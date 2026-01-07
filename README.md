@@ -23,4 +23,8 @@ It is built upon two core theoretical frameworks:
 *   **Corporate Stewardship:** It redefines organizations from profit-extraction machines to **Nafs Nodes** in a network. It detects "invisible risks" (like high profit but high ethical noise/Riba) that lead to eventual systemic collapse, enabling long-term stewardship.
 *   **Education:** It transforms education from information transfer to **Wisdom Cultivation**, providing personalized pathways for every student to reach their Sovereign potential.
 
+## Value Proposition
+
+For a detailed explanation of how these technologies act as the "Zakat" of the Digital Age and compare to the GUI revolution and the world's most valuable companies, see [VALUE_PROPOSITION.md](VALUE_PROPOSITION.md).
+
 For a deep dive into the mathematical models and 12-stage historical execution, see [CONCEPTS.md](CONCEPTS.md).
