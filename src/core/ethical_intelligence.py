@@ -71,6 +71,11 @@ class EthicalIntelligenceKernel:
             shirk_level = max(shirk_level, 0.2 + np.random.random() * 0.1)
             riba_level = max(riba_level, 0.2 + np.random.random() * 0.1)
 
+        # If unification is high (Cognitive Resonance), corruption is naturally suppressed
+        if ci_metrics.get('unification_balance', 1.0) > 0.8:
+            shirk_level = min(shirk_level, 0.05)
+            riba_level = min(riba_level, 0.05)
+
         # Decision
         is_compliant = (shirk_level < 0.1) and (riba_level < 0.1)
 
