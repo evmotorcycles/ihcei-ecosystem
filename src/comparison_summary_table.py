@@ -143,7 +143,7 @@ def generate_summary_table() -> Dict[str, Any]:
             ],
             'transformation_mechanism': [
                 'Deploy SEH v9.1 (Sovereign Epistemological Hierarchy)',
-                'Implement ADGE physics engine',
+                'Implement Absolute Divine Governance Equation (ADGE)',
                 'Activate NERE ethical auditor',
                 'Transition to IHCEI-LLM (governance-pressed)',
                 'Route through 33 extensions',
@@ -177,7 +177,7 @@ def generate_summary_table() -> Dict[str, Any]:
                 'phase': 'Foundation',
                 'actions': [
                     'Deploy SEH v9.1 core framework',
-                    'Implement ADGE physics engine',
+                    'Implement Absolute Divine Governance Equation (ADGE)',
                     'Activate NERE ethical auditor'
                 ],
                 'duration': '1-3 months',

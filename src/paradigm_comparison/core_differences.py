@@ -144,7 +144,7 @@ class ParadigmComparison:
             AIAlignmentApproach(
                 rt_method="Constitutional AI (human-written rules)",
                 rt_weakness="Rules can be gamed or become obsolete",
-                governance_method="ADGE Physics (field unification equations)",
+                governance_method="Absolute Divine Governance Equation (ADGE)",
                 governance_strength="Mathematical governance topology"
             ),
             AIAlignmentApproach(
@@ -355,7 +355,7 @@ class ParadigmComparison:
             'secondary_metric': "Zakat efficiency (purified knowledge transfer)",
             'optimization_goal': "Maximize C_dev while minimizing Shirk/Riba",
             'data_sources': ["Apparition analysis", "Cognitive state assessment", "Governance context"],
-            'algorithm': "SEH v9.1 processing through ADGE physics",
+            'algorithm': "SEH v9.1 processing through Absolute Divine Governance Equation (ADGE)",
             'ethical_considerations': "10 Elements of Deen compliance via NERE",
             'strengths': ["Transparent governance hierarchy", "Immutable ethical framework"],
             'success_criteria': "High C_dev contribution, unified field state, ethical compliance"
@@ -383,7 +383,7 @@ class ParadigmComparison:
             'primary_metric': "Network unification balance",
             'secondary_metric': "C_dev impact across network",
             'optimization_goal': "Maximize field unification, minimize entropy",
-            'methodology': "ADGE field calculations, NERE ethical audit",
+            'methodology': "ADGE calculations, NERE ethical audit",
             'stakeholder_analysis': "Role and authority mapping via 10 Elements",
             'strengths': ["Long-term civilization development", "Systemic integrity"],
             'success_criteria': "High unification balance, positive Ricci scalar"

@@ -1,0 +1,27 @@
+2026-01-07 18:59:42,787 - src.rt_technology.rt_core - INFO - RT Core initialized with deep_learning model
+2026-01-07 18:59:42,787 - src.governance_technology.governance_core - INFO - Governance Core initialized with SEH v9.1 and NERE
+2026-01-07 18:59:42,787 - src.rt_technology.rt_core - INFO - Added ethical constraint: fairness
+2026-01-07 18:59:42,788 - src.rt_technology.rt_core - INFO - Added ethical constraint: safety
+2026-01-07 18:59:42,788 - src.comparison_demo - INFO - Technology Comparison Demo initialized
+2026-01-07 18:59:42,788 - src.comparison_demo - INFO - Running comprehensive paradigm comparison
+2026-01-07 18:59:42,788 - src.comparison_demo - INFO - Running scenario: Medical Diagnosis
+2026-01-07 18:59:42,789 - src.rt_technology.rt_core - WARNING - Ethical constraint violation in decision #1
+2026-01-07 18:59:42,790 - src.rt_technology.rt_core - INFO - RT Decision made: APPROVE/IMPLEMENT (Score: 3026.30, Confidence: -89... (Value: -2703666.16)
+2026-01-07 18:59:42,846 - src.governance_technology.governance_core - INFO - Governance Decision made. C_dev: 84.00, Unification: 0.780
+2026-01-07 18:59:42,847 - src.comparison_demo - INFO - Running scenario: Resource Allocation
+2026-01-07 18:59:42,847 - src.rt_technology.rt_core - WARNING - Ethical constraint violation in decision #2
+2026-01-07 18:59:42,847 - src.rt_technology.rt_core - INFO - RT Decision made: APPROVE/IMPLEMENT (Score: 1000002.50, Confidence: ... (Value: -299998999995.62)
+2026-01-07 18:59:42,847 - src.governance_technology.governance_core - INFO - Governance Decision made. C_dev: 59.50, Unification: 0.787
+2026-01-07 18:59:42,848 - src.comparison_demo - INFO - Running scenario: AI Safety Protocol
+2026-01-07 18:59:42,848 - src.rt_technology.rt_core - WARNING - Ethical constraint violation in decision #3
+2026-01-07 18:59:42,848 - src.rt_technology.rt_core - INFO - RT Decision made: APPROVE/IMPLEMENT (Score: 11.63, Confidence: -3.03... (Value: -35.18)
+2026-01-07 18:59:42,848 - src.governance_technology.governance_core - INFO - Governance Decision made. C_dev: 103.00, Unification: 0.767
+2026-01-07 18:59:42,848 - src.comparison_demo - INFO - Running scenario: Education Policy
+2026-01-07 18:59:42,849 - src.rt_technology.rt_core - WARNING - Ethical constraint violation in decision #4
+2026-01-07 18:59:42,849 - src.rt_technology.rt_core - INFO - RT Decision made: APPROVE/IMPLEMENT (Score: 125006.43, Confidence: -... (Value: -8119141363.48)
+2026-01-07 18:59:42,849 - src.governance_technology.governance_core - INFO - Governance Decision made. C_dev: 105.00, Unification: 0.760
+2026-01-07 18:59:42,849 - src.comparison_demo - INFO - Running scenario: Environmental Policy
+2026-01-07 18:59:42,849 - src.rt_technology.rt_core - WARNING - Ethical constraint violation in decision #5
+2026-01-07 18:59:42,849 - src.rt_technology.rt_core - INFO - RT Decision made: APPROVE/IMPLEMENT (Score: 200030.04, Confidence: -... (Value: -24002503177.58)
+2026-01-07 18:59:42,850 - src.governance_technology.governance_core - INFO - Governance Decision made. C_dev: 90.50, Unification: 0.767
+2026-01-07 18:59:42,854 - src.comparison_demo - INFO - Comprehensive comparison saved to paradigm_comparison_20260107_185942.json

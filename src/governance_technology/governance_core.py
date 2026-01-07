@@ -1,6 +1,6 @@
 """
 GOVERNANCE TECHNOLOGY CORE
-Implementation of IHCEI Ecosystem with ADGE physics and NERE ethics
+Implementation of IHCEI Ecosystem with Absolute Divine Governance Equation (ADGE) and NERE ethics
 """
 
 import numpy as np
