@@ -1,0 +1,34 @@
+2026-01-07 17:46:32,580 - src.rt_technology.rt_core - INFO - RT Core initialized with deep_learning model
+2026-01-07 17:46:32,580 - src.governance_technology.governance_core - INFO - Governance Core initialized with SEH v9.1 and NERE
+2026-01-07 17:46:32,580 - src.rt_technology.rt_core - INFO - Added ethical constraint: fairness
+2026-01-07 17:46:32,580 - src.rt_technology.rt_core - INFO - Added ethical constraint: safety
+2026-01-07 17:46:32,580 - src.comparison_demo - INFO - Technology Comparison Demo initialized
+2026-01-07 17:46:32,581 - src.comparison_demo - INFO - Running comprehensive paradigm comparison
+2026-01-07 17:46:32,581 - src.comparison_demo - INFO - Running scenario: Medical Diagnosis
+2026-01-07 17:46:32,581 - __main__ - ERROR - Comparison failed: the resolved dtypes are not compatible with add.reduce. Resolved (dtype('<U7'), dtype('<U7'), dtype('<U14'))
+Traceback (most recent call last):
+  File "/app/run_paradigm_comparison.py", line 55, in main
+    report = run_demonstration()
+             ^^^^^^^^^^^^^^^^^^^
+  File "/app/src/comparison_demo.py", line 694, in run_demonstration
+    report = comparison.run_comprehensive_comparison()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/comparison_demo.py", line 354, in run_comprehensive_comparison
+    result = self.run_scenario_comparison(scenario['id'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/comparison_demo.py", line 124, in run_scenario_comparison
+    rt_decision = self.rt_core.make_decision(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/rt_technology/rt_core.py", line 74, in make_decision
+    prediction = self._apply_model(features)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/src/rt_technology/rt_core.py", line 140, in _apply_model
+    prediction_values.append(np.mean(feat))
+                             ^^^^^^^^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/numpy/_core/fromnumeric.py", line 3824, in mean
+    return _methods._mean(a, axis=axis, dtype=dtype,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jules/.pyenv/versions/3.12.12/lib/python3.12/site-packages/numpy/_core/_methods.py", line 132, in _mean
+    ret = umr_sum(arr, axis, dtype, out, keepdims, where=where)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: the resolved dtypes are not compatible with add.reduce. Resolved (dtype('<U7'), dtype('<U7'), dtype('<U14'))

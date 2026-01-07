@@ -1,0 +1,7 @@
+2026-01-07 17:45:33,377 - __main__ - ERROR - Comparison failed: No module named 'rt_technology'
+Traceback (most recent call last):
+  File "/app/run_paradigm_comparison.py", line 43, in main
+    from src.comparison_demo import run_demonstration
+  File "/app/src/comparison_demo.py", line 12, in <module>
+    from rt_technology.rt_core import RTCore, RTDecision
+ModuleNotFoundError: No module named 'rt_technology'
