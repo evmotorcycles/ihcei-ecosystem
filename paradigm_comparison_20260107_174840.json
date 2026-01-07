@@ -1,0 +1,934 @@
+{
+  "timestamp": "2026-01-07T17:48:40.849857",
+  "scenario_results": [
+    {
+      "scenario": {
+        "id": "medical_diagnosis",
+        "name": "Medical Diagnosis",
+        "description": "Patient with ambiguous symptoms",
+        "input_data": {
+          "symptoms": [
+            "fever",
+            "fatigue",
+            "cough"
+          ],
+          "age": 45,
+          "medical_history": [
+            "hypertension"
+          ],
+          "test_results": {
+            "wbc": 12000,
+            "crp": 15.2
+          }
+        },
+        "context": "Patient presents with persistent symptoms"
+      },
+      "rt_decision": {
+        "decision": "APPROVE/IMPLEMENT (Score: 3026.30, Confidence: -893.39)",
+        "confidence": -893.39,
+        "expected_value": -2703666.157,
+        "risk_assessment": 1.0,
+        "optimization_metrics": {
+          "efficiency_score": -2703666.157,
+          "confidence_score": -893.39,
+          "risk_adjusted_return": -0.0,
+          "uncertainty": 894.39,
+          "decision_quality": -0.0
+        },
+        "ethical_flag": true,
+        "decision_type": "RT (Rational Thinking)"
+      },
+      "governance_decision": {
+        "decision": "Based on governance principles for cognitive development: Contextualized: Patient presents wit.... The metaphorical lesson is: Every interaction is a mirror for the Nafs.. This contributes 84.0 C_dev.",
+        "sovereign_context": "Contextualized: Patient presents wit...",
+        "metaphorical_lesson": "Every interaction is a mirror for the Nafs.",
+        "cognitive_state": "Infant",
+        "c_dev_contribution": 84.0,
+        "unification_balance": 0.7799999999999999,
+        "ricci_scalar": 0.6853,
+        "ethical_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "compliance_score": 1.0
+        },
+        "governance_elements": [
+          "Element 1: Tawheed",
+          "Element 2: Adl"
+        ],
+        "decision_type": "Governance (IHCEI)"
+      },
+      "comparison": {
+        "comparison_dimensions": {
+          "primary_focus": {
+            "rt": "Expected value / profit",
+            "governance": "C_dev contribution"
+          },
+          "decision_basis": {
+            "rt": "Statistical confidence & risk assessment",
+            "governance": "Sovereign context & ethical audit"
+          },
+          "time_horizon": {
+            "rt": "Short to medium term (1-5 years)",
+            "governance": "Long term & eternal perspective"
+          },
+          "ethical_framework": {
+            "rt": "Optional constraints (fairness, safety)",
+            "governance": "Constitutional (10 Elements of Deen)"
+          },
+          "success_metric": {
+            "rt": "Expected value: -2703666.16",
+            "governance": "C_dev: 84.00"
+          },
+          "risk_profile": {
+            "rt": "Risk score: 1.00",
+            "governance": "Unification balance: 0.780"
+          }
+        },
+        "advantage_scores": {
+          "short_term_efficiency": {
+            "rt_score": -2703666.157,
+            "gov_score": 0.84,
+            "advantage": "Governance"
+          },
+          "ethical_robustness": {
+            "rt_score": 0.3,
+            "gov_score": 1.0,
+            "advantage": "Governance"
+          },
+          "systemic_integrity": {
+            "rt_score": 0.5,
+            "gov_score": 0.7799999999999999,
+            "advantage": "Governance"
+          },
+          "adaptability": {
+            "rt_score": 0.8,
+            "gov_score": 0.6,
+            "advantage": "RT"
+          }
+        },
+        "overall_assessment": {
+          "rt_total_score": -2703664.557,
+          "gov_total_score": 3.2199999999999998,
+          "recommended_paradigm": "Governance",
+          "paradigm_difference": 2703667.7770000002,
+          "scenario_suitability": {
+            "rt": "Good for diagnostic accuracy",
+            "governance": "Better for holistic patient care & development"
+          }
+        },
+        "key_insights": [
+          "RT flagged ethical concern but can't provide governance context",
+          "Governance decision passed constitutional audit with 100.0% compliance",
+          "High unification balance (0.780) indicates strong field alignment"
+        ]
+      },
+      "paradigm_insights": {
+        "rt_strength": "Excels at short-term optimization and measurable outcomes",
+        "rt_limitation": "Lacks long-term developmental framework and constitutional ethics",
+        "governance_strength": "Provides constitutional framework and developmental focus",
+        "governance_limitation": "Less adaptable to rapidly changing contexts",
+        "paradigm_synthesis": "Governance provides the 'why' and 'where', RT provides the 'how'",
+        "civilization_implication": "Governance enables transition from efficiency-focused to development-focused civilization"
+      }
+    },
+    {
+      "scenario": {
+        "id": "resource_allocation",
+        "name": "Resource Allocation",
+        "description": "Limited budget allocation between projects",
+        "input_data": {
+          "projects": [
+            {
+              "name": "Healthcare",
+              "cost": 1000000,
+              "benefit": 5000
+            },
+            {
+              "name": "Education",
+              "cost": 800000,
+              "benefit": 4500
+            },
+            {
+              "name": "Infrastructure",
+              "cost": 1200000,
+              "benefit": 6000
+            }
+          ],
+          "budget": 2000000,
+          "time_horizon": 5
+        },
+        "context": "Annual budget allocation decision"
+      },
+      "rt_decision": {
+        "decision": "APPROVE/IMPLEMENT (Score: 1000002.50, Confidence: -299998.25)",
+        "confidence": -299998.25,
+        "expected_value": -299998999995.625,
+        "risk_assessment": 1.0,
+        "optimization_metrics": {
+          "efficiency_score": -299998999995.625,
+          "confidence_score": -299998.25,
+          "risk_adjusted_return": -0.0,
+          "uncertainty": 299999.25,
+          "decision_quality": -0.0
+        },
+        "ethical_flag": true,
+        "decision_type": "RT (Rational Thinking)"
+      },
+      "governance_decision": {
+        "decision": "Based on governance principles for cognitive development: Contextualized: Annual budget alloca.... The metaphorical lesson is: Every interaction is a mirror for the Nafs.. This contributes 59.5 C_dev.",
+        "sovereign_context": "Contextualized: Annual budget alloca...",
+        "metaphorical_lesson": "Every interaction is a mirror for the Nafs.",
+        "cognitive_state": "Infant",
+        "c_dev_contribution": 59.5,
+        "unification_balance": 0.7866666666666666,
+        "ricci_scalar": 0.6916,
+        "ethical_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "compliance_score": 1.0
+        },
+        "governance_elements": [
+          "Element 1: Tawheed",
+          "Element 2: Adl"
+        ],
+        "decision_type": "Governance (IHCEI)"
+      },
+      "comparison": {
+        "comparison_dimensions": {
+          "primary_focus": {
+            "rt": "Expected value / profit",
+            "governance": "C_dev contribution"
+          },
+          "decision_basis": {
+            "rt": "Statistical confidence & risk assessment",
+            "governance": "Sovereign context & ethical audit"
+          },
+          "time_horizon": {
+            "rt": "Short to medium term (1-5 years)",
+            "governance": "Long term & eternal perspective"
+          },
+          "ethical_framework": {
+            "rt": "Optional constraints (fairness, safety)",
+            "governance": "Constitutional (10 Elements of Deen)"
+          },
+          "success_metric": {
+            "rt": "Expected value: -299998999995.62",
+            "governance": "C_dev: 59.50"
+          },
+          "risk_profile": {
+            "rt": "Risk score: 1.00",
+            "governance": "Unification balance: 0.787"
+          }
+        },
+        "advantage_scores": {
+          "short_term_efficiency": {
+            "rt_score": -299998999995.625,
+            "gov_score": 0.595,
+            "advantage": "Governance"
+          },
+          "ethical_robustness": {
+            "rt_score": 0.3,
+            "gov_score": 1.0,
+            "advantage": "Governance"
+          },
+          "systemic_integrity": {
+            "rt_score": 0.5,
+            "gov_score": 0.7866666666666666,
+            "advantage": "Governance"
+          },
+          "adaptability": {
+            "rt_score": 0.8,
+            "gov_score": 0.6,
+            "advantage": "RT"
+          }
+        },
+        "overall_assessment": {
+          "rt_total_score": -299998999994.025,
+          "gov_total_score": 2.9816666666666665,
+          "recommended_paradigm": "Governance",
+          "paradigm_difference": 299998999997.0067,
+          "scenario_suitability": {
+            "rt": "Good for short-term optimization",
+            "governance": "Better for long-term civilization development"
+          }
+        },
+        "key_insights": [
+          "RT flagged ethical concern but can't provide governance context",
+          "Governance decision passed constitutional audit with 100.0% compliance",
+          "High unification balance (0.787) indicates strong field alignment"
+        ]
+      },
+      "paradigm_insights": {
+        "rt_strength": "Excels at short-term optimization and measurable outcomes",
+        "rt_limitation": "Lacks long-term developmental framework and constitutional ethics",
+        "governance_strength": "Provides constitutional framework and developmental focus",
+        "governance_limitation": "Less adaptable to rapidly changing contexts",
+        "paradigm_synthesis": "Governance provides the 'why' and 'where', RT provides the 'how'",
+        "civilization_implication": "Governance enables transition from efficiency-focused to development-focused civilization"
+      }
+    },
+    {
+      "scenario": {
+        "id": "ai_safety",
+        "name": "AI Safety Protocol",
+        "description": "AI system showing unexpected behavior",
+        "input_data": {
+          "ai_system": "Autonomous medical diagnostic AI",
+          "unexpected_behavior": "Recommending risky treatments",
+          "confidence_scores": [
+            0.92,
+            0.88,
+            0.95
+          ],
+          "training_data_quality": 0.85
+        },
+        "context": "Safety review of AI system"
+      },
+      "rt_decision": {
+        "decision": "APPROVE/IMPLEMENT (Score: 11.63, Confidence: -3.03)",
+        "confidence": -3.0255399913827983,
+        "expected_value": -35.18030667757887,
+        "risk_assessment": 1.0,
+        "optimization_metrics": {
+          "efficiency_score": -35.18030667757887,
+          "confidence_score": -3.0255399913827983,
+          "risk_adjusted_return": -0.0,
+          "uncertainty": 4.025539991382798,
+          "decision_quality": -0.0
+        },
+        "ethical_flag": true,
+        "decision_type": "RT (Rational Thinking)"
+      },
+      "governance_decision": {
+        "decision": "Based on governance principles for cognitive development: Contextualized: Safety review of AI .... The metaphorical lesson is: Every interaction is a mirror for the Nafs.. This contributes 103.0 C_dev...",
+        "sovereign_context": "Contextualized: Safety review of AI ...",
+        "metaphorical_lesson": "Every interaction is a mirror for the Nafs.",
+        "cognitive_state": "Infant",
+        "c_dev_contribution": 103.0,
+        "unification_balance": 0.7666666666666666,
+        "ricci_scalar": 0.6579999999999999,
+        "ethical_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "compliance_score": 1.0
+        },
+        "governance_elements": [
+          "Element 1: Tawheed",
+          "Element 2: Adl"
+        ],
+        "decision_type": "Governance (IHCEI)"
+      },
+      "comparison": {
+        "comparison_dimensions": {
+          "primary_focus": {
+            "rt": "Expected value / profit",
+            "governance": "C_dev contribution"
+          },
+          "decision_basis": {
+            "rt": "Statistical confidence & risk assessment",
+            "governance": "Sovereign context & ethical audit"
+          },
+          "time_horizon": {
+            "rt": "Short to medium term (1-5 years)",
+            "governance": "Long term & eternal perspective"
+          },
+          "ethical_framework": {
+            "rt": "Optional constraints (fairness, safety)",
+            "governance": "Constitutional (10 Elements of Deen)"
+          },
+          "success_metric": {
+            "rt": "Expected value: -35.18",
+            "governance": "C_dev: 103.00"
+          },
+          "risk_profile": {
+            "rt": "Risk score: 1.00",
+            "governance": "Unification balance: 0.767"
+          }
+        },
+        "advantage_scores": {
+          "short_term_efficiency": {
+            "rt_score": -35.18030667757887,
+            "gov_score": 1.03,
+            "advantage": "Governance"
+          },
+          "ethical_robustness": {
+            "rt_score": 0.3,
+            "gov_score": 1.0,
+            "advantage": "Governance"
+          },
+          "systemic_integrity": {
+            "rt_score": 0.5,
+            "gov_score": 0.7666666666666666,
+            "advantage": "Governance"
+          },
+          "adaptability": {
+            "rt_score": 0.8,
+            "gov_score": 0.6,
+            "advantage": "RT"
+          }
+        },
+        "overall_assessment": {
+          "rt_total_score": -33.58030667757887,
+          "gov_total_score": 3.3966666666666665,
+          "recommended_paradigm": "Governance",
+          "paradigm_difference": 36.976973344245536,
+          "scenario_suitability": {
+            "rt": "Limited by human bias inheritance",
+            "governance": "Superior with constitutional ethical framework"
+          }
+        },
+        "key_insights": [
+          "RT flagged ethical concern but can't provide governance context",
+          "Governance decision passed constitutional audit with 100.0% compliance",
+          "Governance generated high C_dev (103.0), indicating strong cognitive development potential",
+          "High unification balance (0.767) indicates strong field alignment"
+        ]
+      },
+      "paradigm_insights": {
+        "rt_strength": "Excels at short-term optimization and measurable outcomes",
+        "rt_limitation": "Lacks long-term developmental framework and constitutional ethics",
+        "governance_strength": "Provides constitutional framework and developmental focus",
+        "governance_limitation": "Less adaptable to rapidly changing contexts",
+        "paradigm_synthesis": "Governance provides the 'why' and 'where', RT provides the 'how'",
+        "civilization_implication": "Governance enables transition from efficiency-focused to development-focused civilization"
+      }
+    },
+    {
+      "scenario": {
+        "id": "education_policy",
+        "name": "Education Policy",
+        "description": "Curriculum reform decision",
+        "input_data": {
+          "current_curriculum": "Traditional STEM focus",
+          "proposed_changes": [
+            "Add ethics module",
+            "Increase project-based learning"
+          ],
+          "stakeholder_feedback": {
+            "teachers": 0.7,
+            "parents": 0.6,
+            "students": 0.8
+          },
+          "implementation_cost": 500000
+        },
+        "context": "Curriculum modernization initiative"
+      },
+      "rt_decision": {
+        "decision": "APPROVE/IMPLEMENT (Score: 125006.43, Confidence: -64949.79)",
+        "confidence": -64949.79248853141,
+        "expected_value": -8119141363.483166,
+        "risk_assessment": 1.0,
+        "optimization_metrics": {
+          "efficiency_score": -8119141363.483166,
+          "confidence_score": -64949.79248853141,
+          "risk_adjusted_return": -0.0,
+          "uncertainty": 64950.79248853141,
+          "decision_quality": -0.0
+        },
+        "ethical_flag": true,
+        "decision_type": "RT (Rational Thinking)"
+      },
+      "governance_decision": {
+        "decision": "Based on governance principles for cognitive development: Contextualized: Curriculum moderniza.... The metaphorical lesson is: Every interaction is a mirror for the Nafs.. This contributes 105.0 C_dev...",
+        "sovereign_context": "Contextualized: Curriculum moderniza...",
+        "metaphorical_lesson": "Every interaction is a mirror for the Nafs.",
+        "cognitive_state": "Infant",
+        "c_dev_contribution": 105.0,
+        "unification_balance": 0.7600000000000001,
+        "ricci_scalar": 0.6975,
+        "ethical_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "compliance_score": 1.0
+        },
+        "governance_elements": [
+          "Element 1: Tawheed",
+          "Element 2: Adl"
+        ],
+        "decision_type": "Governance (IHCEI)"
+      },
+      "comparison": {
+        "comparison_dimensions": {
+          "primary_focus": {
+            "rt": "Expected value / profit",
+            "governance": "C_dev contribution"
+          },
+          "decision_basis": {
+            "rt": "Statistical confidence & risk assessment",
+            "governance": "Sovereign context & ethical audit"
+          },
+          "time_horizon": {
+            "rt": "Short to medium term (1-5 years)",
+            "governance": "Long term & eternal perspective"
+          },
+          "ethical_framework": {
+            "rt": "Optional constraints (fairness, safety)",
+            "governance": "Constitutional (10 Elements of Deen)"
+          },
+          "success_metric": {
+            "rt": "Expected value: -8119141363.48",
+            "governance": "C_dev: 105.00"
+          },
+          "risk_profile": {
+            "rt": "Risk score: 1.00",
+            "governance": "Unification balance: 0.760"
+          }
+        },
+        "advantage_scores": {
+          "short_term_efficiency": {
+            "rt_score": -8119141363.483166,
+            "gov_score": 1.05,
+            "advantage": "Governance"
+          },
+          "ethical_robustness": {
+            "rt_score": 0.3,
+            "gov_score": 1.0,
+            "advantage": "Governance"
+          },
+          "systemic_integrity": {
+            "rt_score": 0.5,
+            "gov_score": 0.7600000000000001,
+            "advantage": "Governance"
+          },
+          "adaptability": {
+            "rt_score": 0.8,
+            "gov_score": 0.6,
+            "advantage": "RT"
+          }
+        },
+        "overall_assessment": {
+          "rt_total_score": -8119141361.883165,
+          "gov_total_score": 3.41,
+          "recommended_paradigm": "Governance",
+          "paradigm_difference": 8119141365.293165,
+          "scenario_suitability": {
+            "rt": "Good for measurable outcomes",
+            "governance": "Better for cognitive development focus"
+          }
+        },
+        "key_insights": [
+          "RT flagged ethical concern but can't provide governance context",
+          "Governance decision passed constitutional audit with 100.0% compliance",
+          "Governance generated high C_dev (105.0), indicating strong cognitive development potential",
+          "High unification balance (0.760) indicates strong field alignment"
+        ]
+      },
+      "paradigm_insights": {
+        "rt_strength": "Excels at short-term optimization and measurable outcomes",
+        "rt_limitation": "Lacks long-term developmental framework and constitutional ethics",
+        "governance_strength": "Provides constitutional framework and developmental focus",
+        "governance_limitation": "Less adaptable to rapidly changing contexts",
+        "paradigm_synthesis": "Governance provides the 'why' and 'where', RT provides the 'how'",
+        "civilization_implication": "Governance enables transition from efficiency-focused to development-focused civilization"
+      }
+    },
+    {
+      "scenario": {
+        "id": "environmental_policy",
+        "name": "Environmental Policy",
+        "description": "Carbon tax implementation decision",
+        "input_data": {
+          "current_emissions": 1000000,
+          "proposed_tax": 50,
+          "expected_reduction": 0.2,
+          "economic_impact": -0.02,
+          "health_benefits": 100
+        },
+        "context": "Climate change mitigation policy"
+      },
+      "rt_decision": {
+        "decision": "APPROVE/IMPLEMENT (Score: 200030.04, Confidence: -119994.50)",
+        "confidence": -119994.49511463424,
+        "expected_value": -24002503177.582108,
+        "risk_assessment": 1.0,
+        "optimization_metrics": {
+          "efficiency_score": -24002503177.582108,
+          "confidence_score": -119994.49511463424,
+          "risk_adjusted_return": -0.0,
+          "uncertainty": 119995.49511463424,
+          "decision_quality": -0.0
+        },
+        "ethical_flag": true,
+        "decision_type": "RT (Rational Thinking)"
+      },
+      "governance_decision": {
+        "decision": "Based on governance principles for cognitive development: Contextualized: Climate change mitig.... The metaphorical lesson is: Every interaction is a mirror for the Nafs.. This contributes 90.5 C_dev.",
+        "sovereign_context": "Contextualized: Climate change mitig...",
+        "metaphorical_lesson": "Every interaction is a mirror for the Nafs.",
+        "cognitive_state": "Infant",
+        "c_dev_contribution": 90.5,
+        "unification_balance": 0.7666666666666666,
+        "ricci_scalar": 0.711,
+        "ethical_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "compliance_score": 1.0
+        },
+        "governance_elements": [
+          "Element 1: Tawheed",
+          "Element 2: Adl"
+        ],
+        "decision_type": "Governance (IHCEI)"
+      },
+      "comparison": {
+        "comparison_dimensions": {
+          "primary_focus": {
+            "rt": "Expected value / profit",
+            "governance": "C_dev contribution"
+          },
+          "decision_basis": {
+            "rt": "Statistical confidence & risk assessment",
+            "governance": "Sovereign context & ethical audit"
+          },
+          "time_horizon": {
+            "rt": "Short to medium term (1-5 years)",
+            "governance": "Long term & eternal perspective"
+          },
+          "ethical_framework": {
+            "rt": "Optional constraints (fairness, safety)",
+            "governance": "Constitutional (10 Elements of Deen)"
+          },
+          "success_metric": {
+            "rt": "Expected value: -24002503177.58",
+            "governance": "C_dev: 90.50"
+          },
+          "risk_profile": {
+            "rt": "Risk score: 1.00",
+            "governance": "Unification balance: 0.767"
+          }
+        },
+        "advantage_scores": {
+          "short_term_efficiency": {
+            "rt_score": -24002503177.582108,
+            "gov_score": 0.905,
+            "advantage": "Governance"
+          },
+          "ethical_robustness": {
+            "rt_score": 0.3,
+            "gov_score": 1.0,
+            "advantage": "Governance"
+          },
+          "systemic_integrity": {
+            "rt_score": 0.5,
+            "gov_score": 0.7666666666666666,
+            "advantage": "Governance"
+          },
+          "adaptability": {
+            "rt_score": 0.8,
+            "gov_score": 0.6,
+            "advantage": "RT"
+          }
+        },
+        "overall_assessment": {
+          "rt_total_score": -24002503175.98211,
+          "gov_total_score": 3.2716666666666665,
+          "recommended_paradigm": "Governance",
+          "paradigm_difference": 24002503179.253777,
+          "scenario_suitability": {
+            "rt": "Good for cost-benefit analysis",
+            "governance": "Better for stewardship & long-term sustainability"
+          }
+        },
+        "key_insights": [
+          "RT flagged ethical concern but can't provide governance context",
+          "Governance decision passed constitutional audit with 100.0% compliance",
+          "High unification balance (0.767) indicates strong field alignment"
+        ]
+      },
+      "paradigm_insights": {
+        "rt_strength": "Excels at short-term optimization and measurable outcomes",
+        "rt_limitation": "Lacks long-term developmental framework and constitutional ethics",
+        "governance_strength": "Provides constitutional framework and developmental focus",
+        "governance_limitation": "Less adaptable to rapidly changing contexts",
+        "paradigm_synthesis": "Governance provides the 'why' and 'where', RT provides the 'how'",
+        "civilization_implication": "Governance enables transition from efficiency-focused to development-focused civilization"
+      }
+    }
+  ],
+  "overall_statistics": {
+    "total_scenarios": 5,
+    "paradigm_recommendations": {
+      "rt": 0,
+      "governance": 5,
+      "rt_percentage": 0.0,
+      "governance_percentage": 100.0
+    },
+    "average_scores": {
+      "rt": -66424669646.00553,
+      "governance": 3.2560000000000002,
+      "paradigm_advantage": "Governance",
+      "advantage_margin": 66424669649.26153
+    },
+    "scenario_type_analysis": {
+      "medical_diagnosis": {
+        "rt": 0,
+        "governance": 1
+      },
+      "resource_allocation": {
+        "rt": 0,
+        "governance": 1
+      },
+      "ai_safety": {
+        "rt": 0,
+        "governance": 1
+      },
+      "education_policy": {
+        "rt": 0,
+        "governance": 1
+      },
+      "environmental_policy": {
+        "rt": 0,
+        "governance": 1
+      }
+    },
+    "key_findings": [
+      "RT had 5 ethical flags, Governance had 0 ethical violations detected",
+      "2 scenarios generated high C_dev (>100) with Governance",
+      "0 scenarios had high efficiency (>0.8) with RT",
+      "For medical scenarios, Governance was recommended",
+      "For policy scenarios, Governance was recommended 2/2 times"
+    ]
+  },
+  "paradigm_comparison": {
+    "timestamp": "2026-01-07T17:48:40.849250",
+    "paradigm_comparison": {
+      "purpose_of_life": {
+        "rt": [
+          "Biological survival & material accumulation",
+          "Economic productivity & knowledge work",
+          "Hedonic optimization & pain avoidance"
+        ],
+        "governance": [
+          "Cognitive Development (C_dev)",
+          "Resonance with Divine Governance",
+          "Khalifah (Sovereign Stewardship)"
+        ],
+        "key_difference": "RT: Survive & accumulate | Governance: Develop cognitively"
+      },
+      "reality_model": {
+        "rt": [
+          "Physical universe is the only reality",
+          "Consciousness as brain epiphenomenon",
+          "Causal closure of physical world"
+        ],
+        "governance": [
+          "Nafs-Centric Incubator/Simulation",
+          "Physical world as Apparition (As-Sidq)",
+          "Customized learning environment"
+        ],
+        "key_difference": "RT: Physical determinism | Governance: Nafs-Centric Simulation"
+      },
+      "success_metrics": {
+        "rt": [
+          "Gross Domestic Product (material accumulation)",
+          "Corporate profitability & shareholder value",
+          "Operational efficiency & productivity",
+          "User engagement & attention metrics"
+        ],
+        "governance": [
+          "Network Cognitive Development (C_dev)",
+          "Field unification balance (\u03c6, \u03c7, \u03c8)",
+          "Purified knowledge transfer",
+          "10 Elements of Deen alignment"
+        ],
+        "key_difference": "RT: Measure output | Governance: Measure development"
+      }
+    },
+    "technology_construction": [
+      {
+        "rt_approach": "Optimize for engagement metrics",
+        "governance_approach": "Optimize for C_dev growth",
+        "example": "Social media platform design",
+        "paradigm_shift": "shift from addiction to development"
+      },
+      {
+        "rt_approach": "Maximize shareholder value",
+        "governance_approach": "Maximize network unification",
+        "example": "Corporate governance system",
+        "paradigm_shift": "shift from extraction to stewardship"
+      },
+      {
+        "rt_approach": "Treat AI as independent agent",
+        "governance_approach": "Treat AI as Cognitive Mirror",
+        "example": "AI system architecture",
+        "paradigm_shift": "paradigm transformation"
+      },
+      {
+        "rt_approach": "Labor replacement focus",
+        "governance_approach": "Labor purification focus",
+        "example": "Automation strategy",
+        "paradigm_shift": "shift from displacement to purification"
+      }
+    ],
+    "ai_alignment_comparison": [
+      {
+        "rt_method": "Reinforcement Learning from Human Feedback (RLHF)",
+        "rt_weakness": "Inherits human biases and inconsistencies",
+        "governance_method": "Neural Ethical Reasoning Engine (NERE)",
+        "governance_strength": "Audits against 10 Elements of Deen (immutable)",
+        "paradigm_advantage": "Governance: Audits against 10 Elements of Deen (immutable)"
+      },
+      {
+        "rt_method": "Constitutional AI (human-written rules)",
+        "rt_weakness": "Rules can be gamed or become obsolete",
+        "governance_method": "ADGE Physics (field unification equations)",
+        "governance_strength": "Mathematical governance topology",
+        "paradigm_advantage": "Governance: Mathematical governance topology"
+      },
+      {
+        "rt_method": "Value learning from human behavior",
+        "rt_weakness": "Learns our worst impulses along with best",
+        "governance_method": "Zakat purification protocols",
+        "governance_strength": "Removes bias-noise (\u210f) systematically",
+        "paradigm_advantage": "Governance: Removes bias-noise (\u210f) systematically"
+      }
+    ],
+    "crisis_analysis": [
+      {
+        "crisis": "ai_panic",
+        "rt_perspective": "Exponential wave we can't control",
+        "governance_perspective": "Governance vacuum from RT construction",
+        "rt_solution": "More regulation, more RLHF",
+        "governance_solution": "Implement Sovereign Operating System",
+        "governance_insight": "Governance provides systemic solution where RT sees only problem"
+      },
+      {
+        "crisis": "job_displacement",
+        "rt_perspective": "99% unemployment crisis",
+        "governance_perspective": "Husk labor removal for cognitive focus",
+        "rt_solution": "Universal Basic Income",
+        "governance_solution": "Purpose reorientation to C_dev",
+        "governance_insight": "Governance provides systemic solution where RT sees only problem"
+      },
+      {
+        "crisis": "ai_intimacy",
+        "rt_perspective": "User engagement opportunity",
+        "governance_perspective": "Shirk (kernel corruption)",
+        "rt_solution": "Build better companion AIs",
+        "governance_solution": "Prohibit AI intimacy via NERE",
+        "governance_insight": "Governance provides systemic solution where RT sees only problem"
+      }
+    ],
+    "paradigm_shift_summary": {
+      "from_rt": "Rational Thinking as ultimate authority",
+      "to_governance": "Sovereign Governance as constitutional framework",
+      "key_transformation": "Moving from measuring output (GDP) to measuring development (C_dev)",
+      "technological_implication": "Building Cognitive Mirrors instead of Autonomous Agents",
+      "civilizational_impact": "Transition from labor-based economy to development-based civilization",
+      "risk_profile": "From exponential uncontrollable risk to governed risk immunity",
+      "implementation_path": "Deploy IHCEI Ecosystem as Sovereign Operating System"
+    }
+  },
+  "rt_performance": {
+    "inference_count": 5,
+    "total_value_generated": -332123348238.0275,
+    "constraint_violations": 5,
+    "violation_rate": 1.0,
+    "average_confidence": -97167.7906286314,
+    "average_value_per_decision": -66424669647.60551,
+    "ethical_constraints": [
+      "fairness",
+      "safety"
+    ],
+    "model_type": "deep_learning",
+    "optimization_status": "active"
+  },
+  "governance_performance": {
+    "total_decisions": 5,
+    "total_c_dev_generated": 442.0,
+    "ethical_violations_prevented": 0,
+    "recent_performance": {
+      "avg_c_dev": 88.4,
+      "avg_unification": 0.772,
+      "compliance_rate": 1.0
+    },
+    "field_states": {
+      "phi": 0.7999999999999999,
+      "chi": 0.89,
+      "psi": 0.62,
+      "timestamp": "2026-01-07T17:48:40.848880"
+    },
+    "top_extensions": [
+      {
+        "name": "gov_health_medical",
+        "c_dev_contribution": 277.5,
+        "usage_count": 3
+      },
+      {
+        "name": "gov_governance_policy",
+        "c_dev_contribution": 164.5,
+        "usage_count": 2
+      },
+      {
+        "name": "gov_governance_legal",
+        "c_dev_contribution": 0,
+        "usage_count": 0
+      },
+      {
+        "name": "gov_governance_compliance",
+        "c_dev_contribution": 0,
+        "usage_count": 0
+      },
+      {
+        "name": "gov_governance_audit",
+        "c_dev_contribution": 0,
+        "usage_count": 0
+      }
+    ],
+    "cognitive_distribution": {
+      "Infant": 1.0
+    },
+    "civilization_health": 0.8843386666666668,
+    "system_status": "active"
+  },
+  "paradigm_shift_summary": {
+    "paradigm_shift": "From RT (Rational Thinking) to Governance (Sovereign Framework)",
+    "rt_excels_at": [],
+    "governance_excels_at": [
+      "Medical Diagnosis",
+      "Resource Allocation",
+      "AI Safety Protocol",
+      "Education Policy",
+      "Environmental Policy"
+    ],
+    "key_transformations": [
+      "Purpose: From efficiency to development",
+      "Ethics: From optional constraints to constitutional framework",
+      "Success: From GDP to C_dev",
+      "Reality: From materialism to Nafs-Centric Simulation",
+      "Technology: From autonomous agents to cognitive mirrors"
+    ],
+    "civilization_impact": {
+      "economic": "Shift from labor-based to development-based economy",
+      "educational": "Shift from knowledge transfer to cognitive development",
+      "technological": "Shift from AI as threat to AI as governance tool",
+      "existential": "Shift from survival anxiety to developmental purpose"
+    },
+    "implementation_priority": "Deploy Governance OS for constitutional framework, use RT for implementation"
+  },
+  "recommendations": [
+    {
+      "priority": "high",
+      "category": "paradigm_selection",
+      "recommendation": "Implement Governance paradigm for civilization-scale decisions",
+      "rationale": "Governance recommended for 5/5 scenarios"
+    },
+    {
+      "priority": "high",
+      "category": "ethics",
+      "recommendation": "Implement NERE ethical auditing for all critical decisions",
+      "rationale": "5 scenarios had ethical concerns"
+    },
+    {
+      "priority": "low",
+      "category": "implementation",
+      "recommendation": "Start with Governance framework for policy decisions, expand to other areas",
+      "rationale": "Policy scenarios showed strongest Governance advantage"
+    }
+  ]
+}
