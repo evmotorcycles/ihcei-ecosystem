@@ -36,10 +36,13 @@ class IHCEIEcosystem:
         # 3. NERE Audit
         # We assume the decision to act on this state depends on the metrics.
         # Construct a decision vector based on ADGE metrics for auditing.
+        # If 'utility' is provided in state_data (e.g. material profit), use it; otherwise default to C_dev.
+        utility = state_data.get('utility', adge_metrics['c_dev'])
+
         decision_vector = {
             'transparency': coherence, # Metaphor: high coherence implies clarity/transparency
             'fairness': alignment,     # Metaphor: high alignment implies fairness/justice
-            'utility': adge_metrics['c_dev'] # Utility derived from cognitive development
+            'utility': utility
         }
         nere_audit = self.nere.audit_decision(decision_vector)
 
