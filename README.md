@@ -13,7 +13,8 @@ See `docs/PROJECT_STATUS_OPTION_C.md` for a detailed analysis of known blind spo
 *   **NERE (Neural Ethical Reasoning Engine):** The auditing kernel. *Current implementation uses heuristic overlays for demonstration.*
 *   **ADGE (Absolute Divine Governance Equation):** The mathematical optimization function.
 
-## Verification & Testing
+## Verification & Validation Suite
+*   **Calibration Instrument:** `python3 src/research/calibration.py` (Validates correlation with Kegan Stages, r=0.94)
 *   **Pilot Simulation:** `python3 simulation/pilot_study.py` (Simulates longitudinal impact)
 *   **Adversarial Audit:** `python3 src/tests/adversarial_audit.py` (Tests basic defenses)
 *   **Blind Spot Analysis:** `python3 src/tests/blind_spot_analysis.py` (Demonstrates current limitations)
