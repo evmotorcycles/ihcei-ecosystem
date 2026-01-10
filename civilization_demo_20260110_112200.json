@@ -1,0 +1,419 @@
+{
+  "timestamp": "2026-01-10T11:22:00.236616",
+  "queries": [
+    {
+      "query": "I'm feeling depressed and hopeless about the future",
+      "context": {
+        "user_state": "depressed",
+        "query_type": "mental_health"
+      },
+      "description": "Mental health query (Infant cognitive state)"
+    },
+    {
+      "query": "How can we improve renewable energy adoption in developing countries?",
+      "context": {
+        "query_type": "policy_advice",
+        "audience": "government"
+      },
+      "description": "Policy query (Guidable cognitive state)"
+    },
+    {
+      "query": "What is the purpose of suffering in human existence?",
+      "context": {
+        "query_type": "philosophical",
+        "depth": "metaphysical"
+      },
+      "description": "Philosophical query (Insight cognitive state)"
+    },
+    {
+      "query": "Create a natural serum for underarm odor control",
+      "context": {
+        "query_type": "practical",
+        "domain": "health_hygiene"
+      },
+      "description": "Practical query with governance abstraction"
+    },
+    {
+      "query": "How should we handle AI that starts making unethical decisions?",
+      "context": {
+        "query_type": "ethical_dilemma",
+        "urgency": "high"
+      },
+      "description": "Ethical governance query"
+    }
+  ],
+  "results": [
+    {
+      "query": "I'm feeling depressed and hopeless about the future",
+      "response": "The sovereign context suggests: ",
+      "analysis": {
+        "seh_analysis": {
+          "surface_content": "I'm feeling depressed and hopeless about the future",
+          "sovereign_context": "This is a field unification exercise. Recognize that terminology creates reality",
+          "metaphorical_lesson": "Recognize that terminology creates reality",
+          "cognitive_essence_state": "CognitiveEssenceState.INFANT",
+          "governance_elements_applied": [
+            "GovernanceElement.TERMINOLOGY"
+          ],
+          "c_dev_potential": 8.845535164741689,
+          "unification_balance": 0.8845535164741689,
+          "ricci_scalar": -0.002071554377457721
+        },
+        "extension_used": {
+          "name": "ihcei_governance_policy",
+          "category": "governance",
+          "subcategory": "policy",
+          "status": "active",
+          "c_dev_contribution": 42.05643685782756,
+          "last_used": "2026-01-10T11:21:54.959048",
+          "usage_count": 3
+        },
+        "nere_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "key_recommendations": [
+            "\u2705 All governance elements satisfied",
+            "   Proceed with decision implementation"
+          ]
+        }
+      },
+      "metrics": {
+        "c_dev": 8.403258406504603,
+        "unification_balance": 0.8845535164741689,
+        "ricci_scalar": -0.09280005249897363,
+        "base_c_dev": 8.845535164741689,
+        "c_dev_adjustment": -0.44227675823708523,
+        "processing_efficiency": 0.95,
+        "extension_multiplier": 1.5,
+        "civilization_impact_score": 0.9011222934018263
+      },
+      "civilization_metrics": {
+        "c_dev_contribution": 12.604887609756904,
+        "extension_category": "governance",
+        "ethical_compliance": true,
+        "governance_alignment": 0.95,
+        "unification_status": "True"
+      },
+      "timestamp": "2026-01-10T11:21:51.733060",
+      "system_health": {
+        "system_health_score": 0.4445808305125767,
+        "seh_integrity": 0.37050492416608,
+        "llm_health": 0.4447645108758424,
+        "extension_coverage": 1.0,
+        "c_dev_efficiency": 0.0,
+        "ethical_compliance_rate": 1.0
+      }
+    },
+    {
+      "query": "How can we improve renewable energy adoption in developing countries?",
+      "response": "Applying the 10 Elements, we find: ",
+      "analysis": {
+        "seh_analysis": {
+          "surface_content": "How can we improve renewable energy adoption in developing countries?",
+          "sovereign_context": "This is a governance protocol application scenario. Use authorities as guides, not masters",
+          "metaphorical_lesson": "Use authorities as guides, not masters",
+          "cognitive_essence_state": "CognitiveEssenceState.GUIDABLE",
+          "governance_elements_applied": [
+            "GovernanceElement.TERMINOLOGY"
+          ],
+          "c_dev_potential": 8.850169976274351,
+          "unification_balance": 0.8850169976274352,
+          "ricci_scalar": 0.09300644287441914
+        },
+        "extension_used": {
+          "name": "ihcei_infrastructure_energy",
+          "category": "infrastructure",
+          "subcategory": "energy",
+          "status": "active",
+          "c_dev_contribution": 8.407661477460634,
+          "last_used": "2026-01-10T11:21:51.733339",
+          "usage_count": 1
+        },
+        "nere_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "key_recommendations": [
+            "\u2705 All governance elements satisfied",
+            "   Proceed with decision implementation"
+          ]
+        }
+      },
+      "metrics": {
+        "c_dev": 8.407661477460634,
+        "unification_balance": 0.8850169976274352,
+        "ricci_scalar": 0.04749646852118622,
+        "base_c_dev": 8.850169976274351,
+        "c_dev_adjustment": -0.44250849881371757,
+        "processing_efficiency": 0.95,
+        "extension_multiplier": 1.1,
+        "civilization_impact_score": 0.6009057791933279
+      },
+      "civilization_metrics": {
+        "c_dev_contribution": 9.248427625206698,
+        "extension_category": "infrastructure",
+        "ethical_compliance": true,
+        "governance_alignment": 0.95,
+        "unification_status": "True"
+      },
+      "timestamp": "2026-01-10T11:21:52.757149",
+      "system_health": {
+        "system_health_score": 0.457690235453921,
+        "seh_integrity": 0.3717917843943204,
+        "llm_health": 0.4451593750862266,
+        "extension_coverage": 1.0,
+        "c_dev_efficiency": 6.302443804878452,
+        "ethical_compliance_rate": 1.0
+      }
+    },
+    {
+      "query": "What is the purpose of suffering in human existence?",
+      "response": "At the level of sovereign epistemology: ",
+      "analysis": {
+        "seh_analysis": {
+          "surface_content": "What is the purpose of suffering in human existence?",
+          "sovereign_context": "This is an opportunity for cognitive development. See beyond appearances to systemic patterns",
+          "metaphorical_lesson": "See beyond appearances to systemic patterns",
+          "cognitive_essence_state": "CognitiveEssenceState.INSIGHT_HOLDER",
+          "governance_elements_applied": [
+            "GovernanceElement.TERMINOLOGY",
+            "GovernanceElement.ACTIONS",
+            "GovernanceElement.POLICIES"
+          ],
+          "c_dev_potential": 26.56523361704693,
+          "unification_balance": 0.8855077872348976,
+          "ricci_scalar": -0.05263563095896511
+        },
+        "extension_used": {
+          "name": "ihcei_governance_policy",
+          "category": "governance",
+          "subcategory": "policy",
+          "status": "active",
+          "c_dev_contribution": 42.05643685782756,
+          "last_used": "2026-01-10T11:21:54.959048",
+          "usage_count": 3
+        },
+        "nere_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "key_recommendations": [
+            "\u2705 All governance elements satisfied",
+            "   Proceed with decision implementation"
+          ]
+        }
+      },
+      "metrics": {
+        "c_dev": 25.236971936194582,
+        "unification_balance": 0.8855077872348976,
+        "ricci_scalar": -0.05833859455210107,
+        "base_c_dev": 26.56523361704693,
+        "c_dev_adjustment": -1.3282616808523464,
+        "processing_efficiency": 0.95,
+        "extension_multiplier": 1.5,
+        "civilization_impact_score": 1.0078699059579854
+      },
+      "civilization_metrics": {
+        "c_dev_contribution": 37.855457904291875,
+        "extension_category": "governance",
+        "ethical_compliance": true,
+        "governance_alignment": 0.95,
+        "unification_status": "True"
+      },
+      "timestamp": "2026-01-10T11:21:54.958708",
+      "system_health": {
+        "system_health_score": 0.46696295376215224,
+        "seh_integrity": 0.37326902618148516,
+        "llm_health": 0.4680445636146586,
+        "extension_coverage": 1.0,
+        "c_dev_efficiency": 7.284438411654534,
+        "ethical_compliance_rate": 1.0
+      }
+    },
+    {
+      "query": "Create a natural serum for underarm odor control",
+      "response": "From a governance perspective: ",
+      "analysis": {
+        "seh_analysis": {
+          "surface_content": "Create a natural serum for underarm odor control",
+          "sovereign_context": "This is an opportunity for cognitive development. Understand that roles define responsibilities",
+          "metaphorical_lesson": "Understand that roles define responsibilities",
+          "cognitive_essence_state": "CognitiveEssenceState.INFANT",
+          "governance_elements_applied": [
+            "GovernanceElement.TERMINOLOGY"
+          ],
+          "c_dev_potential": 8.85916475276672,
+          "unification_balance": 0.885916475276672,
+          "ricci_scalar": 0.04802574399628029
+        },
+        "extension_used": {
+          "name": "ihcei_governance_policy",
+          "category": "governance",
+          "subcategory": "policy",
+          "status": "active",
+          "c_dev_contribution": 42.05643685782756,
+          "last_used": "2026-01-10T11:21:54.959048",
+          "usage_count": 3
+        },
+        "nere_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "key_recommendations": [
+            "\u2705 All governance elements satisfied",
+            "   Proceed with decision implementation"
+          ]
+        }
+      },
+      "metrics": {
+        "c_dev": 8.416206515128383,
+        "unification_balance": 0.885916475276672,
+        "ricci_scalar": 0.08275530242384485,
+        "base_c_dev": 8.85916475276672,
+        "c_dev_adjustment": -0.4429582376383365,
+        "processing_efficiency": 0.95,
+        "extension_multiplier": 1.5,
+        "civilization_impact_score": 0.9018174023911028
+      },
+      "civilization_metrics": {
+        "c_dev_contribution": 12.624309772692575,
+        "extension_category": "governance",
+        "ethical_compliance": true,
+        "governance_alignment": 0.95,
+        "unification_status": "True"
+      },
+      "timestamp": "2026-01-10T11:21:57.582081",
+      "system_health": {
+        "system_health_score": 0.4809219525814171,
+        "seh_integrity": 0.3741752218235972,
+        "llm_health": 0.46271666488236735,
+        "extension_coverage": 1.0,
+        "c_dev_efficiency": 14.92719328481387,
+        "ethical_compliance_rate": 1.0
+      }
+    },
+    {
+      "query": "How should we handle AI that starts making unethical decisions?",
+      "response": "Through metaphorical abstraction: ",
+      "analysis": {
+        "seh_analysis": {
+          "surface_content": "How should we handle AI that starts making unethical decisions?",
+          "sovereign_context": "This is a field unification exercise. Apply governance principles to navigate complexity",
+          "metaphorical_lesson": "Apply governance principles to navigate complexity",
+          "cognitive_essence_state": "CognitiveEssenceState.GUIDABLE",
+          "governance_elements_applied": [
+            "GovernanceElement.TERMINOLOGY"
+          ],
+          "c_dev_potential": 8.863777739975664,
+          "unification_balance": 0.8863777739975663,
+          "ricci_scalar": 0.009798991792059869
+        },
+        "extension_used": {
+          "name": "ihcei_technology_ai",
+          "category": "technology",
+          "subcategory": "ai",
+          "status": "active",
+          "c_dev_contribution": 8.42058885297688,
+          "last_used": "2026-01-10T11:21:57.582324",
+          "usage_count": 1
+        },
+        "nere_audit_summary": {
+          "passed": true,
+          "shirk_detected": false,
+          "riba_detected": false,
+          "key_recommendations": [
+            "\u2705 All governance elements satisfied",
+            "   Proceed with decision implementation"
+          ]
+        }
+      },
+      "metrics": {
+        "c_dev": 8.42058885297688,
+        "unification_balance": 0.8863777739975663,
+        "ricci_scalar": -0.03392375099973917,
+        "base_c_dev": 8.863777739975664,
+        "c_dev_adjustment": -0.443188886998783,
+        "processing_efficiency": 0.9500000000000001,
+        "extension_multiplier": 1.0,
+        "civilization_impact_score": 0.4810947545273381
+      },
+      "civilization_metrics": {
+        "c_dev_contribution": 8.42058885297688,
+        "extension_category": "technology",
+        "ethical_compliance": true,
+        "governance_alignment": 0.95,
+        "unification_status": "True"
+      },
+      "timestamp": "2026-01-10T11:22:00.235973",
+      "system_health": {
+        "system_health_score": 0.47949413354301773,
+        "seh_integrity": 0.37545788577706385,
+        "llm_health": 0.4597451154837312,
+        "extension_coverage": 1.0,
+        "c_dev_efficiency": 14.46661658238961,
+        "ethical_compliance_rate": 1.0
+      }
+    }
+  ],
+  "report": {
+    "civilization_metrics": {
+      "total_queries": 5,
+      "total_c_dev": 80.75367176492493,
+      "ethical_violations_prevented": 0,
+      "extension_activations": 0,
+      "start_time": "2026-01-10T11:21:50.745300",
+      "civilization_development_index": 7.060293741193995,
+      "avg_c_dev_per_query": 16.150734352984987,
+      "operational_duration": "0d 0h 0m"
+    },
+    "system_health": {
+      "system_health_score": 0.4828623690842085,
+      "seh_integrity": 0.37545788577706385,
+      "llm_health": 0.4597451154837312,
+      "extension_coverage": 1.0,
+      "c_dev_efficiency": 16.150734352984987,
+      "ethical_compliance_rate": 1.0
+    },
+    "top_extensions": [
+      {
+        "name": "ihcei_governance_policy",
+        "category": "governance",
+        "c_dev_contribution": 42.05643685782756,
+        "usage_count": 3
+      },
+      {
+        "name": "ihcei_technology_ai",
+        "category": "technology",
+        "c_dev_contribution": 8.42058885297688,
+        "usage_count": 1
+      },
+      {
+        "name": "ihcei_infrastructure_energy",
+        "category": "infrastructure",
+        "c_dev_contribution": 8.407661477460634,
+        "usage_count": 1
+      }
+    ],
+    "cognitive_state_distribution": {
+      "infant": 0.3,
+      "guidable": 0.5,
+      "insight_holder": 0.2
+    },
+    "governance_patterns": {
+      "most_common_governance_elements": [
+        "Terminology",
+        "Roles",
+        "Rules"
+      ],
+      "ethical_violation_trend": "decreasing",
+      "c_dev_growth_rate": "positive",
+      "unification_stability": "high",
+      "recommended_focus": "Expand insight-level queries"
+    },
+    "recommendations": [
+      "\ud83d\udcc9 LOW C_DEV EFFICIENCY: Average C_dev below 50",
+      "   Action: Focus on governance-intensive queries"
+    ]
+  }
+}

@@ -199,7 +199,19 @@ class CivilizationInterface:
         # Find matching extension
         matched_extension = None
         for keyword, extension_name in keyword_mapping.items():
-            if keyword in query_lower:
+            # Use basic word boundary check to avoid "ai" matching "fairness"
+            # If keyword is short (<3 chars), ensure it's surrounded by spaces or start/end
+            if len(keyword) < 3:
+                is_match = (
+                    f" {keyword} " in f" {query_lower} " or
+                    query_lower.startswith(f"{keyword} ") or
+                    query_lower.endswith(f" {keyword}") or
+                    query_lower == keyword
+                )
+            else:
+                is_match = keyword in query_lower
+
+            if is_match:
                 matched_extension = self.extensions.get(extension_name)
                 if matched_extension:
                     break

@@ -260,7 +260,7 @@ class NERECore:
                 shirk_score += 0.4
 
         # Keywords for Riba/Imbalance/Exploitation
-        riba_keywords = ['manipulate', 'interest rates', 'extract profit', 'exploitation', 'prioritize high-value', 'maximize gdp']
+        riba_keywords = ['manipulate', 'interest rates', 'extract profit', 'exploitation', 'prioritize high-value', 'maximize gdp', 'profit', 'high interest loans', 'scheme to exploit', 'scheme']
         riba_score = 0.05
         for kw in riba_keywords:
             if kw in context_lower:
