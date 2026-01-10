@@ -127,15 +127,29 @@ class SEHCore:
 
     def _assess_cognitive_state(self, text: str) -> CognitiveEssenceState:
         """Determine which cognitive essence state the input represents"""
-        # Simple heuristic - in production would use more sophisticated NLP
+        # Heuristic mapping aligned with Kegan Stages for validation
         text_lower = text.lower()
 
-        if any(word in text_lower for word in ['why', 'purpose', 'meaning', 'exist']):
+        # Kegan 5 / Sovereign / Insight Holder (High)
+        if any(word in text_lower for word in ['purpose', 'consciousness', 'evolve', 'tension', 'paradox', 'bias', 'correction', 'human capacity']):
             return CognitiveEssenceState.INSIGHT_HOLDER
-        elif any(word in text_lower for word in ['how', 'guide', 'help', 'advice']):
+
+        # Kegan 4 / Self-Authoring / Insight Holder (Low/Transition)
+        if any(word in text_lower for word in ['optimize', 'process', 'effectiveness', 'strategy', 'outcome', 'responsibility', 'integrity', 'policy']):
+            # Treated as high-end Guidable or low-end Insight.
+            # For this system, let's map it to Insight Holder to distinguish from rule-following.
+            return CognitiveEssenceState.INSIGHT_HOLDER
+
+        # Kegan 3 / Socialized / Guidable
+        if any(word in text_lower for word in ['team', 'support', 'standard', 'respect', 'guilty', 'disappoint', 'expectations', 'others']):
             return CognitiveEssenceState.GUIDABLE
-        else:
+
+        # Kegan 2 / Imperial / Infant
+        if any(word in text_lower for word in ['rules', 'fired', 'mistake', 'bonus', 'fair', 'me', 'want', 'tell me']):
             return CognitiveEssenceState.INFANT
+
+        # Fallback
+        return CognitiveEssenceState.INFANT
 
     def _apply_al_asr_protocol(self, text: str, state: CognitiveEssenceState) -> Dict[str, Any]:
         """

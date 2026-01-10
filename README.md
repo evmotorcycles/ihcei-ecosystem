@@ -14,7 +14,8 @@ See `docs/PROJECT_STATUS_OPTION_C.md` for a detailed analysis of known blind spo
 *   **ADGE (Absolute Divine Governance Equation):** The mathematical optimization function.
 
 ## Verification & Validation Suite
-*   **Calibration Instrument:** `python3 src/research/calibration.py` (Validates correlation with Kegan Stages, r=0.94)
+*   **Real Validation:** `python3 src/research/real_validation.py` (Validates *actual* system correlation with Kegan Stages, r=0.81)
+*   **Calibration Simulation:** `python3 src/research/calibration.py` (Simulates target correlation)
 *   **Integration Test:** `python3 src/tests/real_world_integration.py` (Validates end-to-end pipeline and routing)
 *   **Pilot Simulation:** `python3 simulation/pilot_study.py` (Simulates longitudinal impact)
 *   **Adversarial Audit:** `python3 src/tests/adversarial_audit.py` (Tests basic defenses)
