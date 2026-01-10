@@ -40,6 +40,11 @@ def run_demonstration():
     print("IHCEI ECOSYSTEM: CIVILIZATION-SCALE DEPLOYMENT")
     print("="*80)
     print("Deploying: SEH v9.1 + NERE + IHCEI-LLM")
+    print("="*80)
+    print("⚠️  WARNING: RESEARCH PROTOTYPE / ALPHA 'OPTION C'")
+    print("   This system is in 'Incremental Deployment with Honest Uncertainty'.")
+    print("   Results are for demonstration and pilot auditing only.")
+    print("   Do NOT use for critical governance decisions without human review.")
     print("="*80 + "\n")
 
     # Initialize the complete system

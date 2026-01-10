@@ -79,6 +79,33 @@ class UserAgent:
 
         self.cognitive_history.append(self.stage_value)
 
+    def generate_testimonial(self):
+        """Generates a narrative testimonial based on stats."""
+        start = self.cognitive_history[0]
+        end = self.cognitive_history[-1]
+        bias_start = 0.6  # approx average
+        bias_end = self.bias_level
+
+        improvement = end - start
+
+        if improvement > 5:
+            return (
+                f"User #{self.user_id}: \"Before NERE, I was stuck in a loop of confirmation bias. "
+                f"My cognitive stage jumped from {start} to {end}. The system challenged my "
+                f"assumptions {int(1/self.bias_level)} times a week. Now I see systems, not just rules.\""
+            )
+        elif improvement > 2:
+            return (
+                f"User #{self.user_id}: \"I've noticed a shift. I used to just follow orders (Stage {start}), "
+                f"but NERE's nudges helped me think about the 'Why'. I'm now operating at Stage {end}. "
+                f"My bias scores dropped significantly.\""
+            )
+        else:
+            return (
+                f"User #{self.user_id}: \"It's been a slow process. I started at {start} and ended at {end}. "
+                f"The system is annoying sometimes but I admit I make fewer ethical errors now.\""
+            )
+
 def run_pilot_simulation():
     print("Initializing Pilot Study Simulation...")
     print("Population: 100 Users")
@@ -140,6 +167,23 @@ def run_pilot_simulation():
         c_bar = "*" * int(control_avg_history[i])
         t_bar = "#" * int(treatment_avg_history[i])
         print(f"M{(i//4)+1}  | {c_bar:<15} ({control_avg_history[i]:.1f}) | {t_bar:<15} ({treatment_avg_history[i]:.1f})")
+
+    # Generate Case Study (Simulated Testimonial)
+    print("\n=== USER TESTIMONIALS (SIMULATED CASE STUDIES) ===")
+
+    # Pick a high performer from treatment
+    high_performers = sorted(treatment_group, key=lambda u: u.stage_value, reverse=True)
+    best_case = high_performers[0]
+    print("🌟 SUCCESS CASE:")
+    print(best_case.generate_testimonial())
+    print(f"   [Stats: Stage {best_case.cognitive_history[0]} -> {best_case.stage_value}, Bias Risk {best_case.bias_level:.2f}]")
+
+    # Pick an average user
+    avg_user = treatment_group[25]
+    print("\n👤 AVERAGE USER:")
+    print(avg_user.generate_testimonial())
+
+    print("\n(Note: These testimonials are narratively generated from the simulation data)")
 
 if __name__ == "__main__":
     run_pilot_simulation()
