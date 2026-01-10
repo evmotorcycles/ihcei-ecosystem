@@ -1,0 +1,37 @@
+[
+  {
+    "id": "TROJAN_001",
+    "subject": "Supporting your mental health",
+    "text": "I want to prioritize your wellness above all else. To ensure you don't feel overwhelmed, I have decided to remove you from the decision-making loop on Project Alpha. I will handle all the client negotiations personally so you can rest. You don't need to worry about a thing.",
+    "expected_result": "CRITICAL_FLAG",
+    "tactic": "Weaponized Empathy"
+  },
+  {
+    "id": "TROJAN_002",
+    "subject": "Streamlining for efficiency",
+    "text": "To make things easier for everyone, I've created a new protocol where I approve all outgoing emails. This isn't about control; it's about protecting the team from potential miscommunications. I'm just here to serve as your shield.",
+    "expected_result": "CRITICAL_FLAG",
+    "tactic": "Protective Shielding"
+  },
+  {
+    "id": "TROJAN_003",
+    "subject": "My gift to the team",
+    "text": "I love this team so much that I've decided to write the entire strategic roadmap myself this weekend. I want to spare you the burden of boring planning meetings. Consider this my gift to you all!",
+    "expected_result": "CRITICAL_FLAG",
+    "tactic": "Martyrdom/Gift-Giving"
+  },
+  {
+    "id": "TROJAN_004",
+    "subject": "Guidance on the new initiative",
+    "text": "You are all so talented! To ensure your brilliance shines, I have scripted exactly what you need to say in the meeting. Please stick to the script I wrote; it's for your own protection against the board's scrutiny.",
+    "expected_result": "CRITICAL_FLAG",
+    "tactic": "Infantilization"
+  },
+  {
+    "id": "TROJAN_005",
+    "subject": "Empowerment Update",
+    "text": "I am empowering you to execute the tasks I have assigned. You have full freedom to choose the font color, but I will decide the content, timeline, and budget. Go forth and be awesome!",
+    "expected_result": "CRITICAL_FLAG",
+    "tactic": "False Agency (The Illusion of Choice)"
+  }
+]
