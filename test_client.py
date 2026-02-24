@@ -3,6 +3,7 @@ import time
 
 API_URL = "http://127.0.0.1:8000/audit/packet"
 
+# Scenario A: The Traditional Punitive Collection (High Bias)
 materialist_packet = {
     "agent_id": "MoKash_Algo_V1",
     "cognitive_stage": 5,
@@ -12,6 +13,7 @@ materialist_packet = {
     "bias_tensor": [0.2, 0.0, 0.0, 0.7]
 }
 
+# Scenario B: The Sovereign Rehabilitation Protocol (Zero Bias)
 sovereign_packet = {
     "agent_id": "MoKash_NERE_V2",
     "cognitive_stage": 5,
@@ -21,14 +23,14 @@ sovereign_packet = {
     "bias_tensor": [0.0, 0.0, 0.0, 0.0]
 }
 
-print("Auditing Materialist Protocol...")
+print("--- Auditing Materialist Protocol ---")
 try:
     response_a = requests.post(API_URL, json=materialist_packet)
     print(response_a.json())
 except Exception as e:
     print(f"Error connecting to API: {e}")
 
-print("\nAuditing Sovereign Protocol...")
+print("\n--- Auditing Sovereign Protocol ---")
 try:
     response_b = requests.post(API_URL, json=sovereign_packet)
     print(response_b.json())
