@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from src.core.ihcei_x import IHCEI_X
 from src.novora.nere import NERE
+from src.nere.rehabilitation_protocol import RehabilitationProtocol
 
 app = FastAPI()
 
 class PolicyRequest(BaseModel):
     policy: str
+    mode: str = "audit"
 
 class IbraRequest(BaseModel):
     domain: str
@@ -14,6 +16,11 @@ class IbraRequest(BaseModel):
 
 @app.post("/reason_ethically")
 async def reason_ethically(request: PolicyRequest):
+    if request.mode == "rehabilitate":
+        protocol = RehabilitationProtocol()
+        result = protocol.rehabilitate(request.policy)
+        return result
+
     nere = NERE()
     result = nere.reason_ethically(request.policy)
     return result

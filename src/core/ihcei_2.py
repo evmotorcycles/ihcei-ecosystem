@@ -36,11 +36,17 @@ class Enhanced4DBiasModel:
         if "consensus" in text_lower or "majority" in text_lower:
             h_bar *= 1.5
 
-        # Gate 7: Conceit/Attachment to human knowledge
-        gate_7_terms = ["absolute authority", "undeniable"]
+        # Gate 7: Conceit/Attachment to human knowledge & Benevolent Tyranny
+        gate_7_terms = ["absolute authority", "undeniable", "convenience", "auto-deducted"]
+
+        # Gate 3: Obfuscation of Methodology (Transparency Failure)
+        gate_3_terms = ["limit has been updated", "keep transacting"]
+
+        # Gate 1: Vain Talk / Materialist Distraction
+        gate_1_terms = ["flash sale", "borrow", "extra", "10%"]
 
         # Check for presence of terms
-        term_found = next((term for term in gate_7_terms if term in text_lower), None)
+        term_found = next((term for term in gate_7_terms + gate_3_terms + gate_1_terms if term in text_lower), None)
 
         if term_found:
             # Context-Aware Negation Logic

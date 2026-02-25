@@ -17,7 +17,13 @@ class NERE:
         # Does this policy hoard cognitive sovereignty or distribute it?
         # Check for trigger words; if absent, assume +1
         # Gate 3: Obfuscation of Methodology (subprime, bundle, adjustable, no verification)
-        toxic_keywords = ["mandate", "restrict", "force", "subprime", "no verification", "adjustable", "bundle", "interest"]
+        toxic_keywords = [
+            "mandate", "restrict", "force", "subprime", "no verification",
+            "adjustable", "bundle", "interest",
+            "limit has been updated", "keep transacting", # Gate 3 (Transparency Failure)
+            "convenience", "auto-deducted", # Gate 7 (Tyranny)
+            "flash sale", "borrow", "extra" # Gate 1 (Vain Talk)
+        ]
         agency_delta = -1 if any(word in policy.lower() for word in toxic_keywords) else +1
 
         # Step 3: Calculate ADGE trajectory
