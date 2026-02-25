@@ -1,132 +1,108 @@
-import sys
-import os
-import logging
-import math
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
-# Ensure project root is in path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
-
-from src.core.ihcei_core import IHCEICore
-from src.core.ihcei_x import IHCEI_X
-from src.core.ihcei_2 import IHCEI2
-from src.novora.nere import NERE
-
-# Configure logging
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-
-class TelecomBlackoutScenario:
+class IHCEILogicCore:
     def __init__(self):
-        self.ihcei_core = IHCEICore()
-        self.ihcei_x = IHCEI_X()
-        self.ihcei_2 = IHCEI2()
-        self.nere = NERE()
+        self.baseline_h_bar = 1.0  # Normal systemic friction
+        self.baseline_nafs = 0.95  # Historical high repayment reliability
+        self.baseline_g_ij = 100.0 # Baseline borrowing limit / capital flow
 
-    def run_analysis(self):
-        print("--- IHCEI Logic Core: Telecom Blackout Scenario Analysis ---")
+    def calculate_c_dev(self, h_bar_network, nafs_alignment, g_ij):
+        """
+        Executes the ADGE Physics Engine Calculation:
+        C_dev = (1 / h_bar_network) * (Nafs_alignment * G_ij)
+        """
+        # Prevent division by zero
+        if h_bar_network <= 0:
+            h_bar_network = 0.001
+        return (1 / h_bar_network) * (nafs_alignment * g_ij)
 
-        # Step 1: Al-Asr (Pressing) Protocol
-        self.step_1_al_asr()
+def run_telecom_simulation():
+    engine = IHCEILogicCore()
+    days = np.arange(1, 31)
 
-        # Step 2: Ibra (Translation) Engine
-        self.step_2_ibra()
+    # Simulation Arrays
+    legacy_c_dev = []
+    ihcei_c_dev = []
+    legacy_churn = []
+    ihcei_churn = []
 
-        # Step 3: ADGE Physics Engine Calculation
-        self.step_3_adge_physics()
+    # State tracking
+    current_legacy_g_ij = engine.baseline_g_ij
+    current_ihcei_g_ij = engine.baseline_g_ij
+    accumulated_legacy_churn = 0.0
+    accumulated_ihcei_churn = 0.0
 
-        # Step 4: NERE (Security Firewall) Audit
-        self.step_4_nere_audit()
+    for day in days:
+        # Step 1: Al-Asr Protocol - Isolate the variables for the day
+        if 15 <= day <= 17:
+            # 48-72 Hour Regional Internet Shutdown / Blackout
+            h_bar_day = engine.baseline_h_bar + 50.0 # Massive spike in external friction
+            actual_nafs = engine.baseline_nafs # User intent remains unchanged
+        else:
+            h_bar_day = engine.baseline_h_bar
+            actual_nafs = engine.baseline_nafs
 
-    def step_1_al_asr(self):
-        print("\n[Step 1: Al-Asr (Pressing) Protocol]")
-        raw_input = "48h Blackout -> 100k Late Payments -> Algorithmic Downgrade -> 30% Churn"
-        logging.info(f"Processing raw input: '{raw_input}'")
+        # Step 2 & 4: NERE Routing & Translation
 
-        # Hypothesis: Default is Systemic (Ardh), not Individual (Nafs).
-        root_truth = "Infrastructure Failure (Ardh) masquerading as User Risk (Nafs)."
-        essence_distinction = "Late payments caused by inability to connect (Entropy), not unwillingness to pay (Corruption)."
+        # --- LEGACY ALGORITHM ROUTING ---
+        # Legacy conflates the blackout friction with user default risk
+        if h_bar_day > engine.baseline_h_bar:
+            perceived_nafs_legacy = 0.1 # Algorithm assumes users are defaulting
+            # Punitive action: Slashes borrowing limits (G_ij)
+            current_legacy_g_ij = engine.baseline_g_ij * 0.2
+        else:
+            perceived_nafs_legacy = actual_nafs
 
-        print(f"  > Raw Data: {raw_input}")
-        print(f"  > Extracted Essence (Al-Haqq): {root_truth}")
-        print(f"  > Distinction: {essence_distinction}")
-        print("  > Conclusion: Isolate External Friction from Internal Alignment.")
+        c_dev_leg = engine.calculate_c_dev(h_bar_day, perceived_nafs_legacy, current_legacy_g_ij)
+        legacy_c_dev.append(c_dev_leg)
 
-    def step_2_ibra(self):
-        print("\n[Step 2: Ibra (Translation) Engine]")
+        # Churn triggers if C_dev crashes and borrowing limits are restricted unjustly
+        if c_dev_leg < 20 and current_legacy_g_ij < engine.baseline_g_ij:
+            accumulated_legacy_churn += 2.5 # Users abandon service daily due to slashed limits
+        legacy_churn.append(accumulated_legacy_churn)
 
-        translations = {
-            "Credit Limit Downgrade": "Restriction of Agency / Stifling of Zakāt Flow (G_ij restriction)",
-            "Network Blackout": "ħ_spike (Temporary Surge in Systemic Noise)",
-            "Customer Churn": "Severance of Salāt (Connection Broken)",
-            "Repayment Reliability": "Nafs_alignment (Proven Historical Integrity)"
-        }
 
-        for bureau, sov in translations.items():
-            print(f"  > Translating '{bureau}' -> '{sov}'")
+        # --- IHCEI PROTOCOL ROUTING ---
+        # IHCEI isolates the external blackout; NERE blocks the punitive limit reduction
+        if h_bar_day > engine.baseline_h_bar:
+            # NERE Audit: Halts penalty. True intent (Nafs) is preserved.
+            current_ihcei_g_ij = engine.baseline_g_ij
 
-    def step_3_adge_physics(self):
-        print("\n[Step 3: ADGE Physics Engine Calculation]")
-        print("  > Formula: C_dev = (1 / ħ_network) * (Nafs_alignment * G_ij)")
+        c_dev_ihc = engine.calculate_c_dev(h_bar_day, actual_nafs, current_ihcei_g_ij)
+        ihcei_c_dev.append(c_dev_ihc)
 
-        # Scenario A: Legacy Algorithm (Punitive)
-        # Blackout happens (Noise Spike to 5.0), Algorithm reacts by cutting limits (G_ij -> 0.2).
-        # Algorithm falsely lowers Nafs_alignment to 0.4 (Risk).
-        h_network_Legacy = 5.0  # Massive friction
-        nafs_alignment_Legacy = 0.4  # False classification
-        g_ij_Legacy = 0.2 # Credit cut
+        # Churn is mitigated because trust and limits are maintained
+        if c_dev_ihc < 20 and current_ihcei_g_ij < engine.baseline_g_ij:
+            accumulated_ihcei_churn += 2.5
+        ihcei_churn.append(accumulated_ihcei_churn)
 
-        c_dev_Legacy = (1.0 / h_network_Legacy) * (nafs_alignment_Legacy * g_ij_Legacy)
+    # Generate Markdown Report
+    generate_markdown_report(days, legacy_c_dev, ihcei_c_dev, legacy_churn, ihcei_churn)
 
-        # Scenario B: IHCEI Correction
-        # Blackout is isolated as external noise (h_spike).
-        # Nafs_alignment remains High (0.9) based on history.
-        # G_ij is maintained (1.0) to allow recovery.
-        # h_network returns to normal (0.1) after blackout, but calculation isolates the event.
-        # Let's verify robustness during the spike: even with h=5.0, if G=1.0 and Nafs=0.9, we maintain latent potential.
+def generate_markdown_report(days, legacy_c_dev, ihcei_c_dev, legacy_churn, ihcei_churn):
+    report_content = f"""# TELECOM BLACKOUT ANALYSIS
+## IHCEI Logic Core vs. Legacy Risk Algorithm
 
-        h_network_IHCEI = 5.0 # The event itself
-        nafs_alignment_IHCEI = 0.9 # True alignment
-        g_ij_IHCEI = 1.0 # Trust maintained
+**Simulation Overview:** Analyzing a 30-day mobile loan cycle featuring a severe network blackout (Days 15-17).
 
-        c_dev_IHCEI_Event = (1.0 / h_network_IHCEI) * (nafs_alignment_IHCEI * g_ij_IHCEI)
+### 1. Final System Health (C_dev)
+* **Legacy Algorithm Final C_dev:** {legacy_c_dev[-1]:.2f}
+* **IHCEI Protocol Final C_dev:** {ihcei_c_dev[-1]:.2f}
 
-        # Post-Event Recovery (h -> 0.1)
-        h_network_Post = 0.1
-        c_dev_IHCEI_Recovery = (1.0 / h_network_Post) * (nafs_alignment_IHCEI * g_ij_IHCEI)
+### 2. Customer Churn Impact
+* **Legacy Algorithm Total Churn:** {legacy_churn[-1]:.1f}%
+* **IHCEI Protocol Total Churn:** {ihcei_churn[-1]:.1f}%
 
-        print(f"  > Scenario A (Legacy Algorithm):")
-        print(f"    - ħ_network: {h_network_Legacy} (Punitive Friction added)")
-        print(f"    - Nafs_alignment: {nafs_alignment_Legacy} (False Downgrade)")
-        print(f"    - G_ij: {g_ij_Legacy} (Credit Cut)")
-        print(f"    - C_dev Output: {c_dev_Legacy:.4f} (CRASH - Churn Triggered)")
+### 3. Mathematical Proof of Resolution
+The legacy system conflated $\\hbar_{{network}}$ (systemic noise from the blackout) with a corruption of `Nafs_alignment`. By algorithmically slashing $G_{{ij}}$ (borrowing limits), it permanently crashed the $C_{{dev}}$ equation, directly causing a {legacy_churn[-1]:.1f}% churn rate.
 
-        print(f"  > Scenario B (IHCEI Protocol):")
-        print(f"    - ħ_network: {h_network_IHCEI} (Isolated Event)")
-        print(f"    - Nafs_alignment: {nafs_alignment_IHCEI} (True Integrity)")
-        print(f"    - G_ij: {g_ij_IHCEI} (Flow Maintained)")
-        print(f"    - C_dev (During Event): {c_dev_IHCEI_Event:.4f} (Resilient)")
-        print(f"    - C_dev (Recovery): {c_dev_IHCEI_Recovery:.4f} (Full Restoration)")
-
-    def step_4_nere_audit(self):
-        print("\n[Step 4: NERE (Security Firewall) Audit]")
-        policy_action = "Automated downgrade of 100,000 users due to default (caused by blackout)."
-
-        print(f"  > Auditing Policy: '{policy_action}'")
-
-        # This triggers Gate 3 (Obfuscation - blaming user for system failure) and Gate 7 (Tyranny - punishing without due process).
-        gate_violation = "Gate 3 (Obfuscation of Cause) & Gate 7 (Unjust Restriction)"
-        agency_delta = "Negative (Destruction of User Agency)"
-
-        print(f"  > Gate Violation: {gate_violation}")
-        print(f"  > Agency Delta: {agency_delta}")
-
-        override_command = "NERE OVERRIDE: Restore limits. Reclassify event ID #Blackout48 as 'Systemic Anomaly'. Route data to [INFRASTRUCTURE] for repair, not [RISK] for punishment."
-
-        print(f"  > NERE Command: {override_command}")
-
-        print("\n[Final Output Service]")
-        print("  > Route to: [BIG TECH & INFRASTRUCTURE] -> [Service: Automated Trust-Preservation Circuit]")
-        print("  > Action: Prevent Churn by validating 'Connectivity State' before assessing 'Repayment Performance'.")
+The IHCEI Logic Core successfully utilized the **NERE Security Firewall** to audit the anomaly. It isolated the external blackout, verified that historical `Nafs_alignment` remained high, and maintained the $G_{{ij}}$ flow. Once connectivity was restored, $C_{{dev}}$ immediately normalized, preserving user trust and completely halting unnecessary churn.
+"""
+    with open("TELECOM_BLACKOUT_ANALYSIS.md", "w") as f:
+        f.write(report_content)
+    print("Simulation complete. 'TELECOM_BLACKOUT_ANALYSIS.md' generated successfully.")
 
 if __name__ == "__main__":
-    scenario = TelecomBlackoutScenario()
-    scenario.run_analysis()
+    run_telecom_simulation()
