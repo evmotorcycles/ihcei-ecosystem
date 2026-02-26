@@ -22,6 +22,33 @@ class NafsNode:
         self.iblees_noise = np.clip(iblees_noise, 0.0, 1.0)
         self.c_dev = 0.0
 
+        # New attributes for Repair Protocol
+        self.active_qareen_shield = self.qareen_filter # Represents the active blocking state
+        self.local_friction = 0.0 # Will be updated by environment or Salāt
+        self.qalb_state = np.eye(10) # Default worldview (Identity Matrix)
+
+    def receive_knowledge(self, knowledge_juice: float):
+        """
+        Receives purified knowledge directly (e.g., via Zakat from another node).
+        Bypasses filters as it is 'juice' not raw flow.
+        """
+        self.c_dev += knowledge_juice
+
+    def recalculate_adge(self):
+        """
+        Recalculates internal physics based on current state (post-repair).
+        """
+        # Simplified recalculation for post-repair check
+        # Assuming a standard flow of 100.0 for self-check
+        knowledge_flow = 100.0
+
+        # Effective friction is local_friction if set (Salāt), else use a default high value for simulation context
+        friction = self.local_friction if self.local_friction > 0 else 1.0
+
+        # Recalculate using absorb logic but with updated internal states
+        # Temporarily use local_friction as h_network
+        self.absorb_knowledge(friction, knowledge_flow)
+
     def absorb_knowledge(self, h_network: float, knowledge_flow: float) -> float:
         """
         Attempts to absorb Knowledge Flow from the UGO.
@@ -31,8 +58,9 @@ class NafsNode:
         :return: The calculated Cognitive Development (C_dev) for this step.
         """
         # 1. Attenuation: The Qareen filter blocks incoming light based on its opacity.
-        # If Qareen = 1.0 (Sealed Heart), effective flow is 0.
-        effective_flow = knowledge_flow * (1.0 - self.qareen_filter)
+        # Use active_qareen_shield if set (supports Salāt bypass), otherwise qareen_filter
+        shield = self.active_qareen_shield if hasattr(self, 'active_qareen_shield') else self.qareen_filter
+        effective_flow = knowledge_flow * (1.0 - shield)
 
         # 2. Friction & Noise:
         # The agent must process this flow against External Friction (h_net) AND Internal Noise (Iblees).
