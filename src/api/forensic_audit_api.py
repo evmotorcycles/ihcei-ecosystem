@@ -39,7 +39,8 @@ def run_forensic_audit(payload: ForensicAuditRequest) -> Dict[str, Any]:
             "final_diagnostic": {
                 "Jahannam_Proximity_Index": final_log["Jahannam_Proximity_Index"],
                 "Kanz_Readiness": final_log["Kanz_Readiness"],
-                "Status": final_log["system_status"]
+                "Status": final_log["system_status"],
+                "Narrative": final_log.get("narrative", "N/A")
             }
         }
     except Exception as e:

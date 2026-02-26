@@ -44,8 +44,10 @@ class DualRecoveryEngine:
             # In full ABM, this would modify G_ij weights.
 
             # 4. Calculate Metrics
-            # Jahannam Proximity Index (JPI): Ratio of agents with E -> 0
-            collapsed_agents = np.sum(self.asr.essence_E < 1.0)
+            # Jahannam Proximity Index (JPI): Ratio of agents with Qareen Stack > Threshold (Heaped Entropy)
+            # Threshold = 3.0 (Arbitrary stack depth indicating resonance chamber formation)
+            heaped_entropy_mask = self.asr.qareen_stack > 3.0
+            collapsed_agents = np.sum(heaped_entropy_mask)
             jpi = collapsed_agents / self.num_agents
 
             # Kanz Readiness: Inverse of JPI (simplified)
@@ -57,7 +59,8 @@ class DualRecoveryEngine:
                 "mean_essence_E": float(np.mean(self.asr.essence_E)),
                 "Jahannam_Proximity_Index": float(jpi),
                 "Kanz_Readiness": float(kanz_readiness),
-                "system_status": "CRITICAL" if jpi > 0.5 else "STABLE"
+                "system_status": "CRITICAL: HEAPED_ENTROPY_STATE" if jpi > 0.5 else "STABLE",
+                "narrative": "Analysis: Qareen Daemons Saturation detected." if jpi > 0.5 else "Analysis: System Operating within Bounds."
             }
             self.time_series.append(log_entry)
 
