@@ -5,7 +5,7 @@ from src.core.asr_physics import AsrPhysicsEngine
 
 class TestAsrPhysics:
     def setup_method(self):
-        self.engine = AsrPhysicsEngine(compression_factor=5.0)
+        self.engine = AsrPhysicsEngine(extraction_pressure=5.0)
 
     def test_khusr_default_state(self):
         """
