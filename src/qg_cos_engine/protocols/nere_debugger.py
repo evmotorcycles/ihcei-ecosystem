@@ -17,16 +17,3 @@ class NEREProtocol:
         asr_engine.phi_nafs[anam_indices] = 0.75
         asr_engine.hbar_noise[anam_indices] = 0.0
         return np.sum(anam_indices)
-
-class AlHuqooqProtocol:
-    """
-    Material Restitution Engine.
-    Reverses siphon edges to eradicate Kanz (Hoarding).
-    """
-    def deploy(self, asr_engine):
-        """
-        Intervention: Boosts D_base for recovered agents.
-        """
-        # Boost discipline/integrity
-        asr_engine.D_base[:] = 1.0 # Restore baseline integrity
-        return True
