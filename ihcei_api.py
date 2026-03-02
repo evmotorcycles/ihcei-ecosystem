@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 import uvicorn
 
 # Import the master engine you compiled previously
-from ihcei_master_v2 import IHCEI_v2_Master
+from ihcei_master_v2 import IHCEI_v2_Master, ihcei_core
 
 app = FastAPI(
     title="IHCEI Moral TCP/IP API",
@@ -68,10 +68,10 @@ async def route_packet(packet: RoutePacketRequest):
     Evaluates a cognitive packet sent from Gemini using the Moral TCP/IP architecture.
     """
     try:
-        # Here is where you pass the validated packet to ihcei_master_v2.py
-        result = engine.process_packet(
-            text=packet.concept_payload,
-            domain=packet.context_tags[0] if packet.context_tags else "General"
+        # Pass the validated packet to ihcei_master_v2.py
+        processing_result = ihcei_core.process_packet(
+            concept_payload=packet.concept_payload,
+            context_tags=packet.context_tags
         )
 
         print(f"Incoming Packet Received via {packet.routing_protocol}")
@@ -80,8 +80,9 @@ async def route_packet(packet: RoutePacketRequest):
 
         return {
             "status": "success",
-            "message": "Packet successfully ingested into the IHCEI network.",
-            "data_received": packet.model_dump()
+            "message": "Packet successfully ingested and processed by the IHCEI network.",
+            "data_received": packet.model_dump(),
+            "master_evaluation": processing_result
         }
 
     except Exception as e:
