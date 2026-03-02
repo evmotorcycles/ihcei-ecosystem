@@ -137,12 +137,23 @@ class IHCEI_v2_Master:
         self.translator = DomainTranslator()
         self.physics = GovernancePhysicsEngine()
 
-    def process_packet(self, text: str) -> Dict[str, Any]:
-        # 1. Initialize Default Variables
-        vars = IHCEIVariables(U=10.0, D=0.8, alpha=0.9, tau=0.8, rho=0.9, hbar_network=0.5, phi_nafs_mag=1.2)
+    def process_packet(self, text: str, domain: str = "General", intention_score: float = 1.0) -> Dict[str, Any]:
+        # 1. Initialize Default Variables, scaling Autonomy and Cognitive Vector by Niyyah (Intention)
+        scaled_alpha = max(0.0, min(1.0, 0.9 * intention_score))
+        scaled_phi_nafs = max(0.0, 1.2 * intention_score)
 
-        # 2. Route through Moral TCP/IP Translation
-        vars = self.translator.translate(text, vars)
+        vars = IHCEIVariables(
+            U=10.0,
+            D=0.8,
+            alpha=scaled_alpha,
+            tau=0.8,
+            rho=0.9,
+            hbar_network=0.5,
+            phi_nafs_mag=scaled_phi_nafs
+        )
+
+        # 2. Route through Moral TCP/IP Translation using both text and domain
+        vars = self.translator.translate(f"{domain} {text}", vars)
 
         # 3. Compute the Three Master Equations
         c_dev = self.physics.compute_adge_continuous(vars)

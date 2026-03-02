@@ -22,6 +22,7 @@ engine = IHCEI_v2_Master()
 class LLMRequest(BaseModel):
     query: str = Field(..., description="The concept, plan, or raw data the LLM wants to press.")
     domain: str = Field(default="General", description="The domain context (e.g., Economics, Software, Physics).")
+    intention_score: float = Field(default=1.0, description="The extracted Intention (Niyyah) from -1.0 to 1.0.")
 
 class IHCEIResponse(BaseModel):
     network_health_c_dev: float = Field(..., description="The calculated ADGE Network Health impact.")
@@ -41,7 +42,11 @@ async def press_data_packet(request: LLMRequest):
     """
     try:
         # Route the LLM's query through the 7-Stage Al-Asr pipeline
-        result = engine.process_packet(request.query)
+        result = engine.process_packet(
+            text=request.query,
+            domain=request.domain,
+            intention_score=request.intention_score
+        )
 
         return IHCEIResponse(
             network_health_c_dev=result["C_dev_Network_Health"],
