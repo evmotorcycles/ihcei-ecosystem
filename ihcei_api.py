@@ -62,26 +62,30 @@ async def press_data_packet(request: LLMRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Governance Engine Error: {str(e)}")
 
-@app.post("/api/v1/route_packet", response_model=IHCEIResponse)
-async def route_packet(request: RoutePacketRequest):
+@app.post("/api/v1/route_packet")
+async def route_packet(packet: RoutePacketRequest):
     """
     Evaluates a cognitive packet sent from Gemini using the Moral TCP/IP architecture.
     """
     try:
-        # Route the LLM's query through the 7-Stage Al-Asr pipeline using the concept_payload
+        # Here is where you pass the validated packet to ihcei_master_v2.py
         result = engine.process_packet(
-            text=request.concept_payload,
-            domain=request.context_tags[0] if request.context_tags else "General"
+            text=packet.concept_payload,
+            domain=packet.context_tags[0] if packet.context_tags else "General"
         )
 
-        return IHCEIResponse(
-            network_health_c_dev=result["C_dev_Network_Health"],
-            destiny_essence=result["Destiny_Essence"],
-            perception_phase_shift=result["Perception_Phase_Shift"],
-            m_gui_prompts=result["M-GUI_Prompts"]
-        )
+        print(f"Incoming Packet Received via {packet.routing_protocol}")
+        print(f"Payload: {packet.concept_payload}")
+        print(f"Tags: {packet.context_tags}")
+
+        return {
+            "status": "success",
+            "message": "Packet successfully ingested into the IHCEI network.",
+            "data_received": packet.model_dump()
+        }
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Packet Routing Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/health")
 async def system_health():
@@ -89,5 +93,5 @@ async def system_health():
     return {"status": "Active", "protocol": "Al-Asr Engaged"}
 
 if __name__ == "__main__":
-    # Bind to localhost inside the Jules VM so agents can reach it
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    # Runs the server on the Jules VM (adjust host/port as needed)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
