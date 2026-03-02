@@ -5,8 +5,8 @@ import os
 # 1. Configure API Key
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY", "YOUR_GEMINI_API_KEY"))
 
-# 2. Target your Jules VM (Ensure this matches your actual VM IP)
-JULES_VM_API_URL = "http://127.0.0.1:8000/api/v1/route_packet"
+# 2. Target your Jules VM (Updated with your exact public IP)
+JULES_VM_API_URL = "http://35.224.132.190:8000/api/v1/route_packet"
 
 # 3. Define the Tool
 def transmit_to_ihcei_master(concept_payload: str, context_tags: list[str]):
