@@ -92,7 +92,12 @@ def extract_nere_metrics(api_key: str, text_batch: str) -> dict:
     except Exception as e:
         print(f"[!] API Error during extraction: {e}")
         # Fallback to neutral values to prevent pipeline crash
-        return {"D_audit_score": 0.5, "h_network_score": 0.5}
+        return {
+            "D_audit_score": 0.5,
+            "D_audit_reasoning": "Fallback due to API error.",
+            "h_network_score": 0.5,
+            "h_network_reasoning": "Fallback due to API error."
+        }
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. MOCK DATA INGESTION & PIPELINE EXECUTION
