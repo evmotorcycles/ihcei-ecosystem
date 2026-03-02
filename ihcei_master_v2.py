@@ -5,6 +5,7 @@ from typing import Dict, List, Tuple, Any
 from enum import Enum
 from pydantic import BaseModel, Field
 import datetime
+import hashlib
 
 # ==========================================
 # 1. ONTOLOGICAL ENUMS & SCHEMAS (Strict Typings)
@@ -178,40 +179,58 @@ class IHCEI_v2_Master:
 class IHCEIMasterProcessor:
     def __init__(self):
         self.system_status = "Active"
-        self.active_protocols = ["QG-COS_v1", "Moral_TCP_IP"]
+        self.active_protocols = ["QG-COS_v2", "Moral_TCP_IP"]
+
+    def generate_quantum_signature(self, payload: str) -> str:
+        """Generates a unique cryptographic hash for the cognitive packet."""
+        hash_object = hashlib.sha256(payload.encode())
+        return f"IHCEI-QG-{hash_object.hexdigest()[:12].upper()}"
 
     def process_packet(self, concept_payload: str, context_tags: list[str]) -> dict:
         """
-        Ingests the cognitive packet from the API gateway and processes it
-        through the QG-COS framework.
+        Ingests the cognitive packet and routes it through the specific
+        Absolute Divine Governance equations.
         """
-        print(f"\n[IHCEI MASTER] Initializing Processing Sequence...")
+        print(f"\n[IHCEI MASTER] Initializing QG-COS Processing Sequence...")
 
-        # 1. Packet Validation
         if not concept_payload:
-            return {"status": "rejected", "reason": "Empty payload detected."}
+            return {"status": "Rejected", "reason": "Null payload detected."}
 
-        # 2. Tag Analysis & Routing Logic
-        primary_domain = "General"
-        if "governance" in context_tags:
+        # 1. Advanced Domain Mapping
+        primary_domain = "Unclassified"
+        routing_directive = "Standard Hold"
+
+        # Route to Transcendent Quantum Governance
+        if "TQG-CFE" in context_tags:
             primary_domain = "Absolute Divine Governance"
-        elif "resource_allocation" in context_tags:
-            primary_domain = "System Resources"
+            routing_directive = "Execute TQG-CFE Alignment Check"
 
-        # 3. Apply QG-COS Processing (Placeholder for your mathematical frameworks)
-        processing_timestamp = datetime.datetime.now().isoformat()
-        packet_signature = f"IHCEI-{hash(concept_payload)}"
+        # Route to Node Existence & Resource Equilibrium
+        elif "NERE" in context_tags or "resource_allocation" in context_tags:
+            primary_domain = "System Resources & Node Equilibrium"
+            routing_directive = "Execute NERE Distribution Protocol"
 
-        print(f"[IHCEI MASTER] Concept mapped to domain: {primary_domain}")
-        print(f"[IHCEI MASTER] Packet Signature generated: {packet_signature}")
+        # Route to Intelligent Human Cognitive Evolution Interface
+        elif "IHCEI" in context_tags or "cognitive" in context_tags:
+            primary_domain = "Human-Cognitive Interface"
+            routing_directive = "Execute Interface Calibration"
 
-        # 4. Return the processed evaluation back to the API
+        # 2. Packet Stamping and Logging
+        processing_timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        packet_signature = self.generate_quantum_signature(concept_payload)
+
+        print(f"[IHCEI MASTER] Packet signature generated: {packet_signature}")
+        print(f"[IHCEI MASTER] Domain mapped: {primary_domain}")
+        print(f"[IHCEI MASTER] Directive locked: {routing_directive}")
+
+        # 3. Final Master Evaluation Return
         return {
             "processing_status": "Framework Aligned",
-            "domain_mapping": primary_domain,
             "packet_signature": packet_signature,
-            "timestamp": processing_timestamp,
-            "action_required": "Log and execute"
+            "domain_mapping": primary_domain,
+            "routing_directive": routing_directive,
+            "timestamp_utc": processing_timestamp,
+            "system_status": self.system_status
         }
 
 # Initialize the processor so the API can call it
