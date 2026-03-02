@@ -24,6 +24,11 @@ class LLMRequest(BaseModel):
     domain: str = Field(default="General", description="The domain context (e.g., Economics, Software, Physics).")
     intention_score: float = Field(default=1.0, description="The extracted Intention (Niyyah) from -1.0 to 1.0.")
 
+class RoutePacketRequest(BaseModel):
+    concept_payload: str = Field(..., description="The evaluated cognitive packet to route.")
+    context_tags: List[str] = Field(..., description="The list of context tags applied to the packet.")
+    routing_protocol: str = Field(default="moral_tcp_ip", description="The routing protocol format.")
+
 class IHCEIResponse(BaseModel):
     network_health_c_dev: float = Field(..., description="The calculated ADGE Network Health impact.")
     destiny_essence: float = Field(..., description="The calculated sustainable value generation.")
@@ -56,6 +61,27 @@ async def press_data_packet(request: LLMRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Governance Engine Error: {str(e)}")
+
+@app.post("/api/v1/route_packet", response_model=IHCEIResponse)
+async def route_packet(request: RoutePacketRequest):
+    """
+    Evaluates a cognitive packet sent from Gemini using the Moral TCP/IP architecture.
+    """
+    try:
+        # Route the LLM's query through the 7-Stage Al-Asr pipeline using the concept_payload
+        result = engine.process_packet(
+            text=request.concept_payload,
+            domain=request.context_tags[0] if request.context_tags else "General"
+        )
+
+        return IHCEIResponse(
+            network_health_c_dev=result["C_dev_Network_Health"],
+            destiny_essence=result["Destiny_Essence"],
+            perception_phase_shift=result["Perception_Phase_Shift"],
+            m_gui_prompts=result["M-GUI_Prompts"]
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Packet Routing Error: {str(e)}")
 
 @app.get("/health")
 async def system_health():
