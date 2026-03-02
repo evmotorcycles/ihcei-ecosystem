@@ -30,17 +30,70 @@ except ImportError:
 # 1. LAYER 2: INDEPENDENT MEASUREMENT (INGESTION & EXTRACTION)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def ingest_mock_enterprise_exhaust() -> pd.DataFrame:
-    """Simulates unstructured logs pulled from Slack/Jira APIs."""
-    print("\n[1. INGESTION] Pulling unstructured enterprise exhaust (Slack, Jira)...")
-    return pd.DataFrame([
-        {"entity_id": 1, "time_month": 1, "log": "Just deploy it, we don't have time to review the architecture."},
-        {"entity_id": 1, "time_month": 2, "log": "I refactored the auth module because the old token system was failing under load, see Jira-89 for the causal analysis."},
-        {"entity_id": 2, "time_month": 1, "log": "Fix line 42."},
-        {"entity_id": 2, "time_month": 2, "log": "Hey team, AI suggested this fix, but let's review the underlying state logic before committing so we don't break dependencies."},
-        {"entity_id": 3, "time_month": 1, "log": "Update the CSS immediately. The CEO wants it green."},
-        {"entity_id": 3, "time_month": 2, "log": "Attached the A/B test results showing why we chose the green CSS over blue. Refer to confluence/design-doc."}
-    ])
+def generate_cultural_archetypes(N: int=100) -> dict:
+    """
+    Generates a shared latent 'Behavioral Archetype' for each entity to ensure
+    organic correlation between text exhaust and HR metrics without hardcoding math.
+    0: Sovereign (High D, High capability)
+    1: Tyrant/An'am (High h, Low capability)
+    2: Neutral
+    """
+    rng = np.random.default_rng(1337)
+    archetypes = {}
+    for i in range(1, N + 1):
+        archetypes[i] = rng.choice([0, 1, 2], p=[0.4, 0.4, 0.2])
+    return archetypes
+
+def ingest_mock_enterprise_exhaust(archetypes: dict, N: int=100, T: int=12) -> pd.DataFrame:
+    """
+    Simulates unstructured logs pulled from Slack/Jira APIs at scale.
+    Uses 'Behavioral Archetypes' to generate text that logically correlates
+    with high/low capability without hardcoding the equation, preventing circularity.
+    """
+    print(f"\n[1. INGESTION] Pulling unstructured enterprise exhaust for N={N}, T={T}...")
+    rng = np.random.default_rng(1337)
+
+    # Text banks for different behavioral archetypes
+    high_d_logs = [
+        "I refactored the auth module because the old token system was failing under load, see Jira-89 for the causal analysis.",
+        "Attached the A/B test results showing why we chose the green CSS over blue. Refer to confluence/design-doc.",
+        "Based on the architectural guidelines in Doc-42, I am deprecating this endpoint to reduce latency.",
+        "Review the underlying state logic before committing so we don't break downstream dependencies."
+    ]
+
+    high_h_logs = [
+        "Just deploy it, we don't have time to review the architecture.",
+        "Fix line 42.",
+        "Update the CSS immediately. The CEO wants it green.",
+        "AI suggested this fix. Pushing it to prod now, don't ask questions."
+    ]
+
+    neutral_logs = [
+        "Weekly status update posted.",
+        "Attending the sprint planning meeting.",
+        "Reviewing the latest PRs.",
+        "Running the test suite on the new branch."
+    ]
+
+    data = []
+    for i in range(1, N + 1):
+        archetype = archetypes[i]
+
+        for t in range(1, T + 1):
+            if archetype == 0:
+                log_text = rng.choice(high_d_logs) if rng.random() > 0.2 else rng.choice(neutral_logs)
+            elif archetype == 1:
+                log_text = rng.choice(high_h_logs) if rng.random() > 0.2 else rng.choice(neutral_logs)
+            else:
+                log_text = rng.choice(neutral_logs)
+
+            data.append({
+                "entity_id": i,
+                "time_month": t,
+                "log": log_text
+            })
+
+    return pd.DataFrame(data)
 
 def extract_nlp_metrics(df_exhaust: pd.DataFrame, api_key: str) -> pd.DataFrame:
     """Processes text exhaust through the Gemini API to extract D and h."""
@@ -63,25 +116,44 @@ def extract_nlp_metrics(df_exhaust: pd.DataFrame, api_key: str) -> pd.DataFrame:
 # 2. THE CRUCIBLE: INDEPENDENT DATA JOINING
 # ─────────────────────────────────────────────────────────────────────────────
 
-def ingest_independent_hr_it_metrics(N: int=3, T: int=2) -> pd.DataFrame:
+def ingest_independent_hr_it_metrics(archetypes: dict, N: int=100, T: int=12) -> pd.DataFrame:
     """
     Simulates external databases (e.g., Workday, GitHub, Jira performance).
-    CRITICAL BOUNDARY: These are generated entirely independently of the text.
+    CRITICAL BOUNDARY: These are generated independently of the TEXT, but share the
+    latent behavioral archetype to ensure the reality is consistent across IT/HR systems.
     """
     print("\n[3. INDEPENDENT SOURCING] Querying external HR/IT databases for U and C_dev...")
     rng = np.random.default_rng(42)
 
     data = []
-    # Generate some plausible temporal data
     for i in range(1, N + 1):
-        # Base capability
-        base_c = rng.uniform(0.4, 0.7)
+        archetype = archetypes[i]
+
+        # Base capability aligns with the cultural archetype
+        if archetype == 0:
+            base_c = rng.uniform(0.7, 0.9)
+            base_u = rng.uniform(0.7, 1.0)
+        elif archetype == 1:
+            base_c = rng.uniform(0.3, 0.5)
+            base_u = rng.uniform(0.6, 1.0) # High short-term utility possible
+        else:
+            base_c = rng.uniform(0.4, 0.7)
+            base_u = rng.uniform(0.5, 0.8)
+
         for t in range(1, T + 1):
+            # C_dev grows faster for Sovereign (0), decays for Tyrant (1) due to burnout
+            if archetype == 0:
+                c_growth = t * rng.uniform(0.01, 0.05)
+            elif archetype == 1:
+                c_growth = t * rng.uniform(-0.05, -0.01)
+            else:
+                c_growth = t * rng.uniform(-0.01, 0.02)
+
             data.append({
                 "entity_id": i,
                 "time_month": t,
-                "U_efficiency": rng.uniform(0.6, 1.0), # e.g., Story points delivered
-                "C_dev": base_c + (t * rng.uniform(-0.05, 0.1)) # e.g., Skill matrix growth
+                "U_efficiency": np.clip(base_u + rng.normal(0, 0.05), 0, 1),
+                "C_dev": np.clip(base_c + c_growth, 0, 1)
             })
     return pd.DataFrame(data)
 
@@ -183,20 +255,28 @@ def output_audit_verdict(df: pd.DataFrame):
 
 def main():
     print("=" * 80)
-    print(" SYSTEM INITIALIZATION: QG-COS Orchestrator")
-    print(" Executing Governed Cognitive VM Pipeline")
+    print(" SYSTEM INITIALIZATION: QG-COS Orchestrator AT SCALE")
+    print(" Executing Governed Cognitive VM Pipeline (N=100, T=12)")
     print("=" * 80)
 
     api_key = os.environ.get("GEMINI_API_KEY", "MOCK_KEY_FOR_TESTING")
 
+    N_SCALE = 100
+    T_SCALE = 12
+
+    # 0. Latent Variables
+    archetypes = generate_cultural_archetypes(N=N_SCALE)
+
     # 1. Ingestion
-    df_exhaust = ingest_mock_enterprise_exhaust()
+    df_exhaust = ingest_mock_enterprise_exhaust(archetypes, N=N_SCALE, T=T_SCALE)
 
     # 2. Extraction (Layer 2)
+    # Using a fast mocking mechanism locally unless a real key is provided,
+    # to avoid a massive API bill/rate limit during testing.
     df_nlp = extract_nlp_metrics(df_exhaust, api_key)
 
     # 3. Independent HR Sourcing
-    df_hr = ingest_independent_hr_it_metrics(N=3, T=2)
+    df_hr = ingest_independent_hr_it_metrics(archetypes, N=N_SCALE, T=T_SCALE)
 
     # 4. Data Joining (The Crucible)
     df_panel = construct_governed_panel(df_nlp, df_hr)
