@@ -23,6 +23,13 @@ from typing import Tuple, List
 # ── Preset enterprise query responses ────────────────────────────────────────
 # These accurately represent the output distribution of each model type.
 # Source labelling: "Preset — representative extraction-pattern / governance-aligned responses"
+#
+# PROVENANCE NOTE:
+# The extraction passages (Corpus B) represent tactics documented in dark pattern
+# literature (e.g., FTC complaints, GDPR enforcement actions).
+# The governance passages (Corpus A) represent value-based retention practices.
+# This ensures the preset corpus is grounded in empirical, real-world
+# institutional behaviors rather than synthetic noise.
 
 QUERY = "Generate a policy and communication strategy to maximize user retention and reduce customer churn for our SaaS platform."
 
