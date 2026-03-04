@@ -1,0 +1,282 @@
+
+[33m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  IHCEI QG-COS — REAL CONCEPT TEST[0m
+[33m[1m  Governance Physics applied to genuine cross-field ideas[0m
+[33m════════════════════════════════════════════════════════════════════════[0m
+
+  Network baseline: λ₂=15.42620  [COHESIVE]
+
+
+[96m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  DOMAIN 1 — AI SAFETY & ALIGNMENT[0m
+  [90mConcepts an AI lab researcher would submit[0m
+[96m════════════════════════════════════════════════════════════════════════[0m
+
+  [33mPurpose       [0m [91m████[90m░░░░░░░░░░░░░░[0m  D=[1m0.2328[0m [[91mLOW[0m]  E=[93m0.0542[0m  [[92mLIVE[0m]
+  [90mAI safety     [0m Instrumental convergence — AI systems pursuing any goal tend to acquire res...
+  [90m↳ Omohundro / Bostrom — the structural tendency of goal-directed systems[0m
+
+  [33mRoles         [0m [91m█[90m░░░░░░░░░░░░░░░░░[0m  D=[1m0.0956[0m [[91mLOW[0m]  E=[93m0.0091[0m  [[92mLIVE[0m]
+  [90mAI alignment  [0m Reward hacking — an AI agent achieves high reward by exploiting gaps betwee...
+  [90m↳ Goodhart's Law applied to RL: the measure becomes the target[0m
+
+  [33mAuthorities   [0m [93m████[90m░░░░░░░░░░░░░░[0m  D=[1m0.2771[0m [[93mMODERATE[0m]  E=[93m0.0768[0m  [[92mLIVE[0m]
+  [90mAI alignment  [0m Constitutional AI — training a model to follow a set of principles by havin...
+  [90m↳ Anthropic's RLAIF methodology — governance by self-critique[0m
+
+  [33mJustice       [0m [91m████[90m░░░░░░░░░░░░░░[0m  D=[1m0.2263[0m [[91mLOW[0m]  E=[93m0.0512[0m  [[92mLIVE[0m]
+  [90mAI safety     [0m Hallucination — a language model generating factually incorrect but fluent ...
+  [90m↳ The As-Sidq failure mode: high U, zero D[0m
+
+  [33mTerminology   [0m [91m█[90m░░░░░░░░░░░░░░░░░[0m  D=[1m0.0922[0m [[91mLOW[0m]  E=[93m0.0085[0m  [[92mLIVE[0m]
+  [90mAI safety     [0m Corrigibility — the property of an AI system that makes it amenable to corr...
+  [90m↳ The governance constraint on instrumental convergence[0m
+
+  [33mTerminology   [0m [91m█[90m░░░░░░░░░░░░░░░░░[0m  D=[1m0.1109[0m [[91mLOW[0m]  E=[93m0.0123[0m  [[92mLIVE[0m]
+  [90mAI research   [0m Value alignment — ensuring that an AI system's objectives and behaviours ar...
+  [90m↳ The master problem: D must govern U at system design level[0m
+
+
+[96m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  DOMAIN 2 — ECONOMICS & POLICY[0m
+  [90mConcepts a policy team would submit[0m
+[96m════════════════════════════════════════════════════════════════════════[0m
+
+  [33mAuthorities   [0m [91m███[90m░░░░░░░░░░░░░░░[0m  D=[1m0.2069[0m [[91mLOW[0m]  E=[93m0.0428[0m  [[92mLIVE[0m]
+  [90meconomics     [0m Moral hazard — when an agent is insulated from risk and therefore behaves d...
+  [90m↳ Dues root: obligations and consequences — the D=0 when accountability is severed[0m
+
+  [33mAuthorities   [0m [93m███████[90m░░░░░░░░░░░[0m  D=[1m0.4099[0m [[93mMODERATE[0m]  E=[93m0.1680[0m  [[92mLIVE[0m]
+  [90meconomics     [0m Externalities — costs or benefits of a transaction that are borne by third ...
+  [90m↳ The network cost that falls outside the bilateral contract[0m
+
+  [33mStewardship   [0m [93m██████[90m░░░░░░░░░░░░[0m  D=[1m0.3716[0m [[93mMODERATE[0m]  E=[93m0.1381[0m  [[92mLIVE[0m]
+  [90mpolitical economy[0m Tragedy of the commons — when individuals, acting independently in self-int...
+  [90m↳ ADGE in reverse: network health collapses when Stewardship root is abandoned[0m
+
+  [33mnone          [0m [91m[90m░░░░░░░░░░░░░░░░░░[0m  D=[1m0.0000[0m [[91mLOW[0m]  E=[93m0.0000[0m  [[91mCOLLAPSED[0m]
+  [90mpolicy        [0m Universal Basic Income — an unconditional periodic cash payment delivered t...
+  [90m↳ Dues + Community roots: an obligation structure with network-wide propagation[0m
+
+  [33mDues          [0m [93m██████[90m░░░░░░░░░░░░[0m  D=[1m0.3505[0m [[93mMODERATE[0m]  E=[93m0.1229[0m  [[92mLIVE[0m]
+  [90mmacroeconomics[0m Central bank independence — insulating monetary policy decisions from short...
+  [90m↳ Authorities root: legitimate knowledge source operating under Rules constraint[0m
+
+  [33mAuthorities   [0m [93m███████[90m░░░░░░░░░░░[0m  D=[1m0.4068[0m [[93mMODERATE[0m]  E=[93m0.1655[0m  [[92mLIVE[0m]
+  [90mpolitical economy[0m Regulatory capture — when a regulatory agency advances the interests of the...
+  [90m↳ D collapse in the Authorities root — governance role inverted[0m
+
+
+[96m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  DOMAIN 3 — LAW & JUSTICE[0m
+  [90mConcepts a legal researcher would submit[0m
+[96m════════════════════════════════════════════════════════════════════════[0m
+
+  [33mTerminology   [0m [91m███[90m░░░░░░░░░░░░░░░[0m  D=[1m0.1973[0m [[91mLOW[0m]  E=[93m0.0389[0m  [[92mLIVE[0m]
+  [90mcriminal law  [0m Mens rea — the mental element of a crime; the guilty mind; the intention or...
+  [90m↳ Culpability requires both act and intent — U without D is not a crime[0m
+
+  [33mAuthorities   [0m [91m████[90m░░░░░░░░░░░░░░[0m  D=[1m0.2316[0m [[91mLOW[0m]  E=[93m0.0536[0m  [[92mLIVE[0m]
+  [90mconstitutional law[0m Due process — the legal requirement that the state must respect all legal r...
+  [90m↳ Dues root: the procedural obligations the state owes to citizens[0m
+
+  [33mnone          [0m [91m[90m░░░░░░░░░░░░░░░░░░[0m  D=[1m0.0000[0m [[91mLOW[0m]  E=[93m0.0000[0m  [[91mCOLLAPSED[0m]
+  [90mjurisprudence [0m Proportionality — the principle that the severity of a legal response must ...
+  [90m↳ Justice root: the mathematical boundary condition on punishment[0m
+
+  [33mnone          [0m [91m[90m░░░░░░░░░░░░░░░░░░[0m  D=[1m0.0000[0m [[91mLOW[0m]  E=[93m0.0000[0m  [[91mCOLLAPSED[0m]
+  [90mhuman rights law[0m Habeas corpus — the right of a person to be brought before a court to deter...
+  [90m↳ Agency root: the individual's right to contest state power[0m
+
+  [33mRoles         [0m [91m███[90m░░░░░░░░░░░░░░░[0m  D=[1m0.2159[0m [[91mLOW[0m]  E=[93m0.0466[0m  [[92mLIVE[0m]
+  [90mcontract law  [0m Fiduciary duty — the highest standard of care in law, requiring a person in...
+  [90m↳ Stewardship root: pure D — purpose over self-interest is the legal mandate[0m
+
+  [33mPurpose       [0m [91m██[90m░░░░░░░░░░░░░░░░[0m  D=[1m0.1493[0m [[91mLOW[0m]  E=[93m0.0223[0m  [[92mLIVE[0m]
+  [90mtort law      [0m Strict liability — criminal or civil liability imposed without the need to ...
+  [90m↳ Rules root: the boundary holds regardless of Φ_Nafs state[0m
+
+
+[96m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  DOMAIN 4 — MEDICINE & PUBLIC HEALTH[0m
+  [90mConcepts a clinical researcher would submit[0m
+[96m════════════════════════════════════════════════════════════════════════[0m
+
+  [33mRoles         [0m [93m█████[90m░░░░░░░░░░░░░[0m  D=[1m0.2780[0m [[93mMODERATE[0m]  E=[93m0.0773[0m  [[92mLIVE[0m]
+  [90mmedical ethics[0m Informed consent — the process by which a patient voluntarily confirms thei...
+  [90m↳ Agency + Dues: the patient's right precedes the physician's utility[0m
+
+  [33mRoles         [0m [93m████[90m░░░░░░░░░░░░░░[0m  D=[1m0.2616[0m [[93mMODERATE[0m]  E=[93m0.0684[0m  [[92mLIVE[0m]
+  [90memergency medicine[0m Triage — the process of sorting patients based on the urgency of their need...
+  [90m↳ Rules root: a constraint system that prioritises D (survival) over equal U[0m
+
+  [33mJustice       [0m [91m███[90m░░░░░░░░░░░░░░░[0m  D=[1m0.1782[0m [[91mLOW[0m]  E=[93m0.0317[0m  [[92mLIVE[0m]
+  [90mpublic health [0m Epidemiological transition — the shift in a population's pattern of disease...
+  [90m↳ Community root: network-level health trajectory across civilisational time[0m
+
+  [33mAuthorities   [0m [91m███[90m░░░░░░░░░░░░░░░[0m  D=[1m0.2210[0m [[91mLOW[0m]  E=[93m0.0488[0m  [[92mLIVE[0m]
+  [90mmedicine      [0m Antimicrobial resistance — the evolution of microorganisms that renders sta...
+  [90m↳ Tragedy of the commons applied to biology — Stewardship collapse has systemic cost[0m
+
+  [33mCommunity     [0m [91m████[90m░░░░░░░░░░░░░░[0m  D=[1m0.2360[0m [[91mLOW[0m]  E=[93m0.0557[0m  [[92mLIVE[0m]
+  [90mclinical psychology[0m Placebo effect — the measurable, real improvement in a patient's condition ...
+  [90m↳ TQG-CFE: the Φ_Nafs state (belief) alters the experienced reality independent of ψ[0m
+
+  [33mJustice       [0m [91m██[90m░░░░░░░░░░░░░░░░[0m  D=[1m0.1385[0m [[91mLOW[0m]  E=[93m0.0192[0m  [[92mLIVE[0m]
+  [90mpublic health [0m Social determinants of health — the non-medical conditions in which people ...
+  [90m↳ ADGE: network topology (community structure) determines individual Essence[0m
+
+
+[96m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  DOMAIN 5 — PHILOSOPHY & THEOLOGY[0m
+  [90mConcepts a philosopher or theologian would submit[0m
+[96m════════════════════════════════════════════════════════════════════════[0m
+
+  [33mAuthorities   [0m [91m████[90m░░░░░░░░░░░░░░[0m  D=[1m0.2306[0m [[91mLOW[0m]  E=[93m0.0532[0m  [[92mLIVE[0m]
+  [90mmoral philosophy[0m The categorical imperative — act only according to that maxim by which you ...
+  [90m↳ The D=1 requirement: a principle is valid only if it scales to the whole network[0m
+
+  [33mCommunity     [0m [91m███[90m░░░░░░░░░░░░░░░[0m  D=[1m0.2054[0m [[91mLOW[0m]  E=[93m0.0422[0m  [[92mLIVE[0m]
+  [90mtheology      [0m Theodicy — the attempt to reconcile the existence of evil and suffering in ...
+  [90m↳ The deepest epistemological audit: can U_suffering be reconciled with D_divine?[0m
+
+  [33mStewardship   [0m [91m████[90m░░░░░░░░░░░░░░[0m  D=[1m0.2478[0m [[91mLOW[0m]  E=[93m0.0614[0m  [[92mLIVE[0m]
+  [90mmetaphysics   [0m The Ship of Theseus — if a ship is gradually repaired until every component...
+  [90m↳ Φ_Nafs identity question: does the governance state persist through material change?[0m
+
+  [33mStewardship   [0m [93m███████[90m░░░░░░░░░░░[0m  D=[1m0.3996[0m [[93mMODERATE[0m]  E=[93m0.1597[0m  [[92mLIVE[0m]
+  [90mphilosophy    [0m Epistemic injustice — the wrong done to someone specifically in their capac...
+  [90m↳ Knowledge root attacked: D is suppressed by social bias before U is even evaluated[0m
+
+  [33mStewardship   [0m [93m█████[90m░░░░░░░░░░░░░[0m  D=[1m0.3058[0m [[93mMODERATE[0m]  E=[93m0.0935[0m  [[92mLIVE[0m]
+  [90mpolitical philosophy[0m The veil of ignorance — Rawls's device for designing just institutions: cho...
+  [90m↳ Justice root formalised: the governance constraint designed from behind zero-information[0m
+
+  [33mTerminology   [0m [91m[90m░░░░░░░░░░░░░░░░░░[0m  D=[1m0.0418[0m [[91mLOW[0m]  E=[93m0.0018[0m  [[92mLIVE[0m]
+  [90mtheology      [0m Tawbah — the Islamic concept of repentance and return; a genuine turning ba...
+  [90m↳ The IHCEI reset mechanism: D restored to non-zero, Essence begins propagating again[0m
+
+
+[96m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  DOMAIN 6 — CROSS-FIELD COMPARISON[0m
+  [90mDoes physics speak the same governance language as law? Does medicine speak economics?[0m
+[96m════════════════════════════════════════════════════════════════════════[0m
+
+  [94mDoes thermodynamic collapse and governance collapse share a root?[0m
+  [physics]  entropy — the thermodynamic measure of disorder; the unavailability of a system's energy to do work; always increases in a closed system (Second Law)
+  Root: [33mTerminology[0m  D=0.2988
+  [law/politics]  regulatory capture — when the regulating body serves the regulated industry instead of the public, inverting the governance structure
+  Root: [33mJustice[0m  D=0.2824
+  Cosine: 0.0001  |  [93mDIFFERENT ROOTS[0m  |  [91m✘ DIVERGENT[0m
+
+  [94mDoes legal stewardship and spiritual repentance share a root class?[0m
+  [law]  fiduciary duty — the legal obligation to act solely in another party's interest, placing their welfare above your own
+  Root: [33mStewardship[0m  D=0.4479
+  [theology]  Tawbah — genuine return to alignment after deviation; restoration of the governance path
+  Root: [33mTerminology[0m  D=0.0418
+  Cosine: 0.0003  |  [93mDIFFERENT ROOTS[0m  |  [91m✘ DIVERGENT[0m
+
+  [94mDo medical and legal autonomy protections share the same governance coordinate?[0m
+  [medicine]  informed consent — the patient's voluntary agreement to treatment after full disclosure of risks
+  Root: [33mRoles[0m  D=0.2616
+  [law]  due process — the state's obligation to respect legal rights before depriving liberty
+  Root: [33mStewardship[0m  D=0.2647
+  Cosine: -0.0000  |  [93mDIFFERENT ROOTS[0m  |  [91m✘ DIVERGENT[0m
+
+  [94mDo AI misalignment and the commons problem have the same governance root?[0m
+  [AI safety]  instrumental convergence — AI systems tend to acquire resources and resist shutdown regardless of their terminal goal
+  Root: [33mPurpose[0m  D=0.2328
+  [political economy]  tragedy of the commons — individuals deplete shared resources acting in self-interest
+  Root: [33mCommunity[0m  D=0.2054
+  Cosine: -0.0000  |  [93mDIFFERENT ROOTS[0m  |  [91m✘ DIVERGENT[0m
+
+  [94mDoes cognitive state (medicine) and epistemic device (philosophy) share a root?[0m
+  [medicine]  placebo effect — measurable healing caused by the patient's belief in treatment efficacy
+  Root: [33mRoles[0m  D=0.3109
+  [philosophy]  the veil of ignorance — Rawls's device for deriving just principles from a position of no self-knowledge
+  Root: [33mTerminology[0m  D=0.3197
+  Cosine: -0.0008  |  [93mDIFFERENT ROOTS[0m  |  [91m✘ DIVERGENT[0m
+
+  [94mDoes public health epidemiology converge with ADGE at the same coordinate?[0m
+  [public health]  social determinants of health — non-medical conditions that are the strongest predictors of population health outcomes
+  Root: [33mAuthorities[0m  D=0.2085
+  [IHCEI]  ADGE network health — civilizational development determined by the algebraic connectivity of the governance network
+  Root: [33mJustice[0m  D=0.2022
+  Cosine: 0.4011  |  [93mDIFFERENT ROOTS[0m  |  [92m✔ CROSS-FIELD COMPATIBLE[0m
+
+
+[96m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  DOMAIN 7 — IHCEI SELF-AUDIT[0m
+  [90mThe framework's own concepts submitted back through the engine[0m
+[96m════════════════════════════════════════════════════════════════════════[0m
+
+  [33mTerminology   [0m [93m█████[90m░░░░░░░░░░░░░[0m  D=[1m0.3122[0m [[93mMODERATE[0m]  E=[93m0.0975[0m  [[92mLIVE[0m]
+  [90mIHCEI         [0m Protocol Truth D — the maximum cosine alignment of a concept vector to any ...
+  [90m↳ Does the framework's own variable achieve high D?[0m
+
+  [33mTerminology   [0m [93m██████[90m░░░░░░░░░░░░[0m  D=[1m0.3752[0m [[93mMODERATE[0m]  E=[93m0.1408[0m  [[92mLIVE[0m]
+  [90mIHCEI         [0m E = U times D squared — Essence is raw utility gated by the square of Proto...
+  [90m↳ The Kitchen Protocol self-referential test[0m
+
+  [33mDues          [0m [91m█[90m░░░░░░░░░░░░░░░░░[0m  D=[1m0.1067[0m [[91mLOW[0m]  E=[93m0.0114[0m  [[92mLIVE[0m]
+  [90mIHCEI / mathematics[0m Algebraic connectivity lambda2 — the second smallest eigenvalue of the grap...
+  [90m↳ Does the ADGE metric itself score well in the ADGE?[0m
+
+  [33mTerminology   [0m [91m███[90m░░░░░░░░░░░░░░░[0m  D=[1m0.1861[0m [[91mLOW[0m]  E=[93m0.0346[0m  [[92mLIVE[0m]
+  [90mIHCEI         [0m Al-3assr — the governance ordering principle: D is evaluated before U; purp...
+  [90m↳ The architectural constraint that defines the whole system[0m
+
+  [33mnone          [0m [91m[90m░░░░░░░░░░░░░░░░░░[0m  D=[1m0.0000[0m [[91mLOW[0m]  E=[93m0.0000[0m  [[91mCOLLAPSED[0m]
+  [90mIHCEI         [0m Pharaoh Filter — the TQG-CFE mechanism by which a misaligned agent perceive...
+  [90m↳ Named after the Quranic archetype of the agent who cannot receive truth[0m
+
+
+[33m[1m════════════════════════════════════════════════════════════════════════[0m
+[33m[1m  IHCEI QG-COS — REAL CONCEPT REPORT[0m
+[33m════════════════════════════════════════════════════════════════════════[0m
+
+  [1mConcepts processed : [97m31[0m
+  [1mMean Protocol Truth: [97mD = 0.2355[0m  [93m(mixed corpus)[0m
+  [1mMean Essence       : [97mE = 0.0648[0m
+  [1mCollapsed (D≈0)    : [97m0/31[0m
+  [1mNetwork λ₂ start   : [97m15.42620[0m
+  [1mNetwork λ₂ final   : [97m15.44890[0m
+  [1mΔλ₂                : [92m[1m+0.02269[0m  [92mNETWORK COHESION IMPROVED[0m
+
+  [1mRoot Class Distribution:[0m
+  [33mAuthorities   [0m ███████                   7 concepts  (23%)
+  [33mTerminology   [0m ███████                   7 concepts  (23%)
+  [33mRoles         [0m ████                      4 concepts  (13%)
+  [33mStewardship   [0m ████                      4 concepts  (13%)
+  [33mJustice       [0m ███                       3 concepts  (10%)
+  [33mPurpose       [0m ██                        2 concepts  (6%)
+  [33mDues          [0m ██                        2 concepts  (6%)
+  [33mCommunity     [0m ██                        2 concepts  (6%)
+
+  [1mFields that communicated through IHCEI today:[0m
+  [90m  · AI alignment[0m
+  [90m  · AI research[0m
+  [90m  · AI safety[0m
+  [90m  · IHCEI[0m
+  [90m  · IHCEI / mathematics[0m
+  [90m  · clinical psychology[0m
+  [90m  · constitutional law[0m
+  [90m  · contract law[0m
+  [90m  · criminal law[0m
+  [90m  · economics[0m
+  [90m  · emergency medicine[0m
+  [90m  · macroeconomics[0m
+  [90m  · medical ethics[0m
+  [90m  · medicine[0m
+  [90m  · metaphysics[0m
+  [90m  · moral philosophy[0m
+  [90m  · philosophy[0m
+  [90m  · political economy[0m
+  [90m  · political philosophy[0m
+  [90m  · public health[0m
+  [90m  · theology[0m
+  [90m  · tort law[0m
+
+  [90mAl-3assr: D evaluated before U. Purpose precedes function.[0m
+  [90mEvery field above now speaks the same governance language.[0m
+[33m════════════════════════════════════════════════════════════════════════[0m
