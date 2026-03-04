@@ -80,28 +80,61 @@ ROOT_NAMES = [
     "Stewardship",   # 9 — long-term responsibility
 ]
 
+from embedder_adapter import EmbedderAdapter
+
+class CompatibleEmbedderWrapper:
+    def __init__(self, backend="sentence"):
+        self.adapter = EmbedderAdapter(backend=backend)
+        self.vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=6000, sublinear_tf=True, min_df=1)
+        self._fitted = False
+
+    def fit(self, corpus):
+        self.adapter.fit(corpus)
+        self.vectoriser.fit(corpus)
+        self._fitted = True
+
+    def embed(self, texts):
+        return self.adapter.embed(texts)
+
+    def raw_magnitude(self, text):
+        if not self._fitted:
+            return 1.0
+        mat = self.vectoriser.transform([text])
+        return float(np.sqrt(mat.multiply(mat).sum()))
+
+
+def build_oqm_topology(emb: EmbedderAdapter) -> np.ndarray:
+    """Real semantic root-class basis using the embedder."""
+    rows = []
+    # use the SEED array to build pseudo-roots if ROOT_NAMES doesn't have exact seeds
+    # we can just use the first 10 items of SEED
+    for phrase in SEED[:10]:
+        vecs = emb.embed([phrase])
+        c = vecs.mean(axis=0)
+        c /= np.linalg.norm(c) + 1e-10
+        rows.append(c)
+    return np.stack(rows)
+
 class Engine:
     def __init__(self):
-        v   = TfidfVectorizer(max_features=12000, sublinear_tf=True, ngram_range=(1,2))
-        tf  = v.fit_transform(SEED)
-        n   = min(56, tf.shape[0]-1, tf.shape[1]-1)
-        svd = TruncatedSVD(n_components=n, random_state=42).fit(tf)
-        self.v=v; self.svd=svd; self.dim=n
+        self.wrapper = CompatibleEmbedderWrapper(backend="sentence")
+        self.wrapper.fit(SEED)
+        self.dim = self.wrapper.adapter.dim
+
+        self.oqm = build_oqm_topology(self.wrapper.adapter)
+
         rng = np.random.default_rng(42)
-        nr  = min(10, n-1)
-        Q,_ = np.linalg.qr(rng.standard_normal((nr,n)).T)
-        self.oqm = Q.T[:nr]
-        self.phi  = rng.uniform(0.1,1.0,(60,n))
-        raw = rng.random((60,60)); raw=(raw+raw.T)/2; np.fill_diagonal(raw,0)
+        self.phi  = rng.uniform(0.1, 1.0, (60, self.dim))
+        raw = rng.random((60, 60)); raw=(raw+raw.T)/2; np.fill_diagonal(raw, 0)
         self.adj = raw
         self.log = []
 
     def embed(self, text):
-        return normalize(self.svd.transform(self.v.transform([text])),norm="l2")[0]
+        return self.wrapper.embed([text])[0]
 
     def run(self, text, field="general", lr=0.05):
         vec = self.embed(text)
-        u   = float(np.linalg.norm(vec))
+        u   = self.wrapper.raw_magnitude(text)
         if u < 1e-10:
             return dict(D=0.0,root="none",U=0.0,E=0.0,
                        collapsed=True,scores=[0]*10,lambda2=self._l2(),hbar=0)

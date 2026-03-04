@@ -41,6 +41,7 @@ from pydantic import BaseModel, Field
 # SECTION 1 — EMBEDDER
 # Converts text → number vectors so the maths can work on any language
 # ══════════════════════════════════════════════════════════════════════
+from embedder_adapter import EmbedderAdapter
 
 SEED_CORPUS = [
     # Governance roots
@@ -75,24 +76,17 @@ SEED_CORPUS = [
 
 class Embedder:
     """
-    TF-IDF + SVD embedder. Works offline, no GPU needed.
-    Upgrade to sentence-transformers later by setting IHCEI_EMBEDDER=sentence
+    Sentence-transformers embedder interface via adapter.
     """
     def __init__(self):
-        self._vec = TfidfVectorizer(
-            max_features=10000, sublinear_tf=True, ngram_range=(1, 2)
-        )
-        tfidf      = self._vec.fit_transform(SEED_CORPUS)
-        n          = min(48, tfidf.shape[0] - 1, tfidf.shape[1] - 1)
-        self._svd  = TruncatedSVD(n_components=n, random_state=42)
-        self._svd.fit(tfidf)
-        self.dim   = n
-        print(f"  [Embedder] Ready — dim={n}, vocab={len(self._vec.vocabulary_)}")
+        backend = os.environ.get("IHCEI_EMBEDDER", "sentence")
+        self.adapter = EmbedderAdapter(backend=backend)
+        self.adapter.fit(SEED_CORPUS)
+        self.dim = self.adapter.dim
+        print(f"  [Embedder] Ready — backend={backend}, dim={self.dim}")
 
     def embed(self, texts: List[str]) -> np.ndarray:
-        t = self._vec.transform(texts)
-        v = self._svd.transform(t)
-        return normalize(v, norm="l2")
+        return self.adapter.embed(texts)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -113,12 +107,16 @@ ROOT_NAMES = [
     "Stewardship",   # 9  Custodianship, long-term responsibility
 ]
 
-def build_oqm(dim: int) -> np.ndarray:
-    """Orthonormal root-class basis — no two roots share meaning."""
-    n   = min(len(ROOT_NAMES), dim - 1)
-    rng = np.random.default_rng(42)
-    Q, _ = np.linalg.qr(rng.standard_normal((n, dim)).T)
-    return Q.T[:n]   # shape: (n_roots × dim)
+def build_oqm(emb: Embedder) -> np.ndarray:
+    """Real semantic root-class basis using the embedder."""
+    rows = []
+    # Use first 10 items from SEED_CORPUS corresponding to roots
+    for phrase in SEED_CORPUS[:10]:
+        vecs = emb.embed([phrase])
+        c = vecs.mean(axis=0)
+        c /= np.linalg.norm(c) + 1e-10
+        rows.append(c)
+    return np.stack(rows)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -214,7 +212,7 @@ class Engine:
         print("\n[IHCEI] Initialising engine...")
         self.emb  = Embedder()
         self.dim  = self.emb.dim
-        self.oqm  = build_oqm(self.dim)
+        self.oqm  = build_oqm(self.emb)
         self._init_network()
         self.log: List[Dict] = []
         print(f"  [Engine] Ready — {len(ROOT_NAMES)} OQM roots, {self.n} nodes\n")

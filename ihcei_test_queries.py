@@ -183,17 +183,24 @@ def offline_engine():
     ROOT_NAMES = ["Terminology","Roles","Dues","Authorities","Rules",
                   "Knowledge","Justice","Community","Purpose","Stewardship"]
 
-    vec = TfidfVectorizer(max_features=10000, sublinear_tf=True, ngram_range=(1,2))
-    tf  = vec.fit_transform(SEED)
-    n   = min(48, tf.shape[0]-1, tf.shape[1]-1)
-    svd = TruncatedSVD(n_components=n, random_state=42).fit(tf)
+    from embedder_adapter import EmbedderAdapter
+    import os
+    backend = os.environ.get("IHCEI_EMBEDDER", "sentence")
+    emb_adapter = EmbedderAdapter(backend=backend)
+    emb_adapter.fit(SEED)
+    n = emb_adapter.dim
 
     def embed(texts):
-        return normalize(svd.transform(vec.transform(texts)), norm="l2")
+        return emb_adapter.embed(texts)
 
-    rng = np.random.default_rng(42)
-    raw = rng.standard_normal((min(10, n-1), n))
-    Q,_ = np.linalg.qr(raw.T);  oqm = Q.T[:min(10,n-1)]
+    # Replicate build_oqm logic using first 10 seed phrases
+    rows = []
+    for phrase in SEED[:10]:
+        v = embed([phrase])
+        c = v.mean(axis=0)
+        c /= np.linalg.norm(c) + 1e-10
+        rows.append(c)
+    oqm = np.stack(rows)
 
     def kp(text):
         v   = embed([text])[0]
