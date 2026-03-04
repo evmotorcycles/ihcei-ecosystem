@@ -134,7 +134,6 @@ class Engine:
 
     def compare(self, a, b):
         va,vb = self.embed(a), self.embed(b)
-        # just recompute roots
         def root_of(vec):
             u=float(np.linalg.norm(vec))
             if u<1e-10: return "none",0.0
