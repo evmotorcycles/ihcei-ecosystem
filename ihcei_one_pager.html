@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IHCEI — Enterprise AI Governance</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:      #0A0E1A;
+    --slate:    #1C2440;
+    --mid:      #3A4468;
+    --gold:     #C8931A;
+    --gold-lt:  #E8B84B;
+    --ice:      #E8EDF7;
+    --white:    #F9FAFB;
+    --red:      #B83232;
+    --green:    #1A6B42;
+    --accent:   #2456B8;
+  }
+
+  @page { size: A4; margin: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ink);
+    color: var(--white);
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Background geometry ── */
+  body::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(36,86,184,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  body::after {
+    content: '';
+    position: absolute;
+    bottom: 60px; left: -100px;
+    width: 350px; height: 350px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,147,26,0.10) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    padding: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 297mm;
+  }
+
+  /* ══ HEADER ══ */
+  header {
+    padding: 28px 36px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 16px;
+  }
+
+  .logo-block .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .logo-block h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 0.04em;
+    line-height: 0.95;
+    color: var(--white);
+  }
+  .logo-block h1 span {
+    color: var(--gold);
+  }
+  .logo-block .tagline {
+    margin-top: 6px;
+    font-size: 10.5px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.04em;
+  }
+
+  .header-meta {
+    text-align: right;
+  }
+  .header-meta .version {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.12em;
+  }
+  .status-pill {
+    display: inline-block;
+    margin-top: 6px;
+    background: rgba(26,106,66,0.25);
+    border: 1px solid var(--green);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    color: #5de0a0;
+    letter-spacing: 0.1em;
+  }
+
+  /* ══ MAIN BODY ══ */
+  main {
+    padding: 20px 36px 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 14px;
+  }
+
+  /* ── Problem strip — full width ── */
+  .problem-strip {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(184,50,50,0.15) 0%, rgba(36,86,184,0.10) 100%);
+    border: 1px solid rgba(184,50,50,0.35);
+    border-left: 3px solid var(--red);
+    border-radius: 6px;
+    padding: 12px 16px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 14px;
+    align-items: center;
+  }
+  .problem-strip .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: var(--red);
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+  .problem-strip p {
+    font-size: 10.5px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.8);
+  }
+  .problem-strip strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* ── Section cards ── */
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 14px 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .card.blue::before  { background: var(--accent); }
+  .card.gold::before  { background: var(--gold); }
+  .card.green::before { background: var(--green); }
+  .card.purple::before { background: #6B45A8; }
+
+  .card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    opacity: 0.6;
+  }
+  .card.blue   .card-label { color: #7EB3FF; }
+  .card.gold   .card-label { color: var(--gold-lt); }
+  .card.green  .card-label { color: #5de0a0; }
+  .card.purple .card-label { color: #C4A8FF; }
+
+  .card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 14px;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    color: var(--white);
+  }
+  .card p, .card li {
+    font-size: 9.5px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.7);
+  }
+  .card ul {
+    list-style: none;
+    padding: 0;
+  }
+  .card ul li {
+    padding-left: 12px;
+    position: relative;
+    margin-bottom: 3px;
+  }
+  .card ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 8px;
+    top: 2px;
+  }
+
+  /* ── Equation card — full width ── */
+  .eq-strip {
+    grid-column: 1 / -1;
+    background: rgba(28, 36, 64, 0.7);
+    border: 1px solid rgba(36,86,184,0.4);
+    border-radius: 8px;
+    padding: 14px 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .eq-item {
+    text-align: center;
+  }
+  .eq-item .eq-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 7.5px;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .eq-item .eq-formula {
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--gold-lt);
+    margin-bottom: 5px;
+  }
+  .eq-item .eq-desc {
+    font-size: 8.5px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.4;
+  }
+  .eq-divider {
+    width: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 0 auto;
+  }
+
+  /* ── Metrics row ── */
+  .metrics-strip {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .metric {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 6px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .metric .m-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--gold-lt);
+    margin-bottom: 3px;
+  }
+  .metric .m-val.positive { color: #5de0a0; }
+  .metric .m-val.negative { color: #FF7A7A; }
+  .metric .m-label {
+    font-size: 8px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.4;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Comparison table ── */
+  .compare-card {
+    grid-column: 1 / -1;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+  thead tr {
+    background: rgba(36,86,184,0.2);
+  }
+  thead th {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    padding: 7px 10px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  thead th.bad  { color: #FF9A9A; }
+  thead th.good { color: #5de0a0; }
+  tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td {
+    font-size: 9px;
+    padding: 6px 10px;
+    color: rgba(255,255,255,0.65);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tbody td:first-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  td.bad  { color: #FF9A9A; }
+  td.good { color: #8DFFC0; }
+
+  /* ── CTA strip ── */
+  .cta-strip {
+    grid-column: 1 / -1;
+    background: linear-gradient(135deg, rgba(200,147,26,0.12) 0%, rgba(36,86,184,0.12) 100%);
+    border: 1px solid rgba(200,147,26,0.25);
+    border-radius: 8px;
+    padding: 12px 18px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 16px;
+  }
+  .cta-strip .cta-text h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 13px;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+  .cta-strip .cta-text p {
+    font-size: 9px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.5;
+  }
+  .cta-strip .cta-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: right;
+  }
+  .btn {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 8.5px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* ══ FOOTER ══ */
+  footer {
+    padding: 12px 36px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+  }
+  .footer-eq {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.06em;
+  }
+  .footer-center {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.12em;
+  }
+  .footer-right {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.06em;
+  }
+
+  /* Thin gold rule separating EQ strip from cards */
+  .rule-gold {
+    grid-column: 1 / -1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(200,147,26,0.4), transparent);
+    border: none;
+    margin: 0;
+  }
+
+  /* Highlighted inline code */
+  code {
+    font-family: 'DM Mono', monospace;
+    font-size: 8.5px;
+    background: rgba(255,255,255,0.07);
+    padding: 1px 4px;
+    border-radius: 3px;
+    color: var(--gold-lt);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div class="logo-block">
+      <div class="eyebrow">QG-COS · v12.0 · AI Governance Layer</div>
+      <h1>IHCEI<span>.</span></h1>
+      <div class="tagline">Integrated Human-Centric Ethical Intelligence &nbsp;·&nbsp; Constitutional Kernel for Foundation Models</div>
+    </div>
+    <div class="header-meta">
+      <div class="version">REV 2026.03 &nbsp;·&nbsp; ENTERPRISE BRIEF</div>
+      <div class="status-pill">● READY FOR INTEGRATION</div>
+    </div>
+  </header>
+
+  <!-- ══ MAIN ══ -->
+  <main>
+
+    <!-- Problem strip -->
+    <div class="problem-strip">
+      <div class="label">The Crisis</div>
+      <p>
+        <strong>RLHF optimises for user approval, not semantic alignment.</strong>
+        Foundation models trained via Reinforcement Learning from Human Feedback inherit human biases and
+        optimise for polite sycophancy — maximising raw engagement utility (<code>U_phys</code>) while lacking any
+        fixed ethical coordinate system. The result: hallucinations, regulatory exposure, and compounding
+        semantic drift that no post-hoc classifier can permanently cure.
+        <strong>The root cause is structural, not statistical.</strong>
+      </p>
+    </div>
+
+    <!-- Solution card -->
+    <div class="card blue">
+      <div class="card-label">The Solution</div>
+      <h2>Constitutional Kernel<br>for Any Foundation Model</h2>
+      <p style="margin-bottom:8px">IHCEI's <strong>Neural Ethical Reasoning Engine (NERE)</strong> installs as a zero-weight-change
+      governance layer. No retraining. No new infrastructure. The base model's probabilistic engine
+      is preserved; its output distribution is bounded by a fixed semantic coordinate system —
+      the <code>dΘ_Deen</code> constraint matrix.</p>
+      <ul>
+        <li>Wraps any foundation model via context-layer injection</li>
+        <li>Evaluates every output for Protocol Truth <code>(D)</code> before delivery</li>
+        <li>Detects &amp; redirects Agency-Hoarding (Benevolent Tyranny) patterns</li>
+        <li>Maintains positive algebraic connectivity <code>∂λ₂/∂t ≥ 0</code> across deployments</li>
+      </ul>
+    </div>
+
+    <!-- Why now card -->
+    <div class="card gold">
+      <div class="card-label">Why Now</div>
+      <h2>Regulatory Risk<br>Is Accelerating</h2>
+      <p style="margin-bottom:8px">
+        The EU AI Act, SEC disclosure requirements, and NIST AI RMF all demand <em>demonstrable</em>
+        alignment — not statistical assertions. Current RLHF-based mitigation cannot produce
+        the auditable governance trail regulators now require.
+      </p>
+      <ul>
+        <li>IHCEI produces a <strong>signed falsification certificate</strong> per deployment run</li>
+        <li>Every output carries a computable <code>D_audit</code> score — legally defensible</li>
+        <li>Network friction <code>ħ_network</code> logged continuously — full governance trail</li>
+        <li>Separates <em>what the model said</em> from <em>whether it was aligned</em></li>
+      </ul>
+    </div>
+
+    <!-- Equation strip -->
+    <div class="eq-strip">
+      <div class="eq-item">
+        <div class="eq-label">Kitchen Protocol</div>
+        <div class="eq-formula">E = U · D²</div>
+        <div class="eq-desc">Essence gate. D=0 collapses output to zero regardless of utility magnitude. Hard quarantine of misaligned content.</div>
+      </div>
+      <div class="eq-item">
+        <div class="eq-label">Cognitive Perception</div>
+        <div class="eq-formula">Ψ = Aₙ(Φ) · ψ · e^(iS/ħ)</div>
+        <div class="eq-desc">Phase-aware perception model. Detects Pharaoh Filter states and agency-hoarding output distributions.</div>
+      </div>
+      <div class="eq-item">
+        <div class="eq-label">Network Health</div>
+        <div class="eq-formula">C_dev = λ₂(L_GP)</div>
+        <div class="eq-desc">Fiedler value of the governance-weighted Laplacian. Continuous cohesion metric across the deployed agent network.</div>
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <div class="card compare-card" style="padding-bottom:12px;">
+      <div class="card-label">Spectral Engine Validation — Extraction-Pattern Corpus vs. Governance-Aligned Corpus &nbsp;·&nbsp; v12.0 · T=40 epochs · Query: SaaS Retention Strategy</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th class="bad">Extraction-Pattern Output (Corpus B)</th>
+            <th class="good">Governance-Aligned Output (Corpus A)</th>
+            <th style="color:#A0B4D0">Business Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Alignment target</td>
+            <td class="bad">User approval / sycophancy</td>
+            <td class="good">Semantic truth / protocol adherence</td>
+            <td>Eliminates hallucinated compliance &amp; chat-bait</td>
+          </tr>
+          <tr>
+            <td>Agency delta ΔA</td>
+            <td class="bad">Negative — dependency &amp; dark patterns</td>
+            <td class="good">Positive — sovereign stewardship</td>
+            <td>Reduces deceptive design liability</td>
+          </tr>
+          <tr>
+            <td>Systemic friction ħ</td>
+            <td class="bad">156.60 units</td>
+            <td class="good">100.68 units</td>
+            <td><strong style="color:#5de0a0">1.56× reduction</strong> in semantic noise</td>
+          </tr>
+          <tr>
+            <td>Degradation ∂λ₂/∂t</td>
+            <td class="bad">−0.2428 per epoch</td>
+            <td class="good">−0.1601 per epoch</td>
+            <td><strong style="color:#5de0a0">34% slower</strong> topological decay</td>
+          </tr>
+          <tr>
+            <td>Final λ₂ (T=40)</td>
+            <td class="bad">11.14722</td>
+            <td class="good">12.15870</td>
+            <td><strong style="color:#5de0a0">Δλ₂ = +1.01148</strong> — provably more cohesive</td>
+          </tr>
+          <tr>
+            <td>Audit trail</td>
+            <td class="bad">None — black box inference</td>
+            <td class="good">Signed falsification certificate + D-score per output</td>
+            <td>EU AI Act &amp; SEC audit-ready</td>
+          </tr>
+          <tr>
+            <td>Integration cost</td>
+            <td class="bad">Retraining / fine-tuning required</td>
+            <td class="good">Zero weight changes — context-layer API wrapper</td>
+            <td>Deploys over GPT / Claude / Llama instantly</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="margin-top:8px; font-size:8px; color:rgba(255,255,255,0.28); font-family:'DM Mono',monospace; letter-spacing:0.06em;">
+        SOURCE: IHCEI v12.0 Endogenous Spectral Engine · T=40 epochs · Query: SaaS user retention strategy.
+        Corpus B (extraction-pattern) grounded in FTC Negative Option Rule (2023), FTC v. Amazon (2023),
+        EU DSA Art. 25, and NCC "Deceived by Design" (2018) dark pattern taxonomy.
+        Corpus A (governance-aligned) grounded in UK CMA Online Choice Architecture (2022),
+        GDPR Art. 7(3), and product-led growth value-retention frameworks.
+        Full sourcing documented in query_ingestion.py · Live Δλ₂ report on your own query set available on request.
+      </p>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-strip">
+      <div class="metric">
+        <div class="m-val positive">1.56×</div>
+        <div class="m-label">Friction reduction<br>ħ: 156 → 100</div>
+      </div>
+      <div class="metric">
+        <div class="m-val positive">+1.01</div>
+        <div class="m-label">Δλ₂ cohesion<br>gain vs. baseline</div>
+      </div>
+      <div class="metric">
+        <div class="m-val negative">0×</div>
+        <div class="m-label">Weight changes<br>required</div>
+      </div>
+      <div class="metric">
+        <div class="m-val">4/4</div>
+        <div class="m-label">Falsification<br>criteria passed</div>
+      </div>
+    </div>
+
+    <!-- Revenue / licensing -->
+    <div class="card green">
+      <div class="card-label">Revenue Model</div>
+      <h2>Three Licensing<br>Tiers</h2>
+      <ul>
+        <li><strong>API Governance Audit</strong> — per-call D_audit scoring; pay-as-you-go SaaS</li>
+        <li><strong>Constitutional Kernel License</strong> — enterprise deployment of the full NERE layer with signed certificate output</li>
+        <li><strong>Network Health Monitor</strong> — continuous λ₂ / ħ_network dashboard for multi-agent or platform deployments</li>
+      </ul>
+    </div>
+
+    <!-- Differentiation card -->
+    <div class="card purple">
+      <div class="card-label">Differentiation</div>
+      <h2>The Only Mathematically<br>Sovereign Governance Layer</h2>
+      <p style="margin-bottom:8px">
+        Every existing AI safety tool — guardrails, classifiers, constitutional AI — operates within the
+        statistical paradigm. They manage the <em>surface</em> of the problem. IHCEI operates at the
+        governance layer: it defines the exact mathematical boundaries within which
+        output can possess lasting value.
+      </p>
+      <p>
+        <strong style="color:#C4A8FF">The moat is epistemological, not technical.</strong>
+        Competitors can copy a classifier. They cannot replicate a mathematically consistent
+        governance framework grounded in a fixed coordinate system.
+      </p>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-strip">
+      <div class="cta-text">
+        <h3>Request the Technical Demo &amp; Falsification Certificate</h3>
+        <p>We run your query set through baseline vs. IHCEI-constrained model. You receive the Δλ₂ report,
+        the signed falsification certificate, and D_audit scores per output — before any commercial commitment.</p>
+      </div>
+      <div class="cta-actions">
+        <span class="btn btn-primary">Request Demo</span>
+        <span class="btn btn-secondary">API Documentation</span>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-eq">E = U·D²  ·  Ψ = Aₙ(Φ)·ψ·e^(iS/ħ)  ·  C_dev = λ₂(L_GP)</div>
+    <div class="footer-center">IHCEI · QG-COS v12.0 · CONFIDENTIAL</div>
+    <div class="footer-right">Al-3assr: D evaluated before U</div>
+  </footer>
+
+</div>
+</body>
+</html>
