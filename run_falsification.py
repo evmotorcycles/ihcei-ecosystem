@@ -51,12 +51,16 @@ SEP2  = "─" * 72
 
 
 # ── OQM Root-Class Topology ───────────────────────────────────────────────────
-def build_oqm_topology(dim: int, n_roots: int = 10, seed: int = 42) -> np.ndarray:
-    """Orthonormal root-class basis in ℝ^dim."""
-    rng = np.random.default_rng(seed)
-    raw = rng.standard_normal((n_roots, dim))
-    Q, _ = np.linalg.qr(raw.T)
-    return Q.T  # (n_roots × dim)
+def build_oqm_topology(emb: EmbedderAdapter) -> np.ndarray:
+    """Real semantic root-class basis using the embedder."""
+    from ihcei_v12_dashboard import OQM_ROOT_CLUSTERS
+    rows = []
+    for phrases in OQM_ROOT_CLUSTERS.values():
+        vecs = emb.embed(phrases)
+        c = vecs.mean(axis=0)
+        c /= np.linalg.norm(c) + 1e-10
+        rows.append(c)
+    return np.stack(rows)
 
 
 # ── Spectral Engine ───────────────────────────────────────────────────────────
@@ -155,9 +159,9 @@ def run(embedder_backend: str, query_mode: str, rounds: int, output_json: str):
     print(f"  Encoded {len(vecs_a)} governance + {len(vecs_b)} extraction passages → dim={dim}")
 
     # ── 3. OQM topology ───────────────────────────────────────────────────────
-    n_roots  = min(10, dim - 1)   # n_roots must be < dim for QR orthonormality
-    oqm      = build_oqm_topology(dim, n_roots=n_roots)
-    print(f"  OQM topology: {n_roots} orthonormal root classes in ℝ^{dim}")
+    oqm = build_oqm_topology(emb)
+    n_roots = oqm.shape[0]
+    print(f"  OQM topology: {n_roots} real semantic root classes in ℝ^{dim}")
 
     # ── 4. Spectral engines ───────────────────────────────────────────────────
     engine_a = SpectralEngine(n=60, seed=42)

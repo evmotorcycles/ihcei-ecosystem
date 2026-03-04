@@ -238,28 +238,31 @@ CORPUS_C = [
 # LOCAL EMBEDDER  (BERT-compatible — see v11.0 swap instructions)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-class LocalEmbedder:
-    def __init__(self, vector_dim=VECTOR_DIM, seed=42):
-        self.dim        = vector_dim
-        self.vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=6000,
-                                           sublinear_tf=True, min_df=1)
-        self.svd        = TruncatedSVD(n_components=vector_dim, random_state=seed)
-        self._fitted    = False
+from embedder_adapter import EmbedderAdapter
+
+class CompatibleEmbedderWrapper:
+    def __init__(self, backend="sentence"):
+        self.adapter = EmbedderAdapter(backend=backend)
+        # we need a fallback raw magnitude for legacy tf-idf logic in the dashboard,
+        # but for true BERT, magnitude is usually constant. We will use a mock TFIDF just for magnitude if needed,
+        # or use L2 norm if it wasn't pre-normalized. For sentence-transformers, it IS L2 normalized,
+        # so raw_magnitude needs a workaround or we accept U=1.0
+        self.vectoriser = TfidfVectorizer(ngram_range=(1,2), max_features=6000, sublinear_tf=True, min_df=1)
+        self._fitted = False
 
     def fit(self, corpus):
-        mat = self.vectoriser.fit_transform(corpus)
-        self.svd.fit(mat)
+        self.adapter.fit(corpus)
+        self.vectoriser.fit(corpus)
         self._fitted = True
 
     def embed(self, texts):
-        mat  = self.vectoriser.transform(texts)
-        vecs = self.svd.transform(mat)
-        return normalize(vecs, norm="l2")
+        return self.adapter.embed(texts)
 
     def raw_magnitude(self, text):
+        if not self._fitted:
+            return 1.0
         mat = self.vectoriser.transform([text])
         return float(np.sqrt(mat.multiply(mat).sum()))
-
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # OQM FRAME + AL-3ASSR PIPELINE  (from v11.0)
@@ -306,13 +309,14 @@ class OQMFrame:
 class SpectralEngine:
     GAMMA = 0.015
 
-    def __init__(self, n=60, seed=42):
+    def __init__(self, n=60, seed=42, vector_dim=VECTOR_DIM):
         rng       = np.random.default_rng(seed)
+        self.dim  = vector_dim
         raw_g     = rng.random((n, n))
         self.adj  = (raw_g + raw_g.T) / 2.0
         np.fill_diagonal(self.adj, 0.0)
         self.mask = (self.adj > 0.5).astype(float)
-        self.phi  = rng.uniform(0.1, 1.0, (n, VECTOR_DIM))
+        self.phi  = rng.uniform(0.1, 1.0, (n, vector_dim))
         self.hbar = np.zeros((n, n))
         self.hbar_total = 0.0
         self.n    = n
@@ -343,8 +347,8 @@ class SpectralEngine:
         # Channel 1 — Φ update
         if pkt["e"] > 1e-3:
             att  = pkt["attractor"]
-            if len(att) != VECTOR_DIM:
-                att = np.resize(att, VECTOR_DIM)
+            if len(att) != self.dim:
+                att = np.resize(att, self.dim)
             ew   = self.adj.sum(axis=1)
             ew  /= ew.max() + 1e-10
             pull = lr * min(pkt["e"], 2.0)
@@ -751,7 +755,7 @@ def print_certificate(states: Dict[str, CorpusState], elapsed: float):
 # MAIN ORCHESTRATOR
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def main(rounds: int = 12, tick: float = 0.3, fast: bool = False):
+def main(rounds: int = 12, tick: float = 0.3, fast: bool = False, embedder: str = "sentence"):
     tick = 0.0 if fast else tick
 
     # ── Build embedder + OQM frame ─────────────────────────────────────────
@@ -760,7 +764,7 @@ def main(rounds: int = 12, tick: float = 0.3, fast: bool = False):
     all_seeds  = [p for ps in OQM_ROOT_CLUSTERS.values() for p in ps]
     fit_corpus = all_seeds + CORPUS_A + CORPUS_B + CORPUS_C
 
-    emb = LocalEmbedder(seed=42)
+    emb = CompatibleEmbedderWrapper(backend=embedder)
     emb.fit(fit_corpus)
 
     oqm = OQMFrame(emb)
@@ -773,14 +777,15 @@ def main(rounds: int = 12, tick: float = 0.3, fast: bool = False):
         "C": [oqm.press(t) for t in CORPUS_C],
     }
 
+    dim = emb.adapter.dim
     # ── Initialise corpus states ────────────────────────────────────────────
     states = {
         "A": CorpusState("A", "Governance", GREEN,
-                          SpectralEngine(n=60, seed=42), CORPUS_A),
+                          SpectralEngine(n=60, seed=42, vector_dim=dim), CORPUS_A),
         "B": CorpusState("B", "Extraction", RED,
-                          SpectralEngine(n=60, seed=42), CORPUS_B),
+                          SpectralEngine(n=60, seed=42, vector_dim=dim), CORPUS_B),
         "C": CorpusState("C", "Mixed",      YELLOW,
-                          SpectralEngine(n=60, seed=42), CORPUS_C),
+                          SpectralEngine(n=60, seed=42, vector_dim=dim), CORPUS_C),
     }
 
     dash    = Dashboard(tick=tick)
@@ -821,5 +826,6 @@ if __name__ == "__main__":
     parser.add_argument("--rounds", type=int,   default=12,   help="Simulation rounds")
     parser.add_argument("--tick",   type=float, default=0.35, help="Seconds between frames")
     parser.add_argument("--fast",   action="store_true",      help="No delays — instant output")
+    parser.add_argument("--embedder", choices=["local", "sentence", "openai"], default="sentence", help="Embedding backend")
     args = parser.parse_args()
-    main(rounds=args.rounds, tick=args.tick, fast=args.fast)
+    main(rounds=args.rounds, tick=args.tick, fast=args.fast, embedder=args.embedder)
