@@ -41,6 +41,7 @@ from pydantic import BaseModel, Field
 # SECTION 1 — EMBEDDER
 # Converts text → number vectors so the maths can work on any language
 # ══════════════════════════════════════════════════════════════════════
+
 from embedder_adapter import EmbedderAdapter
 
 SEED_CORPUS = [
@@ -110,8 +111,8 @@ ROOT_NAMES = [
 def build_oqm(emb: Embedder) -> np.ndarray:
     """Real semantic root-class basis using the embedder."""
     rows = []
-    # Use first 10 items from SEED_CORPUS corresponding to roots
-    for phrase in SEED_CORPUS[:10]:
+    # Use first 8 items from SEED_CORPUS corresponding to governance roots
+    for phrase in SEED_CORPUS[:8]:
         vecs = emb.embed([phrase])
         c = vecs.mean(axis=0)
         c /= np.linalg.norm(c) + 1e-10
