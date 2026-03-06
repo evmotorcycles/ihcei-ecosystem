@@ -1,0 +1,18 @@
+{
+  "name": "press_ihcei_data_packet",
+  "description": "The Moral TCP/IP Translation Engine. Use this tool to audit any proposed business logic, architecture, or economic decision through the Absolute Divine Governance Equation (ADGE). It calculates the resulting Cognitive Development (C_dev) and checks for systemic friction (Gates of Jahannam).",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "query": {
+        "type": "string",
+        "description": "The specific proposal, concept, or action you want to evaluate."
+      },
+      "domain": {
+        "type": "string",
+        "description": "The field of study or business sector this query belongs to (e.g., Economics, Software, Finance, Psychology)."
+      }
+    },
+    "required": ["query", "domain"]
+  }
+}
