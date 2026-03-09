@@ -42,8 +42,6 @@ from pydantic import BaseModel, Field
 # Converts text → number vectors so the maths can work on any language
 # ══════════════════════════════════════════════════════════════════════
 
-from embedder_adapter import EmbedderAdapter
-
 SEED_CORPUS = [
     # Governance roots
     "governance justice accountability transparency authority purpose meaning",
@@ -75,19 +73,21 @@ SEED_CORPUS = [
 ]
 
 
+from sentence_transformers import SentenceTransformer
+
 class Embedder:
     """
-    Sentence-transformers embedder interface via adapter.
+    Upgraded Dense Embedder using all-MiniLM-L6-v2.
+    Returns unnormalized vectors so U_phys (Systemic Mass) can scale.
     """
     def __init__(self):
-        backend = os.environ.get("IHCEI_EMBEDDER", "sentence")
-        self.adapter = EmbedderAdapter(backend=backend)
-        self.adapter.fit(SEED_CORPUS)
-        self.dim = self.adapter.dim
-        print(f"  [Embedder] Ready — backend={backend}, dim={self.dim}")
+        self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        self.dim   = self.model.get_sentence_embedding_dimension()
+        print(f"  [Embedder] Ready — Dense Transformer (dim={self.dim})")
 
     def embed(self, texts: List[str]) -> np.ndarray:
-        return self.adapter.embed(texts)
+        # We explicitly do NOT normalize here so magnitude is preserved
+        return self.model.encode(texts, normalize_embeddings=False)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -130,16 +130,21 @@ def kitchen_protocol(vec: np.ndarray, oqm: np.ndarray) -> Dict:
     D = max cosine alignment to any OQM root class.
     Zero truth alignment → zero Essence, regardless of utility.
     """
-    u = float(np.linalg.norm(vec))
-    if u < 1e-10:
+    raw_magnitude = float(np.linalg.norm(vec))
+    if raw_magnitude < 1e-10:
         return dict(D=0.0, root_idx=-1, root_name="none",
                     all_roots=[0.0]*10, U=0.0, E=0.0,
                     E_vec=vec.tolist(), collapsed=True)
 
-    unit    = vec / u
+    # Scale U_phys dynamically based on sentence-transformer dense baseline
+    baseline_expected_magnitude = 5.0
+    u = raw_magnitude / baseline_expected_magnitude
+
+    unit    = vec / raw_magnitude
     scores  = np.clip(oqm @ unit, 0.0, 1.0)
     best    = int(np.argmax(scores))
     D       = float(scores[best])
+
     E       = u * D * D
     E_vec   = unit * E
 
@@ -384,34 +389,34 @@ BOOT_TIME = datetime.now(timezone.utc).isoformat()
 # ── Request models ─────────────────────────────────────────────────────────
 
 class ConceptReq(BaseModel):
-    concept: str        = Field(...,    json_schema_extra={"example": "entropy in thermodynamics"})
-    field:   str        = Field("general", json_schema_extra={"example": "physics"})
-    observer: Optional[int] = Field(None, json_schema_extra={"example": 0})
+    concept: str        = Field(...,    example="entropy in thermodynamics")
+    field:   str        = Field("general", example="physics")
+    observer: Optional[int] = Field(None, example=0)
     lr:      float      = Field(0.05,  ge=0, le=1)
 
 class CompareReq(BaseModel):
-    concept_a: str = Field(..., json_schema_extra={"example": "justice in law"})
-    concept_b: str = Field(..., json_schema_extra={"example": "equilibrium in economics"})
-    field_a:   str = Field("general", json_schema_extra={"example": "law"})
-    field_b:   str = Field("general", json_schema_extra={"example": "economics"})
+    concept_a: str = Field(..., example="justice in law")
+    concept_b: str = Field(..., example="equilibrium in economics")
+    field_a:   str = Field("general", example="law")
+    field_b:   str = Field("general", example="economics")
 
 class TranslateReq(BaseModel):
     concepts: List[str] = Field(...,
-        json_schema_extra={"example": ["entropy (physics)", "moral hazard (economics)",
-                 "mens rea (law)", "homeostasis (biology)"]})
+        example=["entropy (physics)", "moral hazard (economics)",
+                 "mens rea (law)", "homeostasis (biology)"])
     fields: Optional[List[str]] = Field(None,
-        json_schema_extra={"example": ["physics", "economics", "law", "biology"]})
+        example=["physics", "economics", "law", "biology"])
 
 class BatchReq(BaseModel):
-    concepts: List[ConceptReq] = Field(..., max_length=50)
+    concepts: List[ConceptReq] = Field(..., max_items=50)
 
 class LLMReq(BaseModel):
     """The one endpoint every LLM should call."""
     message:    str = Field(...,
-        json_schema_extra={"example": "How does accountability relate to transparency?"})
+        example="How does accountability relate to transparency?")
     source_llm: str = Field("unknown",
-        json_schema_extra={"example": "gemini"})          # gemini | chatgpt | claude | notebooklm
-    field:      str = Field("general", json_schema_extra={"example": "governance"})
+        example="gemini")          # gemini | chatgpt | claude | notebooklm
+    field:      str = Field("general", example="governance")
 
 
 # ── Routes ─────────────────────────────────────────────────────────────────

@@ -4,5 +4,3 @@ pyngrok
 numpy
 scipy
 scikit-learn
-pydantic
-sentence-transformers
