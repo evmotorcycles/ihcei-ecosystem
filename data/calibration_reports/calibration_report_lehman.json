@@ -1,0 +1,83 @@
+{
+  "metadata": {
+    "validation_tier": "Retroactive Historical Instantiation",
+    "evidential_status": "Internal Consistency Check \u2014 Not Prospective Validation",
+    "layer": "Layer 2 Developing (Requires N >= 200 Blind Run for Publication)",
+    "omega_unit_grounding": "Endogenous Composite Index \u2014 Not Physically Primitive",
+    "calibration_date": "2026-03-21",
+    "framework_version": "GT v16.0"
+  },
+  "dataset": "Lehman Brothers (2008)",
+  "records": [
+    {
+      "cycle_id": "2007-Q1",
+      "D_system": 0.8,
+      "h_network": 1.7999999999999998,
+      "U_utility": 503.5,
+      "E_total": 322.24000000000007,
+      "efficiency_linear": 0.8,
+      "efficiency_quadratic": 0.6400000000000001,
+      "collapse_signal": false
+    },
+    {
+      "cycle_id": "2007-Q2",
+      "D_system": 0.7418181818181818,
+      "h_network": 2.52,
+      "U_utility": 603.3,
+      "E_total": 331.9924998347107,
+      "efficiency_linear": 0.7418181818181818,
+      "efficiency_quadratic": 0.550294214876033,
+      "collapse_signal": false
+    },
+    {
+      "cycle_id": "2007-Q3",
+      "D_system": 0.6739393939393938,
+      "h_network": 3.36,
+      "U_utility": 659.3,
+      "E_total": 299.45030640954997,
+      "efficiency_linear": 0.6739393939393938,
+      "efficiency_quadratic": 0.4541943067033975,
+      "collapse_signal": false
+    },
+    {
+      "cycle_id": "2007-Q4",
+      "D_system": 0.606060606060606,
+      "h_network": 4.2,
+      "U_utility": 691.0,
+      "E_total": 253.81083562901736,
+      "efficiency_linear": 0.606060606060606,
+      "efficiency_quadratic": 0.367309458218549,
+      "collapse_signal": false
+    },
+    {
+      "cycle_id": "2008-Q1",
+      "D_system": 0.5381818181818182,
+      "h_network": 5.04,
+      "U_utility": 786.0,
+      "E_total": 227.65678016528926,
+      "efficiency_linear": 0.5381818181818182,
+      "efficiency_quadratic": 0.2896396694214876,
+      "collapse_signal": false
+    },
+    {
+      "cycle_id": "2008-Q2",
+      "D_system": 0.4121212121212121,
+      "h_network": 6.6,
+      "U_utility": 639.4,
+      "E_total": 108.5981854912764,
+      "efficiency_linear": 0.4121212121212121,
+      "efficiency_quadratic": 0.1698438934802571,
+      "collapse_signal": false
+    },
+    {
+      "cycle_id": "2008-Q3",
+      "D_system": 0.16,
+      "h_network": 9.719999999999999,
+      "U_utility": 600.0,
+      "E_total": 15.360000000000001,
+      "efficiency_linear": 0.16,
+      "efficiency_quadratic": 0.0256,
+      "collapse_signal": true
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "metadata": {
+    "validation_tier": "Retroactive Historical Instantiation",
+    "evidential_status": "Internal Consistency Check \u2014 Not Prospective Validation",
+    "layer": "Layer 2 Developing (Requires N >= 200 Blind Run for Publication)",
+    "omega_unit_grounding": "Endogenous Composite Index \u2014 Not Physically Primitive",
+    "calibration_date": "2026-03-21",
+    "framework_version": "GT v16.0"
+  },
+  "dataset": "Control Case (Stable Org)",
+  "records": [
+    {
+      "cycle_id": "2005-Q1",
+      "D_system": 0.7652358539877215,
+      "h_network": 1.4800079468797522,
+      "U_utility": 103.75225597903228,
+      "E_total": 60.75585946322752
+    },
+    {
+      "cycle_id": "2005-Q2",
+      "D_system": 0.7970282358195607,
+      "h_network": 1.0244824056730817,
+      "U_utility": 93.4891024656884,
+      "E_total": 59.389327110499146
+    },
+    {
+      "cycle_id": "2005-Q3",
+      "D_system": 0.7563920201583643,
+      "h_network": 1.841878703828209,
+      "U_utility": 99.91599421247855,
+      "E_total": 57.164826678111545
+    },
+    {
+      "cycle_id": "2005-Q4",
+      "D_system": 0.707347803621321,
+      "h_network": 2.4396989874314143,
+      "U_utility": 103.88895967714474,
+      "E_total": 51.979897173171054
+    },
+    {
+      "cycle_id": "2006-Q1",
+      "D_system": 0.7533015348780608,
+      "h_network": 2.5636206034840163,
+      "U_utility": 102.33754671126023,
+      "E_total": 58.072791987611595
+    },
+    {
+      "cycle_id": "2006-Q2",
+      "D_system": 0.7070353768558381,
+      "h_network": 2.1843753920412494,
+      "U_utility": 95.205586995855,
+      "E_total": 47.593180030540154
+    },
+    {
+      "cycle_id": "2006-Q3",
+      "D_system": 0.7939225150653636,
+      "h_network": 1.9750370445068735,
+      "U_utility": 99.0756881822737,
+      "E_total": 62.44869027504402
+    },
+    {
+      "cycle_id": "2006-Q4",
+      "D_system": 0.715953522779803,
+      "h_network": 2.6112706693370153,
+      "U_utility": 99.227352589656,
+      "E_total": 50.86289376945613
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "metadata": {
+    "validation_tier": "Retroactive Historical Instantiation",
+    "evidential_status": "Internal Consistency Check \u2014 Not Prospective Validation",
+    "layer": "Layer 2 Developing (Requires N >= 200 Blind Run for Publication)",
+    "omega_unit_grounding": "Endogenous Composite Index \u2014 Not Physically Primitive",
+    "calibration_date": "2026-03-21",
+    "framework_version": "GT v16.0"
+  },
+  "dataset": "Enron Corp (2001)",
+  "records": [
+    {
+      "cycle_id": "2001-Q1",
+      "D_enc": 0.9714045207910312,
+      "D_gap": 0.028595479208968766,
+      "U_utility": 80.0,
+      "E_total": 75.49013944106024
+    },
+    {
+      "cycle_id": "2001-Q2",
+      "D_enc": 0.777123616632825,
+      "D_gap": 0.22287638336717497,
+      "U_utility": 75.0,
+      "E_total": 45.294083664636155
+    },
+    {
+      "cycle_id": "2001-Q3",
+      "D_enc": 0.4857022603955156,
+      "D_gap": 0.5142977396044843,
+      "U_utility": 40.0,
+      "E_total": 9.43626743013253
+    },
+    {
+      "cycle_id": "2001-Q4",
+      "D_enc": 0.19428090415820626,
+      "D_gap": 0.8057190958417937,
+      "U_utility": 0.26,
+      "E_total": 0.009813718127337834
+    }
+  ]
+}
