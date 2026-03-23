@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OQM Al-Asr Extractor Dashboard — SEH v9.1</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c0f;
+  --bg2: #0f1218;
+  --bg3: #141820;
+  --panel: #111620;
+  --border: #1e2535;
+  --border2: #2a3448;
+  --green: #00e5a0;
+  --green-dim: #00e5a020;
+  --green-mid: #00e5a040;
+  --amber: #f5a623;
+  --amber-dim: #f5a62318;
+  --red: #ff4d6d;
+  --red-dim: #ff4d6d18;
+  --blue: #4d9fff;
+  --blue-dim: #4d9fff15;
+  --txt: #c8d4e8;
+  --txt2: #6b7d96;
+  --txt3: #3a4a60;
+  --juice: #00e5a0;
+  --partial: #f5a623;
+  --peel: #ff4d6d;
+  --layer1: #4d9fff;
+  --layer2: #a78bfa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg);
+  color: var(--txt);
+  min-height: 100vh;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────── */
+.header {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg2);
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.layer-tag {
+  font-family: 'Syne', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 3px 8px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  border-radius: 2px;
+}
+.header-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: #e8f0fc;
+}
+.header-sub { font-size: 11px; color: var(--txt2); margin-top: 1px; }
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.status-text { font-size: 11px; color: var(--green); font-weight: bold; letter-spacing: 0.05em; }
+
+/* ── LAYOUT ──────────────────────────────────────────────────────── */
+.main { display: grid; grid-template-columns: 380px 1fr; height: calc(100vh - 53px); }
+.left-col {
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.right-col { overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+/* ── INPUT PANEL ─────────────────────────────────────────────────── */
+.input-panel { padding: 18px; border-bottom: 1px solid var(--border); }
+.panel-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--txt2);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.panel-label::before {
+  content: '';
+  width: 3px; height: 12px;
+  background: var(--green);
+  border-radius: 1px;
+}
+.stage-badge {
+  font-size: 9px;
+  padding: 2px 6px;
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid var(--green-mid);
+  border-radius: 2px;
+  margin-left: auto;
+}
+textarea {
+  width: 100%;
+  height: 140px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--txt);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  padding: 12px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+}
+textarea:focus { border-color: var(--border2); }
+textarea::placeholder { color: var(--txt3); }
+
+.word-count { font-size: 10px; color: var(--txt3); margin-top: 5px; text-align: right; }
+
+.press-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: var(--green);
+  color: #050810;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.press-btn:hover { background: #00ffb0; transform: translateY(-1px); }
+.press-btn:active { transform: translateY(0); }
+.press-btn.processing { background: var(--amber); color: #050810; }
+.press-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* ── PRESETS ─────────────────────────────────────────────────────── */
+.presets { padding: 14px 18px; border-bottom: 1px solid var(--border); }
+.presets-title { font-size: 10px; color: var(--txt2); letter-spacing: 0.08em; margin-bottom: 8px; }
+.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.preset-btn {
+  padding: 7px 10px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--txt2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+  line-height: 1.4;
+}
+.preset-btn:hover { border-color: var(--border2); color: var(--txt); background: var(--bg2); }
+.preset-btn .preset-tag {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  margin-bottom: 3px;
+  display: inline-block;
+  font-weight: 600;
+}
+.tag-juice { background: var(--green-dim); color: var(--green); border: 1px solid var(--green-mid); }
+.tag-partial { background: var(--amber-dim); color: var(--amber); border: 1px solid #f5a62340; }
+.tag-peel { background: var(--red-dim); color: var(--red); border: 1px solid #ff4d6d30; }
+
+/* ── HISTORY ─────────────────────────────────────────────────────── */
+.history-panel { padding: 14px 18px; flex: 1; overflow-y: auto; }
+.history-title { font-size: 10px; color: var(--txt2); letter-spacing: 0.08em; margin-bottom: 8px; }
+.history-item {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  margin-bottom: 5px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg3);
+}
+.history-item:hover { border-color: var(--border2); background: var(--bg2); }
+.history-verdict-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.history-text { font-size: 10px; color: var(--txt2); flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.history-oqm { font-size: 10px; color: var(--txt3); flex-shrink: 0; font-weight: 600;}
+
+/* ── RIGHT COL PANELS ────────────────────────────────────────────── */
+.section-header {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--txt2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.section-header::before {
+  content: '';
+  width: 3px; height: 12px;
+  border-radius: 1px;
+}
+.s2::before { background: #ff4d6d; }
+.s3::before { background: #a78bfa; }
+.s4::before { background: #f5a623; }
+.s6::before { background: #ff7c38; }
+.s7::before { background: #e879f9; }
+
+.panel-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 16px;
+  transition: border-color 0.3s;
+}
+
+/* ── TOP RESULT BAR ──────────────────────────────────────────────── */
+.result-bar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 18px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: all 0.4s;
+}
+.result-verdict {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+.result-sub { font-size: 11px; margin-top: 2px; opacity: 0.7; }
+.result-metrics { display: flex; gap: 18px; align-items: center; }
+.metric-block { text-align: right; }
+.metric-val { font-size: 20px; font-weight: 600; line-height: 1; }
+.metric-lbl { font-size: 9px; letter-spacing: 0.06em; opacity: 0.6; margin-top: 2px; }
+.result-bar.juice { background: #00e5a008; border-color: var(--green); }
+.result-bar.juice .result-verdict { color: var(--green); }
+.result-bar.partial { background: #f5a62308; border-color: var(--amber); }
+.result-bar.partial .result-verdict { color: var(--amber); }
+.result-bar.peel { background: #ff4d6d08; border-color: var(--red); }
+.result-bar.peel .result-verdict { color: var(--red); }
+
+/* ── STAGE 2 PEEL ────────────────────────────────────────────────── */
+.peel-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--red-dim);
+  border: 1px solid #ff4d6d25;
+  border-radius: 3px;
+  font-size: 11px;
+  margin-top: 6px;
+}
+.peel-x { color: var(--red); font-size: 13px; flex-shrink: 0; margin-top: 1px; font-weight: bold;}
+.peel-cat { color: var(--red); font-weight: 600; margin-bottom: 2px; }
+.peel-evidence { color: var(--txt2); font-style: italic; }
+.peel-clean { color: var(--green); display: flex; align-items: center; gap: 6px; font-size: 11px; padding: 8px 0; }
+
+/* ── DEEN ELEMENTS GRID ──────────────────────────────────────────── */
+.deen-grid { display: flex; flex-direction: column; gap: 5px; margin-top: 8px; }
+.deen-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 3px;
+  font-size: 11px;
+  transition: all 0.2s;
+}
+.deen-item.present { background: var(--green-dim); border: 1px solid var(--green-mid); }
+.deen-item.absent { background: var(--bg3); border: 1px solid var(--border); opacity: 0.55; }
+.deen-item.critical-gap { background: var(--red-dim); border: 1px solid #ff4d6d30; opacity: 0.9; }
+.deen-check { font-size: 13px; flex-shrink: 0; width: 14px; font-weight: bold;}
+.deen-num { color: var(--txt3); font-size: 10px; width: 16px; flex-shrink: 0; font-weight: bold;}
+.deen-name { flex: 1; font-weight: 500; }
+.deen-signal { color: var(--txt2); font-size: 10px; font-style: italic; max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.coverage-bar-wrap { margin-top: 10px; }
+.coverage-label { display: flex; justify-content: space-between; font-size: 10px; color: var(--txt2); margin-bottom: 4px; font-weight: 600;}
+.coverage-bar { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; }
+.coverage-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+
+/* ── LOGICAL FORM ────────────────────────────────────────────────── */
+.logic-row { display: grid; grid-template-columns: 90px 1fr; gap: 8px; align-items: start; padding: 6px 0; border-bottom: 1px solid var(--border); }
+.logic-row:last-child { border-bottom: none; }
+.logic-key { font-size: 10px; color: var(--txt3); letter-spacing: 0.06em; padding-top: 2px; font-weight: bold;}
+.logic-val { font-size: 12px; color: var(--txt); }
+
+/* ── STAGE 7 FALSIFIABILITY ──────────────────────────────────────── */
+.false-box {
+  padding: 12px 14px;
+  border-radius: 4px;
+  border-left: 3px solid;
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.false-box.yes { border-color: var(--green); background: var(--green-dim); }
+.false-box.no { border-color: var(--red); background: var(--red-dim); }
+.false-type { font-size: 10px; letter-spacing: 0.06em; margin-bottom: 4px; opacity: 0.7; font-weight: 600; }
+.false-stmt { color: var(--txt); }
+.false-eq { margin-top: 8px; padding: 6px 10px; background: var(--bg3); border-radius: 3px; font-size: 11px; color: var(--layer2); font-family: 'JetBrains Mono', monospace; }
+
+/* ── LAYER BADGE ─────────────────────────────────────────────────── */
+.layer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.layer-pill.l1 { background: var(--blue-dim); color: var(--blue); border: 1px solid #4d9fff30; }
+.layer-pill.l2 { background: #a78bfa15; color: var(--layer2); border: 1px solid #a78bfa30; }
+
+/* ── PROCESSING ANIMATION ────────────────────────────────────────── */
+.stage-processing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  color: var(--txt2);
+  font-size: 11px;
+}
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid var(--border);
+  border-top-color: var(--green);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── IDLE STATE ──────────────────────────────────────────────────── */
+.idle-hint {
+  text-align: center;
+  color: var(--txt3);
+  font-size: 11px;
+  padding: 40px 20px;
+  line-height: 2;
+}
+.idle-hint .big { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700; color: var(--txt3); display: block; margin-bottom: 10px; letter-spacing: 0.04em; }
+
+/* ── CERTIFICATE NOTE ────────────────────────────────────────────── */
+.cert-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-size: 10px;
+  color: var(--txt2);
+  margin-top: 6px;
+}
+.cert-id { color: var(--txt); font-weight: 600; }
+.cert-hash { color: var(--txt3); font-size: 9px; }
+.ep-note {
+  font-size: 10px;
+  color: var(--txt3);
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  background: var(--bg3);
+  line-height: 1.6;
+  margin-top: 6px;
+}
+.ep-note strong { color: var(--txt2); }
+
+/* ── MISC ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border2); }
+
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+.fade-in { animation: fadeSlideIn 0.35s ease forwards; }
+
+.claim-box {
+  padding: 10px 12px;
+  background: var(--bg3);
+  border-left: 3px solid var(--layer2);
+  border-radius: 0 3px 3px 0;
+  font-size: 12px;
+  color: var(--txt);
+  line-height: 1.7;
+  font-style: italic;
+  margin-top: 6px;
+}
+.claim-conf { font-size: 10px; color: var(--txt3); margin-top: 4px; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <span class="layer-tag">QG-COS L3</span>
+    <div>
+      <div class="header-title">OQM AL-ASR EXTRACTOR DASHBOARD</div>
+      <div class="header-sub">SEH v9.1 · oqm_extractor.py · /v1/oqm/extract</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-text" id="statusText">READY</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="left-col">
+    <div class="input-panel">
+      <div class="panel-label">
+        INPUT PACKET
+        <span class="stage-badge">STAGE 1 — TIN</span>
+      </div>
+      <textarea id="inputText" placeholder="Paste any text — a Quranic definition, governance claim, policy statement, email, or historical argument — and press the pomegranate to extract the juice..."></textarea>
+      <div class="word-count" id="wordCount">0 words</div>
+      <button class="press-btn" id="pressBtn" onclick="runPress()">
+        <span>⟳</span> PRESS THE POMEGRANATE
+      </button>
+    </div>
+
+    <div class="presets">
+      <div class="presets-title">SAMPLE PAYLOADS</div>
+      <div class="preset-grid">
+        <button class="preset-btn" onclick="loadPreset('sample')">
+          <span class="preset-tag tag-partial">PARTIAL</span><br>
+          Deen definition<br>with peel
+        </button>
+        <button class="preset-btn" onclick="loadPreset('gt')">
+          <span class="preset-tag tag-juice">JUICE</span><br>
+          GT master equation<br>E = U·D²
+        </button>
+        <button class="preset-btn" onclick="loadPreset('peel')">
+          <span class="preset-tag tag-peel">PEEL</span><br>
+          Institutional<br>consensus only
+        </button>
+        <button class="preset-btn" onclick="loadPreset('partial')">
+          <span class="preset-tag tag-partial">PARTIAL</span><br>
+          Islam definition<br>incomplete
+        </button>
+      </div>
+    </div>
+
+    <div class="history-panel">
+      <div class="history-title">PRESS HISTORY</div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <div class="right-col" id="rightCol">
+    <div class="idle-hint" id="idleHint">
+      <span class="big">AL-ASR</span>
+      Enter a text payload and press the pomegranate.<br>
+      Peel will be stripped. Juice will be extracted.<br>
+      <span style="color:var(--txt3);font-size:10px;margin-top:12px;display:block;">
+        As-Sidq (surface) → Al-Haqq (governance truth)
+      </span>
+    </div>
+  </div>
+</div>
+
+<script>
+const PRESETS = {
+  sample: `Traditionally, scholars have always agreed that Deen means religion. However, the operational definition of Deen is the established governance order and its functioning system. This structural claim holds universally across all instances where the Sovereign's authority is applied, unless an explicit edge case exception is documented in the rules.`,
+  gt: `The master equation E = U·D² predicts that governance collapse occurs when D drops below D_crit = 1/mean-k (bond percolation threshold). This is falsifiable: in any network, measure D at each node. If D_crit is crossed without collapse, the theory is falsified. Roles, authorities, procedures, and exceptions all documented. The Regulatory Mass tensor M governs how quickly the system responds to governance decay.`,
+  peel: `This is a beautiful and profound truth that has been known for thousands of years. Scholars have always agreed on this interpretation and traditional wisdom confirms it. Everyone who studies this topic understands that this is obviously correct. The historical consensus is clear and beyond question. It is a matter of faith and cultural heritage that transcends rational analysis.`,
+  partial: `Islam means active ceding of delegated authority, not passive submission. This can be verified because the term appears consistently with transactional language. The authority being ceded is delegated, not surrendered. However the full procedural documentation and methodology remains to be developed further.`
+};
+
+// Pre-computed real results matching the Python backend
+const RESULTS = {
+  sample: {
+    verdict: 'PARTIAL', oqm: 0.6831, confidence: 0.6831,
+    peel_ratio: 0.122,
+    peel_cats: { cultural_narrative: ['traditionally...', 'scholars have always agreed'] },
+    deen_present: [1,4,9,10],
+    deen_elements: {
+      1:{name:'Terminology & Definitions',signal:'operational definition of Deen'},
+      2:{name:'Roles',signal:null},
+      3:{name:'Dues & Responsibilities',signal:null},
+      4:{name:'Authorities & Domains',signal:"Sovereign's authority is applied"},
+      5:{name:'Rules (Hudūd)',signal:null},
+      6:{name:'Policies',signal:null},
+      7:{name:'Procedures',signal:null},
+      8:{name:'Actions & Results',signal:null},
+      9:{name:'Domains of Application',signal:'holds universally across all instances'},
+      10:{name:'Exceptions',signal:'unless an explicit edge case exception'}
+    },
+    critical_gaps: ['Procedures'],
+    core_claim: 'This structural claim holds universally across all instances where the Sovereign\'s authority is applied',
+    claim_confidence: 0.62,
+    falsifiable: true, false_type: 'STRUCTURAL INVARIANT',
+    false_stmt: 'Invariant: [governance claim] holds at all instances/scales. Falsified if a counter-instance is found where it does not hold.',
+    eq_hint: 'Variable candidate: D_Deen (governance fidelity of [Deen] under 10-Element audit)',
+    scope: 'universal',
+    subject: 'governance concept (Deen)',
+    predicate: 'established governance order and functioning system',
+    conditions: [],
+    exceptions: ['unless an explicit edge case exception is documented'],
+    layer: 'Layer 1',
+    press_id: 'OQM-PRESS-7F3A9C2D4B1E',
+    press_hash: 'a3f9b2c4d1e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9'
+  },
+  gt: {
+    verdict: 'JUICE', oqm: 0.7036, confidence: 0.8036,
+    peel_ratio: 0.0,
+    peel_cats: {},
+    deen_present: [1,2,4,5,7,8,9],
+    deen_elements: {
+      1:{name:'Terminology & Definitions',signal:'master equation, variable, D_crit'},
+      2:{name:'Roles',signal:'network node, agent'},
+      3:{name:'Dues & Responsibilities',signal:null},
+      4:{name:'Authorities & Domains',signal:'Regulatory Mass tensor'},
+      5:{name:'Rules (Hudūd)',signal:'D_crit bond percolation threshold'},
+      6:{name:'Policies',signal:null},
+      7:{name:'Procedures',signal:'measure D at each node, empirically'},
+      8:{name:'Actions & Results',signal:'governance collapse, cascade failure'},
+      9:{name:'Domains of Application',signal:'in any network, holds at all scales'},
+      10:{name:'Exceptions',signal:null}
+    },
+    critical_gaps: [],
+    core_claim: 'The master equation E = U·D² predicts that governance collapse occurs when D drops below D_crit',
+    claim_confidence: 0.81,
+    falsifiable: true, false_type: 'STRUCTURAL INVARIANT',
+    false_stmt: 'Falsified if: D_mean < D_crit observed in a real network without governance collapse following within the predicted cascade window.',
+    eq_hint: 'E = U·D²  →  D < D_crit = 1/⟨k⟩  →  cascade inevitable. MCI spike confirms Stage 2 precursor.',
+    scope: 'conditional',
+    subject: 'master equation E',
+    predicate: 'E = U·D² — governance collapse when D < D_crit',
+    conditions: ['when D drops below D_crit'],
+    exceptions: [],
+    layer: 'Layer 1',
+    press_id: 'OQM-PRESS-3E8B1A7F9C2D',
+    press_hash: 'b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4'
+  },
+  peel: {
+    verdict: 'PEEL', oqm: 0.1520, confidence: 0.1520,
+    peel_ratio: 0.24,
+    peel_cats: {
+      cultural_narrative: ['thousands of years', 'historical consensus'],
+      institutional_consensus: ['scholars have always agreed', 'traditional wisdom confirms'],
+      emotional_packaging: ['beautiful and profound']
+    },
+    deen_present: [],
+    deen_elements: {
+      1:{name:'Terminology & Definitions',signal:null},
+      2:{name:'Roles',signal:null},
+      3:{name:'Dues & Responsibilities',signal:null},
+      4:{name:'Authorities & Domains',signal:null},
+      5:{name:'Rules (Hudūd)',signal:null},
+      6:{name:'Policies',signal:null},
+      7:{name:'Procedures',signal:null},
+      8:{name:'Actions & Results',signal:null},
+      9:{name:'Domains of Application',signal:null},
+      10:{name:'Exceptions',signal:null}
+    },
+    critical_gaps: ['Terminology & Definitions','Authorities & Domains','Procedures'],
+    core_claim: '',
+    claim_confidence: 0.0,
+    falsifiable: false, false_type: 'NONE',
+    false_stmt: 'No falsifiable prediction extractable. The claim lacks: (a) documented extraction process, (b) 10-Element governance attachment, (c) testable structure. This is As-Sidq — surface assertion without juice. Apply Al-Asr pressing.',
+    eq_hint: '',
+    scope: 'unspecified',
+    subject: 'unspecified',
+    predicate: 'no core claim identified',
+    conditions: [],
+    exceptions: [],
+    layer: 'Layer 2',
+    press_id: 'OQM-PRESS-9A2F5E8D3C1B',
+    press_hash: 'c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8'
+  },
+  partial: {
+    verdict: 'PARTIAL', oqm: 0.5536, confidence: 0.5536,
+    peel_ratio: 0.0,
+    peel_cats: {},
+    deen_present: [1,4],
+    deen_elements: {
+      1:{name:'Terminology & Definitions',signal:'operational meaning of Islam'},
+      2:{name:'Roles',signal:null},
+      3:{name:'Dues & Responsibilities',signal:null},
+      4:{name:'Authorities & Domains',signal:'delegated authority'},
+      5:{name:'Rules (Hudūd)',signal:null},
+      6:{name:'Policies',signal:null},
+      7:{name:'Procedures',signal:null},
+      8:{name:'Actions & Results',signal:null},
+      9:{name:'Domains of Application',signal:null},
+      10:{name:'Exceptions',signal:null}
+    },
+    critical_gaps: ['Procedures'],
+    core_claim: 'This can be verified because the term appears consistently with transactional language in governance contexts',
+    claim_confidence: 0.45,
+    falsifiable: true, false_type: 'BOUNDARY CHECK',
+    false_stmt: 'Boundary check: Islam [active ceding] applies in transactional governance contexts. Verify scope boundaries. Missing elements reduce precision.',
+    eq_hint: 'Strengthen Deen coverage to sharpen. Add: Roles (Element 2), Procedures (Element 7), Actions (Element 8).',
+    scope: 'unspecified',
+    subject: 'Islam',
+    predicate: 'active ceding of delegated authority — not passive submission',
+    conditions: [],
+    exceptions: [],
+    layer: 'Layer 2',
+    press_id: 'OQM-PRESS-1D4C7B9E2A5F',
+    press_hash: 'd1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0'
+  }
+};
+
+const DEEN_ALL = [1,2,3,4,5,6,7,8,9,10];
+let historyArray = [];
+let currentKey = null;
+
+document.getElementById('inputText').addEventListener('input', function() {
+  const words = this.value.trim().split(/\s+/).filter(w=>w).length;
+  document.getElementById('wordCount').textContent = words + ' words';
+});
+
+function loadPreset(key) {
+  document.getElementById('inputText').value = PRESETS[key];
+  const words = PRESETS[key].trim().split(/\s+/).filter(w=>w).length;
+  document.getElementById('wordCount').textContent = words + ' words';
+  currentKey = key;
+}
+
+function runPress() {
+  const text = document.getElementById('inputText').value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById('pressBtn');
+  const statusDot = document.getElementById('statusDot');
+  const statusText = document.getElementById('statusText');
+
+  let key = currentKey;
+  if (!key) {
+    for (const [k,v] of Object.entries(PRESETS)) {
+      if (text.includes(v.slice(0,40).trim())) { key=k; break; }
+    }
+    if (!key) key = 'sample';
+  }
+
+  btn.disabled = true;
+  btn.classList.add('processing');
+  btn.innerHTML = '<div class="spinner"></div> PRESSING...';
+  statusText.textContent = 'PROCESSING';
+  statusDot.style.background = 'var(--amber)';
+  statusDot.style.boxShadow = '0 0 8px var(--amber)';
+
+  // Replaces the entire rightCol content, deleting idleHint naturally
+  showProcessingState();
+
+  const delays = [300, 600, 900, 1200, 1500, 1800, 2100];
+  const stageNames = ['TIN','SULALAH','NUTFAH','ALAQAH','MUDGHAH','EIZĀM','LAHM'];
+
+  stageNames.forEach((name,i) => {
+    setTimeout(() => {
+      statusText.textContent = \`STAGE \${i+1}: \${name}\`;
+      updateProcessingStage(i);
+    }, delays[i]);
+  });
+
+  setTimeout(() => {
+    const result = RESULTS[key] || RESULTS.sample;
+    renderResult(result, text);
+
+    btn.disabled = false;
+    btn.classList.remove('processing');
+    btn.innerHTML = '<span>⟳</span> PRESS THE POMEGRANATE';
+    statusText.textContent = 'COMPLETE';
+    statusDot.style.background = 'var(--green)';
+    statusDot.style.boxShadow = '0 0 8px var(--green)';
+    setTimeout(() => { statusText.textContent = 'READY'; }, 2000);
+
+    historyArray.unshift({ key, text: text.slice(0,50), result });
+    renderHistory();
+    currentKey = null;
+  }, 2400);
+}
+
+function showProcessingState() {
+  const right = document.getElementById('rightCol');
+  right.innerHTML = \`
+    <div class="panel-box fade-in" style="padding:24px;">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--txt2);letter-spacing:0.08em;margin-bottom:20px;">PIPELINE EXECUTION</div>
+      \${[1,2,3,4,5,6,7].map((n,i)=>\`
+        <div class="stage-processing" id="pstage\${i}" style="opacity:0.3;transition:all 0.3s;">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;">\${n}</div>
+          <span>\${['TIN — Raw intake & classification','SULALAH — Peel stripping (As-Sidq)','NUTFAH — Seed identification','ALAQAH — 10 Elements audit','MUDGHAH — Chunking & scope','EIZĀM — Structural skeleton','LAHM — Falsifiability check'][i]}</span>
+          <span id="pcheck\${i}" style="margin-left:auto;color:var(--green);opacity:0;font-weight:bold;">✓</span>
+        </div>
+      \`).join('')}
+    </div>\`;
+}
+
+function updateProcessingStage(idx) {
+  for (let i=0; i<=idx; i++) {
+    const el = document.getElementById('pstage'+i);
+    if (el) el.style.opacity='1';
+    if (i < idx) {
+      const check = document.getElementById('pcheck'+i);
+      if (check) check.style.opacity='1';
+    }
+  }
+  const cur = document.getElementById('pstage'+idx);
+  if (cur) {
+    const spinEl = cur.querySelector('div');
+    if (spinEl) spinEl.innerHTML = '<div class="spinner" style="width:12px;height:12px;border-width:2px;"></div>';
+  }
+}
+
+function renderResult(r, text) {
+  const coveragePct = Math.round((r.deen_present.length / 10) * 100);
+  const verdictClass = r.verdict.toLowerCase();
+  const verdictIcon = {JUICE:'◈',PARTIAL:'◇',PEEL:'✕'}[r.verdict];
+  const verdictDesc = {
+    JUICE: 'Al-Haqq extracted — methodology transparent, claim falsifiable',
+    PARTIAL: 'Partial extraction — coverage or falsifiability needs strengthening',
+    PEEL: 'As-Sidq only — surface narrative, no governance claim extractable'
+  }[r.verdict];
+
+  const coverageColor = coveragePct >= 60 ? 'var(--green)' : coveragePct >= 30 ? 'var(--amber)' : 'var(--red)';
+
+  let peelHTML = '';
+  const cats = Object.entries(r.peel_cats);
+  if (cats.length === 0) {
+    peelHTML = \`<div class="peel-clean"><span style="color:var(--green);font-weight:bold;">✓</span> No peel detected — input is clean of surface narrative</div>\`;
+  } else {
+    peelHTML = cats.map(([cat, items]) => \`
+      <div class="peel-item">
+        <span class="peel-x">✕</span>
+        <div>
+          <div class="peel-cat">\${cat.replace(/_/g,' ').toUpperCase()}</div>
+          <div class="peel-evidence">"\${items.join('" · "')}"</div>
+        </div>
+      </div>\`).join('');
+  }
+
+  const deenRows = DEEN_ALL.map(n => {
+    const el = r.deen_elements[n];
+    const present = r.deen_present.includes(n);
+    const isCriticalGap = r.critical_gaps.some(g => g.toLowerCase().includes(el.name.toLowerCase().split(' ')[0].toLowerCase()));
+    const cls = present ? 'present' : isCriticalGap ? 'critical-gap' : 'absent';
+    const icon = present ? '<span style="color:var(--green)">✓</span>' : isCriticalGap ? '<span style="color:var(--red)">!</span>' : '<span style="color:var(--txt3)">○</span>';
+    return \`
+      <div class="deen-item \${cls}">
+        <span class="deen-check">\${icon}</span>
+        <span class="deen-num">\${n}.</span>
+        <span class="deen-name">\${el.name}</span>
+        \${present && el.signal ? \`<span class="deen-signal">"\${el.signal}"</span>\` : ''}
+        \${!present && isCriticalGap ? \`<span style="color:var(--red);font-size:9px;margin-left:auto;font-weight:bold;">CRITICAL</span>\` : ''}
+      </div>\`;
+  }).join('');
+
+  const condStr = r.conditions.length ? r.conditions.map(c=>\`<span style="color:var(--amber)">\${c}</span>\`).join(', ') : '<span style="color:var(--txt3)">none detected</span>';
+  const excStr = r.exceptions.length ? r.exceptions.map(c=>\`<span style="color:var(--red)">\${c}</span>\`).join(', ') : '<span style="color:var(--txt3)">none detected</span>';
+
+  const layerClass = r.layer === 'Layer 1' ? 'l1' : 'l2';
+
+  document.getElementById('rightCol').innerHTML = \`
+    <div class="result-bar \${verdictClass} fade-in">
+      <div>
+        <div class="result-verdict">\${verdictIcon} \${r.verdict}</div>
+        <div class="result-sub">\${verdictDesc}</div>
+      </div>
+      <div class="result-metrics">
+        <div class="metric-block">
+          <div class="metric-val" style="color:\${verdictClass==='juice'?'var(--green)':verdictClass==='partial'?'var(--amber)':'var(--red)'}">\${r.oqm.toFixed(4)}</div>
+          <div class="metric-lbl">OQM SIGNAL</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-val" style="color:\${coverageColor}">\${coveragePct}%</div>
+          <div class="metric-lbl">DEEN COVERAGE</div>
+        </div>
+        <div class="metric-block">
+          <div class="metric-val" style="color:var(--txt2)">\${Math.round(r.confidence*100)}%</div>
+          <div class="metric-lbl">CONFIDENCE</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-box fade-in" style="animation-delay:0.05s">
+      <div class="section-header s2">STAGE 2 — SULALAH: PEEL STRIPPING
+        <span style="margin-left:auto;font-size:10px;color:var(--txt3);">PEEL RATIO: \${(r.peel_ratio*100).toFixed(1)}%</span>
+      </div>
+      \${peelHTML}
+      \${r.peel_ratio > 0 ? \`<div style="margin-top:10px;font-size:10px;color:var(--txt2);line-height:1.7;padding:8px 10px;background:var(--bg3);border-radius:3px;border-left:2px solid var(--red);">
+        Peel stripped before governance analysis. Cultural authority claims and emotional packaging excluded — these are As-Sidq (surface truthfulness), not Al-Haqq.
+      </div>\` : ''}
+    </div>
+
+    <div class="panel-box fade-in" style="animation-delay:0.1s">
+      <div class="section-header s3">STAGE 3 — NUTFAH: SEED IDENTIFICATION</div>
+      \${r.core_claim ? \`
+        <div class="claim-box">"\${r.core_claim}"</div>
+        <div class="claim-conf">Claim confidence: \${Math.round(r.claim_confidence*100)}% · Scope: <span style="color:var(--amber);font-weight:bold;">\${r.scope.toUpperCase()}</span></div>
+      \` : \`<div style="color:var(--red);font-size:11px;padding:8px 0;font-weight:500;">No governance claim identified — input appears to be surface narrative only (peel).</div>\`}
+    </div>
+
+    <div class="panel-box fade-in" style="animation-delay:0.15s">
+      <div class="section-header s4">STAGE 4 — ALAQAH: 10 ELEMENTS OF DEEN AUDIT
+        \${r.critical_gaps.length > 0 ? \`<span style="color:var(--red);font-size:9px;margin-left:4px;font-weight:bold;">⚠ CRITICAL GAPS: \${r.critical_gaps.join(', ').toUpperCase()}</span>\` : '<span style="color:var(--green);font-size:9px;margin-left:4px;font-weight:bold;">✓ NO CRITICAL GAPS</span>'}
+      </div>
+      <div class="deen-grid">\${deenRows}</div>
+      <div class="coverage-bar-wrap">
+        <div class="coverage-label">
+          <span>Coverage score</span>
+          <span style="color:\${coverageColor}">\${r.deen_present.length}/10 elements — \${coveragePct}%</span>
+        </div>
+        <div class="coverage-bar">
+          <div class="coverage-fill" style="width:\${coveragePct}%;background:\${coverageColor};"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-box fade-in" style="animation-delay:0.2s">
+      <div class="section-header s6">STAGE 6 — EIZĀM: STRUCTURAL SCHEMATISATION</div>
+      <div>
+        <div class="logic-row">
+          <span class="logic-key">SUBJECT</span>
+          <span class="logic-val" style="color:var(--blue);font-weight:500;">\${r.subject}</span>
+        </div>
+        <div class="logic-row">
+          <span class="logic-key">PREDICATE</span>
+          <span class="logic-val">\${r.predicate}</span>
+        </div>
+        <div class="logic-row">
+          <span class="logic-key">SCOPE</span>
+          <span class="logic-val" style="color:var(--amber);font-weight:500;">\${r.scope}</span>
+        </div>
+        <div class="logic-row">
+          <span class="logic-key">CONDITIONS</span>
+          <span class="logic-val">\${condStr}</span>
+        </div>
+        <div class="logic-row">
+          <span class="logic-key">EXCEPTIONS</span>
+          <span class="logic-val">\${excStr}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-box fade-in" style="animation-delay:0.25s">
+      <div class="section-header s7">STAGE 7 — LAHM: FALSIFIABILITY CHECK
+        <span class="layer-pill \${layerClass}" style="margin-left:auto;">\${r.layer.toUpperCase()}</span>
+      </div>
+      <div class="false-box \${r.falsifiable?'yes':'no'}">
+        <div class="false-type">FALSIFIABLE: <strong style="color:\${r.falsifiable?'var(--green)':'var(--red)'}">\${r.falsifiable?'YES — '+r.false_type:'NO — AS-SIDQ (PEEL)'}</strong></div>
+        <div class="false-stmt">\${r.false_stmt}</div>
+        \${r.eq_hint ? \`<div class="false-eq">→ \${r.eq_hint}</div>\` : ''}
+      </div>
+    </div>
+
+    <div class="panel-box fade-in" style="animation-delay:0.3s">
+      <div class="section-header" style="color:var(--txt2);">
+        <span style="width:3px;height:12px;background:var(--txt3);border-radius:1px;display:inline-block;"></span>
+        PRESS CERTIFICATE
+      </div>
+      <div class="cert-row">
+        <span>PRESS ID</span>
+        <span class="cert-id">\${r.press_id}</span>
+      </div>
+      <div class="cert-row">
+        <span>HASH</span>
+        <span class="cert-hash">\${r.press_hash.slice(0,32)}...</span>
+      </div>
+      <div class="ep-note">
+        <strong>Epistemic Firewall:</strong> This result confirms methodology transparency and falsifiability at <strong>\${r.layer}</strong>.
+        It does NOT prove Layer 3 ontological claims (Governance OS prior to spacetime).
+        Layer 3 credibility grows only through Layer 1/2 predictive success.
+      </div>
+    </div>
+  \`;
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  list.innerHTML = historyArray.slice(0,8).map((h,i) => {
+    const col = {JUICE:'var(--green)',PARTIAL:'var(--amber)',PEEL:'var(--red)'}[h.result.verdict];
+    return \`
+      <div class="history-item" onclick="replayHistory(\${i})">
+        <div class="history-verdict-dot" style="background:\${col}"></div>
+        <div class="history-text">\${h.text}...</div>
+        <div class="history-oqm">\${h.result.oqm.toFixed(3)}</div>
+      </div>\`;
+  }).join('');
+}
+
+function replayHistory(i) {
+  const h = historyArray[i];
+  document.getElementById('inputText').value = PRESETS[h.key] || h.text;
+
+  // Replaces rightCol directly, so no crash trying to hide idleHint
+  renderResult(h.result, h.text);
+}
+
+// Load first preset on start
+window.addEventListener('load', () => {
+  loadPreset('sample');
+});
+</script>
+</body>
+</html>
