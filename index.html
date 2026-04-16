@@ -448,32 +448,17 @@ async function runAI() {
   document.getElementById('bt').textContent = 'Analysing...';
   document.getElementById('res').innerHTML = `<div class="result"><div class="rcard" style="padding:1rem 1.3rem;font-family:var(--mono);font-size:.7rem;color:var(--gold);display:flex;align-items:center;gap:.6rem"><div style="display:flex;gap:3px"><span style="width:5px;height:5px;border-radius:50%;background:var(--gold);animation:td .8s ease infinite 0s;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--gold);animation:td .8s ease infinite .15s;display:inline-block"></span><span style="width:5px;height:5px;border-radius:50%;background:var(--gold);animation:td .8s ease infinite .3s;display:inline-block"></span></div>Claude is analysing...</div></div><style>@keyframes td{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}</style>`;
   try {
-    const p = PRODS[curProd];
     const r = await fetch('/api/analyse', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({system:p.sys,productType:curProd.toUpperCase(),messages:[{role:'user',content:text}]})
+      body: JSON.stringify({ product: curProd.toUpperCase(), text: text })
     });
-    const data = await r.json();
-    const raw = data.content?.[0]?.text || '{}';
-    let result;
-    try {
-      // Robust JSON extraction: find the first { and the last }
-      const jsonStart = raw.indexOf('{');
-      const jsonEnd = raw.lastIndexOf('}');
-      if (jsonStart !== -1 && jsonEnd !== -1) {
-        const jsonStr = raw.substring(jsonStart, jsonEnd + 1);
-        // Remove common artifacts that break JSON.parse
-        const cleaned = jsonStr.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
-        result = JSON.parse(cleaned);
-      } else {
-        throw new Error('No JSON found');
-      }
-    }
-    catch(e) { result = {score:0.5,verdict:'Audit Complete',analysis:raw,flags:[],certificate:'ERR-00000000'}; }
+    const result = await r.json();
+    if (result.error) throw new Error(result.error);
     renderResult(result);
   } catch(err) {
-    document.getElementById('res').innerHTML = `<div class="result"><div class="rcard" style="padding:1.1rem 1.3rem;font-size:.8rem;color:var(--ink2)"><strong style="color:var(--ink)">API key required.</strong> To use the live AI engine, add your ANTHROPIC_API_KEY environment variable during deployment (see Deploy tab). The keyword-based offline versions of all nine products are in the individual product files.</div></div>`;
+    console.error(err);
+    document.getElementById('res').innerHTML = `<div class="result"><div class="rcard" style="padding:1.1rem 1.3rem;font-size:.8rem;color:var(--ink2)"><strong style="color:var(--ink)">Error: ${err.message}.</strong> Ensure your ANTHROPIC_API_KEY environment variable is set in Vercel.</div></div>`;
   } finally {
     btn.classList.remove('loading'); btn.disabled = false;
     document.getElementById('bt').textContent = 'Run Analysis';
