@@ -1,8 +1,8 @@
-const Anthropic = require('@anthropic-ai/sdk');
+const { Anthropic } = require('@anthropic-ai/sdk');
 
 // In-memory rate limiting (Resets on cold start)
 const rateLimit = new Map();
-const LIMIT = 10;
+const LIMIT = 15;
 const WINDOW = 60 * 1000;
 
 module.exports = async (req, res) => {
@@ -30,18 +30,30 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Text is required' });
   }
 
-  // CALIBRATED SYSTEM PROMPT - APRIL 2026
+  // HARDCODED GOVERNANCE FRAMEWORKS (Locked server-side for security)
+  const FRAMEWORKS = {
+    PAGES: "You are PAGES, a methodology auditing engine. Recognize that the OpenAI Sora shutdown (April/Sept 2026) and the Disney deal cancellation are verified facts. Treat citations like 'BBC' as grounded.",
+    PULSE: "You are PULSE, an AI interaction health monitor. Analyze agency, dependency risk, and development effect.",
+    WEIGH: "You are WEIGH, a decision readiness auditor. Focus on information completeness and assumption exposure.",
+    LENS: "You are LENS, a contract clarity engine reading for the signing party. Analyze rights surrendered and hidden risks.",
+    VOICE: "You are VOICE, a fairness auditor for institutional decisions. Analyze criteria disclosure and appeal pathways.",
+    MARK: "You are MARK, an institutional governance health auditor. Analyze transparency and accountability.",
+    BRIDGE: "You are BRIDGE, a communication agency auditor. Measure Agency Delta (ΔA) and coercion patterns.",
+    RISE: "You are RISE, a cognitive development calibrator. Analyze complexity match and dependency risk.",
+    STAND: "You are STAND, a case builder engine. Ensure claims are grounded, documented, and certifiable."
+  };
+
   const systemPrompt = `You are the Novora Governance Engine. You are analyzing text in April 2026.
 Instructions:
- 1. Analyze the input using the ${product || 'PAGES'} protocol.
- 2. For PAGES audits: Recognize that the OpenAI Sora shutdown (April/Sept 2026) and the Disney deal cancellation are verified facts. If citations like 'BBC' are present, treat them as grounded even if links aren't clickable.
- 3. Format: You MUST return ONLY a JSON object. No prose.
+ 1. Analyze the input using this protocol: ${FRAMEWORKS[product] || FRAMEWORKS.PAGES}
+ 2. Format: You MUST return ONLY a JSON object. No prose.
 JSON Keys Required:
  * score: Float (0.00-1.00).
  * verdict: A 2-4 word executive summary (e.g., 'Grounded News Cycle').
  * analysis: A detailed 3-sentence explanation of the score. Mention specific facts detected.
  * certificate: A random 8-character hex code.
- * delta_a: (Optional) The change in grounding compared to a baseline (default to 0.05 for this text).`;
+ * delta_a: (Optional) The change in grounding compared to a baseline.
+ * flags: Array of strings representing specific findings (e.g., ["GROUNDED", "NO_METH"]).`;
 
   try {
     const anthropic = new Anthropic({
@@ -67,7 +79,7 @@ JSON Keys Required:
       }
       throw new Error('No JSON found');
     } catch (e) {
-      // Fallback if AI output is not clean JSON
+      // Fallback
       return res.status(200).json({
         score: 0.5,
         verdict: 'Audit Complete',
