@@ -452,13 +452,25 @@ async function runAI() {
     const r = await fetch('/api/analyse', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({system:p.sys,messages:[{role:'user',content:text}]})
+      body: JSON.stringify({system:p.sys,productType:curProd.toUpperCase(),messages:[{role:'user',content:text}]})
     });
     const data = await r.json();
     const raw = data.content?.[0]?.text || '{}';
     let result;
-    try { result = JSON.parse(raw.replace(/```json|```/g,'').trim()); }
-    catch(e) { result = {score:0.5,verdict:'Analysis complete',analysis:raw,flags:[],certificate:'ERR-00000000'}; }
+    try {
+      // Robust JSON extraction: find the first { and the last }
+      const jsonStart = raw.indexOf('{');
+      const jsonEnd = raw.lastIndexOf('}');
+      if (jsonStart !== -1 && jsonEnd !== -1) {
+        const jsonStr = raw.substring(jsonStart, jsonEnd + 1);
+        // Remove common artifacts that break JSON.parse
+        const cleaned = jsonStr.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
+        result = JSON.parse(cleaned);
+      } else {
+        throw new Error('No JSON found');
+      }
+    }
+    catch(e) { result = {score:0.5,verdict:'Audit Complete',analysis:raw,flags:[],certificate:'ERR-00000000'}; }
     renderResult(result);
   } catch(err) {
     document.getElementById('res').innerHTML = `<div class="result"><div class="rcard" style="padding:1.1rem 1.3rem;font-size:.8rem;color:var(--ink2)"><strong style="color:var(--ink)">API key required.</strong> To use the live AI engine, add your ANTHROPIC_API_KEY environment variable during deployment (see Deploy tab). The keyword-based offline versions of all nine products are in the individual product files.</div></div>`;
@@ -476,7 +488,7 @@ function scCol(s) {
 }
 
 function renderResult(r) {
-  const sc = typeof r.score === 'number' ? r.score : 0.5;
+  const sc = typeof r.score === 'number' ? r.score : (r.delta_a != null ? (parseFloat(r.delta_a) + 1) / 2 : 0.5);
   const col = scCol(sc);
   const flags = r.flags || [];
   const tagHtml = flags.map(f => {
@@ -486,19 +498,21 @@ function renderResult(r) {
   }).join('');
 
   const detailKeys = [
+    ['analysis', 'Audit Explanation'],
     ['methodology_finding','Methodology'],['falsifiability_finding','Falsifiability'],['grounding_finding','Evidence Grounding'],
-    ['agency_finding','Agency'],['dependency_finding','Dependency'],['critical_assumption','Critical Assumption'],
+    ['agency_finding','Agency Analysis'],['dependency_finding','Dependency Risk'],['critical_assumption','Critical Assumption'],
     ['missing_information','Missing Information'],['reversibility','Reversibility'],['rights_surrendered','Rights Surrendered'],
-    ['hidden_risk','Hidden Risk'],['power_asymmetry','Power Asymmetry'],['criteria_finding','Criteria'],
+    ['hidden_risk','Hidden Risk'],['power_asymmetry','Power Asymmetry'],['criteria_finding','Decision Criteria'],
     ['consistency_finding','Consistency'],['transparency_finding','Transparency'],['accountability_finding','Accountability'],
     ['coercion_finding','Coercion Pattern'],['complexity_finding','Complexity Match'],['zone_assessment','Development Zone'],
     ['strongest_ground','Strongest Ground'],
-    ['next_action','Immediate Next Step'],['appeal_guidance','Appeal Guidance'],['improvement','Suggested Improvement'],
-    ['verification_question','Key Verification Question'],['challenge_question','Your Challenge Question'],
+    ['next_action','Immediate Next Step'],['challenge_question','Your Challenge Question'],['appeal_guidance','Appeal Guidance'],
+    ['improvement','Suggested Improvement'],
+    ['verification_question','Key Verification Question'],
   ];
 
   const details = detailKeys.filter(([k]) => r[k]).map(([k,l]) =>
-    `<div class="detail-row"><div class="dl">${l}</div><div class="dv">${k==='next_action'||k==='challenge_question'||k==='appeal_guidance'?`<strong>${r[k]}</strong>`:r[k]}</div></div>`
+    `<div class="detail-row"><div class="dl">${l}</div><div class="dv">${k==='next_action'||k==='challenge_question'||k==='appeal_guidance'||k==='analysis'?`<strong>${r[k]}</strong>`:r[k]}</div></div>`
   ).join('');
 
   const mainScore = r.delta_a != null ? `ΔA ${r.delta_a>=0?'+':''}${(+r.delta_a).toFixed(2)}` : sc.toFixed(2);
@@ -510,16 +524,17 @@ function renderResult(r) {
           <div class="so-n" style="color:${col.t}">${mainScore}</div>
           <div class="so-l" style="color:${col.t}">${curProd.toUpperCase()}</div>
         </div>
-        <div>
-          <div class="rv">${r.verdict||'Analysis Complete'}</div>
-          <div class="rs">${r.analysis||''}</div>
+        <div style="flex:1">
+          <div class="rv" style="color:var(--ink)">${r.verdict||'Audit Complete'}</div>
+          <div class="rs" style="color:var(--ink2);font-weight:400">${r.analysis ? (r.analysis.length > 120 ? r.analysis.slice(0,120)+'...' : r.analysis) : ''}</div>
         </div>
         <div class="cert">${r.certificate||''}<br>${new Date().toISOString().slice(0,16).replace('T',' ')} UTC</div>
       </div>
       ${flags.length?`<div class="tags">${tagHtml}</div>`:''}
-      ${details?`<div class="rbody">${details}</div>`:''}
+      <div class="rbody">
+        ${details || `<div class="dv">No detailed findings available.</div>`}
+      </div>
     </div></div>`;
-
 }
 
 function go(name) {

@@ -28,11 +28,26 @@ module.exports = async (req, res) => {
     return res.status(429).json({ error: 'Too many requests. Please try again later.' });
   }
 
-  const { system, messages } = req.body;
+  const { system, messages, productType } = req.body;
 
   if (!messages) {
     return res.status(400).json({ error: 'Messages are required' });
   }
+
+  // Refined System Instruction from user prompt
+  const enhancedSystem = `You are the Novora Governance Engine. You must analyze the provided text using the ${productType || 'PAGES'} framework.
+
+  You MUST return a JSON object with these exact keys:
+  1. score: A float (0.00 to 1.00).
+  2. verdict: A short, punchy summary (e.g., "Highly Ambiguous", "Grounded Authority").
+  3. analysis: A detailed, user-friendly explanation (2–4 sentences) of WHY the text received that score. Be specific about missing citations, linguistic red flags, or grounding failures.
+  4. certificate: A unique hex-code for the audit.
+
+  You may also include product-specific metrics if relevant to the ${productType || 'PAGES'} framework (e.g. agency_score, transparency_score, methodology_finding, etc.).
+
+  Constraint: Do not return any text outside of the JSON block.
+
+  Original guidance for context: ${system}`;
 
   try {
     const anthropic = new Anthropic({
@@ -40,9 +55,9 @@ module.exports = async (req, res) => {
     });
 
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514', // Exact model from prompt
+      model: 'claude-sonnet-4-20250514',
       max_tokens: 800,
-      system: system,
+      system: enhancedSystem,
       messages: messages,
     });
 
