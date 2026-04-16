@@ -464,7 +464,7 @@ JSON Keys Required:
     const r = await fetch('/api/analyse', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ product: pType, text: text, system: systemPrompt })
+      body: JSON.stringify({ product: pType, text: text, systemPrompt: systemPrompt })
     });
 
     if (!r.ok) {
@@ -479,22 +479,7 @@ JSON Keys Required:
       throw new Error(errorMsg);
     }
 
-    const data = await r.json();
-    const raw = data.content?.[0]?.text || '{}';
-    let result;
-    try {
-      const jsonStart = raw.indexOf('{');
-      const jsonEnd = raw.lastIndexOf('}');
-      if (jsonStart !== -1 && jsonEnd !== -1) {
-        const jsonStr = raw.substring(jsonStart, jsonEnd + 1);
-        const cleaned = jsonStr.replace(/[\u0000-\u001F\u007F-\u009F]/g, "");
-        result = JSON.parse(cleaned);
-      } else {
-        throw new Error('No JSON found');
-      }
-    } catch(e) {
-      result = {score:0.5,verdict:'Audit Complete',analysis:raw,flags:[],certificate:'ERR-00000000'};
-    }
+    const result = await r.json();
     renderResult(result);
   } catch(err) {
     console.error(err);
