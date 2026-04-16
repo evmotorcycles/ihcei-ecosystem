@@ -31,9 +31,6 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Missing text or system prompt' });
   }
 
-  // Basic rate limiting by IP (simple — upgrade with Redis for production)
-  // For now, Vercel's edge handles most abuse
-
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',

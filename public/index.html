@@ -466,9 +466,20 @@ JSON Keys Required:
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ product: pType, text: text, system: systemPrompt })
     });
-    const data = await r.json();
-    if (data.error) throw new Error(data.error);
 
+    if (!r.ok) {
+      const errorText = await r.text();
+      let errorMsg;
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorMsg = errorJson.message || errorJson.error || `Error ${r.status}`;
+      } catch(e) {
+        errorMsg = errorText.includes('The page could not be found') ? 'API Route Not Found (404)' : `Server Error (${r.status})`;
+      }
+      throw new Error(errorMsg);
+    }
+
+    const data = await r.json();
     const raw = data.content?.[0]?.text || '{}';
     let result;
     try {
