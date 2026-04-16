@@ -28,26 +28,24 @@ module.exports = async (req, res) => {
     return res.status(429).json({ error: 'Too many requests. Please try again later.' });
   }
 
-  const { system, messages, productType } = req.body;
+  const { messages, productType } = req.body;
 
   if (!messages) {
     return res.status(400).json({ error: 'Messages are required' });
   }
 
-  // Refined System Instruction from user prompt
-  const enhancedSystem = `You are the Novora Governance Engine. You must analyze the provided text using the ${productType || 'PAGES'} framework.
-
-  You MUST return a JSON object with these exact keys:
-  1. score: A float (0.00 to 1.00).
-  2. verdict: A short, punchy summary (e.g., "Highly Ambiguous", "Grounded Authority").
-  3. analysis: A detailed, user-friendly explanation (2–4 sentences) of WHY the text received that score. Be specific about missing citations, linguistic red flags, or grounding failures.
-  4. certificate: A unique hex-code for the audit.
-
-  You may also include product-specific metrics if relevant to the ${productType || 'PAGES'} framework (e.g. agency_score, transparency_score, methodology_finding, etc.).
-
-  Constraint: Do not return any text outside of the JSON block.
-
-  Original guidance for context: ${system}`;
+  // Overhauled System Instruction from user prompt
+  const systemPrompt = `You are the Novora Governance Engine. You are analyzing text in April 2026.
+Instructions:
+ 1. Analyze the input using the ${productType || 'PAGES'} protocol.
+ 2. For PAGES audits: Recognize that the OpenAI Sora shutdown (April/Sept 2026) and the Disney deal cancellation are verified facts. If citations like 'BBC' are present, treat them as grounded even if links aren't clickable.
+ 3. Format: You MUST return ONLY a JSON object. No prose.
+JSON Keys Required:
+ * score: Float (0.00-1.00).
+ * verdict: A 2-4 word executive summary (e.g., 'Grounded News Cycle').
+ * analysis: A detailed 3-sentence explanation of the score. Mention specific facts detected.
+ * certificate: A random 8-character hex code.
+ * delta_a: (Optional) The change in grounding compared to a baseline (default to 0.05 for this text).`;
 
   try {
     const anthropic = new Anthropic({
@@ -57,7 +55,7 @@ module.exports = async (req, res) => {
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 800,
-      system: enhancedSystem,
+      system: systemPrompt,
       messages: messages,
     });
 
