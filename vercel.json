@@ -1,5 +1,17 @@
 {
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/analyse.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
   "rewrites": [
-    { "source": "/api/analyse", "destination": "/api/analyse.js" }
+    { "source": "/api/analyse", "destination": "/api/analyse.js" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
