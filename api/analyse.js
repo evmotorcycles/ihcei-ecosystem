@@ -1,57 +1,47 @@
-import { Anthropic } from '@anthropic-ai/sdk';
-
+// api/analyse.js — Novora v4
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
-  }
-
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const apiKey = process.env.ANTHROPIC_API_KEY ? process.env.ANTHROPIC_API_KEY.trim() : null;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return res.status(500).json({
-      error: 'ANTHROPIC_API_KEY is missing.',
-      message: 'Please add the secret key in Vercel Settings -> Environment Variables and Redeploy.'
+      error: 'API key not configured',
+      message: 'Please add ANTHROPIC_API_KEY in Vercel Settings → Environment Variables and redeploy.'
     });
   }
 
-  const { product, text, systemPrompt } = req.body;
-  if (!text || !systemPrompt) {
-    return res.status(400).json({ error: 'Missing text or system prompt' });
-  }
+  const { text, system } = req.body;
+  if (!text || !system) return res.status(400).json({ error: 'Missing text or system prompt' });
 
   try {
-    const anthropic = new Anthropic({ apiKey });
-
-    const msg = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20240620",
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: [{ role: "user", content: text }],
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1200,
+        system: system,
+        messages: [{ role: 'user', content: text }]
+      })
     });
 
-    const raw = msg.content[0].text;
-    try {
-      const jsonStart = raw.indexOf('{');
-      const jsonEnd = raw.lastIndexOf('}');
-      if (jsonStart !== -1 && jsonEnd !== -1) {
-        const jsonStr = raw.substring(jsonStart, jsonEnd + 1);
-        const parsed = JSON.parse(jsonStr);
-        return res.status(200).json(parsed);
-      }
-      return res.status(200).json({ error: 'No JSON found', analysis: raw });
-    } catch (e) {
-      return res.status(200).json({ error: 'Parse error', analysis: raw });
+    if (!response.ok) {
+      const errText = await response.text();
+      return res.status(response.status).json({ error: 'API error', detail: errText });
     }
+
+    const data = await response.json();
+    return res.status(200).json(data);
+
   } catch (error) {
-    console.error('Anthropic API Error:', error);
-    return res.status(error.status || 500).json({ error: error.message });
+    return res.status(500).json({ error: 'Server error', detail: error.message });
   }
 }

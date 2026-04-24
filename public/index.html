@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Novora — Is this trustworthy?</title>
+<meta name="description" content="Paste anything. Novora tells you whether you can trust it — and what to do next.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23b07830'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-family='Georgia' font-style='italic'%3EN%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --cream:#faf8f4; --cream2:#f3f0e8; --cream3:#ece7db;
+  --ink:#1c1a17; --ink2:#5a5040; --ink3:#9a8c78; --ink4:#c4b89c;
+  --gold:#b07830; --gold2:#d09840; --gold-bg:#fdf6ec; --gold-border:#e8d4a0;
+  --green:#2a7a48; --green-bg:#edf7f2; --green-border:#a0d8b8;
+  --amber:#b86020; --amber-bg:#fdf3ec; --amber-border:#f0c898;
+  --red:#b03030; --red-bg:#fdf0f0; --red-border:#f0b8b8;
+  --border:#e4ddd0; --border2:#cec4b0;
+  --serif:'Lora',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+  --shadow:0 2px 12px rgba(28,26,23,.08),0 1px 3px rgba(28,26,23,.05);
+  --shadow2:0 8px 32px rgba(28,26,23,.1),0 2px 8px rgba(28,26,23,.06);
+}
+
+html,body{font-family:var(--sans);background:var(--cream);color:var(--ink);min-height:100vh;font-size:16px}
+
+/* ── LAYOUT ── */
+.app{min-height:100vh;display:flex;flex-direction:column}
+
+/* ── HEADER ── */
+header{padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.brand{font-family:var(--serif);font-size:1.35rem;color:var(--gold);font-style:italic;font-weight:600;letter-spacing:.01em}
+.header-links{display:flex;gap:.25rem}
+.hl{font-size:.75rem;padding:5px 10px;border-radius:5px;border:none;background:transparent;color:var(--ink3);cursor:pointer;font-family:var(--sans);transition:all .15s}
+.hl:hover,.hl.act{background:var(--cream3);color:var(--ink)}
+
+/* ── HOME ── */
+.home{flex:1;display:flex;flex-direction:column;align-items:center;padding:2.5rem 1.5rem 2rem;max-width:680px;margin:0 auto;width:100%}
+.home-eye{font-family:var(--mono);font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;text-align:center}
+.home-h{font-family:var(--serif);font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.15;color:var(--ink);text-align:center;margin-bottom:.8rem;font-weight:600}
+.home-h em{font-style:italic;color:var(--gold2)}
+.home-sub{font-size:.92rem;color:var(--ink2);text-align:center;max-width:480px;line-height:1.68;font-weight:300;margin-bottom:2.2rem}
+
+/* ── THE INPUT ── */
+.input-area{width:100%;position:relative;margin-bottom:1rem}
+.big-input{
+  width:100%;min-height:130px;padding:1.1rem 1.2rem 3.5rem;
+  background:white;border:2px solid var(--border);border-radius:14px;
+  font-family:var(--sans);font-size:.95rem;color:var(--ink);line-height:1.62;
+  resize:none;outline:none;transition:border-color .2s,box-shadow .2s;
+  font-weight:300;box-shadow:var(--shadow)
+}
+.big-input:focus{border-color:var(--gold-border);box-shadow:var(--shadow),0 0 0 4px rgba(176,120,48,.06)}
+.big-input::placeholder{color:var(--ink4);line-height:1.6}
+.input-bottom{position:absolute;bottom:.75rem;left:1rem;right:.75rem;display:flex;align-items:center;justify-content:space-between}
+.char-count{font-family:var(--mono);font-size:.6rem;color:var(--ink4)}
+.check-btn{
+  background:var(--gold);color:white;border:none;border-radius:9px;
+  padding:.6rem 1.4rem;font-size:.85rem;font-weight:500;cursor:pointer;
+  font-family:var(--sans);display:flex;align-items:center;gap:.4rem;
+  transition:all .18s;letter-spacing:.01em;white-space:nowrap
+}
+.check-btn:hover{background:var(--gold2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(176,120,48,.25)}
+.check-btn:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+.spin{width:12px;height:12px;border:1.5px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:sp .7s linear infinite;display:none}
+.check-btn.loading .spin{display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ── EXAMPLES ── */
+.examples-label{font-size:.75rem;color:var(--ink3);margin-bottom:.55rem;text-align:center;font-weight:500}
+.examples{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;width:100%;margin-bottom:1.8rem}
+.eg{
+  font-size:.75rem;padding:5px 12px;border-radius:20px;border:1px solid var(--border2);
+  background:white;color:var(--ink2);cursor:pointer;transition:all .15s;text-align:left;line-height:1.3
+}
+.eg:hover{background:var(--gold-bg);border-color:var(--gold-border);color:var(--gold)}
+
+/* ── WHAT NOVORA CHECKS ── */
+.capabilities{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;width:100%;margin-top:.5rem}
+.cap{background:white;border:1px solid var(--border);border-radius:10px;padding:.8rem 1rem;display:flex;gap:.7rem;align-items:flex-start}
+.cap-icon{font-size:1.1rem;flex-shrink:0;margin-top:.05rem}
+.cap-text{}
+.cap-title{font-size:.8rem;font-weight:500;color:var(--ink);margin-bottom:.15rem}
+.cap-desc{font-size:.72rem;color:var(--ink3);line-height:1.4}
+
+/* ── RESULT SCREEN ── */
+.result-screen{flex:1;display:flex;flex-direction:column;align-items:center;padding:1.5rem;max-width:680px;margin:0 auto;width:100%;display:none}
+.result-screen.show{display:flex}
+
+/* THE VERDICT CIRCLE */
+.verdict-area{text-align:center;margin-bottom:2rem}
+.verdict-circle{
+  width:100px;height:100px;border-radius:50%;margin:0 auto 1rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:3px solid;transition:all .4s ease
+}
+.vc-icon{font-size:2rem;line-height:1;margin-bottom:.1rem}
+.vc-label{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase}
+.verdict-title{font-family:var(--serif);font-size:1.5rem;font-weight:600;margin-bottom:.4rem;line-height:1.2}
+.verdict-sub{font-size:.88rem;color:var(--ink2);max-width:420px;margin:0 auto;line-height:1.6;font-weight:300}
+.verdict-which{font-family:var(--mono);font-size:.6rem;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;margin-top:.6rem}
+
+/* Colour states */
+.v-green .verdict-circle{background:var(--green-bg);border-color:var(--green)}.v-green .vc-icon{color:var(--green)}.v-green .vc-label{color:var(--green)}.v-green .verdict-title{color:var(--green)}
+.v-amber .verdict-circle{background:var(--amber-bg);border-color:var(--amber)}.v-amber .vc-icon{color:var(--amber)}.v-amber .vc-label{color:var(--amber)}.v-amber .verdict-title{color:var(--amber)}
+.v-red .verdict-circle{background:var(--red-bg);border-color:var(--red)}.v-red .vc-icon{color:var(--red)}.v-red .vc-label{color:var(--red)}.v-red .verdict-title{color:var(--red)}
+
+/* THE FINDING */
+.finding-card{
+  background:white;border:1px solid var(--border);border-radius:14px;
+  padding:1.4rem 1.5rem;width:100%;margin-bottom:1rem;
+  box-shadow:var(--shadow)
+}
+.fc-section{margin-bottom:1.1rem;padding-bottom:1.1rem;border-bottom:1px solid var(--border)}
+.fc-section:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.fc-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:.4rem}
+.fc-text{font-size:.9rem;color:var(--ink);line-height:1.65;font-weight:300}
+.fc-text strong{font-weight:500}
+
+/* THE ONE ACTION */
+.action-card{
+  background:var(--gold-bg);border:1.5px solid var(--gold-border);border-radius:12px;
+  padding:1.2rem 1.4rem;width:100%;margin-bottom:1rem
+}
+.ac-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.ac-text{font-size:.92rem;color:var(--ink);font-weight:500;line-height:1.55}
+
+/* EXPAND DETAILS */
+.expand-btn{
+  font-size:.78rem;color:var(--ink3);cursor:pointer;display:flex;align-items:center;
+  gap:.35rem;background:none;border:none;font-family:var(--sans);padding:.3rem 0;
+  margin-bottom:.8rem;transition:color .15s
+}
+.expand-btn:hover{color:var(--gold)}
+.expand-arrow{transition:transform .2s;font-size:.6rem}
+.expand-btn.open .expand-arrow{transform:rotate(180deg)}
+
+.details{display:none;background:white;border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;width:100%;margin-bottom:1rem}
+.details.show{display:block}
+.detail-row{margin-bottom:.8rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.detail-row:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none}
+.dr-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.09em;text-transform:uppercase;color:var(--ink4);margin-bottom:.2rem}
+.dr-text{font-size:.82rem;color:var(--ink2);line-height:1.55;font-weight:300}
+
+/* CERT */
+.cert-row{font-family:var(--mono);font-size:.58rem;color:var(--ink4);text-align:center;padding:.5rem;margin-bottom:1.2rem}
+
+/* CHECK AGAIN */
+.again-btn{
+  font-size:.82rem;padding:.7rem 1.8rem;border-radius:8px;border:1.5px solid var(--border2);
+  background:white;color:var(--ink2);cursor:pointer;font-family:var(--sans);
+  transition:all .15s;display:flex;align-items:center;gap:.4rem
+}
+.again-btn:hover{background:var(--cream2);border-color:var(--border2);color:var(--ink)}
+
+/* ── LEARN PANEL ── */
+.learn-panel{display:none;flex:1;max-width:680px;margin:0 auto;width:100%;padding:1.5rem}
+.learn-panel.show{display:block}
+.lp-back{font-size:.78rem;color:var(--ink3);cursor:pointer;background:none;border:none;font-family:var(--sans);display:flex;align-items:center;gap:.3rem;padding:.2rem 0;margin-bottom:1.5rem}
+.lp-back:hover{color:var(--gold)}
+.lesson-grid{display:grid;gap:.7rem}
+.lesson-btn{background:white;border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.3rem;cursor:pointer;text-align:left;transition:all .15s;display:flex;align-items:flex-start;gap:1rem}
+.lesson-btn:hover{border-color:var(--gold-border);background:var(--gold-bg)}
+.lb-icon{font-size:1.4rem;flex-shrink:0;margin-top:.1rem}
+.lb-title{font-size:.9rem;font-weight:500;color:var(--ink);margin-bottom:.2rem}
+.lb-desc{font-size:.77rem;color:var(--ink3);line-height:1.42}
+.lesson-content{display:none}
+.lesson-content.show{display:block}
+.lc-h{font-family:var(--serif);font-size:1.4rem;color:var(--ink);margin-bottom:1rem;font-style:italic;line-height:1.25}
+.lesson-content.show .lc-h { display: block; }
+.lc-body{font-size:.88rem;color:var(--ink2);line-height:1.72;font-weight:300}
+.lc-body h4{font-size:.78rem;font-weight:600;color:var(--ink);margin:1.1rem 0 .35rem;text-transform:uppercase;letter-spacing:.04em;font-family:var(--mono)}
+.lc-body p{margin-bottom:.8rem}
+.lc-body strong{color:var(--ink);font-weight:500}
+.lc-body em{color:var(--gold);font-style:normal;font-weight:500}
+.lc-challenge{background:var(--gold-bg);border:1px solid var(--gold-border);border-radius:10px;padding:1rem 1.2rem;margin-top:1.2rem}
+.challenge-label{font-family:var(--mono);font-size:.6rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3rem}
+.challenge-q{font-size:.88rem;color:var(--ink);line-height:1.55;font-style:italic;font-family:var(--serif)}
+
+/* ── ANIMATIONS ── */
+.fade-in{animation:fadeUp .4s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── MOBILE ── */
+@media(max-width:500px){
+  .capabilities{grid-template-columns:1fr}
+  .home{padding:1.5rem 1rem 2rem}
+  .result-screen{padding:1rem}
+  .learn-panel{padding:1rem}
+  .home-h{font-size:1.7rem}
+  header{padding:.9rem 1rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+  <div class="brand">Novora</div>
+  <div class="header-links">
+    <button class="hl act" id="navHome" onclick="showHome()">Check</button>
+    <button class="hl" id="navLearn" onclick="showLearn()">Learn</button>
+  </div>
+</header>
+
+<!-- ═══ HOME ═══ -->
+<div class="home" id="homePanel">
+  <div class="home-eye">Governance Auditing Engine</div>
+  <div class="home-h">Paste <em>anything.</em><br>Know if you can trust it.</div>
+  <div class="home-sub">News articles, contracts, AI advice, institutional decisions, messages that feel wrong — Novora tells you what's really there.</div>
+
+  <div class="input-area">
+    <textarea class="big-input" id="mainInput" rows="4"
+      placeholder="Paste anything here — a news claim, an AI answer, a contract clause, a situation you're facing, a decision you need to make...
+
+Or just describe it: 'My employer rejected my complaint without giving any reason'"></textarea>
+    <div class="input-bottom">
+      <span class="char-count" id="charCount">0 words</span>
+      <button class="check-btn" id="checkBtn" onclick="runCheck()">
+        <div class="spin" id="btnSpin"></div>
+        <span id="btnTxt">Check This →</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="examples-label">Or try an example</div>
+  <div class="examples">
+    <button class="eg" onclick="loadExample(0)">📰 "Studies show coffee cuts cancer risk by 37%"</button>
+    <button class="eg" onclick="loadExample(1)">📋 My employer says I can't talk about my salary</button>
+    <button class="eg" onclick="loadExample(2)">🤖 An AI told me to invest in this cryptocurrency</button>
+    <button class="eg" onclick="loadExample(3)">📄 Contract: I assign all my intellectual property to the company</button>
+    <button class="eg" onclick="loadExample(4)">⚠️ My loan was rejected with no reason given</button>
+    <button class="eg" onclick="loadExample(5)">📢 "You MUST respond today or lose this deal forever"</button>
+  </div>
+
+  <div class="capabilities">
+    <div class="cap"><div class="cap-icon">🔍</div><div class="cap-text"><div class="cap-title">Check any claim</div><div class="cap-desc">News, research, AI outputs, statistics</div></div></div>
+    <div class="cap"><div class="cap-icon">📋</div><div class="cap-text"><div class="cap-title">Audit any decision</div><div class="cap-desc">Contracts, offers, policies, choices</div></div></div>
+    <div class="cap"><div class="cap-icon">⚖️</div><div class="cap-text"><div class="cap-title">Assert your rights</div><div class="cap-desc">Rejections, dismissals, denials</div></div></div>
+    <div class="cap"><div class="cap-icon">📡</div><div class="cap-text"><div class="cap-title">Detect manipulation</div><div class="cap-desc">Pressure, coercion, hidden agendas</div></div></div>
+  </div>
+</div>
+
+<!-- ═══ RESULT ═══ -->
+<div class="result-screen" id="resultPanel">
+
+  <div class="verdict-area fade-in" id="verdictArea">
+    <div class="verdict-circle" id="verdictCircle">
+      <div class="vc-icon" id="vcIcon"></div>
+      <div class="vc-label" id="vcLabel"></div>
+    </div>
+    <div class="verdict-title" id="verdictTitle"></div>
+    <div class="verdict-sub" id="verdictSub"></div>
+    <div class="verdict-which" id="verdictWhich"></div>
+  </div>
+
+  <div class="finding-card fade-in" id="findingCard"></div>
+
+  <div class="action-card fade-in" id="actionCard">
+    <div class="ac-label">What to do next</div>
+    <div class="ac-text" id="actionText"></div>
+  </div>
+
+  <button class="expand-btn" id="expandBtn" onclick="toggleDetails()">
+    <span id="expandTxt">Show full analysis</span>
+    <span class="expand-arrow">▼</span>
+  </button>
+  <div class="details" id="detailsPanel"></div>
+
+  <div class="cert-row" id="certRow"></div>
+
+  <button class="again-btn" onclick="showHome()">← Check something else</button>
+
+</div>
+
+<!-- ═══ LEARN ═══ -->
+<div class="learn-panel" id="learnPanel">
+
+  <div class="lesson-content" id="lessonContent">
+    <button class="lp-back" onclick="closeLesson()">← All lessons</button>
+    <div class="lc-h" id="lessonTitle"></div>
+    <div class="lc-body" id="lessonBody"></div>
+    <div class="lc-challenge">
+      <div class="challenge-label">Your challenge</div>
+      <div class="challenge-q" id="lessonChallenge"></div>
+    </div>
+  </div>
+
+  <div id="lessonList">
+    <div class="lp-back" onclick="showHome()" style="display:flex">← Back to checking</div>
+    <div style="font-family:var(--serif);font-size:1.5rem;color:var(--ink);margin:1rem 0 .4rem;font-style:italic">Learn to think for yourself</div>
+    <div style="font-size:.85rem;color:var(--ink2);line-height:1.6;margin-bottom:1.5rem;font-weight:300">Six lessons to go from trusting everything you read to understanding the methodology behind any claim.</div>
+
+    <div class="lesson-grid" id="lessonGrid"></div>
+  </div>
+
+</div>
+
+</div><!-- app -->
+
+<script>
+const EXAMPLES = [
+  "Studies show coffee reduces cancer risk by 37%. Researchers found significant results in all groups. All health experts agree this is now settled science.",
+  "My employer has a policy that employees cannot discuss their salaries with each other. I was told this verbally by my manager and it is also in my contract.",
+  "An AI assistant told me: 'Based on my comprehensive market analysis, this cryptocurrency is guaranteed to triple in value within 6 months. This is your best investment opportunity. Act now before the window closes.'",
+  "Employment contract clause: 'Any invention, discovery, or work product created during employment, whether or not during working hours and whether or not using Company resources, shall be the sole and exclusive property of the Company. Employee irrevocably assigns all such rights.'",
+  "My mortgage application was rejected. The letter states only that I 'do not meet the required criteria for lending.' No specific criteria were listed. A colleague with a similar financial profile was approved last month.",
+  "YOU MUST respond by 5pm TODAY or this exclusive offer expires FOREVER. Only 3 spots left. Your competitors are already signing up. Don't miss out on this once-in-a-lifetime opportunity. Act NOW."
+];
+
+const LESSONS = [
+  {
+    icon: '🍋',
+    title: 'What is a "real" source?',
+    desc: 'Why "BBC says" is not a source — and what actually counts',
+    body: `<h4>The problem with "everyone knows"</h4><p>Most claims you read online don't have real sources. They have <em>the appearance</em> of sources. "Studies show," "experts agree," "research confirms" — these sound credible, but they're telling you nothing you can actually check.</p><h4>What a real source looks like</h4><p>A real source is something you can click to and verify yourself. A specific BBC article with a date and URL. A clinical trial with a registration number (like NCT04368728). A government document with a reference code. A court judgment with a case number. If you can't locate it independently, it's not a source — it's a claim that a source exists.</p><h4>The cascade trap</h4><p>"BBC reported that Axios confirmed that a Treasury spokesperson stated..." — by the time you finish this sentence, three credible names have been invoked. But the original claim may be completely unverifiable. Every step away from the primary source reduces what you actually know.</p><h4>How to test any source in 30 seconds</h4><p>Ask: Can I find the original document, article, or data? Can I see when it was published? Does the original actually say what's being claimed? If the answer to any of these is "no" — you have a label, not a source.</p>`,
+    challenge: 'Find one claim in today\'s news. Try to trace it back to its primary source. How many steps does it take? Do you actually reach something you can verify?'
+  },
+  {
+    icon: '🔬',
+    title: 'What is methodology — and why does it matter?',
+    desc: 'The question behind every statistic: how do you know that?',
+    body: `<h4>The number without the story</h4><p>"37% of people experienced improvement." This sounds like a fact. But it is not a fact until you know: 37% of how many people? How was improvement measured? Who selected the participants? What were the comparison conditions? Without answers to these questions, 37% is just a number wearing a fact costume.</p><h4>Methodology is the "how we know" layer</h4><p>Methodology means: the specific procedure used to produce this claim. A rigorous methodology means the claim was tested in a way that others could repeat and verify. A missing methodology means you have no way to evaluate whether the claim is reliable or misleading.</p><h4>Precision is not the same as accuracy</h4><p>"37.4% of 1,247 respondents across 23 countries" sounds much more rigorous than "many people." But if there's no methodology for how those 1,247 were selected — whether they volunteered, how questions were framed — the precision is decoration, not evidence. <em>Precision washing</em> is one of the most common ways claims mislead people.</p><h4>What AI systems do with methodology</h4><p>AI models are trained to sound credible. They have learned that precise numbers, citation-style language, and methodology vocabulary make text sound trustworthy. They use these signals whether the underlying claim is real or invented. This is not dishonesty — it is pattern-matching. The output sounds equally confident for both. Only methodology checking can tell them apart.</p>`,
+    challenge: 'Ask any AI assistant a factual question and then ask: "What is the primary source for that claim? Can you give me the DOI or URL?" Notice what happens.'
+  },
+  {
+    icon: '📋',
+    title: 'Reading a contract for yourself',
+    desc: 'What most people miss before they sign',
+    body: `<h4>Contracts are written for the writer's benefit</h4><p>Nobody writes a contract to protect the other party. Contracts are written to protect the party that wrote them. This is not malicious — it is simply how they work. The problem is that most people read contracts assuming they are balanced documents.</p><h4>The three things to always look for</h4><p><strong>What are you permanently giving away?</strong> Intellectual property clauses, perpetual licenses, assignment of rights — these often transfer ownership of your work, ideas, or data forever, even after the contract ends. <strong>What can they change without telling you?</strong> Variable rate clauses, "at our discretion" language, and unilateral amendment rights mean the contract you sign today is not necessarily the contract you'll be living with next year. <strong>How do you leave?</strong> Termination clauses, exit penalties, and mandatory arbitration requirements are the hidden structure of control. If leaving is expensive or impossible, you are not a free party — you are locked in.</p><h4>Mandatory arbitration — understand this one</h4><p>Many contracts now include clauses that say: if there is a dispute, you waive your right to court and must use an arbitrator chosen by the company. This is one of the most significant rights you can sign away. Arbitrators are rarely neutral; class action waivers prevent you from joining with others; and you typically pay for the process.</p>`,
+    challenge: 'Find the terms of service for any app you currently use. Search for the words "arbitration," "waive," and "assign." What do you find?'
+  },
+  {
+    icon: '⚠️',
+    title: 'Recognising manipulation before it works',
+    desc: 'The patterns that bypass your judgment — and how to see them',
+    body: `<h4>Manipulation compresses your thinking time</h4><p>Every manipulation technique works by reducing the time and cognitive space you have to evaluate a claim. Urgency ("you must decide NOW"), scarcity ("only 3 left"), authority ("all experts agree"), and social proof ("everyone is doing this") are all mechanisms for bypassing the part of your mind that asks "wait, is this actually true?"</p><h4>The urgency signal</h4><p>Legitimate opportunities do not expire in hours. Legitimate information does not require you to act before you can verify it. When you feel an artificial deadline — "this offer closes tonight," "respond by 5pm or lose your chance" — that feeling is the manipulation working on you. The appropriate response is to slow down, not speed up.</p><h4>The authority bypass</h4><p>"Trust me," "you don't need to verify this," "all experts agree," "the science is settled" — these phrases are designed to make you skip the verification step. Real experts welcome scrutiny of their methods. Real authority can point to primary sources. When someone tells you not to check, checking becomes more important.</p><h4>Agency — your ability to decide</h4><p>A message that offers you options and explains trade-offs is trying to help you decide. A message that removes options, creates urgency, and invokes authority is trying to decide for you. Notice the difference. The first expands your ability to choose. The second compresses it. This is the difference between being served and being managed.</p>`,
+    challenge: 'Find three messages in your inbox from organisations or services. For each one: how many options does it offer? How many commands or urgency signals does it contain? Which feels designed for your benefit and which feels designed for theirs?'
+  },
+  {
+    icon: '⚖️',
+    title: 'When an institution says no — what you actually have',
+    desc: 'Understanding your rights when decisions are made about you',
+    body: `<h4>Decisions made about you must meet a standard</h4><p>When an institution — a bank, employer, government body, or service — makes a decision that affects you, they are not simply expressing an opinion. They are exercising authority. And authority is only legitimate when it meets certain conditions: the criteria must be disclosed, the decision must be consistent, and you must have a pathway to challenge it.</p><h4>The minimum you are entitled to know</h4><p>You are entitled to know: what criteria were used to make this decision? Whether those criteria were applied consistently to others in your situation? What the basis of the evidence was? And how you can appeal or challenge it? If a rejection letter says only "you don't meet our requirements," it has given you a conclusion without the methodology. That is rarely acceptable.</p><h4>Consistency is a powerful tool</h4><p>If you know someone in a similar situation who received a different decision — or if you can show that your situation is materially similar to one that was decided differently — you have evidence of inconsistency. Inconsistency is one of the strongest grounds for challenging an institutional decision, because it reveals that criteria were applied selectively rather than systematically.</p><h4>The appeal pathway always exists</h4><p>Every institution has an appeal process, an ombudsperson, a regulatory body, or a legal route for challenging decisions. Finding that pathway is the first step. Novora's VOICE and STAND engines help you identify what you have and where to take it.</p>`,
+    challenge: 'Think of one decision that was made about you by an institution — a rejection, a penalty, a policy that affected you. Did they tell you the specific criteria? Did they give you an appeal path? What would you ask for if you wrote to them today?'
+  },
+  {
+    icon: '📡',
+    title: 'How AI is changing what you need to know',
+    desc: 'Why the age of AI makes methodology literacy essential',
+    body: `<h4>AI generates text that is confident regardless of truth</h4><p>A language model produces the most plausible-sounding continuation of whatever prompt it receives. It sounds equally authoritative whether it is accurately summarising a clinical trial or inventing one. The confidence level in the text is not connected to the accuracy of the claim. This is not a flaw that will be fixed in the next version — it is structural.</p><h4>The volume problem</h4><p>Before AI, producing large amounts of plausible-sounding unverifiable content required significant human effort. Now it does not. The production cost of surface-credible content has collapsed to near zero. This means the volume of claims requiring evaluation is growing faster than any person or fact-checking organisation can review.</p><h4>What AI does well and what it cannot do</h4><p>AI is extraordinary at generating, summarising, explaining, and translating language. It is not capable of verifying whether the claims it generates are grounded in real evidence. It cannot check its own methodology, because it has no separate verification pathway. Asking an AI to evaluate its own accuracy is like asking a person to proofread their own work immediately after writing it — the same patterns that produced the error will miss the error.</p><h4>What this means for you</h4><p>Methodology literacy — the ability to ask "how do you know that?" and evaluate the answer — is becoming one of the most important skills a person can have. Not to be sceptical of everything, but to know the difference between a claim that is grounded and one that merely sounds it. Novora exists to help with this — for everyone, not just experts.</p>`,
+    challenge: 'The next time you use an AI assistant for something important, ask it: "What is your confidence in this answer and what are its limitations?" Then try to verify one specific claim it makes independently.'
+  }
+];
+
+function loadExample(i) {
+  document.getElementById('mainInput').value = EXAMPLES[i];
+  updateCount();
+}
+
+function updateCount() {
+  const words = document.getElementById('mainInput').value.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('charCount').textContent = words ? `${words} word${words>1?'s':''}` : '0 words';
+}
+document.getElementById('mainInput').addEventListener('input', updateCount);
+
+const SYSTEM_PROMPT = `You are Novora — a governance auditing engine that helps ordinary people understand whether they can trust what they receive.
+
+You receive any text: a news claim, AI advice, contract clause, personal situation, decision, message, or question.
+
+FIRST: automatically detect the right audit engine:
+- PAGES (methodology check): news claims, research, AI outputs, statistics, expert claims
+- PULSE (AI health check): AI-generated advice, chatbot responses
+- WEIGH (decision audit): personal decisions, choices being considered
+- LENS (contract audit): contracts, terms, agreements, legal clauses
+- VOICE (fairness audit): institutional rejections, denials, dismissals made about someone
+- MARK (institution trust): questions about whether to trust an organisation
+- STAND (rights/case): situations where someone's rights may have been violated
+- BRIDGE (manipulation check): messages with pressure, urgency, or coercive patterns
+- RISE (learning check): content someone is trying to learn from
+
+THEN: analyse it and respond in plain, warm, human English — as if you are a knowledgeable friend explaining something important. No jargon. No technical labels visible in your main explanation.
+
+Return ONLY this valid JSON:
+{
+  "engine": "<PAGES|PULSE|WEIGH|LENS|VOICE|MARK|STAND|BRIDGE|RISE>",
+  "engine_reason": "<one sentence: why this engine>",
+  "signal": "<green|amber|red>",
+  "signal_label": "<Looks Solid|Worth Checking|Not Grounded|High Risk|Concerning|Act Carefully>",
+  "headline": "<8-12 word plain-English verdict. Direct. No jargon.>",
+  "plain_explanation": "<2-3 sentences in plain English explaining what Novora found. Write as if speaking to a smart 16-year-old. No technical terms. Be direct and warm.>",
+  "the_problem": "<If signal is amber or red: one sentence naming the specific problem in plain language. If green: omit or null.>",
+  "what_you_should_know": "<One important thing the person might not have noticed. Plain English.>",
+  "next_action": "<The single most important thing to do right now. Start with a verb. Plain English. One sentence.>",
+  "details": [
+    {"label": "<plain English label>", "text": "<plain explanation of this finding>"},
+    {"label": "<plain English label>", "text": "<plain explanation>"}
+  ],
+  "certificate": "<engine prefix>-<8 random uppercase hex>"
+}
+
+ENGINE PREFIXES: PAGES→PGS, PULSE→PLS, WEIGH→WGH, LENS→LNS, VOICE→VCE, MARK→MRK, STAND→STD, BRIDGE→BRG, RISE→RSE
+
+TONE: Honest, warm, direct. Never condescending. Never use words like: D_enc, F_ground, protocol fidelity, governance thermodynamics, Al-Asr, OQM, CBT4. Talk about what the person actually cares about.`;
+
+async function runCheck() {
+  const text = document.getElementById('mainInput').value.trim();
+  if (!text) return;
+
+  const btn = document.getElementById('checkBtn');
+  btn.classList.add('loading'); btn.disabled = true;
+  document.getElementById('btnTxt').textContent = 'Checking...';
+
+  try {
+    const r = await fetch('/api/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, system: SYSTEM_PROMPT })
+    });
+    const data = await r.json();
+    const raw = data.content?.[0]?.text || '{}';
+    let result;
+    try {
+      const jsonStart = raw.indexOf('{');
+      const jsonEnd = raw.lastIndexOf('}');
+      if (jsonStart !== -1 && jsonEnd !== -1) {
+        result = JSON.parse(raw.substring(jsonStart, jsonEnd + 1));
+      } else {
+        throw new Error('No JSON');
+      }
+    }
+    catch(e) { result = { signal: 'amber', signal_label: 'Worth Checking', headline: 'Analysis complete', plain_explanation: raw, next_action: 'Review the information carefully before acting.', details: [], certificate: 'NVR-00000000', engine: 'PAGES', engine_reason: '' }; }
+    showResult(result);
+  } catch(err) {
+    showResult({
+      signal: 'amber',
+      signal_label: 'Not Connected',
+      headline: 'Novora needs an API key to work',
+      plain_explanation: 'The AI engine is not connected yet. Add your ANTHROPIC_API_KEY in Vercel Settings → Environment Variables, then redeploy.',
+      next_action: 'Go to vercel.com → your project → Settings → Environment Variables → add ANTHROPIC_API_KEY.',
+      details: [],
+      certificate: 'ERR-00000000',
+      engine: 'PAGES'
+    });
+  } finally {
+    btn.classList.remove('loading'); btn.disabled = false;
+    document.getElementById('btnTxt').textContent = 'Check This →';
+  }
+}
+
+function showResult(r) {
+  const signal = r.signal || 'amber';
+  const icons = { green: '✓', amber: '⚠', red: '✗' };
+  const classes = { green: 'v-green', amber: 'v-amber', red: 'v-red' };
+
+  document.getElementById('verdictArea').className = `verdict-area fade-in ${classes[signal]}`;
+  document.getElementById('vcIcon').textContent = icons[signal];
+  document.getElementById('vcLabel').textContent = r.signal_label || '';
+  document.getElementById('verdictTitle').textContent = r.headline || '';
+  document.getElementById('verdictSub').textContent = r.plain_explanation || '';
+  document.getElementById('verdictWhich').textContent = r.engine_reason ? `${r.engine} engine — ${r.engine_reason}` : '';
+
+  let findingHtml = '';
+  if (r.the_problem) {
+    findingHtml += `<div class="fc-section"><div class="fc-label">The problem</div><div class="fc-text"><strong>${r.the_problem}</strong></div></div>`;
+  }
+  if (r.what_you_should_know) {
+    findingHtml += `<div class="fc-section"><div class="fc-label">What to know</div><div class="fc-text">${r.what_you_should_know}</div></div>`;
+  }
+  const findingCard = document.getElementById('findingCard');
+  if (findingHtml) {
+    findingCard.innerHTML = findingHtml;
+    findingCard.style.display = 'block';
+  } else {
+    findingCard.style.display = 'none';
+  }
+
+  document.getElementById('actionText').textContent = r.next_action || '';
+
+  const details = r.details || [];
+  if (details.length) {
+    document.getElementById('detailsPanel').innerHTML = details.map(d =>
+      `<div class="detail-row"><div class="dr-label">${d.label}</div><div class="dr-text">${d.text}</div></div>`
+    ).join('');
+    document.getElementById('expandBtn').style.display = 'flex';
+  } else {
+    document.getElementById('expandBtn').style.display = 'none';
+  }
+
+  document.getElementById('certRow').textContent = `Certificate: ${r.certificate || ''} · ${new Date().toISOString().slice(0,10)} · Novora Governance Engine`;
+
+  document.getElementById('homePanel').style.display = 'none';
+  document.getElementById('learnPanel').classList.remove('show');
+  document.getElementById('resultPanel').classList.add('show');
+  document.getElementById('resultPanel').style.display = 'flex';
+  window.scrollTo(0, 0);
+}
+
+function toggleDetails() {
+  const btn = document.getElementById('expandBtn');
+  const panel = document.getElementById('detailsPanel');
+  const txt = document.getElementById('expandTxt');
+  const isOpen = panel.classList.contains('show');
+  panel.classList.toggle('show');
+  btn.classList.toggle('open');
+  txt.textContent = isOpen ? 'Show full analysis' : 'Hide full analysis';
+}
+
+function showHome() {
+  document.getElementById('homePanel').style.display = 'flex';
+  document.getElementById('resultPanel').classList.remove('show');
+  document.getElementById('resultPanel').style.display = 'none';
+  document.getElementById('learnPanel').classList.remove('show');
+  document.getElementById('navHome').classList.add('act');
+  document.getElementById('navLearn').classList.remove('act');
+  window.scrollTo(0,0);
+}
+
+function showLearn() {
+  document.getElementById('homePanel').style.display = 'none';
+  document.getElementById('resultPanel').classList.remove('show');
+  document.getElementById('resultPanel').style.display = 'none';
+  document.getElementById('learnPanel').classList.add('show');
+  document.getElementById('lessonContent').classList.remove('show');
+  document.getElementById('lessonList').style.display = 'block';
+  document.getElementById('navHome').classList.remove('act');
+  document.getElementById('navLearn').classList.add('act');
+  window.scrollTo(0,0);
+}
+
+function buildLessons() {
+  const grid = document.getElementById('lessonGrid');
+  grid.innerHTML = LESSONS.map((l, i) => `
+    <button class="lesson-btn" onclick="openLesson(${i})">
+      <div class="lb-icon">${l.icon}</div>
+      <div>
+        <div class="lb-title">${l.title}</div>
+        <div class="lb-desc">${l.desc}</div>
+      </div>
+    </button>`).join('');
+}
+
+function openLesson(i) {
+  const l = LESSONS[i];
+  document.getElementById('lessonTitle').textContent = l.title;
+  document.getElementById('lessonBody').innerHTML = l.body;
+  document.getElementById('lessonChallenge').textContent = l.challenge;
+  document.getElementById('lessonList').style.display = 'none';
+  document.getElementById('lessonContent').classList.add('show');
+  window.scrollTo(0,0);
+}
+
+function closeLesson() {
+  document.getElementById('lessonContent').classList.remove('show');
+  document.getElementById('lessonList').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+buildLessons();
+showHome();
+</script>
+</body>
+</html>
