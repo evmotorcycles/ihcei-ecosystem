@@ -1,0 +1,47 @@
+name: GovPhys Quadratic Pre-Registered Test
+
+# Runs the cohort-level falsifiable test in CI, where a token + the 5,000/hr
+# authenticated rate limit make the ~1,000-repo fetch feasible (it is NOT
+# completable on the 60/hr unauthenticated limit).
+#
+# Setup:
+#   1. Commit govphys_quadratic_prereg_test.py and PREREGISTRATION.md FIRST,
+#      and record the spec SHA-256 the script prints (locks the design).
+#   2. (Recommended) add a repo secret GOVPHYS_PAT = a personal access token
+#      with public_repo scope, for the cross-repo search volume. The default
+#      github.token works but is more rate-limited for search.
+#   3. Trigger manually (Actions tab -> Run workflow) or wait for the monthly run.
+#   4. Download the artifact (CSV + summary JSON) and hand it back for verification.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 1 * *'   # 06:00 UTC on the 1st of each month
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests numpy scipy scikit-learn statsmodels
+
+      - name: Run pre-registered test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GOVPHYS_PAT || github.token }}
+        run: python govphys_quadratic_prereg_test.py
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: govphys-quadratic-results
+          path: |
+            govphys_quadratic_results.csv
+            govphys_quadratic_summary.json
