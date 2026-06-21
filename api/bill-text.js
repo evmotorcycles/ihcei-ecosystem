@@ -7,7 +7,7 @@
 //
 // Env var: Congresskey  (Congress.gov / api.data.gov key, set in Vercel project settings)
 
-const MAX_BATCH = 30;
+const MAX_BATCH = 60;
 const CONCURRENCY = 8;
 
 async function fetchJSON(url) {
@@ -26,6 +26,24 @@ async function fetchText(url) {
   });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   return res.text();
+}
+
+// LOCKED citation regex (same rule used in the repeal-classification pipeline,
+// decided before any of these bills were examined): matches "NN U.S.C. NNNN"
+// / "NN U.S.C. § NNNN" style citations.
+const CITE_RE = /(\d{1,2})\s*U\.S\.C\.\s*§?\s*(\d{2,5}[A-Za-z]?)/g;
+
+function extractCitations(text) {
+  const out = new Set();
+  let m;
+  CITE_RE.lastIndex = 0;
+  while ((m = CITE_RE.exec(text)) !== null) {
+    out.add(`${m[1]}|${m[2]}`);
+  }
+  return Array.from(out).map(s => {
+    const [title, section] = s.split("|");
+    return [parseInt(title, 10), section];
+  });
 }
 
 async function getBillFullText(congress, billType, billNumber, apiKey) {
@@ -107,20 +125,25 @@ export default async function handler(req, res) {
     return { id, congress, billType: billType.toLowerCase(), billNumber: rest.join("-") };
   });
 
+  const includeText = req.query.fullText === "1";
+
   const results = await mapWithConcurrency(parsed, CONCURRENCY, async (item) => {
     if (item.error) return { id: item.id, error: item.error };
     try {
       const r = await getBillFullText(item.congress, item.billType, item.billNumber, apiKey);
-      return {
+      const citations = r.text ? extractCitations(r.text) : [];
+      const out = {
         id: item.id,
         congress: item.congress,
         billType: item.billType,
         billNumber: item.billNumber,
-        text: r.text,
         textLength: r.text ? r.text.length : 0,
+        citations,
         note: r.note,
         versionDate: r.versionDate || null,
       };
+      if (includeText) out.text = r.text;
+      return out;
     } catch (e) {
       return { id: item.id, congress: item.congress, billType: item.billType, billNumber: item.billNumber, error: String(e.message || e) };
     }
