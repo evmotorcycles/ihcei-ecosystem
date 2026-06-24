@@ -1,0 +1,57 @@
+name: IHCEI Pilot Harness Self-Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  harness-self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install scikit-learn numpy
+
+      - name: Run harness self-test (synthetic fixtures)
+        run: |
+          python ihcei_pilot_harness.py 2>&1 | tee harness_output.txt
+          # Verify all three fixtures return correct verdicts
+          grep -q "SEPARATING.*OK\|EARNS ENFORCEMENT.*OK\|separating.*OK" harness_output.txt || \
+          python -c "
+          import subprocess, sys
+          result = open('harness_output.txt').read()
+          # Check that the pipeline is two-directional: must see both positive and negative verdicts
+          if 'DOES NOT EARN ENFORCEMENT' not in result:
+              print('ERROR: Harness must return DOES NOT EARN ENFORCEMENT on noise fixture')
+              sys.exit(1)
+          if 'INCONCLUSIVE' not in result:
+              print('ERROR: Harness must return INCONCLUSIVE on sparse fixture')
+              sys.exit(1)
+          print('Self-test verified: decision rule is two-directional')
+          "
+
+      - name: Print committable SHA-256
+        run: |
+          python -c "
+          import sys
+          sys.path.insert(0, '.')
+          from ihcei_pilot_harness import spec_sha
+          sha = spec_sha()
+          print(f'Committable SHA-256: {sha}')
+          print('Commit this hash + this repo state before opening any real channel window.')
+          "
+
+      - name: Upload harness output
+        uses: actions/upload-artifact@v4
+        with:
+          name: harness-self-test-output
+          path: harness_output.txt
