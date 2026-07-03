@@ -16,8 +16,9 @@ Spec modifications locked in v3.1:
 4. Pre-registered power floor: N >= 500, failures >= 50.
 """
 
-import os, sys, time, json, re, hashlib, argparse
+import os, sys, time, json, re, hashlib
 import numpy as np
+import pandas as pd
 import statsmodels.api as sm
 import requests
 
@@ -66,31 +67,38 @@ def analyze_cohort(y, X):
             return None, "INCONCLUSIVE", str(e)
         raise
 
-def run(token, repo, start_page, limit_pages=50):
-    print("=" * 68)
-    print("Governance OS D_gap Sensor v3.1 | Human-AI Engineering Cohorts")
-    print(f"Spec SHA-256: {spec_hash()}")
-    print("=" * 68, flush=True)
+def run():
+    # Read environment variables
+    owner = os.environ.get("TARGET_OWNER", "kubernetes")
+    repo = os.environ.get("TARGET_REPO", "kubernetes")
+    max_pages = int(os.environ.get("MAX_PAGES", "50"))
+    token = os.environ.get("GOVPHYS_PAT")
 
-    print(f"Target: {repo} (Start Page: {start_page})")
+    # Redirect logging to stderr
+    sys.stderr.write("=" * 68 + "\n")
+    sys.stderr.write("Governance OS D_gap Sensor v3.1 | Human-AI Engineering Cohorts\n")
+    sys.stderr.write(f"Spec SHA-256: {spec_hash()}\n")
+    sys.stderr.write("=" * 68 + "\n")
+
+    sys.stderr.write(f"Target: {owner}/{repo} (Max Pages: {max_pages})\n")
 
     headers = {"Accept": "application/vnd.github.v3+json"}
     if token:
         headers["Authorization"] = f"token {token}"
 
-    base_url = f"https://api.github.com/repos/{repo}/pulls"
+    base_url = f"https://api.github.com/repos/{owner}/{repo}/pulls"
 
     params = {
-        "state": "all",
+        "state": "closed",  # Note: The provided workflow description mentions "closed PRs"
         "per_page": 100,
-        "page": start_page
+        "page": 1
     }
 
     all_prs = []
     fetch_truncation = False
 
     try:
-        for _ in range(limit_pages):
+        for _ in range(max_pages):
             res = requests.get(base_url, headers=headers, params=params)
             res.raise_for_status()
 
@@ -107,23 +115,21 @@ def run(token, repo, start_page, limit_pages=50):
             time.sleep(1) # simple rate limit backoff
 
     except Exception as e:
-        print(f"Fetch truncated due to error: {e}")
+        sys.stderr.write(f"Fetch truncated due to error: {e}\n")
         fetch_truncation = True
 
-    # Parse PRs and calculate D_gap and Outcomes
     outcomes = []
     d_gaps = []
 
     human_d_gaps = []
     bot_d_gaps = []
 
+    pr_data = []
+
     for pr in all_prs:
         user = pr.get("user", {})
         is_bot, is_dependabot, is_llm_agent = process_github_user(user)
 
-        # Simplified D_gap calculation (Length of stripped body as a proxy for encoding fidelity)
-        # Note: The true D_gap definition in Governance OS relies on embedding distance, but for this
-        # structural CI test we use a stable proxy that tests the pipeline requirements.
         body = pr.get("body", "")
         stripped_body = strip_html(body)
         d_gap = len(stripped_body)
@@ -133,12 +139,19 @@ def run(token, repo, start_page, limit_pages=50):
         elif is_llm_agent:
             bot_d_gaps.append(d_gap)
 
-        # Outcome E: Merged (1) vs Closed/Rejected (0)
         is_merged = 1 if pr.get("merged_at") else 0
         outcomes.append(is_merged)
-
-        # We'll use the raw D_gap for now, then scale
         d_gaps.append((d_gap, is_bot, is_llm_agent))
+
+        pr_data.append({
+            "id": pr.get("id"),
+            "author": user.get("login", ""),
+            "is_bot": is_bot,
+            "is_dependabot": is_dependabot,
+            "is_llm_agent": is_llm_agent,
+            "d_gap_raw": d_gap,
+            "outcome": is_merged
+        })
 
     # Perform within-cohort scaling
     scaled_d_gaps = [0.0] * len(d_gaps)
@@ -151,17 +164,28 @@ def run(token, repo, start_page, limit_pages=50):
 
     for i, idx in enumerate(h_idx):
         scaled_d_gaps[idx] = scaled_human[i]
+        pr_data[idx]["d_gap_scaled"] = scaled_human[i]
 
     for i, idx in enumerate(b_idx):
         scaled_d_gaps[idx] = scaled_bot[i]
+        pr_data[idx]["d_gap_scaled"] = scaled_bot[i]
 
-    # Model evaluation
+    # the rest (dependabot) get 0.0 scaling for safety
+    for i in range(len(d_gaps)):
+        if "d_gap_scaled" not in pr_data[i]:
+            pr_data[i]["d_gap_scaled"] = 0.0
+
+    df = pd.DataFrame(pr_data)
+    df.to_csv("dgap_stratified_results.csv", index=False)
+
     y = np.array(outcomes)
     X = np.array(scaled_d_gaps)
 
     res, status, reason = analyze_cohort(y, X)
 
     verdict = status
+    p_val = 1.0
+    coef = 0.0
     if status == "POWER_MET":
         p_val = float(res.pvalues[1]) if len(res.pvalues) > 1 else 1.0
         coef = float(res.params[1]) if len(res.params) > 1 else 0.0
@@ -171,11 +195,10 @@ def run(token, repo, start_page, limit_pages=50):
         else:
             verdict = "NULL_RESULT"
 
-    # Make values json serializable
     summary = {
         "spec_sha256": spec_hash(),
-        "repo": repo,
-        "start_page": start_page,
+        "repo": f"{owner}/{repo}",
+        "max_pages": max_pages,
         "n_total": int(len(all_prs)),
         "n_fail": int(len(y) - sum(y)),
         "verdict": verdict,
@@ -183,17 +206,8 @@ def run(token, repo, start_page, limit_pages=50):
         "fetch_truncation": fetch_truncation
     }
 
-    out_file = "dgap_sensor_results.json"
-    with open(out_file, "w") as f:
-        json.dump(summary, f, indent=2)
-
-    print(f"\nResults saved to {out_file}")
+    # Print JSON strictly to stdout
+    print(json.dumps(summary, indent=2))
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--repo", default="kubernetes/kubernetes")
-    parser.add_argument("--start-page", type=int, default=1)
-    args = parser.parse_args()
-
-    token = os.environ.get("GITHUB_TOKEN")
-    run(token, args.repo, args.start_page)
+    run()

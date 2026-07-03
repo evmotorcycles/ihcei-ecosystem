@@ -1,0 +1,52 @@
+name: NERE D_gap Sensor (High-Powered)
+
+# Trigger manually: Actions tab -> Run workflow. Choose target repo + pages.
+# Secret required (recommended): GOVPHYS_PAT with public_repo scope.
+# Falls back to the default github.token (lower search/API headroom).
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_owner:
+        description: 'Repository owner'
+        required: true
+        default: 'kubernetes'
+      target_repo:
+        description: 'Repository name'
+        required: true
+        default: 'kubernetes'
+      max_pages:
+        description: 'Pages of 100 closed PRs to fetch'
+        required: true
+        default: '50'
+
+jobs:
+  run-sensor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests pandas numpy scikit-learn statsmodels
+
+      - name: Run D_gap sensor
+        env:
+          GOVPHYS_PAT: ${{ secrets.GOVPHYS_PAT || github.token }}
+          TARGET_OWNER: ${{ inputs.target_owner }}
+          TARGET_REPO: ${{ inputs.target_repo }}
+          MAX_PAGES: ${{ inputs.max_pages }}
+        run: python dgap_actions_sensor_v3.py | tee dgap_verdict.json
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dgap-sensor-results
+          path: |
+            dgap_stratified_results.csv
+            dgap_verdict.json
