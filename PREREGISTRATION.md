@@ -87,3 +87,19 @@ A verdict on the quadratic requires `N_fail ≥ 100` **and** `VIF < 5`.
 
 The Third Law (τ_v → failure) is reported regardless and is **logically separate**
 from the quadratic claim; a significant τ_v result neither requires nor rescues it.
+## Pre-Registration Addendum: D_gap Validation on Human-AI Engineering Cohorts (v3.1)
+
+**Status:** Locked specification. This section extends the Protocol Dynamics framework to evaluate communication channel degradation (D_gap) in human-AI engineering cohorts.
+
+**Mathematical Anchor / Spec SHA-256:** `7a74ea544c3e40e4ce81fe1490273e07e9f74458a8d73de465c9bec9a8e17a46`
+
+**Cohort Strategy:**
+To prevent the "forking paths" trap, the cohorts are strictly delineated:
+*   **Discovery Cohort:** `microsoft/vscode` (Pages 1-39). Used for the initial exploratory finding (p = 0.074 on human-only data).
+*   **Confirmatory Cohort:** `kubernetes/kubernetes` (default) OR unseen data from the discovery cohort (e.g., `microsoft/vscode` pages 51+).
+
+**Methodological Commitments (v3.1):**
+1.  **Regex Sanitization:** HTML comments in PR metadata are strictly stripped via `re.sub(r'<!--.*?-->', '', text, flags=re.DOTALL)`.
+2.  **API Ground-Truth Bot Classification:** Bots are identified at fetch time via the GitHub API ground truth: `(user.type == 'Bot') OR (login == 'Copilot')`. The script applies separate quarantine flags for `dependabot` and `llm_agent` to prevent blending.
+3.  **Within-Cohort Scaling:** MinMax scaling is applied *within* the cohort to prevent outlier dependency updates (e.g., dependabot) from artificially compressing human D_gap variance.
+4.  **Power Floor:** A valid run requires `N >= 500` and `failures >= 50`. Runs failing this threshold will formally report an `UNDERPOWERED` verdict rather than an inconclusive null.
