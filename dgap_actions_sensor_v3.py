@@ -1,199 +1,211 @@
+#!/usr/bin/env python3
 """
-Governance OS | Protocol Dynamics Sensor v3.1
-Target: D_{gap} Validation on Human-AI Engineering Cohorts
+NERE D_gap Sensor — Actions Workflow (v3.1, Human-Primary, Stratified)
+======================================================================
+>>> THIS DOCSTRING IS THE PRE-REGISTRATION. Commit the SHA-256 printed at
+>>> startup BEFORE triggering the fetch. Do not edit after.
 
-PRE-REGISTRATION LOGIC:
-This script operationalizes the Governance OS Epistemological check for
-communication channel degradation (D_gap) via GitHub PR metadata.
+SAMPLE STATUS: microsoft/vscode (pages 1-39, fetched 2026-07-04) is the
+DISCOVERY sample; its human-only result (coef +2.12, p = 0.074) was observed
+exploratorily and is NOT confirmatory. This spec is registered for
+CONFIRMATION on data unseen at registration time: a different repository
+(default kubernetes/kubernetes) or vscode pages >= 51.
 
-Discovery Cohort: microsoft/vscode (Pages 1-39). Used for initial finding (p=0.074).
-Confirmatory Cohort: kubernetes/kubernetes (or unseen data, e.g., vscode pages 51+).
+UNIT OF ANALYSIS: one closed pull request with non-empty body text.
 
-Spec modifications locked in v3.1:
-1. Stripper strips HTML comments: re.sub(r'<!--.*?-->', '', text, flags=re.DOTALL)
-2. Ground-truth bot definition: user.type == 'Bot' OR login == 'Copilot', with separate dependabot/llm_agent flags.
-3. Explicit within-cohort scaling (MinMax) to protect human variance.
-4. Pre-registered power floor: N >= 500, failures >= 50.
+OUTCOME E: E=0 if not merged, OR 'revert' in any label, OR 'revert' in the
+first 50 chars of the pressed body; else E=1.
+
+AUTHOR STRATIFICATION (locked, from API ground truth):
+    is_bot       = (user.type == 'Bot') OR (user.login == 'Copilot')
+    is_dependabot = 'dependabot' in user.login (lowercased)
+    is_llm_agent  = login == 'Copilot' or login contains 'copilot'
+
+PRIMARY ANALYSIS (pre-registered): human cohort only (is_bot == False).
+    Text: pressed via press_template_noise (strip HTML comments <!-- -->,
+    markdown checklist lines - / * [ ]/[x], Testing/Verification headers).
+    D_enc/D_dec = locked regex counts, MinMax-scaled WITHIN the human cohort.
+    D_gap = D_enc - D_dec. Channel gate: VIF < 5.0 else INCONCLUSIVE.
+    Logit( E==0 ~ const + D_gap ).
+    VALIDATED iff p < 0.05 AND coef > 0. Minimum cohort: N >= 500 with
+    >= 50 failure events, else UNDERPOWERED (reported, not interpreted).
+
+SECONDARY (descriptive/exploratory, reported regardless of outcome):
+    (a) bot cohort regression, scaled within-cohort;
+    (b) dependabot-only and llm-agent-only descriptives;
+    (c) unpressed-text robustness re-run of the primary.
+No other specifications will be run on this fetch.
 """
-
-import os, sys, time, json, re, hashlib, argparse
+import hashlib, json, re, sys, time, os
+import requests
+import pandas as pd
 import numpy as np
 import statsmodels.api as sm
-import requests
+from sklearn.preprocessing import MinMaxScaler
 
-SPEC_HASH = "7a74ea544c3e40e4ce81fe1490273e07e9f74458a8d73de465c9bec9a8e17a46"
+SPEC_HASH = hashlib.sha256(__doc__.encode()).hexdigest()
+print(f"SPEC SHA-256: {SPEC_HASH}", file=sys.stderr)
 
-def spec_hash():
-    return SPEC_HASH
+GITHUB_TOKEN = os.environ.get("GOVPHYS_PAT") or os.environ.get("GITHUB_TOKEN")
+OWNER = os.environ.get("TARGET_OWNER", "kubernetes")
+REPO = os.environ.get("TARGET_REPO", "kubernetes")
+MAX_PAGES = int(os.environ.get("MAX_PAGES", 50))
+START_PAGE = int(os.environ.get("START_PAGE", 1))  # use 51 for vscode holdout
 
-def strip_html(text):
-    if not text:
+if not GITHUB_TOKEN:
+    print("ERROR: GOVPHYS_PAT / GITHUB_TOKEN not set.", file=sys.stderr)
+    sys.exit(1)
+
+HEADERS = {"Authorization": f"token {GITHUB_TOKEN}",
+           "Accept": "application/vnd.github.v3+json"}
+
+enc_patterns = [r'architecture', r'dependency', r'specification', r'refactor',
+                r'memory', r'race condition', r'throughput', r'latency',
+                r'pointer', r'algorithm']
+dec_patterns = [r'unit test', r'e2e', r'coverage', r'rollback',
+                r'ci/cd', r'assert', r'integration', r'mock', r'fixture']
+
+def press_template_noise(text):
+    if not isinstance(text, str):
         return ""
-    return re.sub(r'<!--.*?-->', '', text, flags=re.DOTALL)
+    text = re.sub(r'<!--.*?-->', '', text, flags=re.DOTALL)          # HTML comments
+    text = re.sub(r'(?m)^\s*[-*]\s*\[[ xX]\]\s*.*$', '', text)       # checklists
+    text = re.sub(r'(?im)^#+\s*(testing|how (was|is) this tested\??|verification|test plan)\s*$',
+                  '', text)                                           # template headers
+    return text
 
-def min_max_scale_within_cohort(values):
-    if not values: return []
-    v_min, v_max = min(values), max(values)
-    if v_min == v_max: return [0.0] * len(values)
-    return [(v - v_min) / (v_max - v_min) for v in values]
+def score_text(text, patterns):
+    if not text:
+        return 0
+    return sum(len(re.findall(p, text, re.IGNORECASE)) for p in patterns)
 
-def process_github_user(user):
-    if not user:
-        return False, False, False
+def compute_vif(d_enc, d_dec):
+    if np.std(d_enc) == 0 or np.std(d_dec) == 0:
+        return float('inf')
+    r = np.corrcoef(d_enc, d_dec)[0, 1]
+    if r**2 >= 1.0:
+        return float('inf')
+    return 1.0 / (1.0 - r**2)
 
-    login = user.get("login", "")
-    user_type = user.get("type", "")
-
-    is_bot = (user_type == 'Bot') or ('Copilot' in login)
-    is_dependabot = 'dependabot' in login.lower()
-    is_llm_agent = is_bot and not is_dependabot
-
-    return is_bot, is_dependabot, is_llm_agent
-
-def analyze_cohort(y, X):
-    if len(y) < 500 or sum(y) < 50:
-        return None, "UNDERPOWERED", None
+def run_cohort(df_sub, text_col):
+    """Scale WITHIN cohort, gate, regress. Returns result dict."""
+    n, n_fail = len(df_sub), int((df_sub['outcome'] == 0).sum())
+    res = {"n": n, "failures_E0": n_fail}
+    if n < 500 or n_fail < 50:
+        res["status"] = "UNDERPOWERED (pre-registered minimum not met)"
+    if n < 10 or df_sub['outcome'].nunique() < 2:
+        res["status"] = "INSUFFICIENT_DATA"
+        return res
+    d = df_sub.copy()
+    d['De'] = d[text_col].apply(lambda x: score_text(x, enc_patterns))
+    d['Dd'] = d[text_col].apply(lambda x: score_text(x, dec_patterns))
+    d[['De_s', 'Dd_s']] = MinMaxScaler().fit_transform(d[['De', 'Dd']])
+    d['D_gap'] = d['De_s'] - d['Dd_s']
+    vif = compute_vif(d['De_s'], d['Dd_s'])
+    res["vif"] = round(vif, 4)
+    if vif >= 5.0:
+        res["status"] = "INCONCLUSIVE_CHANNEL_COLLAPSE"
+        return res
+    y = (d['outcome'] == 0).astype(int)
     try:
-        # Check for zero variance
-        if np.var(X) == 0:
-            return None, "INCONCLUSIVE", "Zero variance"
-        X = sm.add_constant(X)
-        model = sm.Logit(y, X)
-        res = model.fit(disp=0)
-        return res, "POWER_MET", None
-    except Exception as e:
-        if "Singular matrix" in str(e) or "Zero variance" in str(e) or "Perfect separation" in str(e):
-            return None, "INCONCLUSIVE", str(e)
-        raise
-
-def run(token, repo, start_page, limit_pages=50):
-    print("=" * 68)
-    print("Governance OS D_gap Sensor v3.1 | Human-AI Engineering Cohorts")
-    print(f"Spec SHA-256: {spec_hash()}")
-    print("=" * 68, flush=True)
-
-    print(f"Target: {repo} (Start Page: {start_page})")
-
-    headers = {"Accept": "application/vnd.github.v3+json"}
-    if token:
-        headers["Authorization"] = f"token {token}"
-
-    base_url = f"https://api.github.com/repos/{repo}/pulls"
-
-    params = {
-        "state": "all",
-        "per_page": 100,
-        "page": start_page
-    }
-
-    all_prs = []
-    fetch_truncation = False
-
-    try:
-        for _ in range(limit_pages):
-            res = requests.get(base_url, headers=headers, params=params)
-            res.raise_for_status()
-
-            data = res.json()
-            if not data:
-                break
-
-            all_prs.extend(data)
-
-            if 'next' not in res.links:
-                break
-
-            params['page'] += 1
-            time.sleep(1) # simple rate limit backoff
-
-    except Exception as e:
-        print(f"Fetch truncated due to error: {e}")
-        fetch_truncation = True
-
-    # Parse PRs and calculate D_gap and Outcomes
-    outcomes = []
-    d_gaps = []
-
-    human_d_gaps = []
-    bot_d_gaps = []
-
-    for pr in all_prs:
-        user = pr.get("user", {})
-        is_bot, is_dependabot, is_llm_agent = process_github_user(user)
-
-        # Simplified D_gap calculation (Length of stripped body as a proxy for encoding fidelity)
-        # Note: The true D_gap definition in Governance OS relies on embedding distance, but for this
-        # structural CI test we use a stable proxy that tests the pipeline requirements.
-        body = pr.get("body", "")
-        stripped_body = strip_html(body)
-        d_gap = len(stripped_body)
-
-        if not is_bot:
-            human_d_gaps.append(d_gap)
-        elif is_llm_agent:
-            bot_d_gaps.append(d_gap)
-
-        # Outcome E: Merged (1) vs Closed/Rejected (0)
-        is_merged = 1 if pr.get("merged_at") else 0
-        outcomes.append(is_merged)
-
-        # We'll use the raw D_gap for now, then scale
-        d_gaps.append((d_gap, is_bot, is_llm_agent))
-
-    # Perform within-cohort scaling
-    scaled_d_gaps = [0.0] * len(d_gaps)
-
-    h_idx = [i for i, (_, is_bot, _) in enumerate(d_gaps) if not is_bot]
-    b_idx = [i for i, (_, is_bot, is_llm_agent) in enumerate(d_gaps) if is_llm_agent]
-
-    scaled_human = min_max_scale_within_cohort(human_d_gaps)
-    scaled_bot = min_max_scale_within_cohort(bot_d_gaps)
-
-    for i, idx in enumerate(h_idx):
-        scaled_d_gaps[idx] = scaled_human[i]
-
-    for i, idx in enumerate(b_idx):
-        scaled_d_gaps[idx] = scaled_bot[i]
-
-    # Model evaluation
-    y = np.array(outcomes)
-    X = np.array(scaled_d_gaps)
-
-    res, status, reason = analyze_cohort(y, X)
-
-    verdict = status
-    if status == "POWER_MET":
-        p_val = float(res.pvalues[1]) if len(res.pvalues) > 1 else 1.0
-        coef = float(res.params[1]) if len(res.params) > 1 else 0.0
-
-        if p_val < 0.05:
-            verdict = "CONFIRMED_SIGNAL"
+        m = sm.Logit(y, sm.add_constant(d['D_gap'])).fit(disp=0)
+        p, coef = float(m.pvalues['D_gap']), float(m.params['D_gap'])
+        lo, hi = m.conf_int().loc['D_gap']
+        if p < 0.05 and coef > 0:
+            verdict = "[SENSOR VALIDATED]: High D_gap predicts rejection."
+        elif p < 0.05 and coef < 0:
+            verdict = "[SENSOR INVERTED]: D_gap predicts successful merges."
         else:
-            verdict = "NULL_RESULT"
+            verdict = "[NO SIGNAL]"
+        res.update({"d_gap_coefficient": round(coef, 4),
+                    "ci_95": [round(float(lo), 4), round(float(hi), 4)],
+                    "p_value": round(p, 5), "verdict": verdict,
+                    "mean_D_gap_E0": round(float(d.loc[d['outcome'] == 0, 'D_gap'].mean()), 5),
+                    "mean_D_gap_E1": round(float(d.loc[d['outcome'] == 1, 'D_gap'].mean()), 5)})
+    except Exception as e:
+        res["error"] = f"Model failed to converge: {e}"
+    return res
 
-    # Make values json serializable
-    summary = {
-        "spec_sha256": spec_hash(),
-        "repo": repo,
-        "start_page": start_page,
-        "n_total": int(len(all_prs)),
-        "n_fail": int(len(y) - sum(y)),
-        "verdict": verdict,
-        "verdict_reason": reason or ("N < 500 or failures < 50 (Power Floor not met)" if status == "UNDERPOWERED" else f"p={p_val:.3f}, coef={coef:.3f}"),
-        "fetch_truncation": fetch_truncation
-    }
+# ---- FETCH ----
+print(f"── NERE v3.1 ── {OWNER}/{REPO} pages {START_PAGE}-{START_PAGE+MAX_PAGES-1}",
+      file=sys.stderr)
+prs = []
+fetch_error = None
+for page in range(START_PAGE, START_PAGE + MAX_PAGES):
+    url = (f"https://api.github.com/repos/{OWNER}/{REPO}/pulls"
+           f"?state=closed&per_page=100&page={page}")
+    data = None
+    for attempt in range(6):
+        r = requests.get(url, headers=HEADERS, timeout=30)
+        if r.status_code == 200:
+            data = r.json()
+            break
+        if r.status_code == 403 and 'rate limit' in r.text.lower():
+            reset = int(r.headers.get("X-RateLimit-Reset", time.time() + 60))
+            time.sleep(max(reset - int(time.time()), 1))
+        else:
+            time.sleep(3)
+    if data is None:
+        fetch_error = f"page {page}: HTTP {r.status_code}"  # truncation is recorded, not silent
+        break
+    if not data:
+        break
+    print(f"page {page}: {len(data)} PRs", file=sys.stderr)
+    for item in data:
+        raw = item.get('body')
+        user = item.get('user') or {}
+        if raw:
+            prs.append({'id': item['number'],
+                        'text_raw': raw,
+                        'text_pressed': press_template_noise(raw),
+                        'merged_at': item.get('merged_at'),
+                        'user': user.get('login', ''),
+                        'user_type': user.get('type', ''),
+                        'labels': [l['name'] for l in item.get('labels', [])]})
+    time.sleep(0.3)
 
-    out_file = "dgap_sensor_results.json"
-    with open(out_file, "w") as f:
-        json.dump(summary, f, indent=2)
+if not prs:
+    print(json.dumps({"error": "No usable PRs.", "fetch_error": fetch_error}))
+    sys.exit(1)
 
-    print(f"\nResults saved to {out_file}")
+df = pd.DataFrame(prs).drop_duplicates(subset='id')
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--repo", default="kubernetes/kubernetes")
-    parser.add_argument("--start-page", type=int, default=1)
-    args = parser.parse_args()
+def define_outcome(row):
+    if pd.isna(row['merged_at']):
+        return 0
+    if any('revert' in l.lower() for l in row['labels']) \
+       or 'revert' in str(row['text_pressed']).lower()[:50]:
+        return 0
+    return 1
 
-    token = os.environ.get("GITHUB_TOKEN")
-    run(token, args.repo, args.start_page)
+df['outcome'] = df.apply(define_outcome, axis=1)
+
+login_lc = df['user'].astype(str).str.lower()
+df['is_bot'] = (df['user_type'] == 'Bot') | (login_lc == 'copilot')
+df['is_dependabot'] = login_lc.str.contains('dependabot', na=False)
+df['is_llm_agent'] = login_lc.str.contains('copilot', na=False)
+
+humans, bots = df[~df['is_bot']], df[df['is_bot']]
+
+out = {"spec_sha256": SPEC_HASH,
+       "repository": f"{OWNER}/{REPO}",
+       "pages": f"{START_PAGE}-{START_PAGE + MAX_PAGES - 1}",
+       "fetch_error": fetch_error,
+       "telemetry_stats": {"total_usable_prs": len(df),
+                           "humans_n": len(humans), "bots_n": len(bots),
+                           "dependabot_n": int(df['is_dependabot'].sum()),
+                           "llm_agent_n": int(df['is_llm_agent'].sum())},
+       "PRIMARY_human_pressed": run_cohort(humans, 'text_pressed'),
+       "secondary_bot_pressed": run_cohort(bots, 'text_pressed'),
+       "robustness_human_unpressed": run_cohort(humans, 'text_raw'),
+       "descriptive_dependabot": {
+           "n": int(df['is_dependabot'].sum()),
+           "failure_rate": round(float((df[df['is_dependabot']]['outcome'] == 0).mean()), 4)
+           if df['is_dependabot'].any() else None},
+       "descriptive_llm_agent": {
+           "n": int(df['is_llm_agent'].sum()),
+           "failure_rate": round(float((df[df['is_llm_agent']]['outcome'] == 0).mean()), 4)
+           if df['is_llm_agent'].any() else None}}
+
+df.drop(columns=['text_raw']).to_csv('dgap_stratified_results.csv', index=False)
+print(json.dumps(out, indent=2))
