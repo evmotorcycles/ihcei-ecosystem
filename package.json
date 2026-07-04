@@ -1,5 +1,8 @@
 {
   "name": "congress-bill-text-proxy",
-  "version": "1.0.0",
-  "private": true
+  "version": "1.1.0",
+  "private": true,
+  "dependencies": {
+    "adm-zip": "^0.5.18"
+  }
 }
