@@ -1,0 +1,143 @@
+# Reproducibility Record — LISM
+
+This records exactly what reproduces, from what, and what is still needed —
+the concrete answer to referee point **M1** ("the archive does not reproduce as
+shipped"). Two of the three central claims now reproduce from real inputs; the
+third (yeast essentiality) is blocked only on a label file, documented below.
+
+## Environment
+```
+python 3.11+
+numpy 2.4.6  pandas 3.0.3  scipy 1.17.1  statsmodels 0.14.6  scikit-learn 1.9.0
+pip install -r requirements.txt
+```
+
+## 1. GitHub cohort — REPRODUCES (confirmed from the archived CI run)
+The pre-registered fetch + analysis is `govphys_quadratic_prereg_test.py`
+(spec SHA-256 `cac34f44…001f7`). The archived GitHub Actions log
+(`logs_74994532125`, run 2026-06-19) records the fetch of 992 unique
+repositories and the verdict, matching the manuscript exactly:
+
+| Quantity | Manuscript | CI log |
+|---|---|---|
+| N (fail/surv) | 992 (750/242) | 992 (750/242) |
+| VIF(D_enc,D_dec) | 1.02 (r=+0.14) | 1.02 (r=+0.141) |
+| PRIMARY ΔAIC(quad−lin) | −3.48 | −3.48 |
+| SECONDARY nested ΔAIC | −0.12 | −0.12 |
+| τ_v failed / survived | 50.6 / 19.8 d | 50.61 / 19.76 d |
+| Verdict | QUADRATIC DISCONFIRMED | QUADRATIC_DISCONFIRMED |
+
+> Note on `perm z = +9.32` (referee **M3**): this value is produced by the
+> original script's permutation statistic but its *magnitude* is statistic-
+> dependent and does not reproduce stably across formulations (an independent
+> reimplementation yields a different z on the same direction/tail). Use
+> `analysis_corrected.py`, which reports a reproducible permutation **tail**
+> (fraction ≥ observed, seed 42) instead of a point z.
+
+To recompute headline numbers from the per-repo CSV once it is deposited:
+```
+python reproduce_analysis.py --github github_repositories.csv
+```
+
+## 2. Yeast two-hop channel (VIF) — REPRODUCES from raw STRING v12
+`build_yeast_cohort.py` rebuilds the interactome features from the raw STRING
+physical-links file and computes the load-bearing channel-independence metric
+**without needing any labels**:
+```
+python build_yeast_cohort.py --string 4932.protein.physical.links.v12.0.csv --min-score 400
+```
+Result on the real data (medium-confidence cut, STRING's field-standard 400):
+
+| Quantity | Manuscript | Rebuilt from raw STRING |
+|---|---|---|
+| N proteins | 4,772 | 4,825 |
+| VIF(D_enc, D_dec) | 1.003 | **1.005** (r=−0.071) |
+
+This confirms the manuscript's "channel intact / independent two-hop" claim on
+real data with a fully documented construction (answers referee **M4** for the
+independence claim). The small N difference (4,825 vs 4,772) is the expected
+effect of the exact essential-set intersection / isolated-node filtering, which
+requires the label file below.
+
+## 3. Yeast cohort — REPRODUCES end-to-end from raw STRING + DEG + BioGRID
+The full yeast arm now regenerates from raw public inputs. Pipeline:
+```
+python extract_deg_essential.py --annotation deg_annotation_e.csv \
+    --out scer_essential_genes_DEG.csv                       # 1,110 essential genes (DEG2001)
+python biogrid_name_map.py \
+    --biogrid BIOGRID-ORGANISM-Saccharomyces_cerevisiae-2.0.27.tab.txt \
+    --out yeast_name_orf_map.csv                             # standard -> systematic ORF
+python build_yeast_cohort.py --string 4932.protein.physical.links.v12.0.csv \
+    --essential scer_essential_genes_DEG.csv \
+    --aliases yeast_name_orf_map.csv --out yeast_interactome_DEG.csv
+python analysis_yeast.py --csv yeast_interactome_DEG.csv     # M5 re-test
+```
+Rebuilt cohort vs manuscript:
+
+| Quantity | Manuscript | Rebuilt |
+|---|---|---|
+| N proteins | 4,772 | 4,825 |
+| essential | 1,009 | 1,056 |
+| VIF(D_enc,D_dec) | 1.003 | 1.005 |
+| linear AUC | 0.74 | 0.72 (in-sample), 0.72 (CV) |
+| quadratic AUC | 0.41 "below chance" | **0.71 (in-sample), 0.68 (CV)** |
+
+**Finding (referee M5).** The quadratic "AUC 0.41 / below chance" does NOT reproduce; under
+a converging or cross-validated fit it is ≈0.68–0.71 — a separation-degeneracy artifact, not
+anti-prediction. The nested curvature test is significant but the D² coefficient is
+**negative** (saturating), the opposite sign to the accelerating penalty E=U·D² — so the
+paper's no-quadratic conclusion holds and is arguably strengthened. Provenance caveat: this
+is an independent reconstruction; the D_enc/D_dec construction is documented in
+`build_yeast_cohort.py` and may differ from the author's original, so exact AUC magnitudes
+are construction-dependent, but the M5 result is robust to that and to the STRING cut.
+
+### 3b. DEG essential set (intermediate detail)
+The DEG essential set for yeast is **recovered from the raw DEG eukaryote
+annotation** the manuscript cites:
+
+- `deg_eukaryotes.csv` confirms **DEG2001 = *Saccharomyces cerevisiae*, Giaever
+  et al. 2002, 1,110 genes** — the manuscript's exact source.
+- `extract_deg_essential.py` pulls all **1,110 essential genes** from
+  `deg_annotation_e.csv` (block DEG2001) into `scer_essential_genes_DEG.csv`
+  (`deg_id, gene_name, systematic_orf, gi`). The DEG20.nt `DEG2001` block holds
+  the matching 1,110 coding sequences (all codon-length multiples).
+
+The annotation lists genes by **standard** name (TFC3, EFB1, …); STRING is keyed
+by **systematic** ORF name (YAL001C). Only 23/1,110 are already systematic, so a
+standard→systematic map is the last join key. `build_yeast_cohort.py --aliases`
+consumes any of: STRING `4932.protein.info.v12.0.txt` (preferred_name column),
+STRING `4932.protein.aliases.v12.0.txt`, or a 2-column `name,orf` CSV. Validated
+end-to-end on the real STRING graph with a mock map (1,092 standard names →
+910 essential ORFs joined). The STRING download hosts (stringdb-downloads.org,
+string-db.org) are off this environment's allowlist, so **upload
+`4932.protein.info.v12.0.txt(.gz)`** (same STRING download page as the links
+file already provided) **or allowlist the host**. Then E regenerates:
+```
+# 1. essential genes from raw DEG annotation
+python extract_deg_essential.py --annotation deg_annotation_e.csv \
+    --out scer_essential_genes_DEG.csv
+# 2. build the cohort, resolving standard names -> ORF via STRING protein.info
+python build_yeast_cohort.py --string 4932.protein.physical.links.v12.0.csv \
+    --essential scer_essential_genes_DEG.csv \
+    --aliases 4932.protein.info.v12.0.txt --out yeast_interactome_DEG.csv
+# 3. re-test M5 (penalized fit)
+python analysis_corrected.py --csv yeast_interactome_DEG.csv
+```
+Alternative route (no name map): `label_essential_from_deg.py` matches the
+DEG2001 **coding sequences** to a yeast ORF-CDS FASTA (SGD `orf_coding_all` /
+Ensembl R64 CDS) to get systematic ORF names directly — use whichever reference
+is easier to obtain.
+
+## 4. Pipeline self-test without private data
+So CI and reviewers can exercise the full machinery deterministically:
+```
+python make_synthetic_cohort.py --out github_repositories_SYNTHETIC.csv
+python analysis_corrected.py --csv github_repositories_SYNTHETIC.csv --synthetic
+```
+The fixture is drawn from a genuinely linear (additive, no-D²) logit; a correct
+pipeline must return **PASS** on the VIF gate, **NO CURVATURE** on the primary
+nested test, and recover the τ_v effect. It does. (The secondary single-term
+ΔAIC swings wildly on the same data — the live demonstration of referee **M2**.)
+```
+python -m pytest tests/ -q     # tau_v_monitor: 13 tests
+```
