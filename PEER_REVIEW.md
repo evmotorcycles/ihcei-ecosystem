@@ -207,3 +207,46 @@ M4:
 reproduced except for its outcome labels. Recommendation stands at **major revision**,
 but the remaining work is concrete and small: reframe M2/M3 in the text, deposit the yeast
 essential-gene labels, and re-run the yeast AUC under a penalized fit (M5).
+
+---
+
+## 8. Addendum 2 — yeast cohort fully rebuilt from raw data; **M5 is confirmed**
+
+The yeast cohort was rebuilt end-to-end from raw public inputs the author supplied: STRING
+v12 physical links (topology + the documented two-hop D_enc/D_dec), DEG eukaryote annotation
+(`deg_annotation_e.csv`, block **DEG2001 = *S. cerevisiae*, Giaever 2002, 1,110 essential
+genes**), and a BioGRID-derived standard→systematic name map. The reconstruction lands very
+close to the manuscript: **N = 4,825 proteins (vs 4,772), 1,056 essential (vs 1,009),
+VIF = 1.005 (vs 1.003)**. Re-running the coupling test then resolves M5 empirically:
+
+| Model (single-term) | Manuscript | Rebuilt in-sample | Rebuilt 5-fold CV |
+|---|---|---|---|
+| linear `U·D_s` | AUC 0.74 | **0.718** | 0.715 |
+| quadratic `U·D_s²` | **AUC 0.41 (below chance)** | **0.705** | 0.682 |
+
+- **The linear AUC reproduces** (~0.72 vs 0.74). ✔
+- **The "quadratic is anti-predictive, AUC 0.41 (below chance)" claim does NOT reproduce.**
+  Under a converging in-sample fit or a cross-validated regularized fit the quadratic AUC is
+  ~0.68–0.71 — modestly *below* linear, not below chance. This is exactly what M5 predicted:
+  a monotone transform of a predictor cannot legitimately score AUC 0.41 unless the logit
+  **sign-flipped under near-perfect separation**. The 0.41 is a degeneracy artifact, not a
+  finding, and must be corrected in the text. (Robust to the STRING confidence cut: at
+  score ≥ 700 the quadratic AUC is 0.676 vs 0.678 linear.)
+- **The paper's conclusion nonetheless holds — arguably more cleanly.** The pre-registered
+  nested curvature test on the rebuilt data is significant (ΔAIC ≈ +68, LRT p ≈ 5e-17) but
+  the fitted D² coefficient is **negative** (β ≈ −82): the curvature is *saturating/concave*,
+  the **opposite sign** to the convex, accelerating penalty the quadratic hypothesis
+  requires (E = U·D² would need low-fidelity failure to *accelerate*). So the data not only
+  fail to support the accelerating quadratic — they fit curvature in the wrong direction for
+  it. The right conclusion is "linear is adequate and the only curvature present is
+  diminishing-returns, contrary to the proposed penalty," not "the quadratic is
+  anti-predictive."
+
+**Caveat on provenance.** This is an *independent* reconstruction; the D_enc/D_dec
+construction (documented in `build_yeast_cohort.py`) may differ from the author's exact,
+previously-unshipped one, so the precise AUC magnitudes are construction-dependent. The
+*qualitative* M5 result — that AUC 0.41 is a separation artifact and disappears under a
+proper fit — does not depend on the construction and is robust. **Action for the author:**
+either ship the original yeast D_enc/D_dec code so the 0.41 can be audited, or (recommended)
+adopt the corrected reporting above. With this, the yeast arm reproduces end-to-end and the
+manuscript's central claim is *strengthened*.
