@@ -59,36 +59,42 @@ independence claim). The small N difference (4,825 vs 4,772) is the expected
 effect of the exact essential-set intersection / isolated-node filtering, which
 requires the label file below.
 
-## 3. Yeast essentiality outcome (E) — bridge built; needs one reference FASTA
-The shipped DEG FASTA files carry only opaque DEG IDs (e.g. `>DEG20010001`) with
-**no organism/ORF annotation**. Two facts recovered here close most of the gap:
+## 3. Yeast essentiality outcome (E) — essential set recovered; needs one name map
+The DEG essential set for yeast is now **fully recovered from the raw DEG
+eukaryote annotation** the manuscript cites:
 
-- **The yeast essential set is the `DEG2001` block of `DEG20.nt`** — *S. cerevisiae*
-  is the first eukaryote in DEG, and that block holds exactly **1,110 essential
-  coding sequences** (all codon-length multiples), consistent with the
-  manuscript's ~1,009 essential genes. Extract with the DEG-block filter in
-  `label_essential_from_deg.py`.
-- `label_essential_from_deg.py` **maps those 1,110 CDS to systematic ORF names by
-  exact sequence match** against a yeast ORF-CDS reference (validated: given real
-  DEG2001 sequences it recovers their ORF names exactly and ignores decoys).
+- `deg_eukaryotes.csv` confirms **DEG2001 = *Saccharomyces cerevisiae*, Giaever
+  et al. 2002, 1,110 genes** — the manuscript's exact source.
+- `extract_deg_essential.py` pulls all **1,110 essential genes** from
+  `deg_annotation_e.csv` (block DEG2001) into `scer_essential_genes_DEG.csv`
+  (`deg_id, gene_name, systematic_orf, gi`). The DEG20.nt `DEG2001` block holds
+  the matching 1,110 coding sequences (all codon-length multiples).
 
-The only remaining input is a **yeast ORF coding-sequence FASTA keyed by ORF
-name** — SGD `orf_coding_all_R64-*.fasta` (header first token = ORF) or Ensembl
-Fungi `Saccharomyces_cerevisiae.R64-1-1.cds.all.fa.gz`. Both hosts (sgd-archive,
-ensembl) are off this environment's network allowlist, so either upload that one
-FASTA or allowlist the host. Then the full outcome regenerates:
+The annotation lists genes by **standard** name (TFC3, EFB1, …); STRING is keyed
+by **systematic** ORF name (YAL001C). Only 23/1,110 are already systematic, so a
+standard→systematic map is the last join key. `build_yeast_cohort.py --aliases`
+consumes any of: STRING `4932.protein.info.v12.0.txt` (preferred_name column),
+STRING `4932.protein.aliases.v12.0.txt`, or a 2-column `name,orf` CSV. Validated
+end-to-end on the real STRING graph with a mock map (1,092 standard names →
+910 essential ORFs joined). The STRING download hosts (stringdb-downloads.org,
+string-db.org) are off this environment's allowlist, so **upload
+`4932.protein.info.v12.0.txt(.gz)`** (same STRING download page as the links
+file already provided) **or allowlist the host**. Then E regenerates:
 ```
-# 1. DEG essential CDS -> systematic ORF names
-python label_essential_from_deg.py --deg DEG20.nt.gz --deg-block DEG2001 \
-    --orf-cds orf_coding_all_R64.fasta --out scer_essential_orfs.txt
-# 2. build the cohort with real E
+# 1. essential genes from raw DEG annotation
+python extract_deg_essential.py --annotation deg_annotation_e.csv \
+    --out scer_essential_genes_DEG.csv
+# 2. build the cohort, resolving standard names -> ORF via STRING protein.info
 python build_yeast_cohort.py --string 4932.protein.physical.links.v12.0.csv \
-    --essential scer_essential_orfs.txt --out yeast_interactome_DEG.csv
+    --essential scer_essential_genes_DEG.csv \
+    --aliases 4932.protein.info.v12.0.txt --out yeast_interactome_DEG.csv
 # 3. re-test M5 (penalized fit)
 python analysis_corrected.py --csv yeast_interactome_DEG.csv
 ```
-A plain ORF-per-line list or a CSV with an `orf`/`gene` column also works
-directly at step 2 if you already have the essential ORF names.
+Alternative route (no name map): `label_essential_from_deg.py` matches the
+DEG2001 **coding sequences** to a yeast ORF-CDS FASTA (SGD `orf_coding_all` /
+Ensembl R64 CDS) to get systematic ORF names directly — use whichever reference
+is easier to obtain.
 
 ## 4. Pipeline self-test without private data
 So CI and reviewers can exercise the full machinery deterministically:
