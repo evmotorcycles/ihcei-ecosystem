@@ -1,3 +1,8 @@
-node_modules/
 __pycache__/
-package-lock.json
+*.pyc
+.pytest_cache/
+github_repositories_SYNTHETIC.csv
+yeast_interactome_DEG.csv
+yeast_feats_*.csv
+dgap_high_powered_results.csv
+govphys_quadratic_results.csv
