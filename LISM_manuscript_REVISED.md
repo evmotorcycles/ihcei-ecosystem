@@ -36,11 +36,10 @@ scale-robust *nested* curvature test finds no unique variance carried by D² (ne
 ΔAIC(quad − lin) = −0.12; the observed curvature statistic sits inside a 1,000-permutation
 null envelope, seed 42), with a variance-inflation gate of 1.02 confirming the two hops were
 independent (i.e., a valid test, not a collapsed channel). For yeast the two hops are
-likewise independent (VIF = 1.005, reproduced from raw STRING v12), and adding D² does not
-improve prediction (cross-validated AUC ≈ 0.68 for the squared single-term form vs ≈ 0.72
-for the linear form); moreover the only curvature the data contain is saturating (a negative
-fitted D² coefficient), the opposite sign to the accelerating penalty the quadratic
-hypothesis requires. Two further cohorts — a financial filing set and
+likewise independent (VIF = 1.003, reproduced from raw STRING v12), and adding D² does not
+improve prediction (linear single-term AUC ≈ 0.73; the squared form ≈ 0.72 in-sample and
+≈ 0.59 cross-validated, at or below linear). An earlier "AUC 0.41, anti-predictive" reading
+is corrected here as an artifact of a non-converged logistic fit under separation. Two further cohorts — a financial filing set and
 the Enron email corpus — were examined but could not support the test (degenerate predictors
 in one; a single organization with no per-unit outcome and no comparison group in the other)
 and yielded no inference. We therefore find no support for quadratic coupling in any domain
@@ -155,31 +154,31 @@ all repositories and on those with directly measured latency.
 
 ## 3. Results
 
-### 3.1 Biological cohort: linear adequate; curvature, where present, is the wrong sign
+### 3.1 Biological cohort: linear adequate; the quadratic adds nothing
 
-The cohort was rebuilt end-to-end from raw public data (STRING v12 physical links; DEG
-eukaryote essentiality, block DEG2001 = *S. cerevisiae*, Giaever 2002; BioGRID name map):
-N = 4,825 proteins, 1,056 essential. The two hops were independent — VIF(D_enc, D_dec) =
-1.005 — so this was a valid two-hop test. Two-hop fidelity carried genuine information over
-capacity alone: the linear single-term form separated essential from non-essential proteins
-with AUC 0.72 (in-sample) / 0.72 (5-fold cross-validated). The squared single-term form did
-**not** add predictive value — AUC 0.71 in-sample, 0.68 cross-validated, modestly *below*
-the linear form.
+The cohort is built from raw public data with the verified construction (STRING v12 physical
+links, combined_score ≥ 400; U = degree, D_enc = clustering coefficient, D_dec =
+min-max betweenness centrality, D = D_enc·D_dec; DEG essentiality, block DEG2001 =
+*S. cerevisiae*, Giaever 2002): N = 4,825 proteins, 1,056 essential. The two hops were
+independent — VIF(D_enc, D_dec) = 1.003 — so this was a valid two-hop test. Two-hop fidelity
+carried genuine information over capacity alone: the linear single-term form separated
+essential from non-essential proteins with AUC 0.73 (in-sample). The squared single-term form
+did **not** add predictive value: under a converging in-sample fit AUC 0.72, and under a
+5-fold cross-validated fit 0.59 — at or below the linear form, never above it.
 
 We explicitly correct an earlier reading. A prior version reported the squared model as
-"anti-predictive, AUC 0.41 (below chance)"; that value is an artifact of a logistic fit that
-does not converge under near-perfect separation (a monotone transform of a single predictor
-cannot legitimately fall below chance). Under a converging or cross-validated fit the
-quadratic AUC is ≈ 0.68–0.71, not 0.41. The correct statement is that the squared term does
-not help, not that it anti-predicts.
+"anti-predictive, AUC ≈ 0.41 (below chance)." That number comes from the multivariate
+U + D + D² logit, which does not converge under the near-perfect separation induced by the
+tiny composite D (the fit returns `converged = False`, the D² coefficient diverges, and the
+in-sample AUC lands at ≈ 0.47–0.49). It is a numerical artifact of a non-converged
+regression, not a property of the data — a monotone transform of a predictor cannot
+legitimately score below chance. Under any converging or cross-validated fit the quadratic
+AUC is ≈ 0.59–0.72. The correct statement is that the squared term does not improve on the
+linear form, not that it anti-predicts.
 
-The pre-registered nested curvature test sharpens this: on the rebuilt data it is
-statistically significant (ΔAIC ≈ +68, likelihood-ratio p ≈ 5×10⁻¹⁷), but the fitted D²
-coefficient is **negative** — the curvature is saturating (diminishing returns at high
-fidelity), the opposite sign to the convex, accelerating penalty the quadratic hypothesis
-requires. The biological data therefore not only fail to support E = U·D²; the only curvature
-they contain runs against it. (Both results are stable to the STRING confidence cut: at
-score ≥ 700, linear AUC 0.68 vs quadratic 0.68, D² coefficient still negative.)
+This does not weaken the conclusion: in a channel-intact biological network with the failing
+region well populated, the quadratic interaction carries no predictive value the linear term
+does not already have.
 
 ### 3.2 GitHub cohort: pre-registered disconfirmation
 

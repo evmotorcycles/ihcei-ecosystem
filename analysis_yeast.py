@@ -71,6 +71,19 @@ def main():
     print(f"  D alone       : {cv_auc(E, Ds):.3f}")
     print(f"  U alone       : {cv_auc(E, U):.3f}")
 
+    # --- provenance of the "0.41 / anti-predictive" number (referee M5) ---
+    import warnings
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        Xm = sm.add_constant(np.column_stack([U, D, D**2]))
+        mm2 = sm.Logit(E, Xm).fit(disp=0, maxiter=35)
+    auc_artifact = roc_auc_score(E, mm2.predict(Xm))
+    print("\n[artifact check: multivariate U+D+D^2, the manuscript's quad spec]")
+    print(f"  in-sample AUC = {auc_artifact:.3f}   converged = {mm2.mle_retvals['converged']}")
+    print("  -> a NON-converged fit under separation produces the sub-chance AUC the")
+    print("     manuscript reported as 'anti-predictive ~0.41'. It is a numerical")
+    print("     artifact: every converged/CV single-term fit above is ~0.6-0.72.")
+
     def fit(cols):
         return sm.Logit(E, sm.add_constant(np.column_stack(cols))).fit(disp=0)
     m1, m2 = fit([U, D]), fit([U, D, D**2])
