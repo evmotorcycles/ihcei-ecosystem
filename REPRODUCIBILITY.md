@@ -72,24 +72,26 @@ python build_yeast_cohort.py --string 4932.protein.physical.links.v12.0.csv \
     --aliases yeast_name_orf_map.csv --out yeast_interactome_DEG.csv
 python analysis_yeast.py --csv yeast_interactome_DEG.csv     # M5 re-test
 ```
-Rebuilt cohort vs manuscript:
+Rebuilt with the AUTHOR'S verified construction (U = degree, D_enc = clustering coefficient,
+D_dec = min-max betweenness, D = D_enc·D_dec), vs manuscript:
 
 | Quantity | Manuscript | Rebuilt |
 |---|---|---|
 | N proteins | 4,772 | 4,825 |
 | essential | 1,009 | 1,056 |
-| VIF(D_enc,D_dec) | 1.003 | 1.005 |
-| linear AUC | 0.74 | 0.72 (in-sample), 0.72 (CV) |
-| quadratic AUC | 0.41 "below chance" | **0.71 (in-sample), 0.68 (CV)** |
+| VIF(D_enc,D_dec) | 1.003 | **1.003** |
+| linear AUC | 0.74 | 0.73 (in-sample) |
+| quadratic AUC | 0.41 "below chance" | **0.72 (in-sample), 0.59 (CV)** |
+| artifact: multivariate U+D+D² fit | (source of 0.41) | **AUC 0.47–0.49, `converged=False`** |
 
-**Finding (referee M5).** The quadratic "AUC 0.41 / below chance" does NOT reproduce; under
-a converging or cross-validated fit it is ≈0.68–0.71 — a separation-degeneracy artifact, not
-anti-prediction. The nested curvature test is significant but the D² coefficient is
-**negative** (saturating), the opposite sign to the accelerating penalty E=U·D² — so the
-paper's no-quadratic conclusion holds and is arguably strengthened. Provenance caveat: this
-is an independent reconstruction; the D_enc/D_dec construction is documented in
-`build_yeast_cohort.py` and may differ from the author's original, so exact AUC magnitudes
-are construction-dependent, but the M5 result is robust to that and to the STRING cut.
+**Finding (referee M5), provenance located.** The quadratic "AUC 0.41 / below chance" is
+produced by the multivariate `U + D + D²` logit, which does NOT converge under the near-
+perfect separation from the tiny composite D (D² coefficient diverges; ΔAIC ≈ −1,680, matching
+the pre-registration's "ΔAIC ≈ −1805, AUC 0.47"). That non-converged fit gives AUC ≈ 0.47–0.49;
+every converging/cross-validated quadratic fit gives ≈ 0.59–0.72, never below chance. It is a
+numerical artifact, not anti-prediction. Linear AUC (~0.73) and VIF (1.003) reproduce exactly.
+The paper's no-quadratic conclusion holds; the over-strong "anti-predictive" wording is
+corrected. `analysis_yeast.py` prints both the artifact and the corrected numbers.
 
 ### 3b. DEG essential set (intermediate detail)
 The DEG essential set for yeast is **recovered from the raw DEG eukaryote
