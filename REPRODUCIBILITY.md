@@ -59,9 +59,41 @@ independence claim). The small N difference (4,825 vs 4,772) is the expected
 effect of the exact essential-set intersection / isolated-node filtering, which
 requires the label file below.
 
-## 3. Yeast essentiality outcome (E) — essential set recovered; needs one name map
-The DEG essential set for yeast is now **fully recovered from the raw DEG
-eukaryote annotation** the manuscript cites:
+## 3. Yeast cohort — REPRODUCES end-to-end from raw STRING + DEG + BioGRID
+The full yeast arm now regenerates from raw public inputs. Pipeline:
+```
+python extract_deg_essential.py --annotation deg_annotation_e.csv \
+    --out scer_essential_genes_DEG.csv                       # 1,110 essential genes (DEG2001)
+python biogrid_name_map.py \
+    --biogrid BIOGRID-ORGANISM-Saccharomyces_cerevisiae-2.0.27.tab.txt \
+    --out yeast_name_orf_map.csv                             # standard -> systematic ORF
+python build_yeast_cohort.py --string 4932.protein.physical.links.v12.0.csv \
+    --essential scer_essential_genes_DEG.csv \
+    --aliases yeast_name_orf_map.csv --out yeast_interactome_DEG.csv
+python analysis_yeast.py --csv yeast_interactome_DEG.csv     # M5 re-test
+```
+Rebuilt cohort vs manuscript:
+
+| Quantity | Manuscript | Rebuilt |
+|---|---|---|
+| N proteins | 4,772 | 4,825 |
+| essential | 1,009 | 1,056 |
+| VIF(D_enc,D_dec) | 1.003 | 1.005 |
+| linear AUC | 0.74 | 0.72 (in-sample), 0.72 (CV) |
+| quadratic AUC | 0.41 "below chance" | **0.71 (in-sample), 0.68 (CV)** |
+
+**Finding (referee M5).** The quadratic "AUC 0.41 / below chance" does NOT reproduce; under
+a converging or cross-validated fit it is ≈0.68–0.71 — a separation-degeneracy artifact, not
+anti-prediction. The nested curvature test is significant but the D² coefficient is
+**negative** (saturating), the opposite sign to the accelerating penalty E=U·D² — so the
+paper's no-quadratic conclusion holds and is arguably strengthened. Provenance caveat: this
+is an independent reconstruction; the D_enc/D_dec construction is documented in
+`build_yeast_cohort.py` and may differ from the author's original, so exact AUC magnitudes
+are construction-dependent, but the M5 result is robust to that and to the STRING cut.
+
+### 3b. DEG essential set (intermediate detail)
+The DEG essential set for yeast is **recovered from the raw DEG eukaryote
+annotation** the manuscript cites:
 
 - `deg_eukaryotes.csv` confirms **DEG2001 = *Saccharomyces cerevisiae*, Giaever
   et al. 2002, 1,110 genes** — the manuscript's exact source.

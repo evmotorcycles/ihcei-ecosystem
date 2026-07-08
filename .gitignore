@@ -6,3 +6,6 @@ yeast_interactome_DEG.csv
 yeast_feats_*.csv
 dgap_high_powered_results.csv
 govphys_quadratic_results.csv
+yeast_name_orf_map.csv
+scer_essential_genes_DEG.csv
+scer_essential_orfs.txt
