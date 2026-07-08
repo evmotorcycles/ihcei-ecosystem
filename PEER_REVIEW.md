@@ -169,3 +169,41 @@ data do not ship, and it **over-states two statistics** (M2 the single-term ΔAI
 M3 the permutation z) relative to what the code stably computes. None of these threaten the
 conclusion; all of them, fixed, make it more defensible. I recommend **major revision** and
 would expect to recommend acceptance once §3 is addressed.
+
+---
+
+## 7. Addendum — reproduction with the raw inputs (added after the author supplied data)
+
+After the initial review the author provided the raw GitHub Actions run log and the raw
+yeast inputs (STRING v12 physical links; DEG FASTA sets). This materially advances M1 and
+M4:
+
+- **GitHub cohort reproduces exactly.** The archived CI log (run 2026-06-19,
+  `govphys_quadratic_prereg_test.py`, spec SHA `cac34f44…`) records the fetch of 992 repos
+  and prints VIF = 1.02 (r = +0.141), PRIMARY ΔAIC = −3.48, SECONDARY = −0.12, τ_v =
+  50.61/19.76 d, verdict QUADRATIC_DISCONFIRMED — matching the manuscript to the digit.
+  The central pre-registered result is **authentic and reproduced**. *M1 (GitHub): resolved.*
+- **Yeast channel-independence reproduces from raw STRING.** Rebuilding the interactome
+  features directly from `4932.protein.physical.links.v12.0.csv` at the standard medium-
+  confidence cut (score ≥ 400 → 4,825 proteins) with a documented encode/decode two-hop
+  construction gives **VIF(D_enc, D_dec) = 1.005 (r = −0.071)**, matching the reported
+  ≈1.003. The load-bearing "channel intact" claim holds on real data. *M4 (independence):
+  substantially resolved; the D_enc/D_dec construction is now shipped in
+  `build_yeast_cohort.py`.*
+- **M3 sharpened, not dissolved.** The CI log does print `perm z = +9.32`, so that number
+  is what the *original* script emits — but its magnitude remains statistic-dependent and
+  non-portable (an independent reimplementation of the permutation gives a different z on
+  the same tail). The reproducible-tail reporting in `analysis_corrected.py` should replace
+  the point z in the manuscript.
+- **New blocker for full yeast reproduction (refines M1/M4/M5).** The deposited DEG FASTA
+  files carry **only opaque DEG IDs, no organism/ORF annotation**, so essential genes
+  cannot be mapped to yeast ORF names from the shipped files, and the databases that carry
+  that mapping are off the network allowlist. The yeast **outcome column E therefore cannot
+  yet be regenerated**, and the AUC 0.74-vs-0.41 contrast (M5) remains unverified pending an
+  ORF-keyed essential-gene list (DEG annotation, SGD deletion set, or archived E CSV). This
+  is the single remaining item for a fully self-contained yeast reproduction.
+
+**Revised bottom line:** the GitHub arm is now reproduced end-to-end; the yeast arm is
+reproduced except for its outcome labels. Recommendation stands at **major revision**,
+but the remaining work is concrete and small: reframe M2/M3 in the text, deposit the yeast
+essential-gene labels, and re-run the yeast AUC under a penalized fit (M5).
