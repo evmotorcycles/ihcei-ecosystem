@@ -84,6 +84,13 @@ async function pool(items, size, fn) {
 }
 async function main() {
   mkdirSync('public', { recursive: true });
+  // Opt-in only: a normal deploy must NOT fire 44 LLM calls. Set
+  // RUN_DEEP_CALIBRATION=1 in the Vercel env (and fund the Anthropic account)
+  // to produce the live blind metric on the next build.
+  if (!process.env.RUN_DEEP_CALIBRATION) {
+    writeFileSync(OUT, JSON.stringify({ skipped: 'RUN_DEEP_CALIBRATION not set' }));
+    console.log('deep gen skipped: set RUN_DEEP_CALIBRATION=1 to run'); return;
+  }
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) { writeFileSync(OUT, JSON.stringify({ skipped: 'no ANTHROPIC_API_KEY at build' })); console.log('deep gen skipped: no key'); return; }
   const t0 = Date.now();

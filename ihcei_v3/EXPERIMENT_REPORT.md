@@ -93,6 +93,35 @@ architecture's core bet — *swap the evidence, keep the math* — is validated.
    to grow it with real telemetry — which is exactly the paid calibration
    flywheel, not a workaround.
 
+## 5b. Live blind run — built, executed, blocked on account credit
+
+The live pipeline is built and was executed end-to-end against the deployed
+Vercel project (`project-6q4gj`, which holds the key):
+
+- `api/govern.js` — the between-LLMs endpoint (fast = no key; deep = Sonnet).
+- `api/calibrate.js` — server-side blind scorer (labels never sent).
+- `scripts/gen_deep_live.mjs` — build-time blind run → static
+  `public/deep_live_results.json`; reading one static file needs a single
+  authenticated fetch, which the sandbox *can* do reliably (the many-call
+  function path could not, due to an SSO+latency interaction).
+
+Result of the live build run (2026-07-09, model `claude-sonnet-4-6`): **0/44
+ok.** Every call returned HTTP 400:
+
+> `invalid_request_error: Your credit balance is too low to access the
+> Anthropic API. Please go to Plans & Billing to upgrade.`
+
+The key is valid and present; the **Anthropic account has no credit.** This is
+a billing block, not a code or model fault — and it currently disables the real
+product too (`analyse.js` and deep `govern.js` both call Sonnet). The blind
+metric is therefore still `SUPPORTED-BY-PROXY`; the pipeline is one funded
+account + one rebuild away from a real number.
+
+**To finish it:** add credit to the Anthropic account, set
+`RUN_DEEP_CALIBRATION=1` in the Vercel env (the build run is opt-in so normal
+deploys don't fire 44 calls), redeploy, then read `/deep_live_results.json` and
+join to labels with `calibration_harness.py`.
+
 ## 6. What this means for the company
 
 - **Ship deep mode as the product surface; fast mode as the free/pre-filter
