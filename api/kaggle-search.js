@@ -5,22 +5,60 @@
 //   GET /api/kaggle-search?q=patient+safety+incident+outcomes
 //     -> { query, count, datasets: [ { ref, title, subtitle, totalBytes, url } ] }
 //   GET /api/kaggle-search?health=1
-//     -> { ok: true, keyConfigured: true/false }   (never returns the key)
+//     -> { ok, keyConfigured, envVarsPresent: [names only, never values] }
 //
-// Env vars (set in Vercel project settings): KAGGLE_USERNAME, KAGGLE_KEY
-// (from kaggle.json). The shape mirrors bill-text.js so kaggle_dataset_screen.py
-// can consume it via --endpoint.
+// Credentials are resolved tolerantly (Kaggle needs BOTH a username and a key):
+//   * KAGGLE_USERNAME + KAGGLE_KEY (standard)
+//   * a kaggle.json blob in KAGGLE_JSON / any *kaggle* var: {"username","key"}
+//   * a single *kaggle* var in "username:key" form
+// so it works whatever you named the Vercel env var (e.g. Kagglekey, like the
+// Congresskey var the bill-text proxy uses).
+
+function resolveKaggle() {
+  const env = process.env;
+  let user = env.KAGGLE_USERNAME || env.KaggleUsername || env.kaggle_username || env.KAGGLE_USER;
+  let key =
+    env.KAGGLE_KEY || env.Kagglekey || env.KaggleKey || env.KAGGLEKEY || env.kaggle_key;
+
+  const tryBlob = (v) => {
+    if (!v) return;
+    const val = String(v).trim();
+    if (val.startsWith("{")) {
+      try {
+        const j = JSON.parse(val);
+        user = user || j.username || j.user;
+        key = key || j.key;
+      } catch (e) { /* not json */ }
+    } else if (val.includes(":") && !user) {
+      const idx = val.indexOf(":");
+      user = val.slice(0, idx);
+      key = key || val.slice(idx + 1);
+    }
+  };
+
+  tryBlob(env.KAGGLE_JSON || env.KaggleJson || env.KAGGLE_CREDENTIALS || env.Kagglejson);
+  if (!user || !key) {
+    for (const [k, v] of Object.entries(env)) {
+      if (/kaggle/i.test(k)) tryBlob(v);
+      if (user && key) break;
+    }
+  }
+  return { user, key };
+}
 
 export default async function handler(req, res) {
-  const user = process.env.KAGGLE_USERNAME;
-  const key = process.env.KAGGLE_KEY;
+  const { user, key } = resolveKaggle();
 
   if (req.query.health) {
-    res.status(200).json({ ok: true, keyConfigured: Boolean(user && key) });
+    const envVarsPresent = Object.keys(process.env).filter((k) => /kaggle/i.test(k));
+    res.status(200).json({ ok: true, keyConfigured: Boolean(user && key), envVarsPresent });
     return;
   }
   if (!user || !key) {
-    res.status(500).json({ error: "KAGGLE_USERNAME / KAGGLE_KEY not set in Vercel env" });
+    res.status(500).json({
+      error: "Kaggle credentials not resolvable from env",
+      hint: "set KAGGLE_USERNAME + KAGGLE_KEY, or a kaggle.json blob, then redeploy",
+    });
     return;
   }
 
