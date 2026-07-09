@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+</head>
+<body>
+<title>LISM — Fidelity Coupling Is Linear, Not Quadratic</title>
+<style>
+  :root{
+    --paper:#F5F6F8; --surface:#FFFFFF; --raise:#FBFCFD;
+    --ink:#161A20; --ink-soft:#4A5360; --ink-faint:#7C8794;
+    --line:#E4E7EC; --line-strong:#D2D7DE;
+    --accent:#B5701A; --accent-bright:#C97A1E; --accent-wash:#F6ECDD;
+    --linear:#1C7A70; --collapse:#B23A2C;
+    --shadow:0 1px 2px rgba(20,24,32,.04),0 8px 30px rgba(20,24,32,.06);
+    --font-display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --font-body:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --measure:40rem;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0E1217; --surface:#151B22; --raise:#1A212A;
+      --ink:#EAECEF; --ink-soft:#A5AEB9; --ink-faint:#727C88;
+      --line:#242C36; --line-strong:#313B47;
+      --accent:#E8A33D; --accent-bright:#F0B155; --accent-wash:#241D12;
+      --linear:#54B7AC; --collapse:#E0705E;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px rgba(0,0,0,.34);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#F5F6F8; --surface:#FFFFFF; --raise:#FBFCFD;
+    --ink:#161A20; --ink-soft:#4A5360; --ink-faint:#7C8794;
+    --line:#E4E7EC; --line-strong:#D2D7DE;
+    --accent:#B5701A; --accent-bright:#C97A1E; --accent-wash:#F6ECDD;
+    --linear:#1C7A70; --collapse:#B23A2C;
+    --shadow:0 1px 2px rgba(20,24,32,.04),0 8px 30px rgba(20,24,32,.06);
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1217; --surface:#151B22; --raise:#1A212A;
+    --ink:#EAECEF; --ink-soft:#A5AEB9; --ink-faint:#727C88;
+    --line:#242C36; --line-strong:#313B47;
+    --accent:#E8A33D; --accent-bright:#F0B155; --accent-wash:#241D12;
+    --linear:#54B7AC; --collapse:#E0705E;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px rgba(0,0,0,.34);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);
+    font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--measure);margin:0 auto;padding:0 1.5rem}
+  h1,h2,h3{font-family:var(--font-display);font-weight:600;text-wrap:balance;letter-spacing:-.01em}
+  a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+  a:hover{border-bottom-color:var(--accent)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+  .eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-faint)}
+
+  /* ---- hero ---- */
+  header.hero{border-bottom:1px solid var(--line);
+    background:
+      radial-gradient(120% 90% at 88% -10%, var(--accent-wash) 0%, transparent 55%),
+      var(--paper);}
+  .hero-inner{padding:5.5rem 0 3.5rem}
+  .hero .eyebrow{display:flex;gap:.75rem;align-items:center}
+  .hero .eyebrow::after{content:"";height:1px;flex:1;background:var(--line-strong)}
+  h1{font-size:clamp(2.3rem,6vw,3.6rem);line-height:1.05;margin:1.4rem 0 0}
+  h1 em{font-style:normal;color:var(--accent)}
+  h1 .strike{color:var(--ink-faint);text-decoration:line-through;text-decoration-thickness:.06em;
+    text-decoration-color:color-mix(in srgb,var(--collapse) 60%,transparent)}
+  .dek{font-size:1.2rem;color:var(--ink-soft);margin:1.5rem 0 0;max-width:34rem}
+  .meta{margin-top:2.2rem;display:flex;flex-wrap:wrap;gap:.6rem 1.4rem;font-family:var(--font-mono);
+    font-size:.78rem;color:var(--ink-faint);letter-spacing:.03em}
+  .meta b{color:var(--ink-soft);font-weight:500}
+  .verdict{display:inline-flex;align-items:center;gap:.5rem;margin-top:1.6rem;padding:.4rem .85rem;
+    border:1px solid color-mix(in srgb,var(--linear) 45%,var(--line));border-radius:999px;
+    background:color-mix(in srgb,var(--linear) 9%,transparent);
+    font-family:var(--font-mono);font-size:.76rem;letter-spacing:.04em;color:var(--linear)}
+  .verdict .dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--linear)}
+
+  section{padding:3.5rem 0;border-bottom:1px solid var(--line)}
+  .lead-in{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 .9rem}
+  h2{font-size:clamp(1.6rem,3.6vw,2.1rem);margin:0 0 .4rem}
+  h2+.sub{color:var(--ink-soft);margin:0 0 1.8rem}
+  p{max-width:var(--measure)}
+
+  /* ---- figures ---- */
+  figure{margin:2rem 0 0;padding:1.25rem;background:var(--surface);border:1px solid var(--line);
+    border-radius:14px;box-shadow:var(--shadow)}
+  figure canvas{display:block;width:100%;height:auto}
+  figcaption{font-family:var(--font-mono);font-size:.74rem;color:var(--ink-faint);margin-top:.9rem;
+    line-height:1.5}
+  .legend{display:flex;gap:1.3rem;flex-wrap:wrap;font-family:var(--font-mono);font-size:.74rem;
+    color:var(--ink-soft);margin-top:.4rem}
+  .legend span{display:inline-flex;align-items:center;gap:.45rem}
+  .swatch{width:1.4rem;height:0;border-top-width:3px;border-top-style:solid}
+
+  /* ---- cohort cards ---- */
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}
+  @media (max-width:620px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1.5rem;
+    box-shadow:var(--shadow)}
+  .card h3{font-size:1.15rem;margin:.2rem 0 .1rem}
+  .card .tag{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint)}
+  .card ul{list-style:none;margin:1.1rem 0 0;padding:0;display:flex;flex-direction:column;gap:.7rem}
+  .card li{display:flex;justify-content:space-between;gap:1rem;font-size:.92rem;
+    border-top:1px dashed var(--line);padding-top:.7rem}
+  .card li:first-child{border-top:0;padding-top:0}
+  .card li span:first-child{color:var(--ink-soft)}
+  .card li b{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600;
+    color:var(--ink);white-space:nowrap}
+  .ok{color:var(--linear)!important}
+  .no{color:var(--collapse)!important}
+
+  /* ---- tau_v panel ---- */
+  .signal{display:grid;grid-template-columns:1fr;gap:1.5rem;align-items:center}
+  @media (min-width:720px){.signal{grid-template-columns:1.05fr .95fr}}
+  .bignum{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-weight:600;
+    font-size:clamp(2.6rem,7vw,3.6rem);line-height:1;color:var(--accent);letter-spacing:-.02em}
+  .bignum small{display:block;font-size:.8rem;font-weight:400;letter-spacing:.03em;color:var(--ink-faint);
+    margin-top:.5rem;font-family:var(--font-mono)}
+
+  /* ---- gifts ---- */
+  .gifts{display:grid;gap:1rem;margin-top:1.5rem}
+  .gift{display:grid;grid-template-columns:auto 1fr;gap:1.1rem;padding:1.3rem 1.4rem;background:var(--surface);
+    border:1px solid var(--line);border-radius:14px}
+  .gift .n{font-family:var(--font-mono);font-size:.8rem;color:var(--accent);padding-top:.15rem}
+  .gift h3{margin:.05rem 0 .35rem;font-size:1.12rem}
+  .gift p{margin:0;color:var(--ink-soft);font-size:.95rem}
+
+  /* ---- scope ---- */
+  .scope{background:var(--raise);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:0 12px 12px 0;padding:1.4rem 1.6rem;margin-top:1.4rem}
+  .scope ul{margin:.4rem 0 0;padding-left:1.1rem;color:var(--ink-soft)}
+  .scope li{margin:.5rem 0;font-size:.95rem}
+
+  footer{padding:3rem 0 4rem}
+  .links{display:flex;flex-wrap:wrap;gap:.7rem;margin:1.3rem 0}
+  .btn{font-family:var(--font-mono);font-size:.8rem;letter-spacing:.02em;padding:.6rem 1rem;
+    border:1px solid var(--line-strong);border-radius:9px;color:var(--ink);background:var(--surface)}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .cite{font-family:var(--font-mono);font-size:.74rem;color:var(--ink-faint);background:var(--raise);
+    border:1px solid var(--line);border-radius:10px;padding:1rem 1.1rem;margin-top:1.2rem;
+    overflow-x:auto;line-height:1.6}
+  .foot-note{color:var(--ink-faint);font-size:.82rem;margin-top:2rem}
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{opacity:0;transform:translateY(12px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.in{opacity:1;transform:none}
+  }
+</style>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Linear Institution Stability Model · LISM</p>
+    <h1>Fidelity coupling is <em>linear</em>,<br><span class="strike">not quadratic</span>.</h1>
+    <p class="dek">Across a living cell and a software ecosystem, robustness tracks communication fidelity
+      in a straight line — no hidden cliff. And one cheap, universal number quietly forecasts collapse.</p>
+    <div class="verdict"><span class="dot"></span>Pre-registered · reproduced from raw data</div>
+    <div class="meta">
+      <span><b>Author</b> Labib Mago</span>
+      <span><b>Group</b> Novora Research Initiative</span>
+      <span><b>Cohorts</b> Yeast N=4,825 · GitHub N=992</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="reveal">
+    <div class="wrap">
+      <p class="lead-in">The claim under test</p>
+      <h2>A seductive, expensive idea — checked where it could actually fail</h2>
+      <p class="sub">Does a small loss of communication fidelity compound into a disproportionate,
+        accelerating collapse (a squared penalty, E&nbsp;=&nbsp;U·D²), or does it cost only in proportion
+        (E&nbsp;=&nbsp;U·D)?</p>
+      <p>If collapse truly spiraled, the rational response is to chase perfection at any cost. We tested the
+        idea only where a valid, channel-intact two-hop measurement was possible — a yeast protein interactome
+        and 992 pre-registered open-source repositories — with the falsification criterion fixed <em>before</em>
+        the data were seen. In both, the squared term earns its keep in neither.</p>
+      <figure>
+        <canvas id="couple" width="1200" height="620" aria-label="Linear versus quadratic coupling; the data favor the straight line."></canvas>
+        <div class="legend">
+          <span><i class="swatch" style="border-top-color:var(--linear)"></i>Linear · E = U·D</span>
+          <span><i class="swatch" style="border-top-color:var(--collapse);border-top-style:dashed"></i>Quadratic · E = U·D²</span>
+        </div>
+        <figcaption>The quadratic predicts an accelerating cliff at low fidelity. The measured cohorts show
+          no such curvature — the linear model is favored (GitHub ΔAIC = −3.48; yeast quadratic adds nothing).</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="lead-in">The evidence · two independent domains</p>
+      <h2>A cell and a codebase, and they agree</h2>
+      <p class="sub">Chosen because in both the outcome is <em>measured</em>, not assumed, and the two
+        communication hops are genuinely independent (the channel-intact gate, VIF).</p>
+      <div class="cards">
+        <div class="card">
+          <p class="tag">Biological</p>
+          <h3>Yeast interactome</h3>
+          <ul>
+            <li><span>Proteins</span><b>4,825</b></li>
+            <li><span>Channel intact (VIF)</span><b class="ok">1.003</b></li>
+            <li><span>Linear separates essential</span><b class="ok">AUC 0.73</b></li>
+            <li><span>Quadratic adds</span><b class="no">nothing</b></li>
+          </ul>
+        </div>
+        <div class="card">
+          <p class="tag">Pre-registered</p>
+          <h3>GitHub repositories</h3>
+          <ul>
+            <li><span>Repositories</span><b>992</b></li>
+            <li><span>Channel intact (VIF)</span><b class="ok">1.02</b></li>
+            <li><span>Quadratic verdict</span><b class="no">disconfirmed</b></li>
+            <li><span>ΔAIC (quad − lin)</span><b>−3.48</b></li>
+          </ul>
+        </div>
+      </div>
+      <p style="margin-top:1.5rem;font-size:.95rem;color:var(--ink-soft)">A dramatic earlier reading — that the
+        quadratic was <em>anti-predictive</em> (AUC 0.41, below chance) — turned out to be a non-converged-fit
+        artifact. Found, reproduced, and corrected: under any converging fit the quadratic simply doesn't help.</p>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="lead-in">The warning light</p>
+      <h2>One free number predicts collapse: τ&#8202;<sub>v</sub></h2>
+      <p class="sub">Not how polished a system is — how fast it closes the risks it has already flagged for itself.</p>
+      <div class="signal">
+        <figure style="margin:0">
+          <canvas id="tau" width="1000" height="440" aria-label="Mean time to close a system's own flagged issues: failed repositories 50.6 days, survivors 19.8 days."></canvas>
+          <figcaption>Mean issue-close latency, 992 repositories. Mann–Whitney one-tailed p ≈ 10⁻³¹
+            (≈ 10⁻²⁹ on directly measured latency; imputation ran <em>against</em> the finding).</figcaption>
+        </figure>
+        <div>
+          <div class="bignum">2.6×<small>slower to clear its own backlog — the failing system's tell</small></div>
+          <p style="font-size:.95rem;color:var(--ink-soft);margin-top:1.4rem">Computable from records every
+            organization already keeps: ticket queues, audit-finding logs, incident timestamps, bug trackers.
+            The same construct re-instantiates for hospitals (root-cause-analysis closure), finance
+            (audit remediation), and software (time-to-patch). A reference monitor ships in the repository.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="lead-in">Why it matters</p>
+      <h2>Three durable gifts to technology &amp; civilization</h2>
+      <div class="gifts">
+        <div class="gift"><span class="n">01</span><div>
+          <h3>Stop fearing the cliff</h3>
+          <p>Breakdowns cost in proportion, not catastrophically — so invest in many steady improvements, not
+            ruinously expensive perfection. A wrong "everything spirals" prior quietly misdirects budgets in
+            medicine, software, finance, and regulation.</p></div></div>
+        <div class="gift"><span class="n">02</span><div>
+          <h3>Watch one free gauge</h3>
+          <p>A rising backlog of unresolved, self-flagged risk is the earliest, cheapest, most universal sign
+            of impending failure — in a hospital, a bank, a codebase, or a government.</p></div></div>
+        <div class="gift"><span class="n">03</span><div>
+          <h3>Demand disprovable claims</h3>
+          <p>The method's proudest credential is a pre-registered failure. It locked predictions before the
+            data, retired its own false signals, and reported inconclusive as inconclusive — trustworthy
+            precisely because it can be proven wrong.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="wrap">
+      <p class="lead-in">Honest scope · part of the value</p>
+      <h2>What LISM does not claim</h2>
+      <div class="scope">
+        <ul>
+          <li>The 50.6 / 19.8-day figures are specific to public repositories — <b>not</b> universal thresholds.
+            Read the <em>trajectory</em>, not the number.</li>
+          <li>The relationship is correlational and probabilistic — a warning light, not an oracle. One input to
+            human review, never an automated trigger.</li>
+          <li>Linear coupling is proven only in the two domains that admitted a valid test. Legislation and
+            judicial coupling, run on live Congress.gov data, returned <em>inconclusive</em> — the required
+            independent second hop isn't recorded anywhere reachable. Stated, not glossed.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p class="lead-in">Put it out</p>
+      <h2 style="font-size:1.5rem">Read, reproduce, reuse</h2>
+      <p style="color:var(--ink-soft);font-size:.95rem">Manuscript, pre-registration, an independent referee
+        report, full reproduction code from raw public data, and the τ_v early-warning monitor — every headline
+        number recomputes.</p>
+      <div class="links">
+        <a class="btn" href="https://github.com/evmotorcycles/ihcei-ecosystem">Repository ↗</a>
+        <a class="btn" href="https://github.com/evmotorcycles/ihcei-ecosystem/pull/36">Pull request #36 ↗</a>
+        <a class="btn" href="https://github.com/evmotorcycles/ihcei-ecosystem/blob/main/REPRODUCIBILITY.md">Reproducibility ↗</a>
+      </div>
+      <div class="cite">Mago, L. — <b>Information-Fidelity Coupling in Networks Is Linear, Not Quadratic</b>
+        (LISM): A Pre-Registered Cross-Domain Test, with Enforcement Latency as a Collapse Predictor.
+        Novora Research Initiative, Open Science Division.</div>
+      <p class="foot-note">Cohorts: STRING v12 · DEG (Giaever et&nbsp;al. 2002) · BioGRID · 992 public GitHub
+        repositories. Manuscript &amp; docs CC-BY-4.0; code MIT.</p>
+    </div>
+  </footer>
+</main>
+
+<script>
+(function(){
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+
+  function setup(cv){
+    var dpr = Math.min(devicePixelRatio||1, 2);
+    var rect = cv.getBoundingClientRect();
+    var w = rect.width || cv.width, h = w * (cv.height/cv.width);
+    cv.width = w*dpr; cv.height = h*dpr;
+    cv.style.height = h+"px";
+    var ctx = cv.getContext("2d"); ctx.scale(dpr,dpr);
+    return {ctx:ctx, w:w, h:h};
+  }
+
+  // ---- Figure 1: linear vs quadratic coupling ----
+  function drawCouple(t){
+    var s = setup(cpl), ctx=s.ctx, W=s.w, H=s.h;
+    var padL=44, padR=18, padT=18, padB=34;
+    var x0=padL, x1=W-padR, y0=H-padB, y1=padT;
+    ctx.clearRect(0,0,W,H);
+    var line=css("--line"), faint=css("--ink-faint"), lin=css("--linear"), quad=css("--collapse");
+    // grid
+    ctx.strokeStyle=line; ctx.lineWidth=1; ctx.font="11px ui-monospace,monospace"; ctx.fillStyle=faint;
+    for(var i=0;i<=4;i++){
+      var gy=y0+(y1-y0)*(i/4);
+      ctx.beginPath();ctx.moveTo(x0,gy);ctx.lineTo(x1,gy);ctx.stroke();
+    }
+    ctx.textAlign="center";
+    ctx.fillText("communication fidelity  D →", (x0+x1)/2, H-8);
+    ctx.save();ctx.translate(13,(y0+y1)/2);ctx.rotate(-Math.PI/2);
+    ctx.fillText("viability  E →",0,0);ctx.restore();
+    var X=function(u){return x0+(x1-x0)*u;}, Y=function(v){return y0+(y1-y0)*v;};
+    function curve(fn,color,dash,prog){
+      ctx.strokeStyle=color;ctx.lineWidth=3;ctx.setLineDash(dash);ctx.lineJoin="round";
+      ctx.beginPath();
+      for(var u=0;u<=prog+0.0001;u+=0.01){ctx.lineTo(X(u),Y(fn(u)));}
+      ctx.stroke();ctx.setLineDash([]);
+    }
+    curve(function(u){return u;}, lin, [], t);
+    curve(function(u){return u*u;}, quad, [7,6], t);
+    // endpoint dots
+    if(t>=1){
+      ctx.fillStyle=lin;ctx.beginPath();ctx.arc(X(1),Y(1),4,0,7);ctx.fill();
+      ctx.fillStyle=quad;ctx.beginPath();ctx.arc(X(1),Y(1),4,0,7);ctx.fill();
+      // annotate divergence
+      ctx.fillStyle=quad;ctx.textAlign="left";ctx.font="11px ui-monospace,monospace";
+      ctx.fillText("predicted cliff — not seen in data", X(0.14), Y(0.06));
+    }
+  }
+  // ---- Figure 2: tau_v bars ----
+  function drawTau(t){
+    var s=setup(tv), ctx=s.ctx, W=s.w, H=s.h;
+    ctx.clearRect(0,0,W,H);
+    var faint=css("--ink-faint"), soft=css("--ink-soft"), lin=css("--linear"), col=css("--collapse");
+    var max=60, rows=[{l:"failed",v:50.6,c:col},{l:"survived",v:19.8,c:lin}];
+    var padL=96, padR=54, top=44, bh=54, gap=42;
+    ctx.font="13px ui-monospace,monospace";
+    rows.forEach(function(r,i){
+      var y=top+i*(bh+gap);
+      var full=(W-padL-padR), bw=full*(r.v/max)*t;
+      // track
+      ctx.fillStyle=css("--line");ctx.beginPath();
+      if(ctx.roundRect)ctx.roundRect(padL,y,full,bh,7);else ctx.rect(padL,y,full,bh);ctx.fill();
+      // bar
+      ctx.fillStyle=r.c;ctx.beginPath();
+      if(ctx.roundRect)ctx.roundRect(padL,y,Math.max(bw,7),bh,7);else ctx.rect(padL,y,bw,bh);ctx.fill();
+      // label
+      ctx.fillStyle=soft;ctx.textAlign="right";ctx.font="13px ui-monospace,monospace";
+      ctx.fillText(r.l,padL-14,y+bh/2+5);
+      // value
+      ctx.fillStyle=r.c;ctx.textAlign="left";ctx.font="600 20px ui-monospace,monospace";
+      ctx.fillText((r.v*t).toFixed(1)+" d",padL+Math.max(bw,7)+12,y+bh/2+7);
+    });
+    ctx.fillStyle=faint;ctx.textAlign="left";ctx.font="11px ui-monospace,monospace";
+    ctx.fillText("mean days to close a self-flagged issue",padL,H-10);
+  }
+
+  var cpl=document.getElementById("couple"), tv=document.getElementById("tau");
+  function animate(draw){
+    if(reduce){draw(1);return;}
+    var start=null;
+    function step(ts){ if(!start)start=ts; var p=Math.min((ts-start)/900,1);
+      draw(1-Math.pow(1-p,3)); if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  }
+  var seen={};
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){e.target.classList.add("in");
+      if(e.target===cpl&&!seen.c){seen.c=1;animate(drawCouple);}
+      if(e.target===tv&&!seen.t){seen.t=1;animate(drawTau);}
+    }});},{threshold:.35});
+  document.querySelectorAll(".reveal").forEach(function(el){io.observe(el);});
+  [cpl,tv].forEach(function(c){io.observe(c);});
+  // redraw statically on theme change / resize
+  function redraw(){drawCouple(1);drawTau(1);}
+  var mo=new MutationObserver(redraw);
+  mo.observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redraw);
+  var rt; addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(redraw,150);});
+  // first paint (in case already in view)
+  requestAnimationFrame(function(){ if(!seen.c&&cpl.getBoundingClientRect().top<innerHeight){seen.c=1;animate(drawCouple);} drawTau(reduce?1:0); });
+})();
+</script>
+</body>
+</html>
