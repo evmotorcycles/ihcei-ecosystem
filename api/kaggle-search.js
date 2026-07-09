@@ -14,11 +14,13 @@
 // so it works whatever you named the Vercel env var (e.g. Kagglekey, like the
 // Congresskey var the bill-text proxy uses).
 
-function resolveKaggle() {
+function resolveKaggle(userOverride) {
   const env = process.env;
-  let user = env.KAGGLE_USERNAME || env.KaggleUsername || env.kaggle_username || env.KAGGLE_USER;
+  let user =
+    userOverride || env.KAGGLE_USERNAME || env.KaggleUsername || env.kaggle_username || env.KAGGLE_USER;
   let key =
     env.KAGGLE_KEY || env.Kagglekey || env.KaggleKey || env.KAGGLEKEY || env.kaggle_key;
+  let bareKey = null;
 
   const tryBlob = (v) => {
     if (!v) return;
@@ -29,36 +31,45 @@ function resolveKaggle() {
         user = user || j.username || j.user;
         key = key || j.key;
       } catch (e) { /* not json */ }
-    } else if (val.includes(":") && !user) {
+    } else if (val.includes(":")) {
       const idx = val.indexOf(":");
-      user = val.slice(0, idx);
+      user = user || val.slice(0, idx);
       key = key || val.slice(idx + 1);
+    } else {
+      bareKey = bareKey || val; // a lone token: assume it is the API key
     }
   };
 
   tryBlob(env.KAGGLE_JSON || env.KaggleJson || env.KAGGLE_CREDENTIALS || env.Kagglejson);
-  if (!user || !key) {
-    for (const [k, v] of Object.entries(env)) {
-      if (/kaggle/i.test(k)) tryBlob(v);
-      if (user && key) break;
-    }
+  for (const [k, v] of Object.entries(env)) {
+    if (/kaggle/i.test(k)) tryBlob(v);
+    if (user && key) break;
   }
+  if (!key && bareKey) key = bareKey; // key from a lone *kaggle* token
   return { user, key };
 }
 
 export default async function handler(req, res) {
-  const { user, key } = resolveKaggle();
+  const { user, key } = resolveKaggle(req.query.user);
 
   if (req.query.health) {
     const envVarsPresent = Object.keys(process.env).filter((k) => /kaggle/i.test(k));
-    res.status(200).json({ ok: true, keyConfigured: Boolean(user && key), envVarsPresent });
+    res.status(200).json({
+      ok: true,
+      keyConfigured: Boolean(user && key),
+      keyResolved: Boolean(key),
+      userResolved: Boolean(user),
+      envVarsPresent,
+      note: "Kaggle needs username + key; pass ?user=<kaggle_username> if only the key is in env",
+    });
     return;
   }
-  if (!user || !key) {
-    res.status(500).json({
-      error: "Kaggle credentials not resolvable from env",
-      hint: "set KAGGLE_USERNAME + KAGGLE_KEY, or a kaggle.json blob, then redeploy",
-    });
+  if (!key) {
+    res.status(500).json({ error: "Kaggle API key not resolvable from env" });
+    return;
+  }
+  if (!user) {
+    res.status(400).json({ error: "Kaggle username required: pass ?user=<kaggle_username> (key is in env)" });
     return;
   }
 
