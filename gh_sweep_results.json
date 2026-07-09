@@ -1,0 +1,96 @@
+{
+ "clinical": [
+  {
+   "ref": "AbhijeethReddy-0704/Patient-Safety-and-Hospital-Performance",
+   "description": "CMS datasets hospital performance quality acute clinical care analytics pipeline"
+  },
+  {
+   "ref": "OpenNeuroDatasets/ds006949",
+   "description": "Safety MRIs for Focused Ultrasound patient"
+  },
+  {
+   "ref": "Sakinat-Folorunso/Facilitating-ai-patient-data-training",
+   "description": "AI patient data drug safety synthetic datasets pharmacovigilance"
+  },
+  {
+   "ref": "rashi8699/Drug-Safety-Cohort-Simulation",
+   "description": "synthetic dataset patient demographics drug exposure event occurrence"
+  },
+  {
+   "ref": "PratyushJalkote/Drug-Safety-Prediction-ML",
+   "description": "predict suitable drug from health indicators dataset ML"
+  },
+  {
+   "ref": "fatima-zahra20/US-Hospital-Quality-Spending-Readmission-Risk",
+   "description": "CMS Medicare hospital readmissions mortality patient safety infections spending"
+  },
+  {
+   "ref": "Vakula289/Optimizing-Respiratory-Management-MDP",
+   "description": "MIMIC-IV dataset respiratory care patient safety oxygen"
+  },
+  {
+   "ref": "kaustubhpachpande/Capstone-Project",
+   "description": "Leapfrog Group dataset hospital safety performance statistical testing"
+  }
+ ],
+ "contract": [
+  {
+   "ref": "thomasbln/graphrag-legal-demo",
+   "description": "contract analysis Neo4j OpenAI CUAD dataset"
+  },
+  {
+   "ref": "syncora-ai/synthetic-legal-contracts-dataset",
+   "description": "synthetic legal contract Q&A generated SEC 8-K disclosures LLM fine-tuning"
+  },
+  {
+   "ref": "meghaarajeev/ClauseX",
+   "description": "contract validation BERT classifying clauses deviations compliance"
+  },
+  {
+   "ref": "pspandana/legal-contract-analyzer",
+   "description": "contract analysis CUAD dataset NeurIPS 2021"
+  },
+  {
+   "ref": "anthonyrodrigues443/Legal-Contract-Analyzer",
+   "description": "NER clause extraction risk scoring contracts CUAD dataset"
+  },
+  {
+   "ref": "oderannaji/LEDGAR-DATASET",
+   "description": "LEDGAR legal contract provisions SEC filings 100000 provisions 12000 clause labels"
+  },
+  {
+   "ref": "Mr-Dintov/Legal-Contract-Clause-Risk-Corpus",
+   "description": "synthetic legal dataset clause-level contract risk classification"
+  }
+ ],
+ "legislation": [
+  {
+   "ref": "neo4j-graph-examples/legis-graph",
+   "description": "US Congress graph bills votes members legislative-data"
+  },
+  {
+   "ref": "zli12321/CongressionalBill",
+   "description": "dataset congressional bill"
+  },
+  {
+   "ref": "kgreyy/18th-congress-dataset",
+   "description": "dataset bills and proponents"
+  },
+  {
+   "ref": "amelia-dias/Congressional-Bipartisanship-US-Trade",
+   "description": "trade bills roll call votes bipartisanship score CSV dataset"
+  },
+  {
+   "ref": "oliversoctopus/congressional-bill-tracker",
+   "description": "predict passage likelihood machine learning enhanced dataset of 6 congresses"
+  },
+  {
+   "ref": "ntpusu/legislative-data",
+   "description": "legislative datasets bills committee reports bylaws"
+  },
+  {
+   "ref": "apmoskal/Congressional-Lobbying-Data",
+   "description": "OpenSecrets lobbying datasets reports lobbyists bills agencies regression"
+  }
+ ]
+}
