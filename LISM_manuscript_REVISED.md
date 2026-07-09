@@ -52,6 +52,22 @@ quadratic penalty — carry the predictive signal. We refer to the resulting lin
 account, E = U·D with τ_v as a leading collapse indicator, as the Linear Institution
 Stability Model (LISM).
 
+## Significance Statement
+
+A widespread intuition — that systemic viability couples to communication fidelity
+*quadratically*, so small fidelity losses compound into accelerating collapse — underwrites
+costly "zero-defect" policy across medicine, software, finance, and governance, yet had never
+been tested under conditions that could falsify it. We pre-register such a test and run it in
+every domain where an independent two-hop measurement is possible. The quadratic is
+disconfirmed and a linear law, E = U·D, holds in three independent channel-intact domains
+(yeast N = 4,825; GitHub N = 992; a knowledge network N = 793). From the same program we
+validate a cheap, deployable early-warning instrument — enforcement latency τ_v, in a
+probabilistic-hazard formulation that outperforms a brittle deterministic fidelity gate — and
+a reusable, anti-circular protocol for testing coupling claims. The contribution is a
+corrected prior, a usable sensor, and a method, each reproducible from raw public data.
+(A detailed contributions statement and anticipated-objection table are in
+`CONTRIBUTIONS_FOR_REVIEW.md`.)
+
 ## 1. Introduction
 
 Predicting collapse in biological, technical, and organizational networks is a long-standing
