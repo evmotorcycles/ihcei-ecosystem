@@ -81,7 +81,14 @@ def main():
     print(f"\n[single-term AUC]  linear U*D_s = {auc(U*Ds):.3f}   quad U*D_s^2 = {auc(U*Ds**2):.3f}")
 
     def fit(cols):
-        return sm.Logit(E, sm.add_constant(np.column_stack(cols))).fit(disp=0)
+        X = sm.add_constant(np.column_stack(cols))
+        try:
+            m = sm.Logit(E, X).fit(disp=0)
+            if not np.isfinite(m.llf):
+                raise ValueError
+            return m
+        except Exception:
+            return sm.Logit(E, X).fit_regularized(disp=0, alpha=1.0, L1_wt=0.0)
     m1, m2 = fit([U, Ds]), fit([U, Ds, Ds ** 2])
     lr = 2 * (m2.llf - m1.llf)
     p = float(chi2.sf(max(lr, 0), 1))
