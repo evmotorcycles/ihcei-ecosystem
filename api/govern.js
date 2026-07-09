@@ -200,3 +200,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'govern error', detail: e.message });
   }
 }
+
+// Named exports so the validation harness (api/calibrate.js) runs the SAME
+// evidence + posterior code, not a copy. Single source of truth.
+export { extractEvidenceFast, deepEvidence, posterior, band };
