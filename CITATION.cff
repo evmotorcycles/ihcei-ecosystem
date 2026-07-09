@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use LISM, the τ_v monitor, or this analysis code, please cite it as below."
+title: "Information-Fidelity Coupling in Networks Is Linear, Not Quadratic (LISM): A Pre-Registered Cross-Domain Test, with Enforcement Latency as a Collapse Predictor"
+authors:
+  - family-names: Mago
+    given-names: Labib
+    affiliation: "Novora Research Initiative, Open Science Division"
+type: software
+repository-code: "https://github.com/evmotorcycles/ihcei-ecosystem"
+license: MIT
+keywords:
+  - network science
+  - information fidelity
+  - pre-registration
+  - enforcement latency
+  - early-warning signals
+  - reproducibility
+abstract: >
+  The Linear Institution Stability Model (LISM) tests whether systemic viability
+  couples linearly or quadratically to two-hop communication fidelity. Across a
+  yeast protein interactome (N = 4,825) and a pre-registered GitHub cohort
+  (N = 992), coupling is linear; the quadratic interaction is unsupported.
+  Enforcement latency (τ_v) is a robust, measured leading indicator of collapse.
+  The deposit includes reproduction code, a domain-agnostic τ_v early-warning
+  monitor, and an independent referee report.
