@@ -54,18 +54,30 @@ Stability Model (LISM).
 
 ## Significance Statement
 
-A widespread intuition — that systemic viability couples to communication fidelity
-*quadratically*, so small fidelity losses compound into accelerating collapse — underwrites
-costly "zero-defect" policy across medicine, software, finance, and governance, yet had never
-been tested under conditions that could falsify it. We pre-register such a test and run it in
-every domain where an independent two-hop measurement is possible. The quadratic is
-disconfirmed and a linear law, E = U·D, holds in three independent channel-intact domains
-(yeast N = 4,825; GitHub N = 992; a knowledge network N = 793). From the same program we
-validate a cheap, deployable early-warning instrument — enforcement latency τ_v, in a
-probabilistic-hazard formulation that outperforms a brittle deterministic fidelity gate — and
-a reusable, anti-circular protocol for testing coupling claims. The contribution is a
-corrected prior, a usable sensor, and a method, each reproducible from raw public data.
-(A detailed contributions statement and anticipated-objection table are in
+How organizations, institutions, and biological networks slide into collapse is a question
+that cuts across the behavioral and systems sciences, and a pervasive, intuitive assumption
+shapes how we act on it: that viability depends on communication fidelity *non-linearly*, so
+that small losses of fidelity compound into accelerating, catastrophic failure. That
+assumption underwrites expensive "zero-defect" regimes in clinical safety, software
+reliability, financial control, and public administration — and it has never been tested
+under conditions that could prove it wrong. Here we show it is wrong where it can be checked:
+across a biological interactome, a software ecosystem, and a human knowledge network, systemic
+viability couples to two-hop fidelity **linearly, not quadratically** — collapse is
+proportionate, not a cliff. This reframes how self-monitoring systems should be built, and it
+yields a concrete, deployable diagnostic: **enforcement latency (τ_v)** — how fast a system
+resolves the risks it has already flagged — a real-time early-warning sensor of viability that
+runs on records every organization already keeps, and that in a probabilistic-hazard form
+outperforms brittle content-based monitors.
+
+The strength of the claim is the severity of the test behind it. The central prediction was
+**pre-registered with a cryptographically committed falsification criterion fixed before any
+data were seen**; a variance-inflation gate certified that the two communication hops carried
+independent information (so the test was valid, not a collapsed proxy); and an automated
+screen of 52 candidate datasets across three further domains was used to *prevent* false
+positives by refusing tests the data could not support. Every headline result recomputes from
+raw public data. It is precisely this severity — a discipline built to disconfirm itself — that
+licenses trusting the linear reality, and the τ_v sensor, in consequential real-world settings.
+(A detailed contributions statement and an anticipated-objection table are in
 `CONTRIBUTIONS_FOR_REVIEW.md`.)
 
 ## 1. Introduction
