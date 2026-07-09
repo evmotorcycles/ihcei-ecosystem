@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "title": "Information-Fidelity Coupling in Networks Is Linear, Not Quadratic: A Pre-Registered Cross-Domain Test, with Enforcement Latency as a Collapse Predictor (LISM)",
+    "upload_type": "publication",
+    "publication_type": "preprint",
+    "description": "The Linear Institution Stability Model (LISM). We test whether systemic viability couples linearly (E = U·D) or quadratically (E = U·D²) to two-hop communication fidelity, in the two domains admitting a valid, channel-intact test: a Saccharomyces cerevisiae protein interactome (N = 4,825; VIF = 1.003) and a pre-registered GitHub repository cohort (N = 992; quadratic disconfirmed, ΔAIC = -3.48). The linear model is favored in both; a previously reported 'anti-predictive' quadratic AUC (0.41) is shown to be a non-converged-fit artifact and corrected. Separately and pre-registered, enforcement latency τ_v is a robust leading indicator of failure (failed 50.6 d vs surviving 19.8 d; Mann-Whitney p ≈ 1e-31). Legislation and judicial coupling were run on live Congress.gov data and returned inconclusive for lack of an independent second hop. Includes full reproduction code, a domain-agnostic τ_v early-warning monitor, and an independent referee report.",
+    "creators": [
+      {
+        "name": "Mago, Labib",
+        "affiliation": "Novora Research Initiative, Open Science Division"
+      }
+    ],
+    "keywords": [
+      "network science",
+      "information fidelity",
+      "model selection",
+      "pre-registration",
+      "protein interactome",
+      "gene essentiality",
+      "software repository survival",
+      "enforcement latency",
+      "early-warning signals",
+      "institutional resilience",
+      "reproducibility"
+    ],
+    "license": "CC-BY-4.0",
+    "access_right": "open",
+    "language": "eng",
+    "related_identifiers": [
+      {
+        "relation": "isSupplementTo",
+        "identifier": "https://github.com/evmotorcycles/ihcei-ecosystem",
+        "scheme": "url"
+      }
+    ],
+    "notes": "Raw public inputs (STRING v12, DEG, BioGRID) are not redistributed; fetch from source per REPRODUCIBILITY.md. Code: MIT; manuscript and documentation: CC-BY-4.0."
+  }
+}
