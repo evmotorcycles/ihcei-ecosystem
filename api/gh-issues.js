@@ -25,12 +25,50 @@ export default async function handler(req, res) {
     res.status(200).json({ ok: true, tokenConfigured: Boolean(token) });
     return;
   }
-  const repo = req.query.repo;
-  if (!repo || !/^[^/]+\/[^/]+$/.test(repo)) {
-    res.status(400).json({ error: "missing/invalid ?repo=owner/name" });
+  const pages = Math.min(Math.max(parseInt(req.query.pages || "3", 10) || 3, 1), 10);
+  const DAY = 86400000, CAP = 365;
+  const NOW = Date.now();
+
+  // Batch summary mode: ?repos=a/b,c/d&summary=1 -> compact per-repo tau_v (no raw issues)
+  if (req.query.repos) {
+    const list = String(req.query.repos).split(",").map((s) => s.trim()).filter(Boolean).slice(0, 10);
+    const out = [];
+    for (const rp of list) {
+      try {
+        const meta = await gh(`https://api.github.com/repos/${rp}`, token);
+        if (!meta.ok) { out.push({ repo: rp, error: `meta ${meta.status}` }); continue; }
+        const m = await meta.json();
+        const lats = [];
+        for (let page = 1; page <= pages; page++) {
+          const r = await gh(`https://api.github.com/repos/${rp}/issues?state=all&per_page=100&page=${page}&sort=created&direction=desc`, token);
+          if (!r.ok) break;
+          const arr = await r.json();
+          for (const it of arr) {
+            if (it.pull_request || !it.closed_at) continue;
+            const d = Math.min(Math.max((Date.parse(it.closed_at) - Date.parse(it.created_at)) / DAY, 0), CAP);
+            lats.push(d);
+          }
+          if (arr.length < 100) break;
+        }
+        const pushed = Date.parse(m.pushed_at);
+        const stale = !pushed || (NOW - pushed) / DAY > 730;
+        out.push({
+          repo: rp, archived: Boolean(m.archived), pushed_at: (m.pushed_at || "").slice(0, 10),
+          stargazers: m.stargazers_count, E: (m.archived || stale) ? 0 : 1,
+          n_closed: lats.length,
+          tau_v: lats.length ? Number((lats.reduce((a, b) => a + b, 0) / lats.length).toFixed(2)) : null,
+        });
+      } catch (e) { out.push({ repo: rp, error: String((e && e.message) || e) }); }
+    }
+    res.status(200).json({ mode: "summary", pages, count: out.length, repos: out });
     return;
   }
-  const pages = Math.min(Math.max(parseInt(req.query.pages || "3", 10) || 3, 1), 10);
+
+  const repo = req.query.repo;
+  if (!repo || !/^[^/]+\/[^/]+$/.test(repo)) {
+    res.status(400).json({ error: "missing/invalid ?repo=owner/name or ?repos=a/b,c/d&summary=1" });
+    return;
+  }
   try {
     const meta = await gh(`https://api.github.com/repos/${repo}`, token);
     if (!meta.ok) {
