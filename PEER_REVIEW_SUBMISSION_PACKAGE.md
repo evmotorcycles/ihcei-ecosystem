@@ -82,7 +82,9 @@ claim safe.
 | Deposit / DOI package | ✅ | `README_DEPOSIT.md`, `zenodo_metadata.json`, `CITATION.cff`, `SHA256SUMS.txt` |
 | Data & code availability statement | ✅ | manuscript + this file §5 |
 | Scope guard (medical/other layers) | ✅ NEW | `LISM_AND_ALZHEIMERS.md` |
-| **Pending before submission** | ⏳ | yeast ORF-keyed essential-gene label file (M5 CV re-report); optional GITHUB_TOKEN for fleet-scale τ_v figure |
+| Yeast ORF-keyed labels + M5 CV re-report | ✅ RESOLVED | `data/yeast/scer_essential_orfs.txt`, `M5_CV_REREPORT.md` |
+| Blueprint Stage-1 power analysis | ✅ NEW | `BLUEPRINT_POWER_RESULTS.md`, `blueprint_power_sim.py` |
+| **Pending before submission** | ✅ none | (optional only: GITHUB_TOKEN for a fleet-scale τ_v figure) |
 
 ## 4. Reviewer-defense matrix
 
