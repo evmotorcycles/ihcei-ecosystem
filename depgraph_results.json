@@ -1,0 +1,18 @@
+{
+  "N": 430,
+  "n_surv": 364,
+  "n_fail": 66,
+  "vif": 1.018,
+  "auc_cv": {
+    "UD": 0.57,
+    "U": 0.59,
+    "D": 0.553
+  },
+  "curvature_cv": {
+    "lin": 0.59,
+    "quad": 0.59
+  },
+  "verdict": "linear adequate (quadratic adds nothing)",
+  "ud_beats_u": false,
+  "d_signal": true
+}

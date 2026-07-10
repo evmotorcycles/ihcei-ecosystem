@@ -83,9 +83,20 @@
       operate. Each term resolves to a function with a distinct, testable signature. Nothing below uses
       the Layer-3 ontology; these are measurements.</p>
     <div class="badges">
-      <span class="badge"><span class="d"></span>NCU framework tests <b>5 / 5</b></span>
-      <span class="badge"><span class="d"></span>N157 Barakah claims <b>4 / 4</b></span>
-      <span class="badge"><span class="d"></span>channel intact <b>VIF &lt; 5</b></span>
+      <span class="badge"><span class="d"></span>formalization checks <b>internal-consistency</b></span>
+      <span class="badge"><span class="d"></span>external falsifiable test <b>mixed / weak</b></span>
+      <span class="badge"><span class="d"></span>identifiability <b>VIF &lt; 5</b></span>
+    </div>
+    <div style="margin-top:22px;border:1px solid var(--line);border-left:3px solid var(--attack);
+         background:var(--panel);border-radius:9px;padding:14px 17px;max-width:70ch">
+      <div class="mono" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--attack)">Epistemic status — read this</div>
+      <p style="margin:8px 0 0;font-size:14px;color:var(--muted)">The NCU checks below are
+        <b style="color:var(--ink)">internal-consistency tests of the formalization</b> — they verify the code
+        does what its definitions say. Most <b>cannot fail by construction</b>, so they are <b>not empirical
+        validation</b> and do not share a badge with yeast/GitHub. The one test that <em>could</em> come out
+        wrong — <span class="mono">E=U·D</span> on a real dependency graph — returned a
+        <b style="color:var(--ink)">mixed/weak</b> result (see the last panel). A green light that can't turn
+        red isn't evidence.</p>
     </div>
   </div>
 </header>
@@ -113,7 +124,10 @@
 
 <section>
   <div class="wrap">
-    <h2>NCU framework — 5 / 5 pre-registered tests</h2>
+    <h2>NCU formalization — internal-consistency checks (spec tests, mostly can't fail)</h2>
+    <p class="note" style="margin:-8px 0 18px">These confirm the simulation matches its own definitions
+      (useful for catching coding errors). Only <b>N5 (identifiability)</b> could genuinely have failed —
+      it's real methodology. The rest are construction-confirming. None is empirical validation of OQM or the world.</p>
     <div class="tests">
       <div class="t"><span class="chk">N1 ✓</span><div class="body"><div class="h">Iblees inert until actualized</div><div class="m">latent bias corr <b>+0.011</b> vs actualized Shaytan <b>−0.100</b> — <b>9×</b> stronger, negative</div></div></div>
       <div class="t"><span class="chk">N2 ✓</span><div class="body"><div class="h">Shaytan crashes fidelity</div><div class="m">Barakah by attack quartile: <b>0.155 → 0.128</b>, monotone dose-response</div></div></div>
@@ -143,9 +157,11 @@
 <section>
   <div class="wrap">
     <h2>How LISM transforms OQM — Barakah's decay: cliff vs mercy</h2>
-    <p class="note" style="margin-bottom:16px">LISM's empirical correction retires OQM's own quadratic prior.
-      The same fidelity loss is catastrophic under <span class="mono">E=U·D²</span> and graceful under the
-      validated <span class="mono">E=U·D</span>. That graceful slide is Rahmah — and it buys self-correction time.</p>
+    <p class="note" style="margin-bottom:16px">LISM's empirical correction (validated on yeast/GitHub) retires
+      OQM's own quadratic prior. The same fidelity loss is catastrophic under <span class="mono">E=U·D²</span>
+      and graceful under <span class="mono">E=U·D</span> — a measured difference in self-correction runway.
+      <span style="color:var(--faint)">(Reading this graceful runway as "Rahmah/mercy" is a Layer-3
+      interpretation, not part of the measurement.)</span></p>
     <div class="chartwrap">
       <div class="legend">
         <span><span class="sw" style="background:var(--fail)"></span>quadratic cliff · E=U·D² (retired)</span>
@@ -180,11 +196,30 @@
     <div class="runway">
       <div class="rw"><div class="n" style="color:var(--fail)">12</div><div class="l">steps of τ_v runway under the quadratic cliff</div></div>
       <div class="rw"><div class="n" style="color:var(--accent)">23</div><div class="l">steps under linear mercy</div></div>
-      <div class="rw"><div class="n" style="color:var(--ink)">+11</div><div class="l">extra self-correction steps = Rahmah</div></div>
+      <div class="rw"><div class="n" style="color:var(--ink)">+11</div><div class="l">extra self-correction steps (measured)</div></div>
     </div>
-    <p class="note" style="margin-top:18px">Capacity is inert, effort is everything, and — because the law is
-      linear — error is survivable in time. LISM doesn't decorate OQM; it corrects OQM's physics and hands
-      it a merciful, self-correcting law.</p>
+    <p class="note" style="margin-top:18px">The linear-vs-quadratic finding underneath this is the
+      genuinely validated one (yeast/GitHub), and it <b>reconfirmed on external data</b> below. The decay-shape
+      chart is a consequence of that measured law, not a separate claim.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The one test that could come out wrong — E=U·D on a real dependency graph</h2>
+    <p class="note" style="margin-bottom:16px">External data (a live PyPI dependency graph, 434 packages), an
+      outcome the theory never saw (package abandonment by release recency). It could have failed four ways.
+      It returned a <b style="color:var(--ink)">mixed / weak</b> result — which is what real tests do.</p>
+    <div class="tests" style="grid-template-columns:repeat(2,1fr)">
+      <div class="t"><span class="chk" style="color:var(--pass);border-color:color-mix(in srgb,var(--pass) 45%,var(--line))">✓</span><div class="body"><div class="h">Channel-intact gate held</div><div class="m">VIF(D_enc,D_dec) = <b>1.018</b> — could have collapsed on a real graph</div></div></div>
+      <div class="t"><span class="chk" style="color:var(--pass);border-color:color-mix(in srgb,var(--pass) 45%,var(--line))">✓</span><div class="body"><div class="h">Quadratic adds nothing (reconfirmed)</div><div class="m">out-of-sample CV: U+D <b>0.590</b> = U+D+D² <b>0.590</b></div></div></div>
+      <div class="t"><span class="chk" style="color:var(--attack);border-color:color-mix(in srgb,var(--attack) 45%,var(--line))">~</span><div class="body"><div class="h">Fidelity D only marginally predictive</div><div class="m">D alone CV AUC = <b>0.553</b> — barely above chance</div></div></div>
+      <div class="t"><span class="chk" style="color:var(--fail);border-color:color-mix(in srgb,var(--fail) 45%,var(--line))">✗</span><div class="body"><div class="h">U·D does NOT beat utilization U</div><div class="m">U·D <b>0.570</b> vs U alone <b>0.590</b> — U dominates</div></div></div>
+    </div>
+    <p class="note" style="margin-top:16px"><b style="color:var(--ink)">Honest read:</b> this graph neither
+      overturns nor cleanly re-confirms LISM. The quadratic stays dead (good), but two-hop fidelity is only
+      weakly coupled to package survival and doesn't beat raw utilization here. The strong external validation
+      remains yeast + GitHub; software abandonment is a weaker instance. Reported as-is — reality voted.</p>
   </div>
 </section>
 

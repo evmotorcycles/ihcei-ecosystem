@@ -10,6 +10,30 @@ Layer-3 ontology; the terms are governance functions, not theology.*
 
 ---
 
+## Epistemic status (read before the scoreboards)
+
+Be honest about what each result *can* do. A test is only evidence if reality could
+have made it fail:
+
+- **Sections A and B below are largely internal-consistency checks.** Barakah is
+  *defined* as `U·D_enc·D_dec` and Shaytan is *defined* as a thing that lowers D, so
+  "more Shaytan → less Barakah" is arithmetic, and "N157 protocol predicts selection"
+  holds because the outcome is generated from the protocol variables. These verify the
+  **code matches its definitions** — useful for catching bugs — but they are **not
+  empirical validation** of OQM or the world, and the clean 4/4 and 5/5 sweeps are the
+  tell. Only **N5 (identifiability, VIF)** could genuinely have failed.
+- **The real external test is `DEPGRAPH_FIDELITY_RESULTS.md`** — `E=U·D` on a live
+  PyPI dependency graph against an outcome the theory never saw. It came out
+  **mixed/weak** (fidelity D only marginally predictive, CV AUC 0.553; U·D does not
+  beat U alone), which is exactly what a test that can fail looks like.
+- **The genuinely validated external findings remain yeast + GitHub** (and the
+  linear-vs-quadratic verdict, which reconfirmed on the dependency graph).
+
+The sections below are kept because the formalization is worth stating precisely —
+but they are labelled as spec checks, not held up as proof.
+
+---
+
 ## A. How LISM transforms OQM — N157 as the case study
 
 **Script:** `nere_experiment/n157_barakah_experiment.py` (N = 8000, seed 1).
