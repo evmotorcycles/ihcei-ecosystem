@@ -2,11 +2,14 @@
 
 *Two things, held to the same discipline the whole project runs on. (1) The
 Wolfram computational-irreducibility experiments are **verified** and explained as
-Layer-1 results. (2) The NCU / OQM philosophy (Nafs-Centric Universe; apparitions
-rendered to what the Nafs needs; Salat = D_enc, Zakat = D_dec, free will) is
-**Layer-3** — an interpretive prior, not adjudicated by data — but its *structural*
-claim about agency is operationalised into a **measurable, falsifiable Layer-1
-experiment**. The theology is bracketed; the structure is tested.*
+Layer-1 results. (2) The NCU / OQM framing is a **philosophy of governance, not of
+theology** — its terms (Salat = D_enc = sincere seeking, Zakat = D_dec =
+selflessness, free will = bounded choice) are **operational governance functions**,
+which is why they are measurable. By the framework's own stratification the
+term→function **mapping is Layer 2** (OQM operational definitions, calibrating), the
+**measurements are Layer 1**, and only the ontological "rendered apparition" axiom is
+Layer 3 (and is not used here). See `OQM_GOVERNANCE_FUNCTIONS.md` for the corrected
+function dictionary and the Barakah/Iman experiment.*
 
 ---
 
@@ -66,10 +69,11 @@ verdict.)*
 
 ---
 
-## Part II — The NCU philosophy (Layer 3, stated as interpretation)
+## Part II — The NCU governance reading (Layer 2 functions, not theology)
 
 The uploaded slides sketch the **Nafs-Centric Universe (NCU)** / Organic Qur'anic
-Methodology reading. Stated plainly as a Layer-3 prior (no dataset here proves it):
+Methodology. Stated as **governance functions** (Layer-2 operational definitions,
+per `OQM_GOVERNANCE_FUNCTIONS.md`) — not theology, not unprovable priors:
 
 - The universe is a **customized incubator for one Nafs**; the body and everything
   else are *apparitions* rendered **in accordance with what that Nafs needs to grow
@@ -138,13 +142,15 @@ share → 0) and the unlimited-choice extreme (capacity share → 0, choice over
 circumstance). Free will lives, measurably, in the band **between determinism and
 irreducibility**.
 
-### The honest boundary
-The *identification* of these proxies with Salat, Zakat, and free will is **Layer 3**
-— interpretive, not demonstrated by the simulation. What is demonstrated (Layer 1) is
-narrower and real: **a three-way decomposition of outcome into given-circumstance,
-bounded-choice, and irreducible-noise is measurable, and the bounded-choice share is
-non-zero and identifiable.** The theology supplies the meaning; the experiment
-supplies only the measurability. Keeping that line is the whole discipline.
+### The honest boundary (corrected)
+The identification Salat = D_enc (sincere seeking), Zakat = D_dec (selflessness),
+free will = bounded choice is a **Layer-2 governance definition** — an operational
+mapping the framework is calibrating, not a Layer-3 ontological axiom and not
+theology. What is demonstrated **Layer-1** is the measurement: **a three-way
+decomposition of outcome into given-circumstance, bounded-choice, and
+irreducible-noise is measurable, and the bounded-choice share is non-zero and
+identifiable.** The only thing held at Layer 3 — the "rendered apparition" ontology —
+is not used anywhere in these experiments. Keeping that line is the whole discipline.
 
 ## Reproduce
 
