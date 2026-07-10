@@ -1,0 +1,194 @@
+<title>NCU — metaphor pressed into measurement</title>
+<style>
+  :root{
+    --ground:#0b0f0e; --panel:#111716; --panel2:#0d1413; --line:#1e2a27;
+    --ink:#e9f1ee; --muted:#86988f; --faint:#566761;
+    --accent:#2fb89a; --accent-dim:#155248;
+    --pass:#4fc07a; --fail:#e0554e; --attack:#e0a13a;
+    --sans:"Helvetica Neue",Arial,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  :root[data-theme="light"]{
+    --ground:#f2f5f3; --panel:#ffffff; --panel2:#e9efec; --line:#d3ded9;
+    --ink:#101715; --muted:#48574f; --faint:#899790;
+    --accent:#0f7d68; --accent-dim:#bfe4db; --pass:#1f9a55; --fail:#c23b34; --attack:#b6791a;
+  }
+  @media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+    --ground:#f2f5f3; --panel:#ffffff; --panel2:#e9efec; --line:#d3ded9;
+    --ink:#101715; --muted:#48574f; --faint:#899790;
+    --accent:#0f7d68; --accent-dim:#bfe4db; --pass:#1f9a55; --fail:#c23b34; --attack:#b6791a;}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);line-height:1.5}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 26px}
+  header{padding:66px 0 36px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--accent);display:flex;gap:12px;align-items:center;margin-bottom:20px}
+  .eyebrow::before{content:"";width:24px;height:1px;background:var(--accent);opacity:.7}
+  h1{font-size:clamp(32px,6vw,60px);line-height:1.0;letter-spacing:-.02em;font-weight:800;margin:0;text-wrap:balance}
+  .sub{color:var(--muted);font-size:18px;margin-top:16px;max-width:60ch}
+  .badges{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+  .badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:13px;
+    border:1px solid var(--line);border-radius:22px;padding:7px 15px;background:var(--panel)}
+  .badge b{color:var(--accent);font-variant-numeric:tabular-nums}
+  .badge .d{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+  section{padding:44px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:13px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 20px;font-weight:600}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  /* ledger */
+  .ledger{width:100%;border-collapse:collapse;font-size:14.5px}
+  .ledger th,.ledger td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  .ledger th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .ledger .term{font-weight:700;color:var(--ink)}
+  .ledger .fn{font-family:var(--mono);font-size:13px;color:var(--accent)}
+  .ledger .sig{color:var(--muted);font-size:13.5px}
+  .ledger tr td:first-child{white-space:nowrap}
+  .arrow{color:var(--faint)}
+  /* test grid */
+  .tests{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .t{background:var(--panel);padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+  .t .chk{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--pass);border:1px solid color-mix(in srgb,var(--pass) 45%,var(--line));border-radius:6px;padding:2px 7px;flex:0 0 auto;margin-top:2px}
+  .t .body{flex:1}
+  .t .h{font-weight:650;font-size:14.5px}
+  .t .m{color:var(--muted);font-size:13px;margin-top:3px}
+  .t .m b{color:var(--ink);font-variant-numeric:tabular-nums}
+  /* chart */
+  .chartwrap{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:22px 20px 16px;overflow-x:auto}
+  .legend{display:flex;gap:18px;font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:6px;flex-wrap:wrap}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .sw{width:14px;height:3px;border-radius:2px;display:inline-block}
+  .runway{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+  .rw{flex:1;min-width:220px;border:1px solid var(--line);border-radius:9px;padding:14px 16px;background:var(--panel2)}
+  .rw .n{font-family:var(--mono);font-size:26px;font-weight:700}
+  .rw .l{font-size:12.5px;color:var(--muted);margin-top:2px}
+  /* mini bars */
+  .minis{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:4px}
+  .mini{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:16px 18px}
+  .mini h3{margin:0 0 12px;font-size:13px;font-family:var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--faint);font-weight:600}
+  .bar{display:flex;align-items:center;gap:10px;margin-bottom:9px;font-family:var(--mono);font-size:12px}
+  .bar .lab{width:74px;color:var(--muted);flex:0 0 auto}
+  .bar .track{flex:1;height:12px;background:var(--panel2);border-radius:6px;overflow:hidden}
+  .bar .fill{height:100%;border-radius:6px}
+  .bar .val{width:44px;text-align:right;color:var(--ink);flex:0 0 auto;font-variant-numeric:tabular-nums}
+  p.note{color:var(--muted);font-size:14px;max-width:66ch}
+  .foot{padding:30px 0 56px;font-family:var(--mono);font-size:12px;color:var(--faint)}
+  code{font-family:var(--mono);font-size:12.5px;background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+  @media (max-width:680px){.tests,.minis{grid-template-columns:1fr}}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">NCU · OQM — Layer-2, measurable</div>
+    <h1>Every metaphor,<br>pressed into a measurement.</h1>
+    <p class="sub">The Nafs-Centric Universe is not a story to believe — it is a governance system to
+      operate. Each term resolves to a function with a distinct, testable signature. Nothing below uses
+      the Layer-3 ontology; these are measurements.</p>
+    <div class="badges">
+      <span class="badge"><span class="d"></span>NCU framework tests <b>5 / 5</b></span>
+      <span class="badge"><span class="d"></span>N157 Barakah claims <b>4 / 4</b></span>
+      <span class="badge"><span class="d"></span>channel intact <b>VIF &lt; 5</b></span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>The translation ledger — term → function → measured signature</h2>
+    <div style="overflow-x:auto">
+    <table class="ledger">
+      <thead><tr><th>NCU term</th><th>Layer-2 governance function</th><th>Measured signature (Layer 1)</th></tr></thead>
+      <tbody>
+        <tr><td class="term">"Allahh"</td><td class="fn">the data source — a common noun, not a name; channel unfiltered</td><td class="sig">carries pure signal + toxic waves (<span class="mono">mauj</span>)</td></tr>
+        <tr><td class="term">Salat</td><td class="fn">D_enc — sincere seeking, sifts pure from toxic</td><td class="sig">encoding fidelity</td></tr>
+        <tr><td class="term">Zakat</td><td class="fn">D_dec — selflessness, propagates purified knowledge</td><td class="sig">decoding fidelity</td></tr>
+        <tr><td class="term">Iblees</td><td class="fn">latent bias potential — a function, inert until actualized</td><td class="sig">corr ≈ 0 while dormant (+0.011)</td></tr>
+        <tr><td class="term">Shaytan</td><td class="fn">the actualized attack — injects mauj, crashes fidelity</td><td class="sig">dose-responsive ↓ Barakah</td></tr>
+        <tr><td class="term">NERE</td><td class="fn">the epistemological defense — filters mauj</td><td class="sig">recovers agency 1.5× under attack</td></tr>
+        <tr><td class="term">Barakah</td><td class="fn">E — knowledge (ilm) built, not bestowed</td><td class="sig">E = U · D_enc · D_dec</td></tr>
+        <tr><td class="term">Iman</td><td class="fn">safety / security — not faith; a downstream state</td><td class="sig">earned via knowledge (AUC 0.78 vs 0.62 birth)</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>NCU framework — 5 / 5 pre-registered tests</h2>
+    <div class="tests">
+      <div class="t"><span class="chk">N1 ✓</span><div class="body"><div class="h">Iblees inert until actualized</div><div class="m">latent bias corr <b>+0.011</b> vs actualized Shaytan <b>−0.100</b> — <b>9×</b> stronger, negative</div></div></div>
+      <div class="t"><span class="chk">N2 ✓</span><div class="body"><div class="h">Shaytan crashes fidelity</div><div class="m">Barakah by attack quartile: <b>0.155 → 0.128</b>, monotone dose-response</div></div></div>
+      <div class="t"><span class="chk">N3 ✓</span><div class="body"><div class="h">NERE recovers agency</div><div class="m">under matched attack: <b>0.156</b> with NERE vs <b>0.106</b> without (1.5×)</div></div></div>
+      <div class="t"><span class="chk">N4 ✓</span><div class="body"><div class="h">Iman = safety, downstream</div><div class="m">safety AUC <b>0.775</b> from knowledge vs <b>0.621</b> from birth endowment</div></div></div>
+      <div class="t"><span class="chk">N5 ✓</span><div class="body"><div class="h">Functions are identifiable</div><div class="m">max pairwise |corr| among the four = <b>0.44</b> (&lt; 0.5) — channel never collapses</div></div></div>
+      <div class="t"><span class="chk">N157 ✓</span><div class="body"><div class="h">Selection is earned, not at birth</div><div class="m">predict the selected: protocol AUC <b>0.974</b> vs birth <b>0.711</b></div></div></div>
+    </div>
+    <div class="minis" style="margin-top:18px">
+      <div class="mini">
+        <h3>N2 · Shaytan dose-response (mean Barakah)</h3>
+        <div class="bar"><span class="lab">attack Q1</span><span class="track"><span class="fill" style="width:100%;background:var(--pass)"></span></span><span class="val">0.155</span></div>
+        <div class="bar"><span class="lab">Q2</span><span class="track"><span class="fill" style="width:92%;background:var(--accent)"></span></span><span class="val">0.142</span></div>
+        <div class="bar"><span class="lab">Q3</span><span class="track"><span class="fill" style="width:87%;background:var(--attack)"></span></span><span class="val">0.135</span></div>
+        <div class="bar"><span class="lab">Q4 worst</span><span class="track"><span class="fill" style="width:83%;background:var(--fail)"></span></span><span class="val">0.128</span></div>
+      </div>
+      <div class="mini">
+        <h3>N3 · NERE recovery under matched attack</h3>
+        <div class="bar"><span class="lab">with NERE</span><span class="track"><span class="fill" style="width:100%;background:var(--pass)"></span></span><span class="val">0.156</span></div>
+        <div class="bar"><span class="lab">without</span><span class="track"><span class="fill" style="width:68%;background:var(--fail)"></span></span><span class="val">0.106</span></div>
+        <p class="note" style="margin:10px 0 0;font-size:12.5px">The defense preserves 1.5× the knowledge built — agency recovered, measurably.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>How LISM transforms OQM — Barakah's decay: cliff vs mercy</h2>
+    <p class="note" style="margin-bottom:16px">LISM's empirical correction retires OQM's own quadratic prior.
+      The same fidelity loss is catastrophic under <span class="mono">E=U·D²</span> and graceful under the
+      validated <span class="mono">E=U·D</span>. That graceful slide is Rahmah — and it buys self-correction time.</p>
+    <div class="chartwrap">
+      <div class="legend">
+        <span><span class="sw" style="background:var(--fail)"></span>quadratic cliff · E=U·D² (retired)</span>
+        <span><span class="sw" style="background:var(--accent)"></span>linear mercy · E=U·D (LISM)</span>
+      </div>
+      <svg viewBox="0 0 640 250" width="100%" role="img"
+        aria-label="Barakah retained as fidelity D degrades from 1.0 to 0.5. Quadratic falls to 0.25; linear falls only to 0.50. The area between is the mercy gain.">
+        <g font-family="var(--mono)" font-size="11" fill="var(--faint)">
+          <line x1="60" y1="30" x2="600" y2="30" stroke="var(--line)"/>
+          <line x1="60" y1="125" x2="600" y2="125" stroke="var(--line)"/>
+          <line x1="60" y1="220" x2="600" y2="220" stroke="var(--line)"/>
+          <text x="52" y="34" text-anchor="end">1.0</text>
+          <text x="52" y="129" text-anchor="end">0.5</text>
+          <text x="52" y="223" text-anchor="end">0</text>
+          <text x="60" y="240" text-anchor="middle">D=1.0</text>
+          <text x="330" y="240" text-anchor="middle">fidelity degrading →</text>
+          <text x="600" y="240" text-anchor="middle">0.5</text>
+        </g>
+        <!-- mercy gap shaded -->
+        <polygon points="60,30 168,49 276,68 384,87 492,106 600,125 600,173 492,152 384,127 276,98 168,66"
+                 fill="var(--accent)" opacity="0.10"/>
+        <!-- quadratic -->
+        <polyline points="60,30 168,66 276,98 384,127 492,152 600,173" fill="none" stroke="var(--fail)" stroke-width="2.5"/>
+        <!-- linear -->
+        <polyline points="60,30 168,49 276,68 384,87 492,106 600,125" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+        <g font-family="var(--mono)" font-size="12" font-weight="700">
+          <circle cx="600" cy="125" r="3.5" fill="var(--accent)"/><text x="588" y="118" text-anchor="end" fill="var(--accent)">0.50</text>
+          <circle cx="600" cy="173" r="3.5" fill="var(--fail)"/><text x="588" y="185" text-anchor="end" fill="var(--fail)">0.25</text>
+        </g>
+      </svg>
+    </div>
+    <div class="runway">
+      <div class="rw"><div class="n" style="color:var(--fail)">12</div><div class="l">steps of τ_v runway under the quadratic cliff</div></div>
+      <div class="rw"><div class="n" style="color:var(--accent)">23</div><div class="l">steps under linear mercy</div></div>
+      <div class="rw"><div class="n" style="color:var(--ink)">+11</div><div class="l">extra self-correction steps = Rahmah</div></div>
+    </div>
+    <p class="note" style="margin-top:18px">Capacity is inert, effort is everything, and — because the law is
+      linear — error is survivable in time. LISM doesn't decorate OQM; it corrects OQM's physics and hands
+      it a merciful, self-correcting law.</p>
+  </div>
+</section>
+
+<div class="wrap foot">
+  reproduce · <code>ncu_measurable_experiment.py --seed 1</code> (5/5) · <code>n157_barakah_experiment.py --seed 1</code> (4/4)
+  &nbsp;—&nbsp; Layer-1 measurements on Layer-2 governance definitions · no Layer-3 ontology used
+</div>
