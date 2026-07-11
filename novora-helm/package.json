@@ -1,0 +1,9 @@
+{
+  "name": "novora-helm",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "HELM — the personal agency layer. On-device IHCEI/NERE kernel. The mirror, never the hand.",
+  "scripts": { "test": "node test/helm.test.mjs" },
+  "engines": { "node": ">=18.0.0" }
+}
