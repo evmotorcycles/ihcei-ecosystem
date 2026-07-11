@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+ body{width:340px;margin:0;background:#0e1116;color:#e6edf3;font:13px/1.5 -apple-system,Segoe UI,sans-serif;padding:12px}
+ h1{font-size:13px;margin:0 0 8px;color:#d0a040} textarea{width:100%;min-height:70px;background:#0b0e13;
+ color:#e6edf3;border:1px solid #232a34;border-radius:8px;padding:8px;font:inherit;resize:vertical;box-sizing:border-box}
+ button{margin-top:8px;background:#d0a040;color:#1a1305;border:0;border-radius:7px;padding:7px 12px;font-weight:600;cursor:pointer}
+ .sec{margin-top:6px;background:#161b22;border:1px solid #232a34;border-radius:8px;padding:6px 10px;cursor:pointer;color:#8b98a9;font-size:12px}
+ #out{margin-top:10px} .chip{display:inline-block;border-radius:999px;padding:3px 9px;font-weight:600;font-size:12px}
+ .block{background:rgba(224,112,112,.14);color:#e07070} .warn{background:rgba(224,168,96,.12);color:#e0a860}
+ .silent{color:#5fbf8f;font-size:12px} .why{color:#8b98a9;font-size:12px;margin-top:6px} .k{font-family:ui-monospace,monospace;font-size:11px;color:#5a6675;margin-top:4px}
+</style></head><body>
+ <h1>HELM · steer, don't get steered</h1>
+ <textarea id="t" placeholder="Paste or check the selected text on this page…"></textarea>
+ <div class="sec" id="grab">↑ Use the text I've selected on this page</div>
+ <button id="go">Check it</button>
+ <div id="out"></div>
+ <script type="module" src="popup.js"></script>
+</body></html>
