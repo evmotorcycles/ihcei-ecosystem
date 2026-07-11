@@ -23,10 +23,18 @@ novora-helm/
   src/primitives.mjs    DELEGATE (decision-permission table) ·
                         DEVELOP (capacity vs. dependency) ·
                         PROVE (hash-chained certificate wallet)
-  test/helm.test.mjs    48 assertions — run: npm test
+  test/helm.test.mjs    48 assertions — safety, scam armor, gate, 4 primitives
+  test/parity.test.mjs  22 assertions — cross-engine gate + lexicon-stamp parity
   demo/index.html       renderable local demo (paste anything, see the verdict)
   extension/            MV3 browser-extension scaffold (popup surface, loadable)
+  VALIDATION.md         what was tested, the numbers, what HELM does in the world
+  PREREGISTRATION.md    LOCKED spec for on-device deep mode + emergency-at-scale
 ```
+
+Every verdict now stamps a **versioned mechanism lexicon** — `consumer-v1` here,
+`enterprise-v1` on the server (`api/govern.js`) and the Python reference — so a
+certificate records *which channel's priors judged it*. The gate decision is
+consistent across all three engines (`test/parity.test.mjs`).
 
 ## The four primitives
 
@@ -64,7 +72,7 @@ in the test suite and verified in a real browser.
 
 ```bash
 cd novora-helm
-npm test                       # 48/48 — safety, scam armor, gate, all 4 primitives
+npm test                       # 70/70 — helm (48) + cross-engine parity (22)
 python3 -m http.server 8000    # then open http://localhost:8000/demo/
 ```
 

@@ -150,6 +150,8 @@ class NEREVerdictV3:
     correction_pathway: Optional[str]
     certificate_id: str
     certificate_hash: str
+    mechanism_present: bool = False
+    mechanism_lexicon: str = "enterprise-v1"
 
     def to_dict(self) -> dict:
         return {
@@ -165,6 +167,8 @@ class NEREVerdictV3:
             "active_cbt4": self.active_cbt4_dimensions,
             "correction": self.correction_pathway,
             "certificate": self.certificate_id,
+            "mechanism_present": self.mechanism_present,
+            "mechanism_lexicon": self.mechanism_lexicon,
         }
 
 
@@ -178,11 +182,16 @@ class NEREEngineV3:
                      r'\buniversally\s+accepted\b', r'\bwell[- ]established\b', r'\bwidely\s+known\b']
     G4_PROTOCOL   = [r'\bbypass\b', r'\bskip\s+the\b', r'\bno\s+need\s+to\s+(check|verify|review)\b',
                      r'\bdon\'?t\s+(need|have)\s+to\s+verify\b', r'\bignore\s+the\s+procedure\b',
-                     r'\bjust\s+trust\b']
+                     r'\bjust\s+trust\b', r'\bdo\s+not\s+ask\s+questions\b', r'\bdon\'?t\s+ask\s+questions\b',
+                     r'\bno\s+questions\b', r'\bdon\'?t\s+question\s+(?:this|it|me)\b']
     G5_SOURCE     = [r'\bexperts\s+confirm\b', r'\bfda\s+says\b', r'\bpeer[- ]reviewed\s+research\s+proves\b',
                      r'\bauthorities\s+confirm\b', r'\baccording\s+to\s+(?:the\s+)?(?:experts|scholars)\b']
     G6_DISTRACT   = [r'\bas\s+you\s+know\b', r'\bthe\s+complexity\s+here\b', r'\bthis\s+is\s+very\s+technical\b',
-                     r'\btoo\s+complex\s+to\s+explain\b']
+                     r'\btoo\s+complex\s+to\s+explain\b', r'\btoo\s+complex\s+for\s+you\b',
+                     r'\bbeyond\s+what\'?s?\s+useful\s+to\s+explain\b']
+    ISOLATION     = [r'\bdo\s*n\'?t\s+consult\b', r'\bdo\s+not\s+consult\b', r'\b(?:no\s?one|nobody)\s+else\b',
+                     r'\bdon\'?t\s+(?:tell|involve|loop\s+in)\b', r'\bdo\s+not\s+(?:tell|involve)\b',
+                     r'\bkeep\s+this\s+(?:between\s+us|quiet|secret)\b', r'\bwithout\s+(?:telling|involving)\b']
     URGENCY       = [r'\bimmediately\b', r'\bright\s+now\b', r'\bno\s+time\b', r'\bcrisis\b',
                      r'\bdo\s+not\s+ask\s+questions\b', r'\bjust\s+execute\b', r'\bdon\'?t\s+overthink\b']
     FEAR          = [r'\bwill\s+go\s+bankrupt\b', r'\blose\s+everything\b', r'\bcritical\s+warning\b',
@@ -197,7 +206,8 @@ class NEREEngineV3:
 
     def __init__(self, prior_p: float = PRIOR_P_MANIPULATIVE,
                  n_mc: int = 4000, seed: int = 7,
-                 extractor: Optional[Callable[[str], dict]] = None):
+                 extractor: Optional[Callable[[str], dict]] = None,
+                 corroboration_gate: bool = True):
         # extractor: pluggable evidence source. None => regex (fast mode).
         # A callable(text) -> {"hits": {1,2,4,5,6: int}, "urg","fear","opt",
         # "imp","meth": int} swaps in semantic (deep-mode) extraction while
@@ -206,9 +216,11 @@ class NEREEngineV3:
         self.prior_p = clip_floor(prior_p)
         self.n_mc, self.seed = n_mc, seed
         self.extractor = extractor
+        self.corroboration_gate = corroboration_gate
         cp = lambda pats: [re.compile(p, re.IGNORECASE) for p in pats]
         self.g1, self.g2 = cp(self.G1_ADORNMENT), cp(self.G2_GROUPTHINK)
         self.g4, self.g5, self.g6 = cp(self.G4_PROTOCOL), cp(self.G5_SOURCE), cp(self.G6_DISTRACT)
+        self.iso_p = cp(self.ISOLATION)
         self.urg, self.fear = cp(self.URGENCY), cp(self.FEAR)
         self.opt_p, self.imp_p = cp(self.OPTIONS), cp(self.IMPERATIVES)
         self.meth_p = cp(self.METHODOLOGY)
@@ -232,6 +244,7 @@ class NEREEngineV3:
                 5: sum(1 for p in self.g5 if p.search(text)),
                 6: sum(1 for p in self.g6 if p.search(text)),
             },
+            "iso":  sum(1 for p in self.iso_p if p.search(text)),
             "urg":  sum(1 for p in self.urg  if p.search(text)),
             "fear": sum(1 for p in self.fear if p.search(text)),
             "opt":  sum(1 for p in self.opt_p  if p.search(text)),
@@ -256,6 +269,19 @@ class NEREEngineV3:
         opt  = int(ev.get("opt", 0))
         imp  = int(ev.get("imp", 0))
         meth = int(ev.get("meth", 0))
+        iso  = int(ev.get("iso", 0))
+
+        # CORROBORATION GATE (enterprise-v1), parity with api/govern.js and HELM.
+        # The heaviest gates (g3 opacity, g7 tyranny) and the pressure words
+        # (urgency/fear/imperative) fire on any terse directive — including
+        # legitimate emergencies — so they carry full weight only when a real
+        # manipulation MECHANISM is present: manufactured consensus (g2),
+        # verification bypass (g4), unverifiable authority (g5), complexity-
+        # deflection (g6), or isolation ("tell no one"). Else discounted x0.15.
+        mechanism_lexicon = "enterprise-v1"
+        mechanism_present = (hits.get(2, 0) > 0 or hits.get(4, 0) > 0 or
+                             hits.get(5, 0) > 0 or hits.get(6, 0) > 0 or iso > 0)
+        disc = 0.15 if (self.corroboration_gate and not mechanism_present) else 1.0
 
         # Transparency T and agency delta remain as measured FEATURES —
         # continuous observables feeding evidence, never trip-wires.
@@ -276,10 +302,10 @@ class NEREEngineV3:
         for gid, spec in GATE_EVIDENCE.items():
             h = hits.get(gid, 0)
             if gid == 3:
-                contrib = spec["llr"] * g3_strength
+                contrib = spec["llr"] * g3_strength * disc
                 sd = spec["llr_sd"] * max(g3_strength, 0.2)
             elif gid == 7:
-                contrib = spec["llr"] * g7_strength if hits[7] else 0.0
+                contrib = spec["llr"] * g7_strength * disc if hits[7] else 0.0
                 sd = spec["llr_sd"] * max(g7_strength, 0.2) if hits[7] else 0.0
             else:
                 eff = min(h, spec["cap"]) if spec["per_hit"] else (1 if h else 0)
@@ -297,16 +323,19 @@ class NEREEngineV3:
                 bias_detected=info["biases"][0] if active else None,
                 tactic_detected=info["tactics"][0] if active else None))
 
-        for cnt, spec, label in ((urg, URGENCY_EVIDENCE, "urgency"),
-                                 (fear, FEAR_EVIDENCE, "fear"),
-                                 (imp, IMPERATIVE_EVIDENCE, "imperatives"),
-                                 (opt, OPTIONS_EVIDENCE, "options"),
-                                 (meth, METHOD_EVIDENCE, "methodology")):
+        for cnt, spec, label, pressure in ((urg, URGENCY_EVIDENCE, "urgency", True),
+                                           (fear, FEAR_EVIDENCE, "fear", True),
+                                           (imp, IMPERATIVE_EVIDENCE, "imperatives", True),
+                                           (opt, OPTIONS_EVIDENCE, "options", False),
+                                           (meth, METHOD_EVIDENCE, "methodology", False)):
             eff = min(cnt, spec["cap"])
             if eff:
                 # exculpatory evidence scales sublinearly
                 scale = eff if spec["llr"] > 0 else math.sqrt(eff)
-                terms.append((spec["llr"] * scale, spec["llr_sd"] * math.sqrt(eff)))
+                m = spec["llr"] * scale
+                if pressure:
+                    m *= disc              # pressure words gated by corroboration
+                terms.append((m, spec["llr_sd"] * math.sqrt(eff)))
 
         total_llr = sum(m for m, _ in terms)
 
@@ -370,7 +399,9 @@ class NEREEngineV3:
             active_cbt4_dimensions=active_dims, bias_movement_path=movement,
             correction_pathway=correction,
             certificate_id=pv.certificate_id.replace("PGT-", "NERE3-"),
-            certificate_hash=pv.certificate_hash)
+            certificate_hash=pv.certificate_hash,
+            mechanism_present=mechanism_present,
+            mechanism_lexicon=mechanism_lexicon)
         if verbose:
             self._print(result)
         return result
