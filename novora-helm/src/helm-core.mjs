@@ -167,6 +167,7 @@ export function audit(text, opts = {}) {
     p_manipulative: +post.mean.toFixed(4),
     ci95: [+post.ci[0].toFixed(4), +post.ci[1].toFixed(4)],
     mechanismPresent: post.mechanismPresent,
+    mechanism_lexicon: 'consumer-v1',
     evidence: post.evidence,
     correction,
     engine: 'helm-fast-v0.1',
