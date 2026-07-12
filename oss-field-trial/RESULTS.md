@@ -112,6 +112,39 @@ Three conclusions, stated with their limits:
    hidden kill-switch: a layer that notices 87.9% of real traffic gets muted,
    and a muted layer's protection value is $0 regardless of price.
 
+## Follow-up: tests addressing the raised issues (2026-07-12, second run)
+
+Three issues raised on the first run, each answered with a test:
+
+**1 · The prose-floor caveat** (`issues_followup.mjs`). Re-measured on 306 REAL
+README paragraphs (fetched live from the npm registry) — documentation prose
+dense with imperatives and warnings, the harder profile the caveat pointed at.
+Gate OFF: 69.6% notices, 85.0% ambiguous. Gate ON: **0.0% / 0.0% / 0 chips /
+$0 escalation**. The floor extends from one-line descriptions to full
+documentation prose; what remains untested is live *dialogue* (issue threads,
+incident channels), which stays a caveat.
+
+**2 · The Tier-2 federated-calibration claim** (`tier2_calibration_test.py`).
+Tested the claim that federated LLR calibration could substitute for deep mode
+if distillation fails, using the engine's real `update_gate_llr` hooks with
+BEST-CASE telemetry (ground-truth labels, ×100 fleet amplification). Gate LLRs
+moved 4–7× (g4 1.60→6.37) — and evasive recall moved **0.125 → 0.125, exactly
+nothing**, while safety held (emergency false-BLOCK 0.000, clean FP 0.000).
+Reworded coercion produces zero regex hits, so there is no evidence for
+calibration to re-weight. **The "evasion-resistant semantic shield via
+federation" claim is retired for evasive coercion**; Tier-2 remains valid for
+what it actually does — tuning the weights of evidence fast mode can see. The
+ambient-deep bet stays load-bearing, exactly as the locked Stage-1 spec prices
+it.
+
+**3 · Calibration visibility** (`plot_calibration.py` → `calibration_roc.png`).
+The actual curves on n=144 labeled items (44-corpus + 6 threats + 100 real
+registry texts): reliability diagram + ROC. Gate OFF: Brier 0.205, AUC 0.890,
+zigzagging the diagonal. Gate ON: **Brier 0.074, AUC 0.947**. HELM: Brier
+0.082, AUC 0.884. Both gated engines sit under the Stage-1 secondary target
+(Brier ≤ 0.15) on this mixed set — though the *binding* measurement remains the
+sealed acceptance run.
+
 ## Honest limits
 
 - Registry descriptions are calmer than issue threads and incident channels;
