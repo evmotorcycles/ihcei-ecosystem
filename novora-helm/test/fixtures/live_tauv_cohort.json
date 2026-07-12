@@ -1,0 +1,17 @@
+{
+  "description": "LIVE tau_v cohort fetched from the deployed project-6q4gj GitHub API (api/gh-issues, summary mode) — real issue-close latencies computed server-side from each repo's actual issue timeline. Refresh by re-fetching the endpoint below and replacing this snapshot (record the new fetched_at).",
+  "endpoint": "https://project-6q4gj.vercel.app/api/gh-issues?repos=expressjs/express,fastify/fastify,request/request,moment/moment,lodash/lodash&summary=1",
+  "fetched_at": "2026-07-12T17:28:08Z",
+  "response": {
+    "mode": "summary",
+    "pages": 3,
+    "count": 5,
+    "repos": [
+      { "repo": "expressjs/express", "archived": false, "pushed_at": "2026-07-06", "stargazers": 69366, "E": 1, "n_closed": 30, "tau_v": 2.71, "status_note": "actively maintained" },
+      { "repo": "fastify/fastify", "archived": false, "pushed_at": "2026-07-12", "stargazers": 36793, "E": 1, "n_closed": 29, "tau_v": 9.88, "status_note": "actively maintained" },
+      { "repo": "request/request", "archived": false, "pushed_at": "2024-08-14", "stargazers": 25536, "E": 1, "n_closed": 136, "tau_v": 251.29, "status_note": "deprecated 2020, unmaintained (archived flag false — deprecation, not archival)" },
+      { "repo": "moment/moment", "archived": false, "pushed_at": "2024-08-14", "stargazers": 47948, "E": 1, "n_closed": 85, "tau_v": 88.46, "status_note": "officially in maintenance mode / discourages new use" },
+      { "repo": "lodash/lodash", "archived": false, "pushed_at": "2026-07-03", "stargazers": 61246, "E": 1, "n_closed": 67, "tau_v": 114.41, "status_note": "maintenance mode; recent pushes but slow issue enforcement — tau_v tracks queue enforcement, not commit activity" }
+    ]
+  }
+}
