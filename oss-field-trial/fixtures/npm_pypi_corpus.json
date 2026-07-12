@@ -1,0 +1,1171 @@
+{
+ "description": "REAL open-source project communication, fetched live from the public npm and PyPI registries. benign = how maintainers describe their own projects (the ambient traffic an auditor sees on OSS). deprecations = REAL urgent maintainer warnings shipped in package metadata (legitimate urgency: they tell users to stop and migrate).",
+ "provenance": {
+  "npm": {
+   "endpoint": "https://registry.npmjs.org/<pkg>/latest",
+   "fetched_at": "2026-07-12T22:23:14.073Z",
+   "n": 165
+  },
+  "pypi": {
+   "endpoint": "https://pypi.org/pypi/<pkg>/json",
+   "fetched_at": "2026-07-12T22:23:33.971Z",
+   "n": 116
+  }
+ },
+ "benign": [
+  {
+   "id": "npm:express",
+   "text": "Fast, unopinionated, minimalist web framework"
+  },
+  {
+   "id": "npm:react",
+   "text": "React is a JavaScript library for building user interfaces."
+  },
+  {
+   "id": "npm:axios",
+   "text": "Promise based HTTP client for the browser and node.js"
+  },
+  {
+   "id": "npm:debug",
+   "text": "Lightweight debugging utility for Node.js and the browser"
+  },
+  {
+   "id": "npm:fastify",
+   "text": "Fast and low overhead web framework, for Node.js"
+  },
+  {
+   "id": "npm:vite",
+   "text": "Native-ESM powered web dev build tool"
+  },
+  {
+   "id": "npm:lodash",
+   "text": "Lodash modular utilities."
+  },
+  {
+   "id": "npm:prettier",
+   "text": "Prettier is an opinionated code formatter"
+  },
+  {
+   "id": "npm:jest",
+   "text": "Delightful JavaScript Testing."
+  },
+  {
+   "id": "npm:typescript",
+   "text": "TypeScript is a language for application scale JavaScript development"
+  },
+  {
+   "id": "npm:vue",
+   "text": "The progressive JavaScript framework for building modern web UI."
+  },
+  {
+   "id": "npm:zustand",
+   "text": "🐻 Bear necessities for state management in React"
+  },
+  {
+   "id": "npm:ramda",
+   "text": "A practical functional library for JavaScript programmers."
+  },
+  {
+   "id": "npm:svelte",
+   "text": "Cybernetically enhanced web apps"
+  },
+  {
+   "id": "npm:eslint",
+   "text": "An AST-based pattern checker for JavaScript."
+  },
+  {
+   "id": "npm:uuid",
+   "text": "RFC9562 UUIDs"
+  },
+  {
+   "id": "npm:next",
+   "text": "The React Framework"
+  },
+  {
+   "id": "npm:date-fns",
+   "text": "Modern JavaScript date utility library"
+  },
+  {
+   "id": "npm:chokidar",
+   "text": "Minimal and efficient cross-platform file watching library"
+  },
+  {
+   "id": "npm:lint-staged",
+   "text": "Lint files staged by git"
+  },
+  {
+   "id": "npm:ws",
+   "text": "Simple to use, blazing fast and thoroughly tested websocket client and server for Node.js"
+  },
+  {
+   "id": "npm:rxjs",
+   "text": "Reactive Extensions for modern JavaScript"
+  },
+  {
+   "id": "npm:nanoid",
+   "text": "A tiny (118 bytes), secure URL-friendly unique string ID generator"
+  },
+  {
+   "id": "npm:underscore",
+   "text": "JavaScript's functional programming helper library."
+  },
+  {
+   "id": "npm:moment",
+   "text": "Parse, validate, manipulate, and display dates"
+  },
+  {
+   "id": "npm:puppeteer",
+   "text": "A high-level API to control headless Chrome over the DevTools Protocol"
+  },
+  {
+   "id": "npm:chalk",
+   "text": "Terminal string styling done right"
+  },
+  {
+   "id": "npm:tailwindcss",
+   "text": "A utility-first CSS framework for rapidly building custom user interfaces."
+  },
+  {
+   "id": "npm:pino",
+   "text": "super fast, all natural json logger"
+  },
+  {
+   "id": "npm:postcss",
+   "text": "Tool for transforming styles with JS plugins"
+  },
+  {
+   "id": "npm:redux",
+   "text": "Predictable state container for JavaScript apps"
+  },
+  {
+   "id": "npm:winston",
+   "text": "A logger for just about everything."
+  },
+  {
+   "id": "npm:jsdom",
+   "text": "A JavaScript implementation of many web standards"
+  },
+  {
+   "id": "npm:marked",
+   "text": "A markdown parser built for speed"
+  },
+  {
+   "id": "npm:autoprefixer",
+   "text": "Parse CSS and add vendor prefixes to CSS rules using values from the Can I Use website"
+  },
+  {
+   "id": "npm:morgan",
+   "text": "HTTP request logger middleware for node.js"
+  },
+  {
+   "id": "npm:sass",
+   "text": "A pure JavaScript implementation of Sass."
+  },
+  {
+   "id": "npm:helmet",
+   "text": "help secure Express/Connect apps with various HTTP headers"
+  },
+  {
+   "id": "npm:dotenv",
+   "text": "Loads environment variables from .env file"
+  },
+  {
+   "id": "npm:bunyan",
+   "text": "a JSON logging library for node.js services"
+  },
+  {
+   "id": "npm:mkdirp",
+   "text": "Recursively mkdir, like `mkdir -p`"
+  },
+  {
+   "id": "npm:husky",
+   "text": "Modern native Git hooks"
+  },
+  {
+   "id": "npm:graphql",
+   "text": "A Query Language and Runtime which can target any service."
+  },
+  {
+   "id": "npm:classnames",
+   "text": "A simple utility for conditionally joining classNames together"
+  },
+  {
+   "id": "npm:ora",
+   "text": "Elegant terminal spinner"
+  },
+  {
+   "id": "npm:yup",
+   "text": "Dead simple Object schema validation"
+  },
+  {
+   "id": "npm:webpack",
+   "text": "Packs ECMAScript/CommonJs/AMD modules for the browser. Allows you to split your codebase into multiple bundles, which can be loaded on demand. Supports loaders to preprocess files, i.e. json, jsx, es7, css, less, ... and your custom stuff."
+  },
+  {
+   "id": "npm:three",
+   "text": "JavaScript 3D library"
+  },
+  {
+   "id": "npm:commander",
+   "text": "the complete solution for node.js command-line programs"
+  },
+  {
+   "id": "npm:nuxt",
+   "text": "Nuxt is a free and open-source framework with an intuitive and extendable way to create type-safe, performant and production-grade full-stack web applications and websites with Vue.js."
+  },
+  {
+   "id": "npm:cross-env",
+   "text": "Run scripts that set and use environment variables across platforms"
+  },
+  {
+   "id": "npm:zod",
+   "text": "TypeScript-first schema declaration and validation library with static type inference"
+  },
+  {
+   "id": "npm:fs-extra",
+   "text": "fs-extra contains methods that aren't included in the vanilla Node.js fs package. Such as recursive mkdir, copy, and remove."
+  },
+  {
+   "id": "npm:ajv",
+   "text": "Another JSON Schema Validator"
+  },
+  {
+   "id": "npm:cors",
+   "text": "Node.js CORS middleware"
+  },
+  {
+   "id": "npm:rimraf",
+   "text": "A deep deletion module for node (like `rm -rf`)"
+  },
+  {
+   "id": "npm:nodemon",
+   "text": "Simple monitor script for use during development of a Node.js app."
+  },
+  {
+   "id": "npm:dayjs",
+   "text": "2KB immutable date time library alternative to Moment.js with the same modern API "
+  },
+  {
+   "id": "npm:yargs",
+   "text": "yargs the modern, pirate-themed, successor to optimist."
+  },
+  {
+   "id": "npm:styled-components",
+   "text": "Fast, expressive styling for React."
+  },
+  {
+   "id": "npm:jsonwebtoken",
+   "text": "JSON Web Token implementation (symmetric and asymmetric)"
+  },
+  {
+   "id": "npm:ioredis",
+   "text": "A robust, performance-focused and full-featured Redis client for Node.js."
+  },
+  {
+   "id": "npm:bull",
+   "text": "Job manager"
+  },
+  {
+   "id": "npm:mocha",
+   "text": "simple, flexible, fun test framework"
+  },
+  {
+   "id": "npm:rollup",
+   "text": "Next-generation ES module bundler"
+  },
+  {
+   "id": "npm:sharp",
+   "text": "High performance Node.js image processing, the fastest module to resize JPEG, PNG, WebP, GIF, AVIF and TIFF images"
+  },
+  {
+   "id": "npm:cheerio",
+   "text": "The fast, flexible & elegant library for parsing and manipulating HTML and XML."
+  },
+  {
+   "id": "npm:markdown-it",
+   "text": "Markdown-it - modern pluggable markdown parser."
+  },
+  {
+   "id": "npm:vitest",
+   "text": "Next generation testing framework powered by Vite"
+  },
+  {
+   "id": "npm:concurrently",
+   "text": "Run commands concurrently"
+  },
+  {
+   "id": "npm:pdfkit",
+   "text": "A PDF generation library for Node.js"
+  },
+  {
+   "id": "npm:joi",
+   "text": "Object schema validation"
+  },
+  {
+   "id": "npm:highlight.js",
+   "text": "Syntax highlighting with language autodetection."
+  },
+  {
+   "id": "npm:msw",
+   "text": "Seamless REST/GraphQL API mocking library for browser and Node.js."
+  },
+  {
+   "id": "npm:pm2",
+   "text": "Production process manager for Node.JS applications with a built-in load balancer."
+  },
+  {
+   "id": "npm:cypress",
+   "text": "Cypress is a next generation front end testing tool built for the modern web"
+  },
+  {
+   "id": "npm:socket.io",
+   "text": "node.js realtime framework server"
+  },
+  {
+   "id": "npm:less",
+   "text": "Leaner CSS"
+  },
+  {
+   "id": "npm:prismjs",
+   "text": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet."
+  },
+  {
+   "id": "npm:nock",
+   "text": "HTTP server mocking and expectations library for Node.js"
+  },
+  {
+   "id": "npm:d3",
+   "text": "Data-Driven Documents"
+  },
+  {
+   "id": "npm:chart.js",
+   "text": "Simple HTML5 charts using the canvas element."
+  },
+  {
+   "id": "npm:sinon",
+   "text": "JavaScript test spies, stubs and mocks."
+  },
+  {
+   "id": "npm:glob",
+   "text": "the most correct and second fastest glob implementation in JavaScript"
+  },
+  {
+   "id": "npm:inquirer",
+   "text": "A collection of common interactive command line user interfaces."
+  },
+  {
+   "id": "npm:knex",
+   "text": "A batteries-included SQL query & schema builder for PostgresSQL, MySQL, CockroachDB, MSSQL and SQLite3"
+  },
+  {
+   "id": "npm:redis",
+   "text": "A modern, high performance Redis client"
+  },
+  {
+   "id": "npm:pg",
+   "text": "PostgreSQL client - pure javascript & libpq with the same API"
+  },
+  {
+   "id": "npm:apollo-server",
+   "text": "Production ready GraphQL Server"
+  },
+  {
+   "id": "npm:leaflet",
+   "text": "JavaScript library for mobile-friendly interactive maps"
+  },
+  {
+   "id": "npm:mysql2",
+   "text": "fast mysql driver. Implements core protocol, prepared statements, ssl and compression in native JS"
+  },
+  {
+   "id": "npm:node-cron",
+   "text": "Job scheduling for Node.js with overlap prevention, distributed coordination, and background tasks. Zero dependencies, written in TypeScript."
+  },
+  {
+   "id": "npm:mapbox-gl",
+   "text": "A WebGL interactive maps library"
+  },
+  {
+   "id": "npm:sequelize",
+   "text": "Sequelize is a promise-based Node.js ORM tool for Postgres, MySQL, MariaDB, SQLite, Microsoft SQL Server, Amazon Redshift and Snowflake’s Data Cloud. It features solid transaction support, relations, eager and lazy loading, read replication and more."
+  },
+  {
+   "id": "npm:bcrypt",
+   "text": "A bcrypt library for NodeJS."
+  },
+  {
+   "id": "npm:agenda",
+   "text": "Light weight job scheduler for Node.js"
+  },
+  {
+   "id": "npm:multer",
+   "text": "Middleware for handling `multipart/form-data`."
+  },
+  {
+   "id": "npm:mongoose",
+   "text": "Mongoose MongoDB ODM"
+  },
+  {
+   "id": "npm:faker",
+   "text": "Generate massive amounts of fake contextual data"
+  },
+  {
+   "id": "npm:argon2",
+   "text": "An Argon2 library for Node"
+  },
+  {
+   "id": "npm:passport",
+   "text": "Simple, unobtrusive authentication for Node.js."
+  },
+  {
+   "id": "npm:supertest",
+   "text": "SuperAgent driven library for testing HTTP servers"
+  },
+  {
+   "id": "npm:jimp",
+   "text": "An image processing library written entirely in JavaScript."
+  },
+  {
+   "id": "npm:sqlite3",
+   "text": "Asynchronous, non-blocking SQLite3 bindings"
+  },
+  {
+   "id": "npm:playwright",
+   "text": "A high-level API to automate web browsers"
+  },
+  {
+   "id": "npm:prisma",
+   "text": "Prisma is an open-source database toolkit. It includes a JavaScript/TypeScript ORM for Node.js, migrations and a modern GUI to view and edit the data in your database. You can use Prisma in new projects or add it to an existing one."
+  },
+  {
+   "id": "npm:react-hook-form",
+   "text": "Performant, flexible and extensible forms library for React Hooks"
+  },
+  {
+   "id": "npm:framer-motion",
+   "text": "A simple and powerful JavaScript animation library"
+  },
+  {
+   "id": "npm:solid-js",
+   "text": "A declarative JavaScript library for building user interfaces."
+  },
+  {
+   "id": "npm:fabric",
+   "text": "Object model for HTML5 canvas, and SVG-to-canvas parser. Backed by jsdom and node-canvas."
+  },
+  {
+   "id": "npm:reselect",
+   "text": "Selectors for Redux."
+  },
+  {
+   "id": "npm:formik",
+   "text": "Build forms in React, without the tears"
+  },
+  {
+   "id": "npm:immer",
+   "text": "Create your next immutable state by mutating the current one"
+  },
+  {
+   "id": "npm:swr",
+   "text": "React Hooks library for remote data fetching"
+  },
+  {
+   "id": "npm:qs",
+   "text": "A querystring parser that supports nesting and arrays, with a depth limit"
+  },
+  {
+   "id": "npm:bootstrap",
+   "text": "The most popular front-end framework for developing responsive, mobile first projects on the web."
+  },
+  {
+   "id": "npm:konva",
+   "text": "HTML5 2d canvas library."
+  },
+  {
+   "id": "npm:million",
+   "text": "Make React Faster. Automatically."
+  },
+  {
+   "id": "npm:htmx.org",
+   "text": "high power tools for html"
+  },
+  {
+   "id": "npm:gulp",
+   "text": "The streaming build system."
+  },
+  {
+   "id": "npm:preact",
+   "text": "Fast 3kb React-compatible Virtual DOM library."
+  },
+  {
+   "id": "npm:alpinejs",
+   "text": "The rugged, minimal JavaScript framework"
+  },
+  {
+   "id": "npm:react-router-dom",
+   "text": "Declarative routing for React web applications"
+  },
+  {
+   "id": "npm:ua-parser-js",
+   "text": "Detect Browser, Engine, OS, CPU, and Device type/model from User-Agent & Client Hints data. Supports browser & node.js environment"
+  },
+  {
+   "id": "npm:react-query",
+   "text": "Hooks for managing, caching and syncing asynchronous and remote data in React"
+  },
+  {
+   "id": "npm:lottie-web",
+   "text": "After Effects plugin for exporting animations to SVG + JavaScript or canvas + JavaScript"
+  },
+  {
+   "id": "npm:jquery",
+   "text": "JavaScript library for DOM operations"
+  },
+  {
+   "id": "npm:gsap",
+   "text": "GSAP is a framework-agnostic JavaScript animation library that turns developers into animation superheroes. Build high-performance animations that work in **every** major browser. Animate CSS, SVG, canvas, React, Vue, WebGL, colors, strings, motion paths,"
+  },
+  {
+   "id": "npm:howler",
+   "text": "Javascript audio library for the modern web."
+  },
+  {
+   "id": "npm:node-fetch",
+   "text": "A light-weight module that brings Fetch API to node.js"
+  },
+  {
+   "id": "npm:request",
+   "text": "Simplified HTTP request client."
+  },
+  {
+   "id": "npm:dash.js",
+   "text": "Components for building your own Hanzo Dashboard"
+  },
+  {
+   "id": "npm:superagent",
+   "text": "elegant & feature rich browser / node HTTP with a fluent API"
+  },
+  {
+   "id": "npm:query-string",
+   "text": "Parse and stringify URL query strings"
+  },
+  {
+   "id": "npm:bulma",
+   "text": "Modern CSS framework based on Flexbox"
+  },
+  {
+   "id": "npm:animejs",
+   "text": "JavaScript animation engine"
+  },
+  {
+   "id": "npm:url-parse",
+   "text": "Small footprint URL parser that works seamlessly across Node.js and browser environments"
+  },
+  {
+   "id": "npm:wavesurfer.js",
+   "text": "Audio waveform player"
+  },
+  {
+   "id": "npm:undici",
+   "text": "An HTTP/1.1 client, written from scratch for Node.js"
+  },
+  {
+   "id": "npm:yeoman-generator",
+   "text": "Rails-inspired generator system that provides scaffolding for your apps"
+  },
+  {
+   "id": "npm:validator",
+   "text": "String validation and sanitization"
+  },
+  {
+   "id": "npm:dompurify",
+   "text": "DOMPurify is a DOM-only, super-fast, uber-tolerant XSS sanitizer for HTML, MathML and SVG. It runs as JavaScript and works in all modern browsers, as well as in Node.js (via jsdom). DOMPurify is written by security people who have vast background in web a"
+  },
+  {
+   "id": "npm:express-rate-limit",
+   "text": "Basic IP rate-limiting middleware for Express. Use to limit repeated requests to public APIs and/or endpoints such as password reset."
+  },
+  {
+   "id": "npm:csurf",
+   "text": "CSRF token middleware"
+  },
+  {
+   "id": "npm:sanitize-html",
+   "text": "Clean up user-submitted HTML, preserving allowlisted elements and allowlisted attributes on a per-element basis"
+  },
+  {
+   "id": "npm:protractor",
+   "text": "Webdriver E2E test wrapper for Angular."
+  },
+  {
+   "id": "npm:http-proxy-middleware",
+   "text": "The one-liner node.js proxy middleware for connect, express, next.js and more"
+  },
+  {
+   "id": "npm:node-sass",
+   "text": "Wrapper around libsass"
+  },
+  {
+   "id": "npm:http-proxy",
+   "text": "HTTP proxying for the masses"
+  },
+  {
+   "id": "npm:got",
+   "text": "Human-friendly and powerful HTTP request library for Node.js"
+  },
+  {
+   "id": "npm:tslint",
+   "text": "An extensible static analysis linter for the TypeScript language"
+  },
+  {
+   "id": "npm:serve-static",
+   "text": "Serve static files"
+  },
+  {
+   "id": "npm:event-stream",
+   "text": "construct pipes of streams of events"
+  },
+  {
+   "id": "npm:video.js",
+   "text": "An HTML5 video player that supports HLS and DASH with a common API and skin."
+  },
+  {
+   "id": "npm:ky",
+   "text": "Tiny and elegant HTTP client based on the Fetch API"
+  },
+  {
+   "id": "npm:grunt",
+   "text": "The JavaScript Task Runner"
+  },
+  {
+   "id": "npm:bower",
+   "text": "The browser package manager"
+  },
+  {
+   "id": "npm:tone",
+   "text": "A Web Audio framework for making interactive music in the browser."
+  },
+  {
+   "id": "npm:karma",
+   "text": "Spectacular Test Runner for JavaScript."
+  },
+  {
+   "id": "npm:compression",
+   "text": "Node.js compression middleware"
+  },
+  {
+   "id": "npm:left-pad",
+   "text": "String left pad"
+  },
+  {
+   "id": "npm:xss",
+   "text": "Sanitize untrusted HTML (to prevent XSS) with a configuration specified by a Whitelist"
+  },
+  {
+   "id": "npm:form-data",
+   "text": "A library to create readable \"multipart/form-data\" streams. Can be used to submit forms and file uploads to other web applications."
+  },
+  {
+   "id": "npm:coa",
+   "text": "Command-Option-Argument: Yet another parser for command line options."
+  },
+  {
+   "id": "npm:hls.js",
+   "text": "JavaScript HLS client using MediaSourceExtension"
+  },
+  {
+   "id": "pypi:flask",
+   "text": "A simple framework for building complex web applications."
+  },
+  {
+   "id": "pypi:toml",
+   "text": "Python Library for Tom's Obvious, Minimal Language"
+  },
+  {
+   "id": "pypi:itsdangerous",
+   "text": "Safely pass data to untrusted environments and back."
+  },
+  {
+   "id": "pypi:gunicorn",
+   "text": "WSGI HTTP Server for UNIX"
+  },
+  {
+   "id": "pypi:attrs",
+   "text": "Classes Without Boilerplate"
+  },
+  {
+   "id": "pypi:cerberus",
+   "text": "Lightweight, extensible schema and data validation tool for Pythondictionaries."
+  },
+  {
+   "id": "pypi:python-docx",
+   "text": "Create, read, and update Microsoft Word .docx files."
+  },
+  {
+   "id": "pypi:passlib",
+   "text": "comprehensive password hashing framework supporting over 30 schemes"
+  },
+  {
+   "id": "pypi:statsd",
+   "text": "A simple statsd client."
+  },
+  {
+   "id": "pypi:xlrd",
+   "text": "Library for developers to extract data from Microsoft Excel (tm) .xls spreadsheet files"
+  },
+  {
+   "id": "pypi:termcolor",
+   "text": "ANSI color formatting for output in terminal"
+  },
+  {
+   "id": "pypi:requests",
+   "text": "Python HTTP for Humans."
+  },
+  {
+   "id": "pypi:keras",
+   "text": "Multi-backend Keras"
+  },
+  {
+   "id": "pypi:httpx",
+   "text": "The next generation HTTP client."
+  },
+  {
+   "id": "pypi:beautifulsoup4",
+   "text": "Screen-scraping library"
+  },
+  {
+   "id": "pypi:pika",
+   "text": "Pika Python AMQP Client Library"
+  },
+  {
+   "id": "pypi:jinja2",
+   "text": "A very fast and expressive template engine."
+  },
+  {
+   "id": "pypi:loguru",
+   "text": "Python logging made (stupidly) simple"
+  },
+  {
+   "id": "pypi:openpyxl",
+   "text": "A Python library to read/write Excel 2010 xlsx/xlsm files"
+  },
+  {
+   "id": "pypi:structlog",
+   "text": "Structured Logging for Python"
+  },
+  {
+   "id": "pypi:prometheus-client",
+   "text": "Python client for the Prometheus monitoring system."
+  },
+  {
+   "id": "pypi:tabulate",
+   "text": "Pretty-print tabular data"
+  },
+  {
+   "id": "pypi:flake8",
+   "text": "the modular source code checker: pep8 pyflakes and co"
+  },
+  {
+   "id": "pypi:pyjwt",
+   "text": "JSON Web Token implementation in Python"
+  },
+  {
+   "id": "pypi:click",
+   "text": "Composable command line interface toolkit"
+  },
+  {
+   "id": "pypi:python-dotenv",
+   "text": "Read key-value pairs from a .env file and set them as environment variables"
+  },
+  {
+   "id": "pypi:datadog",
+   "text": "The Datadog Python library"
+  },
+  {
+   "id": "pypi:nltk",
+   "text": "Natural Language Toolkit"
+  },
+  {
+   "id": "pypi:alembic",
+   "text": "A database migration tool for SQLAlchemy."
+  },
+  {
+   "id": "pypi:typer",
+   "text": "Typer, build great CLIs. Easy to code. Based on Python type hints."
+  },
+  {
+   "id": "pypi:pypdf2",
+   "text": "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
+  },
+  {
+   "id": "pypi:colorama",
+   "text": "Cross-platform colored terminal text."
+  },
+  {
+   "id": "pypi:scrapy",
+   "text": "A high-level Web Crawling and Web Scraping framework"
+  },
+  {
+   "id": "pypi:kafka-python",
+   "text": "Pure Python client for Apache Kafka"
+  },
+  {
+   "id": "pypi:sympy",
+   "text": "Computer algebra system (CAS) in Python"
+  },
+  {
+   "id": "pypi:optuna",
+   "text": "A hyperparameter optimization framework"
+  },
+  {
+   "id": "pypi:uvicorn",
+   "text": "The lightning-fast ASGI server."
+  },
+  {
+   "id": "pypi:azure-storage-blob",
+   "text": "Microsoft Azure Blob Storage Client Library for Python"
+  },
+  {
+   "id": "pypi:werkzeug",
+   "text": "The comprehensive WSGI web application library."
+  },
+  {
+   "id": "pypi:mysqlclient",
+   "text": "Python interface to MySQL"
+  },
+  {
+   "id": "pypi:fabric",
+   "text": "High level SSH command execution"
+  },
+  {
+   "id": "pypi:lightgbm",
+   "text": "LightGBM Python-package"
+  },
+  {
+   "id": "pypi:jsonschema",
+   "text": "An implementation of JSON Schema validation for Python"
+  },
+  {
+   "id": "pypi:paramiko",
+   "text": "SSH2 protocol library"
+  },
+  {
+   "id": "pypi:google-cloud-storage",
+   "text": "Google Cloud Storage API client library"
+  },
+  {
+   "id": "pypi:networkx",
+   "text": "Python package for creating and manipulating graphs and networks"
+  },
+  {
+   "id": "pypi:celery",
+   "text": "Distributed Task Queue."
+  },
+  {
+   "id": "pypi:redis",
+   "text": "Python client for Redis database and key-value store"
+  },
+  {
+   "id": "pypi:selenium",
+   "text": "Official Python bindings for Selenium WebDriver"
+  },
+  {
+   "id": "pypi:isort",
+   "text": "A Python utility / library to sort Python imports."
+  },
+  {
+   "id": "pypi:tqdm",
+   "text": "Fast, Extensible Progress Meter"
+  },
+  {
+   "id": "pypi:elasticsearch",
+   "text": "Python client for Elasticsearch"
+  },
+  {
+   "id": "pypi:rich",
+   "text": "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
+  },
+  {
+   "id": "pypi:pytest",
+   "text": "pytest: simple powerful testing with Python"
+  },
+  {
+   "id": "pypi:poetry",
+   "text": "Python dependency management and packaging made easy."
+  },
+  {
+   "id": "pypi:xgboost",
+   "text": "XGBoost Python Package"
+  },
+  {
+   "id": "pypi:marshmallow",
+   "text": "A lightweight library for converting complex datatypes to and from native Python datatypes."
+  },
+  {
+   "id": "pypi:anthropic",
+   "text": "The official Python library for the anthropic API"
+  },
+  {
+   "id": "pypi:dask",
+   "text": "Parallel PyData with Task Scheduling"
+  },
+  {
+   "id": "pypi:chromadb",
+   "text": "Chroma."
+  },
+  {
+   "id": "pypi:fastapi",
+   "text": "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
+  },
+  {
+   "id": "pypi:transformers",
+   "text": "Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training."
+  },
+  {
+   "id": "pypi:tox",
+   "text": "tox is a generic virtualenv management and test command line tool"
+  },
+  {
+   "id": "pypi:virtualenv",
+   "text": "Virtual Python Environment builder"
+  },
+  {
+   "id": "pypi:ansible",
+   "text": "Radically simple IT automation"
+  },
+  {
+   "id": "pypi:faiss-cpu",
+   "text": "A library for efficient similarity search and clustering of dense vectors."
+  },
+  {
+   "id": "pypi:django",
+   "text": "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
+  },
+  {
+   "id": "pypi:pipenv",
+   "text": "Python Development Workflow for Humans."
+  },
+  {
+   "id": "pypi:pyyaml",
+   "text": "YAML parser and emitter for Python"
+  },
+  {
+   "id": "pypi:sentry-sdk",
+   "text": "Python client for Sentry (https://sentry.io)"
+  },
+  {
+   "id": "pypi:bcrypt",
+   "text": "Modern password hashing for your software and your servers"
+  },
+  {
+   "id": "pypi:openai",
+   "text": "The official Python library for the openai API"
+  },
+  {
+   "id": "pypi:gensim",
+   "text": "Python framework for fast Vector Space Modelling"
+  },
+  {
+   "id": "pypi:statsmodels",
+   "text": "Statistical computations and models for Python"
+  },
+  {
+   "id": "pypi:torch",
+   "text": "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
+  },
+  {
+   "id": "pypi:llama-index",
+   "text": "Interface between LLMs and your data"
+  },
+  {
+   "id": "pypi:markupsafe",
+   "text": "Safely add untrusted strings to HTML/XML markup."
+  },
+  {
+   "id": "pypi:langchain",
+   "text": "Building applications with LLMs through composability"
+  },
+  {
+   "id": "pypi:sentencepiece",
+   "text": "Unsupervised text tokenizer and detokenizer."
+  },
+  {
+   "id": "pypi:black",
+   "text": "The uncompromising code formatter."
+  },
+  {
+   "id": "pypi:opencv-python",
+   "text": "Wrapper package for OpenCV python bindings."
+  },
+  {
+   "id": "pypi:psycopg2-binary",
+   "text": "psycopg2 - Python-PostgreSQL Database Adapter"
+  },
+  {
+   "id": "pypi:catboost",
+   "text": "CatBoost Python Package"
+  },
+  {
+   "id": "pypi:scikit-learn",
+   "text": "A set of python modules for machine learning and data mining"
+  },
+  {
+   "id": "pypi:tensorflow",
+   "text": "TensorFlow is an open source machine learning framework for everyone."
+  },
+  {
+   "id": "pypi:ray",
+   "text": "Ray provides a simple, universal API for building distributed applications."
+  },
+  {
+   "id": "pypi:pydantic",
+   "text": "Data validation using Python type hints"
+  },
+  {
+   "id": "pypi:mypy",
+   "text": "Optional static typing for Python"
+  },
+  {
+   "id": "pypi:reportlab",
+   "text": "The Reportlab Toolkit"
+  },
+  {
+   "id": "pypi:spacy",
+   "text": "Industrial-strength Natural Language Processing (NLP) in Python"
+  },
+  {
+   "id": "pypi:pandas",
+   "text": "Powerful data structures for data analysis, time series, and statistics"
+  },
+  {
+   "id": "pypi:newrelic",
+   "text": "New Relic Python Agent"
+  },
+  {
+   "id": "pypi:scipy",
+   "text": "Fundamental algorithms for scientific computing in Python"
+  },
+  {
+   "id": "pypi:matplotlib",
+   "text": "Python plotting package"
+  },
+  {
+   "id": "pypi:cryptography",
+   "text": "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
+  },
+  {
+   "id": "pypi:pillow",
+   "text": "Python Imaging Library (fork)"
+  },
+  {
+   "id": "pypi:boto3",
+   "text": "The AWS SDK for Python"
+  },
+  {
+   "id": "pypi:numpy",
+   "text": "Fundamental package for array computing in Python"
+  },
+  {
+   "id": "pypi:botocore",
+   "text": "Low-level, data-driven core of boto 3."
+  },
+  {
+   "id": "pypi:lxml",
+   "text": "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
+  },
+  {
+   "id": "pypi:sqlalchemy",
+   "text": "Database Abstraction Library"
+  },
+  {
+   "id": "pypi:pymongo",
+   "text": "PyMongo - the Official MongoDB Python driver"
+  },
+  {
+   "id": "pypi:aiohttp",
+   "text": "Async http client/server framework (asyncio)"
+  },
+  {
+   "id": "pypi:streamlit",
+   "text": "A faster way to build and share data apps"
+  },
+  {
+   "id": "pypi:seaborn",
+   "text": "Statistical data visualization"
+  },
+  {
+   "id": "pypi:folium",
+   "text": "Make beautiful maps with Leaflet.js & Python"
+  },
+  {
+   "id": "pypi:geopandas",
+   "text": "Geographic pandas extensions"
+  },
+  {
+   "id": "pypi:altair",
+   "text": "Vega-Altair: A declarative statistical visualization library for Python."
+  },
+  {
+   "id": "pypi:pyarrow",
+   "text": "Python library for Apache Arrow"
+  },
+  {
+   "id": "pypi:dash",
+   "text": "A Python framework for building reactive web-apps. Developed by Plotly."
+  },
+  {
+   "id": "pypi:polars",
+   "text": "Blazingly fast DataFrame library"
+  },
+  {
+   "id": "pypi:plotly",
+   "text": "An open-source interactive data visualization library for Python"
+  },
+  {
+   "id": "pypi:bokeh",
+   "text": "Interactive plots and applications in the browser from Python"
+  },
+  {
+   "id": "pypi:gradio",
+   "text": "Python library for easily interacting with trained machine learning models"
+  },
+  {
+   "id": "pypi:shapely",
+   "text": "Manipulation and analysis of geometric objects"
+  },
+  {
+   "id": "pypi:duckdb",
+   "text": "DuckDB in-process database"
+  }
+ ],
+ "deprecations": [
+  {
+   "id": "npm-deprecation:apollo-server",
+   "text": "The `apollo-server` package is part of Apollo Server v2 and v3, which are now end-of-life (as of October 22nd 2023 and October 22nd 2024, respectively). This package's functionality is now found in the `@apollo/server` package. See https://www.apollographql.com/docs/apollo-server/previous-versions/ for more details."
+  },
+  {
+   "id": "npm-deprecation:request",
+   "text": "request has been deprecated, see https://github.com/request/request/issues/3142"
+  },
+  {
+   "id": "npm-deprecation:csurf",
+   "text": "This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions"
+  },
+  {
+   "id": "npm-deprecation:protractor",
+   "text": "We have news to share - Protractor is deprecated and will reach end-of-life by Summer 2023. To learn more and find out about other options please refer to this post on the Angular blog. Thank you for using and contributing to Protractor. https://goo.gle/state-of-e2e-in-angular"
+  },
+  {
+   "id": "npm-deprecation:node-sass",
+   "text": "Node Sass is no longer supported. Please use `sass` or `sass-embedded` instead."
+  },
+  {
+   "id": "npm-deprecation:tslint",
+   "text": "TSLint has been deprecated in favor of ESLint. Please see https://github.com/palantir/tslint/issues/4534 for more information."
+  },
+  {
+   "id": "npm-deprecation:left-pad",
+   "text": "use String.prototype.padStart()"
+  }
+ ]
+}
