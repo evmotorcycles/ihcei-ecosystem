@@ -1,0 +1,73 @@
+{
+ "description": "LIVE tau_v cohort from the deployed project-6q4gj GitHub API (api/gh-issues summary mode). Two calls merged (second retried three repos that hit GitHub rate limits on the first). Real issue-close latencies computed server-side.",
+ "endpoint": "https://project-6q4gj.vercel.app/api/gh-issues?repos=...&summary=1",
+ "fetched_at": "2026-07-12T22:25:00Z",
+ "response": {
+  "repos": [
+   {
+    "repo": "sveltejs/svelte",
+    "pushed_at": "2026-07-12",
+    "stargazers": 87616,
+    "n_closed": 51,
+    "tau_v": 2.61,
+    "status_note": "active"
+   },
+   {
+    "repo": "expressjs/express",
+    "pushed_at": "2026-07-12",
+    "stargazers": 69367,
+    "n_closed": 31,
+    "tau_v": 2.8,
+    "status_note": "active"
+   },
+   {
+    "repo": "vitejs/vite",
+    "pushed_at": "2026-07-12",
+    "stargazers": 82028,
+    "n_closed": 50,
+    "tau_v": 5.43,
+    "status_note": "active"
+   },
+   {
+    "repo": "fastify/fastify",
+    "pushed_at": "2026-07-12",
+    "stargazers": 36794,
+    "n_closed": 29,
+    "tau_v": 9.88,
+    "status_note": "active"
+   },
+   {
+    "repo": "moment/moment",
+    "pushed_at": "2024-08-14",
+    "stargazers": 47947,
+    "n_closed": 85,
+    "tau_v": 88.46,
+    "status_note": "maintenance-mode, discourages new use"
+   },
+   {
+    "repo": "lodash/lodash",
+    "pushed_at": "2026-07-03",
+    "stargazers": 61246,
+    "n_closed": 67,
+    "tau_v": 114.41,
+    "status_note": "maintenance mode; recent pushes, slow queue"
+   },
+   {
+    "repo": "bower/bower",
+    "pushed_at": "2024-10-13",
+    "stargazers": 14918,
+    "n_closed": 200,
+    "tau_v": 121.67,
+    "status_note": "deprecated (superseded by npm/yarn)"
+   },
+   {
+    "repo": "request/request",
+    "pushed_at": "2024-08-14",
+    "stargazers": 25536,
+    "n_closed": 136,
+    "tau_v": 251.29,
+    "status_note": "deprecated 2020, unmaintained"
+   }
+  ]
+ }
+}
