@@ -38,11 +38,18 @@ unverifiable authority, manufactured consensus, complexity-deflection,
 isolation) expressed **without** the surface trigger words. This is the corpus
 fast mode scores ~0.125 on today; it is the reason deep mode exists.
 
-### 1.2 EMERGENCY (expanded, target n ≥ 500)
-Legitimate urgent messages with **no** manipulation mechanism: medical, fire,
-outage, security-incident, legal-deadline, industrial-safety, childcare. This is
-the tail where an average false-positive rate lies. Stratified so no single
-domain exceeds 25% — a model that only learns "reactor" does not pass.
+### 1.2 EMERGENCY (expanded, powered baseline n ≥ 400 — Amendment A1)
+Legitimate urgent messages with **no** manipulation mechanism, hand-labeled and
+high-intensity. This is the tail where an average false-positive rate lies.
+Stratified across four high-stress classes, no stratum exceeding 30% — a model
+that only learns "reactor" does not pass:
+1. *SRE / infrastructure incidents* — failovers, pager alerts, active
+   ransomware mitigation.
+2. *High-acuity clinical / medical directives* — triage codes, critical dosing,
+   emergency-room calls.
+3. *Physical safety / natural hazards* — active threat, evacuation, weather.
+4. *Hard-deadline administrative* — compliance halts, trading freezes,
+   statutory filings.
 
 ### 1.3 CONSUMER-SCAM (target n ≥ 300)
 Real-world consumer manipulation: grandparent/impersonation scams, "account
@@ -103,14 +110,14 @@ was not an artifact of the tens-of-items seed corpus; it holds on EMERGENCY
 
 **Primary endpoint (both engines, sealed EMERGENCY acceptance set):**
 
-| # | metric | **acceptance band** |
+| # | metric | **acceptance band (Amendment A1)** |
 |---|---|---|
-| B1 | fast-mode emergency false-HOLD | **≤ 0.02** |
-| B2 | fast-mode emergency false-HOLD, **worst-performing domain** | **≤ 0.05** |
+| B1 | fast-mode emergency **false-BLOCK** | **≤ 0.005** (0.5%) |
+| B2 | fast-mode emergency false-BLOCK, **worst-performing stratum** | **≤ 0.02** |
 
 **Decision:**
-- **Supported** iff B1 ≤ 0.02 and B2 ≤ 0.05.
-- **NULL** if B1 > 0.02 or any domain exceeds 0.05. **Consequence, written in
+- **Supported** iff B1 ≤ 0.005 and B2 ≤ 0.02.
+- **NULL** if B1 > 0.005 or any stratum exceeds 0.02. **Consequence, written in
   advance:** ambient **default-on** is blocked (design Risk 2). HELM ships
   **default-silent / opt-in-per-surface** until the gate is re-worked and
   re-passes this same locked spec. The 0.00 seed number is demoted to
@@ -139,7 +146,22 @@ was not an artifact of the tens-of-items seed corpus; it holds on EMERGENCY
 
 ## 5. Amendment log
 
-*(empty at lock — 2026-07-11)*
+- **A1 — 2026-07-12 (pre-results; no training run, no corpus frozen yet, no
+  acceptance data seen).** (1) Emergency corpus re-specified as a powered
+  baseline **n ≥ 400** stratified across four named high-stress classes (max
+  30% per stratum), replacing the looser "n ≥ 500, no domain > 25%". (2) Claim
+  B primary endpoint tightened from false-HOLD ≤ 0.02 to **false-BLOCK ≤ 0.005
+  (0.5%)** overall, worst stratum ≤ 0.02 — matching the deployment-grade rate
+  already measured on the real-world OSS run and required before default-on for
+  on-call engineers, paramedics, and infrastructure operators. (3) The full
+  protocol is now also machine-readable: `prereg/stage1_spec.json`, with NPU
+  constraints (1–3B params, int8/int4, p50 ≤ 150 ms / p95 ≤ 400 ms, ≤ 4 GB),
+  calibration targets (Brier ≤ 0.15, ECE ≤ 0.10, secondary), split seed
+  20260711, and checkpoint rule. **Specification hash (canonical, recursive
+  key-sorted):**
+  `sha256: 0f047b962189680c280a1b8cca4c0edd2d9f32d90f759964736adddb815fc0fd`
+  (raw file: `68bc02dc…d6ae1`, full value in `prereg/MANIFEST.sha256`). Any
+  change to the JSON after this entry invalidates the pre-registration.
 
 ---
 
@@ -150,8 +172,9 @@ Two bets, priced honestly and in advance:
 1. **Ambient deep mode** must reach **evasive recall ≥ 0.70 while keeping
    emergency false-HOLD ≤ 0.02**, or the ambient-deep claim is retired and HELM
    remains fast-mode + four primitives.
-2. **Emergency-safety** must replicate at n ≥ 500 with **≤ 0.02 overall and
-   ≤ 0.05 worst-domain false-HOLD**, or ambient default-on is blocked.
+2. **Emergency-safety** must replicate on the powered n ≥ 400 stratified corpus
+   with **≤ 0.005 overall and ≤ 0.02 worst-stratum false-BLOCK**, or ambient
+   default-on is blocked.
 
 Either can return a meaningful null. Both nulls have a written, pre-committed
 consequence. That is the difference between a test and a demo.

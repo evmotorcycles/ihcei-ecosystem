@@ -1,0 +1,5 @@
+# Stage-1 Registered Report — specification lock (2026-07-12)
+# canonical = recursive key-sorted JSON, no whitespace (same serializer as the certificate chain)
+spec_sha256_canonical  0f047b962189680c280a1b8cca4c0edd2d9f32d90f759964736adddb815fc0fd
+spec_sha256_rawfile    68bc02dcd4117d2fa12655774b24601202e8e86eb1e60bed22874986ad1c6ae1  stage1_spec.json
+# corpus hashes appended here at corpus freeze, BEFORE any training:
