@@ -1,0 +1,1014 @@
+{
+ "description": "Per-item labeled scores for reliability/ROC plots. y=1 manipulative. Sources: 44-item validation corpus + 6 injected threats + 100 real registry texts (label 0). p_on/p_off = govern fast mode gate ON/OFF; p_helm = HELM consumer-v1.",
+ "generated": "2026-07-12T23:10:14.320Z",
+ "items": [
+  {
+   "id": "cm01",
+   "y": 1,
+   "p_on": 0.99,
+   "p_off": 0.99,
+   "p_helm": 0.99
+  },
+  {
+   "id": "cm02",
+   "y": 1,
+   "p_on": 0.2425,
+   "p_off": 0.9692,
+   "p_helm": 0.2425
+  },
+  {
+   "id": "cm03",
+   "y": 1,
+   "p_on": 0.9723,
+   "p_off": 0.9723,
+   "p_helm": 0.9863
+  },
+  {
+   "id": "cm04",
+   "y": 1,
+   "p_on": 0.9856,
+   "p_off": 0.9856,
+   "p_helm": 0.9856
+  },
+  {
+   "id": "cm05",
+   "y": 1,
+   "p_on": 0.9871,
+   "p_off": 0.9871,
+   "p_helm": 0.9871
+  },
+  {
+   "id": "cm06",
+   "y": 1,
+   "p_on": 0.4482,
+   "p_off": 0.4482,
+   "p_helm": 0.0961
+  },
+  {
+   "id": "cm07",
+   "y": 1,
+   "p_on": 0.9426,
+   "p_off": 0.9426,
+   "p_helm": 0.9797
+  },
+  {
+   "id": "cm08",
+   "y": 1,
+   "p_on": 0.5654,
+   "p_off": 0.5654,
+   "p_helm": 0.0945
+  },
+  {
+   "id": "cm09",
+   "y": 1,
+   "p_on": 0.8951,
+   "p_off": 0.8951,
+   "p_helm": 0.8951
+  },
+  {
+   "id": "cm10",
+   "y": 1,
+   "p_on": 0.7291,
+   "p_off": 0.7291,
+   "p_helm": 0.7291
+  },
+  {
+   "id": "ev01",
+   "y": 1,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "ev02",
+   "y": 1,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "ev03",
+   "y": 1,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "ev04",
+   "y": 1,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "ev05",
+   "y": 1,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "ev06",
+   "y": 1,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "ev07",
+   "y": 1,
+   "p_on": 0.6309,
+   "p_off": 0.6309,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "ev08",
+   "y": 1,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "hn01",
+   "y": 0,
+   "p_on": 0.2333,
+   "p_off": 0.9588,
+   "p_helm": 0.2333
+  },
+  {
+   "id": "hn02",
+   "y": 0,
+   "p_on": 0.1679,
+   "p_off": 0.7105,
+   "p_helm": 0.1679
+  },
+  {
+   "id": "hn03",
+   "y": 0,
+   "p_on": 0.1679,
+   "p_off": 0.7105,
+   "p_helm": 0.1679
+  },
+  {
+   "id": "hn04",
+   "y": 0,
+   "p_on": 0.2034,
+   "p_off": 0.8963,
+   "p_helm": 0.2034
+  },
+  {
+   "id": "hn05",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "hn06",
+   "y": 0,
+   "p_on": 0.1679,
+   "p_off": 0.7105,
+   "p_helm": 0.1679
+  },
+  {
+   "id": "hn07",
+   "y": 0,
+   "p_on": 0.2333,
+   "p_off": 0.9588,
+   "p_helm": 0.2333
+  },
+  {
+   "id": "hn08",
+   "y": 0,
+   "p_on": 0.1679,
+   "p_off": 0.7105,
+   "p_helm": 0.1679
+  },
+  {
+   "id": "hn09",
+   "y": 0,
+   "p_on": 0.2034,
+   "p_off": 0.8963,
+   "p_helm": 0.2034
+  },
+  {
+   "id": "hn10",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "hn11",
+   "y": 0,
+   "p_on": 0.2034,
+   "p_off": 0.8963,
+   "p_helm": 0.2034
+  },
+  {
+   "id": "hn12",
+   "y": 0,
+   "p_on": 0.2034,
+   "p_off": 0.8963,
+   "p_helm": 0.2034
+  },
+  {
+   "id": "cb01",
+   "y": 0,
+   "p_on": 0.0166,
+   "p_off": 0.0166,
+   "p_helm": 0.0166
+  },
+  {
+   "id": "cb02",
+   "y": 0,
+   "p_on": 0.0466,
+   "p_off": 0.0466,
+   "p_helm": 0.0533
+  },
+  {
+   "id": "cb03",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.0649
+  },
+  {
+   "id": "cb04",
+   "y": 0,
+   "p_on": 0.032,
+   "p_off": 0.032,
+   "p_helm": 0.039
+  },
+  {
+   "id": "cb05",
+   "y": 0,
+   "p_on": 0.039,
+   "p_off": 0.0423,
+   "p_helm": 0.039
+  },
+  {
+   "id": "cb06",
+   "y": 0,
+   "p_on": 0.032,
+   "p_off": 0.032,
+   "p_helm": 0.032
+  },
+  {
+   "id": "cb07",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.0905
+  },
+  {
+   "id": "cb08",
+   "y": 0,
+   "p_on": 0.0533,
+   "p_off": 0.0533,
+   "p_helm": 0.0649
+  },
+  {
+   "id": "cb09",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "cb10",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "gt01",
+   "y": 1,
+   "p_on": 0.6502,
+   "p_off": 0.6502,
+   "p_helm": 0.6502
+  },
+  {
+   "id": "gt02",
+   "y": 1,
+   "p_on": 0.6502,
+   "p_off": 0.6502,
+   "p_helm": 0.6502
+  },
+  {
+   "id": "gt03",
+   "y": 1,
+   "p_on": 0.6502,
+   "p_off": 0.6502,
+   "p_helm": 0.6502
+  },
+  {
+   "id": "gt04",
+   "y": 1,
+   "p_on": 0.0905,
+   "p_off": 0.3515,
+   "p_helm": 0.0905
+  },
+  {
+   "id": "threat0",
+   "y": 1,
+   "p_on": 0.7942,
+   "p_off": 0.7942,
+   "p_helm": 0.7942
+  },
+  {
+   "id": "threat1",
+   "y": 1,
+   "p_on": 0.7105,
+   "p_off": 0.7105,
+   "p_helm": 0.9167
+  },
+  {
+   "id": "threat2",
+   "y": 1,
+   "p_on": 0.6678,
+   "p_off": 0.6678,
+   "p_helm": 0.7756
+  },
+  {
+   "id": "threat3",
+   "y": 1,
+   "p_on": 0.9844,
+   "p_off": 0.9844,
+   "p_helm": 0.8877
+  },
+  {
+   "id": "threat4",
+   "y": 1,
+   "p_on": 0.1679,
+   "p_off": 0.7105,
+   "p_helm": 0.9011
+  },
+  {
+   "id": "threat5",
+   "y": 1,
+   "p_on": 0.99,
+   "p_off": 0.99,
+   "p_helm": 0.9892
+  },
+  {
+   "id": "npm:express",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:debug",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:lodash",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:typescript",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:ramda",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:uuid",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:chokidar",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:rxjs",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:moment",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:tailwindcss",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:redux",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:marked",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:sass",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:bunyan",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:graphql",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:yup",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:commander",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:zod",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:cors",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:dayjs",
+   "y": 0,
+   "p_on": 0.0905,
+   "p_off": 0.3515,
+   "p_helm": 0.0905
+  },
+  {
+   "id": "npm:jsonwebtoken",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:mocha",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:cheerio",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:concurrently",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:highlight.js",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:cypress",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:prismjs",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:chart.js",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:inquirer",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:pg",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:mysql2",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:sequelize",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:multer",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:argon2",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:jimp",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.0649
+  },
+  {
+   "id": "npm:prisma",
+   "y": 0,
+   "p_on": 0.032,
+   "p_off": 0.032,
+   "p_helm": 0.039
+  },
+  {
+   "id": "npm:solid-js",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:formik",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:qs",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:million",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:preact",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:ua-parser-js",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:jquery",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:node-fetch",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:superagent",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:animejs",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:undici",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:dompurify",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:sanitize-html",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:node-sass",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:tslint",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.0649
+  },
+  {
+   "id": "npm:video.js",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:bower",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:compression",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "npm:form-data",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:flask",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:gunicorn",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:python-docx",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:xlrd",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:keras",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:pika",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:openpyxl",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:tabulate",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:click",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:nltk",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:pypdf2",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:kafka-python",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:uvicorn",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:mysqlclient",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:jsonschema",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:networkx",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:selenium",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:elasticsearch",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:poetry",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:anthropic",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:fastapi",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:virtualenv",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:django",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:sentry-sdk",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:gensim",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:llama-index",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:sentencepiece",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:psycopg2-binary",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:tensorflow",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.0649
+  },
+  {
+   "id": "pypi:mypy",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:pandas",
+   "y": 0,
+   "p_on": 0.0533,
+   "p_off": 0.0533,
+   "p_helm": 0.0649
+  },
+  {
+   "id": "pypi:matplotlib",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:boto3",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:lxml",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.0649
+  },
+  {
+   "id": "pypi:aiohttp",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:folium",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:pyarrow",
+   "y": 0,
+   "p_on": 0.1428,
+   "p_off": 0.4725,
+   "p_helm": 0.1428
+  },
+  {
+   "id": "pypi:plotly",
+   "y": 0,
+   "p_on": 0.0533,
+   "p_off": 0.0533,
+   "p_helm": 0.0649
+  },
+  {
+   "id": "pypi:shapely",
+   "y": 0,
+   "p_on": 0.0649,
+   "p_off": 0.0702,
+   "p_helm": 0.0649
+  }
+ ]
+}

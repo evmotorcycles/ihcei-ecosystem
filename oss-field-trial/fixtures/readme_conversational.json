@@ -1,0 +1,1231 @@
+{
+ "description": "REAL conversational/documentation prose: paragraphs from the actual READMEs of popular npm packages (fetched live from registry.npmjs.org). Denser in imperatives, warnings, and urgency than one-line descriptions - the harder traffic profile the prose-floor caveat asked about.",
+ "endpoint": "https://registry.npmjs.org/<pkg> (readme field)",
+ "fetched_at": "2026-07-12T23:09:17.304Z",
+ "items": [
+  {
+   "id": "readme:lodash:0",
+   "text": "Note: <br Install n https://www.npmjs.com/package/n for Lodash use in the Node.js < 6 REPL."
+  },
+  {
+   "id": "readme:lodash:1",
+   "text": "Tested in Chrome 74 75, Firefox 66 67, IE 11, Edge 18, Safari 11 12, & Node.js 8 12.<br Automated browser https://saucelabs.com/u/lodash & CI https://travis ci.org/lodash/lodash/ test runs are available."
+  },
+  {
+   "id": "readme:passport:0",
+   "text": "Passport's sole purpose is to authenticate requests, which it does through an extensible set of plugins known as strategies . Passport does not mount routes or assume any particular database schema, which maximizes flexibility and allows application level decisions to be made by the developer. The API is simple: you provide Passport a request to authenticate, and Passport provides hooks for controlling what occurs when authentication succeeds or fails."
+  },
+  {
+   "id": "readme:passport:1",
+   "text": "Status: ! Build https://travis ci.org/jaredhanson/passport.svg?branch=master https://travis ci.org/jaredhanson/passport ! Coverage https://coveralls.io/repos/jaredhanson/passport/badge.svg?branch=master https://coveralls.io/r/jaredhanson/passport ! Dependencies https://david dm.org/jaredhanson/passport.svg https://david dm.org/jaredhanson/passport"
+  },
+  {
+   "id": "readme:passport:2",
+   "text": "Passport uses the concept of strategies to authenticate requests. Strategies can range from verifying username and password credentials, delegated authentication using OAuth http://oauth.net/ for example, via Facebook http://www.facebook.com/ or Twitter http://twitter.com/ , or federated authentication using OpenID http://openid.net/ ."
+  },
+  {
+   "id": "readme:passport:3",
+   "text": "Before authenticating requests, the strategy or strategies used by an application must be configured."
+  },
+  {
+   "id": "readme:passport:4",
+   "text": "There are 480+ strategies. Find the ones you want at: passportjs.org http://passportjs.org"
+  },
+  {
+   "id": "readme:passport:5",
+   "text": "Passport will maintain persistent login sessions. In order for persistent sessions to work, the authenticated user must be serialized to the session, and deserialized when subsequent requests are made."
+  },
+  {
+   "id": "readme:passport:6",
+   "text": "Passport does not impose any restrictions on how your user records are stored. Instead, you provide functions to Passport which implements the necessary serialization and deserialization logic. In a typical application, this will be as simple as serializing the user ID, and finding the user by ID when deserializing."
+  },
+  {
+   "id": "readme:passport:7",
+   "text": "To use Passport in an Express http://expressjs.com/ or Connect http://senchalabs.github.com/connect/ based application, configure it with the required passport.initialize middleware. If your application uses persistent login sessions recommended, but not required , passport.session middleware must also be used."
+  },
+  {
+   "id": "readme:passport:8",
+   "text": "Passport provides an authenticate function, which is used as route middleware to authenticate requests."
+  },
+  {
+   "id": "readme:passport:9",
+   "text": "Passport has a comprehensive set of over 480 authentication strategies covering social networking, enterprise integration, API services, and more."
+  },
+  {
+   "id": "readme:passport:10",
+   "text": "Strategy Protocol Developer Local https://github.com/jaredhanson/passport local HTML form Jared Hanson https://github.com/jaredhanson OpenID https://github.com/jaredhanson/passport openid OpenID Jared Hanson https://github.com/jaredhanson BrowserID https://github.com/jaredhanson/passport browserid BrowserID Jared Hanson https://github.com/jaredhanson Facebook https://github.com/jaredhanson/passport facebook OAuth 2.0 Jared Hanson https://github.com/jaredhanson Google https://github.com/jaredhanson/passport google OpenID Jared Hanson https://github.com/jaredhanson Google https://github.com/jaredhanson/passport google oauth OAuth / OAuth 2.0 Jared Hanson https://github.com/jaredhanson Twitter https://github.com/jaredhanson/passport twitter OAuth Jared Hanson https://github.com/jaredhanson Azure Active Directory https://github.com/AzureAD/passport azure ad OAuth 2.0 / OpenID / SAML Azure https://github.com/azuread"
+  },
+  {
+   "id": "readme:passport:11",
+   "text": "Locomotive https://github.com/jaredhanson/locomotive — Powerful MVC web framework OAuthorize https://github.com/jaredhanson/oauthorize — OAuth service provider toolkit OAuth2orize https://github.com/jaredhanson/oauth2orize — OAuth 2.0 authorization server toolkit connect ensure login https://github.com/jaredhanson/connect ensure login — middleware to ensure login sessions"
+  },
+  {
+   "id": "readme:moment:0",
+   "text": "! NPM version npm version image npm url ! NPM downloads npm downloads image npm downloads url ! MIT License license image license url ! Build Status travis image travis url ! Coverage Status coveralls image coveralls url ! FOSSA Status fossa badge image fossa badge url ! SemVer compatibility semver image semver url"
+  },
+  {
+   "id": "readme:moment:1",
+   "text": "Moment.js is a legacy project, now in maintenance mode. In most cases, you should choose a different library."
+  },
+  {
+   "id": "readme:moment:2",
+   "text": "For more details and recommendations, please see Project Status https://momentjs.com/docs/ / project status/ in the docs."
+  },
+  {
+   "id": "readme:moment:3",
+   "text": "Moment.js is freely distributable under the terms of the MIT license license url ."
+  },
+  {
+   "id": "readme:moment:4",
+   "text": "semver image : https://api.dependabot.com/badges/compatibility score?dependency name=moment&package manager=npm and yarn&version scheme=semver semver url : https://dependabot.com/compatibility score.html?dependency name=moment&package manager=npm and yarn&version scheme=semver"
+  },
+  {
+   "id": "readme:bcrypt:0",
+   "text": "You can read about bcrypt in Wikipedia bcryptwiki as well as in the following article: How To Safely Store A Password codahale"
+  },
+  {
+   "id": "readme:bcrypt:1",
+   "text": "Please verify that the NodeJS version you are using is a stable version; Unstable versions are currently not supported and issues created while using an unstable version will be closed."
+  },
+  {
+   "id": "readme:bcrypt:2",
+   "text": "If you are on a stable version of NodeJS, please provide a sufficient code snippet or log files for installation issues. The code snippet does not require you to include confidential information. However, it must provide enough information so the problem can be replicable, or it may be closed without an explanation."
+  },
+  {
+   "id": "readme:bcrypt:3",
+   "text": "Node Version Bcrypt Version 0.4 <= 0.4 0.6, 0.8, 0.10 = 0.5 0.11 = 0.8 4 <= 2.1.0 8 = 1.0.3 < 4.0.0 10, 11 = 3 12 onwards = 3.0.6"
+  },
+  {
+   "id": "readme:bcrypt:4",
+   "text": "node gyp only works with stable/released versions of node. Since the bcrypt module uses node gyp to build and install, you'll need a stable version of node to use bcrypt. If you do not, you'll likely see an error that starts with:"
+  },
+  {
+   "id": "readme:bcrypt:5",
+   "text": "Per bcrypt implementation, only the first 72 bytes of a string are used. Any extra bytes are ignored when matching passwords. Note that this is not the first 72 characters . It is possible for a string to contain less than 72 characters, while taking up more than 72 bytes e.g. a UTF 8 encoded string containing emojis . If a string is provided, it will be encoded using UTF 8."
+  },
+  {
+   "id": "readme:bcrypt:6",
+   "text": "As should be the case with any security tool, anyone using this library should scrutinise it. If you find or suspect an issue with the code, please bring it to the maintainers' attention. We will spend some time ensuring that this library is as secure as possible."
+  },
+  {
+   "id": "readme:bcrypt:7",
+   "text": "Here is a list of BCrypt related security issues/concerns that have come up over the years."
+  },
+  {
+   "id": "readme:bcrypt:8",
+   "text": "An issue with passwords jtr was found with a version of the Blowfish algorithm developed for John the Ripper. This is not present in the OpenBSD version and is thus not a problem for this module. HT zooko zooko . Versions < 5.0.0 suffer from bcrypt wrap around bug and will truncate passwords = 255 characters leading to severely weakened passwords . Please upgrade at earliest. See this wiki page wrap around bug for more details. Versions < 5.0.0 do not handle NUL characters inside passwords properly leading to all subsequent characters being dropped and thus resulting in severely weakened passwords . Please upgrade at earliest. See this wiki page improper nuls for more details."
+  },
+  {
+   "id": "readme:bcrypt:9",
+   "text": "This library supports $2a$ and $2b$ prefix bcrypt hashes. $2x$ and $2y$ hashes are specific to bcrypt implementation developed for John the Ripper. In theory, they should be compatible with $2b$ prefix."
+  },
+  {
+   "id": "readme:bcrypt:10",
+   "text": "Compatibility with hashes generated by other languages is not 100% guaranteed due to difference in character encodings. However, it should not be an issue for most cases."
+  },
+  {
+   "id": "readme:bcrypt:11",
+   "text": "Hashes generated in earlier version of bcrypt remain 100% supported in v2.x.x and later versions. In most cases, the migration should be a bump in the package.json ."
+  },
+  {
+   "id": "readme:multer:0",
+   "text": "Multer ! NPM Version npm version image npm url ! NPM Downloads npm downloads image npm url ! Build Status ci image ci url ! Test Coverage test image test url ! OpenSSF Scorecard Badge ossf scorecard badge ossf scorecard visualizer"
+  },
+  {
+   "id": "readme:multer:1",
+   "text": "Multer is a node.js middleware for handling multipart/form data , which is primarily used for uploading files. It is written on top of busboy https://github.com/mscdex/busboy for maximum efficiency."
+  },
+  {
+   "id": "readme:multer:2",
+   "text": "NOTE : Multer will not process any form which is not multipart multipart/form data ."
+  },
+  {
+   "id": "readme:multer:3",
+   "text": "العربية https://github.com/expressjs/multer/blob/main/doc/README ar.md Arabic 简体中文 https://github.com/expressjs/multer/blob/main/doc/README zh cn.md Chinese Français https://github.com/expressjs/multer/blob/main/doc/README fr.md French 한국어 https://github.com/expressjs/multer/blob/main/doc/README ko.md Korean Português https://github.com/expressjs/multer/blob/main/doc/README pt br.md Portuguese BR Русский язык https://github.com/expressjs/multer/blob/main/doc/README ru.md Russian Español https://github.com/expressjs/multer/blob/main/doc/README es.md Spanish O'zbek tili https://github.com/expressjs/multer/blob/main/doc/README uz.md Uzbek Việt Nam https://github.com/expressjs/multer/blob/main/doc/README vi.md Vietnamese Türkçe https://github.com/expressjs/multer/blob/main/doc/README tr.md Turkish"
+  },
+  {
+   "id": "readme:multer:4",
+   "text": "Multer adds a body object and a file or files object to the request object. The body object contains the values of the text fields of the form, the file or files object contains the files uploaded via the form."
+  },
+  {
+   "id": "readme:multer:5",
+   "text": "In case you need to handle a text only multipart form, you should use the .none method:"
+  },
+  {
+   "id": "readme:multer:6",
+   "text": "Here's an example on how multer is used in a HTML form. Take special note of the enctype=\"multipart/form data\" and name=\"uploaded file\" fields:"
+  },
+  {
+   "id": "readme:multer:7",
+   "text": "Then in your javascript file you would add these lines to access both the file and the body. It is important that you use the name field value from the form in your upload function. This tells multer which field on the request it should look for the files in. If these fields aren't the same in the HTML form and on your server, your upload will fail:"
+  },
+  {
+   "id": "readme:multer:8",
+   "text": "Key Description Note fieldname Field name specified in the form originalname Name of the file on the user's computer encoding Encoding type of the file mimetype Mime type of the file size Size of the file in bytes destination The folder to which the file has been saved DiskStorage filename The name of the file within the destination DiskStorage path The full path to the uploaded file DiskStorage buffer A Buffer of the entire file MemoryStorage"
+  },
+  {
+   "id": "readme:multer:9",
+   "text": "Multer accepts an options object, the most basic of which is the dest property, which tells Multer where to upload the files. In case you omit the options object, the files will be kept in memory and never written to disk."
+  },
+  {
+   "id": "readme:multer:10",
+   "text": "By default, Multer will rename the files so as to avoid naming conflicts. The renaming function can be customized according to your needs."
+  },
+  {
+   "id": "readme:multer:11",
+   "text": "Key Description dest or storage Where to store the files fileFilter Function to control which files are accepted limits Limits of the uploaded data preservePath Keep the full path of files instead of just the base name defParamCharset Default character set to use for values of part header parameters e.g. filename that are not extended parameters that contain an explicit charset . Default: 'latin1'"
+  },
+  {
+   "id": "readme:jsonwebtoken:0",
+   "text": "Build Dependency ! Build Status https://secure.travis ci.org/auth0/node jsonwebtoken.svg?branch=master http://travis ci.org/auth0/node jsonwebtoken ! Dependency Status https://david dm.org/auth0/node jsonwebtoken.svg https://david dm.org/auth0/node jsonwebtoken"
+  },
+  {
+   "id": "readme:jsonwebtoken:1",
+   "text": "This was developed against draft ietf oauth json web token 08 . It makes use of node jws https://github.com/brianloveswords/node jws"
+  },
+  {
+   "id": "readme:jsonwebtoken:2",
+   "text": "From v8 to v9 https://github.com/auth0/node jsonwebtoken/wiki/Migration Notes: v8 to v9 From v7 to v8 https://github.com/auth0/node jsonwebtoken/wiki/Migration Notes: v7 to v8"
+  },
+  {
+   "id": "readme:jsonwebtoken:3",
+   "text": "Asynchronous If a callback is supplied, the callback is called with the err or the JWT."
+  },
+  {
+   "id": "readme:jsonwebtoken:4",
+   "text": "payload could be an object literal, buffer or string representing valid JSON. Please note that exp or any other claim is only set if the payload is an object literal. Buffer or string payloads are not checked for JSON validity."
+  },
+  {
+   "id": "readme:jsonwebtoken:5",
+   "text": "If payload is not a buffer or a string, it will be coerced into a string using JSON.stringify ."
+  },
+  {
+   "id": "readme:jsonwebtoken:6",
+   "text": "secretOrPrivateKey is a string utf 8 encoded , buffer, object, or KeyObject containing either the secret for HMAC algorithms or the PEM encoded private key for RSA and ECDSA. In case of a private key with passphrase an object { key, passphrase } can be used based on crypto documentation https://nodejs.org/api/crypto.html crypto sign sign private key output format , in this case be sure you pass the algorithm option. When signing with RSA algorithms the minimum modulus length is 2048 except when the allowInsecureKeySizes option is set to true. Private keys below this size will be rejected with an error."
+  },
+  {
+   "id": "readme:jsonwebtoken:7",
+   "text": "There are no default values for expiresIn , notBefore , audience , subject , issuer . These claims can also be provided in the payload directly with exp , nbf , aud , sub and iss respectively, but you can't include in both places."
+  },
+  {
+   "id": "readme:jsonwebtoken:8",
+   "text": "Remember that exp , nbf and iat are NumericDate , see related Token Expiration exp claim token expiration exp claim"
+  },
+  {
+   "id": "readme:jsonwebtoken:9",
+   "text": "Generated jwts will include an iat issued at claim by default unless noTimestamp is specified. If iat is inserted in the payload, it will be used instead of the real timestamp for calculating other things like exp given a timespan in options.expiresIn ."
+  },
+  {
+   "id": "readme:jsonwebtoken:10",
+   "text": "The standard for JWT defines an exp claim for expiration. The expiration is represented as a NumericDate :"
+  },
+  {
+   "id": "readme:jsonwebtoken:11",
+   "text": "A JSON numeric value representing the number of seconds from 1970 01 01T00:00:00Z UTC until the specified UTC date/time, ignoring leap seconds. This is equivalent to the IEEE Std 1003.1, 2013 Edition POSIX.1 definition \"Seconds Since the Epoch\", in which each day is accounted for by exactly 86400 seconds, other than that non integer values can be represented. See RFC 3339 RFC3339 for details regarding date/times in general and UTC in particular."
+  },
+  {
+   "id": "readme:rimraf:0",
+   "text": "The UNIX command <http://en.wikipedia.org/wiki/Rm Unix rm rf for node in a cross platform implementation."
+  },
+  {
+   "id": "readme:rimraf:1",
+   "text": "There is no default export anymore. Import the functions directly using, e.g., import { rimrafSync } from 'rimraf' ."
+  },
+  {
+   "id": "readme:rimraf:2",
+   "text": "The function returns a Promise instead of taking a callback. Globbing requires the glob CLI option or glob option property to be set. Removed in 4.0 and 4.1, opt in support added in 4.2. Functions take arrays of paths, as well as a single path. Native implementation used by default when available, except on Windows, where this implementation is faster and more reliable. New implementation on Windows, falling back to \"move then remove\" strategy when exponential backoff for EBUSY fails to resolve the situation. Simplified implementation on POSIX, since the Windows affordances are not necessary there. As of 4.3, return/resolve value is boolean instead of undefined."
+  },
+  {
+   "id": "readme:rimraf:3",
+   "text": "All removal functions return a boolean indicating that all entries were successfully removed."
+  },
+  {
+   "id": "readme:rimraf:4",
+   "text": "The only case in which this will not return true is if something was omitted from the removal via a filter option."
+  },
+  {
+   "id": "readme:rimraf:5",
+   "text": "This first parameter is a path or array of paths. The second argument is an options object."
+  },
+  {
+   "id": "readme:rimraf:6",
+   "text": "Using a signal option prevents the use of Node's built in fs.rm because that implementation does not support abort signals."
+  },
+  {
+   "id": "readme:rimraf:7",
+   "text": "glob Boolean flag to treat path as glob pattern, or an object specifying glob options https://github.com/isaacs/node glob . filter Method that returns a boolean indicating whether that path should be deleted. With async rimraf methods, this may return a Promise that resolves to a boolean. Since Promises are truthy, returning a Promise from a sync filter is the same as just not filtering anything."
+  },
+  {
+   "id": "readme:rimraf:8",
+   "text": "The first argument to the filter is the path string. The second argument is either a Dirent or Stats object for that path. The first path explored will be a Stats , the rest will be Dirent ."
+  },
+  {
+   "id": "readme:rimraf:9",
+   "text": "If a filter method is provided, it will only remove entries if the filter returns or resolves to a truthy value. Omitting a directory will still allow its children to be removed, unless they are also filtered out, but any parents of a filtered entry will not be removed, since the directory will not be empty in that case."
+  },
+  {
+   "id": "readme:rimraf:10",
+   "text": "Using a filter method prevents the use of Node's built in fs.rm because that implementation does not support filtering."
+  },
+  {
+   "id": "readme:rimraf:11",
+   "text": "Any other options are provided to the native Node.js fs.rm implementation when that is used."
+  },
+  {
+   "id": "readme:socket.io:0",
+   "text": "socket.io ! Run on Repl.it https://repl.it/badge/github/socketio/socket.io https://replit.com/@socketio/socketio minimal example ! Backers on Open Collective https://opencollective.com/socketio/backers/badge.svg backers ! Sponsors on Open Collective https://opencollective.com/socketio/sponsors/badge.svg sponsors ! Build Status https://github.com/socketio/socket.io/workflows/CI/badge.svg https://github.com/socketio/socket.io/actions ! NPM version https://badge.fury.io/js/socket.io.svg https://www.npmjs.com/package/socket.io ! Downloads https://img.shields.io/npm/dm/socket.io.svg?style=flat ! https://slackin socketio.now.sh/badge.svg https://slackin socketio.now.sh"
+  },
+  {
+   "id": "readme:socket.io:1",
+   "text": "a Node.js server this repository a Javascript client library https://github.com/socketio/socket.io client for the browser or a Node.js client"
+  },
+  {
+   "id": "readme:socket.io:2",
+   "text": "Java https://github.com/socketio/socket.io client java C++ https://github.com/socketio/socket.io client cpp Swift https://github.com/socketio/socket.io client swift Dart https://github.com/rikulo/socket.io client dart Python https://github.com/miguelgrinberg/python socketio .NET https://github.com/doghappy/socket.io client csharp Rust https://github.com/1c3t3a/rust socketio PHP https://github.com/ElephantIO/elephant.io"
+  },
+  {
+   "id": "readme:socket.io:3",
+   "text": "Connections are established even in the presence of: proxies and load balancers. personal firewall and antivirus software."
+  },
+  {
+   "id": "readme:socket.io:4",
+   "text": "For this purpose, it relies on Engine.IO https://github.com/socketio/engine.io , which first establishes a long polling connection, then tries to upgrade to better transports that are \"tested\" on the side, like WebSocket. Please see the Goals https://github.com/socketio/engine.io goals section for more information."
+  },
+  {
+   "id": "readme:socket.io:5",
+   "text": "Unless instructed otherwise a disconnected client will try to reconnect forever, until the server is available again. Please see the available reconnection options here https://socket.io/docs/v3/client api/ new Manager url options ."
+  },
+  {
+   "id": "readme:socket.io:6",
+   "text": "A heartbeat mechanism is implemented at the Engine.IO level, allowing both the server and the client to know when the other one is not responding anymore."
+  },
+  {
+   "id": "readme:socket.io:7",
+   "text": "That functionality is achieved with timers set on both the server and the client, with timeout values the pingInterval and pingTimeout parameters shared during the connection handshake. Those timers require any subsequent client calls to be directed to the same server, hence the sticky session requirement when using multiples nodes."
+  },
+  {
+   "id": "readme:socket.io:8",
+   "text": "ArrayBuffer https://developer.mozilla.org/en US/docs/Web/JavaScript/Reference/Global Objects/ArrayBuffer and Blob https://developer.mozilla.org/en US/docs/Web/API/Blob in the browser ArrayBuffer https://developer.mozilla.org/en US/docs/Web/JavaScript/Reference/Global Objects/ArrayBuffer and Buffer https://nodejs.org/api/buffer.html in Node.js"
+  },
+  {
+   "id": "readme:socket.io:9",
+   "text": "In order to create separation of concerns within your application for example per module, or based on permissions , Socket.IO allows you to create several Namespaces , which will act as separate communication channels but will share the same underlying connection."
+  },
+  {
+   "id": "readme:socket.io:10",
+   "text": "Within each Namespace , you can define arbitrary channels, called Rooms , that sockets can join and leave. You can then broadcast to any given room, reaching every socket that has joined it."
+  },
+  {
+   "id": "readme:socket.io:11",
+   "text": "This is a useful feature to send notifications to a group of users, or to a given user connected on several devices for example."
+  },
+  {
+   "id": "readme:dotenv:0",
+   "text": "<a href=\"https://dotenvx.com/?utm source=github&utm medium=readme&utm campaign=motdotla dotenv&utm content=banner\" <img src=\"https://dotenvx.com/dotenv banner.png\" alt=\"dotenvx\" / </a"
+  },
+  {
+   "id": "readme:dotenv:1",
+   "text": "Dotenv is a zero dependency module that loads environment variables from a .env file into process.env https://nodejs.org/docs/latest/api/process.html process process env . Storing configuration in the environment separate from code is based on The Twelve Factor App https://12factor.net/config methodology."
+  },
+  {
+   "id": "readme:dotenv:2",
+   "text": "That's it. process.env now has the keys and values you defined in your .env file."
+  },
+  {
+   "id": "readme:dotenv:3",
+   "text": "For monorepos with a structure like apps/backend/app.js , put it the .env file in the root of the folder where your app.js process runs."
+  },
+  {
+   "id": "readme:dotenv:4",
+   "text": "If you need multiline variables, for example private keys, those are now supported = v15.0.0 with line breaks:"
+  },
+  {
+   "id": "readme:dotenv:5",
+   "text": "Comments may be added to your file on their own line or inline:"
+  },
+  {
+   "id": "readme:dotenv:6",
+   "text": "Comments begin where a exists, so if your value contains a please wrap it in quotes. This is a breaking change from = v15.0.0 and on."
+  },
+  {
+   "id": "readme:dotenv:7",
+   "text": "The engine which parses the contents of your file containing environment variables is available to use. It accepts a String or Buffer and will return an Object with the parsed keys and values."
+  },
+  {
+   "id": "readme:dotenv:8",
+   "text": "Note: Consider using dotenvx https://github.com/dotenvx/dotenvx instead of preloading. I am now doing and recommending so. It serves the same purpose you do not need to require and load dotenv , adds better debugging, and works with ANY language, framework, or platform. – motdotla https://not.la"
+  },
+  {
+   "id": "readme:dotenv:9",
+   "text": "You can use the require r command line option https://nodejs.org/api/cli.html r require module to preload dotenv. By doing this, you do not need to require and load dotenv in your application code."
+  },
+  {
+   "id": "readme:dotenv:10",
+   "text": "The configuration options below are supported as command line arguments in the format dotenv config <option =value"
+  },
+  {
+   "id": "readme:dotenv:11",
+   "text": "Additionally, you can use environment variables to set configuration options. Command line arguments will precede these."
+  },
+  {
+   "id": "readme:fs-extra:0",
+   "text": "fs extra adds file system methods that aren't included in the native fs module and adds promise support to the fs methods. It also uses graceful fs https://github.com/isaacs/node graceful fs to prevent EMFILE errors. It should be a drop in replacement for fs ."
+  },
+  {
+   "id": "readme:fs-extra:1",
+   "text": "! npm Package https://img.shields.io/npm/v/fs extra.svg https://www.npmjs.org/package/fs extra ! License https://img.shields.io/npm/l/fs extra.svg https://github.com/jprichardson/node fs extra/blob/master/LICENSE ! build status https://img.shields.io/github/actions/workflow/status/jprichardson/node fs extra/ci.yml?branch=master https://github.com/jprichardson/node fs extra/actions/workflows/ci.yml?query=branch%3Amaster ! downloads per month http://img.shields.io/npm/dm/fs extra.svg https://www.npmjs.org/package/fs extra ! JavaScript Style Guide https://img.shields.io/badge/code style standard brightgreen.svg https://standardjs.com"
+  },
+  {
+   "id": "readme:fs-extra:2",
+   "text": "I got tired of including mkdirp , rimraf , and ncp in most of my projects."
+  },
+  {
+   "id": "readme:fs-extra:3",
+   "text": "fs extra is a drop in replacement for native fs . All methods in fs are attached to fs extra . All fs methods return promises if the callback isn't passed."
+  },
+  {
+   "id": "readme:fs-extra:4",
+   "text": "or if you prefer to make it clear that you're using fs extra and not fs , you may want to name your fs variable fse like so:"
+  },
+  {
+   "id": "readme:fs-extra:5",
+   "text": "NOTE: The deprecated constants fs.F OK , fs.R OK , fs.W OK , & fs.X OK are not exported on Node.js v24.0.0+; please use their fs.constants equivalents."
+  },
+  {
+   "id": "readme:fs-extra:6",
+   "text": "There is also an fs extra/esm import, that supports both default and named exports. However, note that fs methods are not included in fs extra/esm ; you still need to import fs and/or fs/promises separately:"
+  },
+  {
+   "id": "readme:fs-extra:7",
+   "text": "but you probably want to just use regular fs extra instead of fs extra/esm for default exports:"
+  },
+  {
+   "id": "readme:fs-extra:8",
+   "text": "Sync vs Async vs Async/Await Most methods are async by default. All async methods will return a promise if the callback isn't passed."
+  },
+  {
+   "id": "readme:fs-extra:9",
+   "text": "Sync methods on the other hand will throw if an error occurs."
+  },
+  {
+   "id": "readme:fs-extra:10",
+   "text": "copy docs/copy.md emptyDir docs/emptyDir.md ensureFile docs/ensureFile.md ensureDir docs/ensureDir.md ensureLink docs/ensureLink.md ensureSymlink docs/ensureSymlink.md mkdirp docs/ensureDir.md mkdirs docs/ensureDir.md move docs/move.md outputFile docs/outputFile.md outputJson docs/outputJson.md pathExists docs/pathExists.md readJson docs/readJson.md remove docs/remove.md writeJson docs/writeJson.md"
+  },
+  {
+   "id": "readme:fs-extra:11",
+   "text": "copySync docs/copy sync.md emptyDirSync docs/emptyDir sync.md ensureFileSync docs/ensureFile sync.md ensureDirSync docs/ensureDir sync.md ensureLinkSync docs/ensureLink sync.md ensureSymlinkSync docs/ensureSymlink sync.md mkdirpSync docs/ensureDir sync.md mkdirsSync docs/ensureDir sync.md moveSync docs/move sync.md outputFileSync docs/outputFile sync.md outputJsonSync docs/outputJson sync.md pathExistsSync docs/pathExists sync.md readJsonSync docs/readJson sync.md removeSync docs/remove sync.md writeJsonSync docs/writeJson sync.md"
+  },
+  {
+   "id": "readme:winston:0",
+   "text": "! Version npm https://img.shields.io/npm/v/winston.svg?style=flat square https://www.npmjs.com/package/winston ! npm Downloads https://img.shields.io/npm/dm/winston.svg?style=flat square https://npmcharts.com/compare/winston?minimal=true ! build status https://github.com/winstonjs/winston/actions/workflows/ci.yml/badge.svg https://github.com/winstonjs/winston/actions/workflows/ci.yml ! coverage status https://coveralls.io/repos/github/winstonjs/winston/badge.svg?branch=master https://coveralls.io/github/winstonjs/winston?branch=master"
+  },
+  {
+   "id": "readme:winston:1",
+   "text": "See the Upgrade Guide UPGRADE 3.0.md for more information. Bug reports and PRs welcome!"
+  },
+  {
+   "id": "readme:winston:2",
+   "text": "Please note that the documentation below is for winston@3 . Read the winston@2.x documentation ."
+  },
+  {
+   "id": "readme:winston:3",
+   "text": "winston is designed to be a simple and universal logging library with support for multiple transports. A transport is essentially a storage device for your logs. Each winston logger can have multiple transports see: Transports configured at different levels see: Logging levels . For example, one may want error logs to be stored in a persistent remote location like a database , but all logs output to the console or a local file."
+  },
+  {
+   "id": "readme:winston:4",
+   "text": "winston aims to decouple parts of the logging process to make it more flexible and extensible. Attention is given to supporting flexibility in log formatting see: Formats & levels see: Using custom logging levels , and ensuring those APIs decoupled from the implementation of transport logging i.e. how the logs are stored / indexed, see: Adding Custom Transports to the API that they exposed to the programmer."
+  },
+  {
+   "id": "readme:winston:5",
+   "text": "TL;DR? Check out the quick start example quick example in ./examples/ . There are a number of other examples in ./examples/ .js examples . Don't see an example you think should be there? Submit a pull request to add it!"
+  },
+  {
+   "id": "readme:winston:6",
+   "text": "The recommended way to use winston is to create your own logger. The simplest way to do this is using winston.createLogger :"
+  },
+  {
+   "id": "readme:winston:7",
+   "text": "You may also log directly via the default logger exposed by require 'winston' , but this merely intended to be a convenient shared logger to use throughout your application if you so choose. Note that the default logger doesn't have any transports by default. You need add transports by yourself, and leaving the default logger without any transports may produce a high memory usage issue."
+  },
+  {
+   "id": "readme:winston:8",
+   "text": "Logging levels in winston conform to the severity ordering specified by RFC5424 : severity of all levels is assumed to be numerically ascending from most important to least important."
+  },
+  {
+   "id": "readme:winston:9",
+   "text": "Creating your own Logger You get started by creating a logger using winston.createLogger :"
+  },
+  {
+   "id": "readme:winston:10",
+   "text": "Name Default Description level 'info' Log only if info.level streams objectmode and info objects is less than or equal to this level levels winston.config.npm.levels Levels and colors representing log priorities format winston.format.json Formatting for info messages see: Formats transports No transports Set of logging targets for info messages exitOnError true If false, handled exceptions will not cause process.exit silent false If true, all logs are suppressed"
+  },
+  {
+   "id": "readme:winston:11",
+   "text": "The levels provided to createLogger will be defined as convenience methods on the logger returned."
+  },
+  {
+   "id": "readme:request:0",
+   "text": "As of Feb 11th 2020, request is fully deprecated. No new changes are expected land. In fact, none have landed for some time."
+  },
+  {
+   "id": "readme:request:1",
+   "text": "For more information about why request is deprecated and possible alternatives refer to this issue https://github.com/request/request/issues/3142 ."
+  },
+  {
+   "id": "readme:request:2",
+   "text": "! Build status https://img.shields.io/travis/request/request/master.svg?style=flat square https://travis ci.org/request/request ! Coverage https://img.shields.io/codecov/c/github/request/request.svg?style=flat square https://codecov.io/github/request/request?branch=master ! Coverage https://img.shields.io/coveralls/request/request.svg?style=flat square https://coveralls.io/r/request/request ! Dependency Status https://img.shields.io/david/request/request.svg?style=flat square https://david dm.org/request/request ! Known Vulnerabilities https://snyk.io/test/npm/request/badge.svg?style=flat square https://snyk.io/test/npm/request ! Gitter https://img.shields.io/badge/gitter join chat blue.svg?style=flat square https://gitter.im/request/request?utm source=badge"
+  },
+  {
+   "id": "readme:request:3",
+   "text": "Request is designed to be the simplest way possible to make http calls. It supports HTTPS and follows redirects by default."
+  },
+  {
+   "id": "readme:request:4",
+   "text": "Streaming streaming Promises & Async/Await promises asyncawait Forms forms HTTP Authentication http authentication Custom HTTP Headers custom http headers OAuth Signing oauth signing Proxies proxies Unix Domain Sockets unix domain sockets TLS/SSL Protocol tlsssl protocol Support for HAR 1.2 support for har 12 All Available Options requestoptions callback"
+  },
+  {
+   "id": "readme:request:5",
+   "text": "Request also offers convenience methods convenience methods like request.defaults and request.post , and there are lots of usage examples examples and several debugging techniques debugging ."
+  },
+  {
+   "id": "readme:request:6",
+   "text": "You can also stream a file to a PUT or POST request. This method will also check the file extension against a mapping of file extensions to content types in this case application/json and use the proper content type in the PUT request if the headers don’t already provide one ."
+  },
+  {
+   "id": "readme:request:7",
+   "text": "Request can also pipe to itself. When doing so, content type and content length are preserved in the PUT headers."
+  },
+  {
+   "id": "readme:request:8",
+   "text": "Request emits a \"response\" event when a response is received. The response argument will be an instance of http.IncomingMessage https://nodejs.org/api/http.html http class http incomingmessage ."
+  },
+  {
+   "id": "readme:request:9",
+   "text": "To easily handle errors when streaming requests, listen to the error event before piping:"
+  },
+  {
+   "id": "readme:request:10",
+   "text": "You can also pipe from http.ServerRequest instances, as well as to http.ServerResponse instances. The HTTP method, headers, and entity body data will be sent. Which means that, if you don't really care about security, you can do:"
+  },
+  {
+   "id": "readme:request:11",
+   "text": "And since pipe returns the destination stream in ≥ Node 0.5.x you can do one line proxying. :"
+  },
+  {
+   "id": "readme:helmet:0",
+   "text": "Helmet helps secure Node/Express apps. It sets HTTP response headers such as Content Security Policy and Strict Transport Security . It aims to be quick to integrate and be low maintenance afterward."
+  },
+  {
+   "id": "readme:helmet:1",
+   "text": "See the docs https://helmet.js.org/ for more info, including the FAQ https://helmet.js.org/faq/ ."
+  },
+  {
+   "id": "readme:helmet:2",
+   "text": "The Content Security Policy header mitigates a large number of attacks, such as cross site scripting XSS . See MDN's introductory article on Content Security Policy https://developer.mozilla.org/en US/docs/Web/HTTP/CSP ."
+  },
+  {
+   "id": "readme:helmet:3",
+   "text": "This header is powerful but likely requires some configuration for your specific app."
+  },
+  {
+   "id": "readme:helmet:4",
+   "text": "To configure this header, pass an object with a nested directives object. Each key is a directive name in camel case such as defaultSrc or kebab case such as default src . Each value is an array or other iterable of strings or functions for that directive. If a function appears in the array, it will be called with the request and response objects."
+  },
+  {
+   "id": "readme:helmet:5",
+   "text": "These directives are merged into a default policy, which you can disable by setting useDefaults to false ."
+  },
+  {
+   "id": "readme:helmet:6",
+   "text": "You can get the default directives object with helmet.contentSecurityPolicy.getDefaultDirectives . Here is the default policy formatted for readability :"
+  },
+  {
+   "id": "readme:helmet:7",
+   "text": "The default src directive can be explicitly disabled by setting its value to helmet.contentSecurityPolicy.dangerouslyDisableDefaultSrc , but this is not recommended."
+  },
+  {
+   "id": "readme:helmet:8",
+   "text": "You can set the Content Security Policy Report Only https://developer.mozilla.org/en US/docs/Web/HTTP/Headers/Content Security Policy Report Only instead:"
+  },
+  {
+   "id": "readme:helmet:9",
+   "text": "upgrade insecure requests , a directive that causes browsers to upgrade HTTP to HTTPS, is set by default. You may wish to avoid this in development, as you may not be developing with HTTPS. Notably, Safari will upgrade http://localhost to https://localhost , which can cause problems. To work around this, you may wish to disable the upgrade insecure requests directive in development. For example:"
+  },
+  {
+   "id": "readme:helmet:10",
+   "text": "Helmet performs very little validation on your CSP. You should rely on CSP checkers like CSP Evaluator https://csp evaluator.withgoogle.com/ instead."
+  },
+  {
+   "id": "readme:helmet:11",
+   "text": "<details id=\"cross origin embedder policy\" <summary <code Cross Origin Embedder Policy</code </summary"
+  },
+  {
+   "id": "readme:commander:0",
+   "text": "! Build Status https://github.com/tj/commander.js/workflows/build/badge.svg https://github.com/tj/commander.js/actions?query=workflow%3A%22build%22 ! NPM Version http://img.shields.io/npm/v/commander.svg?style=flat https://www.npmjs.org/package/commander ! NPM Downloads https://img.shields.io/npm/dm/commander.svg?style=flat https://npmcharts.com/compare/commander?minimal=true ! Install Size https://packagephobia.now.sh/badge?p=commander https://packagephobia.now.sh/result?p=commander"
+  },
+  {
+   "id": "readme:commander:1",
+   "text": "You write code to describe your command line interface. Commander looks after parsing the arguments into options and command arguments, displays usage errors for problems, and implements a help system."
+  },
+  {
+   "id": "readme:commander:2",
+   "text": "Commander is strict and displays an error for unrecognised options. The two most used option types are a boolean option, and an option which takes its value from the following argument."
+  },
+  {
+   "id": "readme:commander:3",
+   "text": "Here is a more complete program using a subcommand and with descriptions for the help. In a multi command program, you have an action handler for each command or stand alone executables for the commands ."
+  },
+  {
+   "id": "readme:commander:4",
+   "text": "Commander exports a global object which is convenient for quick programs. This is used in some examples in this README for brevity."
+  },
+  {
+   "id": "readme:commander:5",
+   "text": "For larger programs which may use commander in multiple ways, including unit testing, it is better to create a local Command object to use."
+  },
+  {
+   "id": "readme:commander:6",
+   "text": "Options are defined with the .option method, also serving as documentation for the options. Each option can have a short flag single character and a long name, separated by a comma, a space, or a vertical bar . To allow a wider range of short ish flags than just single characters, you may also have two long options."
+  },
+  {
+   "id": "readme:commander:7",
+   "text": "The parsed options can be accessed by calling .opts on a Command object, and are passed to the action handler."
+  },
+  {
+   "id": "readme:commander:8",
+   "text": "Multi word options like template engine are normalized to camelCase option names, resulting in properties such as program.opts .templateEngine ."
+  },
+  {
+   "id": "readme:commander:9",
+   "text": "An option and its option argument can be separated by a space, or combined into the same argument. The option argument can follow the short option directly, or follow an = for a long option."
+  },
+  {
+   "id": "readme:commander:10",
+   "text": "You can use to indicate the end of the options, and any remaining arguments will be used without being interpreted."
+  },
+  {
+   "id": "readme:commander:11",
+   "text": "By default, options on the command line are not positional, and can be specified before or after other arguments."
+  },
+  {
+   "id": "readme:redis:0",
+   "text": "! Tests https://img.shields.io/github/actions/workflow/status/redis/node redis/tests.yml?branch=master https://github.com/redis/node redis/actions/workflows/tests.yml ! Coverage https://codecov.io/gh/redis/node redis/branch/master/graph/badge.svg?token=xcfqHhJC37 https://codecov.io/gh/redis/node redis ! License https://img.shields.io/github/license/redis/node redis.svg https://github.com/redis/node redis/blob/master/LICENSE"
+  },
+  {
+   "id": "readme:redis:1",
+   "text": "! Discord https://img.shields.io/discord/697882427875393627.svg?style=social&logo=discord https://discord.gg/redis ! Twitch https://img.shields.io/twitch/status/redisinc?style=social https://www.twitch.tv/redisinc ! YouTube https://img.shields.io/youtube/channel/views/UCD78lHSwYqMlyetR0 P4Vig?style=social https://www.youtube.com/redisinc ! Twitter https://img.shields.io/twitter/follow/redisinc?style=social https://twitter.com/redisinc"
+  },
+  {
+   "id": "readme:redis:2",
+   "text": "node redis is a modern, high performance Redis https://redis.io client for Node.js."
+  },
+  {
+   "id": "readme:redis:3",
+   "text": "\"redis\" is the \"whole in one\" package that includes all the other packages. If you only need a subset of the commands, you can install the individual packages. See the list below."
+  },
+  {
+   "id": "readme:redis:4",
+   "text": "Name Description redis https://github.com/redis/node redis/tree/master/packages/redis The client with all the \"redis stack\" https://github.com/redis stack/redis stack modules @redis/client https://github.com/redis/node redis/tree/master/packages/client The base clients i.e RedisClient , RedisCluster , etc. @redis/bloom https://github.com/redis/node redis/tree/master/packages/bloom Redis Bloom https://redis.io/docs/data types/probabilistic/ commands @redis/json https://github.com/redis/node redis/tree/master/packages/json Redis JSON https://redis.io/docs/data types/json/ commands @redis/search https://github.com/redis/node redis/tree/master/packages/search RediSearch https://redis.io/docs/interact/search and query/ commands @redis/time series https://github.com/redis/node redis/tree/master/packages/time series Redis Time Series https://redis.io/docs/data types/timeseries/ commands @redis/entraid https://github.com/redis/node redis/tree/master/packages/entraid Secure token based authentication for Redis clients using Microsoft Entra ID"
+  },
+  {
+   "id": "readme:redis:5",
+   "text": "Looking for a high level library to handle object mapping? See redis om node https://github.com/redis/redis om node !"
+  },
+  {
+   "id": "readme:redis:6",
+   "text": "The above code connects to localhost on port 6379. To connect to a different host or port, use a connection string in the format redis s :// username :password @ host :port /db number :"
+  },
+  {
+   "id": "readme:redis:7",
+   "text": "You can also use discrete parameters, UNIX sockets, and even TLS to connect. Details can be found in the client configuration guide https://github.com/redis/node redis/blob/master/docs/client configuration.md ."
+  },
+  {
+   "id": "readme:redis:8",
+   "text": "To check if the the client is connected and ready to send commands, use client.isReady which returns a boolean. client.isOpen is also available. This returns true when the client's underlying socket is open, and false when it isn't for example when the client is still connecting or reconnecting after a network error ."
+  },
+  {
+   "id": "readme:redis:9",
+   "text": "There is built in support for all of the out of the box Redis commands https://redis.io/commands . They are exposed using the raw Redis command names HSET , HGETALL , etc. and a friendlier camel cased version hSet , hGetAll , etc. :"
+  },
+  {
+   "id": "readme:redis:10",
+   "text": "For commands that return serialized binary payloads, such as DUMP , map blob strings to Buffer before using the result with commands like RESTORE :"
+  },
+  {
+   "id": "readme:redis:11",
+   "text": "If you want to run commands and/or use arguments that Node Redis doesn't know about yet! use .sendCommand :"
+  },
+  {
+   "id": "readme:node-sass:0",
+   "text": "Warning: LibSass and Node Sass are deprecated https://sass lang.com/blog/libsass is deprecated . While they will continue to receive maintenance releases indefinitely, there are no plans to add additional features or compatibility with any new CSS or Sass features. Projects that still use it should move onto Dart Sass https://sass lang.com/dart sass ."
+  },
+  {
+   "id": "readme:node-sass:1",
+   "text": "1. Supported Node.js versions vary by release, please consult the releases page https://github.com/sass/node sass/releases . 1. Node versions that hit end of life <https://github.com/nodejs/Release , will be dropped from support at each node sass release major, minor . 1. We will stop building binaries for unsupported releases, testing for breakages in dependency compatibility, but we will not block installations for those that want to support themselves. 1. New node release require minor internal changes along with support from CI providers AppVeyor, GitHub Actions . We will open a single issue for interested parties to subscribe to, and close additional issues."
+  },
+  {
+   "id": "readme:node-sass:2",
+   "text": "Below is a quick guide for minimum and maximum supported versions of node sass:"
+  },
+  {
+   "id": "readme:node-sass:3",
+   "text": "NodeJS Supported node sass version Node Module Node 20 9.0+ 115 Node 19 8.0+ 111 Node 18 8.0+ 108 Node 17 7.0+, <8.0 102 Node 16 6.0+ 93 Node 15 5.0+, <7.0 88 Node 14 4.14+, <9.0 83 Node 13 4.13+, <5.0 79 Node 12 4.12+, <8.0 72 Node 11 4.10+, <5.0 67 Node 10 4.9+, <6.0 64 Node 8 4.5.3+, <5.0 57 Node <8 <5.0 <57"
+  },
+  {
+   "id": "readme:node-sass:4",
+   "text": "<table <tr <td <img width=\"77px\" alt=\"Sass logo\" src=\"https://rawgit.com/sass/node sass/master/media/logo.svg\" / </td <td valign=\"bottom\" align=\"right\" <a href=\"https://www.npmjs.com/package/node sass\" <img width=\"100%\" src=\"https://nodei.co/npm/node sass.png?downloads=true&downloadRank=true&stars=true\" </a </td </tr </table"
+  },
+  {
+   "id": "readme:node-sass:5",
+   "text": "! Alpine https://github.com/sass/node sass/workflows/Build%20bindings%20for%20Alpine%20releases/badge.svg ! Linux https://github.com/sass/node sass/workflows/Build%20bindings%20for%20Linux%20releases/badge.svg ! macOS https://github.com/sass/node sass/workflows/Build%20bindings%20for%20macOS%20releases/badge.svg ! Windows x64 https://github.com/sass/node sass/workflows/Build%20bindings%20for%20Windows%20releases/badge.svg ! Linting https://github.com/sass/node sass/workflows/Lint%20JS/badge.svg ! Windows x86 https://ci.appveyor.com/api/projects/status/22mjbk59kvd55m9y/branch/master?svg=true https://ci.appveyor.com/project/sass/node sass/branch/master ! Coverage Status https://coveralls.io/repos/sass/node sass/badge.svg?branch=master https://coveralls.io/r/sass/node sass?branch=master"
+  },
+  {
+   "id": "readme:node-sass:6",
+   "text": "Node sass is a library that provides binding for Node.js to LibSass , the C version of the popular stylesheet preprocessor, Sass."
+  },
+  {
+   "id": "readme:node-sass:7",
+   "text": "It allows you to natively compile .scss files to css at incredible speed and automatically via a connect middleware."
+  },
+  {
+   "id": "readme:node-sass:8",
+   "text": "Some users have reported issues installing on Ubuntu due to node being registered to another package. Follow the official NodeJS docs https://github.com/nodesource/distributions/blob/master/README.md debinstall to install NodeJS so that !/usr/bin/env node correctly resolves."
+  },
+  {
+   "id": "readme:node-sass:9",
+   "text": "Compiling on Windows machines requires the node gyp prerequisites https://github.com/nodejs/node gyp on windows ."
+  },
+  {
+   "id": "readme:node-sass:10",
+   "text": "Are you seeing the following error? Check out our Troubleshooting guide https://github.com/sass/node sass/blob/master/TROUBLESHOOTING.md installing node sass 4x with node 4 ."
+  },
+  {
+   "id": "readme:node-sass:11",
+   "text": "A string to pass to LibSass to compile. It is recommended that you use includePaths in conjunction with this so that LibSass can find files when using the @import directive."
+  },
+  {
+   "id": "readme:glob:0",
+   "text": "The most correct and second fastest glob implementation in JavaScript. See Comparison to Other JavaScript Glob Implementations comparisons to other fnmatchglob implementations at the bottom of this readme."
+  },
+  {
+   "id": "readme:glob:1",
+   "text": "!NOTE The npm package name is not node glob that's a different thing that was abandoned years ago. Just glob ."
+  },
+  {
+   "id": "readme:glob:2",
+   "text": "!NOTE Glob patterns should always use / as a path separator, even on Windows systems, as \\ is used to escape glob characters. If you wish to use \\ as a path separator instead of using it as an escape character on Windows platforms, you may set windowsPathsNoEscape:true in the options. In this mode, special glob characters cannot be escaped, making it impossible to match a literal ? and so on in filenames."
+  },
+  {
+   "id": "readme:glob:3",
+   "text": "The glob CLI has been moved to the glob bin package, and must be installed separately, as of version 13."
+  },
+  {
+   "id": "readme:glob:4",
+   "text": "Perform an asynchronous glob search for the pattern s specified. Returns Path https://isaacs.github.io/path scurry/classes/PathBase objects if the withFileTypes option is set to true . See below for full options field desciptions."
+  },
+  {
+   "id": "readme:glob:5",
+   "text": "Return a stream that emits all the strings or Path objects and then emits end when completed."
+  },
+  {
+   "id": "readme:glob:6",
+   "text": "Syncronous form of globStream . Will read all the matches as fast as you consume them, even all in a single tick if you consume them immediately, but will still respond to backpressure if they're not consumed immediately."
+  },
+  {
+   "id": "readme:glob:7",
+   "text": "Returns true if the provided pattern contains any \"magic\" glob characters, given the options provided."
+  },
+  {
+   "id": "readme:glob:8",
+   "text": "Brace expansion is not considered \"magic\" unless the magicalBraces option is set, as brace expansion just turns one string into an array of strings. So a pattern like 'x{a,b}y' would return false , because 'xay' and 'xby' both do not contain any magic glob characters, and it's treated the same as if you had called it on 'xay', 'xby' . When magicalBraces:true is in the options, brace expansion is treated as a pattern having magic."
+  },
+  {
+   "id": "readme:glob:9",
+   "text": "Escape all magic characters in a glob pattern, so that it will only ever match literal strings"
+  },
+  {
+   "id": "readme:glob:10",
+   "text": "If the windowsPathsNoEscape option is used, then characters are escaped by wrapping in , because a magic character wrapped in a character class can only be satisfied by that exact character."
+  },
+  {
+   "id": "readme:glob:11",
+   "text": "If the windowsPathsNoEscape option is used, then square brace escapes are removed, but not backslash escapes. For example, it will turn the string ' ' into , but it will not turn '\\\\ ' into ' ' , because \\ is a path separator in windowsPathsNoEscape mode."
+  },
+  {
+   "id": "readme:tslint:0",
+   "text": "! NPM version https://badge.fury.io/js/tslint.svg https://badge.fury.io/js/tslint ! Downloads https://img.shields.io/npm/dm/tslint.svg https://npmjs.org/package/tslint ! Dependency Status https://david dm.org/palantir/tslint.svg https://david dm.org/palantir/tslint ! devDependency Status https://david dm.org/palantir/tslint/dev status.svg https://david dm.org/palantir/tslint/?type=dev ! peerDependency Status https://david dm.org/palantir/tslint/peer status.svg https://david dm.org/palantir/tslint/?type=peer ! Circle CI https://circleci.com/gh/palantir/tslint.svg?style=svg https://circleci.com/gh/palantir/tslint"
+  },
+  {
+   "id": "readme:tslint:1",
+   "text": "See this issue for more details: Roadmap: TSLint &rarr; ESLint https://github.com/palantir/tslint/issues/4534 . If you're interested in helping with the TSLint/ESLint migration, please check out our OSS Fellowship https://medium.com/palantir/fellowships for open source developers 3892e6b75ee1 program."
+  },
+  {
+   "id": "readme:tslint:2",
+   "text": "TSLint is an extensible static analysis tool that checks TypeScript https://github.com/Microsoft/TypeScript code for readability, maintainability, and functionality errors. It is widely supported across modern editors & build systems and can be customized with your own lint rules, configurations, and formatters."
+  },
+  {
+   "id": "readme:tslint:3",
+   "text": "an extensive set of core rules custom lint rules custom formatters failure reporters inline disabling and enabling of rules with comment flags in source code configuration presets tslint:latest , tslint react , etc. and plugin composition automatic fixing of formatting & style violations integration with MSBuild https://github.com/joshuakgoldberg/tslint.msbuild , Grunt https://github.com/palantir/grunt tslint , Gulp https://github.com/panuhorsmalahti/gulp tslint , Atom https://github.com/AtomLinter/linter tslint , Eclipse https://github.com/palantir/eclipse tslint , Emacs https://www.flycheck.org/ , Sublime https://packagecontrol.io/packages/SublimeLinter contrib tslint , Vim https://github.com/scrooloose/syntastic , Visual Studio 2015 https://marketplace.visualstudio.com/items?itemName=MadsKristensen.WebAnalyzer , Visual Studio 2017 https://marketplace.visualstudio.com/items?itemName=RichNewman.TypeScriptAnalyzer , Visual Studio code https://marketplace.visualstudio.com/items?itemName=ms vscode.vscode typescript tslint plugin alternative: use this extension https://marketplace.visualstudio.com/items?itemName=eg2.tslint for TS <3.2 , WebStorm https://www.jetbrains.com/webstorm/help/tslint.html and more https://palantir.github.io/tslint/usage/third party tools/"
+  },
+  {
+   "id": "readme:tslint:4",
+   "text": "Please refer to the full installation & usage documentation on the TSLint website https://palantir.github.io/tslint/ . There, you'll find information about"
+  },
+  {
+   "id": "readme:tslint:5",
+   "text": "configuration https://palantir.github.io/tslint/usage/configuration/ , core rules https://palantir.github.io/tslint/rules/ , core formatters https://palantir.github.io/tslint/formatters/ , and customization of TSLint https://palantir.github.io/tslint/develop/custom rules/ . inline disabling and enabling of rules with comment flags https://palantir.github.io/tslint/usage/rule flags/"
+  },
+  {
+   "id": "readme:tslint:6",
+   "text": "There is a sandbox environment for TSLint at palantir.github.io/tslint playground https://palantir.github.io/tslint playground/ , which can be used to test rules and see how TSLint works. Issues can be filed against tslint playground here https://github.com/palantir/tslint playground ."
+  },
+  {
+   "id": "readme:tslint:7",
+   "text": "tslint react https://github.com/palantir/tslint react Lint rules related to React & JSX. tslint blueprint https://github.com/palantir/tslint blueprint Lint rules to enforce best practices with blueprintjs libraries https://github.com/palantir/blueprint"
+  },
+  {
+   "id": "readme:tslint:8",
+   "text": "If we don't have all the rules you're looking for, you can either write your own custom rules https://palantir.github.io/tslint/develop/custom rules/ or use rules implementations developed by the community. The repos below are a good source of custom rules:"
+  },
+  {
+   "id": "readme:bull:0",
+   "text": "<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" <tr <td <a href=\"https://www.dragonflydb.io/\" <img src=\"https://raw.githubusercontent.com/dragonflydb/dragonfly/main/.github/images/logo full.svg\" width=550 alt=\"Dragonfly\" / </a </td <td Dragonfly is a new Redis™ drop in replacement that is fully compatible with BullMQ and brings some important advantages over Redis™ such as massive better performance by utilizing all CPU cores available and faster and more memory efficient data structures. Read more <a href=\"https://www.dragonflydb.io/docs/integrations/bullmq\" here</a on how to use it with BullMQ. </td </tr </table"
+  },
+  {
+   "id": "readme:bull:1",
+   "text": "Bull is currently in maintenance mode, we are only fixing bugs. For new features check BullMQ https://github.com/taskforcesh/bullmq , a modern rewritten implementation in Typescript. You are still very welcome to use Bull if it suits your needs, which is a safe, battle tested library."
+  },
+  {
+   "id": "readme:bull:2",
+   "text": "Bull is popular among large and small organizations, like the following ones:"
+  },
+  {
+   "id": "readme:bull:3",
+   "text": "<table cellspacing=\"0\" cellpadding=\"0\" <tr <td valign=\"center\" <a href=\"https://github.com/atlassian/github for jira\" <img src=\"https://876297641 files.gitbook.io/~/files/v0/b/gitbook x prod.appspot.com/o/spaces%2F LUuDmt xXMfG66Rn1GA%2Fuploads%2FevsJCF6F1tx1ScZwDQOd%2FAtlassian horizontal blue rgb.webp?alt=media&token=2fcd0528 e8bb 4bdd af35 9d20e313d1a8\" width=\"150\" alt=\"Atlassian\" / </a </td <td valign=\"center\" <a href=\"https://github.com/Autodesk\" <img src=\"https://876297641 files.gitbook.io/~/files/v0/b/gitbook x prod.appspot.com/o/spaces%2F LUuDmt xXMfG66Rn1GA%2Fuploads%2FvpTe02RdOhUJBA8TdHEE%2Fautodesk logo white.png?alt=media&token=326961b4 ea4f 4ded 89a4 e05692eec8ee\" width=\"150\" alt=\"Autodesk\" / </a </td <td valign=\"center\" <a href=\"https://github.com/common voice/common voice\" <img src=\"https://876297641 files.gitbook.io/~/files/v0/b/gitbook x prod.appspot.com/o/spaces%2F LUuDmt xXMfG66Rn1GA%2Fuploads%2F4zPSrubNJKViAzUIftIy%2Fmozilla logo bw rgb.png?alt=media&token=9f93aae2 833f 4cc4 8df9 b7fea0ad5cb5\" width=\"150\" alt=\"Mozilla\" / </a </td <td valign=\"center\" <a href=\"https://github.com/nestjs/bull\" <img src=\"https://876297641 files.gitbook.io/~/files/v0/b/gitbook x prod.appspot.com/o/spaces%2F LUuDmt xXMfG66Rn1GA%2Fuploads%2FfAcGye182utFUtPKdLqJ%2FScreenshot%202022 02 15%20at%2011.32.39.png?alt=media&token=29feb550 f0bc 467d a290 f700701d7d15\" width=\"150\" alt=\"Nest\" / </a </td <td valign=\"center\" <a href=\"https://github.com/salesforce/refocus\" <img src=\"https://876297641 files.gitbook.io/~/files/v0/b/gitbook x prod.appspot.com/o/spaces%2F LUuDmt xXMfG66Rn1GA%2Fuploads%2FZNnYNuL5qJ6ZoBh7JJEW%2Fsalesforce logo.png?alt=media&token=ddcae63b 08c0 4dd4 8496 3b29a9bf977d\" width=\"100\" alt=\"Salesforce\" / </a </td"
+  },
+  {
+   "id": "readme:bull:4",
+   "text": "Supercharge your queues with a professional front end: Get a complete overview of all your queues. Inspect jobs, search, retry, or promote delayed jobs. Metrics and statistics. and many more features."
+  },
+  {
+   "id": "readme:bull:5",
+   "text": "x Minimal CPU usage due to a polling free design. x Robust design based on Redis. x Delayed jobs. x Schedule and repeat jobs according to a cron specification. x Rate limiter for jobs. x Retries. x Priority. x Concurrency. x Pause/resume—globally or locally. x Multiple job types per queue. x Threaded sandboxed processing functions. x Automatic recovery from process crashes."
+  },
+  {
+   "id": "readme:bull:6",
+   "text": "Job completion acknowledgement you can use the message queue pattern https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md returning job completions in the meantime . Parent child jobs relationships."
+  },
+  {
+   "id": "readme:bull:7",
+   "text": "There are a few third party UIs that you can use for monitoring:"
+  },
+  {
+   "id": "readme:bull:8",
+   "text": "Taskforce https://taskforce.sh bull board https://github.com/vcapretz/bull board bull repl https://github.com/darky/bull repl bull monitor https://github.com/s r x/bull monitor Monitoro https://github.com/AbhilashJN/monitoro"
+  },
+  {
+   "id": "readme:bull:9",
+   "text": "Since there are a few job queue solutions, here is a table comparing them:"
+  },
+  {
+   "id": "readme:bull:10",
+   "text": "Requirements: Bull requires a Redis version greater than or equal to 2.8.18 ."
+  },
+  {
+   "id": "readme:bull:11",
+   "text": "We welcome all types of contributions, either code fixes, new features or doc improvements. Code formatting is enforced by prettier https://prettier.io/ . For commits please follow conventional commits convention https://www.conventionalcommits.org/en/v1.0.0 beta.2/ . All code must pass lint rules and test suites before it can be merged into develop."
+  },
+  {
+   "id": "readme:got:0",
+   "text": "<! ! Coverage Status https://codecov.io/gh/sindresorhus/got/branch/main/graph/badge.svg https://codecov.io/gh/sindresorhus/got/branch/main ! Downloads https://img.shields.io/npm/dm/got.svg https://npmjs.com/got ! Install size https://packagephobia.com/badge?p=got https://packagephobia.com/result?p=got"
+  },
+  {
+   "id": "readme:got:1",
+   "text": "You probably want Ky https://github.com/sindresorhus/ky instead, by the same people. It's smaller, works in the browser too, and is more stable since it's built on Fetch https://developer.mozilla.org/en US/docs/Web/API/Fetch API . Or fetch extras https://github.com/sindresorhus/fetch extras for simple needs."
+  },
+  {
+   "id": "readme:got:2",
+   "text": "Warning: This package is native ESM https://developer.mozilla.org/en US/docs/Web/JavaScript/Guide/Modules and no longer provides a CommonJS export. If your project uses CommonJS, you will have to convert to ESM https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c . Please don't open issues for questions regarding CommonJS / ESM."
+  },
+  {
+   "id": "readme:got:3",
+   "text": "Got v11 is no longer maintained and we will not accept any backport requests."
+  },
+  {
+   "id": "readme:got:4",
+   "text": "Got has a dedicated option for handling JSON payload.\\ Furthermore, the promise exposes a .json<T function that returns Promise<T ."
+  },
+  {
+   "id": "readme:got:5",
+   "text": "For advanced JSON usage, check out the parseJson documentation/2 options.md parsejson and stringifyJson documentation/2 options.md stringifyjson options."
+  },
+  {
+   "id": "readme:got:6",
+   "text": "Used by 10K+ packages and 5M+ repos https://github.com/sindresorhus/got/network/dependents Actively maintained https://github.com/sindresorhus/got/graphs/contributors Trusted by many companies widely used"
+  },
+  {
+   "id": "readme:got:7",
+   "text": "By default, Got will retry on failure. To disable this option, set options.retry.limit documentation/7 retry.md retry to 0."
+  },
+  {
+   "id": "readme:got:8",
+   "text": "x Promise API documentation/1 promise.md x Options documentation/2 options.md x Stream API documentation/3 streams.md x Pagination API documentation/4 pagination.md x Advanced HTTPS API documentation/5 https.md x HTTP/2 support documentation/2 options.md http2 x Response class documentation/3 streams.md response 2"
+  },
+  {
+   "id": "readme:got:9",
+   "text": "x Advanced timeout handling documentation/6 timeout.md x Retries on failure documentation/7 retry.md x Errors with metadata documentation/8 errors.md"
+  },
+  {
+   "id": "readme:got:10",
+   "text": "x Hooks documentation/9 hooks.md x Instances documentation/10 instances.md x Progress events & other events documentation/3 streams.md events x Plugins documentation/lets make a plugin.md x Compose documentation/examples/advanced creation.js"
+  },
+  {
+   "id": "readme:got:11",
+   "text": "x RFC compliant caching documentation/cache.md x Proxy support documentation/tips.md proxying x Unix Domain Sockets documentation/2 options.md enableunixsockets"
+  },
+  {
+   "id": "readme:nodemon:0",
+   "text": "<p align=\"center\" <a href=\"https://nodemon.io/\" <img src=\"https://user images.githubusercontent.com/13700/35731649 652807e8 080e 11e8 88fd 1b2f6d553b2d.png\" alt=\"Nodemon Logo\" </a </p"
+  },
+  {
+   "id": "readme:nodemon:1",
+   "text": "nodemon is a tool that helps develop Node.js based applications by automatically restarting the node application when file changes in the directory are detected."
+  },
+  {
+   "id": "readme:nodemon:2",
+   "text": "nodemon does not require any additional changes to your code or method of development. nodemon is a replacement wrapper for node . To use nodemon , replace the word node on the command line when executing your script."
+  },
+  {
+   "id": "readme:nodemon:3",
+   "text": "! NPM version https://badge.fury.io/js/nodemon.svg https://npmjs.org/package/nodemon ! Backers on Open Collective https://opencollective.com/nodemon/backers/badge.svg backers ! Sponsors on Open Collective https://opencollective.com/nodemon/sponsors/badge.svg sponsors"
+  },
+  {
+   "id": "readme:nodemon:4",
+   "text": "Either through cloning with git or by using npm http://npmjs.org the recommended way :"
+  },
+  {
+   "id": "readme:nodemon:5",
+   "text": "With a local installation, nodemon will not be available in your system path or you can't use it directly from the command line. Instead, the local installation of nodemon can be run by calling it from within an npm script such as npm start or using npx nodemon ."
+  },
+  {
+   "id": "readme:nodemon:6",
+   "text": "nodemon wraps your application, so you can pass all the arguments you would normally pass to your app:"
+  },
+  {
+   "id": "readme:nodemon:7",
+   "text": "Using nodemon is simple, if my application accepted a host and port as the arguments, I would start it as so:"
+  },
+  {
+   "id": "readme:nodemon:8",
+   "text": "Any output from this script is prefixed with nodemon , otherwise all output from your application, errors included, will be echoed out as expected."
+  },
+  {
+   "id": "readme:nodemon:9",
+   "text": "You can also pass the inspect flag to node through the command line as you would normally:"
+  },
+  {
+   "id": "readme:nodemon:10",
+   "text": "If you have a package.json file for your app, you can omit the main script entirely and nodemon will read the package.json for the main property and use that value as the app ref https://github.com/remy/nodemon/issues/14 ."
+  },
+  {
+   "id": "readme:nodemon:11",
+   "text": "nodemon will also search for the scripts.start property in package.json as of nodemon 1.1.x ."
+  },
+  {
+   "id": "readme:axios:0",
+   "text": "<p align=\"center\" <a href=\"https://axios.rest/\" <b Website</b </a • <a href=\"https://axios.rest/pages/getting started/first steps.html\" <b Documentation</b </a </p"
+  },
+  {
+   "id": "readme:axios:1",
+   "text": "! npm version https://img.shields.io/npm/v/axios.svg?style=flat square https://www.npmjs.org/package/axios ! Build status https://img.shields.io/github/actions/workflow/status/axios/axios/ci.yml?branch=v1.x&label=CI&logo=github&style=flat square https://github.com/axios/axios/actions/workflows/ci.yml ! Gitpod Ready to Code https://img.shields.io/badge/Gitpod Ready to Code blue?logo=gitpod&style=flat square https://gitpod.io/ https://github.com/axios/axios ! install size https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=axios&query=$.install.pretty&label=install%20size&style=flat square https://packagephobia.now.sh/result?p=axios ! npm bundle size https://img.shields.io/bundlephobia/minzip/axios?style=flat square https://bundlephobia.com/package/axios@latest ! npm downloads https://img.shields.io/npm/dm/axios.svg?style=flat square https://npm stat.com/charts.html?package=axios ! gitter chat https://img.shields.io/gitter/room/mzabriskie/axios.svg?style=flat square https://gitter.im/mzabriskie/axios ! code helpers https://www.codetriage.com/axios/axios/badges/users.svg https://www.codetriage.com/axios/axios ! Contributors https://img.shields.io/github/contributors/axios/axios.svg?style=flat square CONTRIBUTORS.md ! Agent Friendly https://agentfriendlycode.com/api/badge/github/axios/axios.svg https://agentfriendlycode.com/repo/32"
+  },
+  {
+   "id": "readme:axios:2",
+   "text": "Make XMLHttpRequests https://developer.mozilla.org/en US/docs/Web/API/XMLHttpRequest from the browser. Make http https://nodejs.org/api/http.html requests from Node.js. Use the Promise https://developer.mozilla.org/en US/docs/Web/JavaScript/Reference/Global Objects/Promise API for asynchronous request handling. Intercept requests and responses to add custom logic or transform data. Transform request and response data. Cancel requests with built in cancellation APIs. Serialize and parse JSON https://www.json.org/json en.html data. Serialize data objects to multipart/form data or application/x www form urlencoded . Add client side protection against Cross Site Request Forgery https://en.wikipedia.org/wiki/Cross site request forgery ."
+  },
+  {
+   "id": "readme:axios:3",
+   "text": "Chrome Firefox Safari Opera Edge : : : : : : : : : : ! Chrome browser logo https://raw.githubusercontent.com/alrra/browser logos/main/src/chrome/chrome 48x48.png ! Firefox browser logo https://raw.githubusercontent.com/alrra/browser logos/main/src/firefox/firefox 48x48.png ! Safari browser logo https://raw.githubusercontent.com/alrra/browser logos/main/src/safari/safari 48x48.png ! Opera browser logo https://raw.githubusercontent.com/alrra/browser logos/main/src/opera/opera 48x48.png ! Edge browser logo https://raw.githubusercontent.com/alrra/browser logos/main/src/edge/edge 48x48.png Latest ✔ Latest ✔ Latest ✔ Latest ✔ Latest ✔"
+  },
+  {
+   "id": "readme:axios:4",
+   "text": "Once the package is installed, import it with import or require :"
+  },
+  {
+   "id": "readme:axios:5",
+   "text": "You can also use the default export, since the named export is just a re export from the Axios factory:"
+  },
+  {
+   "id": "readme:axios:6",
+   "text": "If you use require for importing, only the default export is available :"
+  },
+  {
+   "id": "readme:axios:7",
+   "text": "Note: Set a timeout in production. Without one, a stalled request can hang indefinitely. See Handling Timeouts handling timeouts for the matching error handling."
+  },
+  {
+   "id": "readme:axios:8",
+   "text": "Note: async/await is part of ECMAScript 2017 and is not supported in Internet Explorer and older browsers, so use with caution."
+  },
+  {
+   "id": "readme:axios:9",
+   "text": "Requests can be made by passing the relevant config to axios ."
+  },
+  {
+   "id": "readme:axios:10",
+   "text": "When using the alias methods url , method , and data properties don't need to be specified in config."
+  },
+  {
+   "id": "readme:axios:11",
+   "text": "You can create a new instance of axios with a custom config."
+  },
+  {
+   "id": "readme:pm2:0",
+   "text": "<b P</b rocess <b M</b anager <b 2</b <br/ <i Runtime Edition</i <br/ <br/"
+  },
+  {
+   "id": "readme:pm2:1",
+   "text": "<a title=\"PM2 Downloads\" href=\"https://npm stat.com/charts.html?package=pm2&from=2018 01 01&to=2023 08 01\" <img src=\"https://img.shields.io/npm/dm/pm2\" alt=\"Downloads per Month\"/ </a"
+  },
+  {
+   "id": "readme:pm2:2",
+   "text": "<a title=\"PM2 Downloads\" href=\"https://npm stat.com/charts.html?package=pm2&from=2018 01 01&to=2023 08 01\" <img src=\"https://img.shields.io/npm/dy/pm2\" alt=\"Downloads per Year\"/ </a"
+  },
+  {
+   "id": "readme:pm2:3",
+   "text": "PM2 is a production process manager for Node.js/Bun applications with a built in load balancer. It allows you to keep applications alive forever, to reload them without downtime and to facilitate common system admin tasks."
+  },
+  {
+   "id": "readme:pm2:4",
+   "text": "Works on Linux, macOS, and Windows. Supports Node.js 18+ and Bun 1+."
+  },
+  {
+   "id": "readme:pm2:5",
+   "text": "If you only have Bun installed no Node.js , symlink node to bun so PM2's !/usr/bin/env node shebang resolves to Bun's node compatibility runtime:"
+  },
+  {
+   "id": "readme:pm2:6",
+   "text": "You can install Node.js easily with NVM https://github.com/nvm sh/nvm installing and updating or FNM https://github.com/Schniz/fnm or install Bun with curl fsSL https://bun.sh/install bash"
+  },
+  {
+   "id": "readme:pm2:7",
+   "text": "You can start any application Node.js, Bun, and also Python, Ruby, binaries in $PATH... like that:"
+  },
+  {
+   "id": "readme:pm2:8",
+   "text": "Cluster mode starts multiple Node.js processes and load balances HTTP/TCP/UDP queries between them. This significantly increases throughput on multi core machines and improves reliability faster socket re balancing in case of unhandled errors ."
+  },
+  {
+   "id": "readme:pm2:9",
+   "text": "Starting a Node.js application in cluster mode that will leverage all CPUs available:"
+  },
+  {
+   "id": "readme:pm2:10",
+   "text": "<processes can be 'max' , 1 all cpu minus 1 or a specified number of instances to start."
+  },
+  {
+   "id": "readme:pm2:11",
+   "text": "With the drop in replacement command for node , called pm2 runtime , run your Node.js application in a hardened production environment. Using it is seamless:"
+  },
+  {
+   "id": "readme:sharp:0",
+   "text": "The typical use case for this high speed Node API module is to convert large images in common formats to smaller, web friendly JPEG, PNG, WebP, GIF and AVIF images of varying dimensions."
+  },
+  {
+   "id": "readme:sharp:1",
+   "text": "It can be used with all JavaScript runtimes that provide support for Node API v9, including Node.js = 20.9.0 , Deno and Bun."
+  },
+  {
+   "id": "readme:sharp:2",
+   "text": "Resizing an image is typically 4x 5x faster than using the quickest ImageMagick and GraphicsMagick settings due to its use of libvips https://github.com/libvips/libvips ."
+  },
+  {
+   "id": "readme:sharp:3",
+   "text": "Colour spaces, embedded ICC profiles and alpha transparency channels are all handled correctly. Lanczos resampling ensures quality is not sacrificed for speed."
+  },
+  {
+   "id": "readme:sharp:4",
+   "text": "As well as image resizing, operations such as rotation, extraction, compositing and gamma correction are available."
+  },
+  {
+   "id": "readme:sharp:5",
+   "text": "Most modern macOS, Windows and Linux systems do not require any additional install or runtime dependencies."
+  },
+  {
+   "id": "readme:sharp:6",
+   "text": "Visit sharp.pixelplumbing.com https://sharp.pixelplumbing.com/ for complete installation instructions https://sharp.pixelplumbing.com/install , API documentation https://sharp.pixelplumbing.com/api constructor , benchmark tests https://sharp.pixelplumbing.com/performance and changelog https://sharp.pixelplumbing.com/changelog ."
+  },
+  {
+   "id": "readme:sharp:7",
+   "text": "A guide for contributors https://github.com/lovell/sharp/blob/main/.github/CONTRIBUTING.md covers reporting bugs, requesting features and submitting code changes."
+  },
+  {
+   "id": "readme:sharp:8",
+   "text": "Licensed under the Apache License, Version 2.0 the \"License\" ; you may not use this file except in compliance with the License. You may obtain a copy of the License at https://www.apache.org/licenses/LICENSE 2.0 https://www.apache.org/licenses/LICENSE 2.0"
+  },
+  {
+   "id": "readme:sharp:9",
+   "text": "Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+  },
+  {
+   "id": "readme:eslint:0",
+   "text": "! npm version https://img.shields.io/npm/v/eslint.svg https://www.npmjs.com/package/eslint ! Downloads https://img.shields.io/npm/dm/eslint.svg https://www.npmjs.com/package/eslint ! Build Status https://github.com/eslint/eslint/workflows/CI/badge.svg https://github.com/eslint/eslint/actions <br ! Open Collective Backers https://img.shields.io/opencollective/backers/eslint https://opencollective.com/eslint ! Open Collective Sponsors https://img.shields.io/opencollective/sponsors/eslint https://opencollective.com/eslint"
+  },
+  {
+   "id": "readme:eslint:1",
+   "text": "Website https://eslint.org Configure ESLint https://eslint.org/docs/latest/use/configure Rules https://eslint.org/docs/rules/ Contribute to ESLint https://eslint.org/docs/latest/contribute Report Bugs https://eslint.org/docs/latest/contribute/report bugs Code of Conduct https://eslint.org/conduct X https://x.com/geteslint Discord https://eslint.org/chat Mastodon https://fosstodon.org/@eslint Bluesky https://bsky.app/profile/eslint.org"
+  },
+  {
+   "id": "readme:eslint:2",
+   "text": "ESLint is a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code. In many ways, it is similar to JSLint and JSHint with a few exceptions:"
+  },
+  {
+   "id": "readme:eslint:3",
+   "text": "ESLint uses Espree https://github.com/eslint/js/tree/main/packages/espree for JavaScript parsing. ESLint uses an AST to evaluate patterns in code. ESLint is completely pluggable, every single rule is a plugin and you can add more at runtime."
+  },
+  {
+   "id": "readme:eslint:4",
+   "text": "1. Installation and Usage installation and usage 1. Configuration configuration 1. Version Support version support 1. Code of Conduct code of conduct 1. Filing Issues filing issues 1. Frequently Asked Questions frequently asked questions 1. Releases releases 1. Security Policy security policy 1. Semantic Versioning Policy semantic versioning policy 1. ESM Dependencies esm dependencies 1. License license 1. Team team 1. Sponsors sponsors 1. Technology Sponsors technology sponsors <! markdownlint disable line MD051"
+  },
+  {
+   "id": "readme:eslint:5",
+   "text": "To use ESLint, you must have Node.js https://nodejs.org/ ^20.19.0 , ^22.13.0 , or =24 installed and built with SSL and ICU support. If you are using an official Node.js distribution, both SSL and ICU are always built in."
+  },
+  {
+   "id": "readme:eslint:6",
+   "text": "If you use ESLint's TypeScript type definitions, TypeScript 5.3 or later is required."
+  },
+  {
+   "id": "readme:eslint:7",
+   "text": "After that, you can run ESLint on any file or directory like this:"
+  },
+  {
+   "id": "readme:eslint:8",
+   "text": "To use ESLint with pnpm, we recommend setting up a .npmrc file with at least the following settings:"
+  },
+  {
+   "id": "readme:eslint:9",
+   "text": "This ensures that pnpm installs dependencies in a way that is more compatible with npm and is less likely to produce errors."
+  },
+  {
+   "id": "readme:eslint:10",
+   "text": "You can configure rules in your eslint.config.js files as in this example:"
+  },
+  {
+   "id": "readme:eslint:11",
+   "text": "The names \"prefer const\" and \"no constant binary expression\" are the names of rules https://eslint.org/docs/rules in ESLint. The first value is the error level of the rule and can be one of these values:"
+  },
+  {
+   "id": "readme:sequelize:0",
+   "text": "<p align=\"center\" <img src=\"logo.svg\" width=\"100\" alt=\"Sequelize logo\" / <h1 align=\"center\" <a href=\"https://sequelize.org\" Sequelize</a </h1 </p"
+  },
+  {
+   "id": "readme:sequelize:1",
+   "text": "! npm version https://badgen.net/npm/v/sequelize https://www.npmjs.com/package/sequelize ! Build Status https://github.com/sequelize/sequelize/workflows/CI/badge.svg https://github.com/sequelize/sequelize/actions?query=workflow%3ACI ! npm downloads https://badgen.net/npm/dm/sequelize https://www.npmjs.com/package/sequelize ! contributors https://img.shields.io/github/contributors/sequelize/sequelize https://github.com/sequelize/sequelize/graphs/contributors ! Open Collective https://img.shields.io/opencollective/backers/sequelize https://opencollective.com/sequelize section contributors ! sponsor https://img.shields.io/opencollective/all/sequelize?label=sponsors https://opencollective.com/sequelize ! Merged PRs https://badgen.net/github/merged prs/sequelize/sequelize https://github.com/sequelize/sequelize ! semantic release https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80 semantic release e10079.svg https://github.com/semantic release/semantic release ! License: MIT https://img.shields.io/badge/License MIT yellow.svg https://opensource.org/licenses/MIT"
+  },
+  {
+   "id": "readme:sequelize:2",
+   "text": "Sequelize is an easy to use and promise based Node.js https://nodejs.org/en/about/ ORM tool https://en.wikipedia.org/wiki/Object relational mapping for Postgres https://en.wikipedia.org/wiki/PostgreSQL , MySQL https://en.wikipedia.org/wiki/MySQL , MariaDB https://en.wikipedia.org/wiki/MariaDB , SQLite https://en.wikipedia.org/wiki/SQLite , DB2 https://en.wikipedia.org/wiki/IBM Db2 Family , Microsoft SQL Server https://en.wikipedia.org/wiki/Microsoft SQL Server , and Snowflake https://www.snowflake.com/ . It features solid transaction support, relations, eager and lazy loading, read replication and more."
+  },
+  {
+   "id": "readme:sequelize:3",
+   "text": "Would you like to contribute? Read our contribution guidelines https://github.com/sequelize/sequelize/blob/main/CONTRIBUTING.md to know more. There are many ways to help! 😃"
+  },
+  {
+   "id": "readme:sequelize:4",
+   "text": "We're looking for new maintainers to help finalize and release the next major version of Sequelize! If you're passionate about open source and database ORMs, we'd love to have you onboard."
+  },
+  {
+   "id": "readme:sequelize:5",
+   "text": "💰 Funding Available We distribute $2,500 per quarter among maintainers and have additional funds for full time contributions."
+  },
+  {
+   "id": "readme:sequelize:6",
+   "text": "🛠️ What You’ll Work On Finalizing and releasing Sequelize’s next major version Improving TypeScript support and database integrations Fixing critical issues and shaping the ORM’s future"
+  },
+  {
+   "id": "readme:sequelize:7",
+   "text": "🤝 How to Get Involved Interested? Join our Slack and reach out to @WikiRik or @sdepold : ➡️ sequelize.org/slack https://sequelize.org/slack"
+  },
+  {
+   "id": "readme:sequelize:8",
+   "text": "Do you like Sequelize and would like to give back to the engineering team behind it?"
+  },
+  {
+   "id": "readme:sequelize:9",
+   "text": "We have recently created an OpenCollective based money pool https://opencollective.com/sequelize which is shared amongst all core maintainers based on their contributions. Every support is wholeheartedly welcome. ❤️"
+  },
+  {
+   "id": "readme:sequelize:10",
+   "text": "Documentation https://sequelize.org Databases Compatibility Table https://sequelize.org/releases/ Changelog https://github.com/sequelize/sequelize/releases Discussions https://github.com/sequelize/sequelize/discussions Slack https://sequelize.org/slack Stack Overflow https://stackoverflow.com/questions/tagged/sequelize.js"
+  },
+  {
+   "id": "readme:sequelize:11",
+   "text": "CLI https://github.com/sequelize/cli With TypeScript https://sequelize.org/docs/v6/other topics/typescript Enhanced TypeScript with decorators https://github.com/RobinBuschmann/sequelize typescript For GraphQL https://github.com/mickhansen/graphql sequelize For CockroachDB https://github.com/cockroachdb/sequelize cockroachdb Awesome Sequelize https://sequelize.org/docs/v6/other topics/resources/ For YugabyteDB https://github.com/yugabyte/sequelize yugabytedb"
+  },
+  {
+   "id": "readme:puppeteer:0",
+   "text": "Puppeteer is a JavaScript library which provides a high level API to control Chrome or Firefox over the DevTools Protocol https://chromedevtools.github.io/devtools protocol/ or WebDriver BiDi https://pptr.dev/webdriver bidi . Puppeteer runs in the headless no visible UI by default"
+  },
+  {
+   "id": "readme:puppeteer:1",
+   "text": "Modern package managers including npm see the RFC https://github.com/npm/rfcs/pull/868 , pnpm, Yarn, Bun, and Deno block dependency install scripts by default. If the install script is blocked, Puppeteer will not download the browser during installation, leading to runtime errors."
+  },
+  {
+   "id": "readme:puppeteer:2",
+   "text": "Alternatively, you can configure your package manager to allow the install script to run for example, with npm, by adding \"puppeteer\" to \"allowScripts\" in your package.json ."
+  },
+  {
+   "id": "readme:puppeteer:3",
+   "text": "Install chrome devtools mcp https://github.com/ChromeDevTools/chrome devtools mcp , a Puppeteer based MCP server for browser automation and debugging."
+  },
+  {
+   "id": "readme:webpack:0",
+   "text": "<div align=\"center\" <a href=\"https://github.com/webpack/webpack\" <img width=\"200\" height=\"200\" src=\"https://webpack.js.org/assets/icon square big.svg\" </a <br <br"
+  },
+  {
+   "id": "readme:webpack:1",
+   "text": "! node node node url ! builds1 builds1 builds1 url ! dependency review dependency review dependency review url ! coverage cover cover url ! pkg.pr.new https://pkg.pr.new/badge/webpack/webpack https://pkg.pr.new/~/webpack/webpack ! PR's welcome prs prs url ! compatibility score https://api.dependabot.com/badges/compatibility score?dependency name=webpack&package manager=npm and yarn&previous version=5.72.1&new version=5.73.0 https://docs.github.com/en/code security/dependabot/dependabot security updates/about dependabot security updates about compatibility scores ! downloads https://img.shields.io/npm/dm/webpack.svg https://npmcharts.com/compare/webpack?minimal=true ! install size https://packagephobia.com/badge?p=webpack https://packagephobia.com/result?p=webpack ! backers https://opencollective.com/webpack/backers/badge.svg https://opencollective.com/webpack backer ! sponsors https://opencollective.com/webpack/sponsors/badge.svg https://opencollective.com/webpack sponsors ! contributors https://img.shields.io/github/contributors/webpack/webpack.svg https://github.com/webpack/webpack/graphs/contributors ! discussions https://img.shields.io/github/discussions/webpack/webpack https://github.com/webpack/webpack/discussions ! discord https://img.shields.io/discord/1180618526436888586?label=discord&logo=discord&logoColor=white&style=flat https://discord.gg/5sxFZPdx2k ! LFX Health Score https://insights.linuxfoundation.org/api/badge/health score?project=webpack https://insights.linuxfoundation.org/project/webpack"
+  },
+  {
+   "id": "readme:webpack:2",
+   "text": "<h1 webpack</h1 <p Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset. </p </div"
+  },
+  {
+   "id": "readme:webpack:3",
+   "text": "Install install Introduction introduction Concepts concepts Contributing contributing Support support Current project members current project members TSC Technical Steering Committee tsc technical steering committee Core Collaborators core collaborators Sponsoring sponsoring Premium Partners premium partners Gold Sponsors gold sponsors Silver Sponsors silver sponsors Bronze Sponsors bronze sponsors Backers backers Special Thanks special thanks to"
+  },
+  {
+   "id": "readme:webpack:4",
+   "text": "Webpack is a bundler for modules. The main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging just about any resource or asset."
+  },
+  {
+   "id": "readme:webpack:5",
+   "text": "Bundles ES Modules https://www.2ality.com/2014/09/es6 modules final.html , CommonJS https://wiki.commonjs.org/ , and AMD https://github.com/amdjs/amdjs api/wiki/AMD modules even combined . Can create a single bundle or multiple chunks that are asynchronously loaded at runtime to reduce initial loading time . Dependencies are resolved during compilation, reducing the runtime size. Loaders can preprocess files while compiling, e.g. TypeScript to JavaScript, Handlebars strings to compiled functions, images to Base64, etc. Highly modular plugin system to do whatever else your application requires."
+  },
+  {
+   "id": "readme:webpack:6",
+   "text": "Check out webpack's quick Get Started https://webpack.js.org/guides/getting started guide and the other guides https://webpack.js.org/guides/ ."
+  },
+  {
+   "id": "readme:webpack:7",
+   "text": "Webpack supports all browsers that are ES5 compliant https://kangax.github.io/compat table/es5/ IE8 and below are not supported . Webpack also needs Promise for import and require.ensure . If you want to support older browsers, you will need to load a polyfill https://webpack.js.org/guides/shimming/ before using these expressions."
+  },
+  {
+   "id": "readme:webpack:8",
+   "text": "Webpack has a rich plugin interface https://webpack.js.org/plugins/ . Most of the features within webpack itself use this plugin interface. This makes webpack very flexible ."
+  },
+  {
+   "id": "readme:webpack:9",
+   "text": "Webpack enables the use of loaders to preprocess files. This allows you to bundle any static resource way beyond JavaScript. You can easily write your own loaders https://webpack.js.org/api/loaders/ using Node.js."
+  },
+  {
+   "id": "readme:webpack:10",
+   "text": "Loaders are activated by using loadername! prefixes in require statements, or are automatically applied via regex from your webpack configuration."
+  },
+  {
+   "id": "readme:webpack:11",
+   "text": "Name Status Install Size Description : : : : : : : : <a href=\"https://github.com/awnist/cson loader\" <img width=\"48\" height=\"48\" src=\"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/coffeescript/coffeescript original.svg\" </a ! cson npm ! cson size Loads and transpiles a CSON file"
+  }
+ ]
+}
