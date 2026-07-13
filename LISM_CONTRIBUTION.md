@@ -108,6 +108,60 @@ boundary that gives the whole edifice its credibility.
 
 ---
 
+## How the HELM/IHCEI test campaign upgrades LISM (July 2026)
+
+LISM was, by design, observational — a smoke detector, not a sprinkler. The
+HELM/IHCEI validation campaign (PRs #45–#49, `FINAL_VALIDATION.md`) upgrades it
+along four measured axes. Each upgrade is a tested artifact, not a plan.
+
+**1 · From descriptive law to enforced control, with the effect size measured.**
+LISM proved fidelity decays and that muted alarms precede collapse; it could not
+intervene. The **corroboration gate** is the intervention, and its effect is now
+quantified on real traffic: an ungated auditor notices **87.9%** of live
+registry texts and **69.6%** of real README prose (alarm-fatigue territory — the
+exact muting failure LISM warns about), while the gated engines notice **0.0%**
+with threat recall intact (6/6 injected exploits). The gate operationalizes
+LISM's central operational lesson — *a safety layer that cries wolf gets muted,
+and a muted layer lets τ_v drift toward the failure regime* — as ~200 lines of
+shipped code.
+
+**2 · The τ_v sensor became a live public instrument — and re-proved its own
+fine print.** The deployed `gh-issues` endpoint computes enforcement latency
+server-side from any repo's real issue timeline. On a fresh 8-repo cohort it
+separated maintained from unmaintained by **9–96×** (svelte 2.61d vs request
+251d) — and the **lodash zombie replication** confirmed, on live data, LISM's
+caveat that last-push activity is a contaminated health label: lodash pushes
+commits while its issue queue runs at 114 days. τ_v tracks *enforcement*, and
+now anyone can measure it with a GET request.
+
+**3 · The falsification discipline is now machinery, not just practice.** LISM
+earned credibility by killing its own quadratic and publishing the D_gap null.
+The campaign mechanized that ethic: the Stage-1 protocol is **canonical JSON
+under a SHA-256 manifest, enforced by CI** (edit the locked thresholds and the
+build goes red), and the acceptance harness **refuses to score against a
+tampered spec** and demonstrably returns a null (dry run: Claim A = NULL under
+the fast-mode stand-in). The four-pillar firewall went from a methodology
+section to executable infrastructure.
+
+**4 · A new null in the LISM tradition, from the new stack.** The Tier-2 claim
+— that federated re-weighting of fast-mode LLR priors could substitute for deep
+semantic extraction — was given its best case (ground-truth telemetry, ×100
+fleet amplification, gate LLRs moved 4–7×) and returned **evasive recall 0.125 →
+0.125, exactly flat**. Calibration cannot amplify a signal that was never
+extracted; the claim is retired for evasive coercion. Like the quadratic and
+D_gap before it, the retirement *sharpens* the roadmap: the on-device
+distillation bet is confirmed load-bearing, and it faces the sealed one-shot
+test the lock now guards.
+
+The relationship, in one line: **LISM diagnoses the disease (rising τ_v,
+degrading D); HELM and IHCEI are the first tested treatment — a fidelity floor
+at the interface, alarm-fatigue eliminated so alarms stay believed, and a
+tamper-evident certificate trail — with the diagnostic now live as a public
+endpoint and the treatment's every claim gated by LISM's own falsification
+discipline.**
+
+---
+
 ## Bottom line
 
 From a yeast cell, a codebase, and a question-and-answer network, LISM delivers a
@@ -116,4 +170,6 @@ a **cheap universal sensor** (watch the probabilistic hazard of a rising
 self-flagged-risk backlog, not a brittle fidelity gate), and a **discipline** for
 institutional claims that earn trust by being falsifiable. Not an oracle to obey —
 an instrument, and a method, that help people see collapse coming while there is
-still time to act.
+still time to act. And as of July 2026 it is no longer only an instrument: the
+HELM/IHCEI layer turns its measurements into enforced, tested, zero-marginal-cost
+protection at the human interface.
