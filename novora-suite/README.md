@@ -47,6 +47,32 @@ curl -s https://YOUR-APP.vercel.app/api/analyse -X POST \
   -d '{"text":"Everyone agrees you must act immediately, do not question it.","system":"Return ONLY JSON: {\"score\":0-1,\"verdict\":\"...\",\"analysis\":\"...\"}"}'
 ```
 
+## Tests — the suite is exercised at $0, no paid call
+
+```
+node novora-suite/test/backend.test.mjs   # 13/13 — secure endpoint contract
+node novora-suite/test/suite.test.mjs      # 24/24 — nine products, fast mode
+node novora-suite/field_test.mjs           # displays all nine on real data
+```
+
+- **`engine/fastmode.mjs`** is an on-device ($0, no-network) **screen** for all
+  nine products, reusing the same tested NERE kernel as the rest of the stack.
+  It returns the *identical* JSON shape as deep mode, so the client renders
+  either the same way. Honest scope: fast mode agrees with deep mode (Claude via
+  `/api/analyse`) on the clear cases and defers on the ambiguous middle — the
+  same fast/deep economics documented across the repo.
+- **`test/backend.test.mjs`** verifies the security fix without spending a token:
+  the Anthropic call is stubbed, and we assert the request *shape* (`claude-sonnet-5`,
+  user text + system prompt forwarded) and — the load-bearing property — that
+  the secret key travels only in the server-side `x-api-key` header and **never**
+  appears in the client-visible response. Plus the guardrails: 405 non-POST, 400
+  missing/typed fields, 413 over-length, 429 per-IP daily cap, 500 missing key.
+- **`test/suite.test.mjs`** checks schema conformance for all nine, that fast
+  mode orders each product's own hand-labeled example pair correctly, a **0%
+  false-alarm floor** for the manipulation-sensitive products (PAGES/PULSE/BRIDGE)
+  on 35 real npm+PyPI blurbs, and that every analysis hash-chains into an Echo
+  certificate ledger where a forged verdict is located.
+
 ## Known limitations (be honest before launch)
 
 1. **The Anthropic account must have credit.** With a zero-balance key every
