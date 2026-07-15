@@ -153,8 +153,31 @@ D_gap before it, the retirement *sharpens* the roadmap: the on-device
 distillation bet is confirmed load-bearing, and it faces the sealed one-shot
 test the lock now guards.
 
+**5 · Dissonance (σ) is now a computed say-do gap, tested on real repos.** LISM
+named σ (dissonance) as a hazard covariate alongside τ_v, but earlier work left
+it as a concept. The cross-stack suite (`cross-stack/lism_diagnostic.mjs`)
+operationalizes it and tests it on real GitHub cohorts. For a repo, σ is the
+standardized gap between what it **says** about its own health and what it
+**does** about its own flagged risk:
+
+> **σ = z(SAY) − z(DO)**, with **SAY** = declared vitality (recency of the last
+> push — a fresh push is the project signalling "we are alive and maintaining
+> this") and **DO** = enacted responsiveness (`−log(1+τ_v)` — actually closing
+> flagged risk fast). Both z-scored *within the cohort* — LISM's "calibrate
+> locally, never import a universal threshold" doctrine, applied to σ itself.
+
+σ is a *coherence* signal, not a quality score. On the live cohorts it isolates
+three regimes: **σ ≫ 0 the ZOMBIE** (loudly alive, risk rots — `lodash`: fresh
+push, τ_v ≈ 114 d, flagged in **both** independent web snapshots); **σ ≪ 0 the
+INVERSE-ZOMBIE** (looks abandoned, resolves fastest — `GrapheneOS`: 236-day-stale
+push, τ_v = 1.18 d, σ = −3.31); and **σ ≈ 0 coherent** (honestly deprecated
+`request/`: stale *and* slow, σ = −0.06 — not alarmed, because it is not lying
+about its state). This is exactly the failure a naive last-commit-date health
+scanner cannot see, and it is now a tested, non-suppressive diagnostic composed
+end-to-end with the rest of the stack (`cross-stack/integration.test.mjs`, 26/26).
+
 The relationship, in one line: **LISM diagnoses the disease (rising τ_v,
-degrading D); HELM and IHCEI are the first tested treatment — a fidelity floor
+widening σ, degrading D); HELM and IHCEI are the first tested treatment — a fidelity floor
 at the interface, alarm-fatigue eliminated so alarms stay believed, and a
 tamper-evident certificate trail — with the diagnostic now live as a public
 endpoint and the treatment's every claim gated by LISM's own falsification
