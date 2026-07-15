@@ -16,7 +16,7 @@
 // generativelanguage.googleapis.com where the sandbox proxy blocks it.
 
 const MODEL = 'gemini-2.0-flash';
-const KEY = () => process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY || null;
+const KEY = () => process.env.Gemini_Key || process.env.GEMINI_KEY || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY || process.env.GOOGLE_GENERATIVE_AI_API_KEY || null;
 const clip = p => Math.max(0.01, Math.min(0.99, p));
 
 async function ground(source, claim, key) {
