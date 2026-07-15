@@ -1,0 +1,16 @@
+{
+  "description": "LIVE tau_v cohort of real open-source OPERATING SYSTEMS (computer + mobile), fetched from the deployed project-6q4gj gh-issues endpoint. tau_v = mean capped issue-close latency, computed server-side from each project's real issue timeline.",
+  "endpoint": "https://project-6q4gj.vercel.app/api/gh-issues?repos=...&summary=1",
+  "fetched_at": "2026-07-15T11:20:00Z",
+  "repos": [
+    { "repo": "zephyrproject-rtos/zephyr", "kind": "RTOS (embedded/IoT)", "archived": false, "pushed_at": "2026-07-15", "E": 1, "n_closed": 19, "tau_v": 0.16, "status": "active" },
+    { "repo": "GrapheneOS/os-issue-tracker", "kind": "mobile (hardened Android)", "archived": false, "pushed_at": "2025-11-22", "E": 1, "n_closed": 146, "tau_v": 1.18, "status": "active (push date stale, queue hyper-alive — inverse zombie)" },
+    { "repo": "termux/termux-app", "kind": "mobile (Android terminal OS layer)", "archived": false, "pushed_at": "2026-07-14", "E": 1, "n_closed": 104, "tau_v": 2.77, "status": "active" },
+    { "repo": "apache/nuttx", "kind": "RTOS (POSIX embedded)", "archived": false, "pushed_at": "2026-07-15", "E": 1, "n_closed": 16, "tau_v": 3.02, "status": "active" },
+    { "repo": "RIOT-OS/RIOT", "kind": "RTOS (IoT)", "archived": false, "pushed_at": "2026-07-14", "E": 1, "n_closed": 14, "tau_v": 3.99, "status": "active" },
+    { "repo": "microg/GmsCore", "kind": "mobile (AOSP degoogled services)", "archived": false, "pushed_at": "2026-07-13", "E": 1, "n_closed": 34, "tau_v": 8.7, "status": "active" },
+    { "repo": "SerenityOS/serenity", "kind": "computer (from-scratch desktop OS)", "archived": false, "pushed_at": "2026-07-15", "E": 1, "n_closed": 6, "tau_v": 13.71, "status": "active" },
+    { "repo": "mozilla-b2g/gaia", "kind": "mobile (Firefox OS — discontinued 2016)", "archived": true, "pushed_at": "2021-07-05", "E": 0, "n_closed": 0, "tau_v": null, "status": "DEAD (archived, queue frozen — no enforcement)" },
+    { "repo": "reactos/reactos", "kind": "computer (Windows-compatible OS)", "archived": false, "pushed_at": "2026-07-15", "E": 1, "n_closed": 0, "tau_v": null, "status": "active but uses an EXTERNAL tracker (JIRA) — GitHub issues not the enforcement surface; tau_v not measurable here" }
+  ]
+}
