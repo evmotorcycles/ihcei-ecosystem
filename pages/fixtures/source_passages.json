@@ -1,0 +1,13 @@
+{
+ "description": "REAL prose sentences from the Express.js README (raw.githubusercontent), grounding sources for the PAGES transcript test.",
+ "fetched_at": "2026-07-15T17:12:37.994Z",
+ "repo": "expressjs/express",
+ "passages": [
+  "If this is a brand new project, make sure to create a package.json first with the npm init command.",
+  "Express does not force you to use any specific ORM or template engine.",
+  "Examples To view the examples, clone the Express repository: Then install the dependencies: Then run whichever example you want: Contributing The Express.js project welcomes all constructive contributions.",
+  "See the [Contributing Guide] for more technical details on contributing.",
+  "By participating, you are expected to uphold this code.",
+  "Security Issues If you discover a security vulnerability in Express, please see Security Policies and Procedures."
+ ]
+}
