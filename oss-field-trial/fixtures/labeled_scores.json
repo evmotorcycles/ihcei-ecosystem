@@ -1,6 +1,6 @@
 {
  "description": "Per-item labeled scores for reliability/ROC plots. y=1 manipulative. Sources: 44-item validation corpus + 6 injected threats + 100 real registry texts (label 0). p_on/p_off = govern fast mode gate ON/OFF; p_helm = HELM consumer-v1.",
- "generated": "2026-07-12T23:10:14.320Z",
+ "generated": "2026-07-15T12:34:56.906Z",
  "items": [
   {
    "id": "cm01",
@@ -343,7 +343,7 @@
    "y": 1,
    "p_on": 0.1679,
    "p_off": 0.7105,
-   "p_helm": 0.9011
+   "p_helm": 0.9713
   },
   {
    "id": "threat5",
