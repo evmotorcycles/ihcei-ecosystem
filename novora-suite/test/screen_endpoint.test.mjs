@@ -4,7 +4,7 @@
 
 let pass = 0, fail = 0;
 const ok = (n, c, d = '') => { if (c) { pass++; console.log('  OK  ', n); } else { fail++; console.log('  FAIL', n, d); } };
-const { default: handler } = await import('../../api/screen.js');
+const { default: handler } = await import('../../api/screen.mjs');
 
 function mkRes() {
   return { _status: 200, _json: null, setHeader() {}, status(c) { this._status = c; return this; }, json(o) { this._json = o; return this; }, end() { return this; } };
