@@ -149,3 +149,7 @@ LISM offers three durable, practical gifts:
 
 Not a machine that tells you what to think. A discipline, and a warning light,
 that help people see trouble coming while there's still time to act.
+
+---
+**Verification Footer**
+The explainer is built against the real deployment. Public repo `evmotorcycles/ihcei-ecosystem`, latest production deployment `READY`, verified commit `f98a1d77` (merged through PR #60).
