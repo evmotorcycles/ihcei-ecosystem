@@ -1,0 +1,326 @@
+{
+ "description": "LIVE real-world package prose from the public npm + PyPI registries (both on the sandbox no-proxy allow-list — a genuine live fetch). Maintainer-written descriptions + README opening sentences. Substrate for the cross-stack integration test: the HELM/NERE gate must stay silent on all of it (false-positive floor), and it flows through Echo, Page Code, PAGES and AIPS end-to-end.",
+ "fetched_at": "2026-07-15T23:05:27.623Z",
+ "sources": [
+  "https://registry.npmjs.org/<pkg>",
+  "https://pypi.org/pypi/<pkg>/json"
+ ],
+ "n": 35,
+ "items": [
+  {
+   "id": "npm:express",
+   "registry": "npm",
+   "name": "express",
+   "version": "5.2.1",
+   "description": "Fast, unopinionated, minimalist web framework",
+   "readme": "",
+   "homepage": "https://expressjs.com/"
+  },
+  {
+   "id": "npm:react",
+   "registry": "npm",
+   "name": "react",
+   "version": "19.2.7",
+   "description": "React is a JavaScript library for building user interfaces.",
+   "readme": "",
+   "homepage": "https://react.dev/"
+  },
+  {
+   "id": "npm:lodash",
+   "registry": "npm",
+   "name": "lodash",
+   "version": "4.18.1",
+   "description": "Lodash modular utilities.",
+   "readme": "# lodash v4.18.1 The [Lodash](https://lodash.com/) library exported as [Node.js](https://nodejs.org/) modules. ## Installation Using npm: ```shell $ npm i -g npm $ npm i --save lodash ``` In Node.js: ```js // Load the full build. var _ = require('lodash'); // Load the core build. var _ = require('lodash/core'); // Load the FP build for immutable auto-curried iteratee-first data-last methods.",
+   "homepage": "https://lodash.com/"
+  },
+  {
+   "id": "npm:vue",
+   "registry": "npm",
+   "name": "vue",
+   "version": "3.5.39",
+   "description": "The progressive JavaScript framework for building modern web UI.",
+   "readme": "",
+   "homepage": "https://vuejs.org/"
+  },
+  {
+   "id": "npm:axios",
+   "registry": "npm",
+   "name": "axios",
+   "version": "1.18.1",
+   "description": "Promise based HTTP client for the browser and node.js",
+   "readme": "<h3 align=\"center\">💎 Platinum sponsors <br /></h3> <table align=\"center\"> <tr> <td align=\"center\" width=\"50%\"> <a href=\"https://thanks.dev/?utm_source&#x3D;axios&amp;utm_medium&#x3D;sponsorlist&amp;utm_campaign&#x3D;sponsorship\" style=\"padding: 10px; display: inline-block\" target=\"_blank\" > <img width=\"90px\" height=\"90px\" src=\"https://images.opencollective.com/thanks-dev/360b917/logo/256.png?height=256\" alt=\"Thanks.dev\" /> </a> <p align=\"center\" > We're passionate about making open source sustainable. Scan your dependency tree to better understand which open source projects need funding. </p>",
+   "homepage": "https://axios-http.com"
+  },
+  {
+   "id": "npm:chalk",
+   "registry": "npm",
+   "name": "chalk",
+   "version": "5.6.2",
+   "description": "Terminal string styling done right",
+   "readme": "",
+   "homepage": "https://github.com/chalk/chalk#readme"
+  },
+  {
+   "id": "npm:webpack",
+   "registry": "npm",
+   "name": "webpack",
+   "version": "5.108.4",
+   "description": "Packs ECMAScript/CommonJs/AMD modules for the browser. Allows you to split your codebase into multiple bundles, which can be loaded on demand. Supports loaders to preprocess files, i.e. json, jsx, es7, css, less, ... and your custom stuff.",
+   "readme": "<div align=\"center\"> <a href=\"https://github.com/webpack/webpack\"> <img width=\"200\" height=\"200\" src=\"https://webpack.js.org/assets/icon-square-big.svg\"> </a> <br> <br> [![npm][npm]][npm-url] [![node][node]][node-url] [![builds1][builds1]][builds1-url] [![dependency-review][dependency-review]][dependency-review-url] [![coverage][cover]][cover-url] [![pkg.pr.new](https://pkg.pr.new/badge/webpack/webpack)](https://pkg.pr.new/~/webpack/webpack) [![PR's welcome][prs]][prs-url] [![compatibility-score](https://api.dependabot.com/badges/compatibility_score?dependency-name=webpack&package-manager=npm_",
+   "homepage": "https://github.com/webpack/webpack"
+  },
+  {
+   "id": "npm:eslint",
+   "registry": "npm",
+   "name": "eslint",
+   "version": "10.7.0",
+   "description": "An AST-based pattern checker for JavaScript.",
+   "readme": "[![npm version](https://img.shields.io/npm/v/eslint.svg)](https://www.npmjs.com/package/eslint) [![Downloads](https://img.shields.io/npm/dm/eslint.svg)](https://www.npmjs.com/package/eslint) [![Build Status](https://github.com/eslint/eslint/workflows/CI/badge.svg)](https://github.com/eslint/eslint/actions) <br> [![Open Collective Backers](https://img.shields.io/opencollective/backers/eslint)](https://opencollective.com/eslint) [![Open Collective Sponsors](https://img.shields.io/opencollective/sponsors/eslint)](https://opencollective.com/eslint) # ESLint [Website](https://eslint.org) | [Configu",
+   "homepage": "https://eslint.org"
+  },
+  {
+   "id": "npm:jest",
+   "registry": "npm",
+   "name": "jest",
+   "version": "30.4.2",
+   "description": "Delightful JavaScript Testing.",
+   "readme": "",
+   "homepage": "https://jestjs.io/"
+  },
+  {
+   "id": "npm:typescript",
+   "registry": "npm",
+   "name": "typescript",
+   "version": "7.0.2",
+   "description": "TypeScript is a language for application scale JavaScript development",
+   "readme": "",
+   "homepage": "https://www.typescriptlang.org/"
+  },
+  {
+   "id": "npm:commander",
+   "registry": "npm",
+   "name": "commander",
+   "version": "15.0.0",
+   "description": "the complete solution for node.js command-line programs",
+   "readme": "# Commander.js [![Build Status](https://github.com/tj/commander.js/workflows/build/badge.svg)](https://github.com/tj/commander.js/actions?query=workflow%3A%22build%22) [![NPM Version](http://img.shields.io/npm/v/commander.svg?style=flat)](https://www.npmjs.org/package/commander) [![NPM Downloads](https://img.shields.io/npm/dm/commander.svg?style=flat)](https://npmcharts.com/compare/commander?minimal=true) [![Install Size](https://packagephobia.now.sh/badge?p=commander)](https://packagephobia.now.sh/result?p=commander) The complete solution for [node.js](http://nodejs.org) command-line interfac",
+   "homepage": "https://github.com/tj/commander.js#readme"
+  },
+  {
+   "id": "npm:debug",
+   "registry": "npm",
+   "name": "debug",
+   "version": "4.4.3",
+   "description": "Lightweight debugging utility for Node.js and the browser",
+   "readme": "# debug [![OpenCollective](https://opencollective.com/debug/backers/badge.svg)](#backers) [![OpenCollective](https://opencollective.com/debug/sponsors/badge.svg)](#sponsors) <img width=\"647\" src=\"https://user-images.githubusercontent.com/71256/29091486-fa38524c-7c37-11e7-895f-e7ec8e1039b6.png\"> A tiny JavaScript debugging utility modelled after Node.js core's debugging technique. Works in Node.js and web browsers. ## Installation ```bash $ npm install debug ``` ## Usage `debug` exposes a function; simply pass this function the name of your module, and it will return a decorated version of `con",
+   "homepage": "https://github.com/debug-js/debug#readme"
+  },
+  {
+   "id": "npm:moment",
+   "registry": "npm",
+   "name": "moment",
+   "version": "2.30.1",
+   "description": "Parse, validate, manipulate, and display dates",
+   "readme": "# [Moment.js](http://momentjs.com/) [![NPM version][npm-version-image]][npm-url] [![NPM downloads][npm-downloads-image]][npm-downloads-url] [![MIT License][license-image]][license-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![FOSSA Status][fossa-badge-image]][fossa-badge-url] [![SemVer compatibility][semver-image]][semver-url] A JavaScript date library for parsing, validating, manipulating, and formatting dates. ## Project Status Moment.js is a legacy project, now in maintenance mode. In most cases, you should choose a different librar",
+   "homepage": "https://momentjs.com"
+  },
+  {
+   "id": "npm:fastify",
+   "registry": "npm",
+   "name": "fastify",
+   "version": "5.10.0",
+   "description": "Fast and low overhead web framework, for Node.js",
+   "readme": "<div align=\"center\"> <a href=\"https://fastify.dev/\"> <img src=\"https://raw.githubusercontent.com/fastify/graphics/HEAD/fastify-landscape-outlined.svg\" width=\"650\" height=\"auto\" /> </a> </div> <div align=\"center\"> [![CI](https://github.com/fastify/fastify/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fastify/fastify/actions/workflows/ci.yml) [![Package Manager CI](https://github.com/fastify/fastify/actions/workflows/package-manager-ci.yml/badge.svg?branch=main)](https://github.com/fastify/fastify/actions/workflows/package-manager-ci.yml) [![Web site](https://github.com/fas",
+   "homepage": "https://fastify.dev/"
+  },
+  {
+   "id": "npm:next",
+   "registry": "npm",
+   "name": "next",
+   "version": "16.2.10",
+   "description": "The React Framework",
+   "readme": "",
+   "homepage": "https://nextjs.org"
+  },
+  {
+   "id": "npm:vite",
+   "registry": "npm",
+   "name": "vite",
+   "version": "8.1.4",
+   "description": "Native-ESM powered web dev build tool",
+   "readme": "# Vite ⚡ > Next Generation Frontend Tooling - 💡 Instant Server Start - ⚡️ Lightning Fast HMR - 🛠️ Rich Features - 📦 Optimized Build - 🔩 Universal Plugin Interface - 🔑 Fully Typed APIs Vite (French word for \"quick\", pronounced [`/viːt/`](https://cdn.jsdelivr.net/gh/vitejs/vite@main/docs/public/vite.mp3), like \"veet\") is a build tool that aims to provide a faster and leaner development experience for modern web projects. It consists of two major parts: - A dev server that provides [rich feature enhancements](https://vite.dev/guide/features) over [native ES modules](https://developer.mozilla",
+   "homepage": "https://vite.dev"
+  },
+  {
+   "id": "npm:rollup",
+   "registry": "npm",
+   "name": "rollup",
+   "version": "4.62.2",
+   "description": "Next-generation ES module bundler",
+   "readme": "<p align=\"center\"> <a href=\"https://rollupjs.org/\"><img src=\"https://rollupjs.org/rollup-logo.svg\" width=\"150\" /></a> </p> <p align=\"center\"> <a href=\"https://www.npmjs.com/package/rollup\"> <img src=\"https://img.shields.io/npm/v/rollup.svg\" alt=\"npm version\" > </a> <a href=\"https://nodejs.org/en/about/previous-releases\"> <img src=\"https://img.shields.io/node/v/rollup.svg\" alt=\"node compatibility\"> </a> <a href=\"https://packagephobia.com/result?p=rollup\"> <img src=\"https://packagephobia.com/badge?p=rollup\" alt=\"install size\" > </a> <a href=\"https://codecov.io/gh/rollup/rollup\"> <img src=\"https:",
+   "homepage": "https://rollupjs.org/"
+  },
+  {
+   "id": "npm:prettier",
+   "registry": "npm",
+   "name": "prettier",
+   "version": "3.9.5",
+   "description": "Prettier is an opinionated code formatter",
+   "readme": "[![Prettier Banner](https://unpkg.com/prettier-logo@1.0.3/images/prettier-banner-light.svg)](https://prettier.io) <h2 align=\"center\">Opinionated Code Formatter</h2> <p align=\"center\"> <em> JavaScript · TypeScript · Flow · JSX · JSON </em> <br /> <em> CSS · SCSS · Less </em> <br /> <em> HTML · Vue · Angular </em> <br /> <em> GraphQL · Markdown · YAML </em> <br /> <em> <a href=\"https://prettier.io/docs/plugins\"> Your favorite language? </a> </em> </p> <p align=\"center\"> <a href=\"https://github.com/prettier/prettier/actions?query=branch%3Amain\"> <img alt=\"CI Status\" src=\"https://img.shields.io/gi",
+   "homepage": "https://prettier.io"
+  },
+  {
+   "id": "npm:zod",
+   "registry": "npm",
+   "name": "zod",
+   "version": "4.4.3",
+   "description": "TypeScript-first schema declaration and validation library with static type inference",
+   "readme": "",
+   "homepage": "https://zod.dev"
+  },
+  {
+   "id": "npm:dotenv",
+   "registry": "npm",
+   "name": "dotenv",
+   "version": "17.4.2",
+   "description": "Loads environment variables from .env file",
+   "readme": "<a href=\"https://dotenvx.com/?utm_source=github&utm_medium=readme&utm_campaign=motdotla-dotenv&utm_content=banner\"><img src=\"https://dotenvx.com/dotenv-banner.png\" alt=\"dotenvx\" /></a> # dotenv [![NPM version](https://img.shields.io/npm/v/dotenv.svg?style=flat-square)](https://www.npmjs.com/package/dotenv) [![downloads](https://img.shields.io/npm/dw/dotenv)](https://www.npmjs.com/package/dotenv) <img src=\"https://raw.githubusercontent.com/motdotla/dotenv/master/dotenv.svg\" alt=\"dotenv\" align=\"right\" width=\"200\" /> Dotenv is a zero-dependency module that loads environment variables from a `.env",
+   "homepage": "https://github.com/motdotla/dotenv#readme"
+  },
+  {
+   "id": "pypi:requests",
+   "registry": "pypi",
+   "name": "requests",
+   "version": "2.34.2",
+   "description": "Python HTTP for Humans.",
+   "readme": "# Requests [![Version](https://img.shields.io/pypi/v/requests.svg?maxAge=86400)](https://pypi.org/project/requests/) [![Supported Versions](https://img.shields.io/pypi/pyversions/requests.svg)](https://pypi.org/project/requests) [![Downloads](https://static.pepy.tech/badge/requests/month)](https://pepy.tech/project/requests) [![Contributors](https://img.shields.io/github/contributors/psf/requests.svg)](https://github.com/psf/requests/graphs/contributors) [![Documentation](https://readthedocs.org/projects/requests/badge/?version=latest)](https://requests.readthedocs.io) **Requests** is a simple",
+   "homepage": "https://pypi.org/project/requests/"
+  },
+  {
+   "id": "pypi:flask",
+   "registry": "pypi",
+   "name": "flask",
+   "version": "3.1.3",
+   "description": "A simple framework for building complex web applications.",
+   "readme": "<div align=\"center\"><img src=\"https://raw.githubusercontent.com/pallets/flask/refs/heads/stable/docs/_static/flask-name.svg\" alt=\"\" height=\"150\"></div> # Flask Flask is a lightweight [WSGI] web application framework. It is designed to make getting started quick and easy, with the ability to scale up to complex applications. It began as a simple wrapper around [Werkzeug] and [Jinja], and has become one of the most popular Python web application frameworks. Flask offers suggestions, but doesn't enforce any dependencies or project layout.",
+   "homepage": "https://pypi.org/project/Flask/"
+  },
+  {
+   "id": "pypi:numpy",
+   "registry": "pypi",
+   "name": "numpy",
+   "version": "2.5.1",
+   "description": "Fundamental package for array computing in Python",
+   "readme": "<h1 align=\"center\"> <img src=\"https://raw.githubusercontent.com/numpy/numpy/main/branding/logo/primary/numpylogo.svg\" width=\"300\"> </h1><br> [![Powered by NumFOCUS](https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A)]( https://numfocus.org) [![PyPI Downloads](https://img.shields.io/pypi/dm/numpy.svg?label=PyPI%20downloads)]( https://pypi.org/project/numpy/) [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/numpy.svg?label=Conda%20downloads)]( https://anaconda.org/conda-forge/numpy) [![Stack Overflow](https://img.shields.io/badge/s",
+   "homepage": "https://pypi.org/project/numpy/"
+  },
+  {
+   "id": "pypi:pandas",
+   "registry": "pypi",
+   "name": "pandas",
+   "version": "3.0.3",
+   "description": "Powerful data structures for data analysis, time series, and statistics",
+   "readme": "<picture align=\"center\"> <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://pandas.pydata.org/static/img/pandas_white.svg\"> <img alt=\"Pandas Logo\" src=\"https://pandas.pydata.org/static/img/pandas.svg\"> </picture> ----------------- # pandas: A Powerful Python Data Analysis Toolkit | | | | --- | --- | | Testing | [![CI - Test](https://github.com/pandas-dev/pandas/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/pandas-dev/pandas/actions/workflows/unit-tests.yml) [![Coverage](https://codecov.io/github/pandas-dev/pandas/coverage.svg?branch=main)](https://codecov.io/gh/pand",
+   "homepage": "https://pypi.org/project/pandas/"
+  },
+  {
+   "id": "pypi:django",
+   "registry": "pypi",
+   "name": "django",
+   "version": "6.0.7",
+   "description": "A high-level Python web framework that encourages rapid development and clean, pragmatic design.",
+   "readme": "====== Django ====== Django is a high-level Python web framework that encourages rapid development and clean, pragmatic design. Thanks for checking it out. All documentation is in the \"``docs``\" directory and online at https://docs.djangoproject.com/en/stable/. If you're just getting started, here's how we recommend you read the docs: * First, read ``docs/intro/install.txt`` for instructions on installing Django.",
+   "homepage": "https://pypi.org/project/Django/"
+  },
+  {
+   "id": "pypi:pytest",
+   "registry": "pypi",
+   "name": "pytest",
+   "version": "9.1.1",
+   "description": "pytest: simple powerful testing with Python",
+   "readme": ".. image:: https://github.com/pytest-dev/pytest/raw/main/doc/en/img/pytest_logo_curves.svg :target: https://docs.pytest.org/en/stable/ :align: center :height: 200 :alt: pytest ------ .. image:: https://img.shields.io/pypi/v/pytest.svg :target: https://pypi.org/project/pytest/ .. image:: https://img.shields.io/conda/vn/conda-forge/pytest.svg :target: https://anaconda.org/conda-forge/pytest ..",
+   "homepage": "https://pypi.org/project/pytest/"
+  },
+  {
+   "id": "pypi:click",
+   "registry": "pypi",
+   "name": "click",
+   "version": "8.4.2",
+   "description": "Composable command line interface toolkit",
+   "readme": "<div align=\"center\"><img src=\"https://raw.githubusercontent.com/pallets/click/refs/heads/stable/docs/_static/click-name.svg\" alt=\"\" height=\"150\"></div> # Click Click is a Python package for creating beautiful command line interfaces in a composable way with as little code as necessary. It's the \"Command Line Interface Creation Kit\". It's highly configurable but comes with sensible defaults out of the box. It aims to make the process of writing command line tools quick and fun while also preventing any frustration caused by the inability to implement an intended CLI API.",
+   "homepage": "https://pypi.org/project/click/"
+  },
+  {
+   "id": "pypi:rich",
+   "registry": "pypi",
+   "name": "rich",
+   "version": "15.0.0",
+   "description": "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal",
+   "readme": "[![Supported Python Versions](https://img.shields.io/pypi/pyversions/rich)](https://pypi.org/project/rich/) [![PyPI version](https://badge.fury.io/py/rich.svg)](https://badge.fury.io/py/rich) [![Downloads](https://pepy.tech/badge/rich/month)](https://pepy.tech/project/rich) [![codecov](https://img.shields.io/codecov/c/github/Textualize/rich?label=codecov&logo=codecov)](https://codecov.io/gh/Textualize/rich) [![Rich blog](https://img.shields.io/badge/blog-rich%20news-yellowgreen)](https://www.willmcgugan.com/tag/rich/) [![Twitter Follow](https://img.shields.io/twitter/follow/willmcgugan.svg?sty",
+   "homepage": "https://pypi.org/project/rich/"
+  },
+  {
+   "id": "pypi:fastapi",
+   "registry": "pypi",
+   "name": "fastapi",
+   "version": "0.139.0",
+   "description": "FastAPI framework, high performance, easy to learn, fast to code, ready for production",
+   "readme": "<p align=\"center\"> <a href=\"https://fastapi.tiangolo.com\"><img src=\"https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png\" alt=\"FastAPI\"></a> </p> <p align=\"center\"> <em>FastAPI framework, high performance, easy to learn, fast to code, ready for production</em> </p> <p align=\"center\"> <a href=\"https://github.com/fastapi/fastapi/actions?query=workflow%3ATest+event%3Apush+branch%3Amaster\"> <img src=\"https://github.com/fastapi/fastapi/actions/workflows/test.yml/badge.svg?event=push&branch=master\" alt=\"Test\"> </a> <a href=\"https://coverage-badge.samuelcolvin.workers.dev/redirect/fastapi/fasta",
+   "homepage": "https://pypi.org/project/fastapi/"
+  },
+  {
+   "id": "pypi:pydantic",
+   "registry": "pypi",
+   "name": "pydantic",
+   "version": "2.13.4",
+   "description": "Data validation using Python type hints",
+   "readme": "# Pydantic Validation [![CI](https://img.shields.io/github/actions/workflow/status/pydantic/pydantic/ci.yml?branch=main&logo=github&label=CI)](https://github.com/pydantic/pydantic/actions?query=event%3Apush+branch%3Amain+workflow%3ACI) [![Coverage](https://coverage-badge.samuelcolvin.workers.dev/pydantic/pydantic.svg)](https://coverage-badge.samuelcolvin.workers.dev/redirect/pydantic/pydantic) [![pypi](https://img.shields.io/pypi/v/pydantic.svg)](https://pypi.python.org/pypi/pydantic) [![CondaForge](https://img.shields.io/conda/v/conda-forge/pydantic.svg)](https://anaconda.org/conda-forge/pyda",
+   "homepage": "https://pypi.org/project/pydantic/"
+  },
+  {
+   "id": "pypi:httpx",
+   "registry": "pypi",
+   "name": "httpx",
+   "version": "0.28.1",
+   "description": "The next generation HTTP client.",
+   "readme": "<p align=\"center\"> <a href=\"https://www.python-httpx.org/\"><img width=\"350\" height=\"208\" src=\"https://raw.githubusercontent.com/encode/httpx/master/docs/img/butterfly.png\" alt='HTTPX'></a> </p> <p align=\"center\"><strong>HTTPX</strong> <em>- A next-generation HTTP client for Python.</em></p> <p align=\"center\"> <a href=\"https://github.com/encode/httpx/actions\"> <img src=\"https://github.com/encode/httpx/workflows/Test%20Suite/badge.svg\" alt=\"Test Suite\"> </a> <a href=\"https://pypi.org/project/httpx/\"> <img src=\"https://badge.fury.io/py/httpx.svg\" alt=\"Package version\"> </a> </p> HTTPX is a fully ",
+   "homepage": "https://pypi.org/project/httpx/"
+  },
+  {
+   "id": "pypi:scipy",
+   "registry": "pypi",
+   "name": "scipy",
+   "version": "1.18.0",
+   "description": "Fundamental algorithms for scientific computing in Python",
+   "readme": ".. image:: https://raw.githubusercontent.com/scipy/scipy/main/doc/source/_static/logo.svg :target: https://scipy.org :width: 110 :height: 110 :align: left .. image:: https://img.shields.io/badge/powered%20by-NumFOCUS-orange.svg?style=flat&colorA=E1523D&colorB=007D8A :target: https://numfocus.org .. image:: https://img.shields.io/pypi/dm/scipy.svg?label=Pypi%20downloads :target: https://pypi.org/project/scipy/ ..",
+   "homepage": "https://pypi.org/project/scipy/"
+  },
+  {
+   "id": "pypi:pillow",
+   "registry": "pypi",
+   "name": "pillow",
+   "version": "12.3.0",
+   "description": "Python Imaging Library (fork)",
+   "readme": "<p align=\"center\"> <img width=\"248\" height=\"250\" src=\"https://raw.githubusercontent.com/python-pillow/pillow-logo/main/pillow-logo-248x250.png\" alt=\"Pillow logo\"> </p> # Pillow ## Python Imaging Library (Fork) Pillow is the friendly PIL fork by [Jeffrey 'Alex' Clark and contributors](https://github.com/python-pillow/Pillow/graphs/contributors). PIL is the Python Imaging Library by Fredrik Lundh and contributors. Development is supported by: - [Tidelift](https://tidelift.com/subscription/pkg/pypi-pillow?utm_source=pypi-pillow&utm_medium=readme&utm_campaign=enterprise) (since 2018) - [Thanks.dev",
+   "homepage": "https://pypi.org/project/pillow/"
+  },
+  {
+   "id": "pypi:sqlalchemy",
+   "registry": "pypi",
+   "name": "sqlalchemy",
+   "version": "2.0.51",
+   "description": "Database Abstraction Library",
+   "readme": "SQLAlchemy ========== |PyPI| |Python| |Downloads| .. |PyPI| image:: https://img.shields.io/pypi/v/sqlalchemy :target: https://pypi.org/project/sqlalchemy :alt: PyPI .. |Python| image:: https://img.shields.io/pypi/pyversions/sqlalchemy :target: https://pypi.org/project/sqlalchemy :alt: PyPI - Python Version .. |Downloads| image:: https://static.pepy.tech/badge/sqlalchemy/month :target: https://pepy.tech/project/sqlalchemy :alt: PyPI - Downloads The Python SQL Toolkit and Object Relational Mapper Introduction ------------- SQLAlchemy is the Python SQL toolkit and Object Relational Mapper that gi",
+   "homepage": "https://www.sqlalchemy.org"
+  },
+  {
+   "id": "pypi:boto3",
+   "registry": "pypi",
+   "name": "boto3",
+   "version": "1.43.49",
+   "description": "The AWS SDK for Python",
+   "readme": "=============================== Boto3 - The AWS SDK for Python =============================== |Version| |Python| |License| Boto3 is the Amazon Web Services (AWS) Software Development Kit (SDK) for Python, which allows Python developers to write software that makes use of services like Amazon S3 and Amazon EC2. You can find the latest, most up to date, documentation at our `doc site`_, including a list of services that are supported. Boto3 is maintained and published by `Amazon Web Services`_. Boto (pronounced boh-toh) was named after the fresh water dolphin native to the Amazon river.",
+   "homepage": "https://github.com/boto/boto3"
+  }
+ ]
+}

@@ -1,0 +1,184 @@
+{
+ "description": "Frozen union of REAL open-source GitHub repositories with server-computed tau_v (mean capped issue-close latency, days) and a lifecycle label E, assembled from the live cohorts already committed in this repo (fetched via the deployed api/gh-issues endpoint, GitHub API only). E=0 (failed) if archived OR no push in >365 days; E=1 (survived) otherwise. Substrate for a zero-dependency reproduction of the LISM Third-Law tau_v finding.",
+ "label_rule": "E=0 (failed) iff archived or days_since_push>365; else E=1 (survived)",
+ "as_of": "2026-07-16",
+ "n": 21,
+ "reported_reference": {
+  "source": "LISM manuscript / REPRODUCIBILITY.md / zenodo_metadata.json",
+  "tau_v_failed_days": 50.6,
+  "tau_v_survived_days": 19.8,
+  "N": 992,
+  "p_one_tailed_MWU": "~1e-31",
+  "direction": "failed > survived"
+ },
+ "repos": [
+  {
+   "repo": "request/request",
+   "tau_v": 251.29,
+   "pushed_at": "2024-08-14",
+   "archived": false,
+   "n_closed": 136,
+   "E": 0
+  },
+  {
+   "repo": "bower/bower",
+   "tau_v": 121.67,
+   "pushed_at": "2024-10-13",
+   "archived": false,
+   "n_closed": 200,
+   "E": 0
+  },
+  {
+   "repo": "lodash/lodash",
+   "tau_v": 114.41,
+   "pushed_at": "2026-07-03",
+   "archived": false,
+   "n_closed": 67,
+   "E": 1
+  },
+  {
+   "repo": "moment/moment",
+   "tau_v": 88.46,
+   "pushed_at": "2024-08-14",
+   "archived": false,
+   "n_closed": 85,
+   "E": 0
+  },
+  {
+   "repo": "jashkenas/underscore",
+   "tau_v": 76.74,
+   "pushed_at": "2026-07-13",
+   "archived": false,
+   "n_closed": 140,
+   "E": 1
+  },
+  {
+   "repo": "facebook/create-react-app",
+   "tau_v": 38.06,
+   "pushed_at": "2025-02-15",
+   "archived": false,
+   "n_closed": 19,
+   "E": 0
+  },
+  {
+   "repo": "gulpjs/gulp",
+   "tau_v": 24.06,
+   "pushed_at": "2026-02-09",
+   "archived": false,
+   "n_closed": 194,
+   "E": 1
+  },
+  {
+   "repo": "SerenityOS/serenity",
+   "tau_v": 13.71,
+   "pushed_at": "2026-07-15",
+   "archived": false,
+   "n_closed": 6,
+   "E": 1
+  },
+  {
+   "repo": "pallets/flask",
+   "tau_v": 10.56,
+   "pushed_at": "2026-06-10",
+   "archived": false,
+   "n_closed": 76,
+   "E": 1
+  },
+  {
+   "repo": "fastify/fastify",
+   "tau_v": 9.88,
+   "pushed_at": "2026-07-12",
+   "archived": false,
+   "n_closed": 29,
+   "E": 1
+  },
+  {
+   "repo": "microg/GmsCore",
+   "tau_v": 8.7,
+   "pushed_at": "2026-07-13",
+   "archived": false,
+   "n_closed": 34,
+   "E": 1
+  },
+  {
+   "repo": "vitejs/vite",
+   "tau_v": 4.45,
+   "pushed_at": "2026-07-16",
+   "archived": false,
+   "n_closed": 51,
+   "E": 1
+  },
+  {
+   "repo": "RIOT-OS/RIOT",
+   "tau_v": 3.99,
+   "pushed_at": "2026-07-14",
+   "archived": false,
+   "n_closed": 14,
+   "E": 1
+  },
+  {
+   "repo": "psf/requests",
+   "tau_v": 3.38,
+   "pushed_at": "2026-07-09",
+   "archived": false,
+   "n_closed": 27,
+   "E": 1
+  },
+  {
+   "repo": "sveltejs/svelte",
+   "tau_v": 3.11,
+   "pushed_at": "2026-07-16",
+   "archived": false,
+   "n_closed": 51,
+   "E": 1
+  },
+  {
+   "repo": "apache/nuttx",
+   "tau_v": 3.02,
+   "pushed_at": "2026-07-15",
+   "archived": false,
+   "n_closed": 16,
+   "E": 1
+  },
+  {
+   "repo": "termux/termux-app",
+   "tau_v": 2.77,
+   "pushed_at": "2026-07-14",
+   "archived": false,
+   "n_closed": 104,
+   "E": 1
+  },
+  {
+   "repo": "expressjs/express",
+   "tau_v": 2.72,
+   "pushed_at": "2026-07-12",
+   "archived": false,
+   "n_closed": 32,
+   "E": 1
+  },
+  {
+   "repo": "gohugoio/hugo",
+   "tau_v": 2.52,
+   "pushed_at": "2026-07-13",
+   "archived": false,
+   "n_closed": 74,
+   "E": 1
+  },
+  {
+   "repo": "GrapheneOS/os-issue-tracker",
+   "tau_v": 1.18,
+   "pushed_at": "2025-11-22",
+   "archived": false,
+   "n_closed": 146,
+   "E": 1
+  },
+  {
+   "repo": "zephyrproject-rtos/zephyr",
+   "tau_v": 0.16,
+   "pushed_at": "2026-07-15",
+   "archived": false,
+   "n_closed": 19,
+   "E": 1
+  }
+ ]
+}

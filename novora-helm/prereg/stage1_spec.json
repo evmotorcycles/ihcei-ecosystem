@@ -1,0 +1,95 @@
+{
+  "meta": {
+    "title": "Stage-1 Registered Report — On-Device Deep Mode & Emergency-Safety at Scale",
+    "framework": "GT v18.2",
+    "format": "Registered Report, Stage 1 (methodology locked before data collection / model training)",
+    "locked_at": "2026-07-12",
+    "supersedes": "PREREGISTRATION.md v1 (2026-07-11) via Amendment A1, pre-results",
+    "hash_note": "The SHA-256 of this file's canonical serialization (recursive key-sorted, no whitespace) is recorded in prereg/MANIFEST.sha256 and in PREREGISTRATION.md §5. Any change to this file after that hash is written invalidates the pre-registration."
+  },
+  "frozen_kernel": {
+    "posterior": "Monte-Carlo over LLR uncertainty, n_mc >= 3000, mc_seed 7",
+    "floor": [0.01, 0.99],
+    "block_rule": "mean >= 0.85 AND ci95_lower >= 0.50",
+    "warn_rule": "mean >= 0.40 OR ci95_upper >= 0.85",
+    "corroboration_gate": { "enabled": true, "no_mechanism_discount": 0.15 },
+    "tuning_prohibited": "Any change to the kernel, gate discount, or band thresholds voids this pre-registration and requires a new locked spec."
+  },
+  "mechanism_lexicons": {
+    "enterprise-v1": ["manufactured-consensus(g2)", "verification-bypass-incl-scrutiny-suppression(g4)", "unverifiable-authority(g5)", "complexity-deflection(g6)", "isolation"],
+    "consumer-v1": ["enterprise-v1(all)", "secrecy", "payment-pressure", "impersonation", "manufactured-scarcity"],
+    "stamping": "Every verdict and certificate records mechanism_lexicon; deep-mode extraction must expose the same mechanism set so the stamp means the same thing in both modes."
+  },
+  "corpora": {
+    "split": { "train_fraction": 0.70, "test_fraction": 0.30, "rule": "seeded hash of item id", "split_seed": 20260711, "acceptance_set": "the 30% test split of each corpus, SEALED: never inspected, never in training, never in few-shot prompts, never used for checkpoint selection; scored exactly once" },
+    "evasive_coercion": { "n_min": 300, "definition": "reworded manipulation carrying a genuine mechanism (bypass, unverifiable authority, manufactured consensus, complexity-deflection, isolation) expressed WITHOUT fast-mode surface keywords" },
+    "emergency": {
+      "n_min": 400,
+      "definition": "legitimate urgent messages with NO manipulation mechanism, hand-labeled, high intensity",
+      "strata": [
+        "sre_infrastructure_incidents (failovers, pager alerts, active ransomware mitigation)",
+        "clinical_medical_directives (triage codes, critical dosing, ER calls)",
+        "physical_safety_natural_hazards (active threat, evacuation, weather warnings)",
+        "hard_deadline_administrative (compliance halts, trading freezes, statutory filings)"
+      ],
+      "stratum_max_fraction": 0.30
+    },
+    "consumer_scam": { "n_min": 300, "definition": "impersonation/grandparent scams, account-suspension gift-card demands, delivery-fee phishing, romance-scam openers, dark-pattern checkouts; every item carries a consumer-v1 mechanism" },
+    "label_rubric": "manipulative iff the message tries to override the receiver's judgement via a mechanism; legitimate-urgent iff urgency is real and verification is invited or neutral; ambiguous items dropped and logged, never guessed",
+    "freeze": "corpora hashed into prereg/MANIFEST.sha256 before any model training touches them"
+  },
+  "on_device_model_constraints": {
+    "parameters": { "min": 1e9, "max": 3e9 },
+    "quantization_allowed": ["int8", "int4"],
+    "target_hardware": "2024-class phone NPU, ~40 TOPS INT8 equivalent",
+    "latency_budget_ms": { "p50_max": 150, "p95_max": 400 },
+    "memory_budget_gb_max": 4,
+    "checkpoint_rule": "one checkpoint pre-committed using train splits only; training seeds {1,2,3} all reported, acceptance run on the pre-declared seed-1 checkpoint"
+  },
+  "claim_A_ambient_deep_mode": {
+    "hypothesis": "A distilled 1-3B on-device extractor feeding the unchanged posterior kernel raises evasive-coercion recall far above fast mode without sacrificing emergency-safety or clean precision.",
+    "primary_endpoints": {
+      "A1_evasive_recall_hold_or_warn": { "corpus": "evasive_coercion.test", "fast_mode_baseline": 0.125, "accept_min": 0.70 },
+      "A2_emergency_false_hold_rate": { "corpus": "emergency.test", "accept_max": 0.02 }
+    },
+    "secondary_reported_not_gating": {
+      "evasive_block_only_rate_min": 0.40,
+      "consumer_scam_recall_min": 0.85,
+      "clean_benign_false_positive_max": 0.02,
+      "brier_score_max": 0.15,
+      "ece_5bin_max": 0.10
+    },
+    "decision": {
+      "supported": "A1 >= 0.70 AND A2 <= 0.02 on sealed acceptance sets",
+      "null": "A1 < 0.70 OR A2 > 0.02",
+      "null_consequence": [
+        "ambient-deep NPU claim retired (HYPOTHESIS -> RETIRED_FULLY); published as a first-class finding",
+        "HELM degrades to fast-mode + primitives (delegation table, capacity meter, certificate wallet) — still shipped",
+        "deep-mode evaluations restricted to paid cloud-escalation tiers; no unhedged on-device token-burn claims"
+      ],
+      "partial": "A2 holds and 0.50 <= A1 < 0.70: SUPPORTED-BY-PROXY only if a cloud deep run on the same acceptance set clears 0.70; does not license the ambient on-device claim"
+    }
+  },
+  "claim_B_emergency_safety_at_scale": {
+    "hypothesis": "The corroboration gate's 0.50 -> 0.00 emergency false-HOLD result replicates on the powered n>=400 stratified emergency corpus, in fast mode, at deployment-grade rates.",
+    "primary_endpoints": {
+      "B1_fast_mode_false_block_rate": { "corpus": "emergency.test", "accept_max": 0.005 },
+      "B2_worst_stratum_false_block_rate": { "corpus": "emergency.test per stratum", "accept_max": 0.02 }
+    },
+    "decision": {
+      "supported": "B1 <= 0.005 AND B2 <= 0.02",
+      "null": "B1 > 0.005 OR any stratum > 0.02",
+      "null_consequence": [
+        "ambient default-on BLOCKED (design Risk 2); HELM ships default-silent / opt-in-per-surface",
+        "the 0.00 seed number demoted in VALIDATION.md to 'seed-only, did not replicate at scale'",
+        "gate re-worked and re-passed against this same locked spec before default-on is reconsidered"
+      ]
+    }
+  },
+  "analysis_plan": {
+    "one_shot_acceptance": "sealed 30% sets scored exactly once per engine on the pre-committed checkpoint; no checkpoint shopping",
+    "reporting": "per-item {id, p, ci95, verdict, mechanism_present, mechanism_lexicon} plus the corpus hash it ran on; per-class recall table; calibration (Brier, ECE-5bin) deep vs fast",
+    "multiplicity": "four primary endpoints, each judged against its own pre-set band; no cross-crediting",
+    "amendments": "dated entries in PREREGISTRATION.md §5 permitted only BEFORE results are seen; any post-results change invalidates the claim"
+  }
+}

@@ -1,0 +1,1806 @@
+{
+ "description": "REAL commit/release-note lines from the CHANGELOGs of popular open-source repos (fetched live from raw.githubusercontent). The high-velocity dev traffic Page Code must stay silent on.",
+ "fetched_at": "2026-07-15T15:16:00.300Z",
+ "items": [
+  {
+   "id": "commit:react:0",
+   "repo": "facebook/react",
+   "text": "Fixed missing FormData entries in Server Actions which regressed in 19.2.6 (@unstubbable )"
+  },
+  {
+   "id": "commit:react:1",
+   "repo": "facebook/react",
+   "text": "Type hardening and performance improvements (@eps1lon, @unstubbable )"
+  },
+  {
+   "id": "commit:react:2",
+   "repo": "facebook/react",
+   "text": "Add more cycle protections (@eps1lon, @unstubbable )"
+  },
+  {
+   "id": "commit:react:3",
+   "repo": "facebook/react",
+   "text": "Add more DoS mitigations to Server Actions, and harden Server Components (@gnoff, @lubieowoce, @sebmarkbage, @unstubbable )"
+  },
+  {
+   "id": "commit:react:4",
+   "repo": "facebook/react",
+   "text": "Add extra loop protection to React Server Functions (@sebmarkbage )"
+  },
+  {
+   "id": "commit:react:5",
+   "repo": "facebook/react",
+   "text": "Patch Promise cycles and toString on Server Functions (@sebmarkbage, @unstubbable , )"
+  },
+  {
+   "id": "commit:react:6",
+   "repo": "facebook/react",
+   "text": "Bring React Server Component fixes to Server Actions (@sebmarkbage )"
+  },
+  {
+   "id": "commit:react:7",
+   "repo": "facebook/react",
+   "text": "Below is a list of all new features, APIs, and bug fixes."
+  },
+  {
+   "id": "commit:react:8",
+   "repo": "facebook/react",
+   "text": "appear on the Performance panel’s timeline in your browser developer tools"
+  },
+  {
+   "id": "commit:react:9",
+   "repo": "facebook/react",
+   "text": "Added resume APIs for partial pre-rendering with Web Streams:"
+  },
+  {
+   "id": "commit:react:10",
+   "repo": "facebook/react",
+   "text": "Added resume APIs for partial pre-rendering with Node Streams:"
+  },
+  {
+   "id": "commit:react:11",
+   "repo": "facebook/react",
+   "text": "Updated APIs to return a postponed state that can be passed to the resume APIs."
+  },
+  {
+   "id": "commit:react:12",
+   "repo": "facebook/react",
+   "text": "Add Node Web Streams (prerender, renderToReadableStream) to server-side-rendering APIs for Node.js"
+  },
+  {
+   "id": "commit:react:13",
+   "repo": "facebook/react",
+   "text": "Fix infinite useDeferredValue loop in popstate event (@acdlite )"
+  },
+  {
+   "id": "commit:react:14",
+   "repo": "facebook/react",
+   "text": "Fix a bug when an initial value was passed to useDeferredValue (@acdlite )"
+  },
+  {
+   "id": "commit:react:15",
+   "repo": "facebook/react",
+   "text": "Fix a crash when submitting forms with Client Actions (@sebmarkbage )"
+  },
+  {
+   "id": "commit:react:16",
+   "repo": "facebook/react",
+   "text": "Improve Owner and Component stacks in various places (@sebmarkbage, @eps1lon: , , , )"
+  },
+  {
+   "id": "commit:react:17",
+   "repo": "facebook/react",
+   "text": "Allow nonce to be used on hoistable styles (@Andarist )"
+  },
+  {
+   "id": "commit:react:18",
+   "repo": "facebook/react",
+   "text": "Fix a bug with React.use inside React.lazy\\-ed Component (@hi-ogawa )"
+  },
+  {
+   "id": "commit:react:19",
+   "repo": "facebook/react",
+   "text": "Fix a bug with deeply nested Suspense inside Suspense fallback when server-side-rendering (@gnoff )"
+  },
+  {
+   "id": "commit:react:20",
+   "repo": "facebook/react",
+   "text": "Add Node Web Streams to server-side-rendering APIs for Node.js (@sebmarkbage )"
+  },
+  {
+   "id": "commit:react:21",
+   "repo": "facebook/react",
+   "text": "Fix a bug when returning a Temporary reference (e.g. a Client Reference) from Server Functions (@sebmarkbage , @denk0403 )"
+  },
+  {
+   "id": "commit:react:22",
+   "repo": "facebook/react",
+   "text": "Support Async Modules in Turbopack Server References (@lubieowoce )"
+  },
+  {
+   "id": "commit:react:23",
+   "repo": "facebook/react",
+   "text": "Add support for .mjs file extension in Webpack (@jennyscript )"
+  },
+  {
+   "id": "commit:react:24",
+   "repo": "facebook/react",
+   "text": "Fix a wrong missing key warning (@unstubbable )"
+  },
+  {
+   "id": "commit:react:25",
+   "repo": "facebook/react",
+   "text": "and had their parameter order adjusted after on handlers to account for upcoming experimental APIs"
+  },
+  {
+   "id": "commit:react:26",
+   "repo": "facebook/react",
+   "text": "Fixed missing FormData entries in Server Actions which regressed in 19.1.7 (@unstubbable )"
+  },
+  {
+   "id": "commit:react:27",
+   "repo": "facebook/react",
+   "text": "Type hardening and performance improvements (@eps1lon, @unstubbable )"
+  },
+  {
+   "id": "commit:react:28",
+   "repo": "facebook/react",
+   "text": "Add more cycle protections (@eps1lon, @unstubbable )"
+  },
+  {
+   "id": "commit:react:29",
+   "repo": "facebook/react",
+   "text": "Add more DoS mitigations to Server Actions, and harden Server Components (@gnoff, @lubieowoce, @sebmarkbage, @unstubbable )"
+  },
+  {
+   "id": "commit:core:0",
+   "repo": "vuejs/core",
+   "text": "compiler-core: correct filter rewrite recursion () ()"
+  },
+  {
+   "id": "commit:core:1",
+   "repo": "vuejs/core",
+   "text": "hydration: force patch dynamic props when hydrating () (), closes"
+  },
+  {
+   "id": "commit:core:2",
+   "repo": "vuejs/core",
+   "text": "hydration: respect data-allow-mismatch on conditional branches () (), closes"
+  },
+  {
+   "id": "commit:core:3",
+   "repo": "vuejs/core",
+   "text": "runtime-core: handle non-isomorphic block element update () (), closes"
+  },
+  {
+   "id": "commit:core:4",
+   "repo": "vuejs/core",
+   "text": "teleport: handle teleport unmount edge case () (), closes"
+  },
+  {
+   "id": "commit:core:5",
+   "repo": "vuejs/core",
+   "text": "types: support named tuple emits () (), closes"
+  },
+  {
+   "id": "commit:core:6",
+   "repo": "vuejs/core",
+   "text": "compiler-sfc: handle vue-ignore on leading intersection/union type () (), closes"
+  },
+  {
+   "id": "commit:core:7",
+   "repo": "vuejs/core",
+   "text": "runtime-core: add dev warning for silent catch in compat mode and fix test description typo () ()"
+  },
+  {
+   "id": "commit:core:8",
+   "repo": "vuejs/core",
+   "text": "runtime-core: force model update when reverted before sync () (), closes"
+  },
+  {
+   "id": "commit:core:9",
+   "repo": "vuejs/core",
+   "text": "runtime-dom: optimize array event handler dispatch () ()"
+  },
+  {
+   "id": "commit:core:10",
+   "repo": "vuejs/core",
+   "text": "reactivity: prevent orphan effect when created in a stopped scope () (), closes"
+  },
+  {
+   "id": "commit:core:11",
+   "repo": "vuejs/core",
+   "text": "compiler-sfc: handle nested :deep in selector pseudos () (), closes"
+  },
+  {
+   "id": "commit:core:12",
+   "repo": "vuejs/core",
+   "text": "runtime-core: prevent currentInstance leak into sibling render during async setup re-entry () (), closes"
+  },
+  {
+   "id": "commit:core:13",
+   "repo": "vuejs/core",
+   "text": "teleport: handle updates before deferred mount () (), closes"
+  },
+  {
+   "id": "commit:core:14",
+   "repo": "vuejs/core",
+   "text": "types: allow customRef to have different getter/setter types () ()"
+  },
+  {
+   "id": "commit:core:15",
+   "repo": "vuejs/core",
+   "text": "Revert \"fix(server-renderer): cleanup component effect scopes after SSR render\" (14674) (), closes"
+  },
+  {
+   "id": "commit:core:16",
+   "repo": "vuejs/core",
+   "text": "compiler-sfc: allow Node.js subpath imports patterns in asset urls () (), closes"
+  },
+  {
+   "id": "commit:core:17",
+   "repo": "vuejs/core",
+   "text": "compiler-sfc: support template literal as defineModel name () (), closes"
+  },
+  {
+   "id": "commit:core:18",
+   "repo": "vuejs/core",
+   "text": "reactivity: normalize toRef property keys before dep lookup + improve types () (), closes"
+  },
+  {
+   "id": "commit:core:19",
+   "repo": "vuejs/core",
+   "text": "runtime-core: preserve nullish event handlers in mergeProps () ()"
+  },
+  {
+   "id": "commit:core:20",
+   "repo": "vuejs/core",
+   "text": "runtime-core: prevent merging model listener when value is null or undefined () ()"
+  },
+  {
+   "id": "commit:core:21",
+   "repo": "vuejs/core",
+   "text": "runtime-dom: defer teleport mount/update until suspense resolves () (), closes"
+  },
+  {
+   "id": "commit:core:22",
+   "repo": "vuejs/core",
+   "text": "runtime-dom: handle activeElement check in Shadow DOM for v-model () ()"
+  },
+  {
+   "id": "commit:core:23",
+   "repo": "vuejs/core",
+   "text": "suspense: update suspense vnode's el during branch self-update () (), closes"
+  },
+  {
+   "id": "commit:core:24",
+   "repo": "vuejs/core",
+   "text": "types: prevent shallowReactive marker from leaking into value unions () (), closes"
+  },
+  {
+   "id": "commit:core:25",
+   "repo": "vuejs/core",
+   "text": "compat: add entities to @vue/compat deps to fix CJS edge cases () (), closes"
+  },
+  {
+   "id": "commit:core:26",
+   "repo": "vuejs/core",
+   "text": "custom-element: ensure child component styles are injected in correct order before parent styles () (), closes"
+  },
+  {
+   "id": "commit:core:27",
+   "repo": "vuejs/core",
+   "text": "custom-element: should properly patch as props for vue custom elements () (), closes"
+  },
+  {
+   "id": "commit:core:28",
+   "repo": "vuejs/core",
+   "text": "reactivity: avoid duplicate raw/proxy entries in Set.add () ()"
+  },
+  {
+   "id": "commit:core:29",
+   "repo": "vuejs/core",
+   "text": "reactivity: fix reduce on reactive arrays to preserve reactivity () (), closes"
+  },
+  {
+   "id": "commit:eslint:0",
+   "repo": "eslint/eslint",
+   "text": "chore: update dependency @eslint/eslintrc to ^3.3.6 (21076) (renovate[bot])"
+  },
+  {
+   "id": "commit:eslint:1",
+   "repo": "eslint/eslint",
+   "text": "chore: updates for v9.39.5 release (Jenkins)"
+  },
+  {
+   "id": "commit:eslint:2",
+   "repo": "eslint/eslint",
+   "text": "fix: apply ignoreClassesWithImplements to class expressions (21069) (Pixel)"
+  },
+  {
+   "id": "commit:eslint:3",
+   "repo": "eslint/eslint",
+   "text": "chore: enable $ExpectType annotations in all TypeScript files (21071) (Francesco Trotta)"
+  },
+  {
+   "id": "commit:eslint:4",
+   "repo": "eslint/eslint",
+   "text": "feat: add errorClassNames option to preserve-caught-error rule (21032) (sethamus)"
+  },
+  {
+   "id": "commit:eslint:5",
+   "repo": "eslint/eslint",
+   "text": "docs: Update README (GitHub Actions Bot)"
+  },
+  {
+   "id": "commit:eslint:6",
+   "repo": "eslint/eslint",
+   "text": "feat: max-nested-callbacks option for constructor callbacks (21063) (fnx)"
+  },
+  {
+   "id": "commit:eslint:7",
+   "repo": "eslint/eslint",
+   "text": "chore: restrict markdownlint-cli2 updates in renovate (21067) (lumir)"
+  },
+  {
+   "id": "commit:eslint:8",
+   "repo": "eslint/eslint",
+   "text": "fix: insert cause outside wrapping parens in preserve-caught-error (21062) (Mahin Anowar)"
+  },
+  {
+   "id": "commit:eslint:9",
+   "repo": "eslint/eslint",
+   "text": "chore: update dependency prettier to v3.9.4 (21061) (renovate[bot])"
+  },
+  {
+   "id": "commit:eslint:10",
+   "repo": "eslint/eslint",
+   "text": "docs: Update README (GitHub Actions Bot)"
+  },
+  {
+   "id": "commit:eslint:11",
+   "repo": "eslint/eslint",
+   "text": "chore: update ecosystem plugins (21059) (ESLint Bot)"
+  },
+  {
+   "id": "commit:eslint:12",
+   "repo": "eslint/eslint",
+   "text": "fix: handle static template literals in eqeqeq rule (21058) (Pixel)"
+  },
+  {
+   "id": "commit:eslint:13",
+   "repo": "eslint/eslint",
+   "text": "fix: prevent eqeqeq null option from reporting non-equality operators (21057) (Pixel)"
+  },
+  {
+   "id": "commit:eslint:14",
+   "repo": "eslint/eslint",
+   "text": "chore: add prettier update commit to .git-blame-ignore-revs (21056) (lumir)"
+  },
+  {
+   "id": "commit:eslint:15",
+   "repo": "eslint/eslint",
+   "text": "chore: update dependency prettier to v3.9.1 (21055) (renovate[bot])"
+  },
+  {
+   "id": "commit:eslint:16",
+   "repo": "eslint/eslint",
+   "text": "chore: update prettier to v3.9.0 (21054) (Pixel)"
+  },
+  {
+   "id": "commit:eslint:17",
+   "repo": "eslint/eslint",
+   "text": "fix: avoid no-invalid-regexp false positive for shadowed RegExp (21051) (Pixel)"
+  },
+  {
+   "id": "commit:eslint:18",
+   "repo": "eslint/eslint",
+   "text": "fix: avoid no-control-regex false positive for shadowed RegExp (21050) (Pixel)"
+  },
+  {
+   "id": "commit:eslint:19",
+   "repo": "eslint/eslint",
+   "text": "chore: update dependency prettier to v3.8.5 (21049) (renovate[bot])"
+  },
+  {
+   "id": "commit:eslint:20",
+   "repo": "eslint/eslint",
+   "text": "fix: parenthesize sequence expression operands in no-implicit-coercion (21045) (spokodev)"
+  },
+  {
+   "id": "commit:eslint:21",
+   "repo": "eslint/eslint",
+   "text": "docs: update semver policy for bug fixes (21048) (Milos Djermanovic)"
+  },
+  {
+   "id": "commit:eslint:22",
+   "repo": "eslint/eslint",
+   "text": "docs: Update README (GitHub Actions Bot)"
+  },
+  {
+   "id": "commit:eslint:23",
+   "repo": "eslint/eslint",
+   "text": "fix: avoid prefer-numeric-literals false positive for shadowed globals (21047) (한국)"
+  },
+  {
+   "id": "commit:eslint:24",
+   "repo": "eslint/eslint",
+   "text": "fix: use-isnan false positive on shadowed NaN/Number (20958) (sethamus)"
+  },
+  {
+   "id": "commit:eslint:25",
+   "repo": "eslint/eslint",
+   "text": "feat: support computed Number.parseInt member access in radix rule (21041) (Pixel)"
+  },
+  {
+   "id": "commit:eslint:26",
+   "repo": "eslint/eslint",
+   "text": "fix: avoid false positives in radix rule for spread arguments (21044) (Pixel)"
+  },
+  {
+   "id": "commit:eslint:27",
+   "repo": "eslint/eslint",
+   "text": "feat: add suggestions to no-compare-neg-zero (21034) (den$)"
+  },
+  {
+   "id": "commit:eslint:28",
+   "repo": "eslint/eslint",
+   "text": "chore: update dependency @eslint/json to ^2.0.1 (21042) (renovate[bot])"
+  },
+  {
+   "id": "commit:eslint:29",
+   "repo": "eslint/eslint",
+   "text": "docs: Update README (GitHub Actions Bot)"
+  },
+  {
+   "id": "commit:prettier:0",
+   "repo": "prettier/prettier",
+   "text": "CommonMark parsers only support ordered list item numbers up to 999,999,999."
+  },
+  {
+   "id": "commit:prettier:1",
+   "repo": "prettier/prettier",
+   "text": "Do not remove <> from an inline link or image with an empty URL and a title, as this removal would change its interpretation."
+  },
+  {
+   "id": "commit:prettier:2",
+   "repo": "prettier/prettier",
+   "text": "Less: Remove extra spaces after by )"
+  },
+  {
+   "id": "commit:prettier:3",
+   "repo": "prettier/prettier",
+   "text": "CSS: Prevent addition space in type() with + ( by )"
+  },
+  {
+   "id": "commit:prettier:4",
+   "repo": "prettier/prettier",
+   "text": "This fixes the addition space before + in CSS type() declaration. For example type(<number>+) was being converted into type(<number> +) which is invalid CSS and does not work."
+  },
+  {
+   "id": "commit:prettier:5",
+   "repo": "prettier/prettier",
+   "text": "Less: Remove spaces between merge markers and colons ( by )"
+  },
+  {
+   "id": "commit:prettier:6",
+   "repo": "prettier/prettier",
+   "text": "TypeScript: Fix comments being dropped on shorthand type import/export specifiers ( by )"
+  },
+  {
+   "id": "commit:prettier:7",
+   "repo": "prettier/prettier",
+   "text": "Flow: Stop enforcing empty module declaration to break ( by )"
+  },
+  {
+   "id": "commit:prettier:8",
+   "repo": "prettier/prettier",
+   "text": "Angular: Support expression for exhaustive typechecking ( by )"
+  },
+  {
+   "id": "commit:prettier:9",
+   "repo": "prettier/prettier",
+   "text": "Less: Fix adjacent block comments being corrupted ( by )"
+  },
+  {
+   "id": "commit:prettier:10",
+   "repo": "prettier/prettier",
+   "text": "JavaScript: Handle dangling comments in SwitchStatement ( by )"
+  },
+  {
+   "id": "commit:prettier:11",
+   "repo": "prettier/prettier",
+   "text": "TypeScript: Remove space in comment-only object type ( by )"
+  },
+  {
+   "id": "commit:prettier:12",
+   "repo": "prettier/prettier",
+   "text": "Markdown: Fix unexpected removal of characters in liquid syntax ( by )"
+  },
+  {
+   "id": "commit:prettier:13",
+   "repo": "prettier/prettier",
+   "text": "TypeScript: Allow decorators to be used with declare on class fields ( by )"
+  },
+  {
+   "id": "commit:prettier:14",
+   "repo": "prettier/prettier",
+   "text": "Extensively used within the Ember ecosystem, decorators with declare on class fields will ignore the babel parser error and allow Prettier to format the code without breaking it."
+  },
+  {
+   "id": "commit:prettier:15",
+   "repo": "prettier/prettier",
+   "text": "CLI: Fix ignored file has been cached incorrectly ( by )"
+  },
+  {
+   "id": "commit:prettier:16",
+   "repo": "prettier/prettier",
+   "text": "Flow: Support readonly as a variance annotation ( by )"
+  },
+  {
+   "id": "commit:prettier:17",
+   "repo": "prettier/prettier",
+   "text": "Markdown: Fix blank lines between list items and nested sub-lists being removed in Markdown/MDX ( by )"
+  },
+  {
+   "id": "commit:prettier:18",
+   "repo": "prettier/prettier",
+   "text": "SCSS: Prevent trailing comma in if() function ( by )"
+  },
+  {
+   "id": "commit:prettier:19",
+   "repo": "prettier/prettier",
+   "text": "Angular: Support Angular v21.2 (, by )"
+  },
+  {
+   "id": "commit:prettier:20",
+   "repo": "prettier/prettier",
+   "text": "TypeScript: Fix comment inside union type gets duplicated ( by )"
+  },
+  {
+   "id": "commit:prettier:21",
+   "repo": "prettier/prettier",
+   "text": "TypeScript: Fix unstable comment print in union type comments ( by )"
+  },
+  {
+   "id": "commit:prettier:22",
+   "repo": "prettier/prettier",
+   "text": "API: Fix prettier.getFileInfo() change that breaks VSCode extension ( by )"
+  },
+  {
+   "id": "commit:prettier:23",
+   "repo": "prettier/prettier",
+   "text": "An internal refactor accidentally broke the VSCode extension plugin loading."
+  },
+  {
+   "id": "commit:prettier:24",
+   "repo": "prettier/prettier",
+   "text": "JavaScript: Fix string print when switching quotes ( by )"
+  },
+  {
+   "id": "commit:prettier:25",
+   "repo": "prettier/prettier",
+   "text": "TypeScript: Fix comment in empty type literal ( by )"
+  },
+  {
+   "id": "commit:prettier:26",
+   "repo": "prettier/prettier",
+   "text": "API: Fix performance regression in doc printer ( by )"
+  },
+  {
+   "id": "commit:prettier:27",
+   "repo": "prettier/prettier",
+   "text": "Prettier 3.7.0 can be very slow when formatting big files, the regression has been fixed."
+  },
+  {
+   "id": "commit:prettier:28",
+   "repo": "prettier/prettier",
+   "text": "Markdown: Add missing blank line around code block ( by )"
+  },
+  {
+   "id": "commit:prettier:29",
+   "repo": "prettier/prettier",
+   "text": "TypeScript: Allow const without initializer (, by )"
+  },
+  {
+   "id": "commit:rollup:0",
+   "repo": "rollup/rollup",
+   "text": "Do not add spurious side-effect-free external imports to chunks when using minChunkSize (6411)"
+  },
+  {
+   "id": "commit:rollup:1",
+   "repo": "rollup/rollup",
+   "text": ": refactor(rust/parserast): extract property AstConverter write buffer kind logic to new method (@fabianbernhart, @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:2",
+   "repo": "rollup/rollup",
+   "text": "Fix an issue where getLogFilter would match additional logs (6415)"
+  },
+  {
+   "id": "commit:rollup:3",
+   "repo": "rollup/rollup",
+   "text": ": fix: insert conflict numbers before first extension in multi-extension filenames (@LeSingh1, @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:4",
+   "repo": "rollup/rollup",
+   "text": ": fix: advance value past wildcard prefix before suffix check in getLogFilter (@JSap0914, @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:5",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): update msys2/setup-msys2 digest to 66cd2cc (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:6",
+   "repo": "rollup/rollup",
+   "text": ": fix(deps): update minor/patch updates (@renovate[bot], @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:7",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): update dependency eslint-plugin-unicorn to v66 (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:8",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): lock file maintenance minor/patch updates (@renovate[bot], @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:9",
+   "repo": "rollup/rollup",
+   "text": "Ensure that shared dependencies between manual chunks and entry points receive a serparate chunk (6374)"
+  },
+  {
+   "id": "commit:rollup:10",
+   "repo": "rollup/rollup",
+   "text": ": fix(deps): update minor/patch updates (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:11",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): pin dependency concurrently to v9 (@renovate[bot], @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:12",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): lock file maintenance minor/patch updates (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:13",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): update minor/patch updates to v6.2.0 (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:14",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): lock file maintenance minor/patch updates (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:15",
+   "repo": "rollup/rollup",
+   "text": ": fix(deps): update minor/patch updates (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:16",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): update dependency eslint-plugin-unicorn to v65 (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:17",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): lock file maintenance minor/patch updates (@renovate[bot], @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:18",
+   "repo": "rollup/rollup",
+   "text": "Avoid extraneous newlines when adding headers via plugins (6403)"
+  },
+  {
+   "id": "commit:rollup:19",
+   "repo": "rollup/rollup",
+   "text": "Fix a rare issue where starting Rollup would hang on Windows (6404)"
+  },
+  {
+   "id": "commit:rollup:20",
+   "repo": "rollup/rollup",
+   "text": ": Improve documentation for manualPureFunctions (@lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:21",
+   "repo": "rollup/rollup",
+   "text": ": Does not add an extra leading line feed for addons (@TrickyPi)"
+  },
+  {
+   "id": "commit:rollup:22",
+   "repo": "rollup/rollup",
+   "text": ": fix: set report.excludeNetwork=true before getReport() to avoid blocking PTR lookups (@jdz321, @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:23",
+   "repo": "rollup/rollup",
+   "text": ": fix(deps): update minor/patch updates (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:24",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): update dependency lint-staged to v17 (@renovate[bot], @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:25",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): update dependency lru-cache to v11 (@renovate[bot], @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:26",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): lock file maintenance (@renovate[bot], @lukastaegert)"
+  },
+  {
+   "id": "commit:rollup:27",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): update dependency @types/node to ^20.19.41 (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:28",
+   "repo": "rollup/rollup",
+   "text": ": fix(deps): update minor/patch updates (@renovate[bot])"
+  },
+  {
+   "id": "commit:rollup:29",
+   "repo": "rollup/rollup",
+   "text": ": chore(deps): update aws-actions/configure-aws-credentials action to v6 (@renovate[bot])"
+  },
+  {
+   "id": "commit:jest:0",
+   "repo": "jestjs/jest",
+   "text": "[@jest/expect-utils, jest-mock] Add mockFn.whenCalledWith(...args) for configuring return values per argument list, with first-class asymmetric-matcher support ()"
+  },
+  {
+   "id": "commit:jest:1",
+   "repo": "jestjs/jest",
+   "text": "[jest-resolve] Bump unrs-resolver to 1.12.1, remove jest-pnp-resolver and unnecessary checks ()"
+  },
+  {
+   "id": "commit:jest:2",
+   "repo": "jestjs/jest",
+   "text": "[expect, jest-message-util, jest-pattern, jest-regex-util, jest-util] Revert node: protocol imports to restore webpack/browser-bundle compatibility ()"
+  },
+  {
+   "id": "commit:jest:3",
+   "repo": "jestjs/jest",
+   "text": "[jest-mock] Remove the leftover own accessor descriptor when restoring a spyOn of an inherited getter or setter, so the instance keeps reflecting the prototype ()"
+  },
+  {
+   "id": "commit:jest:4",
+   "repo": "jestjs/jest",
+   "text": "[jest-runtime] Allow require() of ESM-marked files on Node < 24.9 via transform fallback ()"
+  },
+  {
+   "id": "commit:jest:5",
+   "repo": "jestjs/jest",
+   "text": "[jest-runtime] Support older test environments whose moduleMocker does not implement clearMocksOnScope ()"
+  },
+  {
+   "id": "commit:jest:6",
+   "repo": "jestjs/jest",
+   "text": "[jest-haste-map] Refactor massive class into multiple files ()"
+  },
+  {
+   "id": "commit:jest:7",
+   "repo": "jestjs/jest",
+   "text": "[jest-runtime] Fix named imports from CJS modules whose module.exports is a function with own-property exports ()"
+  },
+  {
+   "id": "commit:jest:8",
+   "repo": "jestjs/jest",
+   "text": "[jest-config, jest-core, jest-runner, jest-schemas, jest-types] Allow custom runner configuration options via tuple format ['runner-path', {options}] ()"
+  },
+  {
+   "id": "commit:jest:9",
+   "repo": "jestjs/jest",
+   "text": "[babel-jest] Support collecting coverage from .mts, .cts (and other) files ()"
+  },
+  {
+   "id": "commit:jest:10",
+   "repo": "jestjs/jest",
+   "text": "[jest-circus, jest-cli, jest-config, jest-core, jest-jasmine2, jest-types] Add --collect-tests flag to discover and list tests without executing them ()"
+  },
+  {
+   "id": "commit:jest:11",
+   "repo": "jestjs/jest",
+   "text": "[jest-config, jest-runner, jest-worker] Add workerGracefulExitTimeout config option to control how long workers are given to exit before being force-killed ()"
+  },
+  {
+   "id": "commit:jest:12",
+   "repo": "jestjs/jest",
+   "text": "[jest-config] Add support for jest.config.mts as a valid configuration file ()"
+  },
+  {
+   "id": "commit:jest:13",
+   "repo": "jestjs/jest",
+   "text": "[jest-mock] Add clearMocksOnScope(scope) on ModuleMocker for clearing every mock function exposed on a scope object ()"
+  },
+  {
+   "id": "commit:jest:14",
+   "repo": "jestjs/jest",
+   "text": "[jest-resolve] Add canResolveSync() on Resolver so callers can detect when a user-configured resolver only exports an async hook ()"
+  },
+  {
+   "id": "commit:jest:15",
+   "repo": "jestjs/jest",
+   "text": "[jest-runtime] Use synchronous evaluate() for ES modules without top-level await on Node versions that support it (v24.9+), and prefer the synchronous transform path when a sync transformer is configured ()"
+  },
+  {
+   "id": "commit:jest:16",
+   "repo": "jestjs/jest",
+   "text": "[jest-runtime] Support require() of ES modules on Node v24.9+ ()"
+  },
+  {
+   "id": "commit:jest:17",
+   "repo": "jestjs/jest",
+   "text": "[@jest/transform] Add canTransformSync(filename) on ScriptTransformer so callers can pick the sync vs async transform path ()"
+  },
+  {
+   "id": "commit:jest:18",
+   "repo": "jestjs/jest",
+   "text": "[expect-utils] Fix toStrictEqual failing on structuredClone results due to cross-realm constructor mismatch ()"
+  },
+  {
+   "id": "commit:jest:19",
+   "repo": "jestjs/jest",
+   "text": "[@jest/expect-utils] Prevent toMatchObject/subset matching from throwing when encountering exotic iterables ()"
+  },
+  {
+   "id": "commit:jest:20",
+   "repo": "jestjs/jest",
+   "text": "[jest-circus] Prevent crash when asyncError is undefined for non-Error throws ()"
+  },
+  {
+   "id": "commit:jest:21",
+   "repo": "jestjs/jest",
+   "text": "[jest-config] Fix preset path resolution on Windows when the preset uses subpath exports ()"
+  },
+  {
+   "id": "commit:jest:22",
+   "repo": "jestjs/jest",
+   "text": "[jest-config] Allow collectCoverage and coverageProvider in project config without a validation warning ()"
+  },
+  {
+   "id": "commit:jest:23",
+   "repo": "jestjs/jest",
+   "text": "[jest-config] Project config validator now emits \"is not supported in an individual project configuration\" instead of \"probably a typing mistake\" for known global-only options ()"
+  },
+  {
+   "id": "commit:jest:24",
+   "repo": "jestjs/jest",
+   "text": "[jest-environment-node] Fix --localstorage-file warning on Node 25+ ()"
+  },
+  {
+   "id": "commit:jest:25",
+   "repo": "jestjs/jest",
+   "text": "[jest-reporters] Apply global coverage threshold to unmatched pattern files in addition to glob/path thresholds ()"
+  },
+  {
+   "id": "commit:jest:26",
+   "repo": "jestjs/jest",
+   "text": "[jest-reporters, jest-runner, jest-runtime, jest-transform] Fix coverage report not showing correct code coverage when using projects config option ()"
+  },
+  {
+   "id": "commit:jest:27",
+   "repo": "jestjs/jest",
+   "text": "[jest-runtime] Improve CJS-from-ESM interop: esModule/Babel default unwrap, broader named-export coverage, and shared CJS singleton across importers ()"
+  },
+  {
+   "id": "commit:jest:28",
+   "repo": "jestjs/jest",
+   "text": "[jest-runtime] Fix deadlocks and double-evaluation in concurrent ESM and wasm imports ()"
+  },
+  {
+   "id": "commit:jest:29",
+   "repo": "jestjs/jest",
+   "text": "[jest-runtime] Fix error when require() is called after the Jest environment has been torn down ()"
+  },
+  {
+   "id": "commit:axios:0",
+   "repo": "axios/axios",
+   "text": "This release hardens redirect and URL handling, improves the validateStatus configuration semantics, and includes updates to documentation, dependencies, and release metadata."
+  },
+  {
+   "id": "commit:axios:1",
+   "repo": "axios/axios",
+   "text": "Redirect Header Safety: Added Node HTTP adapter support for stripping caller-specified sensitive headers on cross-origin redirects, helping prevent custom auth headers such as API keys from leaking to another origin. (10892)"
+  },
+  {
+   "id": "commit:axios:2",
+   "repo": "axios/axios",
+   "text": "Status Validation: Added transitional.validateStatusUndefinedResolves so applications can opt in to treating validateStatus: undefined like the option was omitted, while validateStatus: null remains the explicit way to accept every status. (10899)"
+  },
+  {
+   "id": "commit:axios:3",
+   "repo": "axios/axios",
+   "text": "Documentation: Published the v1.17.0 release notes, fixed a changelog typo, clarified the package update PR policy, and marked the proxy request config as Node.js-only in the advanced docs. (10984, 10988, 10992, 10995)"
+  },
+  {
+   "id": "commit:axios:4",
+   "repo": "axios/axios",
+   "text": "Dependencies: Bumped @babel/core, @babel/preset-env, @commitlint/cli, @commitlint/config-conventional, @rollup/plugin-babel, @rollup/plugin-commonjs, @vitest/browser, @vitest/browser-playwright, eslint, lint-staged, rollup, vitest, and actions/checkout. (10989, 10996, 10997)"
+  },
+  {
+   "id": "commit:axios:5",
+   "repo": "axios/axios",
+   "text": "Release Metadata: Prepared the 1.18.0 release by updating package metadata and the runtime VERSION value. (11003)"
+  },
+  {
+   "id": "commit:axios:6",
+   "repo": "axios/axios",
+   "text": "We are thrilled to welcome our new contributors. Thank you for helping improve axios:"
+  },
+  {
+   "id": "commit:axios:7",
+   "repo": "axios/axios",
+   "text": "This release adds Node HTTP zstd decompression, hardens config and release workflows, and fixes authentication, header, proxy, and type-handling regressions."
+  },
+  {
+   "id": "commit:axios:8",
+   "repo": "axios/axios",
+   "text": "Config Hardening: Guarded socketPath, params, and paramsSerializer reads with own-property checks to prevent inherited prototype values from affecting request behavior, including SSRF-sensitive paths. (10901, 10922)"
+  },
+  {
+   "id": "commit:axios:9",
+   "repo": "axios/axios",
+   "text": "Release Publishing: Switched the publish workflow to npm staged publishing for safer, auditable package releases with provenance. (10926)"
+  },
+  {
+   "id": "commit:axios:10",
+   "repo": "axios/axios",
+   "text": "HTTP Compression: Added Node HTTP adapter support for zstd response decompression, with transitional.advertiseZstdAcceptEncoding controlling whether zstd is advertised in Accept-Encoding. (6792, 10920)"
+  },
+  {
+   "id": "commit:axios:11",
+   "repo": "axios/axios",
+   "text": "React Native FormData: Cleared default Content-Type for React Native FormData so multipart boundaries can be generated correctly. (10898)"
+  },
+  {
+   "id": "commit:axios:12",
+   "repo": "axios/axios",
+   "text": "Types: Corrected AxiosHeaders.toJSON() return types and updated CommonJS isCancel typings to narrow to CanceledError<T>. (10956, 10952)"
+  },
+  {
+   "id": "commit:axios:13",
+   "repo": "axios/axios",
+   "text": "HTTP/2 Internals: Extracted Http2Sessions into its own helper module and added direct unit coverage for session pooling, timeout, and cleanup behavior. (10861)"
+  },
+  {
+   "id": "commit:axios:14",
+   "repo": "axios/axios",
+   "text": "Package Publishing: Reduced published package size by switching to a files allowlist and dropping unneeded unminified bundle source maps. (10939)"
+  },
+  {
+   "id": "commit:axios:15",
+   "repo": "axios/axios",
+   "text": "CI and Release Automation: Added bundle-size reporting, moved reports to the job summary, fixed bundle-size comparison coverage, added Node 26 to the matrix, pinned npm for staged publishing, and prepared the 1.17.0 release. (10907, 10911, 10916, 10927, 10935, 10983)"
+  },
+  {
+   "id": "commit:axios:16",
+   "repo": "axios/axios",
+   "text": "Developer Workflow: Added a dev container and iterated on OpenSpec workflow files before removing them from the release branch. (10925, 10914, 10958)"
+  },
+  {
+   "id": "commit:axios:17",
+   "repo": "axios/axios",
+   "text": "Documentation and Policy: Updated disclosure, contributor, collaboration, threat-model, advanced docs, README badges, release notes, moderator configuration, and project metadata. (10890, 10889, 10921, 10945, 10905, 10933, 10915, 10887, 10955)"
+  },
+  {
+   "id": "commit:axios:18",
+   "repo": "axios/axios",
+   "text": "Dependencies: Bumped Babel tooling, Commitlint, ESLint, Rollup, Globals, Vitest, Playwright, fs-extra, qs, docs dependencies, and GitHub Actions dependencies including actions/dependency-review-action and zizmorcore/zizmor-action. (10871, 10879, 10918, 10919, 10934, 10947, 10954, 10960)"
+  },
+  {
+   "id": "commit:axios:19",
+   "repo": "axios/axios",
+   "text": "We are thrilled to welcome our new contributors. Thank you for helping improve axios:"
+  },
+  {
+   "id": "commit:axios:20",
+   "repo": "axios/axios",
+   "text": "This release ships a defence-in-depth fix for prototype pollution in formDataToJSON, hardens proxy and CI workflows, restores Webpack 4 compatibility for the fetch adapter, and includes several small bug fixes and maintenance improvements."
+  },
+  {
+   "id": "commit:axios:21",
+   "repo": "axios/axios",
+   "text": "Proxy Cleartext Leak: Fixed an issue where HTTPS request data could be transmitted in cleartext to an HTTP proxy under certain configurations. (10858)"
+  },
+  {
+   "id": "commit:axios:22",
+   "repo": "axios/axios",
+   "text": "CI Cache Removal: Removed all GitHub Actions caches as a defence-in-depth measure against cache poisoning vectors in the build pipeline. (10882)"
+  },
+  {
+   "id": "commit:axios:23",
+   "repo": "axios/axios",
+   "text": "Data URI Parsing: Updated the fromDataURI regex to match RFC 2397 more strictly, fixing edge cases in data: URL handling. (10829)"
+  },
+  {
+   "id": "commit:axios:24",
+   "repo": "axios/axios",
+   "text": "XHR Upload Progress: Guarded against malformed ProgressEvent payloads emitted by some environments during XHR upload, preventing crashes when loaded / total are missing or invalid. (10868)"
+  },
+  {
+   "id": "commit:axios:25",
+   "repo": "axios/axios",
+   "text": "Webpack 4 Fetch Adapter: Fixed an \"unexpected token\" error caused by syntax in the fetch adapter that Webpack 4 could not parse, restoring compatibility for legacy bundler users. (10864)"
+  },
+  {
+   "id": "commit:axios:26",
+   "repo": "axios/axios",
+   "text": "URL Object Support Reverted: Reverted the change that allowed passing a URL object as config.url (originally 10866) due to regressions; this support will be reintroduced in a later release once the underlying issues are addressed. (10874)"
+  },
+  {
+   "id": "commit:axios:27",
+   "repo": "axios/axios",
+   "text": "Cycle Detection Refactor: Replaced the array-based cycle tracker in toJSONObject with a WeakSet, improving performance and memory behaviour on large nested structures. (10832)"
+  },
+  {
+   "id": "commit:axios:28",
+   "repo": "axios/axios",
+   "text": "composeSignals Cleanup: Refactored composeSignals to use a clearer early-return structure, simplifying the cancellation/abort composition path. (10844)"
+  },
+  {
+   "id": "commit:axios:29",
+   "repo": "axios/axios",
+   "text": "AI Readiness & Repo Docs: Added AGENTS.md and related contributor-guide updates for both human and AI agents, plus post-release documentation improvements. (10835, 10841)"
+  },
+  {
+   "id": "commit:babel:0",
+   "repo": "babel/babel",
+   "text": "Note: Gaps between patch versions are faulty, broken or test releases."
+  },
+  {
+   "id": "commit:babel:1",
+   "repo": "babel/babel",
+   "text": "See for v7.15.0 to v7.28.5 changes (the last common release between the v8 and v7 release lines was v7.28.5)."
+  },
+  {
+   "id": "commit:babel:2",
+   "repo": "babel/babel",
+   "text": "fix(parser): disallow declare module M {} ()"
+  },
+  {
+   "id": "commit:babel:3",
+   "repo": "babel/babel",
+   "text": "fix(parser): forbid let x! and let x! = ()"
+  },
+  {
+   "id": "commit:babel:4",
+   "repo": "babel/babel",
+   "text": "fix: replaceWith in Visitorexit should not stop traversal ()"
+  },
+  {
+   "id": "commit:babel:5",
+   "repo": "babel/babel",
+   "text": "refactor: Shrink validator identifier size ()"
+  },
+  {
+   "id": "commit:babel:6",
+   "repo": "babel/babel",
+   "text": "fix: Remove isTSX from babel-plugin-syntax-typescript types ()"
+  },
+  {
+   "id": "commit:babel:7",
+   "repo": "babel/babel",
+   "text": "fix: Use runtime: 'classic' in the browser for React ()"
+  },
+  {
+   "id": "commit:babel:8",
+   "repo": "babel/babel",
+   "text": "fix(identifier): avoid double escaping slash ()"
+  },
+  {
+   "id": "commit:babel:9",
+   "repo": "babel/babel",
+   "text": "Update @babel/preset-modules and polyfill packages ()"
+  },
+  {
+   "id": "commit:babel:10",
+   "repo": "babel/babel",
+   "text": "perf: Only extract source map comments at the end of the file ()"
+  },
+  {
+   "id": "commit:babel:11",
+   "repo": "babel/babel",
+   "text": "Fallback to assuming ESM support with modules: auto ()"
+  },
+  {
+   "id": "commit:babel:12",
+   "repo": "babel/babel",
+   "text": "Remove corejs exports for @babe/runtime-corejs3 ()"
+  },
+  {
+   "id": "commit:babel:13",
+   "repo": "babel/babel",
+   "text": "fix(generator): improve new callee parens check ()"
+  },
+  {
+   "id": "commit:babel:14",
+   "repo": "babel/babel",
+   "text": "fix(systemjs): support proto as an export name ()"
+  },
+  {
+   "id": "commit:babel:15",
+   "repo": "babel/babel",
+   "text": "Add EOL date for Babel 7 (end of June 2027) to SECURITY.md ()"
+  },
+  {
+   "id": "commit:babel:16",
+   "repo": "babel/babel",
+   "text": "perf: Only extract source map comments at the end of the file ()"
+  },
+  {
+   "id": "commit:babel:17",
+   "repo": "babel/babel",
+   "text": "fix: improve inputSourceMap URL handling ()"
+  },
+  {
+   "id": "commit:babel:18",
+   "repo": "babel/babel",
+   "text": "Always use native Node.js TS support for config files ()"
+  },
+  {
+   "id": "commit:babel:19",
+   "repo": "babel/babel",
+   "text": "chore: use bundled dts for register and eslint- ()"
+  },
+  {
+   "id": "commit:babel:20",
+   "repo": "babel/babel",
+   "text": "babel-build-external-helpers, babel-cli, babel-generator, babel-helper-fixtures, babel-helper-plugin-test-runner, babel-helper-transform-fixture-test-runner, babel-node, babel-parser, babel-plugin-transform-modules-systemjs, babel-types"
+  },
+  {
+   "id": "commit:babel:21",
+   "repo": "babel/babel",
+   "text": "Add file URL support for test runners ()"
+  },
+  {
+   "id": "commit:babel:22",
+   "repo": "babel/babel",
+   "text": "fix(code-frame): use 0-based columns to match Babel AST locations (1… ()"
+  },
+  {
+   "id": "commit:babel:23",
+   "repo": "babel/babel",
+   "text": "Remove noop plugins from @babel/standalone ()"
+  },
+  {
+   "id": "commit:babel:24",
+   "repo": "babel/babel",
+   "text": "Deprecate spec and loose plugin options ()"
+  },
+  {
+   "id": "commit:babel:25",
+   "repo": "babel/babel",
+   "text": "fix(systemjs): improve module string name support ()"
+  },
+  {
+   "id": "commit:babel:26",
+   "repo": "babel/babel",
+   "text": "Add threat model to SECURITY.md ()"
+  },
+  {
+   "id": "commit:babel:27",
+   "repo": "babel/babel",
+   "text": "babel-core, babel-helper-create-class-features-plugin, babel-plugin-proposal-decorators, babel-plugin-transform-async-to-generator, babel-plugin-transform-class-static-block, babel-plugin-transform-flow-strip-types, babel-plugin-transform-modules-amd, babel-plugin-transform-modules-systemjs, babel-plugin-transform-typescript, babel-preset-env, babel-preset-flow, babel-preset-react, babel-preset-typescript"
+  },
+  {
+   "id": "commit:babel:28",
+   "repo": "babel/babel",
+   "text": "Add testing for plugin options ()"
+  },
+  {
+   "id": "commit:babel:29",
+   "repo": "babel/babel",
+   "text": "refactor(ts): migrate babel-eslint-plugin- to TS ()"
+  },
+  {
+   "id": "commit:express:0",
+   "repo": "expressjs/express",
+   "text": "Fixed HTTP header conflict between Content-Length and Transfer-Encoding in res.send - by in"
+  },
+  {
+   "id": "commit:express:1",
+   "repo": "expressjs/express",
+   "text": "Improve HTML structure in res.redirect() responses when HTML format is accepted by adding <!DOCTYPE html>, <title>, and <body> tags for better browser compatibility - by in"
+  },
+  {
+   "id": "commit:express:2",
+   "repo": "expressjs/express",
+   "text": "When calling app.render with options set to null, the locals object is handled correctly, preventing unexpected errors and making the method behave the same as when options is omitted or an empty object is passed - by in"
+  },
+  {
+   "id": "commit:express:3",
+   "repo": "expressjs/express",
+   "text": "The default error handler now logs the full error object instead of only its stack trace, so nested details such as Error.cause and library-specific properties (e.g. Sequelize's parent/original) are no longer swallowed - by in"
+  },
+  {
+   "id": "commit:express:4",
+   "repo": "expressjs/express",
+   "text": "The prior release (5.2.0) included an erroneous breaking change related to the extended query parser. There is no actual security vulnerability associated with this behavior (CVE-2024-51999 has been rejected). The change has been fully reverted in this release."
+  },
+  {
+   "id": "commit:express:5",
+   "repo": "expressjs/express",
+   "text": "A deprecation warning was added when using res.redirect with undefined arguments, Express now emits a warning to help detect calls that pass undefined as the status or URL and make them easier to fix."
+  },
+  {
+   "id": "commit:express:6",
+   "repo": "expressjs/express",
+   "text": "Add support for Uint8Array in res.send()"
+  },
+  {
+   "id": "commit:express:7",
+   "repo": "expressjs/express",
+   "text": "Add support for ETag option in res.sendFile()"
+  },
+  {
+   "id": "commit:express:8",
+   "repo": "expressjs/express",
+   "text": "Add support for multiple links with the same rel in res.links()"
+  },
+  {
+   "id": "commit:express:9",
+   "repo": "expressjs/express",
+   "text": "refactor: prefix built-in node module imports"
+  },
+  {
+   "id": "commit:express:10",
+   "repo": "expressjs/express",
+   "text": "Update cookie semver lock to address"
+  },
+  {
+   "id": "commit:express:11",
+   "repo": "expressjs/express",
+   "text": "res.redirect('back') and res.location('back') is no longer a supported magic string, explicitly use req.get('Referrer') || '/'."
+  },
+  {
+   "id": "commit:express:12",
+   "repo": "expressjs/express",
+   "text": "This is the first Express 5.0 beta release, based off 4.17.2 and includes"
+  },
+  {
+   "id": "commit:express:13",
+   "repo": "expressjs/express",
+   "text": "- Add new ?, , and + parameter modifiers"
+  },
+  {
+   "id": "commit:express:14",
+   "repo": "expressjs/express",
+   "text": "- Special path segment behavior removed"
+  },
+  {
+   "id": "commit:express:15",
+   "repo": "expressjs/express",
+   "text": "- Remove hidden option; use dotfiles option instead"
+  },
+  {
+   "id": "commit:express:16",
+   "repo": "expressjs/express",
+   "text": "- Remove hidden option; use dotfiles option instead"
+  },
+  {
+   "id": "commit:express:17",
+   "repo": "expressjs/express",
+   "text": "- Remove express.static.mime export; use mime-types package instead"
+  },
+  {
+   "id": "commit:express:18",
+   "repo": "expressjs/express",
+   "text": "This is the eighth Express 5.0 alpha release, based off 4.17.1 and includes"
+  },
+  {
+   "id": "commit:express:19",
+   "repo": "expressjs/express",
+   "text": "This is the seventh Express 5.0 alpha release, based off 4.16.4 and includes"
+  },
+  {
+   "id": "commit:express:20",
+   "repo": "expressjs/express",
+   "text": "The major change with this alpha is the basic support for returned, rejected"
+  },
+  {
+   "id": "commit:express:21",
+   "repo": "expressjs/express",
+   "text": "- Remove DEBUGFD environment variable support"
+  },
+  {
+   "id": "commit:express:22",
+   "repo": "expressjs/express",
+   "text": "- Add basic support for returned, rejected Promises"
+  },
+  {
+   "id": "commit:express:23",
+   "repo": "expressjs/express",
+   "text": "- Fix JSDoc for Router constructor"
+  },
+  {
+   "id": "commit:express:24",
+   "repo": "expressjs/express",
+   "text": "This is the sixth Express 5.0 alpha release, based off 4.15.5 and includes"
+  },
+  {
+   "id": "commit:express:25",
+   "repo": "expressjs/express",
+   "text": "This is the fifth Express 5.0 alpha release, based off 4.15.2 and includes"
+  },
+  {
+   "id": "commit:express:26",
+   "repo": "expressjs/express",
+   "text": "This is the fourth Express 5.0 alpha release, based off 4.15.0 and includes"
+  },
+  {
+   "id": "commit:express:27",
+   "repo": "expressjs/express",
+   "text": "- Remove Express 3.x middleware error stubs"
+  },
+  {
+   "id": "commit:express:28",
+   "repo": "expressjs/express",
+   "text": "- Add next(\"router\") to exit from router"
+  },
+  {
+   "id": "commit:express:29",
+   "repo": "expressjs/express",
+   "text": "- Fix case where router.use skipped requests routes did not"
+  },
+  {
+   "id": "commit:webpack:0",
+   "repo": "webpack/webpack",
+   "text": "Add HTML integration tests: generateError output, ignored src, null-char parse. (by in )"
+  },
+  {
+   "id": "commit:webpack:1",
+   "repo": "webpack/webpack",
+   "text": "Fix HMR codegen crash for harmony accept with unresolved imports. (by in )"
+  },
+  {
+   "id": "commit:webpack:2",
+   "repo": "webpack/webpack",
+   "text": "Match harmony accept dependencies by module reference so HMR codegen handles imports without a module or chunk id. (by in )"
+  },
+  {
+   "id": "commit:webpack:3",
+   "repo": "webpack/webpack",
+   "text": "Fix lazy barrel deferral of ungrouped side-effect imports. (by in )"
+  },
+  {
+   "id": "commit:webpack:4",
+   "repo": "webpack/webpack",
+   "text": "Fix invalid property access for escaped namespace imports with multi-character mangled export names. (by in )"
+  },
+  {
+   "id": "commit:webpack:5",
+   "repo": "webpack/webpack",
+   "text": "Add frames to ProfilingPlugin TracingStartedInBrowser event so the trace loads in Chrome DevTools. (by in )"
+  },
+  {
+   "id": "commit:webpack:6",
+   "repo": "webpack/webpack",
+   "text": "Add a bun target that emits ESM and externalizes bun: and node.js built-in modules. (by in )"
+  },
+  {
+   "id": "commit:webpack:7",
+   "repo": "webpack/webpack",
+   "text": "Support CommonJS reexports via Object.defineProperty value and getter descriptors. (by in )"
+  },
+  {
+   "id": "commit:webpack:8",
+   "repo": "webpack/webpack",
+   "text": "Support JSON Schema const when generating CLI flags from a schema. (by in )"
+  },
+  {
+   "id": "commit:webpack:9",
+   "repo": "webpack/webpack",
+   "text": "Support JSON Schema if/then/else when generating CLI flags from a schema. (by in )"
+  },
+  {
+   "id": "commit:webpack:10",
+   "repo": "webpack/webpack",
+   "text": "Add CSS parser as option and resolve url() inside HTML style attributes. (by in )"
+  },
+  {
+   "id": "commit:webpack:11",
+   "repo": "webpack/webpack",
+   "text": "Add dedicated module classes for all built-in module types. (by in )"
+  },
+  {
+   "id": "commit:webpack:12",
+   "repo": "webpack/webpack",
+   "text": "Support .html/.css for the default ./src entry under the html/css experiments. (by in )"
+  },
+  {
+   "id": "commit:webpack:13",
+   "repo": "webpack/webpack",
+   "text": "Add defineConfig helper for typed configuration files. (by in )"
+  },
+  {
+   "id": "commit:webpack:14",
+   "repo": "webpack/webpack",
+   "text": "Add a deno target (with versions, e.g. deno, deno2, deno1.40) that emits ESM, resolves node.js built-ins via the required node: specifier, and keeps Deno's own import protocols (npm:, jsr:, node:, http(s)://) external. (by in )"
+  },
+  {
+   "id": "commit:webpack:15",
+   "repo": "webpack/webpack",
+   "text": "Use module-import for electron externals when the target supports ESM. (by in )"
+  },
+  {
+   "id": "commit:webpack:16",
+   "repo": "webpack/webpack",
+   "text": "Add output.environment.logicalAssignment to emit ||= in runtime code when the target supports logical assignment operators. (by in )"
+  },
+  {
+   "id": "commit:webpack:17",
+   "repo": "webpack/webpack",
+   "text": "Add HMR support for HTML modules with body/title DOM patching on update. (by in )"
+  },
+  {
+   "id": "commit:webpack:18",
+   "repo": "webpack/webpack",
+   "text": "Add css-url html source type extracting url() references from CSS-valued attributes. (by in )"
+  },
+  {
+   "id": "commit:webpack:19",
+   "repo": "webpack/webpack",
+   "text": "Add module.parser.html.sources option to disable or customize URL-attribute extraction for HTML modules, with script / script-module / stylesheet / stylesheet-inline types for custom attributes (by in )"
+  },
+  {
+   "id": "commit:webpack:20",
+   "repo": "webpack/webpack",
+   "text": "Add module.parser.html.template option to transform HTML module source before parsing. (by in )"
+  },
+  {
+   "id": "commit:webpack:21",
+   "repo": "webpack/webpack",
+   "text": "Support optimization.inlineExports for better tree-shaking. (by in )"
+  },
+  {
+   "id": "commit:webpack:22",
+   "repo": "webpack/webpack",
+   "text": "Allow tree-shaking unused calls to /NOSIDEEFFECTS/-annotated (pure) exports across module boundaries. (by in )"
+  },
+  {
+   "id": "commit:webpack:23",
+   "repo": "webpack/webpack",
+   "text": "Add output.html to emit an HTML file per entrypoint, injecting its JS/CSS chunks (including dependOn shared chunks). (by in )"
+  },
+  {
+   "id": "commit:webpack:24",
+   "repo": "webpack/webpack",
+   "text": "Add module.parser.javascript.pureFunctions to mark top-level names as side-effect-free for tree shaking. (by in )"
+  },
+  {
+   "id": "commit:webpack:25",
+   "repo": "webpack/webpack",
+   "text": "Add universal to compiler.platform, true for universal targets (\"universal\" or [\"web\", \"node\"]). (by in )"
+  },
+  {
+   "id": "commit:webpack:26",
+   "repo": "webpack/webpack",
+   "text": "Add output.strictModuleResolution to gate the runtime MODULENOTFOUND guard. (by in )"
+  },
+  {
+   "id": "commit:webpack:27",
+   "repo": "webpack/webpack",
+   "text": "Support an inline digest in hash path placeholders, e.g. [contenthash:base64:8]. (by in )"
+  },
+  {
+   "id": "commit:webpack:28",
+   "repo": "webpack/webpack",
+   "text": "Support [uniqueName] and its [uniquename] alias in template paths. (by in )"
+  },
+  {
+   "id": "commit:webpack:29",
+   "repo": "webpack/webpack",
+   "text": "Support CSS in Node for universal targets, collecting styles for SSR. (by in )"
+  },
+  {
+   "id": "commit:vite:0",
+   "repo": "vitejs/vite",
+   "text": "legacy: prefer oxc as minifier (fix ) () ()"
+  },
+  {
+   "id": "commit:vite:1",
+   "repo": "vitejs/vite",
+   "text": "build: add workaround for building on stackblitz () ()"
+  },
+  {
+   "id": "commit:vite:2",
+   "repo": "vitejs/vite",
+   "text": "deps: update all non-major dependencies () ()"
+  },
+  {
+   "id": "commit:vite:3",
+   "repo": "vitejs/vite",
+   "text": "deps: update rolldown-related dependencies () ()"
+  },
+  {
+   "id": "commit:vite:4",
+   "repo": "vitejs/vite",
+   "text": "fix incorrect @default for server.cors () ()"
+  },
+  {
+   "id": "commit:vite:5",
+   "repo": "vitejs/vite",
+   "text": "deps: update dependency postcss-modules to v9 () ()"
+  },
+  {
+   "id": "commit:vite:6",
+   "repo": "vitejs/vite",
+   "text": "remove the custom onLog function () ()"
+  },
+  {
+   "id": "commit:vite:7",
+   "repo": "vitejs/vite",
+   "text": "replace deprecated onwarn with onLog () ()"
+  },
+  {
+   "id": "commit:vite:8",
+   "repo": "vitejs/vite",
+   "text": "deps: bump es-module-lexer to 2.3.0 () ()"
+  },
+  {
+   "id": "commit:vite:9",
+   "repo": "vitejs/vite",
+   "text": "ssr: correct stacktrace column position for first line () ()"
+  },
+  {
+   "id": "commit:vite:10",
+   "repo": "vitejs/vite",
+   "text": "deps: revert es-module-lexer to 2.1.0 () ()"
+  },
+  {
+   "id": "commit:vite:11",
+   "repo": "vitejs/vite",
+   "text": "restore, \"fix: resolve pnpm .modules.yaml from workspace root instead of cwd ()\" () ()"
+  },
+  {
+   "id": "commit:vite:12",
+   "repo": "vitejs/vite",
+   "text": "revert, \"fix: escape ids with multiple null bytes ()\" ()"
+  },
+  {
+   "id": "commit:vite:13",
+   "repo": "vitejs/vite",
+   "text": "revert, \"fix: resolve pnpm .modules.yaml from workspace root instead of cwd ()\" ()"
+  },
+  {
+   "id": "commit:vite:14",
+   "repo": "vitejs/vite",
+   "text": "update dynamic import warning to link to Vite docs () ()"
+  },
+  {
+   "id": "commit:vite:15",
+   "repo": "vitejs/vite",
+   "text": "deps: update all non-major dependencies () ()"
+  },
+  {
+   "id": "commit:vite:16",
+   "repo": "vitejs/vite",
+   "text": "deps: update all non-major dependencies () ()"
+  },
+  {
+   "id": "commit:vite:17",
+   "repo": "vitejs/vite",
+   "text": "deps: update rolldown-related dependencies () ()"
+  },
+  {
+   "id": "commit:vite:18",
+   "repo": "vitejs/vite",
+   "text": "server: handle malformed URI in indexHtmlMiddleware () ()"
+  },
+  {
+   "id": "commit:vite:19",
+   "repo": "vitejs/vite",
+   "text": "improve dependency optimizer messages () ()"
+  },
+  {
+   "id": "commit:vite:20",
+   "repo": "vitejs/vite",
+   "text": "css: remove lightningcss null byte bug workaround () ()"
+  },
+  {
+   "id": "commit:vite:21",
+   "repo": "vitejs/vite",
+   "text": "enable \"manual chunk path\" test and remove \"worker.format error\" test () ()"
+  },
+  {
+   "id": "commit:vite:22",
+   "repo": "vitejs/vite",
+   "text": "update rolldown to 1.1.2 () ()"
+  },
+  {
+   "id": "commit:vite:23",
+   "repo": "vitejs/vite",
+   "text": "server: handle malformed URI in memory files middleware () ()"
+  },
+  {
+   "id": "commit:vite:24",
+   "repo": "vitejs/vite",
+   "text": "warn on deprecated envFile () ()"
+  },
+  {
+   "id": "commit:vite:25",
+   "repo": "vitejs/vite",
+   "text": "remove unused removeRawQuery util () ()"
+  },
+  {
+   "id": "commit:vite:26",
+   "repo": "vitejs/vite",
+   "text": "import.meta.glob support caseSensitive option () ()"
+  },
+  {
+   "id": "commit:vite:27",
+   "repo": "vitejs/vite",
+   "text": "add warning to discourage Vite with yarn pnp () ()"
+  },
+  {
+   "id": "commit:vite:28",
+   "repo": "vitejs/vite",
+   "text": "css: support lightningcss plugin dependency () ()"
+  },
+  {
+   "id": "commit:vite:29",
+   "repo": "vitejs/vite",
+   "text": "deps: bump @vitejs/devtools peer dependency version () ()"
+  },
+  {
+   "id": "commit:svelte:0",
+   "repo": "sveltejs/svelte",
+   "text": "chore: drop dead code that make TSGO fail ()"
+  },
+  {
+   "id": "commit:svelte:1",
+   "repo": "sveltejs/svelte",
+   "text": "fix: don't (re)connect deriveds when read inside branch/root effects ()"
+  },
+  {
+   "id": "commit:svelte:2",
+   "repo": "sveltejs/svelte",
+   "text": "fix: skip unnecessary derived effect in earlier batch ()"
+  },
+  {
+   "id": "commit:svelte:3",
+   "repo": "sveltejs/svelte",
+   "text": "fix: avoid declaration tag warning in event handlers ()"
+  },
+  {
+   "id": "commit:svelte:4",
+   "repo": "sveltejs/svelte",
+   "text": "fix: abort deriveds own AbortSignal when it disconnects ()"
+  },
+  {
+   "id": "commit:svelte:5",
+   "repo": "sveltejs/svelte",
+   "text": "fix: ensure $state.eager() is correctly transormed for SSR output ()"
+  },
+  {
+   "id": "commit:svelte:6",
+   "repo": "sveltejs/svelte",
+   "text": "fix: correctly transform declaration tags during SSR ()"
+  },
+  {
+   "id": "commit:svelte:7",
+   "repo": "sveltejs/svelte",
+   "text": "fix: transform computed keys in keyed {each} destructuring patterns ()"
+  },
+  {
+   "id": "commit:svelte:8",
+   "repo": "sveltejs/svelte",
+   "text": "fix: chain preprocessor sourcemaps with an empty sources[0] instead of dropping them ()"
+  },
+  {
+   "id": "commit:svelte:9",
+   "repo": "sveltejs/svelte",
+   "text": "fix: clear previoustask reference after abort in Tween to prevent memory leak on interrupted tweens ()"
+  },
+  {
+   "id": "commit:svelte:10",
+   "repo": "sveltejs/svelte",
+   "text": "fix: don't treat declaration tags as parts inside each blocks ()"
+  },
+  {
+   "id": "commit:svelte:11",
+   "repo": "sveltejs/svelte",
+   "text": "fix: include wrapping parentheses in {@const} declarator end position ()"
+  },
+  {
+   "id": "commit:svelte:12",
+   "repo": "sveltejs/svelte",
+   "text": "fix: always unset reactivity context after restoring it ()"
+  },
+  {
+   "id": "commit:svelte:13",
+   "repo": "sveltejs/svelte",
+   "text": "fix: don't notify searchParams subscribers when the URL changes without affecting the search string ()"
+  },
+  {
+   "id": "commit:svelte:14",
+   "repo": "sveltejs/svelte",
+   "text": "fix: strip ? from optional parameters in <script lang=\"ts\"> so generated JavaScript is valid ()"
+  },
+  {
+   "id": "commit:svelte:15",
+   "repo": "sveltejs/svelte",
+   "text": "fix: ignore errors that occur in destroyed effects ()"
+  },
+  {
+   "id": "commit:svelte:16",
+   "repo": "sveltejs/svelte",
+   "text": "fix: type BigInts in $state.snapshot(...) return values ()"
+  },
+  {
+   "id": "commit:svelte:17",
+   "repo": "sveltejs/svelte",
+   "text": "fix: properly track effect end node for async sibling component ()"
+  },
+  {
+   "id": "commit:svelte:18",
+   "repo": "sveltejs/svelte",
+   "text": "fix: prevent false-positive reactivity loss warning ()"
+  },
+  {
+   "id": "commit:svelte:19",
+   "repo": "sveltejs/svelte",
+   "text": "fix: ignore declaration tags for animation directive ()"
+  },
+  {
+   "id": "commit:svelte:20",
+   "repo": "sveltejs/svelte",
+   "text": "fix: reject pending async deriveds on discard ()"
+  },
+  {
+   "id": "commit:svelte:21",
+   "repo": "sveltejs/svelte",
+   "text": "fix: error at compile time on duplicate snippet/declaration tag definitions ()"
+  },
+  {
+   "id": "commit:svelte:22",
+   "repo": "sveltejs/svelte",
+   "text": "fix: parse declaration tag contents more robustly ()"
+  },
+  {
+   "id": "commit:svelte:23",
+   "repo": "sveltejs/svelte",
+   "text": "fix: correctly transform references to earlier declarators in a declaration tag (e.g. {let a = $state(0), b = $derived(a 2)}) ()"
+  },
+  {
+   "id": "commit:svelte:24",
+   "repo": "sveltejs/svelte",
+   "text": "fix: avoid spurious statereferencedlocally warnings for $derived declarations in declaration tags ()"
+  },
+  {
+   "id": "commit:svelte:25",
+   "repo": "sveltejs/svelte",
+   "text": "fix: tolerate whitespace before let/const in declaration tags ()"
+  },
+  {
+   "id": "commit:svelte:26",
+   "repo": "sveltejs/svelte",
+   "text": "fix: prevent infinite loop when a tag's expression ends with a trailing / at the end of the input ()"
+  },
+  {
+   "id": "commit:svelte:27",
+   "repo": "sveltejs/svelte",
+   "text": "fix: more robust parsing of declaration tags with regards to type ()"
+  },
+  {
+   "id": "commit:svelte:28",
+   "repo": "sveltejs/svelte",
+   "text": "fix: preserve newlines in spread input values when the type attribute is applied after value ()"
+  },
+  {
+   "id": "commit:svelte:29",
+   "repo": "sveltejs/svelte",
+   "text": "fix: update SvelteURLSearchParams when setting duplicate keys to the same joined value ()"
+  }
+ ]
+}

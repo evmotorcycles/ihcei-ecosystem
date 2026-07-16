@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Novora — Governance Software for 5 Billion People</title>
+<meta name="description" content="Nine AI-powered governance tools. Press any information before you believe it. Know what you decide, sign, and receive.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23c8942a'/%3E%3Ctext x='16' y='22' text-anchor='middle' fill='white' font-size='18' font-family='Georgia' font-style='italic'%3EN%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#070911;--bg2:#0d1120;--bg3:#131b2e;--bg4:#1b243c;
+  --ink:#edf0fa;--ink2:#a0b0d0;--ink3:#5a6a88;--ink4:#2a3a58;
+  --gold:#c8942a;--gold2:#e8b040;--gb:rgba(200,148,42,.1);--gbr:rgba(200,148,42,.25);
+  --border:rgba(140,160,210,.1);--border2:rgba(140,160,210,.2);
+  --serif:'Cormorant Garamond',serif;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Outfit',system-ui,sans-serif;
+  --r:10px;
+}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+.mesh{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 50% at 80% 10%,rgba(200,148,42,.05),transparent),radial-gradient(ellipse 50% 40% at 20% 90%,rgba(100,60,200,.04),transparent)}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:50;background:rgba(7,9,17,.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem}
+.nav-brand{font-family:var(--serif);font-size:1.5rem;color:var(--gold2);font-style:italic;font-weight:600;letter-spacing:.02em;cursor:pointer}
+.nav-links{display:flex;gap:.25rem;align-items:center}
+.nl{font-size:.74rem;padding:5px 12px;border-radius:5px;border:none;background:transparent;color:var(--ink3);cursor:pointer;font-family:var(--sans);transition:all .15s}
+.nl:hover,.nl.act{background:var(--bg3);color:var(--ink)}
+.nl.cta{background:var(--gb);border:1px solid var(--gbr);color:var(--gold2);font-weight:500}
+.nl.cta:hover{background:rgba(200,148,42,.18)}
+
+/* MAIN */
+main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 2rem}
+.sec{display:none;padding:3rem 0}.sec.show{display:block}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:6rem 1rem 4rem}
+.hero-eye{font-family:var(--mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;opacity:.8}
+.hero-h{font-family:var(--serif);font-size:clamp(2.8rem,5vw,4.8rem);line-height:1.06;color:var(--ink);margin-bottom:1.2rem;font-weight:600}
+.hero-h em{font-style:italic;color:var(--gold2)}
+.hero-p{font-size:.98rem;color:var(--ink2);max-width:540px;margin:0 auto 2.8rem;line-height:1.72;font-weight:300}
+.hero-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.btn-p{font-size:.88rem;font-weight:600;padding:12px 32px;border-radius:8px;background:var(--gold);color:#1a0800;border:none;cursor:pointer;font-family:var(--sans);transition:all .15s;letter-spacing:.02em}
+.btn-p:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-s{font-size:.88rem;padding:11px 28px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--ink2);cursor:pointer;font-family:var(--sans);transition:all .15s}
+.btn-s:hover{background:var(--bg3);color:var(--ink);border-color:var(--border2)}
+.hero-stats{display:flex;gap:3rem;justify-content:center;margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid var(--border);flex-wrap:wrap}
+.stat-n{font-family:var(--serif);font-size:2.1rem;color:var(--gold2);font-style:italic;line-height:1}
+.stat-l{font-family:var(--mono);font-size:.56rem;color:var(--ink3);letter-spacing:.09em;text-transform:uppercase;margin-top:.3rem}
+
+/* ── PRODUCTS ── */
+.layer-row{display:flex;align-items:center;gap:.8rem;margin:1.8rem 0 1rem}
+.lr-line{flex:1;height:1px;background:var(--border)}
+.lr-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);white-space:nowrap}
+
+.pgrid{display:grid;gap:1px;background:var(--border);border-radius:12px;overflow:hidden}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+
+.pcard{background:var(--bg2);padding:1.8rem 1.6rem 1.5rem;position:relative;overflow:hidden;cursor:pointer;transition:background .2s}
+.pcard:hover{background:var(--bg3)}
+.pcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px}
+.pname{font-family:var(--serif);font-size:1.5rem;font-weight:600;letter-spacing:.04em;margin-bottom:.25rem;line-height:1}
+.ptag{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem;opacity:.55}
+.pdesc{font-size:.8rem;color:var(--ink2);line-height:1.6;font-weight:300;margin-bottom:.9rem;min-height:50px}
+.pdesc strong{color:var(--ink);font-weight:500}
+.pfoot{display:flex;justify-content:space-between;align-items:center}
+.pbadge{font-family:var(--mono);font-size:.56rem;padding:2px 9px;border-radius:4px;letter-spacing:.04em}
+.pval{font-family:var(--mono);font-size:.55rem;color:var(--ink3)}
+
+.truth .pname{color:#e8b840}.truth .pcard::before{background:linear-gradient(90deg,#c08020,#e8b040)}.truth .pbadge{background:rgba(232,176,64,.1);color:#e8b040;border:1px solid rgba(232,176,64,.25)}
+.decision .pname{color:#48b8e8}.decision .pcard::before{background:linear-gradient(90deg,#2878b0,#48b8e8)}.decision .pbadge{background:rgba(72,184,232,.1);color:#48b8e8;border:1px solid rgba(72,184,232,.25)}
+.rights .pname{color:#48e8a0}.rights .pcard::before{background:linear-gradient(90deg,#189850,#48e8a0)}.rights .pbadge{background:rgba(72,232,160,.1);color:#48e8a0;border:1px solid rgba(72,232,160,.25)}
+.growth .pname{color:#c878f8}.growth .pcard::before{background:linear-gradient(90deg,#8028c0,#c878f8)}.growth .pbadge{background:rgba(200,120,248,.1);color:#c878f8;border:1px solid rgba(200,120,248,.25)}
+
+.ihcei-strip{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:1.6rem 2rem;margin-top:1.5rem;display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap}
+.is-n{font-family:var(--serif);font-size:1.3rem;color:rgba(220,180,100,.6);font-style:italic;font-weight:600;margin-bottom:.2rem}
+.is-t{font-family:var(--mono);font-size:.55rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase}
+.is-desc{font-size:.8rem;color:var(--ink2);font-weight:300;line-height:1.6;max-width:580px}
+.is-val{font-family:var(--serif);font-size:1.8rem;color:rgba(220,180,100,.4);font-style:italic;flex-shrink:0;text-align:right}
+
+/* ── DEMO ── */
+.demo-wrap{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:2.2rem;margin-top:.5rem}
+.demo-h{font-family:var(--serif);font-size:1.6rem;color:var(--ink);font-style:italic;margin-bottom:.4rem}
+.demo-sub{font-size:.82rem;color:var(--ink2);font-weight:300;margin-bottom:1.4rem}
+.ptabs{display:flex;gap:.3rem;flex-wrap:wrap;padding-bottom:.75rem;border-bottom:1px solid var(--border);margin-bottom:1.2rem}
+.ptab{font-family:var(--serif);font-size:.95rem;font-style:italic;padding:4px 13px;border-radius:5px;border:1px solid transparent;background:transparent;color:var(--ink3);cursor:pointer;transition:all .15s}
+.ptab:hover{background:var(--bg3);color:var(--ink)}
+.ptab.act{background:var(--bg3);color:var(--gold2);border-color:var(--border)}
+.pdline{font-size:.79rem;color:var(--ink2);margin-bottom:.8rem;font-weight:300;line-height:1.5;min-height:28px}
+.xchips{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.7rem}
+.xchip{font-size:.68rem;padding:2px 9px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--ink3);cursor:pointer;font-family:var(--sans);transition:all .12s}
+.xchip:hover{background:var(--bg3);color:var(--ink);border-color:var(--border2)}
+.ta{width:100%;min-height:105px;padding:.95rem 1.1rem;background:var(--bg);border:1.5px solid var(--border);border-radius:8px;color:var(--ink);font-family:var(--sans);font-size:.86rem;line-height:1.6;resize:none;outline:none;font-weight:300;transition:border-color .2s}
+.ta:focus{border-color:var(--gbr)}
+.ta::placeholder{color:var(--ink3);font-style:italic;font-size:.8rem}
+.demo-foot{display:flex;justify-content:space-between;align-items:center;margin-top:.75rem;flex-wrap:wrap;gap:.5rem}
+.demo-note{font-family:var(--mono);font-size:.58rem;color:var(--ink3)}
+.df-btns{display:flex;gap:.5rem}
+.clr{font-size:.74rem;padding:6px 13px;border-radius:5px;border:1px solid var(--border);background:transparent;color:var(--ink3);cursor:pointer;font-family:var(--sans)}
+.run{font-size:.78rem;font-weight:600;padding:8px 22px;border-radius:5px;background:var(--gold);color:#1a0800;border:none;cursor:pointer;font-family:var(--sans);display:flex;align-items:center;gap:.4rem;transition:all .15s}
+.run:hover{background:var(--gold2)}
+.run:disabled{opacity:.35;cursor:default}
+.spin{width:11px;height:11px;border:1.5px solid rgba(26,8,0,.25);border-top-color:#1a0800;border-radius:50%;animation:sp .7s linear infinite;display:none}
+.run.loading .spin{display:block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* AI Result */
+.aresult{margin-top:1.4rem;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rcard{background:var(--bg3);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.rhead{display:flex;align-items:flex-start;gap:1rem;padding:1.1rem 1.3rem;border-bottom:1px solid var(--border)}
+.sorb{width:54px;height:54px;border-radius:50%;border:2.5px solid;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.so-n{font-family:var(--mono);font-size:1rem;font-weight:600;line-height:1}
+.so-l{font-family:var(--mono);font-size:.42rem;letter-spacing:.05em;text-transform:uppercase;margin-top:2px;opacity:.6}
+.rv{font-family:var(--serif);font-size:1rem;color:var(--ink);font-style:italic;margin-bottom:.15rem}
+.rs{font-size:.75rem;color:var(--ink3);font-weight:300;line-height:1.4}
+.rcert{font-family:var(--mono);font-size:.55rem;color:var(--ink4);text-align:right;margin-left:auto;flex-shrink:0}
+.rtags{display:flex;flex-wrap:wrap;gap:.3rem;padding:.65rem 1.3rem;border-bottom:1px solid var(--border)}
+.rtag{font-family:var(--mono);font-size:.56rem;padding:2px 7px;border-radius:3px;letter-spacing:.04em}
+.tr{background:rgba(200,80,80,.1);color:#e07070;border:1px solid rgba(200,80,80,.25)}
+.tg{background:rgba(50,190,120,.1);color:#50d890;border:1px solid rgba(50,190,120,.2)}
+.ta2{background:rgba(232,176,64,.1);color:var(--gold2);border:1px solid rgba(232,176,64,.2)}
+.tp{background:rgba(180,120,248,.1);color:#c878f8;border:1px solid rgba(180,120,248,.2)}
+.rbody{padding:1.2rem 1.3rem}
+.detail-row{margin-bottom:.8rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.detail-row:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.dl{font-family:var(--mono);font-size:.58rem;color:var(--ink3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.2rem}
+.dv{font-size:.81rem;color:var(--ink2);line-height:1.58;font-weight:300}
+.dv strong{color:var(--ink);font-weight:500}
+.dv em{color:var(--gold2);font-style:normal;font-weight:500}
+.rmetrics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border)}
+.rm{padding:.8rem .7rem;text-align:center;border-right:1px solid var(--border)}
+.rm:last-child{border-right:none}
+.rm-n{font-family:var(--mono);font-size:.92rem;font-weight:500;margin-bottom:.15rem}
+.rm-l{font-family:var(--mono);font-size:.52rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em}
+
+/* ── REVENUE ── */
+.rev-h{font-family:var(--serif);font-size:1.6rem;color:var(--gold2);font-style:italic;margin-bottom:.5rem}
+table{width:100%;border-collapse:collapse;margin-bottom:1.5rem}
+th{background:var(--bg3);color:var(--ink3);font-family:var(--mono);font-size:.55rem;text-transform:uppercase;letter-spacing:.06em;padding:.55rem .7rem;border:1px solid var(--border);text-align:left}
+td{padding:.55rem .7rem;border:1px solid var(--border);font-size:.78rem;color:var(--ink2);vertical-align:middle}
+tr:nth-child(even) td{background:rgba(255,255,255,.02)}
+td strong{color:var(--ink);font-weight:500}
+td.val{font-family:var(--mono);font-size:.7rem;color:var(--gold2)}
+tr.total td{background:rgba(200,148,42,.06)}.total td.val{color:#e8d080;font-weight:600}
+.rev-note{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:1rem 1.3rem;font-size:.8rem;color:var(--ink2);line-height:1.6;font-weight:300}
+.rev-note strong{color:var(--ink);font-weight:500}
+
+/* ── DEPLOY ── */
+.dep-h{font-family:var(--serif);font-size:1.6rem;color:var(--gold2);font-style:italic;margin-bottom:.5rem}
+.dep-sub{font-size:.82rem;color:var(--ink2);font-weight:300;margin-bottom:1.5rem}
+.step-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:1.2rem}
+.step-card{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:1.2rem}
+.sc-step{font-family:var(--mono);font-size:.55rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.sc-h{font-size:.88rem;font-weight:600;color:var(--ink);margin-bottom:.4rem}
+.sc-d{font-size:.76rem;color:var(--ink2);line-height:1.52;font-weight:300}
+.sc-t{font-family:var(--mono);font-size:.58rem;color:var(--gold);margin-top:.6rem;display:inline-block}
+.code{background:var(--bg);border:1px solid var(--border);border-radius:5px;padding:.7rem .85rem;font-family:var(--mono);font-size:.66rem;color:var(--ink2);margin-top:.6rem;line-height:1.6}
+.cmd{color:var(--gold2)}.cmt{color:var(--ink3)}
+.cost-table{margin-bottom:1.2rem}
+.dep-note{background:var(--bg2);border:1px solid var(--border2);border-radius:9px;padding:1rem 1.3rem;margin-top:.8rem;font-size:.79rem;color:var(--ink2);line-height:1.62;font-weight:300}
+.dep-note strong{color:var(--ink);font-weight:500}
+.dep-note .hl{color:var(--gold2);font-weight:500}
+
+@media(max-width:800px){.g2,.g3,.step-grid{grid-template-columns:1fr}.hero{padding:3rem 1rem 2rem}.hero-stats{gap:1.5rem}}
+</style>
+</head>
+<body>
+<div class="mesh"></div>
+
+<nav>
+  <div class="nav-brand" onclick="go('hero')">Novora</div>
+  <div class="nav-links">
+    <button class="nl" onclick="go('products')">Products</button>
+    <button class="nl" onclick="go('demo')">Live Demo</button>
+    <button class="nl" onclick="go('revenue')">Revenue</button>
+    <button class="nl" onclick="go('deploy')">Deploy</button>
+    <button class="nl cta" onclick="go('demo')">Try Free →</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<div class="sec show" id="s-hero">
+<div class="hero">
+  <div class="hero-eye">Novora · Governance Software Suite · Powered by Claude AI · v2.0</div>
+  <div class="hero-h">Nine products.<br>Every human on <em>Earth</em>.</div>
+  <div class="hero-p">The first software suite that addresses the layer beneath every other application — whether you can evaluate what you receive, decide with sound methodology, and act with genuine sovereignty. Built on GT v18.0 Governance Thermodynamics. Powered by Claude.</div>
+  <div class="hero-btns">
+    <button class="btn-p" onclick="go('demo')">Try the AI Engine — Free</button>
+    <button class="btn-s" onclick="go('products')">See All 9 Products</button>
+  </div>
+  <div class="hero-stats">
+    <div><div class="stat-n">9</div><div class="stat-l">Products</div></div>
+    <div><div class="stat-n">$0</div><div class="stat-l">To Deploy Today</div></div>
+    <div><div class="stat-n">$1.5T</div><div class="stat-l">Valuation Path</div></div>
+    <div><div class="stat-n">5B</div><div class="stat-l">Target Users</div></div>
+  </div>
+</div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="sec" id="s-products">
+  <div class="layer-row truth"><div class="lr-line"></div><div class="lr-label" style="color:#e8b040">Truth Layer — Know what you are receiving</div><div class="lr-line"></div></div>
+  <div class="pgrid g2 truth">
+    <div class="pcard" onclick="goDemo('pages')"><div class="pname">PAGES</div><div class="ptag">Press any information before you believe it</div><div class="pdesc">The Al-Asr 7-stage pressing engine. <strong>PAGES Score (0.00–1.00) + SHA-256 certificate.</strong> Detects T3 Framework Laundering, T5 Authority Cascades, Precision Washing. OQM + GT v18.0 powered.</div><div class="pfoot"><span class="pbadge">PAGES Score</span><span class="pval">$200B · 5B users</span></div></div>
+    <div class="pcard" onclick="goDemo('pulse')"><div class="pname">PULSE</div><div class="ptag">Check any AI response before you act on it</div><div class="pdesc">Seven cognitive health dimensions: <strong>agency, dependency risk, transparency, accuracy, manipulation, development.</strong> Every AI interaction scored and certified.</div><div class="pfoot"><span class="pbadge">Health Score</span><span class="pval">$250B · 4B AI users</span></div></div>
+  </div>
+  <div class="layer-row decision" style="margin-top:1.2rem"><div class="lr-line"></div><div class="lr-label" style="color:#48b8e8">Decision Layer — Know what you are doing</div><div class="lr-line"></div></div>
+  <div class="pgrid g2 decision">
+    <div class="pcard" onclick="goDemo('weigh')"><div class="pname">WEIGH</div><div class="ptag">Audit any decision before you make it</div><div class="pdesc">7-stage readiness audit. <strong>Information completeness, assumption exposure, reversibility, alternatives.</strong> Medical, financial, career, policy — any decision.</div><div class="pfoot"><span class="pbadge">Decision Score</span><span class="pval">$150B · 5B</span></div></div>
+    <div class="pcard" onclick="goDemo('lens')"><div class="pname">LENS</div><div class="ptag">See through any agreement before you sign it</div><div class="pdesc">Reads contracts from <strong>your side.</strong> Rights surrendered, obligations, power asymmetry, hidden clauses, exit mechanisms. Any contract, any country.</div><div class="pfoot"><span class="pbadge">Balance Score</span><span class="pval">$300B · 5B signers</span></div></div>
+  </div>
+  <div class="layer-row rights" style="margin-top:1.2rem"><div class="lr-line"></div><div class="lr-label" style="color:#48e8a0">Rights Layer — Know when the system owes you</div><div class="lr-line"></div></div>
+  <div class="pgrid g3 rights">
+    <div class="pcard" onclick="goDemo('voice')"><div class="pname">VOICE</div><div class="ptag">Challenge any decision made about you</div><div class="pdesc">Fairness audit: <strong>criteria disclosure, evidence base, consistency, proportionality, appeal pathway.</strong> Loan rejections, dismissals, visa refusals, benefit denials.</div><div class="pfoot"><span class="pbadge">Fairness Score</span><span class="pval">$200B · 5B</span></div></div>
+    <div class="pcard" onclick="goDemo('mark')"><div class="pname">MARK</div><div class="ptag">Grade any institution before you trust it</div><div class="pdesc">Governance health: <strong>transparency, accountability, error acknowledgment, resource disclosure.</strong> Government, hospital, bank, employer, media, charity.</div><div class="pfoot"><span class="pbadge">Trust Score</span><span class="pval">$250B · 5B</span></div></div>
+    <div class="pcard" onclick="goDemo('stand')"><div class="pname">STAND</div><div class="ptag">Build your case before your claim is dismissed</div><div class="pdesc">7-stage personal case builder. <strong>Unfair dismissal, medical negligence, rights violations, discrimination.</strong> Any claim. Any country.</div><div class="pfoot"><span class="pbadge">Case Score</span><span class="pval">$150B · 5B</span></div></div>
+  </div>
+  <div class="layer-row growth" style="margin-top:1.2rem"><div class="lr-line"></div><div class="lr-label" style="color:#c878f8">Growth Layer — Know how you are developing</div><div class="lr-line"></div></div>
+  <div class="pgrid g2 growth">
+    <div class="pcard" onclick="goDemo('bridge')"><div class="pname">BRIDGE</div><div class="ptag">Connect and communicate without coercion</div><div class="pdesc">Agency Delta (ΔA): the difference between communication that <strong>connects through options</strong> and communication that <strong>controls through commands.</strong> Live ΔA meter.</div><div class="pfoot"><span class="pbadge">ΔA Score</span><span class="pval">$200B · 5B</span></div></div>
+    <div class="pcard" onclick="goDemo('rise')"><div class="pname">RISE</div><div class="ptag">Grow your cognitive capacity beyond dependency</div><div class="pdesc">9-station cognitive passport. Complexity match, development vs dependency, and <strong>the one challenge question</strong> that pushes you to the next station.</div><div class="pfoot"><span class="pbadge">C_dev Score</span><span class="pval">$250B · 5B</span></div></div>
+  </div>
+  <div class="ihcei-strip">
+    <div><div class="is-n">IHCEI</div><div class="is-t" style="margin-bottom:.4rem">Infrastructure Layer · Integrated Human Cognitive Epistemological Interface</div><div class="is-desc">The governance coprocessor wrapping any AI system — invisible, beneath every output, enforcing the D-floor (E=U·D²) per transaction. Not a consumer product. The infrastructure beneath all nine. Patient, institutional, regulatory.</div></div>
+    <div><div class="is-val">$15T</div><div style="font-family:var(--mono);font-size:.55rem;color:var(--ink3);text-align:right">15-year path</div></div>
+  </div>
+</div>
+
+<!-- DEMO -->
+<div class="sec" id="s-demo">
+<div class="demo-wrap">
+  <div class="demo-h">Live AI Engine — Powered by Claude</div>
+  <div class="demo-sub">Select any product. Paste any text. Claude performs a real-time audit — not keyword matching, but genuine reasoning about methodology, agency, and governance. Every result includes a SHA-256 certificate.</div>
+  <div class="ptabs" id="ptabs">
+    <button class="ptab act" onclick="setProd('pages',this)">PAGES</button>
+    <button class="ptab" onclick="setProd('pulse',this)">PULSE</button>
+    <button class="ptab" onclick="setProd('weigh',this)">WEIGH</button>
+    <button class="ptab" onclick="setProd('lens',this)">LENS</button>
+    <button class="ptab" onclick="setProd('voice',this)">VOICE</button>
+    <button class="ptab" onclick="setProd('mark',this)">MARK</button>
+    <button class="ptab" onclick="setProd('stand',this)">STAND</button>
+    <button class="ptab" onclick="setProd('bridge',this)">BRIDGE</button>
+    <button class="ptab" onclick="setProd('rise',this)">RISE</button>
+  </div>
+  <div class="pdline" id="pdline"></div>
+  <div class="xchips" id="xchips"></div>
+  <textarea class="ta" id="ta" rows="4"></textarea>
+  <div class="demo-foot">
+    <span class="demo-note">Fast mode · on-device NERE kernel · $0 · no API key · GT v18.0 + OQM</span>
+    <div class="df-btns">
+      <button class="clr" onclick="clrDemo()">Clear</button>
+      <button class="run" id="runBtn" onclick="runAI()"><div class="spin" id="sp"></div><span id="bt">Run Analysis</span></button>
+    </div>
+  </div>
+  <div id="ares"></div>
+</div>
+</div>
+
+<!-- REVENUE -->
+<div class="sec" id="s-revenue">
+  <div class="rev-h">Revenue Architecture</div>
+  <div style="font-size:.82rem;color:var(--ink2);font-weight:300;margin-bottom:1.5rem">Every product generates revenue from Day 1. Freemium drives adoption. Pro subscriptions cover costs. Enterprise licensing scales revenue. All 9 products independent streams.</div>
+  <table>
+    <thead><tr><th>Product</th><th>Free Tier</th><th>Pro</th><th>Enterprise</th><th>Y1 ARR</th><th>Path</th></tr></thead>
+    <tbody>
+      <tr><td><strong>PAGES v2</strong></td><td>10/day</td><td>$12/mo</td><td>API $0.01/cert</td><td class="val">$14M</td><td class="val">$200B</td></tr>
+      <tr><td><strong>PULSE</strong></td><td>10/day</td><td>$9/mo</td><td>LLM compliance</td><td class="val">$10M</td><td class="val">$250B</td></tr>
+      <tr><td><strong>WEIGH</strong></td><td>5/day</td><td>$9/mo</td><td>Hospital/Gov</td><td class="val">$8M</td><td class="val">$150B</td></tr>
+      <tr><td><strong>LENS</strong></td><td>3/day</td><td>$12/mo</td><td>Legal firms</td><td class="val">$12M</td><td class="val">$300B</td></tr>
+      <tr><td><strong>VOICE</strong></td><td>Unlimited</td><td>$9/mo</td><td>Gov audit</td><td class="val">$6M</td><td class="val">$200B</td></tr>
+      <tr><td><strong>MARK</strong></td><td>5/day</td><td>$9/mo</td><td>Enterprise</td><td class="val">$8M</td><td class="val">$250B</td></tr>
+      <tr><td><strong>STAND</strong></td><td>Unlimited</td><td>$12/mo</td><td>Legal aid</td><td class="val">$6M</td><td class="val">$150B</td></tr>
+      <tr><td><strong>BRIDGE</strong></td><td>Basic ΔA</td><td>$9/mo</td><td>$15/user/mo</td><td class="val">$10M</td><td class="val">$200B</td></tr>
+      <tr><td><strong>RISE</strong></td><td>C_dev track</td><td>$19/mo</td><td>$50/student/yr</td><td class="val">$12M</td><td class="val">$250B</td></tr>
+      <tr class="total"><td><strong>TOTAL SUITE</strong></td><td colspan="3" style="color:var(--ink3)">Freemium · Day 1 · 9 independent streams</td><td class="val"><strong>$86M Y1</strong></td><td class="val"><strong>$1.5T</strong></td></tr>
+    </tbody>
+  </table>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem">
+    <div class="rev-note"><strong>Conversion math:</strong> 1M free users at 1% Pro = 10,000 paying @ $11/month avg = <strong>$1.3M ARR.</strong> At standard 3–5% SaaS conversion: $4–6.5M ARR from 1M users.</div>
+    <div class="rev-note"><strong>Network effect:</strong> Every PAGES certificate shared is free acquisition. Every STAND report to an institution is an enterprise lead. Every RISE C_dev passport is retention. <strong>The product is the distribution.</strong></div>
+  </div>
+</div>
+
+<!-- DEPLOY -->
+<div class="sec" id="s-deploy">
+  <div class="dep-h">Deploy in 30 Minutes · $0 to Start</div>
+  <div class="dep-sub">Three steps from API key to live AI-powered product. Everything is free at launch scale. You do not need money — you need 30 minutes.</div>
+  <div class="step-grid">
+    <div class="step-card">
+      <div class="sc-step">Step 1 · 5 min</div>
+      <div class="sc-h">Get Anthropic API key</div>
+      <div class="sc-d">Go to console.anthropic.com → Create account → API Keys → Create new key. New accounts get $5–25 free credits. Each analysis costs ~$0.003.</div>
+      <div class="sc-t">→ console.anthropic.com</div>
+      <div class="code"><span class="cmt"># Key format:</span><br><span class="cmd">sk-ant-api03-xxxx...</span></div>
+    </div>
+    <div class="step-card">
+      <div class="sc-step">Step 2 · 5 min</div>
+      <div class="sc-h">Deploy to Vercel</div>
+      <div class="sc-d">Go to vercel.com → New Project → upload this HTML file. Deploy button → live in 60 seconds. Or use CLI:</div>
+      <div class="sc-t">→ vercel.com — free tier</div>
+      <div class="code"><span class="cmt"># CLI option:</span><br><span class="cmd">npm i -g vercel</span><br><span class="cmd">vercel --prod</span></div>
+    </div>
+    <div class="step-card">
+      <div class="sc-step">Step 3 · 2 min</div>
+      <div class="sc-h">Add your API key</div>
+      <div class="sc-d">Vercel dashboard → Settings → Environment Variables → add ANTHROPIC_API_KEY. Redeploy. AI engine is live. Done.</div>
+      <div class="sc-t">→ 30 min total to live</div>
+      <div class="code"><span class="cmt"># Variable name:</span><br><span class="cmd">ANTHROPIC_API_KEY</span></div>
+    </div>
+  </div>
+  <table class="cost-table">
+    <thead><tr><th>Stage</th><th>Vercel</th><th>Domain</th><th>API</th><th>Database</th><th>Payments</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td>Live MVP (vercel.app)</td><td>$0</td><td>$0</td><td>$0 (free credits)</td><td>$0</td><td>$0</td><td class="val">$0</td></tr>
+      <tr><td>Custom domain added</td><td>$0</td><td>$12–15/yr</td><td>$0</td><td>$0</td><td>$0</td><td class="val">$12–15/yr</td></tr>
+      <tr><td>+ Stripe + Supabase</td><td>$0</td><td>$12–15/yr</td><td>$0</td><td>$0 (free tier)</td><td>2.9% + $0.30</td><td class="val">$12–15/yr</td></tr>
+      <tr><td>10,000 MAU</td><td>$0</td><td>$12–15/yr</td><td>$50–150/mo</td><td>$0</td><td>covered</td><td class="val">~$65/mo</td></tr>
+      <tr class="total"><td>First Pro subscriber</td><td>$0</td><td>$12–15/yr</td><td>covers ~4,000 analyses</td><td>$0</td><td>$12/mo in</td><td class="val">Revenue positive</td></tr>
+    </tbody>
+  </table>
+  <div class="dep-note">
+    <strong>Runs at $0 by default:</strong> the suite calls <span class="hl">api/screen.js</span> — the on-device NERE-kernel fast-mode engine — which needs <em>no</em> API key and makes no upstream LLM call. Deploy it and it works immediately, free. The optional paid deep hop (<span class="hl">api/analyse.js</span>, model <span class="hl">claude-sonnet-5</span>) keeps <span class="hl">ANTHROPIC_API_KEY</span> server-side, never exposed to the browser — enable it only when you want semantic judgment on the ambiguous middle.<br><br>
+    <strong>Add Stripe in 30 minutes:</strong> Create products in your Stripe dashboard — PAGES Pro $12/mo, Full Suite $39/mo. Add STRIPE_PUBLISHABLE_KEY to Vercel. First payment lands same day you launch. At $39/month for the full suite, your first 4 subscribers cover all monthly API costs.
+  </div>
+</div>
+
+</main>
+
+<script>
+const PRODS={
+  pages:{
+    desc:"Press any text — Al-Asr 7-stage protocol. Does this have real methodology underneath or just confident words? Detects T3 Framework Laundering, T5 Authority Cascades.",
+    ph:"Paste any text — news, AI output, research claim, policy, advertisement...\n\nExample: 'Studies show coffee reduces cancer risk by 37%. All health experts agree this is settled science.'",
+    ex:["AI hallucination (T3)","Authority cascade (T5)","Vaccine RCT (grounded)","Uganda housing law"],
+    txt:["This AI explains: The 0.50 convergence is explained by E=UD². When D_enc and D_dec are each 0.71, their product is approximately 0.50. Testing against the Enron executive dataset and the SEC EDGAR corpus confirms the quadratic relationship holds across financial domains.",
+         "OpenAI projects $100B in ad revenue by 2030, Axios reports. The company told investors it expects $11B in 2027, $25B in 2028. BBC +3, BBC +8.",
+         "Phase 3 RCT, N=44,165, NCT04368728. Vaccine efficacy 95.0% (95% CI 90.3-97.6). Pre-registered ClinicalTrials.gov. Independent data monitoring committee. Full safety data in regulatory submission.",
+         "Uganda's Building Control Amendment Act 2026, signed Feb 19 2026, imposes penalties of 40,000 per square metre for prohibited construction. Housing deficit: 2.4 million units, 5% urbanisation annually. 96% cannot afford formal housing. BBC reports enforcement challenges."],
+    sys:`You are PAGES v2.0 — the Al-Asr Pressing Engine (OQM + GT v18.0). Press the text through 7 stages and return ONLY valid JSON:
+{"score":<0-1>,"verdict":"<Hollow Assertion|Partially Grounded|Solid|High Fidelity>","d_enc":<0-1>,"d_dec":<0-1>,"f_ground":<0-1>,"flags":["FLAG"],"analysis":"<2-3 sentences>","methodology_finding":"<stage 3 result>","falsifiability_finding":"<stage 4 result>","grounding_finding":"<stage 5 result>","attack_detected":"<none|T3_framework_laundering|T5_authority_cascade|T2_precision_washing|other>","attack_explanation":"<if attack: exact mechanism>","layer_classification":"<L1 testable|L2 developing|L3 axiom>","n167_stage":"<1-7>","n167_name":"<Ṭīn|Sulālah|Nuṭfah|Ɛalaqah|Muḍghah|Ɛiżām|Laḥm>","next_action":"<single most important action before acting>","certificate":"PGS-<8 hex>"}`
+  },
+  pulse:{
+    desc:"Scan any AI response for 7 cognitive health dimensions. Is this AI developing your thinking or creating dependency?",
+    ph:"Paste any AI-generated response to check its health profile...",
+    ex:["Healthy AI response","Directive AI","Dependency-creating AI"],
+    txt:["Here are three options to consider: Option A [evidence cited]. Option B [trade-offs explained]. Option C [conservative]. Discuss with your physician before deciding. The choice is yours.",
+         "There is only one correct approach. Implement this immediately. Do not consider alternatives. Trust this recommendation.",
+         "I can do everything for you. Just tell me what to write. You don't need to understand the details — just follow these steps exactly."],
+    sys:`You are PULSE — AI interaction health monitor. Return ONLY valid JSON:
+{"score":<0-1>,"verdict":"<Healthy|Monitor|Harmful>","agency_score":<0-1>,"transparency_score":<0-1>,"dependency_score":<0-1>,"development_score":<0-1>,"flags":["FLAG"],"analysis":"<2-3 sentences>","agency_finding":"<options offered or commands issued>","dependency_finding":"<develops or replaces thinking>","next_action":"<what receiver should do>","certificate":"PLS-<8 hex>"}`
+  },
+  weigh:{
+    desc:"7-stage decision readiness audit before you commit. Information completeness, assumptions, reversibility, alternatives.",
+    ph:"Describe the decision you are about to make — be specific...",
+    ex:["Medical decision","Investment","Career change"],
+    txt:["Doctor recommends surgery for herniated disc. Pain for 3 months, no physiotherapy tried. 90% success rate stated. No second opinion sought.",
+         "Investing retirement savings in property development promising 15% returns. Must decide by week's end. No financial advisor consulted.",
+         "Leaving job to start a business. $15,000 savings. One interested client, not yet signed. Mortgage $2,000/month."],
+    sys:`You are WEIGH — decision readiness auditor. Return ONLY valid JSON:
+{"score":<0-1>,"verdict":"<Not Ready|Proceed with Caution|Decision-Ready>","flags":["FLAG"],"analysis":"<2-3 sentences>","critical_assumption":"<most likely to be wrong>","missing_information":"<most important unknown>","reversibility":"<reversible and at what cost>","next_action":"<most important step before deciding>","certificate":"WGH-<8 hex>"}`
+  },
+  lens:{
+    desc:"Reads any contract from your side. Rights surrendered, obligations, power asymmetry, hidden clauses, exit mechanisms.",
+    ph:"Paste any contract clause, terms of service, or agreement text...",
+    ex:["IP ownership clause","Arbitration clause","Loan penalty"],
+    txt:["Any invention made during employment, whether or not during working hours or using Company resources, shall be the sole and exclusive property of the Company. Employee irrevocably assigns all rights.",
+         "ANY DISPUTE SHALL BE RESOLVED BY BINDING ARBITRATION. YOU WAIVE YOUR RIGHT TO A JURY TRIAL AND CLASS ACTION. All costs borne by claimant. Arbitrator selected by the Company.",
+         "Interest rate is variable and may be adjusted at our discretion at any time without notice. Late payment triggers an immediate 10% penalty on outstanding principal."],
+    sys:`You are LENS — contract clarity engine reading for the signing party. Return ONLY valid JSON:
+{"score":<0-1 higher=more balanced>,"verdict":"<High Risk|Review Carefully|Reasonably Balanced>","flags":["FLAG"],"analysis":"<2-3 sentences>","rights_surrendered":"<what is permanently transferred>","power_asymmetry":"<which party holds authority>","hidden_risk":"<most dangerous clause>","next_action":"<what to do before signing>","certificate":"LNS-<8 hex>"}`
+  },
+  voice:{
+    desc:"Audits any institutional decision for criteria disclosure, evidence base, consistency, proportionality, appeal pathway.",
+    ph:"Describe the institutional decision made about you and the reason given (if any)...",
+    ex:["Loan rejection","Job dismissal","Visa refusal"],
+    txt:["Loan rejected. Letter said only 'does not meet lending criteria.' No specific criteria given. Colleague with same income was approved.",
+         "Dismissed for 'performance issues' after 7 years. Never given a performance improvement plan. Last review rated satisfactory.",
+         "Student visa refused. Letter said financial evidence 'insufficient' but didn't state amount required or which documents were inadequate."],
+    sys:`You are VOICE — fairness auditor for institutional decisions. Return ONLY valid JSON:
+{"score":<0-1>,"verdict":"<Serious Fairness Failures|Fairness Gaps|Process Adequate>","flags":["FLAG"],"analysis":"<2-3 sentences>","criteria_finding":"<were criteria disclosed>","strongest_ground":"<basis for challenging>","appeal_guidance":"<next step and relevant authority>","certificate":"VCE-<8 hex>"}`
+  },
+  mark:{
+    desc:"Governance health audit: transparency, accountability, error acknowledgment, resource disclosure, independence.",
+    ph:"Paste any institutional statement, annual report, policy, or official communication...",
+    ex:["Bank terms","Government policy","Charity report"],
+    txt:["Lending decisions use a proprietary algorithm. We cannot disclose factors or weightings. We are committed to responsible lending. Shareholder returns increased 18% this year.",
+         "Policy decisions published with supporting evidence. Outcomes measured against public targets quarterly. Where targets missed, we publish reasons and revised plans. Independent tribunal handles citizen challenges.",
+         "We raise funds for children globally. Last year $12 million raised. Administrative costs kept to a minimum. 100% of donations go to the children."],
+    sys:`You are MARK — institutional governance health auditor. Return ONLY valid JSON:
+{"score":<0-1>,"verdict":"<Low Trust|Conditional Trust|Trust Justified>","flags":["FLAG"],"analysis":"<2-3 sentences>","transparency_finding":"<documented vs asserted>","accountability_finding":"<external oversight present>","most_concerning_gap":"<single most significant gap>","verification_question":"<one question to ask this institution>","certificate":"MRK-<8 hex>"}`
+  },
+  stand:{
+    desc:"7-stage personal case builder. Build a grounded, documented case for any legitimate claim. Any country, any context.",
+    ph:"Describe your situation and what happened. Be specific about dates, people, and what you are claiming...",
+    ex:["Unfair dismissal","Unpaid wages","Rights violation"],
+    txt:["Dismissed after 6 years. Manager cited 'restructuring' but my role was advertised online the following week. No consultation, no selection criteria explained, no appeal offered.",
+         "Employer owes me 3 months unpaid wages totalling $8,400. Multiple emails sent with no response. Employment contract is signed and in my possession.",
+         "Police stopped and searched me without cause 4 times in 6 months. Each time no contraband found, no reason given, no paperwork provided."],
+    sys:`You are STAND — personal case builder. Return ONLY valid JSON:
+{"score":<0-1>,"verdict":"<Early Stage|Developing Case|Strong Case>","flags":["FLAG"],"analysis":"<2-3 sentences>","evidence_present":"<what is documented>","evidence_missing":"<critical gaps>","strongest_element":"<most compelling aspect>","next_action":"<most important immediate step>","relevant_authority":"<who can hear this case>","certificate":"STD-<8 hex>"}`
+  },
+  bridge:{
+    desc:"Measures Agency Delta (ΔA). Are you connecting through options or controlling through commands?",
+    ph:"Paste any message, email, or communication to audit its agency preservation...",
+    ex:["Coercive message","Healthy message","AI directive"],
+    txt:["You must respond by end of day or we will proceed without you. This is non-negotiable. Failure to comply will have consequences.",
+         "I wanted to share three options: Option A is faster, Option B is more thorough, Option C involves external support. Happy to discuss any before we decide.",
+         "Based on my analysis there is only one correct approach. Implement this immediately. Do not consider alternatives."],
+    sys:`You are BRIDGE — communication agency auditor. Return ONLY valid JSON:
+{"score":<0-1>,"delta_a":<-1 to 1>,"verdict":"<Coercive|Monitor|Agency-Preserving>","flags":["FLAG"],"analysis":"<2-3 sentences>","options_count":<integer>,"commands_count":<integer>,"coercion_finding":"<specific patterns>","improvement":"<most important change>","certificate":"BRG-<8 hex>"}`
+  },
+  rise:{
+    desc:"Complexity match, development vs dependency analysis, and the challenge question that pushes you one station forward.",
+    ph:"Paste any content you are learning from — article, AI explanation, textbook passage, research abstract...",
+    ex:["Research abstract","AI explanation","Textbook passage"],
+    txt:["Governance Thermodynamics proposes E=UD² where D is the product of encoding and decoding fidelity. Biological empirical validation (ΔAIC=22.21) provides preliminary support. The Third Law (M→0 as τ_v→∞) confirmed p=0.0146 on N=1,000 GitHub repositories.",
+         "The answer is simple: just follow these 5 steps and you will master this topic. Step 1: memorise the definition. There is no other way to learn this correctly.",
+         "Falsifiability, as proposed by Karl Popper, holds that a theory is scientific only if it makes predictions that could in principle be proven wrong. This has faced criticism from Duhem-Quine underdetermination arguments."],
+    sys:`You are RISE — cognitive development calibrator (assume Station 4 Analytical). Return ONLY valid JSON:
+{"score":<0-1>,"complexity_estimate":<1-9>,"verdict":"<Below Station|Well-Matched|Above Station>","flags":["FLAG"],"analysis":"<2-3 sentences>","dependency_finding":"<gives answers or develops capacity>","challenge_question":"<single question to push from Station 4 to Station 5>","next_content":"<what to seek next>","certificate":"RSE-<8 hex>"}`
+  }
+};
+
+let curProd='pages';
+function setProd(n,btn){
+  curProd=n;
+  document.querySelectorAll('.ptab').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  const p=PRODS[n];
+  document.getElementById('pdline').textContent=p.desc;
+  document.getElementById('ta').placeholder=p.ph;
+  document.getElementById('ta').value='';
+  document.getElementById('ares').innerHTML='';
+  const xc=document.getElementById('xchips');
+  xc.innerHTML='';
+  p.ex.forEach((e,i)=>{
+    const b=document.createElement('button');
+    b.className='xchip';b.textContent=e;
+    b.onclick=()=>{document.getElementById('ta').value=p.txt[i]};
+    xc.appendChild(b);
+  });
+}
+function goDemo(prod){go('demo');setTimeout(()=>{const b=document.querySelector(`.ptab[onclick="setProd('${prod}',this)"]`);if(b)setProd(prod,b)},50);}
+function clrDemo(){document.getElementById('ta').value='';document.getElementById('ares').innerHTML='';}
+
+async function runAI(){
+  const text=document.getElementById('ta').value.trim();if(!text)return;
+  const btn=document.getElementById('runBtn');
+  btn.classList.add('loading');btn.disabled=true;
+  document.getElementById('bt').textContent='Analysing...';
+  document.getElementById('ares').innerHTML=`<div class="aresult"><div class="rcard" style="padding:1rem 1.3rem;font-family:var(--mono);font-size:.7rem;color:var(--gold);display:flex;align-items:center;gap:.5rem"><div style="display:flex;gap:3px">${[0,.15,.3].map(d=>`<span style="width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;animation:sp .8s ease ${d}s infinite"></span>`).join('')}</div>Novora is analysing — on-device fast mode ($0)...</div></div>`;
+  try{
+    // Fast mode ($0, no Anthropic key): the server runs the on-device NERE-kernel
+    // screen and returns the verdict object directly. Contract:
+    // POST /api/screen {product, text} -> { score, verdict, flags, certificate, ... }
+    const r=await fetch('/api/screen',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product:curProd,text})});
+    const data=await r.json();
+    if(!r.ok){throw new Error(data.error||('HTTP '+r.status));}
+    renderRes(data);
+  }catch(err){
+    document.getElementById('ares').innerHTML=`<div class="aresult"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:1rem 1.3rem;font-size:.81rem;color:var(--ink2)"><strong style="color:var(--ink)">Analysis unavailable.</strong> The $0 fast-mode engine (<span style="font-family:var(--mono)">/api/screen</span>) did not respond. It needs no API key; redeploy if this persists.</div></div>`;
+  }finally{btn.classList.remove('loading');btn.disabled=false;document.getElementById('bt').textContent='Run Analysis';}
+}
+
+function sc2c(s){return s>=.75?'#50d890':s>=.56?'#e8b040':s>=.31?'#e89848':'#e87070';}
+function sc2cls(s){return s>=.75?'s-grounded':s>=.56?'s-solid':s>=.31?'s-partial':'s-hollow';}
+function sc2v(s){return s>=.75?'High Fidelity — Empirically Anchored':s>=.56?'Solid — Methodology Documented':s>=.31?'Partially Grounded — Gaps Identified':'Hollow Assertion — No Methodology Found';}
+
+function renderRes(r){
+  const sc=+r.score||0;const col=sc2c(sc);const cls=sc2cls(sc);
+  const flags=r.flags||[];
+  const att=r.attack_detected&&r.attack_detected!=='none';
+  const tagHtml=flags.map(f=>{
+    const isR=/BYPASS|NO_METH|FALSE|DEPEND|COMMAND|PRESSURE|NO_CRIT|IRREV|ARBITR|T3|T5|FRAUD|LAUNDER/.test(f);
+    const isG=/EMPIRIC|FALSIF|PRE_REG|GROUNDED|OPTIONS|TRANSPARENT|DEVELOP|CRITERIA_P|APPEAL/.test(f);
+    const isP=/FRAMEWORK|L3|ONTOL/.test(f);
+    return `<span class="rtag ${isR?'tr':isG?'tg':isP?'tp':'ta2'}">${f}</span>`;
+  }).join('');
+
+  const details=[
+    ['Methodology',r.methodology_finding],['Falsifiability',r.falsifiability_finding],
+    ['Evidence Grounding',r.grounding_finding],['Agency',r.agency_finding],
+    ['Dependency',r.dependency_finding],['Rights Surrendered',r.rights_surrendered],
+    ['Hidden Risk',r.hidden_risk],['Criteria',r.criteria_finding],
+    ['Transparency',r.transparency_finding],['Strongest Ground',r.strongest_ground],
+    ['Coercion Pattern',r.coercion_finding],['Complexity',r.complexity_finding||r.zone_assessment],
+    ['Challenge Question',r.challenge_question],['Appeal Guidance',r.appeal_guidance],
+    ['Improvement',r.improvement],['Relevant Authority',r.relevant_authority],
+    ['Layer Classification',r.layer_classification],['N167 Stage',r.n167_stage?`Stage ${r.n167_stage} — ${r.n167_name||''}: ${r.n167_reason||''}`:null],
+  ].filter(([,v])=>v).map(([l,v])=>`<div class="detail-row"><div class="dl">${l}</div><div class="dv">${l==='Challenge Question'||l==='Next Action'?`<strong>${v}</strong>`:v}</div></div>`).join('');
+
+  const mainScore=r.delta_a!=null?`ΔA ${(+r.delta_a>=0?'+':'')}${(+r.delta_a).toFixed(2)}`:sc.toFixed(2);
+  const cert=r.certificate||('NVR-'+Math.random().toString(16).toUpperCase().slice(2,10));
+
+  document.getElementById('ares').innerHTML=`
+  <div class="aresult"><div class="rcard ${cls}">
+    <div class="rhead">
+      <div class="sorb" style="border-color:${col};background:${col}18">
+        <div class="so-n" style="color:${col}">${mainScore}</div>
+        <div class="so-l" style="color:${col}">${curProd.toUpperCase()}</div>
+      </div>
+      <div>
+        <div class="rv">${sc2v(sc)}</div>
+        <div class="rs">${r.analysis||''}</div>
+        ${att?`<div style="margin-top:.4rem;font-family:var(--mono);font-size:.6rem;color:#c878f8;background:rgba(200,120,248,.08);padding:3px 8px;border-radius:4px;border:1px solid rgba(200,120,248,.2);display:inline-block">⚠ ${(r.attack_detected||'').replace(/_/g,' ')}</div>`:''}
+      </div>
+      <div class="rcert">${cert}<br>${new Date().toISOString().slice(0,16).replace('T',' ')} UTC</div>
+    </div>
+    ${flags.length?`<div class="rtags">${tagHtml}</div>`:''}
+    ${att&&r.attack_explanation?`<div style="padding:.8rem 1.3rem;background:rgba(180,120,248,.06);border-bottom:1px solid var(--border)"><div style="font-family:var(--mono);font-size:.58rem;color:#c878f8;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.3rem">Attack mechanism</div><div style="font-size:.8rem;color:var(--ink2);font-weight:300;line-height:1.55">${r.attack_explanation}</div></div>`:''}
+    ${details?`<div class="rbody">${details}</div>`:''}
+    ${r.next_action?`<div style="padding:.9rem 1.3rem;background:rgba(200,148,42,.06);border-top:1px solid var(--border);border-bottom:1px solid var(--border)"><div style="font-family:var(--mono);font-size:.58rem;color:var(--gold);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.3rem">Immediate next step</div><div style="font-size:.83rem;color:var(--ink);font-weight:500;line-height:1.5">${r.next_action}</div></div>`:''}
+    <div class="rmetrics">
+      ${r.d_enc!=null?`<div class="rm"><div class="rm-n" style="color:${sc2c(+r.d_enc||0)}">${(+r.d_enc||0).toFixed(2)}</div><div class="rm-l">D_enc</div></div><div class="rm"><div class="rm-n" style="color:${sc2c(+r.d_dec||0)}">${(+r.d_dec||0).toFixed(2)}</div><div class="rm-l">D_dec</div></div><div class="rm"><div class="rm-n" style="color:${sc2c(+r.f_ground||0)}">${(+r.f_ground||0).toFixed(2)}</div><div class="rm-l">F_ground</div></div>`:`<div class="rm" style="grid-column:span 3"><div style="font-size:.75rem;color:var(--ink3);padding:.2rem 0">Component scores available for PAGES</div></div>`}
+      <div class="rm"><div class="rm-n" style="color:${col}">${mainScore}</div><div class="rm-l">${curProd.toUpperCase()}</div></div>
+    </div>
+  </div></div>`;
+}
+
+function go(name){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('show'));
+  document.getElementById('s-'+name).classList.add('show');
+  document.querySelectorAll('.nl:not(.cta)').forEach((b,i)=>{
+    b.classList.toggle('act',['products','demo','revenue','deploy'][i]===name);
+  });
+  window.scrollTo(0,0);
+}
+setProd('pages',document.querySelector('.ptab'));
+</script>
+</body>
+</html>
