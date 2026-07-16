@@ -1,0 +1,74 @@
+﻿2026-06-19T12:53:03.9661710Z ##[group]Run python govphys_quadratic_prereg_test.py
+2026-06-19T12:53:03.9662660Z [36;1mpython govphys_quadratic_prereg_test.py[0m
+2026-06-19T12:53:03.9707235Z shell: /usr/bin/bash -e {0}
+2026-06-19T12:53:03.9707660Z env:
+2026-06-19T12:53:03.9708206Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-19T12:53:03.9709268Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-06-19T12:53:03.9710149Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-19T12:53:03.9710982Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-19T12:53:03.9711690Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-06-19T12:53:03.9712401Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-06-19T12:53:03.9713280Z   GITHUB_TOKEN: ***
+2026-06-19T12:53:03.9713656Z ##[endgroup]
+2026-06-19T12:53:06.9640348Z ====================================================================
+2026-06-19T12:53:06.9641518Z GovPhys Quadratic Pre-Registered Test  |  E=U*D vs E=U*D^2
+2026-06-19T12:53:06.9642776Z Spec SHA-256: cac34f44b2cea0ee3346921d708f00913f6b67cc36376e0b2e4630b9e77001f7
+2026-06-19T12:53:06.9654603Z ====================================================================
+2026-06-19T12:53:06.9655582Z [fetch] S1_thriving: language:python stars:>1000 pushed:>2024-06-01
+2026-06-19T12:53:23.3947956Z [fetch] S2_aging: language:python stars:100..1000 pushed:2022-01-01..2023-12-31
+2026-06-19T12:53:39.6148040Z [fetch] S3_at_risk: language:python stars:10..100 pushed:<2022-01-01
+2026-06-19T12:53:56.0127930Z [fetch] S4_failed: language:python archived:true stars:>10
+2026-06-19T12:54:12.7367645Z [fetch] 992 unique repositories
+2026-06-19T12:54:12.7368654Z   metrics 0/992 (0 ok)
+2026-06-19T12:55:38.3517899Z   metrics 25/992 (25 ok)
+2026-06-19T12:57:03.9435122Z   metrics 50/992 (50 ok)
+2026-06-19T12:58:28.0448850Z   metrics 75/992 (75 ok)
+2026-06-19T12:59:56.7709598Z   metrics 100/992 (100 ok)
+2026-06-19T13:01:22.9838331Z   metrics 125/992 (125 ok)
+2026-06-19T13:02:46.6247940Z   metrics 150/992 (150 ok)
+2026-06-19T13:04:08.5991872Z   metrics 175/992 (175 ok)
+2026-06-19T13:05:31.2039005Z   metrics 200/992 (200 ok)
+2026-06-19T13:06:56.0111790Z   metrics 225/992 (225 ok)
+2026-06-19T13:08:19.8417179Z   metrics 250/992 (250 ok)
+2026-06-19T13:09:28.4374370Z   metrics 275/992 (275 ok)
+2026-06-19T13:10:30.8218062Z   metrics 300/992 (300 ok)
+2026-06-19T13:11:35.7057892Z   metrics 325/992 (325 ok)
+2026-06-19T13:12:38.6574313Z   metrics 350/992 (350 ok)
+2026-06-19T13:13:39.6317752Z   metrics 375/992 (375 ok)
+2026-06-19T13:14:42.8437820Z   metrics 400/992 (400 ok)
+2026-06-19T13:15:40.2648678Z   metrics 425/992 (425 ok)
+2026-06-19T13:16:41.3868127Z   metrics 450/992 (450 ok)
+2026-06-19T13:17:46.4341504Z   metrics 475/992 (475 ok)
+2026-06-19T13:18:47.0818329Z   metrics 500/992 (500 ok)
+2026-06-19T13:19:31.4578860Z   metrics 525/992 (525 ok)
+2026-06-19T13:20:20.4211344Z   metrics 550/992 (550 ok)
+2026-06-19T13:21:08.4640003Z   metrics 575/992 (575 ok)
+2026-06-19T13:21:55.1909704Z   metrics 600/992 (600 ok)
+2026-06-19T13:22:40.5568163Z   metrics 625/992 (625 ok)
+2026-06-19T13:23:29.0454417Z   metrics 650/992 (650 ok)
+2026-06-19T13:24:13.3226229Z   metrics 675/992 (675 ok)
+2026-06-19T13:24:59.6794676Z   metrics 700/992 (700 ok)
+2026-06-19T13:25:43.4485342Z   metrics 725/992 (725 ok)
+2026-06-19T13:26:28.9051472Z   metrics 750/992 (750 ok)
+2026-06-19T13:28:08.0047761Z   metrics 775/992 (775 ok)
+2026-06-19T13:29:33.2676951Z   metrics 800/992 (800 ok)
+2026-06-19T13:31:00.4838511Z   metrics 825/992 (825 ok)
+2026-06-19T13:32:26.3162999Z   metrics 850/992 (850 ok)
+2026-06-19T13:33:48.0880938Z   metrics 875/992 (875 ok)
+2026-06-19T13:35:19.5517679Z   metrics 900/992 (900 ok)
+2026-06-19T13:36:41.9617730Z   metrics 925/992 (925 ok)
+2026-06-19T13:38:04.0690977Z   metrics 950/992 (950 ok)
+2026-06-19T13:39:23.3740113Z   metrics 975/992 (975 ok)
+2026-06-19T13:40:21.9103082Z [save] per-repo data -> govphys_quadratic_results.csv  (N=992)
+2026-06-19T13:40:24.3897007Z
+2026-06-19T13:40:24.3897968Z ====================================================================
+2026-06-19T13:40:24.3899414Z N=992  fail=750  surv=242
+2026-06-19T13:40:24.3900084Z VIF(D_enc,D_dec)=1.02  (gate <5.0)   r=+0.141
+2026-06-19T13:40:24.3900771Z PRIMARY dAIC(quad-lin)=-3.48  perm z=+9.32
+2026-06-19T13:40:24.3901417Z SECONDARY nested dAIC(quad-lin)=-0.12
+2026-06-19T13:40:24.3902307Z Third Law: tau_fail=50.61 tau_surv=19.76 p1(all)=0.0000 p1(measured)=0.0000 imputed fail/surv=0.15/0.04
+2026-06-19T13:40:24.3903072Z
+2026-06-19T13:40:24.3903547Z VERDICT: QUADRATIC_DISCONFIRMED  (dAIC=-3.48<=0 (linear >= quadratic))
+2026-06-19T13:40:24.3904351Z Certificate: GOVPHYS-QUAD-126779B673F6
+2026-06-19T13:40:24.3904989Z Summary -> govphys_quadratic_summary.json
+2026-06-19T13:40:24.3905641Z ====================================================================
