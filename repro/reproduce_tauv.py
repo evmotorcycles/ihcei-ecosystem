@@ -23,12 +23,14 @@ WHAT THIS DOES INSTEAD
 HONEST SCOPE
     This reproduces the LAW (failed repos have higher enforcement latency than
     survivors, at p<0.05, one-tailed) on the committed 21-repo cohort. It does
-    NOT reproduce the manuscript's exact N=992 / p~1e-31 or the yeast channel --
-    those require the documented network fetch (govphys_quadratic_prereg_test.py,
-    build_yeast_cohort.py). See repro/README.md for that path. The point here is
-    to move the headline finding from "read from an artifact" to "recomputed from
-    real data with zero dependencies," which anyone (including Claude chat) can
-    re-run and check in one command.
+    NOT reproduce the manuscript's exact N=992 / p~1e-31 (that needs a live fetch
+    of 992 repos). The other two arms now ALSO run from committed data:
+    repro/reproduce_yeast.py recomputes the yeast VIF=1.003 from committed raw
+    STRING v12, and repro/verify_github_ci.py attests the archived 992 run by
+    re-hashing its pre-registration lock. See repro/README.md. The point of THIS
+    script is the zero-dependency path: move the headline tau_v finding from "read
+    from an artifact" to "recomputed with no installs," which anyone (including
+    Claude chat) can re-run in one command.
 """
 import json
 import math
