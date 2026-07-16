@@ -252,7 +252,7 @@ tr.total td{background:rgba(200,148,42,.06)}.total td.val{color:#e8d080;font-wei
   <div class="xchips" id="xchips"></div>
   <textarea class="ta" id="ta" rows="4"></textarea>
   <div class="demo-foot">
-    <span class="demo-note">Claude Sonnet 5 · server-side · Real-time analysis · GT v18.0 + OQM</span>
+    <span class="demo-note">Fast mode · on-device NERE kernel · $0 · no API key · GT v18.0 + OQM</span>
     <div class="df-btns">
       <button class="clr" onclick="clrDemo()">Clear</button>
       <button class="run" id="runBtn" onclick="runAI()"><div class="spin" id="sp"></div><span id="bt">Run Analysis</span></button>
@@ -325,7 +325,7 @@ tr.total td{background:rgba(200,148,42,.06)}.total td.val{color:#e8d080;font-wei
     </tbody>
   </table>
   <div class="dep-note">
-    <strong>Security — already done in this build:</strong> the AI engine calls a Vercel serverless function at <span class="hl">api/analyse.js</span> (model <span class="hl">claude-sonnet-5</span>), so <span class="hl">ANTHROPIC_API_KEY</span> stays server-side and is never exposed to the browser. A best-effort per-IP daily free cap is built in; wire Vercel KV / Upstash for a hard quota before monetizing (see README).<br><br>
+    <strong>Runs at $0 by default:</strong> the suite calls <span class="hl">api/screen.js</span> — the on-device NERE-kernel fast-mode engine — which needs <em>no</em> API key and makes no upstream LLM call. Deploy it and it works immediately, free. The optional paid deep hop (<span class="hl">api/analyse.js</span>, model <span class="hl">claude-sonnet-5</span>) keeps <span class="hl">ANTHROPIC_API_KEY</span> server-side, never exposed to the browser — enable it only when you want semantic judgment on the ambiguous middle.<br><br>
     <strong>Add Stripe in 30 minutes:</strong> Create products in your Stripe dashboard — PAGES Pro $12/mo, Full Suite $39/mo. Add STRIPE_PUBLISHABLE_KEY to Vercel. First payment lands same day you launch. At $39/month for the full suite, your first 4 subscribers cover all monthly API costs.
   </div>
 </div>
@@ -454,21 +454,17 @@ async function runAI(){
   const btn=document.getElementById('runBtn');
   btn.classList.add('loading');btn.disabled=true;
   document.getElementById('bt').textContent='Analysing...';
-  document.getElementById('ares').innerHTML=`<div class="aresult"><div class="rcard" style="padding:1rem 1.3rem;font-family:var(--mono);font-size:.7rem;color:var(--gold);display:flex;align-items:center;gap:.5rem"><div style="display:flex;gap:3px">${[0,.15,.3].map(d=>`<span style="width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;animation:sp .8s ease ${d}s infinite"></span>`).join('')}</div>Claude is analysing with GT v18.0 + OQM protocol...</div></div>`;
+  document.getElementById('ares').innerHTML=`<div class="aresult"><div class="rcard" style="padding:1rem 1.3rem;font-family:var(--mono);font-size:.7rem;color:var(--gold);display:flex;align-items:center;gap:.5rem"><div style="display:flex;gap:3px">${[0,.15,.3].map(d=>`<span style="width:5px;height:5px;border-radius:50%;background:var(--gold);display:inline-block;animation:sp .8s ease ${d}s infinite"></span>`).join('')}</div>Novora is analysing — on-device fast mode ($0)...</div></div>`;
   try{
-    // Secure: call the server-side function, which holds the API key and the
-    // model choice. The browser never sees ANTHROPIC_API_KEY. Contract:
-    // POST /api/analyse {text, system} -> raw Anthropic Messages response.
-    const r=await fetch('/api/analyse',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,system:PRODS[curProd].sys})});
+    // Fast mode ($0, no Anthropic key): the server runs the on-device NERE-kernel
+    // screen and returns the verdict object directly. Contract:
+    // POST /api/screen {product, text} -> { score, verdict, flags, certificate, ... }
+    const r=await fetch('/api/screen',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({product:curProd,text})});
     const data=await r.json();
     if(!r.ok){throw new Error(data.error||('HTTP '+r.status));}
-    const raw=data.content?.[0]?.text||'{}';
-    let res;try{res=JSON.parse(raw.replace(/```json|```/g,'').trim());}catch(e){res={score:.5,verdict:'Analysis complete',analysis:raw,flags:[],certificate:'ERR-00000000',next_action:'API error'};}
-    renderRes(res);
+    renderRes(data);
   }catch(err){
-    const msg=(err&&err.message)?err.message:'unavailable';
-    const rateLimited=/rate|429|limit/i.test(msg);
-    document.getElementById('ares').innerHTML=`<div class="aresult"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:1rem 1.3rem;font-size:.81rem;color:var(--ink2)"><strong style="color:var(--ink)">${rateLimited?'Daily free limit reached.':'Analysis unavailable.'}</strong> ${rateLimited?'Upgrade to Pro for unlimited checks, or try again tomorrow.':'The AI engine needs a funded ANTHROPIC_API_KEY in the Vercel environment. See the Deploy tab.'}</div></div>`;
+    document.getElementById('ares').innerHTML=`<div class="aresult"><div style="background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:1rem 1.3rem;font-size:.81rem;color:var(--ink2)"><strong style="color:var(--ink)">Analysis unavailable.</strong> The $0 fast-mode engine (<span style="font-family:var(--mono)">/api/screen</span>) did not respond. It needs no API key; redeploy if this persists.</div></div>`;
   }finally{btn.classList.remove('loading');btn.disabled=false;document.getElementById('bt').textContent='Run Analysis';}
 }
 

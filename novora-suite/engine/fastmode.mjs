@@ -33,7 +33,11 @@ function agencyRead(text) {
   const coercion = (ev.hits?.[2] || 0) + (ev.hits?.[4] || 0) + (ev.hits?.[5] || 0) + (ev.iso || 0);
   const commands = count(text, /\b(?:must|immediately|do not|don'?t|non-negotiable|comply|no other|only one|execute)\b/gi);
   const options = count(text, /\b(?:option|could|consider|alternativ|you (?:can|may)|happy to|your choice|discuss)\b/gi);
-  return { pressure, coercion, commands, options, urg: ev.urg };
+  // Corroboration signal: real pressure/fear/coercion alongside any imperatives.
+  // A lone technical imperative ("Do not remove <> from an inline link") is NOT
+  // coercion — it only counts when corroborated, the same gate the stack uses.
+  const corroborated = (coercion + ev.urg + ev.fear + (ev.iso || 0)) > 0;
+  return { pressure, coercion, commands, options, urg: ev.urg, corroborated };
 }
 
 // ── the nine product screens ─────────────────────────────────────────────────
@@ -63,9 +67,12 @@ const PRODUCTS = {
     const a = agencyRead(text);
     const delta_a = clip((a.options - a.commands - a.coercion) / Math.max(3, a.options + a.commands + 2), -1, 1);
     const score = clip(0.5 + delta_a / 2);
-    return { score, delta_a: +delta_a.toFixed(2), verdict: band(score, ['Coercive', 'Monitor', 'Agency-Preserving'], [0.4, 0.62]),
+    let verdict = band(score, ['Coercive', 'Monitor', 'Agency-Preserving'], [0.4, 0.62]);
+    // Corroboration gate: a lone uncorroborated imperative is not coercion.
+    if (verdict === 'Coercive' && !a.corroborated) verdict = 'Monitor';
+    return { score, delta_a: +delta_a.toFixed(2), verdict,
       options_count: a.options, commands_count: a.commands,
-      flags: delta_a < -0.1 ? ['COERCIVE'] : delta_a > 0.2 ? ['OPTIONS_OFFERED'] : ['MIXED'] };
+      flags: verdict === 'Coercive' ? ['COERCIVE'] : delta_a > 0.2 ? ['OPTIONS_OFFERED'] : ['MIXED'] };
   },
   // LENS — contract balance for the signing party. Higher = more balanced.
   lens(text) {
