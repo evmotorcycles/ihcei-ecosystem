@@ -1,6 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/ui.mjs": { "includeFiles": "novora-suite/public/index.html" }
+  },
   "rewrites": [
-    { "source": "/", "destination": "/novora-suite/public/index.html" }
+    { "source": "/", "destination": "/api/ui" }
   ]
 }
