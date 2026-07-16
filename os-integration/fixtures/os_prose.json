@@ -1,0 +1,631 @@
+{
+ "description": "REAL prose from open-source operating-system project READMEs (computer + mobile OSes), fetched live from raw.githubusercontent.com. The ambient OS-domain traffic an on-device auditor would see.",
+ "fetched_at": "2026-07-15T11:19:10.365Z",
+ "items": [
+  {
+   "id": "os:serenity:0",
+   "repo": "SerenityOS/serenity",
+   "text": "Graphical Unix like operating system for 64 bit x86, Arm, and RISC V computers."
+  },
+  {
+   "id": "os:serenity:1",
+   "repo": "SerenityOS/serenity",
+   "text": "! GitHub Actions Status https://github.com/SerenityOS/serenity/actions/workflows/ci.yml/badge.svg https://github.com/SerenityOS/serenity/actions/workflows/ci.yml ! Fuzzing Status https://oss fuzz build logs.storage.googleapis.com/badges/serenity.svg https://issues.oss fuzz.com/issues?q project:serenity ! Discord https://img.shields.io/discord/830522505605283862.svg?logo discord&logoColor white&logoWidth 20&labelColor 7289DA&label Discord&color 17cf48 https://serenityos.org/discord"
+  },
+  {
+   "id": "os:serenity:2",
+   "repo": "SerenityOS/serenity",
+   "text": "FAQ Documentation/FAQ.md Documentation how do i read the documentation Build Instructions how do i build and run this"
+  },
+  {
+   "id": "os:serenity:3",
+   "repo": "SerenityOS/serenity",
+   "text": "SerenityOS is a love letter to '90s user interfaces with a custom Unix like core. It flatters with sincerity by stealing beautiful ideas from various other systems."
+  },
+  {
+   "id": "os:serenity:4",
+   "repo": "SerenityOS/serenity",
+   "text": "Roughly speaking, the goal is a marriage between the aesthetic of late 1990s productivity software and the power user accessibility of late 2000s \\ nix. This is a system by us, for us, based on the things we like."
+  },
+  {
+   "id": "os:serenity:5",
+   "repo": "SerenityOS/serenity",
+   "text": "Andreas Kling's channel https://youtube.com/andreaskling Linus Groh's channel https://youtube.com/linusgroh kleines Filmröllchen's channel https://www.youtube.com/c/kleinesfilmroellchen"
+  },
+  {
+   "id": "os:serenity:6",
+   "repo": "SerenityOS/serenity",
+   "text": "... and all of the above are right in this repository, no extra dependencies, built from scratch by us :^"
+  },
+  {
+   "id": "os:serenity:7",
+   "repo": "SerenityOS/serenity",
+   "text": "Additionally, there are over three hundred ports of popular open source software Ports/AvailablePorts.md , including games, compilers, Unix tools, multimedia apps and more."
+  },
+  {
+   "id": "os:serenity:8",
+   "repo": "SerenityOS/serenity",
+   "text": "Man pages are available online at man.serenityos.org https://man.serenityos.org . These pages are generated from the Markdown source files in Base/usr/share/man https://github.com/SerenityOS/serenity/tree/master/Base/usr/share/man and updated automatically."
+  },
+  {
+   "id": "os:serenity:9",
+   "repo": "SerenityOS/serenity",
+   "text": "When running SerenityOS you can use man for the terminal interface, or help for the GUI."
+  },
+  {
+   "id": "os:reactos:0",
+   "repo": "reactos/reactos",
+   "text": "Quick Links Website https://reactos.org/ &bull; Official chat https://chat.reactos.org/ &bull; Wiki https://reactos.org/wiki/ &bull; Forum https://reactos.org/forum/ &bull; Community Discord https://discord.gg/7knjvhT &bull; JIRA Bug Tracker https://jira.reactos.org/issues/ &bull; ReactOS Git mirror https://git.reactos.org/ &bull; Testman https://reactos.org/testman/"
+  },
+  {
+   "id": "os:reactos:1",
+   "repo": "reactos/reactos",
+   "text": "ReactOS™ is an Open Source effort to develop a quality operating system that is compatible with applications and drivers written for the Microsoft® Windows™ NT family of operating systems NT4, 2000, XP, 2003, Vista, 7 ."
+  },
+  {
+   "id": "os:reactos:2",
+   "repo": "reactos/reactos",
+   "text": "The ReactOS project, although currently focused on Windows Server 2003 compatibility, is always keeping an eye toward compatibility with Windows Vista and future Windows NT releases."
+  },
+  {
+   "id": "os:reactos:3",
+   "repo": "reactos/reactos",
+   "text": "The code of ReactOS is licensed under GNU GPL 2.0 https://github.com/reactos/reactos/blob/master/COPYING ."
+  },
+  {
+   "id": "os:reactos:4",
+   "repo": "reactos/reactos",
+   "text": "ReactOS is currently an Alpha quality operating system. This means that ReactOS is under heavy development and you have to be ready to encounter some problems. Different things may not work well and it can corrupt the data present on your hard disk. It is HIGHLY recommended to test ReactOS on a virtual machine or on a computer with no sensitive or critical data!"
+  },
+  {
+   "id": "os:reactos:5",
+   "repo": "reactos/reactos",
+   "text": "! Build https://github.com/reactos/reactos/workflows/Build/badge.svg ! rosbewin.badge rosbewin.link ! rosbeunix.badge rosbeunix.link ! coverity.badge coverity.link"
+  },
+  {
+   "id": "os:reactos:6",
+   "repo": "reactos/reactos",
+   "text": "To build the system it is strongly advised to use the ReactOS Build Environment RosBE . Up to date versions for Windows and for Unix/GNU Linux are available from our download page at: \"Build Environment\" https://reactos.org/wiki/Build Environment ."
+  },
+  {
+   "id": "os:reactos:7",
+   "repo": "reactos/reactos",
+   "text": "Alternatively one can use Microsoft Visual C++ MSVC version 2019+. Building with MSVC is covered here: \"Visual Studio or Microsoft Visual C++\" https://reactos.org/wiki/CMake Visual Studio or Microsoft Visual C.2B.2B ."
+  },
+  {
+   "id": "os:reactos:8",
+   "repo": "reactos/reactos",
+   "text": "To build ReactOS you must run the configure script in the directory you want to have your build files. Choose configure.cmd or configure.sh depending on your system. Then run ninja to build a module you want or just ninja to build all modules."
+  },
+  {
+   "id": "os:reactos:9",
+   "repo": "reactos/reactos",
+   "text": "To build a bootable CD image run ninja bootcd from the build directory. This will create a CD image with a filename bootcd.iso ."
+  },
+  {
+   "id": "os:freebsd-src:0",
+   "repo": "freebsd/freebsd-src",
+   "text": "FreeBSD Source: This is the top level of the FreeBSD source directory."
+  },
+  {
+   "id": "os:freebsd-src:1",
+   "repo": "freebsd/freebsd-src",
+   "text": "FreeBSD is an operating system used to power modern servers, desktops, and embedded platforms. A large community has continually developed it for more than thirty years. Its advanced networking, security, and storage features have made FreeBSD the platform of choice for many of the busiest web sites and most pervasive embedded networking and storage devices."
+  },
+  {
+   "id": "os:freebsd-src:2",
+   "repo": "freebsd/freebsd-src",
+   "text": "For copyright information, please see the file COPYRIGHT COPYRIGHT in this directory. Additional copyright information also exists for some sources in this tree please see the specific source directories for more information."
+  },
+  {
+   "id": "os:freebsd-src:3",
+   "repo": "freebsd/freebsd-src",
+   "text": "The Makefile in this directory supports a number of targets for building components or all of the FreeBSD source tree. See build 7 , config 8 , FreeBSD handbook on building userland https://docs.freebsd.org/en/books/handbook/cutting edge/ makeworld , and Handbook for kernels https://docs.freebsd.org/en/books/handbook/kernelconfig/ for more information, including setting make 1 variables."
+  },
+  {
+   "id": "os:freebsd-src:4",
+   "repo": "freebsd/freebsd-src",
+   "text": "For information on the CPU architectures and platforms supported by FreeBSD, see the FreeBSD website's Platforms page https://www.freebsd.org/platforms/ ."
+  },
+  {
+   "id": "os:freebsd-src:5",
+   "repo": "freebsd/freebsd-src",
+   "text": "For official FreeBSD bootable images, see the release page https://download.freebsd.org/ftp/releases/ISO IMAGES/ ."
+  },
+  {
+   "id": "os:freebsd-src:6",
+   "repo": "freebsd/freebsd-src",
+   "text": "For information on synchronizing your source tree with one or more of the FreeBSD Project's development branches, please see FreeBSD Handbook https://docs.freebsd.org/en/books/handbook/cutting edge/ current stable ."
+  },
+  {
+   "id": "os:managarm:0",
+   "repo": "managarm/managarm",
+   "text": "! CI https://github.com/managarm/managarm/workflows/CI/badge.svg ! Documentation https://github.com/managarm/managarm/workflows/Documentation/badge.svg https://docs.managarm.org/handbook/ ! x86 64 https://builds.managarm.org/projects/managarm/badge https://builds.managarm.org/projects/managarm ! aarch64 https://builds.managarm.org/projects/managarm aarch64/badge https://builds.managarm.org/projects/managarm aarch64 ! riscv https://builds.managarm.org/projects/managarm riscv64/badge https://builds.managarm.org/projects/managarm riscv64"
+  },
+  {
+   "id": "os:managarm:1",
+   "repo": "managarm/managarm",
+   "text": "This is the main repository of managarm, a microkernel based operating system."
+  },
+  {
+   "id": "os:managarm:2",
+   "repo": "managarm/managarm",
+   "text": "What is special about managarm? Some notable properties of managarm are: i managarm is based on a microkernel while common Desktop operating systems like Linux and Windows use monolithic kernels, ii managarm uses a completely asynchronous API for I/O and iii despite those internal differences, managarm provides good compatibility with Linux at the user space level."
+  },
+  {
+   "id": "os:managarm:3",
+   "repo": "managarm/managarm",
+   "text": "Aren't microkernels slow? Microkernels do have some performance disadvantages over monolithic kernels. managarm tries to mitigate some of those issues by providing good abstractions at the driver and system call levels that allow efficient implementations of common user space functionality like POSIX ."
+  },
+  {
+   "id": "os:managarm:4",
+   "repo": "managarm/managarm",
+   "text": "Is this a Linux distribution? No, managarm runs its own kernel that does not originate from Linux. While the managarm user space API supports many Linux APIs e.g. epoll, timerfd, signalfd or tmpfs , managarm does not share any source code or binaries with the Linux kernel."
+  },
+  {
+   "id": "os:managarm:5",
+   "repo": "managarm/managarm",
+   "text": "Official Discord server: https://discord.gg/7WB6Ur3. This is our primary real time communication channel."
+  },
+  {
+   "id": "os:managarm:6",
+   "repo": "managarm/managarm",
+   "text": "Official IRC channel: managarm on irc.libera.chat , with many more available! Type /msg alis list managarm to find them."
+  },
+  {
+   "id": "os:managarm:7",
+   "repo": "managarm/managarm",
+   "text": "64 bit operating system with SMP i.e., multicore and ACPI support. Fully asynchronous microkernel and servers. Support for many modern hardware devices such as USB 3 controllers. Networking support. POSIX and Linux API compatibility. Support for Linux style special files epoll, signalfd, ... and pseudo file systems /sys , /proc , ... ."
+  },
+  {
+   "id": "os:managarm:8",
+   "repo": "managarm/managarm",
+   "text": "If you want to try out managarm without building the whole OS, you can download a xz compressed nightly image https://builds.managarm.org/projects/managarm/success/repo/files/x86 64/image.xz ; these images are automatically compiled on our build server https://builds.managarm.org and reflect the current state of Managarm development. To run the uncompressed image using qemu, we recommend the following flags:"
+  },
+  {
+   "id": "os:managarm:9",
+   "repo": "managarm/managarm",
+   "text": "qemu system x86 64 display gtk,zoom to fit off enable kvm m 2048 cpu host,migratable off device qemu xhci device usb kbd device usb tablet drive id hdd,file image,format raw,if none device virtio blk pci,drive hdd vga virtio debugcon stdio"
+  },
+  {
+   "id": "os:linux:0",
+   "repo": "torvalds/linux",
+   "text": "The Linux kernel is the core of any Linux operating system. It manages hardware, system resources, and provides the fundamental services for all other software."
+  },
+  {
+   "id": "os:linux:1",
+   "repo": "torvalds/linux",
+   "text": "Report a bug: See Documentation/admin guide/reporting issues.rst Get the latest kernel: https://kernel.org Build the kernel: See Documentation/admin guide/quickly build trimmed linux.rst Join the community: https://lore.kernel.org/"
+  },
+  {
+   "id": "os:linux:2",
+   "repo": "torvalds/linux",
+   "text": "Building requirements: Documentation/process/changes.rst Code of Conduct: Documentation/process/code of conduct.rst License: See COPYING"
+  },
+  {
+   "id": "os:linux:3",
+   "repo": "torvalds/linux",
+   "text": "Documentation can be built with make htmldocs or viewed online at: https://www.kernel.org/doc/html/latest/"
+  },
+  {
+   "id": "os:linux:4",
+   "repo": "torvalds/linux",
+   "text": "New Kernel Developer Getting started with kernel development Academic Researcher Studying kernel internals and architecture Security Expert Hardening and vulnerability analysis Backport/Maintenance Engineer Maintaining stable kernels System Administrator Configuring and troubleshooting Maintainer Leading subsystems and reviewing patches Hardware Vendor Writing drivers for new hardware Distribution Maintainer Packaging kernels for distros AI Coding Assistant LLMs and AI powered development tools"
+  },
+  {
+   "id": "os:linux:5",
+   "repo": "torvalds/linux",
+   "text": "Getting Started: Documentation/process/development process.rst Your First Patch: Documentation/process/submitting patches.rst Coding Style: Documentation/process/coding style.rst Build System: Documentation/kbuild/index.rst Development Tools: Documentation/dev tools/index.rst Kernel Hacking Guide: Documentation/kernel hacking/hacking.rst Core APIs: Documentation/core api/index.rst"
+  },
+  {
+   "id": "os:linux:6",
+   "repo": "torvalds/linux",
+   "text": "Researcher Guidelines: Documentation/process/researcher guidelines.rst Memory Management: Documentation/mm/index.rst Scheduler: Documentation/scheduler/index.rst Networking Stack: Documentation/networking/index.rst Filesystems: Documentation/filesystems/index.rst RCU Read Copy Update : Documentation/RCU/index.rst Locking Primitives: Documentation/locking/index.rst Power Management: Documentation/power/index.rst"
+  },
+  {
+   "id": "os:linux:7",
+   "repo": "torvalds/linux",
+   "text": "Security Documentation: Documentation/security/index.rst LSM Development: Documentation/security/lsm development.rst Self Protection: Documentation/security/self protection.rst Reporting Vulnerabilities: Documentation/process/security bugs.rst CVE Procedures: Documentation/process/cve.rst Embargoed Hardware Issues: Documentation/process/embargoed hardware issues.rst Security Features: Documentation/userspace api/seccomp filter.rst"
+  },
+  {
+   "id": "os:linux:8",
+   "repo": "torvalds/linux",
+   "text": "Stable Kernel Rules: Documentation/process/stable kernel rules.rst Backporting Guide: Documentation/process/backporting.rst Applying Patches: Documentation/process/applying patches.rst Subsystem Profile: Documentation/maintainer/maintainer entry profile.rst Git for Maintainers: Documentation/maintainer/configure git.rst"
+  },
+  {
+   "id": "os:linux:9",
+   "repo": "torvalds/linux",
+   "text": "Admin Guide: Documentation/admin guide/index.rst Kernel Parameters: Documentation/admin guide/kernel parameters.rst Sysctl Tuning: Documentation/admin guide/sysctl/index.rst Tracing/Debugging: Documentation/trace/index.rst Performance Security: Documentation/admin guide/perf security.rst Hardware Monitoring: Documentation/hwmon/index.rst"
+  },
+  {
+   "id": "os:illumos-gate:0",
+   "repo": "illumos/illumos-gate",
+   "text": "The illumos build must be run on an illumos based operating system. See the Building illumos https://illumos.org/docs/developers/build/ section of our documentation for detailed instructions."
+  },
+  {
+   "id": "os:illumos-gate:1",
+   "repo": "illumos/illumos-gate",
+   "text": "Code changes must be reviewed and tested. If you'd like to submit a change for inclusion in the project, please see the Contributing to illumos https://illumos.org/docs/contributing/ guide in our documentation."
+  },
+  {
+   "id": "os:illumos-gate:2",
+   "repo": "illumos/illumos-gate",
+   "text": "The illumos community is small but active. We welcome everybody who would like to use the software and participate in the community whether you've decades of experience in systems software, or you're just getting started; whether you work for a company that uses illumos, or you just find it personally interesting."
+  },
+  {
+   "id": "os:illumos-gate:3",
+   "repo": "illumos/illumos-gate",
+   "text": "Our Community https://illumos.org/docs/community/ guide includes details about our Mailing Lists and IRC channels."
+  },
+  {
+   "id": "os:illumos-gate:4",
+   "repo": "illumos/illumos-gate",
+   "text": "Participation in our community spaces, and in the project in general, are covered by our Code of Conduct ./CODE OF CONDUCT.md . By participating in the project you agree to abide by its terms."
+  },
+  {
+   "id": "os:illumos-gate:5",
+   "repo": "illumos/illumos-gate",
+   "text": "Most of the existing code is licensed under the CDDL https://illumos.org/license/CDDL and we expect new code will generally be under this license as well. Modifications of existing code may not alter the original license terms. Integrations of code from upstream sources that use another open source license are permissible, subject to approval of the advocates."
+  },
+  {
+   "id": "os:src:0",
+   "repo": "NetBSD/src",
+   "text": "NetBSD is a free, fast, secure, and highly portable Unix like Open Source operating system. It is available for a wide range of platforms https://wiki.NetBSD.org/ports/ , from large scale servers and powerful desktop systems to handheld and embedded devices."
+  },
+  {
+   "id": "os:src:1",
+   "repo": "NetBSD/src",
+   "text": "You can cross build NetBSD from most UNIX like operating systems. To build for amd64 x86 64 , in the src directory:"
+  },
+  {
+   "id": "os:src:2",
+   "repo": "NetBSD/src",
+   "text": "Send bugs and patches via web form https://www.NetBSD.org/cgi bin/sendpr.cgi?gndb netbsd . Subscribe to the mailing lists https://www.NetBSD.org/mailinglists/ . The netbsd users https://www.NetBSD.org/mailinglists/ netbsd users list is a good choice for many problems; watch current users https://www.NetBSD.org/mailinglists/ current users if you follow the bleeding edge of NetBSD current. Join the community IRC channel netbsd @ libera.chat https://web.libera.chat/ netbsd ."
+  },
+  {
+   "id": "os:src:3",
+   "repo": "NetBSD/src",
+   "text": "To work in the Git mirror, which is updated every few hours from CVS:"
+  },
+  {
+   "id": "os:src:4",
+   "repo": "NetBSD/src",
+   "text": "The NetBSD Guide https://www.NetBSD.org/docs/guide/en/ NetBSD manual pages https://man.NetBSD.org/ NetBSD Cross Reference https://nxr.NetBSD.org/"
+  },
+  {
+   "id": "os:zephyr:0",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "The Zephyr Project is a scalable real time operating system RTOS supporting multiple hardware architectures, optimized for resource constrained devices, and built with security in mind."
+  },
+  {
+   "id": "os:zephyr:1",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "The Zephyr OS is based on a small footprint kernel designed for use on resource constrained systems: from simple embedded environmental sensors and LED wearables to sophisticated smart watches and IoT wireless gateways."
+  },
+  {
+   "id": "os:zephyr:2",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "The Zephyr kernel supports multiple architectures, including ARM Cortex A, Cortex R, Cortex M , Intel x86, ARC, Tensilica Xtensa, and RISC V, SPARC, MIPS, and a large number of supported boards ."
+  },
+  {
+   "id": "os:zephyr:3",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "Welcome to Zephyr! See the Introduction to Zephyr for a high level overview, and the documentation's Getting Started Guide to start developing."
+  },
+  {
+   "id": "os:zephyr:4",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "Community support is provided via mailing lists and Discord; see the Resources below for details."
+  },
+  {
+   "id": "os:zephyr:5",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "Here's a quick summary of resources to help you find your way around:"
+  },
+  {
+   "id": "os:zephyr:6",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "📖 Zephyr Documentation 🚀 Getting Started Guide 🙋🏽 Tips when asking for help 💻 Code samples"
+  },
+  {
+   "id": "os:zephyr:7",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "💬 Discord Server for real time community discussions 📧 User mailing list users@lists.zephyrproject.org 📧 Developer mailing list devel@lists.zephyrproject.org 📬 Other project mailing lists 📚 Project Wiki"
+  },
+  {
+   "id": "os:zephyr:8",
+   "repo": "zephyrproject-rtos/zephyr",
+   "text": "🐛 GitHub Issues 🔒 Security documentation 🛡️ Security Advisories Repository ⚠️ Report security vulnerabilities at vulnerabilities@zephyrproject.org"
+  },
+  {
+   "id": "os:nuttx:0",
+   "repo": "apache/nuttx",
+   "text": "! POSIX Badge https://img.shields.io/badge/POSIX Compliant brightgreen?style flat&label POSIX ! License https://img.shields.io/badge/License Apache%202.0 blue https://nuttx.apache.org/docs/latest/introduction/licensing.html ! Issues Tracking Badge https://img.shields.io/badge/issue track github blue?style flat&label Issue%20Tracking ! Contributors https://img.shields.io/github/contributors/apache/nuttx https://github.com/apache/nuttx/graphs/contributors ! GitHub Build Badge https://github.com/apache/nuttx/workflows/Build/badge.svg https://github.com/apache/nuttx/actions/workflows/build.yml ! Documentation Badge https://github.com/apache/nuttx/workflows/Build%20Documentation/badge.svg https://nuttx.apache.org/docs/latest/index.html ! MemBrowse https://membrowse.com/badge.svg https://membrowse.com/public/apache/nuttx"
+  },
+  {
+   "id": "os:nuttx:1",
+   "repo": "apache/nuttx",
+   "text": "Apache NuttX is a real time operating system RTOS with an emphasis on standards compliance and small footprint. Scalable from 8 bit to 64 bit microcontroller environments, the primary governing standards in NuttX are POSIX and ANSI standards. Additional standard APIs from Unix and other common RTOSs such as VxWorks are adopted for functionality not available under these standards, or for functionality that is not appropriate for deeply embedded environments such as fork ."
+  },
+  {
+   "id": "os:nuttx:2",
+   "repo": "apache/nuttx",
+   "text": "For brevity, many parts of the documentation will refer to Apache NuttX as simply NuttX."
+  },
+  {
+   "id": "os:nuttx:3",
+   "repo": "apache/nuttx",
+   "text": "Getting Started First time on NuttX? Read the Getting Started https://nuttx.apache.org/docs/latest/quickstart/index.html guide! If you don't have a board available, NuttX has its own simulator that you can run on terminal."
+  },
+  {
+   "id": "os:nuttx:4",
+   "repo": "apache/nuttx",
+   "text": "Documentation You can find the current NuttX documentation on the Documentation Page https://nuttx.apache.org/docs/latest/ ."
+  },
+  {
+   "id": "os:nuttx:5",
+   "repo": "apache/nuttx",
+   "text": "Alternatively, you can build the documentation yourself by following the Documentation Build Instructions https://nuttx.apache.org/docs/latest/contributing/documentation.html ."
+  },
+  {
+   "id": "os:nuttx:6",
+   "repo": "apache/nuttx",
+   "text": "The old NuttX documentation is still available in the Apache wiki https://cwiki.apache.org/NUTTX/NuttX ."
+  },
+  {
+   "id": "os:nuttx:7",
+   "repo": "apache/nuttx",
+   "text": "Supported Boards NuttX supports a wide variety of platforms. See the full list on the Supported Platforms https://nuttx.apache.org/docs/latest/platforms/index.html page."
+  },
+  {
+   "id": "os:nuttx:8",
+   "repo": "apache/nuttx",
+   "text": "Contributing If you wish to contribute to the NuttX project, read the Contributing https://nuttx.apache.org/docs/latest/contributing/index.html guidelines for information on Git usage, coding standard, workflow and the NuttX principles."
+  },
+  {
+   "id": "os:nuttx:9",
+   "repo": "apache/nuttx",
+   "text": "License The code in this repository is under either the Apache 2 license, or a license compatible with the Apache 2 license. See the License Page https://nuttx.apache.org/docs/latest/introduction/licensing.html for more information."
+  },
+  {
+   "id": "os:RIOT:0",
+   "repo": "RIOT-OS/RIOT",
+   "text": "! Nightly CI status master ci badge ci link ! GitHub release release badge release link ! License license badge license link ! API docs api badge api link ! Getting Started Guide guide badge guide link ! Mastodon mastodon badge mastodon link ! Matrix matrix badge matrix link"
+  },
+  {
+   "id": "os:RIOT:1",
+   "repo": "RIOT-OS/RIOT",
+   "text": "RIOT is an open source microcontroller operating system , designed to match the requirements of Internet of Things IoT devices and other embedded devices. It supports a range of devices that are typically found in the Internet of Things IoT : 8 bit , 16 bit and 32 bit microcontrollers."
+  },
+  {
+   "id": "os:RIOT:2",
+   "repo": "RIOT-OS/RIOT",
+   "text": "RIOT is based on the following design principles: energy efficiency, real time capabilities, small memory footprint, modularity, and uniform API access, independent of the underlying hardware this API offers partial POSIX compliance ."
+  },
+  {
+   "id": "os:RIOT:3",
+   "repo": "RIOT-OS/RIOT",
+   "text": "RIOT is developed by an international open source community which is independent of specific vendors e.g. similarly to the Linux community . RIOT is licensed with LGPLv2.1 , a copyleft license which fosters indirect business models around the free open source software platform provided by RIOT, e.g. it is possible to link closed source code with the LGPL code."
+  },
+  {
+   "id": "os:RIOT:4",
+   "repo": "RIOT-OS/RIOT",
+   "text": "ci badge : https://ci.riot os.org/job/branch/master/badge ci link : https://ci.riot os.org/details/branch/master release badge : https://img.shields.io/github/release/RIOT OS/RIOT.svg release link : https://github.com/RIOT OS/RIOT/releases/latest license badge : doc/resources/badge license.svg license link : https://github.com/RIOT OS/RIOT/blob/master/LICENSE api badge : doc/resources/badge api.svg api link : https://api.riot os.org/ guide badge : doc/resources/badge guide.svg guide link : https://guide.riot os.org/getting started/installing/ mastodon badge : doc/resources/badge mastodon.svg mastodon link : https://floss.social/@RIOT OS matrix badge : doc/resources/badge matrix.svg matrix link : https://matrix.to/ / riot os:matrix.org"
+  },
+  {
+   "id": "os:RIOT:5",
+   "repo": "RIOT-OS/RIOT",
+   "text": "Start here: Our comprehensive Getting Started Guide getting started walks you through installation and your first RIOT applications. Learn by doing: Try our hands on tutorials tutorials designed for beginners Take the RIOT online course riot course at your own pace Explore the API: Check out the API documentation api docs for detailed information on RIOT's features and functions."
+  },
+  {
+   "id": "os:RIOT:6",
+   "repo": "RIOT-OS/RIOT",
+   "text": "getting started : https://guide.riot os.org/getting started/installing/ tutorials : https://github.com/RIOT OS/Tutorials riot course : https://github.com/RIOT OS/riot course api docs : https://api.riot os.org/"
+  },
+  {
+   "id": "os:RIOT:7",
+   "repo": "RIOT-OS/RIOT",
+   "text": "You can ask for help on the Forum or on Matrix. Please send bug reports and feature requests to our GitHub issue tracker issues"
+  },
+  {
+   "id": "os:RIOT:8",
+   "repo": "RIOT-OS/RIOT",
+   "text": "The Forum forum is the default place to start asking for help. Our Forum provides an archive of prior questions and answers. For chat, we use riot os:matrix.org matrix chat on the Matrix matrix chat network."
+  },
+  {
+   "id": "os:RIOT:9",
+   "repo": "RIOT-OS/RIOT",
+   "text": "For how our community is structured and governed, please see our governance document governance ."
+  },
+  {
+   "id": "os:os-issue-tracker:0",
+   "repo": "GrapheneOS/os-issue-tracker",
+   "text": "This repository serves as a place to report issues with GrapheneOS https://grapheneos.org/ . To open an issue, please see the issue tracker https://github.com/GrapheneOS/os issue tracker/issues ."
+  },
+  {
+   "id": "os:os-issue-tracker:1",
+   "repo": "GrapheneOS/os-issue-tracker",
+   "text": "To report issues for standalone apps , please use their respective issue trackers, listed here: App Store https://github.com/GrapheneOS/AppStore/issues Auditor https://github.com/GrapheneOS/Auditor/issues Camera https://github.com/GrapheneOS/Camera/issues Info https://github.com/GrapheneOS/Info/issues Messaging https://github.com/GrapheneOS/Messaging/issues PDF Viewer https://github.com/GrapheneOS/PdfViewer/issues Vanadium https://github.com/GrapheneOS/Vanadium/issues"
+  },
+  {
+   "id": "os:os-issue-tracker:2",
+   "repo": "GrapheneOS/os-issue-tracker",
+   "text": "To report issues for GrapheneOS services , please use their respective issue trackers, listed here: App repository https://github.com/GrapheneOS/apps.grapheneos.org/issues AttestationServer https://github.com/GrapheneOS/AttestationServer/issues Connectivity check & time server https://github.com/GrapheneOS/grapheneos.network/issues Discussion forum https://github.com/GrapheneOS/discuss.grapheneos.org/issues Mail server https://github.com/GrapheneOS/mail.grapheneos.org/issues Matrix server https://github.com/GrapheneOS/matrix.grapheneos.org/issues Server infrastructure https://github.com/GrapheneOS/infrastructure/issues Update server https://github.com/GrapheneOS/releases.grapheneos.org/issues Website https://github.com/GrapheneOS/grapheneos.org/issues"
+  },
+  {
+   "id": "os:os-issue-tracker:3",
+   "repo": "GrapheneOS/os-issue-tracker",
+   "text": "To report issues for other standalone projects , please use their respective issue trackers, listed here: hardened malloc https://github.com/GrapheneOS/hardened malloc Setup wizard https://github.com/GrapheneOS/platform packages apps SetupWizard2/issues Talkback https://github.com/GrapheneOS/talkback/issues Update client https://github.com/GrapheneOS/platform packages apps Updater/issues"
+  },
+  {
+   "id": "os:GmsCore:0",
+   "repo": "microg/GmsCore",
+   "text": "microG Services is a FLOSS Free/Libre Open Source Software framework to allow applications designed for Google Play Services to run on systems, where Play Services is not available."
+  },
+  {
+   "id": "os:GmsCore:1",
+   "repo": "microg/GmsCore",
+   "text": "If you'd like to help translate microG, take a look at TRANSLATION TRANSLATION.md ."
+  },
+  {
+   "id": "os:GmsCore:2",
+   "repo": "microg/GmsCore",
+   "text": "Licensed under the Apache License, Version 2.0 the \"License\" ; you may not use this file except in compliance with the License. You may obtain a copy of the License at"
+  },
+  {
+   "id": "os:GmsCore:3",
+   "repo": "microg/GmsCore",
+   "text": "Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
+  },
+  {
+   "id": "os:termux-app:0",
+   "repo": "termux/termux-app",
+   "text": "! Build status https://github.com/termux/termux app/workflows/Build/badge.svg https://github.com/termux/termux app/actions ! Testing status https://github.com/termux/termux app/workflows/Unit%20tests/badge.svg https://github.com/termux/termux app/actions ! Join the chat at https://gitter.im/termux/termux https://badges.gitter.im/termux/termux.svg https://gitter.im/termux/termux ! Join the Termux discord server https://img.shields.io/discord/641256914684084234.svg?label &logo discord&logoColor ffffff&color 5865F2 https://discord.gg/HXpF69X ! Termux library releases at Jitpack https://jitpack.io/v/termux/termux app.svg https://jitpack.io/ termux/termux app"
+  },
+  {
+   "id": "os:termux-app:1",
+   "repo": "termux/termux-app",
+   "text": "Note that this repository is for the app itself the user interface and the terminal emulation . For the packages installable inside the app, see termux/termux packages https://github.com/termux/termux packages ."
+  },
+  {
+   "id": "os:termux-app:2",
+   "repo": "termux/termux-app",
+   "text": "Quick how to about Termux package management is available at Package Management https://github.com/termux/termux packages/wiki/Package Management . It also has info on how to fix repository is under maintenance or down errors when running apt or pkg commands."
+  },
+  {
+   "id": "os:termux-app:3",
+   "repo": "termux/termux-app",
+   "text": "Contents Termux App and Plugins termux app and plugins Installation installation Uninstallation uninstallation Important Links important links Debugging debugging For Maintainers and Contributors for maintainers and contributors Forking forking Sponsors and Funders sponsors and funders"
+  },
+  {
+   "id": "os:termux-app:4",
+   "repo": "termux/termux-app",
+   "text": "The core Termux https://github.com/termux/termux app app comes with the following optional plugin apps."
+  },
+  {
+   "id": "os:termux-app:5",
+   "repo": "termux/termux-app",
+   "text": "Termux:API https://github.com/termux/termux api Termux:Boot https://github.com/termux/termux boot Termux:Float https://github.com/termux/termux float Termux:Styling https://github.com/termux/termux styling Termux:Tasker https://github.com/termux/termux tasker Termux:Widget https://github.com/termux/termux widget"
+  },
+  {
+   "id": "os:termux-app:6",
+   "repo": "termux/termux-app",
+   "text": "NOTICE: It is highly recommended that you update to v0.118.0 or higher ASAP for various bug fixes, including a critical world readable vulnerability reported here https://termux.github.io/general/2022/02/15/termux apps vulnerability disclosures.html . See below google play store experimental branch for information regarding Termux on Google Play."
+  },
+  {
+   "id": "os:termux-app:7",
+   "repo": "termux/termux-app",
+   "text": "Termux can be obtained through various sources listed below for only Android 7 with full support for apps and packages."
+  },
+  {
+   "id": "os:termux-app:8",
+   "repo": "termux/termux-app",
+   "text": "Support for both app and packages was dropped for Android 5 and 6 on 2020 01 01 https://www.reddit.com/r/termux/comments/dnzdbs/end of android56 support on 20200101/ at v0.83 , however it was re added just for the app without any support for package updates on 2022 05 24 https://github.com/termux/termux app/pull/2740 via the GitHub github sources. Check here https://github.com/termux/termux app/wiki/Termux on android 5 or 6 for the details."
+  },
+  {
+   "id": "os:termux-app:9",
+   "repo": "termux/termux-app",
+   "text": "If you wish to install from a different source, then you must uninstall any and all existing Termux or its plugin app APKs from your device first, then install all new APKs from the same new source. Check Uninstallation uninstallation section for details. You may also want to consider Backing up Termux https://wiki.termux.dev/wiki/Backing up Termux before the uninstallation so that you can restore it after re installing from Termux different source."
+  },
+  {
+   "id": "os:android_build:0",
+   "repo": "LineageOS/android_build",
+   "text": "For a list of behavioral changes useful for Android.mk writers see Changes.md Changes.md"
+  },
+  {
+   "id": "os:android_build:1",
+   "repo": "LineageOS/android_build",
+   "text": "For an outdated reference on Android.mk files, see build system.html /core/build system.html . Our Android.mk files look similar, but are entirely different from the Android.mk files used by the NDK build system. When searching for documentation elsewhere, ensure that it is for the platform build system most are not."
+  },
+  {
+   "id": "os:android_build:2",
+   "repo": "LineageOS/android_build",
+   "text": "This Makefile based system is in the process of being replaced with Soong , a new build system written in Go. During the transition, all of these makefiles are read by Kati , and generate a ninja file instead of being executed directly. That's combined with a ninja file read by Soong so that the build graph of the two systems can be combined and run as one."
+  },
+  {
+   "id": "os:gaia:0",
+   "repo": "mozilla-b2g/gaia",
+   "text": "Gaia is Mozilla's Phone UX for the Boot to Gecko B2G project."
+  },
+  {
+   "id": "os:gaia:1",
+   "repo": "mozilla-b2g/gaia",
+   "text": "Boot to Gecko aims to create a complete, standalone operating system for the open web."
+  },
+  {
+   "id": "os:gaia:2",
+   "repo": "mozilla-b2g/gaia",
+   "text": "The Gaia/Hacking page on MDN https://developer.mozilla.org/en US/docs/Mozilla/Firefox OS/Platform/Gaia/Hacking has all the information that you need to start working on Gaia, including building and running Gaia on a compatible device or desktop computer."
+  },
+  {
+   "id": "os:gaia:3",
+   "repo": "mozilla-b2g/gaia",
+   "text": "1. Run DEBUG 1 make 2. Run make test agent server & 3. Run B2G Desktop and open the Test Agent app 4. Run make test agent test"
+  },
+  {
+   "id": "os:gaia:4",
+   "repo": "mozilla-b2g/gaia",
+   "text": "or make test agent test APP to run unit tests for a specific app"
+  },
+  {
+   "id": "os:gaia:5",
+   "repo": "mozilla-b2g/gaia",
+   "text": "More importantly, you can use test agent server to watch the files on the filesystem and execute relevant tests when they change:"
+  },
+  {
+   "id": "os:gaia:6",
+   "repo": "mozilla-b2g/gaia",
+   "text": "1. Run DEBUG 1 make 2. Run make test agent server & 3. Run B2G Desktop and open the Test Agent app 4. Edit files and when you save them, glance at the console with test agent server running"
+  },
+  {
+   "id": "os:gaia:7",
+   "repo": "mozilla-b2g/gaia",
+   "text": "Note: If you add new files, you will need to restart test agent server."
+  },
+  {
+   "id": "os:gaia:8",
+   "repo": "mozilla-b2g/gaia",
+   "text": "As a convenience, you can also use the gaia test script to launch the test agent server and open the Test Agent app in firefox:"
+  },
+  {
+   "id": "os:gaia:9",
+   "repo": "mozilla-b2g/gaia",
+   "text": "1. Add firefox to your $PATH or set $FIREFOX to your preferred firefox/aurora/nightly binary. 2. Run ./bin/gaia test to run the test agent server and launch firefox. 3. Run make test agent test or modify files as described above."
+  },
+  {
+   "id": "os:ubuntu-touch:0",
+   "repo": "ubports/ubuntu-touch",
+   "text": "A simple and beautiful mobile OS for everyone! Ubuntu Touch https://ubports.com is the touch friendly mobile version of the Ubuntu https://ubuntu.com operating system. Originally designed and developed by Canonical, it now lives on in the UBports community."
+  },
+  {
+   "id": "os:ubuntu-touch:1",
+   "repo": "ubports/ubuntu-touch",
+   "text": "This is where we track all bugs https://github.com/ubports/ubports touch/issues?q is%3Aissue+is%3Aopen+label%3Abug and feature request https://github.com/ubports/ubuntu touch/issues?utf8 %E2%9C%93&q is%3Aissue+is%3Aopen+label%3A%22feature+request%22+ for the operating system."
+  },
+  {
+   "id": "os:ubuntu-touch:2",
+   "repo": "ubports/ubuntu-touch",
+   "text": "Please read our guide on writing a good bug report https://docs.ubports.com/en/latest/contribute/bugreporting.html before creating a new issue. To better understand the lifecycle of your issue, refer to our issue tracking guidelines https://docs.ubports.com/en/latest/about/process/issue tracking.html . Thank you!"
+  },
+  {
+   "id": "os:ubuntu-touch:3",
+   "repo": "ubports/ubuntu-touch",
+   "text": "You can use GitHub's filtering syntax to reduce clutter. Here's a brief explaination of the standard labels and what they mean https://docs.ubports.com/en/latest/about/process/issue tracking.html labels ."
+  },
+  {
+   "id": "os:ubuntu-touch:4",
+   "repo": "ubports/ubuntu-touch",
+   "text": "critical devel https://github.com/ubports/ubuntu touch/labels/critical%20%28devel%29 : This critical issue that only occurs on the devel channel is blocking the release of the next rc image. critical rc https://github.com/ubports/ubuntu touch/labels/critical%20%28rc%29 : This critical issue that only occurs on the devel and rc channel is blocking the release of the next stable release. Usually, issues that can not simply be moved to a different release and have the power to postpone the release are labeled this."
+  },
+  {
+   "id": "os:ubuntu-touch:5",
+   "repo": "ubports/ubuntu-touch",
+   "text": "team: ui https://github.com/ubports/ubports touch/labels/team%3A%20ui : This issue falls under the responsibility of the user interface team. team: middleware https://github.com/ubports/ubports touch/labels/team%3A%20middleware : This issue falls under the responsibility of the middleware team. team: hal https://github.com/ubports/ubports touch/labels/team%3A%20hal : This issue falls under the responsibility of the hardware abstraction layer team."
+  },
+  {
+   "id": "os:ubuntu-touch:6",
+   "repo": "ubports/ubuntu-touch",
+   "text": "Note: This repository does not contain the actual Ubuntu Touch code. Duh."
+  }
+ ]
+}

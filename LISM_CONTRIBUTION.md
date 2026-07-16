@@ -108,6 +108,95 @@ boundary that gives the whole edifice its credibility.
 
 ---
 
+## How the HELM/IHCEI test campaign upgrades LISM (July 2026)
+
+LISM was, by design, observational — a smoke detector, not a sprinkler. The
+HELM/IHCEI validation campaign (PRs #45–#49, `FINAL_VALIDATION.md`) upgrades it
+along four measured axes. Each upgrade is a tested artifact, not a plan.
+
+**1 · From descriptive law to enforced control, with the effect size measured.**
+LISM proved fidelity decays and that muted alarms precede collapse; it could not
+intervene. The **corroboration gate** is the intervention, and its effect is now
+quantified on real traffic: an ungated auditor notices **87.9%** of live
+registry texts and **69.6%** of real README prose (alarm-fatigue territory — the
+exact muting failure LISM warns about), while the gated engines notice **0.0%**
+with threat recall intact (6/6 injected exploits). The gate operationalizes
+LISM's central operational lesson — *a safety layer that cries wolf gets muted,
+and a muted layer lets τ_v drift toward the failure regime* — as ~200 lines of
+shipped code.
+
+**2 · The τ_v sensor became a live public instrument — and re-proved its own
+fine print.** The deployed `gh-issues` endpoint computes enforcement latency
+server-side from any repo's real issue timeline. On a fresh 8-repo cohort it
+separated maintained from unmaintained by **9–96×** (svelte 2.61d vs request
+251d) — and the **lodash zombie replication** confirmed, on live data, LISM's
+caveat that last-push activity is a contaminated health label: lodash pushes
+commits while its issue queue runs at 114 days. τ_v tracks *enforcement*, and
+now anyone can measure it with a GET request.
+
+**3 · The falsification discipline is now machinery, not just practice.** LISM
+earned credibility by killing its own quadratic and publishing the D_gap null.
+The campaign mechanized that ethic: the Stage-1 protocol is **canonical JSON
+under a SHA-256 manifest, enforced by CI** (edit the locked thresholds and the
+build goes red), and the acceptance harness **refuses to score against a
+tampered spec** and demonstrably returns a null (dry run: Claim A = NULL under
+the fast-mode stand-in). The four-pillar firewall went from a methodology
+section to executable infrastructure.
+
+**4 · A new null in the LISM tradition, from the new stack.** The Tier-2 claim
+— that federated re-weighting of fast-mode LLR priors could substitute for deep
+semantic extraction — was given its best case (ground-truth telemetry, ×100
+fleet amplification, gate LLRs moved 4–7×) and returned **evasive recall 0.125 →
+0.125, exactly flat**. Calibration cannot amplify a signal that was never
+extracted; the claim is retired for evasive coercion. Like the quadratic and
+D_gap before it, the retirement *sharpens* the roadmap: the on-device
+distillation bet is confirmed load-bearing, and it faces the sealed one-shot
+test the lock now guards.
+
+**5 · Dissonance (σ) is now a computed say-do gap, tested on real repos.** LISM
+named σ (dissonance) as a hazard covariate alongside τ_v, but earlier work left
+it as a concept. The cross-stack suite (`cross-stack/lism_diagnostic.mjs`)
+operationalizes it and tests it on real GitHub cohorts. For a repo, σ is the
+standardized gap between what it **says** about its own health and what it
+**does** about its own flagged risk:
+
+> **σ = z(SAY) − z(DO)**, with **SAY** = declared vitality (recency of the last
+> push — a fresh push is the project signalling "we are alive and maintaining
+> this") and **DO** = enacted responsiveness (`−log(1+τ_v)` — actually closing
+> flagged risk fast). Both z-scored *within the cohort* — LISM's "calibrate
+> locally, never import a universal threshold" doctrine, applied to σ itself.
+
+σ is a *coherence* signal, not a quality score. On the live cohorts it isolates
+three regimes: **σ ≫ 0 the ZOMBIE** (loudly alive, risk rots — `lodash`: fresh
+push, τ_v ≈ 114 d, flagged in **both** independent web snapshots); **σ ≪ 0 the
+INVERSE-ZOMBIE** (looks abandoned, resolves fastest — `GrapheneOS`: 236-day-stale
+push, τ_v = 1.18 d, σ = −3.31); and **σ ≈ 0 coherent** (honestly deprecated
+`request/`: stale *and* slow, σ = −0.06 — not alarmed, because it is not lying
+about its state). This is exactly the failure a naive last-commit-date health
+scanner cannot see, and it is now a tested, non-suppressive diagnostic composed
+end-to-end with the rest of the stack (`cross-stack/integration.test.mjs`, 26/26).
+
+**6 · The whole stack is now validated on GitHub-API data alone, and ships at
+$0.** A GitHub-only pilot (`cross-stack/github_pilot.test.mjs`, 32/32) drives
+*every* engine from one source — the public GitHub API: a live 12-repo cohort
+(τ_v computed server-side by the deployed `gh-issues` endpoint) plus 360 real
+commit lines. On it, τ_v separates stale/abandoned repos from alive ones
+(**124.9 d vs 15.9 d**), σ flags a fresh **zombie** (`jashkenas/underscore`:
+pushed today, τ_v ≈ 77 d) and reads deprecated `request/` as coherent, HELM stays
+silent (0/360) and fires on an injected scam, and the nine Novora products score
+GitHub prose in **fast mode — $0, no Anthropic key** (new keyless `api/screen.js`,
+8/8 contract). LISM's instrument and the treatment built on it now run end-to-end
+on nothing but the open GitHub API, at zero marginal cost.
+
+The relationship, in one line: **LISM diagnoses the disease (rising τ_v,
+widening σ, degrading D); HELM and IHCEI are the first tested treatment — a fidelity floor
+at the interface, alarm-fatigue eliminated so alarms stay believed, and a
+tamper-evident certificate trail — with the diagnostic now live as a public
+endpoint and the treatment's every claim gated by LISM's own falsification
+discipline.**
+
+---
+
 ## Bottom line
 
 From a yeast cell, a codebase, and a question-and-answer network, LISM delivers a
@@ -116,4 +205,6 @@ a **cheap universal sensor** (watch the probabilistic hazard of a rising
 self-flagged-risk backlog, not a brittle fidelity gate), and a **discipline** for
 institutional claims that earn trust by being falsifiable. Not an oracle to obey —
 an instrument, and a method, that help people see collapse coming while there is
-still time to act.
+still time to act. And as of July 2026 it is no longer only an instrument: the
+HELM/IHCEI layer turns its measurements into enforced, tested, zero-marginal-cost
+protection at the human interface.

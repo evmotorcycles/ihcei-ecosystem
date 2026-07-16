@@ -1,0 +1,19 @@
+{
+ "description": "LIVE GitHub-API-only cohort of 12 real open-source repositories, fetched through the deployed api/gh-issues endpoint (project-6q4gj), which computes tau_v = mean capped issue-close latency server-side from each repo's real issue timeline via the public GitHub API. No npm/PyPI, no other source — GitHub API only. Used by the whole-stack GitHub pilot.",
+ "endpoint": "https://project-6q4gj.vercel.app/api/gh-issues?repos=<a/b,...>&summary=1",
+ "fetched_at": "2026-07-16T10:43:00Z",
+ "repos": [
+  {"repo": "gohugoio/hugo", "archived": false, "pushed_at": "2026-07-13", "stargazers": 89000, "E": 1, "n_closed": 74, "tau_v": 2.52},
+  {"repo": "expressjs/express", "archived": false, "pushed_at": "2026-07-12", "stargazers": 69371, "E": 1, "n_closed": 32, "tau_v": 2.72},
+  {"repo": "sveltejs/svelte", "archived": false, "pushed_at": "2026-07-16", "stargazers": 87638, "E": 1, "n_closed": 51, "tau_v": 3.11},
+  {"repo": "psf/requests", "archived": false, "pushed_at": "2026-07-09", "stargazers": 54145, "E": 1, "n_closed": 27, "tau_v": 3.38},
+  {"repo": "vitejs/vite", "archived": false, "pushed_at": "2026-07-16", "stargazers": 82090, "E": 1, "n_closed": 51, "tau_v": 4.45},
+  {"repo": "pallets/flask", "archived": false, "pushed_at": "2026-06-10", "stargazers": 71951, "E": 1, "n_closed": 76, "tau_v": 10.56},
+  {"repo": "gulpjs/gulp", "archived": false, "pushed_at": "2026-02-09", "stargazers": 32957, "E": 1, "n_closed": 194, "tau_v": 24.06},
+  {"repo": "facebook/create-react-app", "archived": false, "pushed_at": "2025-02-15", "stargazers": 103310, "E": 1, "n_closed": 19, "tau_v": 38.06},
+  {"repo": "jashkenas/underscore", "archived": false, "pushed_at": "2026-07-13", "stargazers": 27336, "E": 1, "n_closed": 140, "tau_v": 76.74},
+  {"repo": "moment/moment", "archived": false, "pushed_at": "2024-08-14", "stargazers": 47943, "E": 1, "n_closed": 85, "tau_v": 88.46},
+  {"repo": "bower/bower", "archived": false, "pushed_at": "2024-10-13", "stargazers": 14919, "E": 1, "n_closed": 199, "tau_v": 121.7},
+  {"repo": "request/request", "archived": false, "pushed_at": "2024-08-14", "stargazers": 25535, "E": 1, "n_closed": 136, "tau_v": 251.29}
+ ]
+}

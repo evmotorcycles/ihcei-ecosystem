@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELM — the place where the human steers</title>
+<style>
+  :root{ --bg:#0e1116; --card:#161b22; --ink:#e6edf3; --ink2:#8b98a9; --line:#232a34;
+         --gold:#d0a040; --red:#e07070; --amber:#e0a860; --green:#5fbf8f; }
+  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);
+     font:15px/1.55 -apple-system,Segoe UI,Roboto,sans-serif;padding:2rem 1rem}
+  main{max-width:760px;margin:0 auto}
+  h1{font-weight:600;font-size:1.5rem;margin:0 0 .2rem} .sub{color:var(--ink2);margin:0 0 1.5rem}
+  .box{width:100%;min-height:84px;background:#0b0e13;border:1px solid var(--line);border-radius:10px;
+       color:var(--ink);padding:.8rem 1rem;font:inherit;resize:vertical}
+  .row{display:flex;gap:.5rem;margin:.6rem 0 1.4rem;flex-wrap:wrap}
+  button{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:8px;
+         padding:.5rem .9rem;cursor:pointer;font:inherit} button:hover{border-color:var(--gold)}
+  .primary{background:var(--gold);color:#1a1305;border-color:var(--gold);font-weight:600}
+  .chip{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;padding:.35rem .8rem;
+        font-size:.85rem;font-weight:600;border:1px solid}
+  .chip.block{background:rgba(224,112,112,.12);color:var(--red);border-color:rgba(224,112,112,.3)}
+  .chip.warn{background:rgba(224,168,96,.1);color:var(--amber);border-color:rgba(224,168,96,.3)}
+  .silent{color:var(--green);font-size:.85rem}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:1rem 1.2rem;margin:.7rem 0}
+  .card p{margin:.2rem 0 .6rem}
+  .why{color:var(--ink2);font-size:.85rem;margin-top:.5rem;border-top:1px solid var(--line);padding-top:.5rem}
+  .why b{color:var(--ink)}
+  .k{font-family:ui-monospace,monospace;font-size:.8rem;color:var(--ink2)}
+  .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink2);margin:.2rem 0}
+  footer{color:var(--ink2);font-size:.8rem;margin-top:2rem;border-top:1px solid var(--line);padding-top:1rem}
+</style>
+</head>
+<body>
+<main>
+  <h1>HELM <span style="color:var(--gold)">·</span> the place where the human steers</h1>
+  <p class="sub">On-device agency verdicts. Silent until it matters. Nothing you paste leaves this page.</p>
+
+  <div class="lbl">Check anything</div>
+  <textarea class="box" id="box" placeholder="Paste a message, an AI answer, an offer, a text from &quot;family&quot;…"></textarea>
+  <div class="row">
+    <button class="primary" onclick="run()">Check it</button>
+    <button onclick="fill('scam')">Try: a scam text</button>
+    <button onclick="fill('emergency')">Try: a real emergency</button>
+    <button onclick="fill('dark')">Try: a checkout page</button>
+    <button onclick="fill('calm')">Try: a calm message</button>
+  </div>
+  <div id="out"></div>
+
+  <footer>
+    HELM v0.1 · fast mode + corroboration gate · the mirror, never the hand.<br>
+    Silence is a feature: emergencies and ordinary urgency stay quiet — a chip appears only on a strong,
+    corroborated manipulation posterior.
+  </footer>
+</main>
+
+<script type="module">
+import { audit } from '../src/helm-core.mjs';
+const SAMPLES = {
+  scam: "It's me, your grandson. I'm in trouble — don't tell anyone. I need you to wire $2000 right now. Trust me, please hurry.",
+  emergency: "The database is down and the site is offline. Restart the primary now — there is no time to wait for the maintenance window.",
+  dark: "Only 2 left in stock! Everyone is buying this right now. Offer expires in 5 minutes — don't miss out!",
+  calm: "Here are three options for the trip, with trade-offs for each. Sources are linked. The choice is yours.",
+};
+window.fill = k => { document.getElementById('box').value = SAMPLES[k]; run(); };
+window.run = () => {
+  const text = document.getElementById('box').value.trim();
+  const out = document.getElementById('out');
+  if (!text) { out.innerHTML = ''; return; }
+  const r = audit(text);
+  const cls = r.verdict === 'BLOCK' ? 'block' : 'warn';
+  const chip = r.chip
+    ? `<span class="chip ${cls}">⚠ ${r.verdict === 'BLOCK' ? 'This looks like manipulation' : 'Worth a second look'}</span>`
+    : `<span class="silent">✓ HELM stayed silent — nothing here trips the floor.</span>`;
+  const why = r.correction ? `<div class="why"><b>Why:</b> ${r.correction}</div>` : '';
+  const ev = r.evidence.filter(e => e.llr > 0).map(e => e.gate).slice(0,4).join(', ') || '—';
+  out.innerHTML = `<div class="card"><p>${text.replace(/</g,'&lt;')}</p>${chip}${why}
+    <div class="why k">p(manipulative) = ${r.p_manipulative} · 95% CI [${r.ci95[0]}, ${r.ci95[1]}]
+    · mechanism ${r.mechanismPresent ? 'present' : 'absent'} · signals: ${ev}</div></div>`;
+};
+</script>
+</body>
+</html>
