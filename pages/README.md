@@ -20,10 +20,10 @@ structures, reusing the same primitives as the rest of the stack:
 
 Each segment is also audited two ways: **manipulation** (the NERE `consumer-v1`
 gate, catching coercion inside synthesized speech) and **grounding** — fast mode
-is on-device lexical alignment (word-overlap + fabricated-number detection);
-deep mode is the **Gemini grounding hop** (`api/gemini-ground.js`), invoked only
-on the ambiguous middle. Non-suppressive: verdicts ride alongside; the listener
-decides.
+is on-device lexical alignment (word-overlap + fabricated-number detection),
+the shipped **$0** path; deep mode is an **optional pluggable async grounder**
+(`buildStream`'s `ground` hook — bring your own semantic checker) for the
+ambiguous middle. Non-suppressive: verdicts ride alongside; the listener decides.
 
 ## Results — tested on real open-source data
 
@@ -52,21 +52,14 @@ segments, one hallucinated statistic, and one manipulation:
   a segment or rewriting a stored verdict is likewise caught. A normal `.mp3`/`.mp4`
   carries no such chain — the edit would play as authentic.
 
-## The Gemini grounding hop (`api/gemini-ground.js`)
+## Deep-mode grounding (optional, pluggable)
 
-The deep-mode fidelity check runs in project-6q4gj on Vercel (where the Gemini
-key and egress live). GET-testable:
-
-```
-GET /api/gemini-ground?health=1      -> { ok, keyConfigured, model }
-GET /api/gemini-ground?test=1        -> runs a grounded + a hallucinated case live
-GET /api/gemini-ground?source=…&claim=…  -> { grounded, p_alignment, reason }
-```
-
-It asks Gemini whether a CLAIM is fully supported by a SOURCE and returns a
-calibrated `p_alignment`. Fast mode (on-device, `$0`) handles the clear cases;
-this paid semantic hop resolves the ambiguous middle — the same fast/deep economics
-as the rest of the stack.
+Fast mode (on-device, `$0`) is the shipped grounding path and handles the clear
+cases. For the ambiguous middle, `buildStream(transcript, sources, { ground })`
+accepts an **optional** async grounder — `ground(source, claim) => { grounded,
+p_alignment }` — so an operator can plug in whatever semantic checker they run.
+No external LLM is wired by default: PAGES ships fast-mode-only, at zero cost and
+with no API key.
 
 ## What PAGES solves
 
@@ -83,8 +76,9 @@ as the rest of the stack.
   grounding audit (fast), manipulation audit, and tamper/splice detection — on
   real Express.js source data, 14/14.
 - **Fast-mode grounding is lexical:** overlap + fabricated-number detection catches
-  the common cases; genuine semantic paraphrase-vs-distortion is the Gemini hop's
-  job, and reworded manipulation is the same fast-mode ceiling as elsewhere.
+  the common cases; genuine semantic paraphrase-vs-distortion is the optional
+  deep-grounder hook's job, and reworded manipulation is the same fast-mode ceiling
+  as elsewhere.
 - **Not built here (design, per the memo):** spread-spectrum audio watermarking
   into real codecs, MPEG-4 timed-metadata muxing, and the player UI. PAGES here is
   the provenance/attestation *engine* and its contract, not a media muxer.

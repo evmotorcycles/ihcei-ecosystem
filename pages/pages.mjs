@@ -13,7 +13,8 @@
 //
 // AUDIT per segment: (a) manipulation (NERE consumer gate) and (b) GROUNDING —
 // fast mode is on-device lexical alignment (overlap + fabricated-number
-// detection); deep mode is the Gemini grounding hop (api/gemini-ground.js).
+// detection); deep mode is an optional pluggable async grounder (buildStream's
+// `ground` hook) — bring your own semantic checker for the ambiguous middle.
 // Non-suppressive: verdicts ride alongside; the listener decides.
 
 import { sha256, canonical, merkleRoot, merkleProof, verifyInclusion } from '../echo/echo.mjs';

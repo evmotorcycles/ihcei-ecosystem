@@ -54,6 +54,6 @@ console.log('  · every spoken claim is grounded-checked (fabricated stats surfa
 console.log('  · manipulation inside synthesized speech is caught by the same NERE gate');
 console.log('  · one tap traces a claim to the un-mutated source with a Merkle inclusion proof');
 console.log('  · splicing / word-swapping / deepfaking the audio breaks the chain at the timestamp');
-console.log('  fast grounding runs on-device ($0); the ambiguous middle escalates to the Gemini');
-console.log('  grounding hop (api/gemini-ground.js). The listener keeps the helm.');
+console.log('  fast grounding runs on-device ($0); the ambiguous middle can escalate to an');
+console.log('  optional pluggable deep grounder (buildStream `ground` hook). The listener keeps the helm.');
 bar('=');
