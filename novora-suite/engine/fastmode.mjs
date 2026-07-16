@@ -4,6 +4,11 @@
 // reasoning, paid) and, here, a FAST mode: a $0, no-network structural + lexical
 // screen that reuses the SAME tested NERE kernel the rest of the stack runs on.
 //
+// Epistemological, not ethical: IHCEI/NERE do not adjudicate morality or "AI
+// safety." They test the FIDELITY, METHODOLOGY, and GROUNDING of communication —
+// is a claim corroborated, is an agreement balanced, does a message preserve the
+// receiver's agency — i.e. verifiable epistemic properties, not subjective values.
+//
 // Honest scope: fast mode is a SCREEN, not the semantic judge. It agrees with
 // deep mode on the clear cases (a plainly-coercive message, a plainly-hollow
 // claim, a plainly-predatory clause) and returns a calibrated score + the
