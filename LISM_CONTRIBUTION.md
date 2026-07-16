@@ -176,6 +176,18 @@ about its state). This is exactly the failure a naive last-commit-date health
 scanner cannot see, and it is now a tested, non-suppressive diagnostic composed
 end-to-end with the rest of the stack (`cross-stack/integration.test.mjs`, 26/26).
 
+**6 · The whole stack is now validated on GitHub-API data alone, and ships at
+$0.** A GitHub-only pilot (`cross-stack/github_pilot.test.mjs`, 32/32) drives
+*every* engine from one source — the public GitHub API: a live 12-repo cohort
+(τ_v computed server-side by the deployed `gh-issues` endpoint) plus 360 real
+commit lines. On it, τ_v separates stale/abandoned repos from alive ones
+(**124.9 d vs 15.9 d**), σ flags a fresh **zombie** (`jashkenas/underscore`:
+pushed today, τ_v ≈ 77 d) and reads deprecated `request/` as coherent, HELM stays
+silent (0/360) and fires on an injected scam, and the nine Novora products score
+GitHub prose in **fast mode — $0, no Anthropic key** (new keyless `api/screen.js`,
+8/8 contract). LISM's instrument and the treatment built on it now run end-to-end
+on nothing but the open GitHub API, at zero marginal cost.
+
 The relationship, in one line: **LISM diagnoses the disease (rising τ_v,
 widening σ, degrading D); HELM and IHCEI are the first tested treatment — a fidelity floor
 at the interface, alarm-fatigue eliminated so alarms stay believed, and a
