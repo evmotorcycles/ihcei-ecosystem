@@ -68,6 +68,6 @@ stat to `0.02`, BLOCKs coercion inside the speech, and locates a splice at
   archived repos here have empty queues (no latency signal), so it reports null
   rather than inventing a comparison. That is recorded, not hidden.
 - Fast-mode grounding (PAGES stage E) is lexical overlap + fabricated-number
-  detection; genuine semantic paraphrase-vs-distortion is the Gemini deep hop's
-  job (`api/gemini-ground.js`). Everything else here is on-device, `$0`, no
+  detection; genuine semantic paraphrase-vs-distortion is the job of an optional
+  pluggable deep grounder (PAGES' `ground` hook). Everything else here is on-device, `$0`, no
   network beyond the one-time registry fetch.
