@@ -1,0 +1,357 @@
+<title>ADG & TQG-CFE — Governance Telemetry, Empirically Verified</title>
+<style>
+  :root{
+    --ground:#0b0f1a; --panel:#131826; --panel2:#1a2032; --line:#2a3346;
+    --brass:#c8a24a; --brass-hi:#e6c877; --patina:#5aa88f;
+    --ink:#ece5d4; --ink-mut:#9ea69c; --ink-faint:#6b7386;
+    --good:#54b58c; --warn:#e0a53a; --bad:#d1745a;
+    --serif:Georgia,'Iowan Old Style','Palatino Linotype','Times New Roman',serif;
+    --sans:system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
+    --maxw:74ch;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --ground:#f3eede; --panel:#faf6ea; --panel2:#f0e9d6; --line:#ddd2b6;
+      --brass:#9c7519; --brass-hi:#7c5c12; --patina:#2f7a63;
+      --ink:#20242c; --ink-mut:#55524a; --ink-faint:#8a8574;
+      --good:#2f8a63; --warn:#a8761a; --bad:#b0503a;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0b0f1a; --panel:#131826; --panel2:#1a2032; --line:#2a3346;
+    --brass:#c8a24a; --brass-hi:#e6c877; --patina:#5aa88f;
+    --ink:#ece5d4; --ink-mut:#9ea69c; --ink-faint:#6b7386;
+    --good:#54b58c; --warn:#e0a53a; --bad:#d1745a;
+  }
+  :root[data-theme="light"]{
+    --ground:#f3eede; --panel:#faf6ea; --panel2:#f0e9d6; --line:#ddd2b6;
+    --brass:#9c7519; --brass-hi:#7c5c12; --patina:#2f7a63;
+    --ink:#20242c; --ink-mut:#55524a; --ink-faint:#8a8574;
+    --good:#2f8a63; --warn:#a8761a; --bad:#b0503a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 1.5rem}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;line-height:1.12;letter-spacing:.01em}
+  a{color:var(--brass)}
+  .eyebrow{font-family:var(--mono);font-size:.66rem;letter-spacing:.28em;text-transform:uppercase;color:var(--brass);opacity:.9}
+  .num{font-variant-numeric:tabular-nums}
+  code,.mono{font-family:var(--mono)}
+
+  /* ── HERO ── */
+  header{position:relative;min-height:clamp(30rem,72vh,46rem);display:flex;align-items:center;
+    border-bottom:1px solid var(--line);overflow:hidden}
+  #sky{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .hero-mask{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 42%,transparent,var(--ground) 96%)}
+  .hero-inner{position:relative;z-index:2;width:100%;padding:5rem 0}
+  .hero-inner .eyebrow{display:block;margin-bottom:1.4rem}
+  h1{font-size:clamp(2.5rem,6.4vw,4.4rem);margin:0 0 1.1rem}
+  h1 em{font-style:italic;color:var(--brass-hi)}
+  .lede{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--ink-mut);max-width:56ch;margin:0}
+  .verdict-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2.2rem}
+  .stamp{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;padding:.5rem .8rem;border:1px solid var(--line);
+    border-radius:2px;background:color-mix(in srgb,var(--panel) 70%,transparent);color:var(--ink-mut)}
+  .stamp b{color:var(--good);font-weight:600}
+
+  /* ── SECTIONS ── */
+  section{padding:4.5rem 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:1rem;align-items:baseline;margin-bottom:2rem}
+  .sec-mark{font-family:var(--mono);font-size:.72rem;color:var(--brass);letter-spacing:.1em;
+    border:1px solid var(--brass);border-radius:50%;width:2rem;height:2rem;min-width:2rem;
+    display:flex;align-items:center;justify-content:center;opacity:.85}
+  h2{font-size:clamp(1.6rem,3.6vw,2.3rem);margin:0}
+  .sec-head p{margin:.35rem 0 0;color:var(--ink-mut);font-size:.95rem}
+  p{max-width:var(--maxw)}
+  .muted{color:var(--ink-mut)}
+
+  /* ── EQUATION PLATES ── */
+  .plate{background:var(--panel);border:1px solid var(--line);border-radius:6px;margin:1.4rem 0;
+    box-shadow:inset 0 1px 0 color-mix(in srgb,var(--brass) 14%,transparent)}
+  .plate-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;
+    padding:.8rem 1.2rem;border-bottom:1px solid var(--line)}
+  .plate-head .name{font-family:var(--serif);font-size:1.15rem;color:var(--ink)}
+  .plate-head .tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+  .eqn{padding:1.6rem 1.2rem;text-align:center;overflow-x:auto}
+  .eqn .big{font-family:var(--serif);font-size:clamp(1.15rem,3.2vw,1.7rem);color:var(--brass-hi);white-space:nowrap}
+  .eqn .big .op{color:var(--ink-mut)}
+  .eqn .whereis{font-family:var(--mono);font-size:.76rem;color:var(--ink-mut);margin-top:1rem;white-space:normal;line-height:1.9}
+  .eqn .whereis b{color:var(--patina);font-weight:600}
+
+  /* ── DICTIONARY / DATA TABLES ── */
+  .scroll{overflow-x:auto;margin:1.2rem 0;border:1px solid var(--line);border-radius:6px}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:34rem}
+  th,td{text-align:left;padding:.62rem .85rem;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brass);background:var(--panel2);position:sticky;top:0}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover td{background:color-mix(in srgb,var(--panel) 55%,transparent)}
+  td .term{font-family:var(--serif);color:var(--ink);font-size:.95rem}
+  td .ar{color:var(--brass);font-size:.8rem}
+  td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+  .chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.04em;padding:.16rem .5rem;border-radius:2px;
+    border:1px solid;white-space:nowrap;display:inline-block}
+  .c-meas{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,transparent);background:color-mix(in srgb,var(--good) 12%,transparent)}
+  .c-road{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent);background:color-mix(in srgb,var(--warn) 10%,transparent)}
+  .c-good{color:var(--good)} .c-bad{color:var(--bad)} .c-warn{color:var(--warn)}
+  .sup{color:var(--good);font-weight:600}
+
+  /* AUC bar */
+  .bar{display:inline-flex;align-items:center;gap:.5rem}
+  .bar .track{width:56px;height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}
+  .bar .fill{height:100%;background:linear-gradient(90deg,var(--patina),var(--brass))}
+
+  /* ── CONTRIBUTION CARDS ── */
+  .cols{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:1.2rem}
+  @media(min-width:760px){.cols{grid-template-columns:repeat(3,1fr)}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:1.4rem}
+  .card h3{font-size:1.12rem;margin:.2rem 0 .6rem}
+  .card .kicker{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--brass)}
+  .card p{font-size:.88rem;color:var(--ink-mut);margin:.5rem 0 0}
+
+  /* ── layer callout ── */
+  .layers{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:1.2rem}
+  @media(min-width:680px){.layers{grid-template-columns:1fr 1fr}}
+  .layer{border:1px solid var(--line);border-radius:6px;padding:1.1rem 1.3rem;background:var(--panel)}
+  .layer.l1{border-left:3px solid var(--good)}
+  .layer.l3{border-left:3px solid var(--brass)}
+  .layer h3{font-size:1rem;margin:0 0 .4rem}
+  .layer p{font-size:.85rem;color:var(--ink-mut);margin:0}
+
+  .repro{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:1rem 1.2rem;margin-top:1.4rem;
+    font-family:var(--mono);font-size:.76rem;color:var(--ink-mut);overflow-x:auto}
+  .repro .c{color:var(--patina)} .repro .k{color:var(--brass)}
+
+  footer{padding:3rem 0 4rem;color:var(--ink-faint);font-size:.8rem}
+  footer .wrap>div{max-width:var(--maxw)}
+  hr.tick{border:none;height:1px;background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 16px);margin:2rem 0}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header>
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-mask"></div>
+  <div class="hero-inner"><div class="wrap">
+    <span class="eyebrow">ADG · TQG-CFE — organization-graph telemetry</span>
+    <h1>Two governance equations, <em>read like an instrument</em>.</h1>
+    <p class="lede">Not physics with SI units — telemetry, the way <span class="mono">E&nbsp;=&nbsp;U·D</span> is in LISM.
+      Each symbol is a measurable signal of a real network. Tested on 22 open-source GitHub projects, they
+      predict which survive and which fail — and name the ones a naïve health-check mislabels.</p>
+    <div class="verdict-row">
+      <span class="stamp">ADG C<sub>dev</sub> · <b>p=0.025</b> · AUC 0.78</span>
+      <span class="stamp">TQG A<sub>n</sub> · <b>p=0.018</b> · AUC 0.80</span>
+      <span class="stamp">Shirk detector · <b>p=0.0013</b></span>
+      <span class="stamp">Ψ<sub>Yusr</sub> survival · <b>9 / 9</b></span>
+    </div>
+  </div></div>
+</header>
+
+<section id="instruments"><div class="wrap">
+  <div class="sec-head">
+    <span class="sec-mark">I</span>
+    <div><h2>The instruments</h2>
+      <p>A repository is a governance network of contributors resolving flagged risk. Every term below is a dial.</p></div>
+  </div>
+
+  <div class="plate">
+    <div class="plate-head"><span class="name">ADG — Network Development, C<sub>dev</sub></span><span class="tag">Absolute Divine Governance</span></div>
+    <div class="eqn">
+      <div class="big">C<sub>dev</sub> = U <span class="op">·</span> D <span class="op">/</span> (ε + ℏ<sub>network</sub>)&nbsp;&nbsp;&nbsp; D = Salat <span class="op">·</span> Zakat</div>
+      <div class="whereis">
+        U = adoption <b>ln(1+stars)</b> &nbsp;·&nbsp; Salat = D<sub>enc</sub> = sincere seeking <b>1/(1+τ<sub>v</sub>)</b> &nbsp;·&nbsp;
+        Zakat = D<sub>dec</sub> = selflessness <b>ln(1+closed issues)</b> &nbsp;·&nbsp; ℏ<sub>network</sub> = Shaytan / internal noise <b>= τ<sub>v</sub></b>
+      </div>
+    </div>
+  </div>
+
+  <div class="plate">
+    <div class="plate-head"><span class="name">TQG-CFE — Perception rendering, Ψ &amp; A<sub>n</sub></span><span class="tag">Cognitive-Field Equivalence</span></div>
+    <div class="eqn">
+      <div class="big">A<sub>n</sub>(Φ) = ⟨Φ | Θ<sub>Deen</sub>⟩ <span class="op">/</span> (‖Φ‖ ‖Θ<sub>Deen</sub>‖)</div>
+      <div class="big" style="margin-top:.8rem;font-size:clamp(1rem,2.6vw,1.35rem)">
+        Ψ → <span style="color:var(--good)">Yusr</span> if A<sub>n</sub> &gt; κ &nbsp;·&nbsp;
+        <span style="color:var(--bad)">Usr</span> if A<sub>n</sub> ≤ κ &nbsp;·&nbsp;
+        <span style="color:var(--warn)">Chaos</span> if Shirk dominates</div>
+      <div class="whereis">
+        Φ = the practice vector (U, Salat, Zakat) &nbsp;·&nbsp; Θ<sub>Deen</sub> = the Established Order, target <b>(1,1,1)</b> &nbsp;·&nbsp;
+        Shirk = <b>|σ|</b>, the say-do dissonance &nbsp;·&nbsp; Yusr = <b>Iman</b> (safety, the rendered ease)
+      </div>
+    </div>
+  </div>
+  <p class="muted" style="font-size:.86rem">The outcome each equation predicts — <b style="color:var(--patina)">Barakah</b>, evidence-based
+    knowledge <span class="mono">E</span> — is measured <em>independently</em> (a repo failed if archived or unpushed &gt;365 days),
+    so predicting it is a real test, not a tautology.</p>
+</div></section>
+
+<section id="calibration"><div class="wrap">
+  <div class="sec-head">
+    <span class="sec-mark">II</span>
+    <div><h2>Calibration — every word is a measurement</h2>
+      <p>The transition from metaphysical vocabulary to engineering telemetry. Terms are taken exactly as defined, never reduced to cultural labels.</p></div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>Governance term</th><th>Engineering meaning</th><th>Measured proxy</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><span class="term">Nafs</span></td><td>a node in the collaboration network</td><td class="mono">repo / contributor</td><td><span class="chip c-meas">instrumented</span></td></tr>
+      <tr><td><span class="term">Salat</span> <span class="ar">D_enc</span></td><td>sincere seeking · the encode / alignment hop</td><td class="mono">1/(1+τ_v)</td><td><span class="chip c-meas">measured</span></td></tr>
+      <tr><td><span class="term">Zakat</span> <span class="ar">D_dec</span></td><td>selflessness · the decode / transfer hop</td><td class="mono">ln(1+closed)</td><td><span class="chip c-meas">measured</span></td></tr>
+      <tr><td><span class="term">Barakah</span></td><td>evidence-based knowledge <span class="mono">E</span> — the yield of D_enc·D_dec</td><td class="mono">health / survival</td><td><span class="chip c-meas">measured</span></td></tr>
+      <tr><td><span class="term">Deen</span></td><td>the Established Order — the governance target (not “religion”)</td><td class="mono">Θ = (1,1,1)</td><td><span class="chip c-meas">measured</span></td></tr>
+      <tr><td><span class="term">Iman</span></td><td>safety / security — the rendered ease of an aligned, coherent node</td><td class="mono">Ψ = Yusr</td><td><span class="chip c-meas">measured</span></td></tr>
+      <tr><td><span class="term">Yusr</span></td><td>cognitive ease — low-friction operation</td><td class="mono">A_n &gt; κ</td><td><span class="chip c-meas">measured</span></td></tr>
+      <tr><td><span class="term">Shaytan</span></td><td>internal disposition — accumulated internal governance-failure noise</td><td class="mono">ℏ = τ_v</td><td><span class="chip c-meas">measured</span></td></tr>
+      <tr><td><span class="term">Shirk</span></td><td>epistemic conflation — associating the wrong label with reality (“not a sin”)</td><td class="mono">|σ| dissonance</td><td><span class="chip c-meas">measured</span></td></tr>
+      <tr><td><span class="term">Fasad</span></td><td><em>intentional</em> terminology violation — deliberate Shirk</td><td class="mono">signed σ, adversarial</td><td><span class="chip c-road">roadmap</span></td></tr>
+      <tr><td><span class="term">Huzw</span></td><td>linguistic misuse — careless label drift</td><td class="mono">label-vs-behaviour drift</td><td><span class="chip c-road">roadmap</span></td></tr>
+      <tr><td><span class="term">Iblees</span></td><td>the Nafs counterpart — the 4-D bias engine (four attack dimensions)</td><td class="mono">4 bias vectors</td><td><span class="chip c-road">roadmap</span></td></tr>
+      <tr><td><span class="term">Firaun</span></td><td>a system that declares itself the <em>illah</em> — self-certifying, no external audit</td><td class="mono">receiver-side audit = 0</td><td><span class="chip c-meas">countered by EI</span></td></tr>
+      <tr><td><span class="term">7 Gates of Jahannam</span></td><td>seven failure modes (Zīnah/adornment, groupthink, indirect guidance, neglected verification…)</td><td class="mono">NERE gate lexicon</td><td><span class="chip c-meas">partly tested</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted" style="font-size:.84rem"><b>Shirk</b>, <b>Fasad</b> and <b>Huzw</b> form one measurable family — the gap between what a
+    network <em>says</em> about itself and what it <em>does</em>. Only Shirk (|σ|) is fully instrumented today; the other two are named subtypes on the roadmap.</p>
+</div></section>
+
+<section id="evidence"><div class="wrap">
+  <div class="sec-head">
+    <span class="sec-mark">III</span>
+    <div><h2>The reading — real open-source data</h2>
+      <p>22 live GitHub repositories (16 survived, 6 failed). Mann-Whitney U in pure standard library; outcome measured independently.</p></div>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>Prediction</th><th>Survived vs failed</th><th>p (1-tailed)</th><th>AUC</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>ADG — C<sub>dev</sub> ranks health</td><td class="n">1.40 · 0.30</td><td class="n">0.025</td>
+        <td class="n"><span class="bar"><span class="track"><span class="fill" style="width:78%"></span></span>0.78</span></td><td><span class="sup">supported</span></td></tr>
+      <tr><td>TQG — alignment A<sub>n</sub> ranks health</td><td class="n">0.86 · 0.73</td><td class="n">0.018</td>
+        <td class="n"><span class="bar"><span class="track"><span class="fill" style="width:80%"></span></span>0.80</span></td><td><span class="sup">supported</span></td></tr>
+      <tr><td>Two-hop D = Salat·Zakat</td><td class="n">0.119 · 0.042</td><td class="n">0.028</td>
+        <td class="n"><span class="bar"><span class="track"><span class="fill" style="width:78%"></span></span>0.78</span></td><td><span class="sup">supported</span></td></tr>
+      <tr><td>Shirk — fresh push, rotting queue</td><td class="n">τ_v 67.6 · 6.2</td><td class="n c-good">0.0013</td>
+        <td class="n">—</td><td><span class="sup">supported</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <p style="margin-top:1.6rem"><b>Ψ renders exactly as the equation says.</b> Once the deceptive nodes are split into <span class="chip" style="color:var(--warn);border-color:var(--warn)">Chaos</span>,
+    the three states separate cleanly on survival:</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Ψ rendering</th><th>Meaning</th><th>Survival</th></tr></thead>
+    <tbody>
+      <tr><td><span class="c-good">Yusr</span> — ease / Iman</td><td>aligned, coherent</td><td class="n c-good">9 / 9 · 100%</td></tr>
+      <tr><td><span class="c-bad">Usr</span> — hardship</td><td>misaligned</td><td class="n">3 / 7 · 43%</td></tr>
+      <tr><td><span class="c-warn">Chaos</span> — Shirk dominates</td><td>the mislabelled set (e.g. an archived repo that still <em>looks</em> fast)</td><td class="n">4 / 6</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted" style="font-size:.86rem">Adding Shirk (|σ|) <em>fixed</em> a real error: <code>angular.js</code> — archived yet still responsive — fooled the
+    plain model as a false “Yusr”. The dissonance term correctly re-files it as <b class="c-warn">Chaos</b>, leaving Yusr a clean 9/9. That is
+    <b>epistemic Shirk made measurable</b>: a network associating the label “alive” with a reality that is rotting.</p>
+
+  <hr class="tick">
+  <p class="muted" style="font-size:.86rem"><b>Lineage.</b> This sits on LISM, whose enforcement-latency law is the deepest-tested result here:
+    failed repos τ_v <span class="num">50.6 d</span> vs survivors <span class="num">19.8 d</span> across <span class="num">992</span> repositories
+    (<span class="mono">p ≈ 10⁻³¹</span>); the yeast channel’s independence <span class="mono">VIF = 1.003</span> at <span class="num">N = 4825</span>,
+    recomputed here from raw STRING v12. Salat embeds <span class="mono">1/(1+τ_v)</span>, so C<sub>dev</sub> is a superset of that hazard read.</p>
+</div></section>
+
+<section id="contribution"><div class="wrap">
+  <div class="sec-head">
+    <span class="sec-mark">IV</span>
+    <div><h2>What it contributes to science</h2>
+      <p>A falsifiable, receiver-side way to measure the health of any governed network from clean telemetry.</p></div>
+  </div>
+  <div class="cols">
+    <div class="card">
+      <span class="kicker">Perception</span>
+      <h3>Hoffman’s Interface</h3>
+      <p>Donald Hoffman argues perception is a fitness-tuned <em>interface</em> — a desktop of icons — not a window onto raw
+        reality. TQG-CFE’s Ψ is exactly that: a node renders <span class="c-good">Yusr</span> / <span class="c-bad">Usr</span> / <span class="c-warn">Chaos</span>,
+        never the raw substrate. The new result adds the missing driver — we <em>measured</em> that governance-alignment (A<sub>n</sub>)
+        predicts which interface a system experiences. The icon is fitness; fitness is fidelity.</p>
+    </div>
+    <div class="card">
+      <span class="kicker">Substrate</span>
+      <h3>A computational reality</h3>
+      <p>If reality is an incubator for development — a high-fidelity simulator — governed sub-systems should obey compact
+        information laws, not matter laws. They do: on real collaboration graphs, outcomes fall out of timestamps via
+        <span class="mono">E=U·D</span>, τ_v and σ. Governed networks behave as information processors, which is what a
+        computational universe would predict at the meso-scale.</p>
+    </div>
+    <div class="card">
+      <span class="kicker">Trust</span>
+      <h3>The anti-Firaun</h3>
+      <p><em>Firaun</em> is any system that declares itself the sole source (<em>illah</em>) and grades its own output — the
+        self-certifying conflict of interest. The cure is structural: <span class="mono">A_n</span> and Shirk are computed
+        <b>receiver-side</b>, on the network’s own timestamps, by no authority it controls. Verification moves from the producer to the audited.</p>
+    </div>
+  </div>
+
+  <div class="layers">
+    <div class="layer l1"><h3>Layer 1 — measured</h3>
+      <p>The telemetry. Every number on this page is recomputed from real GitHub data with a stdlib test, reproducible in one command.
+        This is what has been empirically verified.</p></div>
+    <div class="layer l3"><h3>Layer 3 — interpretation</h3>
+      <p>The metaphysical reading (Nafs, Deen, the computational cosmos, the Hoffman bridge) is the framework’s <em>interpretive prior</em> —
+        consistent with the data, not proven by it. Kept deliberately separate, as the framework’s own note requests.</p></div>
+  </div>
+
+  <div class="repro">
+    <span class="c"># recompute every figure — no network, stdlib only</span><br>
+    <span class="k">python3</span> adg-tqg/experiment_enriched.py <span class="c"># ADG + TQG + Shirk detector</span><br>
+    <span class="k">python3</span> repro/reproduce_tauv.py <span class="c"># LISM τ_v law, zero dependencies</span><br>
+    <span class="k">python3</span> repro/reproduce_yeast.py <span class="c"># yeast VIF=1.003 from raw STRING v12</span>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><div>
+  <p><b>Provenance.</b> All statistics are recomputed from committed real data in
+    <code>evmotorcycles/ihcei-ecosystem</code> (<code>adg-tqg/</code>, <code>repro/</code>). Cohort: 22 live open-source GitHub
+    repositories, fetched via the project’s <code>gh-issues</code> endpoint. Mann-Whitney U validated against SciPy.
+    ADG &amp; TQG-CFE are organization-graph telemetry operationalizations — <em>not</em> claims of physical measurement.
+    The governance vocabulary is used with its stated engineering meanings; the Layer-3 interpretation is neither tested nor asserted here.</p>
+</div></div></footer>
+
+<script>
+(function(){
+  var c=document.getElementById('sky'), x=c.getContext('2d'), W,H,DPR,stars=[],t=0;
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function brass(){return getComputedStyle(document.documentElement).getPropertyValue('--brass').trim()||'#c8a24a';}
+  function ink(){return getComputedStyle(document.documentElement).getPropertyValue('--ink-faint').trim()||'#6b7386';}
+  function size(){DPR=Math.min(2,devicePixelRatio||1);W=c.clientWidth;H=c.clientHeight;c.width=W*DPR;c.height=H*DPR;x.setTransform(DPR,0,0,DPR,0,0);
+    stars=[];var n=Math.round(W*H/9000);for(var i=0;i<n;i++)stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+.2,p:Math.random()*6.28});}
+  function ring(cx,cy,rad,seg,off,alpha){x.globalAlpha=alpha;x.strokeStyle=brass();x.lineWidth=1;
+    for(var i=0;i<seg;i++){var a0=(i/seg)*6.283+off,a1=a0+(6.283/seg)*0.62;x.beginPath();x.arc(cx,cy,rad,a0,a1);x.stroke();}x.globalAlpha=1;}
+  function ticks(cx,cy,rad,n,len,off){x.strokeStyle=brass();x.globalAlpha=.5;x.lineWidth=1;
+    for(var i=0;i<n;i++){var a=(i/n)*6.283+off;x.beginPath();x.moveTo(cx+Math.cos(a)*rad,cy+Math.sin(a)*rad);
+      x.lineTo(cx+Math.cos(a)*(rad-len),cy+Math.sin(a)*(rad-len));x.stroke();}x.globalAlpha=1;}
+  function frame(){
+    x.clearRect(0,0,W,H);
+    var cx=W*0.5,cy=H*0.44,base=Math.min(W,H);
+    // starfield
+    for(var i=0;i<stars.length;i++){var s=stars[i];var tw=reduce?.5:(.4+.6*Math.abs(Math.sin(t*.6+s.p)));
+      x.globalAlpha=tw*.7;x.fillStyle=ink();x.beginPath();x.arc(s.x,s.y,s.r,0,6.283);x.fill();}
+    x.globalAlpha=1;
+    // astrolabe plates
+    var r0=base*0.30;
+    ring(cx,cy,r0,1,0,.22);
+    ticks(cx,cy,r0,72,7,0);
+    ticks(cx,cy,r0*0.98,24,13,0);
+    ring(cx,cy,r0*0.72,1,0,.16);
+    // rotating rete
+    var rot=reduce?0.4:t*0.05;
+    ring(cx,cy,r0*0.55,6,rot,.5);
+    ring(cx,cy,r0*0.4,5,-rot*1.4,.4);
+    // pointer
+    x.globalAlpha=.6;x.strokeStyle=brass();x.lineWidth=1.2;x.beginPath();
+    x.moveTo(cx+Math.cos(rot)*r0*0.62,cy+Math.sin(rot)*r0*0.62);
+    x.lineTo(cx-Math.cos(rot)*r0*0.62,cy-Math.sin(rot)*r0*0.62);x.stroke();
+    x.beginPath();x.arc(cx,cy,2.5,0,6.283);x.fillStyle=brass();x.fill();x.globalAlpha=1;
+    if(!reduce){t+=0.016;requestAnimationFrame(frame);}
+  }
+  size();frame();if(reduce)frame();
+  addEventListener('resize',function(){size();if(reduce)frame();});
+  new MutationObserver(function(){if(reduce)frame();}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
