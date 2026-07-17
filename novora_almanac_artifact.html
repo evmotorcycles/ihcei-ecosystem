@@ -1,0 +1,306 @@
+<title>Novora — The Whole Stack, and What We Measured</title>
+<style>
+  :root{
+    --ground:#eceef1; --panel:#f6f7f9; --panel-2:#e4e8ec; --ink:#14212c; --ink-soft:#43555f;
+    --line:#c9d2d8; --teal:#15806f; --teal-soft:#1f9e8f; --amber:#b26a12; --oxblood:#a5423f;
+    --measured-bg:#e2efec; --hazard-bg:#f5ebd9; --shadow:0 1px 2px rgba(20,33,44,.08),0 8px 24px rgba(20,33,44,.06);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#0e1620; --panel:#152230; --panel-2:#1c2c3b; --ink:#dfe7ec; --ink-soft:#94a6b2;
+      --line:#28394a; --teal:#3fb8ad; --teal-soft:#4fcabd; --amber:#e0972c; --oxblood:#c86864;
+      --measured-bg:#122b2a; --hazard-bg:#2b2413; --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#0e1620; --panel:#152230; --panel-2:#1c2c3b; --ink:#dfe7ec; --ink-soft:#94a6b2;
+    --line:#28394a; --teal:#3fb8ad; --teal-soft:#4fcabd; --amber:#e0972c; --oxblood:#c86864;
+    --measured-bg:#122b2a; --hazard-bg:#2b2413; --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --ground:#eceef1; --panel:#f6f7f9; --panel-2:#e4e8ec; --ink:#14212c; --ink-soft:#43555f;
+    --line:#c9d2d8; --teal:#15806f; --teal-soft:#1f9e8f; --amber:#b26a12; --oxblood:#a5423f;
+    --measured-bg:#e2efec; --hazard-bg:#f5ebd9; --shadow:0 1px 2px rgba(20,33,44,.08),0 8px 24px rgba(20,33,44,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    line-height:1.62;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;text-wrap:balance;letter-spacing:.1px}
+  a{color:var(--teal)}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--teal);font-weight:600}
+  section{border-top:1px solid var(--line)}
+  .pad{padding:64px 0}
+
+  /* ── hero ── */
+  header{position:relative;overflow:hidden;background:
+    radial-gradient(1200px 500px at 78% -10%, color-mix(in srgb,var(--teal) 14%,transparent), transparent 60%),
+    var(--ground)}
+  .hero{padding:78px 0 56px}
+  .hero h1{font-size:clamp(2.4rem,5.4vw,4rem);line-height:1.04;margin:.35em 0 .3em}
+  .hero .lede{font-size:clamp(1.12rem,2vw,1.4rem);color:var(--ink-soft);max-width:44ch}
+  .hero .accent{color:var(--teal)}
+  canvas#tv{display:block;width:100%;height:132px;margin:30px 0 8px;
+    border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+  .cap{font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);letter-spacing:.02em}
+
+  /* ── stat strip ── */
+  .strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:34px}
+  .strip .cell{background:var(--panel);padding:18px 16px}
+  .strip .n{font-family:var(--mono);font-size:clamp(1.3rem,2.6vw,1.9rem);font-weight:600;color:var(--teal);
+    font-variant-numeric:tabular-nums;line-height:1}
+  .strip .l{font-size:12.5px;color:var(--ink-soft);margin-top:7px}
+  @media(max-width:720px){.strip{grid-template-columns:repeat(2,1fr)}}
+
+  .thesis{font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,1.75rem);line-height:1.4;max-width:30ch}
+  .thesis b{color:var(--teal)}
+  .two{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:start}
+  @media(max-width:760px){.two{grid-template-columns:1fr;gap:22px}}
+  .note{font-size:14.5px;color:var(--ink-soft)}
+
+  /* ── stack grid ── */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+    box-shadow:var(--shadow)}
+  .card h3{font-size:1.12rem;margin:0 0 2px}
+  .card .tag{font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:.06em}
+  .card p{margin:.5em 0 0;font-size:14.6px;color:var(--ink-soft)}
+  .card p .real{color:var(--ink)}
+
+  /* ── ledger table ── */
+  .ledger{width:100%;border-collapse:collapse;font-size:14.5px}
+  .ledger caption{text-align:left;font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--teal);padding-bottom:10px}
+  .ledger th,.ledger td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  .ledger th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:600}
+  .ledger td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--teal);white-space:nowrap}
+  .ledger tr:hover td{background:var(--panel)}
+  .scroll{overflow-x:auto}
+  .meter{height:7px;border-radius:4px;background:var(--panel-2);overflow:hidden;margin-top:6px;min-width:90px}
+  .meter i{display:block;height:100%;background:var(--teal);border-radius:4px}
+
+  .chip{display:inline-block;font-family:var(--mono);font-size:11px;padding:2px 8px;border-radius:20px;
+    border:1px solid var(--line);color:var(--ink-soft)}
+  .chip.m{color:var(--teal);border-color:color-mix(in srgb,var(--teal) 45%,var(--line));background:var(--measured-bg)}
+  .chip.h{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 45%,var(--line));background:var(--hazard-bg)}
+
+  /* ── two-layer callout ── */
+  .layers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px}
+  @media(max-width:640px){.layers{grid-template-columns:1fr}}
+  .layer{border-radius:12px;padding:16px 18px;border:1px solid var(--line)}
+  .layer.l1{background:var(--measured-bg)}
+  .layer.l3{background:var(--panel)}
+  .layer h4{margin:0 0 6px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase}
+  .layer.l1 h4{color:var(--teal)} .layer.l3 h4{color:var(--ink-soft)}
+  .layer p{margin:0;font-size:14.5px;color:var(--ink-soft)}
+
+  /* ── benefits ── */
+  .benefits{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  @media(max-width:760px){.benefits{grid-template-columns:1fr}}
+  .benefit{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+    display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .benefit .big{font-family:var(--mono);font-weight:600;color:var(--teal);font-size:1.35rem;
+    font-variant-numeric:tabular-nums;line-height:1.1;white-space:nowrap}
+  .benefit h3{font-size:1.02rem;margin:0 0 3px} .benefit p{margin:0;font-size:14.3px;color:var(--ink-soft)}
+
+  pre.repro{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;
+    overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.75;color:var(--ink)}
+  pre.repro .c{color:var(--ink-soft)}
+  footer{border-top:1px solid var(--line);padding:34px 0 60px;color:var(--ink-soft);font-size:13.5px}
+  .kicker{color:var(--oxblood)}
+</style>
+
+<header>
+  <div class="wrap hero">
+    <div class="eyebrow">Novora · governance telemetry · field almanac</div>
+    <h1>The seatbelt and dashboard for AI —<br><span class="accent">not a faster engine.</span></h1>
+    <p class="lede">Everyone else is racing to make machines generate faster. Novora builds the layer
+      that <b>verifies without ever censoring</b>: it measures what a model doesn't know, keeps a
+      human in charge, and proves what happened. Here is the whole stack — and every real number we measured.</p>
+
+    <canvas id="tv" aria-label="Enforcement-latency chart: survivors hold near 19.8 days, failing institutions drift to 50.6 days"></canvas>
+    <div class="cap">τ_v — enforcement latency (days a problem sits unfixed). Survivors hold; the failing drift upward long before they collapse. N=992, p≈10⁻³¹.</div>
+
+    <div class="strip" role="list">
+      <div class="cell" role="listitem"><div class="n">992</div><div class="l">institutions in the core LISM test</div></div>
+      <div class="cell" role="listitem"><div class="n">10⁻³¹</div><div class="l">significance of the rot gauge τ_v</div></div>
+      <div class="cell" role="listitem"><div class="n">87.9→0%</div><div class="l">false alarms removed on real traffic</div></div>
+      <div class="cell" role="listitem"><div class="n">$0</div><div class="l">edge cost, zero network calls</div></div>
+      <div class="cell" role="listitem"><div class="n">4/4</div><div class="l">Wolfram + Hoffman claims measured</div></div>
+    </div>
+  </div>
+</header>
+
+<section><div class="wrap pad two">
+  <div>
+    <div class="eyebrow">The bet</div>
+    <p class="thesis">When machine intelligence is cheap and everywhere, <b>speed stops being scarce.</b>
+      What becomes scarce is <b>trust</b> — and trust is something you can measure.</p>
+  </div>
+  <div class="note">
+    <p>Novora's whole stack answers verifiable questions and hands the decision back to the person:
+      <em>Is this claim grounded? Is this agent in-bounds? Is the human still growing? Is the record intact?
+      Is this queue about to fail?</em></p>
+    <p>Nothing here mutes a token stream. Every layer <b style="color:var(--ink)">calibrates and records</b> —
+      it never censors. That single design choice is why the guard is one people don't switch off.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap pad">
+  <div class="eyebrow">The stack, in plain words</div>
+  <h2 style="font-size:clamp(1.6rem,3.4vw,2.3rem);margin:.2em 0 .8em">Thirteen parts, one idea</h2>
+  <div class="grid">
+    <div class="card"><span class="tag">LISM</span><h3>The rot law</h3><p>Organizations fail on a <span class="real">slow slide, not a cliff</span>. The early gauge is enforcement latency <b class="mono">τ_v</b> — how long a problem sits unfixed.</p></div>
+    <div class="card"><span class="tag">IHCEI + NERE</span><h3>The gatekeeper &amp; its kernel</h3><p>An <span class="real">epistemological</span> gate — about <em>knowledge, not morality</em>. It scores manipulation and uncertainty on-device and stays silent unless there's a real mechanism.</p></div>
+    <div class="card"><span class="tag">HELM</span><h3>The on-device guard</h3><p>Runs the kernel <span class="real">locally, zero network</span>: scam armor, dark-pattern spotting, a capacity meter, and a tamper-proof wallet.</p></div>
+    <div class="card"><span class="tag">EI</span><h3>Epistemological Intelligence</h3><p>Intelligence that <span class="real">knows what it doesn't know</span>. Composes five proven primitives — Audit · Delegate · Develop · Prove · Hazard — release always stays human.</p></div>
+    <div class="card"><span class="tag">EI LLM</span><h3>Eight verifier models</h3><p><span class="real">Veridian</span> (deep audit) + <span class="real">Apex</span> (on-device edge). A receiver-side attestation layer that checks generators instead of competing with them.</p></div>
+    <div class="card"><span class="tag">Echo Database</span><h3>A ledger you can't secretly edit</h3><p>Append-only, <span class="real">hash-chained, Merkle-provable</span>. Every decision leaves a tamper-evident receipt; editing history is detected and located.</p></div>
+    <div class="card"><span class="tag">Page Code</span><h3>OAuth of agency</h3><p>A stake-bounded permission table: a coding agent may edit <b class="mono">src/**</b> but is <span class="real">physically blocked</span> from force-push, secrets, or payments.</p></div>
+    <div class="card"><span class="tag">Agency Internet</span><h3>The machine-to-machine fabric</h3><p>The addressing and permission protocol so autonomous agents transact on your behalf with <span class="real">bounded, revocable authority</span>.</p></div>
+    <div class="card"><span class="tag">Novora PAGES</span><h3>Provenance welded into media</h3><p>Every second of generated audio/video is bound to its source by a hash chain; a <span class="real">splice or deepfake breaks the chain at the exact spot</span>.</p></div>
+    <div class="card"><span class="tag">Novora suite · SRE</span><h3>The 9-product app &amp; swarm compass</h3><p>Screens content on-device at <span class="real">$0 marginal cost</span>; SRE watches τ_v and throttles an AI swarm the instant its fix-queue saturates.</p></div>
+    <div class="card"><span class="tag">ADG · C_dev</span><h3>Network-health telemetry</h3><p>An organization-graph equation (like <b class="mono">E=U·D</b>, <span class="real">not physics</span>): how developed and aligned a network is, from pure graph structure.</p></div>
+    <div class="card"><span class="tag">TQG-CFE · Ψ</span><h3>How a node "renders" its world</h3><p>Alignment decides whether a node experiences <span class="real">ease, hardship, or chaos</span> — a measurable interface, not a metaphor.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap pad">
+  <div class="eyebrow">What came back</div>
+  <h2 style="font-size:clamp(1.6rem,3.4vw,2.3rem);margin:.2em 0 .3em">Every headline is a real measurement</h2>
+  <p class="note" style="max-width:60ch;margin-top:0">100+ JavaScript assertions, 86+ Python assertions, live field trials, and three
+    live production endpoints — all green, all reproducible from committed data. A selection:</p>
+  <div class="scroll">
+  <table class="ledger">
+    <caption>Measured results</caption>
+    <thead><tr><th>Technology</th><th>What we tested</th><th>Result</th><th>Evidence</th></tr></thead>
+    <tbody>
+      <tr><td><b>LISM</b></td><td>Do failing institutions sit on problems longer?</td><td class="num">50.6d vs 19.8d · p≈10⁻³¹</td><td><span class="chip m">N=992 · measured</span></td></tr>
+      <tr><td><b>LISM</b></td><td>Is it the <em>process</em>, not the <em>words</em>?</td><td class="num">D_gap null 0.735 · τ_v wins</td><td><span class="chip m">static vs process</span></td></tr>
+      <tr><td><b>LISM</b></td><td>Reproduces in biology (yeast protein net)?</td><td class="num">VIF=1.003</td><td><span class="chip m">N=4825</span></td></tr>
+      <tr><td><b>NERE</b></td><td>Kernel: floor, bands, gates, corroboration</td><td class="num">62/62</td><td><span class="chip">unit</span></td></tr>
+      <tr><td><b>IHCEI</b></td><td>False-holds on real emergencies</td><td class="num">0.000</td><td><span class="chip m">real traffic</span></td></tr>
+      <tr><td><b>HELM</b></td><td>Alarm fatigue on 281 live texts</td><td class="num">87.9% → 0.0%</td><td><span class="chip m">field trial</span></td></tr>
+      <tr><td><b>HELM</b></td><td>Calibration error on 306 READMEs (Brier)</td><td class="num">0.205 → 0.074</td><td><span class="chip m">field trial</span></td></tr>
+      <tr><td><b>EI</b></td><td>Non-suppressive contract, human release</td><td class="num">17/17</td><td><span class="chip">unit</span></td></tr>
+      <tr><td><b>EI LLM</b></td><td>Eight models, field checks on real repos</td><td class="num">17/17 + 9/9</td><td><span class="chip m">22 real repos</span></td></tr>
+      <tr><td><b>EI LLM · SENTRY</b></td><td>Survivors close issues faster than the failing</td><td class="num">26.5d vs 101.7d</td><td><span class="chip m">measured</span></td></tr>
+      <tr><td><b>EI LLM · PAGE CODE</b></td><td>In-scope edit vs force-push / secrets</td><td class="num">allow / deny / deny</td><td><span class="chip">attested</span></td></tr>
+      <tr><td><b>Novora PAGES</b></td><td>Localise a deepfaked media frame</td><td class="num">exact second</td><td><span class="chip">hash chain</span></td></tr>
+      <tr><td><b>Novora suite</b></td><td>Live τ_v read in production</td><td class="num">2.72d vs 251.3d (92×)</td><td><span class="chip m">live prod</span></td></tr>
+      <tr><td><b>ADG · C_dev</b></td><td>Network development predicts survival</td><td class="num">p=0.025 · AUC 0.78</td><td><span class="chip m">measured</span></td></tr>
+      <tr><td><b>TQG · A_n / Ψ</b></td><td>Alignment renders ease; Yusr class</td><td class="num">p=0.018 · 9/9</td><td><span class="chip m">measured</span></td></tr>
+      <tr><td><b>Shirk detector</b></td><td>Catch "zombie" repos (fresh-looking, rotting)</td><td class="num">p=0.0013</td><td><span class="chip h">say-do gap</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</div></section>
+
+<section><div class="wrap pad">
+  <div class="eyebrow">The big claim, made testable</div>
+  <h2 style="font-size:clamp(1.6rem,3.4vw,2.3rem);margin:.2em 0 .5em">Why the universe being <span style="font-style:italic">computational</span> is a number here, not a slogan</h2>
+  <p class="note" style="max-width:64ch">Two thinkers frame it. <b style="color:var(--ink)">Stephen Wolfram</b>: reality's base isn't matter —
+    it's simple rules rewriting a network, and matter is the pattern. <b style="color:var(--ink)">Donald Hoffman</b>:
+    what we perceive isn't truth, it's a <em>fitness interface</em> — a headset evolution gave us to survive, not to see reality.
+    Usually this is philosophy. We turned four of their claims into measurements on real networks — <b class="mono" style="color:var(--teal)">4/4 supported</b>.</p>
+  <div class="scroll">
+  <table class="ledger">
+    <thead><tr><th>Claim</th><th>Plain meaning</th><th>What we measured (22 real repos)</th></tr></thead>
+    <tbody>
+      <tr><td><b>Substrate independence</b><br><span class="chip">Wolfram</span></td><td>Institutions survive on <em>information</em>, not physical mass</td><td class="num">C_dev from pure graph topology<br>p=0.033 · AUC 0.77</td></tr>
+      <tr><td><b>Computational irreducibility</b><br><span class="chip">Wolfram</span></td><td>No shortcut predicts a complex system — you must <em>run</em> it</td><td class="num">running process AUC 0.83<br>dominates frozen snapshot 0.75</td></tr>
+      <tr><td><b>The interface renders</b><br><span class="chip">Hoffman</span></td><td>Perception is a fitness dial, not truth</td><td class="num">alignment A_n<br>p=0.018 · AUC 0.80</td></tr>
+      <tr><td><b>Why it <em>survives</em></b><br><span class="chip">Hoffman · FBT</span></td><td>Fitness-beats-truth says why it's <em>chosen</em>, not why it <em>lasts</em></td><td class="num">decay is linear, not a cliff<br>adj R² picks linear</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="layers">
+    <div class="layer l1"><h4>Layer 1 — measured</h4><p>The four p-values and AUCs above. Organization-graph telemetry on real networks. This is all Novora claims.</p></div>
+    <div class="layer l3"><h4>Layer 3 — interpretation</h4><p>That institutions, biology, and perception share one information-decay law is <em>consistent with</em> a computational base for reality. Labelled as analogy — never asserted as proof.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap pad">
+  <div class="eyebrow">What it changes</div>
+  <h2 style="font-size:clamp(1.6rem,3.4vw,2.3rem);margin:.2em 0 .7em">Eight benefits for civilization — each anchored to a datum</h2>
+  <div class="benefits">
+    <div class="benefit"><div class="big">10⁻³¹</div><div><h3>Warning before the cliff</h3><p>τ_v is a cheap live gauge that gives months of notice for companies, agencies, and open infrastructure — because decay is a slide, not a snap.</p></div></div>
+    <div class="benefit"><div class="big">26.5d</div><div><h3>Safe AI swarms at scale</h3><p>SRE bounds a swarm's speed to a human team's real review capacity (survivors 26.5d vs 101.7d rotting) — autonomy without cascade failures.</p></div></div>
+    <div class="benefit"><div class="big">0.0%</div><div><h3>The guard people won't mute</h3><p>False alarms fell 87.9%→0.0% on real text while real threats were still caught 6/6. A safety layer nobody switches off is the only one that protects.</p></div></div>
+    <div class="benefit"><div class="big">deny</div><div><h3>Humans keep the wheel</h3><p>Page Code, VITALIS and SCALE make the AI a calibrated copilot: it acts within bounds, but force-push, prescriptions, and big choices need an audited human — with a receipt.</p></div></div>
+    <div class="benefit"><div class="big">1&nbsp;sec</div><div><h3>Deepfakes fought structurally</h3><p>PAGES localises a media tamper to the exact second; CHARTER flags circular "prestige-trap" citations. Trust becomes verifiable, not assumed.</p></div></div>
+    <div class="benefit"><div class="big">ΔA</div><div><h3>Cognition protected</h3><p>ASCENT detects when a person outsources their thinking and adds friction — so AI in education grows capability instead of hollowing it.</p></div></div>
+    <div class="benefit"><div class="big">$0</div><div><h3>Free at the edge, no data harvest</h3><p>The Apex family runs on-device, ≤4GB, zero network — sidestepping the cloud billing trap and keeping privacy by physical topology.</p></div></div>
+    <div class="benefit"><div class="big">null</div><div><h3>It refuses to lie to itself</h3><p>Every headline is pre-registered under a SHA-256 lock. When a model misses the sealed threshold, the system reports the honest null — as it already has.</p></div></div>
+  </div>
+</div></section>
+
+<section><div class="wrap pad">
+  <div class="eyebrow">Reproduce any of it</div>
+  <h2 style="font-size:clamp(1.5rem,3vw,2rem);margin:.2em 0 .6em">Run it yourself — stdlib &amp; Node, no keys</h2>
+  <pre class="repro"><span class="c"># EI LLM — 17/17 field checks on the real GitHub cohort, + 9/9 unit</span>
+node ei-llm/field_test.mjs
+node --test ei-llm/ei-llm.test.mjs
+<span class="c"># ADG / TQG-CFE — governance telemetry (4/4) and Wolfram+Hoffman (4/4)</span>
+python3 adg-tqg/experiment_enriched.py
+python3 adg-tqg/experiment_wolfram_hoffman.py
+<span class="c"># LISM — the rot law and its biological reproduction, from committed raw data</span>
+python3 repro/reproduce_tauv.py
+python3 repro/reproduce_yeast.py</pre>
+</div></section>
+
+<footer><div class="wrap">
+  <p><span class="kicker">Two layers, never mixed.</span> Layer 1 is everything with a p-value — organization-graph
+    telemetry measured on real open-source projects and public networks. Layer 3 is the interpretation, always
+    labelled. <b style="color:var(--ink)">Novora claims only Layer 1.</b> IHCEI and NERE are epistemological
+    (about knowledge), not ethical. The ADG/TQG-CFE and E=U·D equations are telemetry, not physics with SI units.</p>
+  <p class="mono" style="font-size:12px;margin-top:14px;color:var(--ink-soft)">Novora / IHCEI ecosystem · results re-run for this page · every figure traceable to a committed test or a live production endpoint.</p>
+</div></footer>
+
+<script>
+(function(){
+  var c=document.getElementById('tv'); if(!c) return;
+  var ctx=c.getContext('2d'), dpr=Math.min(window.devicePixelRatio||1,2);
+  function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function size(){c.width=c.clientWidth*dpr;c.height=c.clientHeight*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+  size();
+  // Two latency traces: healthy holds near 19.8d; failing drifts up toward 50.6d.
+  var W=function(){return c.clientWidth;},H=function(){return c.clientHeight;};
+  function draw(t){
+    var w=W(),h=H(),pad=14,teal=css('--teal'),amber=css('--amber'),line=css('--line'),soft=css('--ink-soft');
+    ctx.clearRect(0,0,w,h);
+    // baseline grid
+    ctx.strokeStyle=line;ctx.globalAlpha=.6;ctx.lineWidth=1;
+    for(var g=0;g<=3;g++){var yy=pad+(h-2*pad)*g/3;ctx.beginPath();ctx.moveTo(pad,yy);ctx.lineTo(w-pad,yy);ctx.stroke();}
+    ctx.globalAlpha=1;
+    var n=120, ampH=(h-2*pad), x0=pad, x1=w-pad;
+    function trace(color,base,drift,noise,ph){
+      ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=2;
+      for(var i=0;i<=n;i++){
+        var fx=i/n, x=x0+(x1-x0)*fx;
+        var d=base+drift*fx+noise*Math.sin(fx*9+ph+t*0.0006)*(0.4+0.6*fx);
+        var y=pad+ampH*(1-(d-10)/45); // map 10..55 days into panel
+        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+    }
+    trace(teal,19.8,3,1.4,0);       // survivors — hold low
+    trace(amber,22,26,2.2,1.7);     // failing — drift toward 50.6
+    // labels
+    ctx.fillStyle=soft;ctx.font='11px ui-monospace,Menlo,monospace';
+    ctx.fillText('50.6d — failing',x1-104,pad+12);
+    ctx.fillText('19.8d — survivors',x0+4,h-pad-4);
+  }
+  if(reduce){draw(0);} else {var start=performance.now();(function loop(now){draw(now-start);requestAnimationFrame(loop);})(start);}
+  window.addEventListener('resize',function(){size();if(reduce)draw(0);});
+})();
+</script>

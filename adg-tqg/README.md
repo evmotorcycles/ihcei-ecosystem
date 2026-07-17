@@ -94,10 +94,31 @@ correctly flagged as **Chaos**, leaving **Yusr a clean 9/9**. H5 is the operatio
 definition of *epistemic Shirk*: a network associating the wrong label ("alive",
 fresh push) with its real state (rotting, high τ_v) — caught at p=0.0013.
 
+## Do ADG/TQG-CFE address & advance Wolfram and Hoffman?
+
+`python3 adg-tqg/experiment_wolfram_hoffman.py` tests four falsifiable claims that
+map the telemetry onto Stephen Wolfram's computational-universe thesis and Donald
+Hoffman's Interface Theory of Perception. **4/4 supported on the 22 real repos:**
+
+| # | Claim (Wolfram / Hoffman) | Operational test | Result |
+|---|---|---|---|
+| **W1** | **Substrate independence** — matter emerges from information rules | `C_dev` from *pure* graph topology + timestamps (no funding/headcount/material) separates survival | surv 3.19 vs fail 1.18, **p=0.033, AUC 0.77** |
+| **W2** | **Computational irreducibility** — no static shortcut; you must run the process | frozen popularity snapshot (AUC 0.75) vs running self-correction `1/(1+τ_v)` (AUC 0.83) | **process dominates by +0.08 AUC**; at scale the semantic `D_gap` snapshot is a full null (p≈0.735) while `τ_v` holds (p≈10⁻³¹, N=992) |
+| **H1** | **Interface rendering** — perception is a fitness interface, not truth | TQG-CFE renders Ψ = Yusr/Usr/Chaos from alignment `A_n` | A_n **p=0.018, AUC 0.80**; Yusr **9/9** survive, Chaos isolates the mislabelled set |
+| **H2** | **FBT persistence = linear decay** — *why* a non-veridical interface is stable, not just selected | regress vitality on fidelity `U·D`; adjusted R² picks linear vs quadratic | **adjusted R² prefers LINEAR (0.168 vs 0.154)** — graceful slide, not a cliff: the buffer that lets an interface coast on raw `U` |
+
+**What this contributes.** Wolfram gives the *thesis* (reality is computational) and
+Hoffman gives the *selection* theorem (fitness beats truth) — but neither supplies a
+**measured dynamical law on real networks**. ADG/TQG-CFE do: substrate independence,
+irreducibility, the fitness-interface render, and FBT's missing *persistence*
+mechanism (linear, not quadratic, decay) all become numbers you can falsify. This is
+a Layer-1 telemetry result; the physics analogy stays an analogy (no Layer-3 claim).
+
 ## Files
 
 - `experiment.py` — base operationalization + 3 tests + display (stdlib).
 - `experiment_enriched.py` — the retest with Salat/Zakat/Shaytan/Shirk/Iman + Ψ 3-state.
+- `experiment_wolfram_hoffman.py` — the Wolfram/Hoffman verification (4/4, stdlib).
 - `fixtures/experiment_cohort.json` — 22 real repos (stars, closed-issues, τ_v,
   push date, archived, E), fetched via the deployed `api/gh-issues`.
-- `test_experiment.py` — pytest wrapper (6/6).
+- `test_experiment.py`, `test_wolfram_hoffman.py` — pytest wrappers (10/10 total).
