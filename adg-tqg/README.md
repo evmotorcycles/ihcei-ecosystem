@@ -60,9 +60,44 @@ routine validated against `scipy` in `repro/`); the p-values are conservative.
 - **Layer 1 only.** This tests the telemetry. It neither supports nor refutes any
   metaphysical claim in the framework; those are explicitly out of empirical scope.
 
+## Enriched retest — governance terms as engineering telemetry
+
+`python3 adg-tqg/experiment_enriched.py` operationalizes the author's term-level
+definitions, each as a **measurable** governance/engineering signal (no theology;
+`Shirk` here is an epistemic-conflation *metric*, "not a sin"):
+
+| term | engineering proxy |
+|---|---|
+| **Salat** = `D_enc` (encode/alignment hop) | responsiveness `1/(1+τ_v)` |
+| **Zakat** = `D_dec` (decode/transfer hop) | throughput `ln(1+closed issues)` |
+| **D** = `Salat·Zakat` | two-hop fidelity (exactly LISM's `D_enc·D_dec`) |
+| **Deen** = Established Order | governance target `Θ = (1,1,1)` |
+| **Shaytan** = internal disposition | internal noise `ħ = normalized τ_v` |
+| **Shirk** = epistemic conflation | `\|σ\|`, the LISM say-do Dissonance |
+| **Iman** = safety/security | the **rendered** Yusr outcome (aligned + coherent) |
+| **Ψ_Chaos** | `\|σ\|` (Shirk) dominates — the network mislabels its own state |
+
+**Results (same 22 repos):**
+
+| prediction | result |
+|---|---|
+| **H1 ADG `C_dev`** | surv 1.40 vs fail 0.30, p=0.025, **AUC 0.78** |
+| **H2 TQG `A_n`** | surv 0.86 vs fail 0.73, p=0.018, **AUC 0.80** |
+| **H4 two-hop `D=Salat·Zakat`** | surv 0.119 vs fail 0.042, p=0.028, **AUC 0.78** |
+| **H3 Ψ rendering** | **Yusr 9/9 survive**, Usr 3/7, Chaos 4/6 (the mislabeled set) |
+| **H5 Shirk detector** | among fresh-pushed repos, high-Shirk "zombies" τ_v **67.6 vs 6.2, p=0.0013** |
+
+**4/4 core predictions, and the enrichment measurably improves the model:** the
+`Ψ_Chaos` (high-Shirk) class isolates the deceptive repos — `angular.js`
+(archived yet fast), the false "Yusr" that fooled the plain model, is now
+correctly flagged as **Chaos**, leaving **Yusr a clean 9/9**. H5 is the operational
+definition of *epistemic Shirk*: a network associating the wrong label ("alive",
+fresh push) with its real state (rotting, high τ_v) — caught at p=0.0013.
+
 ## Files
 
-- `experiment.py` — operationalization + the three tests + display (stdlib).
+- `experiment.py` — base operationalization + 3 tests + display (stdlib).
+- `experiment_enriched.py` — the retest with Salat/Zakat/Shaytan/Shirk/Iman + Ψ 3-state.
 - `fixtures/experiment_cohort.json` — 22 real repos (stars, closed-issues, τ_v,
   push date, archived, E), fetched via the deployed `api/gh-issues`.
-- `test_experiment.py` — pytest wrapper (4/4).
+- `test_experiment.py` — pytest wrapper (6/6).
