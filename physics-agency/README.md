@@ -40,3 +40,27 @@ telemetry hops, scales linearly, and decays gracefully — and it is the
 low-latency feedback loop (`τ_v`) that turns the abstract invariant into a bounded,
 functioning machine. **Layer-1 control theory only**; the "physics is *literally* a
 communication channel" reading stays an explicitly-labelled Layer-3 prior.
+
+---
+
+## Emergent spacetime — distance from information alone (indirect stepping-stone)
+
+`python3 physics-agency/emergent_spacetime.py` builds a network defined **only**
+by an information-coupling matrix `W` — no coordinates, no positions — and
+reconstructs a genuine distance metric from it via effective resistance /
+Doyle-Snell commute times: `dx_ij = √R_ij`, `R_ij = L⁺_ii + L⁺_jj − 2L⁺_ij`.
+
+**Results — 3/3:**
+- **S1** `dx` is a real **metric** emergent from pure information: `dx_ii=0`, symmetric, **0/8640 triangle-inequality violations** across random chains.
+- **S2** distance is a **function of information coupling**: scale coupling by `c` and every distance contracts exactly as `dx ∝ 1/√c` — space stretches and shrinks with the information, it is not a fixed stage.
+- **S3 (indirect proof)** two networks with **identical nodes and identical total coupling "energy"** but different *structure* render **different geometries** (mean dx 1.39 vs 0.98) — so the geometry is fixed by the **information**, not the substrate or the energy.
+
+**Firewall.** Layer 1 (proven here): on an information network, spatial distance is
+an emergent, reconstructable function of the transition structure — not
+fundamental. Layer 3 (**not** claimed): that physical spacetime is likewise a
+projection of an information substrate. This is the indirect stepping-stone the
+Hoffman/Wolfram picture points at, never a proof of the metaphysics.
+
+```
+python3 physics-agency/emergent_spacetime.py   # 3/3  (pytest: physics-agency/ 7/7 total)
+```
