@@ -62,5 +62,51 @@ projection of an information substrate. This is the indirect stepping-stone the
 Hoffman/Wolfram picture points at, never a proof of the metaphysics.
 
 ```
-python3 physics-agency/emergent_spacetime.py   # 3/3  (pytest: physics-agency/ 7/7 total)
+python3 physics-agency/emergent_spacetime.py   # 3/3
+```
+
+---
+
+## The Telemetric Metric — a new, falsifiable physics equation
+
+`python3 physics-agency/telemetric_metric.py` proposes an equation and a theory
+built on the **same** commute-time telemetry, and numerically validates both the
+equation and the *experiment that would decide whether spacetime is fundamental*.
+
+**The equation (Telemetric Metric / latency line element):**
+
+```
+    d(i,j)² = κ · τ_rt(i,j)          τ_rt = C_ij / ν = R_ij
+```
+
+Two things are *close* when a signal can round-trip between them fast (low latency
+/ high correlation) and *far* when the round-trip is slow. `τ_rt` is the round-trip
+information latency — the same latency family as LISM's `τ_v`, reduced to the
+effective resistance `R_ij` of the correlation network. **Distance is the geometry
+of latency.**
+
+**The theory — Latency–Metric Duality (LMD):** geometry is not a fundamental
+container; the metric is emergent bookkeeping of round-trip information latency
+between the underlying degrees of freedom.
+
+**Numerical validation — 3/3:**
+- **T1** `d=√(κ·τ_rt)` is a genuine metric (0/8640 triangle violations).
+- **T2** the predicted scaling holds exactly: `d ∝ 1/√coupling`, log-log slope **−0.5000**, R²=1.00000.
+- **T3 (the discriminator)** change *only* the information coupling of two **fixed** sites: the emergent distance moves (Δ=0.94) while a fundamental-container null stays frozen (Δ=0). *This is the measurement that decides.*
+
+**The proposed physical experiment.** A **tunable-coupling qubit lattice**
+(superconducting / trapped-ion) or an **entangled optical-clock network**: hold two
+probe sites at fixed physical positions, sweep the entanglement/coupling between
+them, and measure their operational "distance" via correlation round-trip time
+(Lieb-Robinson / commute time). *Fundamental spacetime* forbids a fixed pair's
+distance from changing when only their coupling changes; *LMD* requires
+`d ∝ 1/√coupling`. The sign and scaling of the response decide it.
+
+**Firewall.** This script is Layer-1 numerics validating the equation's consistency
+and the experiment's discriminating logic. The physical experiment is **proposed,
+not performed**; the Layer-3 claim (physical spacetime is emergent) is neither
+claimed nor proven — it is exactly what the proposed experiment would test.
+
+```
+python3 physics-agency/telemetric_metric.py    # 3/3  (pytest: physics-agency/ 10/10 total)
 ```
