@@ -1,0 +1,48 @@
+{
+  "title": "The Telemetric Metric — pre-registered numerical validation",
+  "equation": "d(i,j)^2 = kappa * tau_rt(i,j);  tau_rt = C_ij / nu = R_ij",
+  "theory": "Latency-Metric Duality (LMD): geometry is emergent bookkeeping of round-trip information latency.",
+  "engine": "physics-agency/telemetric_metric.py",
+  "date_locked": "2026-07-18",
+  "layer": "Layer-1 numerical validation only; the physical experiment is proposed, not performed; the Layer-3 claim (physical spacetime is emergent) is neither claimed nor proven.",
+  "parameters": {
+    "n_nodes": 6,
+    "n_random_networks": 40,
+    "kappa": 1.0,
+    "metric_seed": 7,
+    "scaling_seed": 11,
+    "discriminator_seed": 29,
+    "scaling_couplings": [0.5, 1.0, 2.0, 4.0, 8.0, 16.0],
+    "discriminator_couplings": [0.5, 1.0, 2.0, 4.0],
+    "probe_sites": [0, 5]
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "d = sqrt(kappa * tau_rt) is a genuine metric emergent from pure information",
+      "endpoint": "triangle_violations",
+      "pass_if": "triangle_violations == 0"
+    },
+    {
+      "id": "H2",
+      "claim": "the metric obeys the predicted scaling d ~ 1/sqrt(coupling)",
+      "endpoint": "loglog_slope",
+      "target_slope": -0.5,
+      "slope_tol": 0.02,
+      "r2_min": 0.999,
+      "pass_if": "abs(slope - (-0.5)) < 0.02 AND r2 > 0.999"
+    },
+    {
+      "id": "H3",
+      "primary": true,
+      "claim": "DISCRIMINATOR: changing only the info-coupling of two FIXED sites moves the emergent distance, while a fundamental-container null stays frozen",
+      "endpoint": "emergent_range_vs_null_range",
+      "emergent_range_min": 0.05,
+      "null_range_max": 1e-9,
+      "pass_if": "emergent_range > 0.05 AND null_range < 1e-9"
+    }
+  ],
+  "primary_endpoint": "H3 is the decisive endpoint: it is the numerical analogue of the physical discriminator that distinguishes fundamental from emergent spacetime.",
+  "symmetric_null": "If ANY endpoint misses its locked threshold, the result is reported as a NULL, honestly, with NO post-hoc adjustment of parameters, seeds, thresholds, or sub-populations. A miss on H3 falsifies the discriminating logic on this construction.",
+  "acceptance": "PASS iff all three hypotheses meet their locked pass_if conditions."
+}

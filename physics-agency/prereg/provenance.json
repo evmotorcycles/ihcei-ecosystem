@@ -1,0 +1,59 @@
+{
+  "spec_sha256": "011b7b53e9df4d12cc54e7689639209b82a282b3199b88f4d9ce481e6fdb7e3c",
+  "lock_intact": true,
+  "agency": {
+    "results": "allow",
+    "spec": "deny",
+    "lock": "deny"
+  },
+  "results": {
+    "engine": "physics-agency/telemetric_metric.py",
+    "H1": {
+      "triangle_violations": 0,
+      "checks": 8640,
+      "pass": true
+    },
+    "H2": {
+      "slope": -0.5,
+      "r2": 1,
+      "pass": true
+    },
+    "H3": {
+      "emergent_range": 0.9425,
+      "null_range": 0,
+      "emergent": [
+        1.2112,
+        0.776,
+        0.4705,
+        0.2686
+      ],
+      "null_fixed": 0.776,
+      "pass": true,
+      "primary": true
+    },
+    "n_pass": 3,
+    "verdict": "PASS"
+  },
+  "echo": {
+    "prereg": "ECHO-33E512A421",
+    "results": "ECHO-0CF9152CC6",
+    "chain_ok": true,
+    "merkle_root": "cda9ba7888bb9d65235c3db7228e8a1b681b3c1514728a60006a7bb88435df24"
+  },
+  "ei": {
+    "verdict": "PASS",
+    "release": "release",
+    "receipt": "ECHO-5C1EFE2F30",
+    "ledger_ok": true
+  },
+  "pages_abstract": {
+    "score": 1,
+    "verdict": "Solid",
+    "flags": [
+      "METHODOLOGY_PRESENT"
+    ],
+    "attack": "none",
+    "certificate": "PGS-72D2F48D"
+  },
+  "generated_at": "2026-07-18T19:58:27.914Z"
+}
