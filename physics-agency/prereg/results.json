@@ -1,0 +1,28 @@
+{
+  "engine": "physics-agency/telemetric_metric.py",
+  "H1": {
+    "triangle_violations": 0,
+    "checks": 8640,
+    "pass": true
+  },
+  "H2": {
+    "slope": -0.5,
+    "r2": 1.0,
+    "pass": true
+  },
+  "H3": {
+    "emergent_range": 0.9425,
+    "null_range": 0.0,
+    "emergent": [
+      1.2112,
+      0.776,
+      0.4705,
+      0.2686
+    ],
+    "null_fixed": 0.776,
+    "pass": true,
+    "primary": true
+  },
+  "n_pass": 3,
+  "verdict": "PASS"
+}

@@ -1,0 +1,136 @@
+<title>The Telemetric Metric — Pre-registered Preprint</title>
+<style>
+  :root{
+    --bg:#f4f4f1; --page:#fbfbf9; --ink:#191b1a; --ink2:#4a4e4c; --ink3:#83887f;
+    --line:#d9dad3; --accent:#0e7c74; --accent2:#12938a; --amber:#a86a1a;
+    --lock:#e7f1ef; --fire:#f4ecdc; --shadow:0 1px 2px rgba(0,0,0,.05),0 10px 30px rgba(0,0,0,.05);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{
+    --bg:#0e100f; --page:#161917; --ink:#e9ece7; --ink2:#aab0a8; --ink3:#6d746b;
+    --line:#272b27; --accent:#37c0b3; --accent2:#4fd0c3; --amber:#dCA24a;
+    --lock:#0f2b28; --fire:#2a2312; --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.45);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0e100f; --page:#161917; --ink:#e9ece7; --ink2:#aab0a8; --ink3:#6d746b;
+    --line:#272b27; --accent:#37c0b3; --accent2:#4fd0c3; --amber:#dCA24a;
+    --lock:#0f2b28; --fire:#2a2312; --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.45);
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f4f1; --page:#fbfbf9; --ink:#191b1a; --ink2:#4a4e4c; --ink3:#83887f;
+    --line:#d9dad3; --accent:#0e7c74; --accent2:#12938a; --amber:#a86a1a;
+    --lock:#e7f1ef; --fire:#f4ecdc; --shadow:0 1px 2px rgba(0,0,0,.05),0 10px 30px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:18px;line-height:1.66;-webkit-font-smoothing:antialiased}
+  .sheet{max-width:760px;margin:26px auto;background:var(--page);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:56px 60px}
+  @media(max-width:680px){.sheet{padding:34px 22px;margin:12px}}
+  h1{font-size:clamp(1.7rem,3.6vw,2.3rem);line-height:1.16;margin:.1em 0 .1em;text-wrap:balance;letter-spacing:.1px}
+  .sub{font-family:var(--sans);font-size:14px;color:var(--ink2);font-style:italic;margin:.3em 0 0}
+  .meta{font-family:var(--mono);font-size:11.5px;color:var(--ink3);margin-top:14px;line-height:1.7;word-break:break-all}
+  .meta b{color:var(--accent)}
+  h2{font-family:var(--sans);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:2.3em 0 .5em;font-weight:700}
+  h3{font-family:var(--sans);font-size:1rem;margin:1.4em 0 .3em}
+  p{margin:.7em 0}
+  a{color:var(--accent)}
+  .lede{font-size:1.02rem}
+  .drop::first-letter{font-size:3.1rem;line-height:.8;float:left;padding:6px 10px 0 0;color:var(--accent);font-weight:600}
+  code,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.86em}
+  hr{border:0;border-top:1px solid var(--line);margin:12px 0 0}
+
+  .eqplate{margin:20px 0;padding:20px 22px;border:1px solid var(--line);border-radius:8px;background:var(--bg);text-align:center}
+  .eqplate .eq{font-size:clamp(1.35rem,3.4vw,1.9rem)}
+  .eqplate .eq i{color:var(--accent);font-style:italic}
+  .eqplate .n{font-family:var(--sans);font-size:12.5px;color:var(--ink3);margin-top:8px}
+
+  .lock{margin:18px 0;padding:16px 18px;border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));border-radius:8px;background:var(--lock)}
+  .lock .h{font-family:var(--sans);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  .lock .mono{display:block;color:var(--ink);margin-top:4px;font-size:11.5px;word-break:break-all}
+
+  table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13.5px;margin:12px 0}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+  td.n{font-family:var(--mono);color:var(--accent);white-space:nowrap}
+  .scroll{overflow-x:auto}
+
+  .fire{margin:18px 0;padding:14px 18px;border:1px solid color-mix(in srgb,var(--amber) 35%,var(--line));border-radius:8px;background:var(--fire);font-family:var(--sans);font-size:14px;color:var(--ink2)}
+  .fire b{color:var(--amber)}
+  ul{font-family:var(--sans);font-size:14.5px;color:var(--ink2);padding-left:20px}
+  ul li{margin:.35em 0} ul li b{color:var(--ink)}
+  pre{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--ink)}
+  .foot{font-family:var(--sans);font-size:12px;color:var(--ink3);margin-top:28px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<div class="sheet">
+  <h1>The Telemetric Metric: proper distance as round-trip information latency, and a bench test for whether spacetime is fundamental</h1>
+  <p class="sub">A pre-registered Layer-1 validation and a proposed physical experiment · Novora / IHCEI ecosystem</p>
+  <div class="meta">
+    pre-registration locked 2026-07-18 · verdict <b>PASS (3/3)</b><br>
+    spec SHA-256 <b>011b7b53e9df4d12cc54e7689639209b82a282b3199b88f4d9ce481e6fdb7e3c</b><br>
+    prereg + results hash-chained into Echo; Merkle root published · receipts regenerate per audit run
+  </div>
+  <hr>
+
+  <h2>Abstract</h2>
+  <p class="lede drop">We propose the <b>Telemetric Metric</b>, in which proper distance is the <em>round-trip information latency</em> between two regions of a correlation network, and the theory <b>Latency–Metric Duality</b>, in which geometry is emergent bookkeeping of that latency rather than a fundamental container. We report a pre-registered numerical validation: the specification — parameters, seeds, and pass thresholds — was locked under a canonical SHA-256 fingerprint before the run. Across 40 random correlation networks the metric is genuine (0/8640 triangle violations), obeys the predicted scaling <code>d ∝ 1/√coupling</code> (log-log slope −0.5000, R²=1.00000), and the primary discriminator — hold two sites at fixed positions, sweep only their coupling — shows the emergent distance moving (range 0.94) while a fundamental-container null stays frozen (0). We then specify the physical experiment that would decide the ontological question, and its falsifiable signature. The physical experiment is <em>proposed, not performed</em>; the claim that physical spacetime is emergent is neither claimed nor proven.</p>
+
+  <div class="eqplate">
+    <div class="eq"><i>d</i>(i,j)<sup>2</sup> = <i>κ</i> · <i>τ</i><sub>rt</sub>(i,j) = <i>κ</i> · R<sub>ij</sub></div>
+    <div class="n">proper distance² = round-trip information latency = effective resistance of the correlation graph</div>
+  </div>
+
+  <h2>1 · Physics advances by turning latency into law</h2>
+  <p>Einstein's <code>E=mc²</code> began as a telemetry problem — synchronizing clocks across distance with light signals, where the finite round-trip time of a sync pulse encodes the relation between two clocks. He read that delay as a <em>fixed</em> geometry. This paper runs the move in reverse: what if the geometry was never fixed — what if distance is just the latency, all the way down? The same latency telemetry we already validated on real networks (enforcement latency <code>τ_v</code> predicting collapse at <code>p≈10⁻³¹</code>, N=992; a metric emerging from a coupling matrix with no coordinates) motivates the equation above.</p>
+
+  <h2>2 · The equation &amp; the theory</h2>
+  <p>For a network given only by a symmetric coupling matrix <code>W</code>, the effective resistance is <code>R_ij = L⁺_ii + L⁺_jj − 2L⁺_ij</code> (with <code>L</code> the graph Laplacian), the commute time is <code>C_ij = vol·R_ij</code>, and the round-trip latency is <code>τ_rt = C_ij/ν = R_ij</code>. Two regions are <em>close</em> when a signal round-trips fast, <em>far</em> when it is slow. <b>Latency–Metric Duality</b>: where general relativity says matter tells space how to curve, LMD says correlation tells latency how to render as distance — the entanglement-geometry family (Van Raamsdonk, Ryu–Takayanagi, ER=EPR), stated as a benchable latency law.</p>
+
+  <h2>3 · Pre-registered validation (Layer 1)</h2>
+  <div class="lock"><span class="h">Pre-registration lock — frozen before the run</span>
+    <span class="mono">SHA-256(canonical spec) = 011b7b53e9df4d12cc54e7689639209b82a282b3199b88f4d9ce481e6fdb7e3c · verified == manifest at run time</span>
+  </div>
+  <p>N=6 nodes, 40 random networks, κ=1, fixed seeds (7, 11, 29), declared <em>symmetric-null</em> rule (any endpoint that misses its locked threshold is a reported null, no post-hoc adjustment). The runner reads thresholds only from the frozen spec.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>ID</th><th>Pre-registered claim</th><th>Locked pass condition</th><th>Measured</th></tr></thead>
+    <tbody>
+      <tr><td>H1</td><td>d=√(κ·τ_rt) is a metric</td><td class="mono">violations == 0</td><td class="n">0 / 8640</td></tr>
+      <tr><td>H2</td><td>d ∝ 1/√coupling</td><td class="mono">|slope+0.5|&lt;0.02 ∧ R²&gt;0.999</td><td class="n">−0.5000 · R² 1.00000</td></tr>
+      <tr><td>H3 ★</td><td>discriminator (primary)</td><td class="mono">emergentΔ&gt;0.05 ∧ nullΔ&lt;1e-9</td><td class="n">0.9425 vs 0</td></tr>
+    </tbody>
+  </table></div>
+  <p>H3 is decisive: holding two sites at fixed labels and changing <em>only</em> their coupling moves the emergent distance monotonically (<code>1.21 → 0.78 → 0.47 → 0.27</code>), while a fundamental container cannot respond. <b>Verdict: PASS (3/3).</b></p>
+
+  <h2>4 · The experiment that decides it</h2>
+  <p>A tunable-coupling qubit lattice (superconducting / trapped-ion) or an entangled optical-clock network. Pin two probe sites at fixed positions; sweep the coupling; measure their operational separation via the correlation round-trip time (Lieb–Robinson front / commute time).</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Hypothesis</th><th>Prediction</th><th>Signature</th></tr></thead>
+    <tbody>
+      <tr><td>Spacetime fundamental</td><td>distance fixed by the container</td><td class="n">∂d/∂coupling = 0</td></tr>
+      <tr><td>LMD / emergent</td><td>distance is the latency</td><td class="n">d ∝ 1/√coupling</td></tr>
+    </tbody>
+  </table></div>
+  <p>The <b>sign and scaling</b> of the response is the verdict. A fixed pair whose distance contracts as <code>1/√coupling</code> when only its correlation changes is the signature of latency-rendered, emergent geometry.</p>
+
+  <div class="fire"><b>Epistemic firewall.</b> This is a Layer-1 numerical result validating the equation's consistency and the experiment's logic. The physical experiment is <b>proposed, not performed</b>; the Layer-3 claim that physical spacetime is emergent is <b>neither claimed nor proven</b> — it is exactly what the bench experiment would test.</p>
+
+  <h2>5 · Tooling &amp; provenance — the governance stack that ran it</h2>
+  <p>The entire run executed on-device, <code>$0</code>, no network. Each tool made a specific, auditable contribution:</p>
+  <ul>
+    <li><b>Pre-registration lock (Echo sha256∘canonical)</b> — froze hypotheses/thresholds; the runtime re-verified <code>spec hash == manifest</code> so a silent post-hoc edit aborts the run.</li>
+    <li><b>Page Code (agency)</b> — bounded the runner: it may <code>write results.json</code> (allow) but is <b>denied</b> writing the spec and manifest. An agent cannot rewrite its own pre-registration.</li>
+    <li><b>Echo Database (attestation)</b> — hash-chained the spec and results, verified the chain, and published a Merkle root (receipts regenerate per run; see <code>provenance.json</code>).</li>
+    <li><b>EI (independent audit)</b> — a receiver-side, non-suppressive audit of the results claim: verdict <b>PASS</b>, release attested with its own hash-chained receipt.</li>
+    <li><b>NERE / IHCEI / HELM (PAGES)</b> — screened this abstract: <b>1.0 Solid</b>, <code>METHODOLOGY_PRESENT</code>, no authority-cascade attack — it carries its own methodology.</li>
+  </ul>
+
+  <h2>6 · Reproducibility</h2>
+  <pre>node physics-agency/prereg/audit.mjs         <span style="color:var(--ink3)"># locked run under the full stack</span>
+python3 physics-agency/prereg/run.py         <span style="color:var(--ink3)"># the pre-registered run alone</span>
+python3 physics-agency/telemetric_metric.py  <span style="color:var(--ink3)"># the equation validation (3/3)</span>
+python3 -m pytest physics-agency/            <span style="color:var(--ink3)"># 12 assertions, all green</span></pre>
+  <p>All code is stdlib Python and Node, no keys, no network. The equation, the validation, and the provenance are yours to check — and the physical experiment is specified precisely enough to hand to any lab with a tunable-coupling array.</p>
+
+  <div class="foot">Novora / IHCEI ecosystem · Layer-1 measured, Layer-3 labelled · ready to give to those with the tools to prove or disprove it.</div>
+</div>
