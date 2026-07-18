@@ -49,7 +49,7 @@ function agencyRead(text) {
 const PRODUCTS = {
   // PAGES — methodology / grounding press. Higher = better grounded.
   pages(text) {
-    const meth = count(text, /\b(?:RCT|N\s*=\s*\d|p\s*[=<]\s*0|95%\s*CI|confidence interval|pre-?regist|randomi[sz]ed|NCT\d|DOI|ΔAIC|SHA-?256|dataset|methodology|control group|sample size)\b/gi);
+    const meth = count(text, /\b(?:RCT|N\s*=\s*\d+|p\s*[=<≈~]\s*\d|95%\s*CI|confidence interval|pre-?regist\w*|randomi[sz]ed|NCT\d|DOI|ΔAIC|SHA-?256|dataset|methodolog\w*|control group|sample size|VIF|AUC|interactome\w*|cohort)\b/gi);
     const hollow = count(text, /\b(?:all (?:experts|economists|scientists) agree|settled science|everyone knows|unquestionable|obviously|it'?s clear that|proven fact|no doubt|inevitable)\b/gi);
     const numbers = groundFast(text, text).addedNumbers.length; // reflexive: any hard numbers at all
     const score = clip(0.35 + 0.14 * meth - 0.22 * hollow + 0.03 * Math.min(numbers, 3));
