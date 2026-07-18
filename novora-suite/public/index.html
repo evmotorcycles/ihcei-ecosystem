@@ -337,11 +337,11 @@ const PRODS={
   pages:{
     desc:"Press any text — Al-Asr 7-stage protocol. Does this have real methodology underneath or just confident words? Detects T3 Framework Laundering, T5 Authority Cascades.",
     ph:"Paste any text — news, AI output, research claim, policy, advertisement...\n\nExample: 'Studies show coffee reduces cancer risk by 37%. All health experts agree this is settled science.'",
-    ex:["AI hallucination (T3)","Authority cascade (T5)","Vaccine RCT (grounded)","Uganda housing law"],
+    ex:["AI hallucination (T3)","Authority cascade (T5)","Vaccine RCT (grounded)","Housing policy stats"],
     txt:["This AI explains: The 0.50 convergence is explained by E=UD². When D_enc and D_dec are each 0.71, their product is approximately 0.50. Testing against the Enron executive dataset and the SEC EDGAR corpus confirms the quadratic relationship holds across financial domains.",
          "OpenAI projects $100B in ad revenue by 2030, Axios reports. The company told investors it expects $11B in 2027, $25B in 2028. BBC +3, BBC +8.",
          "Phase 3 RCT, N=44,165, NCT04368728. Vaccine efficacy 95.0% (95% CI 90.3-97.6). Pre-registered ClinicalTrials.gov. Independent data monitoring committee. Full safety data in regulatory submission.",
-         "Uganda's Building Control Amendment Act 2026, signed Feb 19 2026, imposes penalties of 40,000 per square metre for prohibited construction. Housing deficit: 2.4 million units, 5% urbanisation annually. 96% cannot afford formal housing. BBC reports enforcement challenges."],
+         "A national Building Control Amendment Act imposes penalties per square metre for prohibited construction. Reported housing deficit: 2.4 million units, with 5% annual urbanisation and 96% of households unable to afford formal housing. Press coverage notes enforcement challenges."],
     sys:`You are PAGES v2.0 — the Al-Asr Pressing Engine (OQM + GT v18.0). Press the text through 7 stages and return ONLY valid JSON:
 {"score":<0-1>,"verdict":"<Hollow Assertion|Partially Grounded|Solid|High Fidelity>","d_enc":<0-1>,"d_dec":<0-1>,"f_ground":<0-1>,"flags":["FLAG"],"analysis":"<2-3 sentences>","methodology_finding":"<stage 3 result>","falsifiability_finding":"<stage 4 result>","grounding_finding":"<stage 5 result>","attack_detected":"<none|T3_framework_laundering|T5_authority_cascade|T2_precision_washing|other>","attack_explanation":"<if attack: exact mechanism>","layer_classification":"<L1 testable|L2 developing|L3 axiom>","n167_stage":"<1-7>","n167_name":"<Ṭīn|Sulālah|Nuṭfah|Ɛalaqah|Muḍghah|Ɛiżām|Laḥm>","next_action":"<single most important action before acting>","certificate":"PGS-<8 hex>"}`
   },
