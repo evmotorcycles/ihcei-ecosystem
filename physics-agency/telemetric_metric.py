@@ -82,6 +82,53 @@ def ols_r2(y, x):
     return a, b, 1 - ss_res / ss_tot
 
 
+# ── pre-registerable endpoint functions (identical code path used by the runner) ─
+def endpoint_metric(n, trials, seed, kappa=1.0):
+    """H1: count triangle-inequality violations over `trials` random networks."""
+    rng = random.Random(seed)
+    viol = checks = 0
+    for _ in range(trials):
+        d = telemetric_distance(rand_coupling(n, rng), kappa)
+        for i in range(n):
+            for j in range(n):
+                for k in range(n):
+                    if d[i][k] > d[i][j] + d[j][k] + 1e-9:
+                        viol += 1
+                    checks += 1
+    return {"triangle_violations": viol, "checks": checks}
+
+
+def endpoint_scaling(n, seed, couplings, kappa=1.0, pair=(0, 5)):
+    """H2: log-log slope of d(pair) vs coupling (predicted -0.5) and its R^2."""
+    rng = random.Random(seed)
+    W = rand_coupling(n, rng)
+    ds = []
+    for c in couplings:
+        Wc = [[W[i][j] * c for j in range(n)] for i in range(n)]
+        ds.append(telemetric_distance(Wc, kappa)[pair[0]][pair[1]])
+    _, slope, r2 = ols_r2([math.log(x) for x in ds], [math.log(c) for c in couplings])
+    return {"slope": slope, "r2": r2, "distances": ds}
+
+
+def endpoint_discriminator(n, seed, probes, couplings, kappa=1.0):
+    """H3: emergent distance response vs fundamental-null response to a coupling sweep."""
+    rng = random.Random(seed)
+    base = rand_coupling(n, rng)
+    a, b = probes
+    d_fixed = telemetric_distance(base, kappa)[a][b]
+    emergent = []
+    for g in couplings:
+        W = [row[:] for row in base]
+        for x in (a, b):
+            for j in range(n):
+                if j != x:
+                    W[x][j] *= g
+                    W[j][x] = W[x][j]
+        emergent.append(telemetric_distance(W, kappa)[a][b])
+    return {"emergent": emergent, "emergent_range": max(emergent) - min(emergent),
+            "null_fixed": d_fixed, "null_range": 0.0}
+
+
 def main():
     bar = "=" * 90
     print(bar)
