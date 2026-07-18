@@ -25,6 +25,38 @@ python3 qg-cos/five_questions.py     # stdlib only  (pytest: qg-cos/ 2/2)
 the running self-correction process (juice). That is the one thing RT structurally
 cannot do — and here it is a falsifiable number.
 
-*Layer 1 only. The Layer-3 metaphysical reading (Nafs, Deen, the afterlife as
-terminal registers) is neither tested nor claimed — kept strictly apart, as the
-LISM epistemic firewall requires.*
+## Nafs vs Iblees — the cognitive essence under attack (EI + 4D Bias Engine)
+
+`python3 qg-cos/nafs_iblees.py` composes two proven components — EI's say-do
+dissonance detector and the 4D Bias Engine — into one experiment on the same 22
+real repos. **The maths (Layer-1 operational):**
+
+- A node is a **Nafs** (cognitive essence). Its job is a two-hop channel:
+  **Salat = D_enc** (toil: sift / supplicate / extract EBK with sincerity =
+  self-correction, proxy `1/(1+τ_v)`) and **Zakat = D_dec** (enable *others* to
+  perform Salat = propagation, proxy `ln(1+closed)`).
+- **Nafs essence** `E = U · Salat · Zakat` (Barakah; capacity is inert until run
+  through both hops).
+- **Iblees** = internal bias/predilection = the **4D Bias Engine load** `B`
+  (Temporal+Moral+Social+Communication) — the counterpart that attacks.
+- **Overpower** `O = z(B) − z(Salat)`; **concealment** `σ` = say-do dissonance.
+- A **Jinn** = *concealment*: a node overpowered by its biases (`O>0`) that hides
+  its decay behind a live-looking surface (`σ>0`).
+
+**Results — 4/4 supported:**
+
+| # | Prediction | Result |
+|---|---|---|
+| **P1** | Iblees attacks through the **Salat channel** (decode/self-correction) | Communication-bias fail 0.97 vs surv 0.24, **p=0.008** |
+| **P2** | Overpowered Nafs → **Jinn = concealment** | among looks-alive repos, Jinn hide τ_v **57.7 vs 6.0d, p=0.003** |
+| **P3** | **Salat is the defense** | D_enc surv 0.27 vs fail 0.06, **p=0.010** |
+| **P4** | **Zakat completes the essence** (E=U·Salat·Zakat) | surv 0.086 vs fail 0.022, **p=0.021** |
+
+Reported honestly: the raw overpower ratio does **not** separate archived death
+(p=0.20) — a Jinn is concealment *among the living*, not a death certificate. That
+null is printed, not hidden. pytest **2/2**.
+
+*Layer 1 only. The Layer-3 metaphysical reading (Nafs, Deen, Iblees, Jinn, the
+afterlife as terminal registers) is neither tested nor claimed — kept strictly
+apart, as the LISM epistemic firewall requires. Grammatical gender (Nafs feminine,
+Iblees masculine) is the conceptual frame, not a measured quantity.*
