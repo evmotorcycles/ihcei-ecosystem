@@ -1,0 +1,6 @@
+{
+  "spec": "bench_prereg.json",
+  "canonical_sha256": "8ad104d970f1e9ad3b3dd45868c7884e8ba0c5162f8fd4ad4601b6092c31cfb3",
+  "locked_at": "2026-07-19",
+  "algo": "SHA-256 over echo.canonical(spec)"
+}

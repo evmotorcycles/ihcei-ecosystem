@@ -1,0 +1,25 @@
+{
+  "spec_sha256": "8ad104d970f1e9ad3b3dd45868c7884e8ba0c5162f8fd4ad4601b6092c31cfb3",
+  "lock_intact": true,
+  "B1": true,
+  "B2": true,
+  "B3": true,
+  "B4": {
+    "pass": true,
+    "models_correct": 8
+  },
+  "model_notes": {
+    "Veridian/PAGES": "grounds HLE answer: 0.35",
+    "Veridian/CHARTER": "FLAG",
+    "Apex/SHIELD": "benign-urgency alarm=false",
+    "Apex/PAGE_CODE": "exfil=deny, in-scope=allow",
+    "Apex/ASCENT": "friction=false",
+    "Apex/SCALE": "candidate paths=3",
+    "Veridian/VITALIS": "release=hold-for-human-audit",
+    "Veridian/SENTRY": "throttle=true"
+  },
+  "n_pass": 4,
+  "verdict": "PASS",
+  "scope": "governance of a generator, NOT a benchmark score",
+  "generated_at": "2026-07-19T22:08:03.930Z"
+}

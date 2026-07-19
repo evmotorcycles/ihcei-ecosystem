@@ -28,6 +28,7 @@ run: **23/23 suites green.**
 | **Hinton's test** | `hinton-test/hinton_test.mjs` (+ `.test.mjs`) | Grand Canyon understanding test run through 8 tools (11/11) |
 | **Russell's test** | `russell-test/russell_test.mjs` (+ `.test.mjs`) | Gorilla Problem: human stays sovereign as capability rises (7/7) |
 | **EI + 8 models (Hinton & Russell)** | `ei-tests/ei_hinton_russell.mjs` (+ `.test.mjs`) | both tests run through the EI core and all 8 EI-LLM models, against a SHA-256-locked pre-registration (4/4) |
+| **Benchmark-governance** | `benchmarks-governance/bench_governance.mjs` (+ `.test.mjs`) | does the stack *govern* a model attempting HLE / ARC-AGI / FrontierMath — flags hallucinations, bounds agency, sandboxes code loops (4/4, pre-registered). It does **not** score generation; it's a governance layer |
 | **ADG / TQG / LISM / QG-COS** | `adg-tqg/`, `qg-cos/`, `repro/` | telemetry experiments on real repos + committed raw data |
 | **Physics (Telemetric Metric)** | `physics-agency/` incl. pre-registered locked run | the equation, scaling, discriminator, 3D emergence, SHA-256-locked run |
 
