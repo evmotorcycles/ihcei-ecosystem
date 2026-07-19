@@ -1,0 +1,15 @@
+# Route review of sensitive paths to the repo owner.
+# (Requires branch protection with "require review from Code Owners" to enforce.)
+
+# Anything by default
+*                           @evmotorcycles
+
+# Secret-handling / deployment surface
+/api/                       @evmotorcycles
+/novora-suite/api/          @evmotorcycles
+/vercel.json                @evmotorcycles
+/.github/                   @evmotorcycles
+
+# Pre-registration locks must not change silently
+/physics-agency/prereg/     @evmotorcycles
+/prereg/                    @evmotorcycles

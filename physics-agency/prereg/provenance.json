@@ -35,15 +35,15 @@
     "verdict": "PASS"
   },
   "echo": {
-    "prereg": "ECHO-33E512A421",
-    "results": "ECHO-0CF9152CC6",
+    "prereg": "ECHO-BB0A6805BB",
+    "results": "ECHO-DA703E083B",
     "chain_ok": true,
-    "merkle_root": "cda9ba7888bb9d65235c3db7228e8a1b681b3c1514728a60006a7bb88435df24"
+    "merkle_root": "cf79f6f7121dfcaa0677e8411e721a472f38bfd18ab75a06768220a308b2b756"
   },
   "ei": {
     "verdict": "PASS",
     "release": "release",
-    "receipt": "ECHO-5C1EFE2F30",
+    "receipt": "ECHO-40C54D65B5",
     "ledger_ok": true
   },
   "pages_abstract": {
@@ -55,5 +55,5 @@
     "attack": "none",
     "certificate": "PGS-72D2F48D"
   },
-  "generated_at": "2026-07-18T19:58:27.914Z"
+  "generated_at": "2026-07-19T16:08:21.977Z"
 }
