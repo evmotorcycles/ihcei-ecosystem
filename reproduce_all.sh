@@ -55,6 +55,7 @@ bar; echo "  Understanding & control tests (Node)"; bar
 run "Hinton 'Grand Canyon' test (8 tools)" node_run hinton-test/hinton_test.mjs
 run "Russell 'Gorilla Problem' control test" node_run russell-test/russell_test.mjs
 run "EI + 8 models: Hinton & Russell (pre-registered)" node_run ei-tests/ei_hinton_russell.mjs
+run "benchmark-governance: HLE/ARC/FrontierMath (pre-registered)" node_run benchmarks-governance/bench_governance.mjs
 
 bar; echo "  ADG / TQG / LISM / QG-COS telemetry (Python)"; bar
 run "adg-tqg: experiment + Wolfram/Hoffman" py adg-tqg/test_experiment.py adg-tqg/test_wolfram_hoffman.py
