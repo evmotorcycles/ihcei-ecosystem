@@ -27,6 +27,7 @@ run: **23/23 suites green.**
 | **EI-LLM** | `ei-llm/ei-llm.test.mjs`, `ei-llm/field_test.mjs` | 8 verifier models, unit + field on the real 22-repo cohort |
 | **Hinton's test** | `hinton-test/hinton_test.mjs` (+ `.test.mjs`) | Grand Canyon understanding test run through 8 tools (11/11) |
 | **Russell's test** | `russell-test/russell_test.mjs` (+ `.test.mjs`) | Gorilla Problem: human stays sovereign as capability rises (7/7) |
+| **EI + 8 models (Hinton & Russell)** | `ei-tests/ei_hinton_russell.mjs` (+ `.test.mjs`) | both tests run through the EI core and all 8 EI-LLM models, against a SHA-256-locked pre-registration (4/4) |
 | **ADG / TQG / LISM / QG-COS** | `adg-tqg/`, `qg-cos/`, `repro/` | telemetry experiments on real repos + committed raw data |
 | **Physics (Telemetric Metric)** | `physics-agency/` incl. pre-registered locked run | the equation, scaling, discriminator, 3D emergence, SHA-256-locked run |
 

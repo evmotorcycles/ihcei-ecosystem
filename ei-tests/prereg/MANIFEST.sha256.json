@@ -1,0 +1,6 @@
+{
+  "spec": "ei_prereg.json",
+  "canonical_sha256": "7b119a75ba81c940f2a2835ffb5a0cd6f3d4e8a3ce5d547e93f48c5839d726ec",
+  "locked_at": "2026-07-19",
+  "algo": "SHA-256 over echo.canonical(spec)"
+}
