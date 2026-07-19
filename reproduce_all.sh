@@ -54,6 +54,7 @@ run "ei-llm: field harness (real 22-repo cohort)" node_run ei-llm/field_test.mjs
 bar; echo "  Understanding & control tests (Node)"; bar
 run "Hinton 'Grand Canyon' test (8 tools)" node_run hinton-test/hinton_test.mjs
 run "Russell 'Gorilla Problem' control test" node_run russell-test/russell_test.mjs
+run "EI + 8 models: Hinton & Russell (pre-registered)" node_run ei-tests/ei_hinton_russell.mjs
 
 bar; echo "  ADG / TQG / LISM / QG-COS telemetry (Python)"; bar
 run "adg-tqg: experiment + Wolfram/Hoffman" py adg-tqg/test_experiment.py adg-tqg/test_wolfram_hoffman.py
