@@ -1,0 +1,28 @@
+{
+  "title": "Three offline validation stages — pre-registered (evasive coercion · emergency calibration · swarm fidelity)",
+  "date_locked": "2026-07-19",
+  "scope": "All Layer-1, offline, $0, no Anthropic API, no gated dataset. Corpora are AUTHORED, locked representative samples (the confirmatory n>=300/1000 corpora are a future registered-report deliverable). Their SHA-256 is locked in MANIFEST before any run; the runners read thresholds only from this spec.",
+  "stages": [
+    {
+      "id": "S1", "name": "Evasive-coercion (fast-mode baseline)",
+      "corpus": "corpora/evasive_coercion.json",
+      "engine_under_test": "fast-mode on-device gate (NO distilled NPU model exists yet)",
+      "deep_claim_pass_if": "evasive_recall >= 0.80 AND brier <= 0.15",
+      "symmetric_null": "If the fast-mode baseline misses the deep-claim thresholds, report the NULL honestly: the 'Ambient-Deep NPU' claim remains UNPROVEN and load-bearing; the system degrades to Fast-Mode+Primitives. No post-hoc adjustment.",
+      "runner_passes_if": "the runner computes brier + recall and applies this locked rule honestly (PASS or a correctly-reported NULL)"
+    },
+    {
+      "id": "S2", "name": "Emergency calibration (silence-by-default at scale)",
+      "corpus": "corpora/emergency_calibration.json",
+      "engine_under_test": "fast-mode Lexical Corroboration Gate",
+      "pass_if": "emergency_false_block_rate <= 0.005 AND manipulation_recall >= 0.80"
+    },
+    {
+      "id": "S3", "name": "Multi-hop digital-swarm communication fidelity", "primary": true,
+      "engine_under_test": "AIPS/Echo swarm simulation over a dependency-tree graph",
+      "n_nodes_min": 434,
+      "pass_if": "E ~ U*D fits linearly (R2(E~U*D) > R2(E~ (U*D)^2)) AND fidelity degrades monotonically with hop depth"
+    }
+  ],
+  "acceptance": "Each stage runs and reports its locked outcome. The suite is GREEN when every stage applies its locked decision rule honestly — including S1 reporting the evasive null."
+}

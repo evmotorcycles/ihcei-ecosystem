@@ -1,0 +1,11 @@
+{
+  "n_nodes": 500,
+  "max_depth": 39,
+  "meanD_first": 0.8383996022654431,
+  "meanD_last": 0.01363394828466553,
+  "fidelity_decays_with_depth": true,
+  "r2_linear": 0.9296,
+  "r2_quadratic": 0.9008,
+  "linear_coupling_wins": true,
+  "pass": true
+}
