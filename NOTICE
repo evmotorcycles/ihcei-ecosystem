@@ -1,0 +1,35 @@
+Novora / IHCEI ecosystem
+Copyright (c) 2026 Labib Mago — Novora Research Initiative, Open Science Division
+Origin: https://github.com/evmotorcycles/ihcei-ecosystem
+
+LICENSING
+  * Source code ............ MIT (LICENSE)
+  * Docs, papers, data, ... CC-BY-4.0 (LICENSE-docs)
+  Both REQUIRE attribution to the origin above.
+
+CRYPTOGRAPHIC PROVENANCE
+  The frozen scientific record — every pre-registration spec and SHA-256
+  manifest, the authored corpora, the offline knowledge fixture, and the
+  manuscripts for LISM, LMD, the four cohorts (yeast 4825 / GitHub 992 /
+  knowledge 793 / digital swarm), the three validation stages, the Hinton and
+  Russell tests, and the benchmark-governance suite — is fingerprinted into a
+  single Merkle root in PROVENANCE.lock.json.
+
+  Reproduce freely; that is the point. But a faithful reproduction recomputes
+  the same root, which is the cryptographic reference back to this source. Run:
+
+      python3 provenance/verify_provenance.py
+
+  You MAY reproduce, extend, and build upon this work (including its NULL and
+  NEGATIVE results). You MUST retain this attribution and cite the origin. You
+  may NOT present this work, or a reproduction of it, as your own origin.
+
+  Provenance proves integrity, priority (first-publication), and attribution.
+  It does not — and cannot — prevent copying; it makes misattribution
+  detectable and gives the originator a dated, checkable record. For public,
+  reproducible work this is the correct protection: signatures + content hashes,
+  not encryption.
+
+CONTACT / PARTNERSHIPS
+  Open to collaborators and partners. Reach the author via the origin repository
+  (issues / discussions) at the URL above.
