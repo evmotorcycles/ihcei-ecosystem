@@ -26,7 +26,9 @@
       "channel_intact": true,
       "verdict": "linear adequate; no curvature (LRT p~1)",
       "effect": "WEAK (AUC 0.58-0.62; newest-first time confound) \u2014 honest scope",
-      "reproduce": "python3 se_barakah_test.py (committed SE fixture)",
+      "reproduce_live": "python3 se_barakah_test.py --json <SE proxy fetch> (headline N=793)",
+      "reproduce_offline": "python3 repro/make_se_fixture.py && python3 se_barakah_test.py --json repro/data/se_fixture_barakah.json  (deterministic, no network)",
+      "offline_repro_available": true,
       "provenance_present": true,
       "pass": true
     },

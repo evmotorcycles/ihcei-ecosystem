@@ -1,0 +1,29 @@
+{
+  "title": "Latency-Metric Duality (LMD) — the spacetime-verdict-matrix experiment (pre-registered)",
+  "date_locked": "2026-07-20",
+  "equation": "d(i,j)^2 = kappa * tau_rt(i,j),  tau_rt = round-trip info latency = commute time = effective resistance R_ij of the coupling graph",
+  "layer_discipline": "LAYER-1 ONLY. The locked claim is a numerical property of a coupling matrix: (a) the telemetric distance obeys the metric axioms, (b) under a global coupling-RATE sweep the emergent distance follows d ~ coupling^(-1/2) (log-log slope -0.5), and (c) it DISCRIMINATES — a fundamental-container null does not respond to coupling. The interpretation that PHYSICAL spacetime is emergent / a rendered interface (Van Raamsdonk, RT, ER=EPR, Hoffman) is LAYER-3 and is NOT part of the decision rule. The physical qubit-lattice / optical-clock experiment is PROPOSED, not performed.",
+  "setup": "Two probe sites are PINNED (never relabelled/moved). Only the information coupling between nodes is swept. Distance is read out as the correlation round-trip latency (commute time = effective resistance).",
+  "hypotheses": {
+    "H1_metric": {
+      "claim": "telemetric distance is a genuine metric (triangle inequality holds)",
+      "design": "K >= 8640 random coupling networks across n in {5,6,7,8}; count triangle-inequality violations",
+      "pass_if": "triangle_violations == 0 over all K networks"
+    },
+    "H2_scaling": {
+      "claim": "emergent distance contracts as d ~ coupling^(-1/2) when coupling RATE rises",
+      "design": "sweep a geometric coupling grid over M>=200 seeded networks; OLS log(d) ~ log(coupling)",
+      "pass_if": "median slope in [-0.52, -0.48] AND min R^2 >= 0.999",
+      "predicted_slope": -0.5
+    },
+    "H3_discriminator": {
+      "claim": "the emergent model RESPONDS to a coupling sweep on two pinned probes; the fundamental-container null does not",
+      "design": "pin probes (a,b); sweep coupling on their incident edges; compare emergent distance range vs the fixed-container null range",
+      "pass_if": "emergent_range > 0 AND null_range == 0",
+      "verdict_rule": "EMERGENT (LMD) when H2 slope ~ -0.5 AND emergent_range>0 AND null_range==0; FUNDAMENTAL-container when slope ~ 0 (no response). Report whichever the data give."
+    }
+  },
+  "symmetric_null": "If the measured log-log slope were ~0 (distance invariant to coupling), that is EVIDENCE FOR the fundamental-container view and must be reported as such — not rescued. No threshold is moved after seeing results.",
+  "reproducibility": "stdlib only, seeded, offline, $0. Reuses the already-merged, validated endpoint functions in physics-agency/telemetric_metric.py (endpoint_metric / endpoint_scaling / endpoint_discriminator) — identical code path, no reinvention.",
+  "acceptance": "GREEN when the spec re-hashes to the locked manifest AND H1, H2, H3 each apply their locked rule and return the emergent verdict on this substrate. A slope-~0 (fundamental) outcome would be reported honestly and would NOT be silently converted into an emergent claim."
+}

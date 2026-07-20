@@ -9,6 +9,26 @@ bash reproduce_all.sh
 No API keys. No network. Requires only `python3` (with `pytest`) and `node` (≥18).
 Exit code `0` means every suite passed; non-zero prints which suite failed.
 
+### Dependencies (one command)
+
+```bash
+pip install -r requirements.txt      # numpy pandas scipy statsmodels scikit-learn networkx pytest
+```
+
+Every heavy-dependency python test **skips gracefully** (never fails) if a library
+is missing, so the stdlib-only arms reproduce on a bare interpreter. The node
+suites need only `node ≥ 18` — no `npm install`.
+
+> **Independent-reproducer note (addressing Jules's feedback).** The knowledge
+> (Barakah / Stack Exchange) cohort previously required a *live* fetch through the
+> Vercel SE proxy, so it could not be re-run offline. It now reproduces fully
+> offline from a committed, deterministic fixture:
+> `python3 repro/make_se_fixture.py && python3 se_barakah_test.py --json repro/data/se_fixture_barakah.json`
+> (also run automatically by `repro/test_se_offline.py` inside `reproduce_all.sh`).
+> The live `N=793` headline stays attested in `SE_BARAKAH_RESULTS.md`; the offline
+> fixture reproduces the *verdict class* (channel-intact VIF≈1, LINEAR adequate on a
+> no-D² ground truth) so the pipeline is not network-gated.
+
 That single script runs **every test across the whole stack** — this is the
 entrypoint any person, CI, or agent (Jules, Claude Code, etc.) should use. Latest
 run: **23/23 suites green.**
