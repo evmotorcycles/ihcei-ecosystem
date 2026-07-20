@@ -1,0 +1,25 @@
+{
+  "spec_sha256": "7ea3099985c5be60e3808284a4dec8c202ac604e0ce5b0fe9a2b57ce9d558217",
+  "lock_ok": true,
+  "H1_metric": {
+    "networks": 8640,
+    "triangle_checks": 2583360,
+    "violations": 0,
+    "pass": true
+  },
+  "H2_scaling": {
+    "median_slope": -0.5,
+    "predicted": -0.5,
+    "min_r2": 1.0,
+    "M": 200,
+    "pass": true
+  },
+  "H3_discriminator": {
+    "emergent_range": 1.4525,
+    "null_range": 0.0,
+    "pass": true
+  },
+  "verdict": "EMERGENT (LMD)",
+  "layer": "Layer-1 numerical; physical experiment proposed not performed",
+  "pass": true
+}
