@@ -63,6 +63,7 @@ bar; echo "  ADG / TQG / LISM / QG-COS telemetry (Python)"; bar
 run "adg-tqg: experiment + Wolfram/Hoffman" py adg-tqg/test_experiment.py adg-tqg/test_wolfram_hoffman.py
 run "qg-cos: 5 questions + Iqra + Nafs/Iblees" py qg-cos/test_five_questions.py qg-cos/test_iqra_channel.py qg-cos/test_nafs_iblees.py
 run "repro: tau_v + yeast + CI attest"   py repro/test_reproduce.py
+run "lism-cohorts: 4-cohort E=U*D meta (pre-registered)" py lism-cohorts/test_meta_lism.py
 
 bar; echo "  Physics-agency: Telemetric Metric (Python)"; bar
 run "physics: metric + scaling + discriminator" py physics-agency/test_telemetric_metric.py

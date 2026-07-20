@@ -1,0 +1,52 @@
+{
+  "title": "LISM E=U*D — four-cohort cross-substrate meta-test (pre-registered)",
+  "date_locked": "2026-07-20",
+  "layer": "Layer-1 telemetry only. The measured claim is a model-selection verdict (does the ACCELERATING quadratic E=U*D^2 add anything over the linear E=U*D where a valid, channel-intact test is possible?). Any interpretation about Hinton/AI/physics is Layer-3 and is NOT part of the locked decision rule.",
+  "constitutive_relation": "E = U * D,  with D = D_enc * D_dec  (two multiplicative fidelity hops)",
+  "primary_claim": "Across four heterogeneous substrates the linear form E=U*D is ADEQUATE and the accelerating quadratic E=U*D^2 gains NOTHING wherever a valid (VIF~1, populated failing region) test can be run; and a sequential multi-hop digital swarm INHERITS the same linear coupling rather than escaping it.",
+  "symmetric_null": "If any channel-intact cohort shows the quadratic materially beating the linear (higher CV AUC AND a significant curvature term outside its permutation null), that cohort is reported as EVIDENCE FOR the accelerating law, not relabelled. Untestable channels (collapsed VIF or empty failing region) are reported as UNTESTABLE, never spun as support.",
+  "cohorts": [
+    {
+      "id": "A", "name": "Yeast interactome (STRING v12, S. cerevisiae)", "N": 4825,
+      "U": "node degree", "D_enc": "local clustering coefficient", "D_dec": "betweenness centrality (min-max)",
+      "E": "essential-gene label (DEG)",
+      "verdict_ref": "linear adequate; VIF(D_enc,D_dec)=1.003 (channel intact); quadratic adds nothing",
+      "reproduced_by": "repro/reproduce_yeast.py recomputes VIF=1.003 @ N=4825 from committed raw STRING (no network)",
+      "meta_check": "attest committed REF_VIF=1.003, REF_N=4825"
+    },
+    {
+      "id": "B", "name": "GitHub repositories (pre-registered confirmatory)", "N": 992,
+      "split": "750 fail / 242 survive",
+      "U": "activity/size capacity", "D_enc": "documentation/encode fidelity", "D_dec": "review/decode fidelity",
+      "E": "repo viability",
+      "verdict_ref": "QUADRATIC DISCONFIRMED; linear AUC ~0.73, quadratic CV AUC ~0.59; VIF=1.003",
+      "reproduced_by": "govphys_quadratic_prereg_test.spec_hash() re-hashes to cac34f44...; archived CI log matches",
+      "meta_check": "LIVE re-hash spec == cac34f44b2cea0ee3346921d708f00913f6b67cc36376e0b2e4630b9e77001f7"
+    },
+    {
+      "id": "C", "name": "Knowledge propagation (Stack Exchange / Barakah)", "N": 793,
+      "U": "question capacity", "D_enc": "query fidelity (sincere seeking)", "D_dec": "answer/onward-transmission fidelity",
+      "E": "downstream reuse",
+      "verdict_ref": "linear adequate; no curvature (LRT p~1); VIF~1.08; weak effect AUC 0.58-0.62 (honest scope)",
+      "reproduced_by": "se_barakah_test.py against committed SE fixture; SE_BARAKAH_RESULTS.md",
+      "meta_check": "attest committed pooled N=793, linear-adequate, no-curvature verdict"
+    },
+    {
+      "id": "D", "name": "Digital swarm (multi-hop dependency tree)", "N": 500, "primary": true,
+      "U": "per-agent capacity", "D_enc": "encode hop fidelity", "D_dec": "decode hop fidelity",
+      "E": "realized task success",
+      "pass_if": "R2(E~U*D) > R2(E~(U*D)^2) AND corr(hop_depth, joint_fidelity) < -0.5",
+      "meta_check": "LIVE re-simulate (stdlib, seeded); expect linear>quadratic and fidelity decay with depth"
+    }
+  ],
+  "negatives_register_required": [
+    "GitHub quadratic 'AUC 0.41 below chance' was a numerical artifact of a non-converging fit; corrected to CV ~0.59 (over-strong 'anti-predictive' wording retracted). The no-quadratic conclusion stands.",
+    "D_gap curvature statistic fell INSIDE the 1000-permutation null envelope (seed 42) => reported INCONCLUSIVE, not as evidence either way.",
+    "Kubernetes D_gap sensor null (p=0.735) reported as a null.",
+    "Clinical / contract / legislative channels: collapsed VIF or empty failing region => reported UNTESTABLE, not spun as support.",
+    "Validation Stage 1 (evasive coercion): fast-mode NULL (recall 0.25, Brier 0.30) => deep NPU claim remains load-bearing/unproven.",
+    "Validation Stage 2: blunt-manipulation recall 0.375 (credential-bypass tail) reported honestly; safety false-block 0.000.",
+    "Knowledge cohort effect is WEAK (AUC ~0.58) with a newest-first time confound; the linear-vs-quadratic verdict is what is claimed, not a strong predictor."
+  ],
+  "acceptance": "GREEN when (1) the spec re-hashes to the locked manifest, (2) each cohort applies its locked check honestly, (3) the GitHub hash and the live swarm re-simulation both pass, and (4) the negatives register is emitted verbatim. A correctly-reported null or untestable channel does NOT turn the suite red; only a dishonest relabel or a silent post-hoc change would."
+}
