@@ -171,11 +171,17 @@ def cohort_A_yeast():
 
 def cohort_C_knowledge():
     ref_ok = os.path.exists(os.path.join(ROOT, "SE_BARAKAH_RESULTS.md"))
+    # Jules fix: the knowledge cohort now reproduces OFFLINE from a committed,
+    # deterministic SE-shaped fixture (no network). Live N=793 stays attested.
+    offline_ok = os.path.exists(os.path.join(ROOT, "repro", "make_se_fixture.py"))
     return {"N": 793, "VIF": 1.08, "channel_intact": True,
             "verdict": "linear adequate; no curvature (LRT p~1)",
             "effect": "WEAK (AUC 0.58-0.62; newest-first time confound) — honest scope",
-            "reproduce": "python3 se_barakah_test.py (committed SE fixture)",
-            "provenance_present": ref_ok, "pass": ref_ok}
+            "reproduce_live": "python3 se_barakah_test.py --json <SE proxy fetch> (headline N=793)",
+            "reproduce_offline": "python3 repro/make_se_fixture.py && python3 se_barakah_test.py "
+                                 "--json repro/data/se_fixture_barakah.json  (deterministic, no network)",
+            "offline_repro_available": offline_ok,
+            "provenance_present": ref_ok, "pass": ref_ok and offline_ok}
 
 
 # --------------------------------------------------------------------------- #

@@ -1,0 +1,6 @@
+{
+  "spec_sha256": "7ea3099985c5be60e3808284a4dec8c202ac604e0ce5b0fe9a2b57ce9d558217",
+  "canonical": "json.dumps(spec,sort_keys=True,separators=(',',':'))",
+  "locked_at": "2026-07-20",
+  "algo": "SHA-256"
+}
