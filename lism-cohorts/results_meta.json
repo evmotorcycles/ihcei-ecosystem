@@ -1,0 +1,58 @@
+{
+  "spec_sha256": "2e2cc89054c75c73897fdd162d32bc49ebb7e549f6a7c76353968b119d65da00",
+  "lock_ok": true,
+  "cohorts": {
+    "A_yeast": {
+      "N": 4825,
+      "VIF": 1.003,
+      "channel_intact": true,
+      "verdict": "linear adequate; quadratic adds nothing",
+      "reproduce": "python3 repro/reproduce_yeast.py (recomputes VIF from raw STRING v12)",
+      "provenance_present": true,
+      "pass": true
+    },
+    "B_github": {
+      "N": 992,
+      "split": "750 fail / 242 survive",
+      "live_spec_hash": "cac34f44b2cea0ee3346921d708f00913f6b67cc36376e0b2e4630b9e77001f7",
+      "archived_ci_hash": "cac34f44b2cea0ee3346921d708f00913f6b67cc36376e0b2e4630b9e77001f7",
+      "match": true,
+      "verdict": "QUADRATIC DISCONFIRMED (linear AUC ~0.73, quad CV AUC ~0.59, VIF 1.003)",
+      "pass": true
+    },
+    "C_knowledge": {
+      "N": 793,
+      "VIF": 1.08,
+      "channel_intact": true,
+      "verdict": "linear adequate; no curvature (LRT p~1)",
+      "effect": "WEAK (AUC 0.58-0.62; newest-first time confound) \u2014 honest scope",
+      "reproduce": "python3 se_barakah_test.py (committed SE fixture)",
+      "provenance_present": true,
+      "pass": true
+    },
+    "D_swarm": {
+      "N": 500,
+      "max_depth": 39,
+      "decay_corr": -0.887,
+      "meanD_first": 0.838,
+      "meanD_last": 0.014,
+      "r2_linear": 0.9296,
+      "r2_quadratic": 0.9008,
+      "linear_wins": true,
+      "decays": true,
+      "pass": true
+    }
+  },
+  "meta_verdict": "linear E=U*D adequate across all four channel-intact cohorts; quadratic adds nothing; swarm inherits the law",
+  "negatives_register": [
+    "GitHub quadratic 'AUC 0.41 below chance' was a numerical artifact of a non-converging fit; corrected to CV ~0.59 (over-strong 'anti-predictive' wording retracted). The no-quadratic conclusion stands.",
+    "D_gap curvature statistic fell INSIDE the 1000-permutation null envelope (seed 42) => reported INCONCLUSIVE, not as evidence either way.",
+    "Kubernetes D_gap sensor null (p=0.735) reported as a null.",
+    "Clinical / contract / legislative channels: collapsed VIF or empty failing region => reported UNTESTABLE, not spun as support.",
+    "Validation Stage 1 (evasive coercion): fast-mode NULL (recall 0.25, Brier 0.30) => deep NPU claim remains load-bearing/unproven.",
+    "Validation Stage 2: blunt-manipulation recall 0.375 (credential-bypass tail) reported honestly; safety false-block 0.000.",
+    "Knowledge cohort effect is WEAK (AUC ~0.58) with a newest-first time confound; the linear-vs-quadratic verdict is what is claimed, not a strong predictor."
+  ],
+  "honest_reporting": true,
+  "pass": true
+}
