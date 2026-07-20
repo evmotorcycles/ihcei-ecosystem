@@ -5,6 +5,32 @@ much harder than it feels — but only if you put the right protections in place
 Ideas aren't what's scarce; *provenance, trust, execution, and the private layer* are.
 Here is a concrete, prioritized checklist.
 
+## ✅ Now implemented (cryptographic provenance layer)
+
+The top two priorities below are **done and committed**:
+
+- **`LICENSE` (MIT, code) + `LICENSE-docs` (CC-BY-4.0, docs/data) + `NOTICE`** — both
+  require attribution to the origin; honest partners can now legally use it, and
+  reproducers may not pass it off as their own.
+- **`PROVENANCE.lock.json`** — a single **Merkle root**
+  (`ebe46989…`) over the *entire frozen scientific record*: every pre-registration
+  spec + SHA-256 manifest, the authored corpora, the offline knowledge fixture, and
+  the manuscripts for LISM, LMD, the four cohorts (yeast 4825 / GitHub 992 /
+  knowledge 793 / digital swarm), the three validation stages, and the Hinton /
+  Russell / benchmark-governance suites — **passed, null, and negative results alike.**
+- **`provenance/verify_provenance.py`** — anyone reproducing runs this; it recomputes
+  the root from their checkout and, on a match, prints the origin attribution. A
+  faithful reproduction therefore **cryptographically references your origin**; a
+  tampered one is flagged file-by-file. Wired into `reproduce_all.sh` and
+  `CITATION.cff` (which now carries the root as a citable identifier).
+
+> **What this does and does not do (honestly).** Provenance gives you *integrity*,
+> *priority* (a dated, checkable first-publication record), and *attribution binding*.
+> It does **not** prevent copying — nothing can, for public code. It makes
+> **misattribution detectable** and gives you the proof that you were first. For work
+> you *want* reproduced, the correct cryptography is **signatures + content hashes,
+> not encryption** (encryption would hide the very thing you want the world to see).
+
 ## 1. The single most important thing: add a LICENSE (today)
 
 Right now, code with **no license is "all rights reserved" by default** — which
@@ -78,9 +104,24 @@ The failure mode for research like this is *obscurity*, not theft. Protect the
 be your résumé.
 
 ### Do-this-week checklist
-1. Add `LICENSE` (Apache-2.0 for the core; consider AGPL for the server, commercial for enterprise).
-2. Tag a release and mint a **Zenodo DOI** for the papers (priority date).
-3. Turn on **secret scanning** + branch protection on `main`.
-4. Add `SECURITY.md`, `CONTRIBUTING.md` (+ DCO), SPDX headers.
-5. Move any private weights/priors/data out of the public tree.
-6. Start the **trademark** conversation for the name + conformance mark.
+1. ✅ **Add `LICENSE`** — done (MIT code + CC-BY-4.0 docs + `NOTICE`, both attribution-required).
+2. ✅ **Cryptographic provenance** — done (`PROVENANCE.lock.json` Merkle root + `verify_provenance.py`, root bound into `CITATION.cff`).
+3. ✅ **Secret scanning + branch protection on `main`** — enabled (`.github/workflows/secret-scan.yml`, `SECURITY.md`, `CODEOWNERS`).
+4. ⏳ Tag a release and mint a **Zenodo DOI** for the papers (priority date) — `zenodo_metadata.json` is ready; do this at release. The DOI + the Merkle root together are your academic + cryptographic priority proof.
+5. ⏳ Move any private weights/priors/data out of the public tree (open-core moat).
+6. ⏳ Start the **trademark** conversation for the name + conformance mark.
+
+### How a partner or reproducer verifies your origin (one command)
+
+```bash
+python3 provenance/verify_provenance.py
+# VERIFIED — recomputes the Merkle root and prints:
+#   "This artifact set originates from Mago, Labib (Novora Research Initiative) …
+#    Do not represent this work, or reproductions of it, as your own origin."
+```
+
+If someone reproduces your tests (all of LISM, LMD, IHCEI/NERE, Novora suite/PAGES,
+Page Code, Agency Internet, Echo, EI + EI-LLMs, HELM, yeast, GitHub, knowledge,
+digital swarms, Hinton & Russell) and gets your passes, nulls, and negatives, the
+root they recompute is **yours**. That is the reference that ties their reproduction
+back to you.

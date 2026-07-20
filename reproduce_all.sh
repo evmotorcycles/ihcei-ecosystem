@@ -65,6 +65,7 @@ run "qg-cos: 5 questions + Iqra + Nafs/Iblees" py qg-cos/test_five_questions.py 
 run "repro: tau_v + yeast + CI attest"   py repro/test_reproduce.py
 run "lism-cohorts: 4-cohort E=U*D meta (pre-registered)" py lism-cohorts/test_meta_lism.py
 run "knowledge cohort: Barakah SE reproduces OFFLINE" py repro/test_se_offline.py
+run "provenance: cryptographic origin lock verifies" py provenance/test_provenance.py
 
 bar; echo "  Physics-agency: Telemetric Metric (Python)"; bar
 run "physics: metric + scaling + discriminator" py physics-agency/test_telemetric_metric.py
