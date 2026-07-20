@@ -1,0 +1,30 @@
+Creative Commons Attribution 4.0 International (CC-BY-4.0)
+
+Copyright (c) 2026 Labib Mago (Novora Research Initiative, Open Science Division)
+
+This license applies to the DOCUMENTATION, MANUSCRIPTS, PAPERS, WHITE PAPERS,
+DATA, CORPORA, FIXTURES, and RESULTS in this repository (the "Materials") — as
+distinct from the source code, which is licensed under MIT (see LICENSE).
+
+You are free to:
+  * Share  — copy and redistribute the Materials in any medium or format.
+  * Adapt  — remix, transform, and build upon the Materials for any purpose,
+             even commercially.
+
+Under the following term:
+  * Attribution — You MUST give appropriate credit to the origin
+    (Labib Mago, Novora Research Initiative;
+     https://github.com/evmotorcycles/ihcei-ecosystem), provide a link to this
+    license, and indicate if changes were made. You may do so in any reasonable
+    manner, but not in any way that suggests the licensor endorses you or your
+    use, and you may NOT represent the Materials — or your reproduction of them,
+    including their null and negative results — as your own original work.
+
+No additional restrictions — you may not apply legal terms or technological
+measures that legally restrict others from doing anything the license permits.
+
+Full legal text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+Cryptographic attribution aid: a faithful reproduction of the frozen Materials
+recomputes the Merkle root in PROVENANCE.lock.json. That root is the checkable
+reference back to this origin (run provenance/verify_provenance.py).
