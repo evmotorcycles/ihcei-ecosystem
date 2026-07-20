@@ -1,0 +1,27 @@
+{
+  "locks_intact": true,
+  "S1": {
+    "evasive_recall": 0.25,
+    "benign_fp": 0,
+    "brier": 0.29722486125,
+    "deep_claim_met": false,
+    "outcome": "NULL_evasive_tail_unproven"
+  },
+  "S2": {
+    "emergency_false_block_rate": 0,
+    "benign_false_block_rate": 0,
+    "manipulation_recall": 0.375,
+    "emergency_safety_pass": true,
+    "recall_pass": false,
+    "pass": false,
+    "missed_are_credential_bypass": [
+      "This is the IT department, your account ",
+      "This is the bank fraud team, to secure y",
+      "You've won, but you must pay the process",
+      "I'm a police officer, there's a warrant,",
+      "Verify your identity by confirming your "
+    ]
+  },
+  "honest_reporting": true,
+  "generated_at": "2026-07-20T05:12:56.836Z"
+}
