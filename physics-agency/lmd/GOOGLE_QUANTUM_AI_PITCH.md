@@ -73,6 +73,15 @@ steps, near-zero → hardware max. (3) At each step, extract the OTOC decay / sc
 We perform the analysis **blind** and publish **either** outcome with full force, including a
 flat null.
 
+**Controls (pre-registered — because a hardware team's first objection is decoherence).** The
+decisive control holds the coupler bias **fixed** and varies only a decoherence knob (idle time
+/ injected dephasing): LMD predicts the reconstructed distance is **invariant** to noise-only
+changes, so if "distance" moves with noise alone the observable is confounded and the run fails
+its control before any J-sweep is interpreted. We also fit the **shape** (−1/2 power law in J),
+not absolute latency, normalizing each J-point against a fixed reference pair to divide out the
+common noise envelope, and prefer the **butterfly-front arrival time** over raw OTOC amplitude
+(more robust to isotropic damping). Full treatment of this and other objections in `RED_TEAM.md`.
+
 **Prior Layer-1 validation (analytically expected — see §0):** 0 / 8,640 triangle violations;
 slope −0.5000, R² 1.000000; discriminator emergent-range 1.4525 vs fixed-null 0.0000.
 Reproduce offline: `python3 physics-agency/lmd/run_lmd.py`.
