@@ -17,6 +17,12 @@ confirm them from a primary source.
    from **primary sources**: the Google Quantum AI team page, the authors' own
    university/lab pages, or the corresponding-author email on their most recent paper. Do **not**
    pull names/roles from secondary summaries.
+   - *Plausible high-value targets for the hardware prong:* **Sergio Boixo** and **Ryan Babbush**
+     are long-standing, publicly-documented leads in Google's quantum-algorithms / theory effort.
+     They are reasonable people to address — **but confirm their current role and preferred contact
+     from a primary Google source before sending** (a mis-titled salutation is a first-impression
+     killer). Earlier notes also named other individuals with specific titles that we could not
+     verify; do not use unverified names.
 3. **Use Google Quantum AI's official published collaboration/contact channel** if one exists at
    the time you send (check quantumai.google). Prefer a named PI over a generic inbox — a generic
    inbox is high-latency and low-signal.
