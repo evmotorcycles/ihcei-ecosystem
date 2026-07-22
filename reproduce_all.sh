@@ -76,6 +76,7 @@ run "physics: telemetry machines (F=ma/E=mc2)" py physics-agency/test_telemetry_
 run "physics: 3D coordinate emergence"   py physics-agency/test_telemetric_3d.py
 run "physics: pre-registered locked run" py physics-agency/prereg/test_prereg.py
 run "physics: LMD spacetime-verdict-matrix (pre-registered)" py physics-agency/lmd/test_lmd.py
+run "physics: LMD vs 4 emergent-spacetime theories (honest)" py physics-agency/lmd/comparison/test_comparison.py
 
 echo
 echo "========================================================================"
