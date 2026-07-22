@@ -1,0 +1,39 @@
+{
+  "cohort_n": 24,
+  "spec_sha256": "913f4d03dfa6aa1df38d888f215ed23d7933297bdc3292d3eac154fc39d48325",
+  "lock_ok": true,
+  "A1_real_lineage": {
+    "n": 24,
+    "n_has_descendant": 1,
+    "within_cohort_edges": 12,
+    "r2_linear": 0.0041,
+    "r2_quadratic": 0.0002,
+    "valid_powered_test": false,
+    "verdict": "INCONCLUSIVE (underpowered: N=24, 1 positives \u2014 needs >=200 & >=100/cell)"
+  },
+  "A2_swarm_coupling": {
+    "n_nodes": 500,
+    "max_depth": 25,
+    "decay_corr": -0.89,
+    "r2_linear": 0.7336,
+    "r2_quadratic": 0.7511,
+    "fidelity_decays": true,
+    "linear_wins": false,
+    "pass": false
+  },
+  "A3_revocation_latency": {
+    "hub": "Qwen/Qwen3.6-27B",
+    "direct_dependents": 4,
+    "total_nodes_below_hub": 12,
+    "all_halted": true,
+    "un_halted": [],
+    "max_tau_v_hops": 4,
+    "tau_v_scales_with_depth": true,
+    "pass": true
+  },
+  "coupling_confirmed": false,
+  "fidelity_decay_confirmed": true,
+  "note": "A1 underpowered-by-design; A2 confirms multi-hop DECAY, coupling reported honestly (here inconclusive on HF-skewed U); A3 revocation halts every dependent. Green = honest application of the locked rules + the safety-critical halt.",
+  "honest_reporting": true,
+  "pass": true
+}
