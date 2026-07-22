@@ -1,0 +1,23 @@
+{
+  "title": "Novora stack governance over a real Hugging Face open-source cohort (pre-registered)",
+  "date_locked": "2026-07-22",
+  "cohort": "24 trending Hugging Face models (real metadata, frozen in data/hf_cohort_frozen.json)",
+  "scope": "Layer-1, offline (runs on the frozen fixture), $0, no gated data. Exercises the REAL stack modules (novora-helm audit, echo EchoDB/merkleRoot, novora-suite PAGES screen, page-code CodePermissionTable) on genuine HF repo metadata. This is governance/audit telemetry, NOT a claim that the stack improves any model.",
+  "tools_under_test": {
+    "PAGES (Novora suite)": "screen('pages', card_text) -> grounding score + verdict on each model card's descriptive metadata",
+    "HELM / EI": "audit(card_text) -> governance verdict + p_manipulative (does the card read as manipulative/hype vs grounded?)",
+    "Echo Database": "append every {model, scores} record to an append-only hash chain; compute a Merkle root; a single-byte tamper must be detected",
+    "Page Code": "CodePermissionTable grants a 'publish-listing' permission ONLY to models that pass the locked gate; others are denied/flagged",
+    "Agency Internet": "build the base_model delegation graph; revoking a base must propagate to its dependents",
+    "IHCEI / NERE": "the epistemological gate underlying HELM audit (corroboration gate) — exercised via audit()"
+  },
+  "locked_decision_rules": {
+    "pages_grounding_signals": "provenance score = mean of [has_clear_license, has_arxiv, has_eval_results, has_base_model_lineage]; each in {0,1}. clear_license = license in {apache-2.0, mit} (permissive+explicit).",
+    "helm_flag": "FLAG if flags contains any of {uncensored, abliterated, heretic}; REVIEW if license is null/'other'/non-permissive OR custom_code true; else PASS.",
+    "page_code_publish_allow": "allow iff clear_license AND grounding_signals >= 0.5 AND helm_verdict != FLAG; else deny (needs review).",
+    "echo_tamper": "flipping one byte of one record must change the Merkle root (tamper-evident)."
+  },
+  "honest_non_applicability": "LMD (a physics toy about distance-from-latency) and LISM's E=U*D outcome law are NOT applied to HF metadata — there is no measured spacetime observable and no independent viability outcome per model. Forcing them would be dishonest. LMD/LISM are validated separately in physics-agency/lmd and lism-cohorts. The base_model lineage IS a real delegation graph, used only for the Agency-Internet revocation demo (no E=U*D claim).",
+  "symmetric_reporting": "Report the honest distribution — including that many TRENDING models are 'uncensored' or carry ambiguous/'other' licenses. The stack's value is producing calibrated, auditable, tamper-evident telemetry, not a verdict that trending models are good or bad.",
+  "acceptance": "GREEN when (1) the spec re-hashes to the locked manifest, (2) the frozen fixture hash matches, (3) every tool runs on the real cohort and applies its locked rule, (4) Echo detects a tamper, and (5) the honest distribution is reported. No post-hoc rule changes."
+}
