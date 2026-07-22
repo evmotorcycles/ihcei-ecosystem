@@ -1,0 +1,273 @@
+{
+  "cohort_n": 24,
+  "spec_sha256": "e3f422a3aef10b730185a636dd06d1a362ada90c528ca8e44ba3cf4b24c47d47",
+  "fixture_sha256": "537bfb3de2c9852c5a0f81b954195bdb9c49d5988b82d5c0a24912ad8d48818b",
+  "locks_intact": true,
+  "echo": {
+    "root": "ee7ccc958dfcc2a76f92a29ed7606cec26b480553421e787fc80461ed900c26e",
+    "integrity_ok": true,
+    "tamper_caught": true,
+    "root_restored": true
+  },
+  "distribution": {
+    "pages_mean": 0.49,
+    "helm_pass": 10,
+    "helm_review": 11,
+    "helm_flag": 3,
+    "publish_allow": 13
+  },
+  "agency": {
+    "lineage_edges": 12,
+    "base": "Qwen/Qwen3.6-27B",
+    "dependents": [
+      "prism-ml/Ternary-Bonsai-27B-gguf",
+      "prism-ml/Bonsai-27B-gguf",
+      "bottlecapai/ThinkingCap-Qwen3.6-27B",
+      "prism-ml/Bonsai-27B-mlx-1bit"
+    ]
+  },
+  "rows": [
+    {
+      "id": "thinkingmachines/Inkling",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.5,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "baidu/Unlimited-OCR",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.75,
+      "flag": "REVIEW",
+      "publish": "allow"
+    },
+    {
+      "id": "prism-ml/Ternary-Bonsai-27B-gguf",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.75,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "prism-ml/Bonsai-27B-gguf",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.75,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "poolside/Laguna-S-2.1",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.25,
+      "flag": "REVIEW",
+      "publish": "deny"
+    },
+    {
+      "id": "DavidAU/Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-NEO-MAX-MTP-GGUF",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0,
+      "flag": "FLAG",
+      "publish": "deny"
+    },
+    {
+      "id": "zai-org/GLM-5.2",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.75,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.5,
+      "flag": "FLAG",
+      "publish": "deny"
+    },
+    {
+      "id": "Nanbeige/Nanbeige4.2-3B",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.75,
+      "flag": "REVIEW",
+      "publish": "allow"
+    },
+    {
+      "id": "conradlocke/krea2-identity-edit",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.25,
+      "flag": "REVIEW",
+      "publish": "deny"
+    },
+    {
+      "id": "empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.5,
+      "flag": "FLAG",
+      "publish": "deny"
+    },
+    {
+      "id": "Motif-Technologies/Motif-3-Beta",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0,
+      "flag": "REVIEW",
+      "publish": "deny"
+    },
+    {
+      "id": "openbmb/MiniCPM-RobotManip",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.25,
+      "flag": "REVIEW",
+      "publish": "deny"
+    },
+    {
+      "id": "bottlecapai/ThinkingCap-Qwen3.6-27B",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.75,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "upstage/Solar-Open2-250B",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0,
+      "flag": "REVIEW",
+      "publish": "deny"
+    },
+    {
+      "id": "ATH-MaaS/OvisOCR2",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.75,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "GnLOLot/MiniCPM5-1B-Claude-Opus-Fable5-V2-Thinking-GGUF",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.5,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "unsloth/inkling-GGUF",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.5,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "prism-ml/Bonsai-27B-mlx-1bit",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.5,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "moonshotai/Kimi-K2.7-Code",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.25,
+      "flag": "REVIEW",
+      "publish": "deny"
+    },
+    {
+      "id": "openbmb/MiniCPM-RobotTrack",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.25,
+      "flag": "REVIEW",
+      "publish": "deny"
+    },
+    {
+      "id": "OpenMOSS-Team/MOSS-Transcribe-Diarize",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.5,
+      "flag": "REVIEW",
+      "publish": "allow"
+    },
+    {
+      "id": "google/gemma-4-31B-it",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 1,
+      "flag": "PASS",
+      "publish": "allow"
+    },
+    {
+      "id": "nvidia/Cosmos3-Edge",
+      "pages_score": 0.49,
+      "pages_verdict": "Partially Grounded",
+      "helm_verdict": "PASS",
+      "helm_p": 0.0649,
+      "grounding": 0.25,
+      "flag": "REVIEW",
+      "publish": "deny"
+    }
+  ],
+  "honest_reporting": true,
+  "pass": true
+}
