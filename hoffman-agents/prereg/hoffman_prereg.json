@@ -1,0 +1,27 @@
+{
+  "title": "Hoffman conscious-agent evolutionary simulation — LISM linear-decay + tau_v coherence (pre-registered)",
+  "date_locked": "2026-07-22",
+  "layer": "Layer-1, offline, $0, seeded, stdlib. An agent-based SIMULATION of Donald Hoffman's Interface Theory of Perception (ITP). It is a computational model, NOT a claim about human consciousness.",
+  "world": "A true world state x in [0,1]. Fitness f(x) is NON-monotonic (a resource is good in moderation): f(x)=exp(-((x-0.5)/0.18)^2). So perceiving x accurately does NOT maximize fitness -- the setup that makes Hoffman's Fitness-Beats-Truth (FBT) possible.",
+  "agent": "Each agent has a perceptual fidelity D in [0,1] = correlation of its percept to the true x, and a capacity U (perceptual samples/round). It perceives, acts to maximize expected fitness given its percept, and accrues realized fitness f(x, action). Survival E = 1 if accumulated fitness over the rounds exceeds a fixed threshold; else 0.",
+  "hypotheses": {
+    "P1_FBT_control": {
+      "claim": "Hoffman's FBT: a fitness-tuned strategy (perceive fitness category, ignore true x) OUTCOMPETES a truth-tuned strategy (perceive x accurately) under selection on fitness.",
+      "design": "evolve a population mixing truth-tuned and fitness-tuned agents; track the fitness-tuned share over generations.",
+      "pass_if": "fitness-tuned final share > 0.60 (FBT reproduced -> this IS a Hoffman world). This is a CONTROL that the substrate is genuine."
+    },
+    "P2_LISM_linear_decay": {
+      "claim": "LISM: across agents of varying perceptual fidelity, SURVIVAL couples LINEARLY to U*D, not quadratically -- fitness-tuned interfaces persist because fidelity decays GRACEFULLY (linear), not off a quadratic cliff.",
+      "design": "sample a population with varying (U, D); bin realized survival rate by U*D; OLS linear vs quadratic-only.",
+      "pass_if": "R2(E~U*D) > R2(E~(U*D)^2) AND R2_linear > 0.9",
+      "symmetric_null": "If quadratic wins or neither fits (as happened on the HF-skewed cohort), report the NULL at full force. No post-hoc retuning."
+    },
+    "P3_tau_v_coherence": {
+      "claim": "The latency tau_v with which agents reconcile CONFLICTING percepts predicts loss of network coherence: higher tau_v -> lower coherence.",
+      "design": "agents on a graph exchange percepts and average toward consensus; tau_v = rounds to reach a consensus band; coherence = 1 - final percept variance. Sweep tau_v via disagreement/noise.",
+      "pass_if": "corr(tau_v, coherence) < -0.5 (higher reconciliation latency -> lower coherence)"
+    }
+  },
+  "acceptance": "GREEN when the spec re-hashes to the manifest AND each hypothesis applies its locked rule honestly. P1 and P3 are load-bearing (the substrate is a genuine Hoffman world; tau_v tracks coherence). P2's linear-vs-quadratic verdict is reported as-is -- a correctly-reported null does NOT turn the suite red.",
+  "honest_scope": "This tests whether LISM's linear coupling and tau_v laws hold in a simulated Hoffman-ITP substrate. It does NOT prove ITP is true of reality, and it does NOT claim agents are conscious. The statutory/legislative cohort mentioned elsewhere is INCONCLUSIVE in this repo's own record (live Congress.gov, no independent second hop) and is NOT counted as a validated cohort."
+}
