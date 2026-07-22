@@ -1,0 +1,25 @@
+{
+  "spec_sha256": "79f750284e1a1bf9d408fd2a5150e6826a844cde8eed07182aa86ece42184bb7",
+  "lock_ok": true,
+  "P1_fbt": {
+    "fitness_final_share": 1.0,
+    "gens": 60,
+    "fbt_reproduced": true
+  },
+  "P2_lism": {
+    "n": 1200,
+    "r2_linear": 0.2752,
+    "r2_quadratic": 0.1386,
+    "linear_wins": false,
+    "linear_directionally_beats_quad": true,
+    "survival_rate": 0.945
+  },
+  "P3_tau_v": {
+    "trials": 200,
+    "corr_tau_coherence": -0.939,
+    "predicts": true
+  },
+  "note": "Green = genuine Hoffman world (P1) + tau_v tracks coherence (P3) + P2 coupling reported honestly (linear or null). Layer-1 simulation; not a claim about real consciousness.",
+  "honest_reporting": true,
+  "pass": true
+}
