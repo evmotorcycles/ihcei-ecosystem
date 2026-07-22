@@ -56,6 +56,7 @@ run "Hinton 'Grand Canyon' test (8 tools)" node_run hinton-test/hinton_test.mjs
 run "Russell 'Gorilla Problem' control test" node_run russell-test/russell_test.mjs
 run "EI + 8 models: Hinton & Russell (pre-registered)" node_run ei-tests/ei_hinton_russell.mjs
 run "benchmark-governance: HLE/ARC/FrontierMath (pre-registered)" node_run benchmarks-governance/bench_governance.mjs
+run "hf-cohort: real HF models audited by the stack (pre-registered)" node_test hf-cohort/hf.test.mjs
 run "validation stage 1&2: evasive + emergency (pre-registered)" node_run validation-stages/stage12_screen.mjs
 run "validation stage 3: swarm fidelity N>=434 (pre-registered)" py validation-stages/test_stage3.py
 

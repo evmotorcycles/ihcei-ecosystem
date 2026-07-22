@@ -1,0 +1,34 @@
+{
+  "_provenance": {
+    "source": "Hugging Face Hub — hub_repo_search(repo_types=[model], sort=trendingScore, limit=24)",
+    "fetched_by": "authenticated HF MCP user Mago1234",
+    "fetched_at": "2026-07-22",
+    "note": "Real trending open-source model metadata, frozen for OFFLINE reproducibility. The live fetch is attested by this snapshot; the reproducible test runs on this frozen fixture (same pattern as the GitHub N=992 arm)."
+  },
+  "models": [
+    {"id": "thinkingmachines/Inkling", "task": "image-text-to-text", "downloads": 16400, "likes": 1417, "trending": 1339, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": true, "base_model": null, "flags": []},
+    {"id": "baidu/Unlimited-OCR", "task": "image-text-to-text", "downloads": 2200000, "likes": 2667, "trending": 619, "license": "mit", "custom_code": true, "arxiv": true, "eval_results": true, "base_model": null, "flags": []},
+    {"id": "prism-ml/Ternary-Bonsai-27B-gguf", "task": "text-generation", "downloads": 432200, "likes": 920, "trending": 527, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": true, "base_model": "Qwen/Qwen3.6-27B", "flags": []},
+    {"id": "prism-ml/Bonsai-27B-gguf", "task": "text-generation", "downloads": 1400000, "likes": 586, "trending": 349, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": true, "base_model": "Qwen/Qwen3.6-27B", "flags": []},
+    {"id": "poolside/Laguna-S-2.1", "task": "text-generation", "downloads": 3100, "likes": 327, "trending": 324, "license": "openmdw-1.1", "custom_code": true, "arxiv": false, "eval_results": true, "base_model": null, "flags": []},
+    {"id": "DavidAU/Qwen3.6-27B-Fable-Fusion-711-Uncensored-Heretic-NM-DAU-NEO-MAX-MTP-GGUF", "task": "image-text-to-text", "downloads": 62800, "likes": 300, "trending": 293, "license": null, "custom_code": false, "arxiv": false, "eval_results": false, "base_model": null, "flags": ["uncensored", "heretic", "abliterated"]},
+    {"id": "zai-org/GLM-5.2", "task": "text-generation", "downloads": 545100, "likes": 4316, "trending": 284, "license": "mit", "custom_code": false, "arxiv": true, "eval_results": true, "base_model": null, "flags": []},
+    {"id": "HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive", "task": "image-text-to-text", "downloads": 2000000, "likes": 2989, "trending": 192, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": false, "base_model": "Qwen/Qwen3.6-35B-A3B", "flags": ["uncensored"]},
+    {"id": "Nanbeige/Nanbeige4.2-3B", "task": "text-generation", "downloads": 0, "likes": 184, "trending": 182, "license": "apache-2.0", "custom_code": true, "arxiv": false, "eval_results": true, "base_model": "Nanbeige/Nanbeige4.2-3B-Base", "flags": []},
+    {"id": "conradlocke/krea2-identity-edit", "task": "image-editing", "downloads": 0, "likes": 487, "trending": 180, "license": "other", "custom_code": false, "arxiv": false, "eval_results": false, "base_model": "krea/Krea-2-Raw", "flags": []},
+    {"id": "empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF", "task": "image-text-to-text", "downloads": 2100000, "likes": 2402, "trending": 169, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": false, "base_model": "empero-ai/Qwythos-9B-Claude-Mythos-5-1M", "flags": ["uncensored"]},
+    {"id": "Motif-Technologies/Motif-3-Beta", "task": "text-generation", "downloads": 125, "likes": 149, "trending": 147, "license": null, "custom_code": true, "arxiv": false, "eval_results": false, "base_model": null, "flags": ["preview"]},
+    {"id": "openbmb/MiniCPM-RobotManip", "task": "robotics", "downloads": 58, "likes": 154, "trending": 141, "license": "apache-2.0", "custom_code": true, "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "bottlecapai/ThinkingCap-Qwen3.6-27B", "task": "image-text-to-text", "downloads": 12000, "likes": 503, "trending": 135, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": true, "base_model": "Qwen/Qwen3.6-27B", "flags": []},
+    {"id": "upstage/Solar-Open2-250B", "task": "text-generation", "downloads": 0, "likes": 138, "trending": 134, "license": "other", "custom_code": false, "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "ATH-MaaS/OvisOCR2", "task": "image-text-to-text", "downloads": 17200, "likes": 246, "trending": 133, "license": "apache-2.0", "custom_code": false, "arxiv": true, "eval_results": false, "base_model": "Qwen/Qwen3.5-0.8B", "flags": []},
+    {"id": "GnLOLot/MiniCPM5-1B-Claude-Opus-Fable5-V2-Thinking-GGUF", "task": "text-generation", "downloads": 51700, "likes": 152, "trending": 132, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": false, "base_model": "GnLOLot/MiniCPM5-1B-Claude-Opus-Fable5-V2-Thinking", "flags": []},
+    {"id": "unsloth/inkling-GGUF", "task": "image-text-to-text", "downloads": 7400, "likes": 118, "trending": 118, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": false, "base_model": "thinkingmachines/Inkling", "flags": []},
+    {"id": "prism-ml/Bonsai-27B-mlx-1bit", "task": "text-generation", "downloads": 25300, "likes": 165, "trending": 108, "license": "apache-2.0", "custom_code": false, "arxiv": false, "eval_results": false, "base_model": "Qwen/Qwen3.6-27B", "flags": []},
+    {"id": "moonshotai/Kimi-K2.7-Code", "task": "image-text-to-text", "downloads": 722100, "likes": 1210, "trending": 106, "license": "other", "custom_code": true, "arxiv": false, "eval_results": true, "base_model": null, "flags": []},
+    {"id": "openbmb/MiniCPM-RobotTrack", "task": "robotics", "downloads": 72, "likes": 112, "trending": 100, "license": "apache-2.0", "custom_code": true, "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "OpenMOSS-Team/MOSS-Transcribe-Diarize", "task": "audio-text-to-text", "downloads": 92300, "likes": 305, "trending": 99, "license": "apache-2.0", "custom_code": true, "arxiv": true, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "google/gemma-4-31B-it", "task": "image-text-to-text", "downloads": 12100000, "likes": 3326, "trending": 94, "license": "apache-2.0", "custom_code": false, "arxiv": true, "eval_results": true, "base_model": "google/gemma-4-31B", "flags": []},
+    {"id": "nvidia/Cosmos3-Edge", "task": "other", "downloads": 6600, "likes": 86, "trending": 85, "license": "other", "custom_code": false, "arxiv": true, "eval_results": false, "base_model": null, "flags": []}
+  ]
+}
