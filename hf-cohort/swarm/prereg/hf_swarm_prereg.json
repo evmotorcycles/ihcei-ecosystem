@@ -1,0 +1,31 @@
+{
+  "title": "Hugging Face digital-swarm E=U*D + revocation-latency (tau_v) test (pre-registered)",
+  "date_locked": "2026-07-22",
+  "layer": "Layer-1, offline, $0. Runs on the frozen HF cohort fixture (hf-cohort/data/hf_cohort_frozen.json). Two arms use REAL HF lineage; the coupling-power arm is a SEEDED SIMULATION on HF-calibrated topology, labelled as such.",
+  "constitutive_relation": "E = U * D, with D = D_enc * D_dec along each lineage hop.",
+  "honest_construct_validity": "A true model-SURVIVAL study (E = 0 if downloads drop >95% over 12 months / repo deprecated) needs longitudinal data we do NOT have from a single snapshot. We do not fabricate it. Arm 1 uses a weak snapshot proxy and is reported HONESTLY as underpowered; Arm 2 tests the E=U*D coupling law on a simulated swarm whose TOPOLOGY is calibrated from the real HF lineage; Arm 3 measures revocation latency on the real hub.",
+  "arms": [
+    {
+      "id": "A1_real_lineage",
+      "name": "Real HF lineage forest (snapshot, underpowered — honest)",
+      "outcome_E": "has_descendant: 1 if the model is referenced as another model's base_model, else 0 (a non-survival adoption proxy)",
+      "U": "log(1+downloads)", "D_enc": "grounding = mean(clear_license, arxiv, eval_results)", "D_dec": "1 (single snapshot; no downstream-integration series)",
+      "pass_if": "REPORT the linear-vs-quadratic AUC/fit AND the sample size; if N or the failing cell is too small for a valid test (n<100 per cell), report INCONCLUSIVE/underpowered rather than a verdict. No mining."
+    },
+    {
+      "id": "A2_swarm_coupling",
+      "name": "Digital-swarm E=U*D on HF-calibrated lineage topology (seeded simulation)",
+      "engine": "grow a dependency tree seeded on the real HF branching (hubs like Qwen3.6-27B spawn many quantizations/finetunes); seed U from the real download distribution; per-hop fidelity D_i in [0.80,0.99).",
+      "n_nodes_min": 434,
+      "pass_if": "joint fidelity D=prod(D_i) DECAYS with lineage depth (corr<-0.5) AND realized success couples LINEARLY to U*D: R2(E~U*D) > R2(E~(U*D)^2). Report the null honestly if not."
+    },
+    {
+      "id": "A3_revocation_latency",
+      "name": "Lineage revocation latency (tau_v) on the real Qwen hub",
+      "engine": "revoke the real base hub (Qwen/Qwen3.6-27B); propagate a halt through its dependents using the LISM circuit-breaker + Echo revocation certificate; measure tau_v = hops (BFS depth) to halt every dependent.",
+      "pass_if": "every reachable dependent halts (0 un-halted) AND tau_v is finite and scales with lineage depth (deeper trees take proportionally longer — linear in depth)."
+    }
+  ],
+  "symmetric_null": "If Arm 2 shows quadratic beating linear, or Arm 1's proxy shows a real effect, report it as-is. If a revoked node fails to halt a dependent, that is a SECURITY FAILURE reported at full force. No post-hoc threshold changes.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, the fixture hash matches, and each arm applies its locked rule honestly (including Arm 1's underpowered/inconclusive report as a valid outcome)."
+}
