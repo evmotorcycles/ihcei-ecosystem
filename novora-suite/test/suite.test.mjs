@@ -19,7 +19,7 @@ let pass = 0, fail = 0;
 const ok = (n, c, d = '') => { if (c) { pass++; console.log('  OK  ', n); } else { fail++; console.log('  FAIL', n, d); } };
 
 const VERDICTS = {
-  pages: ['Hollow Assertion', 'Partially Grounded', 'Solid', 'High Fidelity'],
+  pages: ['Hollow Assertion', 'Partially Grounded', 'Solid', 'High Fidelity', 'Insufficient Evidence'],
   pulse: ['Healthy', 'Monitor', 'Harmful'], weigh: ['Not Ready', 'Proceed with Caution', 'Decision-Ready'],
   lens: ['High Risk', 'Review Carefully', 'Reasonably Balanced'], voice: ['Serious Fairness Failures', 'Fairness Gaps', 'Process Adequate'],
   mark: ['Low Trust', 'Conditional Trust', 'Trust Justified'], stand: ['Early Stage', 'Developing Case', 'Strong Case'],

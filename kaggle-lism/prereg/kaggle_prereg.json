@@ -1,0 +1,30 @@
+{
+  "title": "LISM structural test on a real Kaggle open-dataset cohort: engagement concentration + maintenance-latency tau_v (pre-registered BEFORE data)",
+  "date_locked": "2026-07-23",
+  "prereg_discipline": "This spec was written and SHA-256-locked BEFORE any Kaggle data was seen. The gates below are fixed. When the real frozen cohort is dropped in, the fixture is hashed into the manifest and the runner executes -- the gates are NOT changed after seeing results.",
+  "layer": "Layer-1, offline (runs on the frozen fixture), $0. Tests two STRUCTURAL LISM predictions -- heavy-tailed concentration and a maintenance-latency tau_v -- on a new real data-governance substrate: Kaggle open datasets.",
+  "substrate": "A real cohort of Kaggle datasets exported by the user (Kaggle API is network-blocked from the analysis session; the user supplies a real export, which is frozen for offline reproducibility). Expected source: `kaggle datasets list --sort-by votes --csv` (one or more pages), converted to the fixture schema below. No fabricated rows.",
+  "fixture_schema": {
+    "frozen_at": "YYYY-MM-DD -- the freeze date, stored IN the fixture so days-since-update is deterministic (not 'today').",
+    "records[]": {
+      "ref": "owner/dataset-slug (string)",
+      "title": "dataset title (string)",
+      "voteCount": "integer >= 0",
+      "downloadCount": "integer >= 0 (optional; used if present)",
+      "lastUpdated": "YYYY-MM-DD (date of last update)",
+      "usabilityRating": "float in [0,1] or null (Kaggle's own quality score; optional)"
+    }
+  },
+  "derived": {
+    "tau_v_maintenance": "days(frozen_at - lastUpdated) per dataset = staleness / maintenance latency -- the tau_v Third-Law analog on a maintained-artifact substrate."
+  },
+  "gates": {
+    "H1_engagement_heavy_tail": "Dataset engagement (voteCount) is right-skewed with a heavy upper tail (a few datasets carry most attention). PASS if mean > median AND p90/median >= 2.0. Reported honestly; if it fails, it fails.",
+    "H2_maintenance_latency_heavy_tail": "The maintenance latency tau_v (days since last update) is right-skewed with a heavy upper tail (a slow tail of stale, unmaintained datasets -- the hazard signature). PASS if mean > median AND p90/median >= 2.0.",
+    "H3_coupling_untestable": "The two-hop E=U*D SURVIVAL coupling is NOT cleanly instrumentable on this listing (no independent second fidelity hop, no non-circular per-dataset survival outcome). DECLARED UNTESTABLE and reported as such -- exactly like the bioRxiv H3 coupling, the PubMed H3 latency, and the legislation channel. NOT spun into support."
+  },
+  "descriptive": "Also report the usabilityRating distribution (Kaggle's own governance/quality score) as descriptive telemetry -- not a pass/fail gate.",
+  "symmetric_null": "Report the measured distributions AS-IS. If H1 or H2 fails, report the failure; do not retune the cohort or the window. H3 is an honest construct limit, not a result.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, the frozen fixture hash matches, the fixture is real (status != UNFILLED, N >= 20), H1 and H2 pass on the real data, and H3 is reported as untestable.",
+  "honest_scope": "Illustrative structural test on real Kaggle metadata; it measures engagement concentration and maintenance latency, NOT the E=U*D coupling (declared untestable). The validated LISM coupling cohorts remain yeast/GitHub/knowledge/swarm; the tau_v latency law is measured on GitHub, bioRxiv, and (as a maintenance analog) here."
+}

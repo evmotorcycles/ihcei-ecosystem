@@ -1,0 +1,43 @@
+{
+  "_provenance": {
+    "source": "GitHub REST API via MCP (search_repositories, real repo metadata)",
+    "fetched_at": "2026-07-23",
+    "note": "Real, most-starred open-source repositories surfaced by four domain queries (deep-learning, bioinformatics, security, scientific-computing). Frozen for offline reproducibility. stars = stargazers_count (engagement); open_issues = open_issues_count (unresolved-issue backlog, an enforcement-latency / hazard analog); created = created_at date. Duplicates across queries de-duplicated by full_name (first domain kept).",
+    "queries": [
+      "topic:deep-learning stars:>20000 (sort stars)",
+      "topic:bioinformatics stars:>3000 (sort stars)",
+      "topic:security stars:>15000 (sort stars)",
+      "topic:scientific-computing stars:>3000 (sort stars)"
+    ]
+  },
+  "repos": [
+    {"full_name": "tensorflow/tensorflow", "domain": "ai-ml", "stars": 196481, "open_issues": 2772, "forks": 75507, "created": "2015-11-07", "language": "C++"},
+    {"full_name": "AUTOMATIC1111/stable-diffusion-webui", "domain": "ai-ml", "stars": 164240, "open_issues": 2499, "forks": 30434, "created": "2022-08-22", "language": "Python"},
+    {"full_name": "huggingface/transformers", "domain": "ai-ml", "stars": 162884, "open_issues": 2383, "forks": 34005, "created": "2018-10-29", "language": "Python"},
+    {"full_name": "pytorch/pytorch", "domain": "ai-ml", "stars": 101887, "open_issues": 18272, "forks": 28472, "created": "2016-08-13", "language": "Python"},
+    {"full_name": "rasbt/LLMs-from-scratch", "domain": "ai-ml", "stars": 99669, "open_issues": 4, "forks": 15310, "created": "2023-07-23", "language": "Jupyter Notebook"},
+    {"full_name": "opencv/opencv", "domain": "ai-ml", "stars": 90104, "open_issues": 2758, "forks": 56919, "created": "2012-07-19", "language": "C++"},
+    {"full_name": "Developer-Y/cs-video-courses", "domain": "bioinformatics", "stars": 82683, "open_issues": 2, "forks": 11402, "created": "2016-10-21", "language": null},
+    {"full_name": "K-Dense-AI/scientific-agent-skills", "domain": "bioinformatics", "stars": 31558, "open_issues": 38, "forks": 3146, "created": "2025-10-19", "language": "Python"},
+    {"full_name": "plotly/dash", "domain": "bioinformatics", "stars": 24341, "open_issues": 533, "forks": 2308, "created": "2015-04-10", "language": "Python"},
+    {"full_name": "biopython/biopython", "domain": "bioinformatics", "stars": 5135, "open_issues": 600, "forks": 1922, "created": "2009-03-15", "language": "Python"},
+    {"full_name": "danielecook/Awesome-Bioinformatics", "domain": "bioinformatics", "stars": 4189, "open_issues": 33, "forks": 723, "created": "2014-08-27", "language": null},
+    {"full_name": "seandavi/awesome-single-cell", "domain": "bioinformatics", "stars": 3813, "open_issues": 12, "forks": 1088, "created": "2016-06-29", "language": null},
+    {"full_name": "google/deepvariant", "domain": "bioinformatics", "stars": 3762, "open_issues": 4, "forks": 796, "created": "2017-11-23", "language": "Python"},
+    {"full_name": "nextflow-io/nextflow", "domain": "bioinformatics", "stars": 3448, "open_issues": 392, "forks": 797, "created": "2013-03-27", "language": "Groovy"},
+    {"full_name": "trimstray/the-book-of-secret-knowledge", "domain": "security", "stars": 234796, "open_issues": 161, "forks": 13972, "created": "2018-06-23", "language": null},
+    {"full_name": "Hack-with-Github/Awesome-Hacking", "domain": "security", "stars": 116758, "open_issues": 43, "forks": 10546, "created": "2016-03-30", "language": null},
+    {"full_name": "swisskyrepo/PayloadsAllTheThings", "domain": "security", "stars": 79380, "open_issues": 33, "forks": 17204, "created": "2016-10-18", "language": "Python"},
+    {"full_name": "caddyserver/caddy", "domain": "security", "stars": 74302, "open_issues": 278, "forks": 4843, "created": "2015-01-13", "language": "Go"},
+    {"full_name": "x64dbg/x64dbg", "domain": "security", "stars": 48973, "open_issues": 574, "forks": 2794, "created": "2015-04-11", "language": "C++"},
+    {"full_name": "mitmproxy/mitmproxy", "domain": "security", "stars": 44427, "open_issues": 447, "forks": 4640, "created": "2010-02-16", "language": "Python"},
+    {"full_name": "usestrix/strix", "domain": "security", "stars": 43687, "open_issues": 224, "forks": 4510, "created": "2025-08-05", "language": "Python"},
+    {"full_name": "tracel-ai/burn", "domain": "sci-computing", "stars": 15628, "open_issues": 296, "forks": 989, "created": "2022-07-18", "language": "Rust"},
+    {"full_name": "scipy/scipy", "domain": "sci-computing", "stars": 14840, "open_issues": 1845, "forks": 5818, "created": "2011-03-09", "language": "Python"},
+    {"full_name": "goplus/xgo", "domain": "sci-computing", "stars": 9439, "open_issues": 43, "forks": 565, "created": "2015-12-12", "language": "Go"},
+    {"full_name": "gonum/gonum", "domain": "sci-computing", "stars": 8417, "open_issues": 251, "forks": 580, "created": "2017-03-25", "language": "Go"},
+    {"full_name": "stdlib-js/stdlib", "domain": "sci-computing", "stars": 5906, "open_issues": 1283, "forks": 1224, "created": "2016-03-24", "language": "JavaScript"},
+    {"full_name": "mlpack/mlpack", "domain": "sci-computing", "stars": 5681, "open_issues": 16, "forks": 1717, "created": "2014-12-17", "language": "C++"},
+    {"full_name": "ProjectPhysX/FluidX3D", "domain": "sci-computing", "stars": 5185, "open_issues": 53, "forks": 469, "created": "2022-08-04", "language": "C++"}
+  ]
+}
