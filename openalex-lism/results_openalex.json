@@ -1,0 +1,43 @@
+{
+  "n": 50,
+  "spec_sha256": "175efac5f805f87989c249069b695b095d9a4c170bbc72205c7ed7f22df9233f",
+  "fixture_sha256": "e7d6cfe28b5bf87960df44a23c5fd501624c16212540d4bcac822e7ccb5b5b97",
+  "lock_ok": true,
+  "H1_citations": {
+    "n": 50,
+    "median": 0.0,
+    "mean": 3.32,
+    "p90": 4,
+    "max": 99,
+    "zeros": 34,
+    "zero_frac": 0.68,
+    "tail_ratio": 0.0,
+    "top_work_share": 0.6,
+    "median_is_zero": true,
+    "pass": false
+  },
+  "H2_references": {
+    "n": 50,
+    "median": 0.0,
+    "mean": 5.96,
+    "p90": 34,
+    "max": 51,
+    "zeros": 38,
+    "zero_frac": 0.76,
+    "tail_ratio": 0.0,
+    "top_work_share": 0.17,
+    "median_is_zero": true,
+    "pass": false
+  },
+  "pre_registered_outcome": "NULL \u2014 locked p90/median tail gate not met (zero-inflated, median=0); NOT retuned",
+  "null_by_zero_inflation": true,
+  "descriptive_only": {
+    "top_work_citation_share": 0.6,
+    "note": "extreme concentration IS present; the locked ratio metric is ill-posed for median=0 and was not changed."
+  },
+  "H3_coupling": "UNTESTABLE on snapshot (no non-circular survival outcome); most promising future two-hop",
+  "hypotheses_pass": false,
+  "honest_reporting": true,
+  "ran_ok": true,
+  "pass": false
+}
