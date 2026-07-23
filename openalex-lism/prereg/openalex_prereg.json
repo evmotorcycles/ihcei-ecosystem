@@ -1,0 +1,28 @@
+{
+  "title": "LISM structural test on a real OpenAlex scholarly-works sample: citation concentration + reference-effort heavy tail (pre-registered BEFORE data)",
+  "date_locked": "2026-07-23",
+  "prereg_discipline": "Written and SHA-256-locked BEFORE any OpenAlex data is seen. Gates are fixed. When the real reproducible sample is dropped in, the fixture is hashed into the manifest and the runner executes -- gates are NOT changed after seeing results.",
+  "layer": "Layer-1, offline (runs on the frozen fixture), $0. Tests two STRUCTURAL LISM predictions -- heavy-tailed concentration (citations) and a heavy-tailed encoding effort (reference-list length) -- on a real sample of the OpenAlex scholarly-works catalogue.",
+  "why_openalex": "OpenAlex is a fully OPEN, no-key catalogue of ~250M scholarly works with the citation graph attached. Its API is network-blocked from the analysis session, so the real data is a user-supplied export from a REPRODUCIBLE random sample (sample=N with a fixed seed), frozen for offline reproduction. OpenAlex is also the closest substrate yet to a genuine E=U*D two-hop (references = D_enc, forward citations = D_dec) -- see H3.",
+  "reproducible_source": "https://api.openalex.org/works?sample=50&seed=42&per-page=50&select=id,display_name,cited_by_count,referenced_works_count,publication_year,primary_topic  (a fixed-seed random sample; re-running the same URL reproduces the same 50 works). Freeze the 'results' array verbatim.",
+  "fixture_schema": {
+    "frozen_at": "YYYY-MM-DD",
+    "sample_url": "the exact OpenAlex URL used (with sample + seed), for reproducibility",
+    "results[]": {
+      "id": "OpenAlex work id (string)",
+      "display_name": "title (string)",
+      "cited_by_count": "integer >= 0 (forward citations = engagement / D_dec proxy)",
+      "referenced_works_count": "integer >= 0 (length of the reference list = encoding effort / D_enc proxy)",
+      "publication_year": "integer",
+      "primary_topic": "object or null (field label)"
+    }
+  },
+  "gates": {
+    "H1_citation_heavy_tail": "Forward citations (cited_by_count) are right-skewed with a heavy upper tail (a few works absorb most citations -- the classic bibliometric power law and the LISM concentration signature). PASS if mean > median AND p90/median >= 2.0.",
+    "H2_reference_effort_heavy_tail": "The reference-list length (referenced_works_count = D_enc encoding effort) is right-skewed with a heavy upper tail (a few works cite hugely, most cite little). PASS if mean > median AND p90/median >= 2.0.",
+    "H3_coupling_untestable_for_now": "The two-hop E=U*D SURVIVAL coupling is NOT cleanly instrumentable on a single OpenAlex snapshot: references (D_enc) and citations (D_dec) ARE both present, but there is no non-circular per-work SURVIVAL outcome (E) in one snapshot. DECLARED UNTESTABLE here -- and honestly flagged as the MOST PROMISING future substrate, because a longitudinal OpenAlex pull (references -> citations -> 5-year citation survival) could give a genuine non-circular coupling trial. Reported as untestable, NOT spun into support."
+  },
+  "symmetric_null": "Report the measured distributions AS-IS. If H1 or H2 fails, report the failure; do not resample or reseed. H3 is an honest construct limit, not a result. A fixed-seed random sample (not top-cited) is used precisely so the heavy tail is a real property of the population, not a selection artifact.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, the fixture hash matches, the fixture is real (status != UNFILLED, N >= 40), H1 and H2 pass on the real data, and H3 is reported as untestable.",
+  "honest_scope": "Illustrative structural test on a real OpenAlex sample; it measures citation + reference concentration, NOT the E=U*D coupling (declared untestable on a snapshot). The validated LISM coupling cohorts remain yeast/GitHub/knowledge/swarm."
+}

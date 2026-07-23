@@ -1,0 +1,7 @@
+{
+  "status": "UNFILLED",
+  "_note": "Placeholder. Awaiting a REAL OpenAlex export (OpenAlex is network-blocked from the analysis session, but it is keyless, so it can be fetched from any browser and pasted). No data is fabricated. Fetch the reproducible fixed-seed sample below, paste its 'results' array here, set frozen_at + status='REAL', hash into prereg/MANIFEST.sha256.json, then run. The runner refuses to run while status is UNFILLED.",
+  "sample_url": "https://api.openalex.org/works?sample=50&seed=42&per-page=50&select=id,display_name,cited_by_count,referenced_works_count,publication_year,primary_topic",
+  "frozen_at": null,
+  "results": []
+}
