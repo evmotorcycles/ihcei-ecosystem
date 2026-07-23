@@ -68,6 +68,7 @@ run "hoffman-agents: conscious-agent FBT + LISM + tau_v (pre-registered)" py hof
 run "colab-tests: run-elsewhere reproduction hash (pre-registered)" py colab-tests/test_colab.py
 run "gilt: irreducibility tipping-point (real sim, pre-registered)" py gilt/test_gilt.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
+run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "qg-cos: 5 questions + Iqra + Nafs/Iblees" py qg-cos/test_five_questions.py qg-cos/test_iqra_channel.py qg-cos/test_nafs_iblees.py
 run "repro: tau_v + yeast + CI attest"   py repro/test_reproduce.py
 run "lism-cohorts: 4-cohort E=U*D meta (pre-registered)" py lism-cohorts/test_meta_lism.py

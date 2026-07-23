@@ -1,0 +1,20 @@
+{
+  "_provenance": {
+    "source": "PubMed via MCP (search_articles, total_count of each query)",
+    "attribution": "Data from PubMed (U.S. National Library of Medicine).",
+    "fetched_at": "2026-07-23",
+    "window": "publication date 2004/01/01 - 2023/12/31 (a closed, past window)",
+    "note": "Real live total_count values, frozen for offline reproducibility. Each field has a denominator query (all papers) and a numerator query (retracted publications). retraction_rate = retracted / total. Re-running the same 16 queries reproduces these counts (a closed pdat window drifts only as PubMed back-indexes late retractions; the frozen snapshot is the reproducible record).",
+    "method": "denominator query = '<field>[MeSH Terms]'; numerator query = 'Retracted Publication[Publication Type] AND <field>[MeSH Terms]'; both filtered to the window above."
+  },
+  "fields": [
+    {"field": "Anesthesia",              "mesh": "Anesthesia[MeSH Terms]",              "total": 79294,   "retracted": 262},
+    {"field": "Stem Cells",              "mesh": "Stem Cells[MeSH Terms]",              "total": 218494,  "retracted": 680},
+    {"field": "Neoplasms",               "mesh": "Neoplasms[MeSH Terms]",               "total": 2251959, "retracted": 6435},
+    {"field": "Cardiovascular Diseases", "mesh": "Cardiovascular Diseases[MeSH Terms]", "total": 1525045, "retracted": 1926},
+    {"field": "Nervous System Diseases", "mesh": "Nervous System Diseases[MeSH Terms]", "total": 1639434, "retracted": 1957},
+    {"field": "Mental Disorders",        "mesh": "Mental Disorders[MeSH Terms]",        "total": 895683,  "retracted": 645},
+    {"field": "Immune System Diseases",  "mesh": "Immune System Diseases[MeSH Terms]",  "total": 865164,  "retracted": 620},
+    {"field": "Communicable Diseases",   "mesh": "Communicable Diseases[MeSH Terms]",   "total": 329618,  "retracted": 165}
+  ]
+}
