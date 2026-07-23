@@ -1,0 +1,32 @@
+{
+  "n_fields": 8,
+  "spec_sha256": "54d2114cfc796409210d9fc768faaf188e7a6916108ddb53a71b5a146fe74892",
+  "fixture_sha256": "70b75ad503f2c158cad020c87c284183c893cf42d0fd35d1d5e85bdeeff7262f",
+  "lock_ok": true,
+  "measured_observable": "retraction_rate (failure burden), NOT tau_v latency",
+  "rates_per_100k": {
+    "Anesthesia": 330.4,
+    "Stem Cells": 311.2,
+    "Neoplasms": 285.8,
+    "Cardiovascular Diseases": 126.3,
+    "Nervous System Diseases": 119.4,
+    "Mental Disorders": 72.0,
+    "Immune System Diseases": 71.7,
+    "Communicable Diseases": 50.1
+  },
+  "H1_heavy_tail": {
+    "mean": 170.8,
+    "median": 122.8,
+    "tail_ratio": 2.69,
+    "pass": true
+  },
+  "H2_field_dependence": {
+    "ratio": 6.6,
+    "pass": true
+  },
+  "H3_latency": "UNTESTABLE (no paired retraction date via this connector; notices not retrievable)",
+  "note": "structural concentration + field-dependence tested on a real self-correction substrate; tau_v latency honestly untestable here; no E=U*D coupling claimed.",
+  "attribution": "Data from PubMed (U.S. National Library of Medicine).",
+  "honest_reporting": true,
+  "pass": true
+}
