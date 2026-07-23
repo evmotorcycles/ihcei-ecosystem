@@ -1,0 +1,52 @@
+{
+  "n": 28,
+  "spec_sha256": "4a613d633fe7d8ae44280abe3a66ba445cc278b49a0344abde8d346b7b4893da",
+  "fixture_sha256": "d5b105905cab0460208d337e278d03817c5362279091295006d8a421d20d1564",
+  "lock_ok": true,
+  "H1_engagement_heavy_tail": {
+    "n": 28,
+    "min": 3448,
+    "median": 37622.5,
+    "mean": 60057.6,
+    "p90": 164240,
+    "max": 234796,
+    "tail_ratio": 4.37,
+    "pass": true
+  },
+  "H2_backlog_heavy_tail": {
+    "n": 28,
+    "min": 2,
+    "median": 264.5,
+    "mean": 1280.3,
+    "p90": 2758,
+    "max": 18272,
+    "tail_ratio": 10.43,
+    "pass": true
+  },
+  "domain_medians": {
+    "ai-ml": {
+      "n": 6,
+      "median_stars": 132385,
+      "median_backlog": 2628
+    },
+    "bioinformatics": {
+      "n": 8,
+      "median_stars": 4662,
+      "median_backlog": 35
+    },
+    "security": {
+      "n": 7,
+      "median_stars": 74302,
+      "median_backlog": 224
+    },
+    "sci-computing": {
+      "n": 7,
+      "median_stars": 8417,
+      "median_backlog": 251
+    }
+  },
+  "H3_coupling": "UNTESTABLE (no independent second hop, no non-circular survival outcome)",
+  "note": "engagement concentration + backlog hazard on real GitHub metadata; coupling untestable here.",
+  "honest_reporting": true,
+  "pass": true
+}
