@@ -68,6 +68,7 @@ run "adg-tqg: experiment + Wolfram/Hoffman" py adg-tqg/test_experiment.py adg-tq
 run "hoffman-agents: conscious-agent FBT + LISM + tau_v (pre-registered)" py hoffman-agents/test_hoffman.py
 run "colab-tests: run-elsewhere reproduction hash (pre-registered)" py colab-tests/test_colab.py
 run "gilt: irreducibility tipping-point (real sim, pre-registered)" py gilt/test_gilt.py
+run "det-telemetry: generator/evaluator decoupling law (pre-registered)" py det-telemetry/test_det.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py
