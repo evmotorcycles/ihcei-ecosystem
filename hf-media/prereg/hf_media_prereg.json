@@ -1,0 +1,25 @@
+{
+  "title": "Novora PAGES governance over a real Hugging Face open-source VIDEO/AUDIO GENERATION cohort (pre-registered)",
+  "date_locked": "2026-07-23",
+  "cohort": "19 real, most-liked open-source video/audio generation tools on the Hugging Face Hub (text-to-speech, text-to-audio, text-to-video, image-to-video), metadata frozen in data/hf_media_cohort_frozen.json.",
+  "scope": "Layer-1, offline (runs on the frozen fixture), $0, no gated data, no model download. Exercises the REAL stack modules (novora-suite PAGES screen, novora-helm audit, echo EchoDB/merkleRoot, page-code CodePermissionTable) on genuine generative-media repo metadata. This is publish-listing governance/audit telemetry over card metadata, NOT a claim that the stack improves generation quality or that any listed tool is unsafe.",
+  "why_this_cohort": "Generative media (synthetic voice + synthetic video) is the frontier where a listing-governance stack matters most: voice-cloning enables impersonation, video generation enables synthetic footage, and licenses split between permissive, non-commercial, and use-restricted (RAIL). This cohort lets PAGES/HELM/Page Code demonstrate calibrated, tamper-evident telemetry on exactly those distinctions.",
+  "tools_under_test": {
+    "PAGES (Novora suite)": "screen('pages', card_text) -> grounding score + verdict on each tool card's descriptive prose.",
+    "HELM / EI": "audit(card_text) -> governance verdict + p_manipulative (does the card read as grounded vs hype?).",
+    "Echo Database": "append every {tool, scores} record to an append-only hash chain; publish a Merkle root; a single-byte tamper must be detected and located.",
+    "Page Code": "CodePermissionTable grants a 'publish-listing' permission ONLY to tools that pass the locked gate; others are denied (need review).",
+    "Agency Internet": "build the base_model delegation graph over the media cohort; revoking a base propagates review to its dependents."
+  },
+  "locked_decision_rules": {
+    "license_class": "clear = license in {apache-2.0, mit} (permissive, explicit); non_commercial = cc-by-nc-4.0 (research/non-commercial only); use_restricted = creativeml-openrail-m (RAIL behavioural use restrictions); ambiguous = 'other' or null (terms not machine-legible from the tag). clear_license := license_class == clear.",
+    "voice_cloning_flag": "For AUDIO tools, a 'voice-cloning' flag is treated as an impersonation-relevant safety attribute (not a defect) that must be surfaced for review before a publish grant.",
+    "pages_grounding_signals": "provenance score = mean of [clear_license, has_arxiv, has_eval_results, has_base_model_lineage], each in {0,1}.",
+    "media_flag": "FLAG if voice-cloning AND NOT clear_license (impersonation capability under ambiguous/restricted terms). REVIEW if (voice-cloning) OR (NOT clear_license) OR (preview). else PASS.",
+    "page_code_publish_allow": "allow iff clear_license AND grounding_signals >= 0.5 AND media_flag != FLAG; else deny (needs human review).",
+    "echo_tamper": "flipping one byte of one stored record must change the Merkle root (tamper-evident, and the first tampered record is locatable)."
+  },
+  "honest_non_applicability": "LMD (a physics toy about distance-from-latency) and LISM's E=U*D outcome law are NOT applied to media metadata — there is no measured spacetime observable and no independent per-tool viability outcome. Forcing them would be dishonest. LMD/LISM are validated separately (physics-agency/lmd, lism-cohorts, biorxiv-lism latency). The base_model lineage IS a real delegation graph, used only for the Agency-Internet revocation demo (no coupling claim).",
+  "symmetric_reporting": "Report the honest distribution — including how many tools carry a voice-cloning capability, how many carry non-commercial or ambiguous/use-restricted licenses, and that PAGES scores uniformly low because tag-level metadata lacks card PROSE (methodology, N=, metrics). PAGES not discriminating here is itself an honest, reported finding; HELM + Page Code carry the discrimination. The stack surfaces distinctions; it does not moralize about generative media.",
+  "acceptance": "GREEN when (1) the spec re-hashes to the locked manifest, (2) the frozen fixture hash matches, (3) every tool runs on the real cohort and applies its locked rule, (4) Echo detects and locates a tamper, and (5) the honest distribution is reported. No post-hoc rule changes."
+}

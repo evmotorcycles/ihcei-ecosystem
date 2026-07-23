@@ -58,6 +58,7 @@ run "EI + 8 models: Hinton & Russell (pre-registered)" node_run ei-tests/ei_hint
 run "benchmark-governance: HLE/ARC/FrontierMath (pre-registered)" node_run benchmarks-governance/bench_governance.mjs
 run "hf-cohort: real HF models audited by the stack (pre-registered)" node_test hf-cohort/hf.test.mjs
 run "hf-cohort: digital-swarm E=U*D + revocation tau_v (pre-registered)" py hf-cohort/swarm/test_hf_swarm.py
+run "hf-media: PAGES governance over real video/audio-gen cohort (pre-registered)" node_test hf-media/hf_media.test.mjs
 run "validation stage 1&2: evasive + emergency (pre-registered)" node_run validation-stages/stage12_screen.mjs
 run "validation stage 3: swarm fidelity N>=434 (pre-registered)" py validation-stages/test_stage3.py
 
@@ -66,6 +67,7 @@ run "adg-tqg: experiment + Wolfram/Hoffman" py adg-tqg/test_experiment.py adg-tq
 run "hoffman-agents: conscious-agent FBT + LISM + tau_v (pre-registered)" py hoffman-agents/test_hoffman.py
 run "colab-tests: run-elsewhere reproduction hash (pre-registered)" py colab-tests/test_colab.py
 run "gilt: irreducibility tipping-point (real sim, pre-registered)" py gilt/test_gilt.py
+run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "qg-cos: 5 questions + Iqra + Nafs/Iblees" py qg-cos/test_five_questions.py qg-cos/test_iqra_channel.py qg-cos/test_nafs_iblees.py
 run "repro: tau_v + yeast + CI attest"   py repro/test_reproduce.py
 run "lism-cohorts: 4-cohort E=U*D meta (pre-registered)" py lism-cohorts/test_meta_lism.py
