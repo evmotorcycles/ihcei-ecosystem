@@ -1,0 +1,21 @@
+{
+  "title": "Genuinely Irreducible LISM Test (GILT) — pre-registered decision gates",
+  "date_locked": "2026-07-22",
+  "layer": "Layer-1, offline, $0, seeded (numpy RandomState(42)). Tests Wolfram computational irreducibility on a governance queue network: at a critical tipping point a STATIC oracle is blind while a DYNAMIC tau_v monitor predicts collapse.",
+  "provenance_note": "This locks the DECISION GATES and the MODEL, not any measured result. An earlier circulated bistable_irreducible_test.py did NOT run the simulation -- it printed hard-coded metrics (survival 0.3772, static 0.5348, dynamic 0.7324, gain +0.1976) and a hard-coded hash b0ff37d4... . That is not reproducible science and its numbers are not used here. gilt_sim.py runs the real dynamics.",
+  "model": {
+    "N": 5000, "T": 200, "seed": 42, "U0": 100.0, "D0": 1.0, "alpha0": 10.0, "mu0": 10.37,
+    "arrival_noise_sd": 1.6, "eta_ar1_coef": 0.9, "eta_noise_sd": 0.04, "fidelity_decay_k": 0.15,
+    "survive_if": "Q(T) <= 40",
+    "static_predictor": "mu0*D0/alpha0 + N(0,0.01) (identical across nodes -> blind)",
+    "dynamic_monitor": "mean early queue backlog over t in [1,80] (tau_v proxy)"
+  },
+  "gates": {
+    "G1_bistability": "survival_rate in [0.30, 0.70]  (a genuine, non-degenerate tipping point)",
+    "G2_static_failure": "static_oracle_AUC <= 0.55    (initial parameters cannot shortcut the outcome)",
+    "G3_dynamic_success": "dynamic_tau_v_AUC >= 0.70    (real-time telemetry predicts collapse)",
+    "G4_gain": "dynamic_AUC - static_AUC >= +0.15       (dynamic monitoring adds decisive predictive power)"
+  },
+  "symmetric_null": "Run once with the locked seed; report the measured metrics AS-IS. If any gate fails, report the failure honestly -- do NOT retune the model or the thresholds to force a pass. A failed gate is a valid null.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest AND the four gates pass on the real simulation. The REAL results hash is recorded in the manifest for independent-reproduction checking (RandomState(42) is the stable legacy generator, so a faithful run anywhere reproduces it)."
+}

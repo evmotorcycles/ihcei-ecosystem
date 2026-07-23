@@ -1,0 +1,20 @@
+{
+  "spec_sha256": "34e8712ce234453c06af0eb0e4f9ba9acbac08ad8dd9bfee753d38f127bb1b37",
+  "lock_ok": true,
+  "metrics": {
+    "survival_rate": 0.5344,
+    "static_auc": 0.5085,
+    "dynamic_auc": 0.7107,
+    "gain": 0.2022
+  },
+  "gates": {
+    "G1_bistability": true,
+    "G2_static_failure": true,
+    "G3_dynamic_success": true,
+    "G4_gain": true
+  },
+  "results_sha256": "40c095840b656be97793ddf6d98f7b4269013c4a0b9beae13c10809de6ab291b",
+  "note": "REAL simulation. The earlier bistable_irreducible_test.py PRINTED hard-coded numbers and a hard-coded hash; those are NOT reproducible science. These metrics are computed from the actual dynamics; the hash is over the real results.",
+  "honest_reporting": true,
+  "pass": true
+}
