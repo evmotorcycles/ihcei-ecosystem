@@ -1,0 +1,40 @@
+{
+  "n": 40,
+  "spec_sha256": "6189220846b10050b44992c1046919e4d71f2dc93cefeaa5e1d81ef1696c071e",
+  "fixture_sha256": "aa3600d10c0fe6cbe0eb5f1b90949f8c8cd742e2f42956f8acca351d638c7103",
+  "lock_ok": true,
+  "tau_v_days": {
+    "min": 88,
+    "p10": 109,
+    "median": 219.5,
+    "mean": 358.4,
+    "p90": 856,
+    "max": 1458
+  },
+  "H1_heavy_tail": {
+    "mean": 358.4,
+    "median": 219.5,
+    "tail_ratio": 3.9,
+    "pass": true
+  },
+  "H2_field_variation": {
+    "category_medians": {
+      "microbiology": 217,
+      "cancer biology": 701.5,
+      "bioinformatics": 187.5,
+      "ecology": 228.0,
+      "biochemistry": 147.5,
+      "neuroscience": 253.5,
+      "genomics": 429.5,
+      "biophysics": 355.5,
+      "evolutionary biology": 549.5,
+      "molecular biology": 175
+    },
+    "ratio": 4.76,
+    "pass": true
+  },
+  "H3_coupling": "UNTESTABLE (published-only, no independent second hop, no non-circular survival)",
+  "note": "tau_v latency law measured on a new real substrate; coupling honestly untestable here.",
+  "honest_reporting": true,
+  "pass": true
+}

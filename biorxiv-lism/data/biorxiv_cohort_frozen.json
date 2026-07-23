@@ -1,0 +1,370 @@
+{
+  "_provenance": {
+    "source": "bioRxiv API via MCP (search_published_preprints, biorxiv, 2024-02-01..2024-02-15, include_details)",
+    "fetched_by": "MCP",
+    "fetched_at": "2026-07-22",
+    "note": "Real published-preprint records frozen for offline reproducibility. tau_v = days from preprint posting to journal publication."
+  },
+  "records": [
+    {
+      "doi": "10.1101/2023.03.02.530809",
+      "category": "microbiology",
+      "journal": "Peer Community Journal",
+      "preprint_date": "2023-03-02",
+      "published_date": "2024-02-01",
+      "n_authors": 4,
+      "publisher_prefix": "10.24072"
+    },
+    {
+      "doi": "10.1101/2023.07.19.549644",
+      "category": "genetics",
+      "journal": "Peer Community Journal",
+      "preprint_date": "2023-07-19",
+      "published_date": "2024-02-01",
+      "n_authors": 6,
+      "publisher_prefix": "10.24072"
+    },
+    {
+      "doi": "10.1101/2020.09.30.320580",
+      "category": "cancer biology",
+      "journal": "Journal of Clinical Investigation",
+      "preprint_date": "2020-10-02",
+      "published_date": "2024-02-01",
+      "n_authors": 13,
+      "publisher_prefix": "10.1172"
+    },
+    {
+      "doi": "10.1101/2022.06.01.494368",
+      "category": "bioinformatics",
+      "journal": "Vaccine",
+      "preprint_date": "2022-06-03",
+      "published_date": "2024-02-03",
+      "n_authors": 4,
+      "publisher_prefix": "10.1016"
+    },
+    {
+      "doi": "10.1101/2023.08.22.554265",
+      "category": "ecology",
+      "journal": "Scientific Data",
+      "preprint_date": "2023-08-23",
+      "published_date": "2024-02-01",
+      "n_authors": 2,
+      "publisher_prefix": "10.1038"
+    },
+    {
+      "doi": "10.1101/2023.05.17.541181",
+      "category": "paleontology",
+      "journal": "Palaeontology",
+      "preprint_date": "2023-05-20",
+      "published_date": "2024-02-01",
+      "n_authors": 3,
+      "publisher_prefix": "10.1111"
+    },
+    {
+      "doi": "10.1101/2023.07.31.551266",
+      "category": "biochemistry",
+      "journal": "Structure",
+      "preprint_date": "2023-07-31",
+      "published_date": "2024-02-02",
+      "n_authors": 10,
+      "publisher_prefix": "10.1016"
+    },
+    {
+      "doi": "10.1101/2023.07.28.551026",
+      "category": "neuroscience",
+      "journal": "PLOS ONE",
+      "preprint_date": "2023-07-29",
+      "published_date": "2024-02-15",
+      "n_authors": 22,
+      "publisher_prefix": "10.1371"
+    },
+    {
+      "doi": "10.1101/2023.03.05.531166",
+      "category": "neuroscience",
+      "journal": "eLife",
+      "preprint_date": "2023-03-06",
+      "published_date": "2024-02-09",
+      "n_authors": 3,
+      "publisher_prefix": "10.7554"
+    },
+    {
+      "doi": "10.1101/2022.08.10.503541",
+      "category": "neuroscience",
+      "journal": "eLife",
+      "preprint_date": "2022-08-13",
+      "published_date": "2024-02-09",
+      "n_authors": 5,
+      "publisher_prefix": "10.7554"
+    },
+    {
+      "doi": "10.1101/2022.09.14.507932",
+      "category": "physiology",
+      "journal": "eLife",
+      "preprint_date": "2022-09-19",
+      "published_date": "2024-02-05",
+      "n_authors": 12,
+      "publisher_prefix": "10.7554"
+    },
+    {
+      "doi": "10.1101/2022.02.21.481373",
+      "category": "genomics",
+      "journal": "eLife",
+      "preprint_date": "2022-02-22",
+      "published_date": "2024-02-06",
+      "n_authors": 16,
+      "publisher_prefix": "10.7554"
+    },
+    {
+      "doi": "10.1101/2022.09.21.508807",
+      "category": "biophysics",
+      "journal": "eLife",
+      "preprint_date": "2022-09-21",
+      "published_date": "2024-02-13",
+      "n_authors": 12,
+      "publisher_prefix": "10.7554"
+    },
+    {
+      "doi": "10.1101/2022.06.10.495666",
+      "category": "neuroscience",
+      "journal": "eLife",
+      "preprint_date": "2022-06-13",
+      "published_date": "2024-02-06",
+      "n_authors": 6,
+      "publisher_prefix": "10.7554"
+    },
+    {
+      "doi": "10.1101/2021.08.16.456444",
+      "category": "evolutionary biology",
+      "journal": "NAR Genomics and Bioinformatics",
+      "preprint_date": "2021-08-16",
+      "published_date": "2024-02-02",
+      "n_authors": 1,
+      "publisher_prefix": "10.1093"
+    },
+    {
+      "doi": "10.1101/2023.07.27.550774",
+      "category": "ecology",
+      "journal": "Peer Community Journal",
+      "preprint_date": "2023-07-29",
+      "published_date": "2024-02-12",
+      "n_authors": 5,
+      "publisher_prefix": "10.24072"
+    },
+    {
+      "doi": "10.1101/2023.07.29.551099",
+      "category": "evolutionary biology",
+      "journal": "Peer Community Journal",
+      "preprint_date": "2023-07-29",
+      "published_date": "2024-02-13",
+      "n_authors": 6,
+      "publisher_prefix": "10.24072"
+    },
+    {
+      "doi": "10.1101/2020.02.09.940494",
+      "category": "ecology",
+      "journal": "Peer Community Journal",
+      "preprint_date": "2020-02-10",
+      "published_date": "2024-02-07",
+      "n_authors": 9,
+      "publisher_prefix": "10.24072"
+    },
+    {
+      "doi": "10.1101/2023.10.22.563383",
+      "category": "bioinformatics",
+      "journal": "Nature Communications",
+      "preprint_date": "2023-10-24",
+      "published_date": "2024-02-09",
+      "n_authors": 3,
+      "publisher_prefix": "10.1038"
+    },
+    {
+      "doi": "10.1101/2023.08.11.552904",
+      "category": "molecular biology",
+      "journal": "Science Advances",
+      "preprint_date": "2023-08-11",
+      "published_date": "2024-02-02",
+      "n_authors": 8,
+      "publisher_prefix": "10.1126"
+    },
+    {
+      "doi": "10.1101/2023.05.29.542546",
+      "category": "neuroscience",
+      "journal": "Human Brain Mapping",
+      "preprint_date": "2023-05-29",
+      "published_date": "2024-02-09",
+      "n_authors": 8,
+      "publisher_prefix": "10.1002"
+    },
+    {
+      "doi": "10.1101/2023.05.22.541648",
+      "category": "ecology",
+      "journal": "Nature Communications",
+      "preprint_date": "2023-05-24",
+      "published_date": "2024-02-06",
+      "n_authors": 20,
+      "publisher_prefix": "10.1038"
+    },
+    {
+      "doi": "10.1101/2023.07.20.549859",
+      "category": "molecular biology",
+      "journal": "The FEBS Journal",
+      "preprint_date": "2023-07-20",
+      "published_date": "2024-02-09",
+      "n_authors": 4,
+      "publisher_prefix": "10.1111"
+    },
+    {
+      "doi": "10.1101/2023.11.03.564190",
+      "category": "bioinformatics",
+      "journal": "Scientific Reports",
+      "preprint_date": "2023-11-06",
+      "published_date": "2024-02-02",
+      "n_authors": 10,
+      "publisher_prefix": "10.1038"
+    },
+    {
+      "doi": "10.1101/2021.10.01.462632",
+      "category": "developmental biology",
+      "journal": "Developmental Cell",
+      "preprint_date": "2021-10-01",
+      "published_date": "2024-02-04",
+      "n_authors": 13,
+      "publisher_prefix": "10.1016"
+    },
+    {
+      "doi": "10.1101/2023.08.01.551552",
+      "category": "cancer biology",
+      "journal": "Molecular Therapy - Nucleic Acids",
+      "preprint_date": "2023-08-03",
+      "published_date": "2024-02-05",
+      "n_authors": 11,
+      "publisher_prefix": "10.1016"
+    },
+    {
+      "doi": "10.1101/2023.07.06.548057",
+      "category": "neuroscience",
+      "journal": "Neuron",
+      "preprint_date": "2023-07-07",
+      "published_date": "2024-02-14",
+      "n_authors": 10,
+      "publisher_prefix": "10.1016"
+    },
+    {
+      "doi": "10.1101/2023.09.21.558927",
+      "category": "cell biology",
+      "journal": "Journal of Biological Chemistry",
+      "preprint_date": "2023-09-22",
+      "published_date": "2024-02-02",
+      "n_authors": 4,
+      "publisher_prefix": "10.1016"
+    },
+    {
+      "doi": "10.1101/2023.06.05.543660",
+      "category": "neuroscience",
+      "journal": "NeuroImage: Clinical",
+      "preprint_date": "2023-06-07",
+      "published_date": "2024-02-13",
+      "n_authors": 11,
+      "publisher_prefix": "10.1016"
+    },
+    {
+      "doi": "10.1101/2023.11.03.565488",
+      "category": "molecular biology",
+      "journal": "Molecular Cell",
+      "preprint_date": "2023-11-03",
+      "published_date": "2024-02-02",
+      "n_authors": 5,
+      "publisher_prefix": "10.1016"
+    },
+    {
+      "doi": "10.1101/2023.09.18.558170",
+      "category": "genomics",
+      "journal": "Epigenetics & Chromatin",
+      "preprint_date": "2023-09-18",
+      "published_date": "2024-02-10",
+      "n_authors": 4,
+      "publisher_prefix": "10.1186"
+    },
+    {
+      "doi": "10.1101/2023.11.17.567527",
+      "category": "neuroscience",
+      "journal": "Molecular Psychiatry",
+      "preprint_date": "2023-11-17",
+      "published_date": "2024-02-13",
+      "n_authors": 8,
+      "publisher_prefix": "10.1038"
+    },
+    {
+      "doi": "10.1101/2023.05.16.541003",
+      "category": "bioinformatics",
+      "journal": "Nature Methods",
+      "preprint_date": "2023-05-16",
+      "published_date": "2024-02-07",
+      "n_authors": 2,
+      "publisher_prefix": "10.1038"
+    },
+    {
+      "doi": "10.1101/2023.04.17.537284",
+      "category": "bioengineering",
+      "journal": "Protein Science",
+      "preprint_date": "2023-04-18",
+      "published_date": "2024-02-15",
+      "n_authors": 5,
+      "publisher_prefix": "10.1002"
+    },
+    {
+      "doi": "10.1101/2023.07.27.550828",
+      "category": "neuroscience",
+      "journal": "Network Neuroscience",
+      "preprint_date": "2023-07-28",
+      "published_date": "2024-02-12",
+      "n_authors": 5,
+      "publisher_prefix": "10.1162"
+    },
+    {
+      "doi": "10.1101/2023.10.03.560699",
+      "category": "microbiology",
+      "journal": "ISME Communications",
+      "preprint_date": "2023-10-04",
+      "published_date": "2024-02-12",
+      "n_authors": 7,
+      "publisher_prefix": "10.1093"
+    },
+    {
+      "doi": "10.1101/2023.07.10.548433",
+      "category": "microbiology",
+      "journal": "mBio",
+      "preprint_date": "2023-07-10",
+      "published_date": "2024-02-12",
+      "n_authors": 7,
+      "publisher_prefix": "10.1128"
+    },
+    {
+      "doi": "10.1101/2023.10.26.563981",
+      "category": "biochemistry",
+      "journal": "ChemBioChem",
+      "preprint_date": "2023-10-26",
+      "published_date": "2024-02-12",
+      "n_authors": 7,
+      "publisher_prefix": "10.1002"
+    },
+    {
+      "doi": "10.1101/2022.02.28.482352",
+      "category": "neuroscience",
+      "journal": "Development",
+      "preprint_date": "2022-03-01",
+      "published_date": "2024-02-12",
+      "n_authors": 3,
+      "publisher_prefix": "10.1242"
+    },
+    {
+      "doi": "10.1101/2023.07.24.550440",
+      "category": "biophysics",
+      "journal": "Cytoskeleton",
+      "preprint_date": "2023-07-26",
+      "published_date": "2024-02-12",
+      "n_authors": 2,
+      "publisher_prefix": "10.1002"
+    }
+  ]
+}
