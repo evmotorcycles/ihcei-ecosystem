@@ -1,0 +1,15 @@
+{
+  "title": "LISM structural test on a real cross-domain GitHub open-source cohort (pre-registered)",
+  "date_locked": "2026-07-23",
+  "layer": "Layer-1, offline (runs on the frozen fixture), $0. Tests two STRUCTURAL LISM predictions -- heavy-tailed concentration and a backlog / enforcement-latency hazard -- on real GitHub repository metadata across four domains (AI/ML, bioinformatics, security, scientific-computing).",
+  "substrate": "28 real, most-starred open-source repositories surfaced by four GitHub topic queries (fetched via the GitHub MCP search_repositories, then frozen). Fields: stars = stargazers_count (engagement/capacity); open_issues = open_issues_count (unresolved-issue backlog -- an enforcement-latency / hazard analog: unaddressed issues accumulate before maintainers resolve them); created; language; domain.",
+  "gates": {
+    "H1_engagement_heavy_tail": "Repository engagement (stars) is right-skewed with a heavy upper tail (a few repos absorb most attention). PASS if mean > median AND p90/median >= 2.0.",
+    "H2_backlog_heavy_tail": "The unresolved-issue backlog (open_issues) is right-skewed with a heavy upper tail (a slow tail of repos carrying large unaddressed governance backlogs -- the tau_v hazard signature). PASS if mean > median AND p90/median >= 2.0.",
+    "H3_coupling_untestable": "The two-hop E=U*D SURVIVAL coupling is NOT cleanly instrumentable on this listing (no independent second fidelity hop, and no non-circular per-repo survival outcome -- a live repo is a survivor by construction, no abandoned/deleted control group). DECLARED UNTESTABLE and reported as such -- exactly like the bioRxiv/PubMed/Kaggle H3 and the legislation channel. NOT spun into support."
+  },
+  "descriptive": "Also report the per-domain median stars and median backlog as descriptive telemetry (is backlog domain-dependent?) -- not a pass/fail gate, since the four domains are small unequal buckets.",
+  "symmetric_null": "Report the measured distributions AS-IS. If H1 or H2 fails, report the failure; do not retune the cohort or the queries. H3 is an honest construct limit, not a result.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, the fixture hash matches, N>=20, H1 and H2 pass on the real data, and H3 is reported as untestable.",
+  "honest_scope": "Illustrative structural test on real GitHub metadata; it measures engagement concentration and backlog heavy-tail, NOT the E=U*D coupling (declared untestable). GitHub hosts hundreds of millions of repositories; this is a top-of-distribution sample, not a random draw -- the heavy tail among the already-popular is a conservative test. The validated LISM coupling cohorts remain yeast/GitHub-issue-tau_v/knowledge/swarm; this cohort is a concentration + backlog structural probe."
+}
