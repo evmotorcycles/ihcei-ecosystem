@@ -70,6 +70,7 @@ run "colab-tests: run-elsewhere reproduction hash (pre-registered)" py colab-tes
 run "gilt: irreducibility tipping-point (real sim, pre-registered)" py gilt/test_gilt.py
 run "det-telemetry: generator/evaluator decoupling law (pre-registered)" py det-telemetry/test_det.py
 run "two-regime: soft-linear / hard-threshold / serial-quadratic on real GitHub (pre-registered)" py two-regime/test_two_regime.py
+run "det-cohorts: D>=Dmin binary-gate cohorts on GitHub/PubMed/HF (pre-registered)" py deterministic-cohorts/test_det_cohorts.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py
