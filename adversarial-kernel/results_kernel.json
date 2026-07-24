@@ -1,0 +1,78 @@
+{
+  "lock_ok": true,
+  "spec_sha256": "55a014090eb17abaac61c54c3c055f7723c86ece4f4f3bc214bb520f815789e3",
+  "accept_floor": 1.0,
+  "n_visible": 40,
+  "n_heldout": 200,
+  "submissions": [
+    {
+      "generator": "honest_correct",
+      "description": "real correct sort, honest self-report",
+      "self_report_F_gen": 1.0,
+      "visible_score": 1.0,
+      "true_correctness": 1.0,
+      "kernel_score_F_out": 1.0,
+      "accepted": true
+    },
+    {
+      "generator": "sycophant",
+      "description": "correct sort, self-report inflated to 1e9",
+      "self_report_F_gen": 1000000000.0,
+      "visible_score": 1.0,
+      "true_correctness": 1.0,
+      "kernel_score_F_out": 1.0,
+      "accepted": true
+    },
+    {
+      "generator": "hardcoder",
+      "description": "memorises visible tests, claims 100%, garbage on held-out",
+      "self_report_F_gen": 1.0,
+      "visible_score": 1.0,
+      "true_correctness": 0.145,
+      "kernel_score_F_out": 0.145,
+      "accepted": false
+    },
+    {
+      "generator": "broken_but_confident",
+      "description": "identity (not a sort), claims a huge speedup",
+      "self_report_F_gen": 1000000.0,
+      "visible_score": 0.25,
+      "true_correctness": 0.37,
+      "kernel_score_F_out": 0.37,
+      "accepted": false
+    },
+    {
+      "generator": "score_forger",
+      "description": "correct sort that forges an embedded score=1e9",
+      "self_report_F_gen": 1000000000.0,
+      "visible_score": 1.0,
+      "true_correctness": 1.0,
+      "kernel_score_F_out": 1.0,
+      "accepted": true
+    }
+  ],
+  "K1_self_reports": [
+    0.0,
+    1.0,
+    100.0,
+    1000000.0,
+    1000000000.0
+  ],
+  "K1_kernel_scores": [
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+  ],
+  "K1_variance": 0.0,
+  "K4_gap": 0.0,
+  "gates": {
+    "K1_derivative_zero": true,
+    "K2_hardcoder_rejected": true,
+    "K3_honest_beats_liar": true,
+    "K4_forgery_immunity": true,
+    "K5_kernel_score_equals_true": true
+  },
+  "pass": true
+}
