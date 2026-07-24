@@ -1,0 +1,4 @@
+{
+  "spec_sha256": "55a014090eb17abaac61c54c3c055f7723c86ece4f4f3bc214bb520f815789e3",
+  "note": "Self-contained capstone: the adversarial generator population and the held-out test bank are generated deterministically inside kernel_verify.py from fixed seeds declared in the spec. No external fixtures are consumed, so only the spec is hash-pinned."
+}

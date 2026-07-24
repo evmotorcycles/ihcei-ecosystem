@@ -73,6 +73,7 @@ run "two-regime: soft-linear / hard-threshold / serial-quadratic on real GitHub 
 run "det-cohorts: D>=Dmin binary-gate cohorts on GitHub/PubMed/HF (pre-registered)" py deterministic-cohorts/test_det_cohorts.py
 run "agency-discovery: AlphaAgency verified allocator + honest limitation (pre-registered)" py agency-discovery/test_agency.py
 run "agency-substrates: triage-first methodology on real GitHub/PubMed/HF/bioRxiv (pre-registered)" py agency-substrates/test_substrates.py
+run "adversarial-kernel: dF_out/dF_gen=0 — safety kernel rejects hallucinated gains (pre-registered)" py adversarial-kernel/test_kernel.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py
