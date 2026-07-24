@@ -1,0 +1,78 @@
+{
+  "spec_sha256": "b7f6016e26c778d033205f191b828700e8b4b2ee74163036ffbf628032827885",
+  "fixture_sha256": {
+    "github": "d5b105905cab0460208d337e278d03817c5362279091295006d8a421d20d1564",
+    "pubmed": "70b75ad503f2c158cad020c87c284183c893cf42d0fd35d1d5e85bdeeff7262f",
+    "hf": "3885e06905d1d067fc07b63fa3376464711835ac7c242d213dfaa252d46a5909",
+    "biorxiv": "aa3600d10c0fe6cbe0eb5f1b90949f8c8cd742e2f42956f8acca351d638c7103"
+  },
+  "lock_ok": true,
+  "substrates": [
+    {
+      "name": "PubMed",
+      "n": 8,
+      "below": 2,
+      "applicable": true,
+      "feasible": false,
+      "median_rescue_gain": 5.104,
+      "median_improve_gain": 0.364,
+      "T1": true,
+      "E_triage": 36.11,
+      "E_capacity": 36.11,
+      "E_equal": 36.11,
+      "T2": null,
+      "floor": 0.997
+    },
+    {
+      "name": "HuggingFace",
+      "n": 19,
+      "below": 8,
+      "applicable": true,
+      "feasible": true,
+      "median_rescue_gain": 1.582,
+      "median_improve_gain": 0.28,
+      "T1": true,
+      "E_triage": 22.64,
+      "E_capacity": 20.09,
+      "E_equal": 21.21,
+      "T2": true,
+      "floor": 0.28
+    },
+    {
+      "name": "GitHub",
+      "n": 28,
+      "below": 2,
+      "applicable": true,
+      "feasible": true,
+      "median_rescue_gain": 2.853,
+      "median_improve_gain": 0.274,
+      "T1": true,
+      "E_triage": 111.51,
+      "E_capacity": 109.62,
+      "E_equal": 106.71,
+      "T2": true,
+      "floor": 0.65
+    }
+  ],
+  "biorxiv_below_floor": 0,
+  "biorxiv_null": true,
+  "T1_all": true,
+  "T2_feasible": true,
+  "feasible_substrates": [
+    "HuggingFace",
+    "GitHub"
+  ],
+  "untestable_substrates": [
+    "PubMed"
+  ],
+  "T3_decoupling_real": true,
+  "T4_biorxiv_null": true,
+  "popular_but_below_floor": [
+    "coqui/XTTS-v2",
+    "ResembleAI/chatterbox",
+    "Lightricks/LTX-2.3"
+  ],
+  "note": "triage-first METHODOLOGY beats naive allocation on every substrate where rescue is FEASIBLE (HuggingFace, GitHub); UNTESTABLE on PubMed (integrity-D floor 0.997 > invest cap 0.99, rescue impossible -- a construct limit, reported not retuned); NULL on bioRxiv (survivor-only). Methodology, not speed. LISM prioritizes nulls.",
+  "honest_reporting": true,
+  "pass": true
+}

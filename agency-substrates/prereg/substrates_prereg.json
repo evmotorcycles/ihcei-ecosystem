@@ -1,0 +1,22 @@
+{
+  "title": "The triage-first agency METHODOLOGY tested on four real open-source/scientific substrates -- pre-registered BEFORE running",
+  "date_locked": "2026-07-24",
+  "thesis": "The AlphaAgency breakthrough is a METHODOLOGY, not speed and not superhuman intelligence: because agency is MULTIPLICATIVE (E = U * prod D_i) with a tau_v collapse floor, the structurally-optimal governance move is TRIAGE-FIRST -- rescue below-floor nodes before optimizing healthy ones. This is a claim about active method, and (like all of LISM) it prioritizes honest nulls over a manufactured win. Here we test whether that structural methodology transfers to REAL substrates. OQM is invoked strictly as PHILOSOPHY OF GOVERNANCE (the multiplicative-collapse -> triage structure), NOT theology.",
+  "node_mapping": {
+    "note": "These proxy mappings and floors are DESIGN CHOICES, locked here before computing. The gates test STRUCTURE (triage dominance), which is robust to the exact proxy because it follows from the multiplicative collapse.",
+    "PubMed (8 fields)": "U = log10(total_papers); D = integrity = 1 - retracted/total (single hop, D_dec=1). floor: D < 0.997 is below the integrity floor.",
+    "HuggingFace (19 models)": "U = log10(1+downloads); D_enc = license clarity (apache/mit 0.9, cc-by-nc/openrail 0.5, other/null 0.25); D_dec = 0.3 + 0.6*eval_results. floor: min(D_enc,D_dec) < 0.28 is below floor (ambiguous-license models collapse).",
+    "GitHub (28 repos)": "U = log10(stars); D = resolution fidelity = forks/(forks+open_issues) (single hop). floor: D < 0.65 is below the maintenance floor.",
+    "bioRxiv (40 preprints)": "U = n_authors; D = 1/(1 + tau_v_days/365). ALL are published survivors -> NO collapsed nodes exist (survivor bias)."
+  },
+  "evaluator": "value(node) = 0 if min(D_enc,D_dec) < floor (collapsed) else U*D_enc*D_dec. Investing one unit raises the weakest hop by a step (0.06, capped 0.99). E_total = sum of node values. Deterministic; node fidelities come from the FROZEN fixtures (F_out=F_eval: a node's self-reported popularity does NOT enter the evaluation).",
+  "gates": {
+    "T1_triage_dominance": "On each substrate WITH >=2 below-floor nodes, the marginal value of RESCUING a below-floor node (U_i * floor, an unlock from 0) exceeds the marginal value of IMPROVING a typical healthy node (U_i * step). PASS iff median rescue-gain > median improve-gain.",
+    "T2_triage_recovers_more": "Under a fixed budget B = 3 * (below-floor count), the TRIAGE-FIRST allocator yields strictly more realized systemic agency E than greedy-by-capacity AND than equal-split, on each substrate with below-floor nodes. PASS iff triage > both baselines.",
+    "T3_Fout_Feval_on_real_data": "The deterministic evaluator uses VERIFIED fidelity (license/eval/retraction/backlog), NOT self-reported popularity. On HuggingFace, ranking nodes by popularity (downloads, the 'self-report') differs from ranking by verified D, and a highly-popular model can be below-floor -- so trusting the self-report would misallocate. PASS iff the popularity ranking != the verified-D ranking AND at least one high-popularity model is below floor.",
+    "T4_biorxiv_null": "bioRxiv has NO collapsed nodes (all published survivors), so the triage claim is NOT applicable there. DECLARED as a null / not-applicable, reported with full force -- LISM prioritizes nulls. PASS iff below-floor count == 0 and it is reported as untestable, not forced."
+  },
+  "symmetric_null": "Report realized E for every allocator AS-IS on every substrate. If triage does NOT beat a baseline on some substrate, report the failure. T4 is a genuine null and is reported, not hidden. No post-hoc gate changes.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, the 4 referenced frozen fixtures hash-match, and T1-T4 hold (T1/T2 on the substrates that have below-floor nodes; T4 as the declared bioRxiv null). No retuning.",
+  "honest_scope": "This tests whether the triage-first METHODOLOGY (a structural consequence of E=U*prod(D) + tau_v) transfers to real substrates. It is NOT a claim of superhuman optimization or speed; the value is the verifiable active method. Proxy mappings are documented design choices; the structural result is what is claimed."
+}
