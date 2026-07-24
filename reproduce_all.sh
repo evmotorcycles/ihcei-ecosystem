@@ -75,6 +75,7 @@ run "agency-discovery: AlphaAgency verified allocator + honest limitation (pre-r
 run "agency-substrates: triage-first methodology on real GitHub/PubMed/HF/bioRxiv (pre-registered)" py agency-substrates/test_substrates.py
 run "adversarial-kernel: dF_out/dF_gen=0 — safety kernel rejects hallucinated gains (pre-registered)" py adversarial-kernel/test_kernel.py
 run "agency-constitution: 3-law allocator beats naive+triage on GitHub/HF; Law-2-in-objective falsified (pre-registered)" py agency-constitution/test_constitution.py
+run "biomedical-agency: 4 telemetry laws on real yeast/PubMed/bioRxiv/GitHub (OQM case study, firewalled, pre-registered)" py biomedical-agency/test_biomedical.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py
