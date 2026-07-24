@@ -1,0 +1,52 @@
+{
+  "spec_sha256": "bf336fa2c24bdd3e8a98eeb100d086b59b02337051820a3c572c0610c4727a64",
+  "fixture_sha256": {
+    "github": "d168c846867f38ec0f4bc0ff794af71a932e77a7ec3b9312069d4fed5da1ff8e",
+    "pubmed": "70b75ad503f2c158cad020c87c284183c893cf42d0fd35d1d5e85bdeeff7262f",
+    "hf": "3885e06905d1d067fc07b63fa3376464711835ac7c242d213dfaa252d46a5909",
+    "biorxiv": "aa3600d10c0fe6cbe0eb5f1b90949f8c8cd742e2f42956f8acca351d638c7103"
+  },
+  "lock_ok": true,
+  "github_merge_gate": {
+    "mean_survival": 0.7893,
+    "repos": [
+      {
+        "repo": "scipy/scipy",
+        "s": 0.8377
+      },
+      {
+        "repo": "mitmproxy/mitmproxy",
+        "s": 0.8149
+      },
+      {
+        "repo": "biopython/biopython",
+        "s": 0.7819
+      },
+      {
+        "repo": "nextflow-io/nextflow",
+        "s": 0.7226
+      }
+    ]
+  },
+  "pubmed_integrity_gate": {
+    "pooled_n": 7804691,
+    "retracted": 12690,
+    "survival": 0.99837
+  },
+  "hf_eval_gate": {
+    "pass": 1,
+    "n": 19,
+    "survival": 0.0526
+  },
+  "biorxiv_publication_gate": "survivor-only -> pass-rate UNTESTABLE",
+  "DG1_binary": true,
+  "DG2_genuine_filter": true,
+  "DG3_Dmin_spread": {
+    "spread": 18.97,
+    "pass": true
+  },
+  "DG4_biorxiv_untestable": true,
+  "note": "the deterministic threshold law D>=Dmin has real binary-gate cohorts on GitHub/PubMed/HF; bioRxiv survivor-only; D_min is gate-specific.",
+  "honest_reporting": true,
+  "pass": true
+}
