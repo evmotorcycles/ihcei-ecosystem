@@ -1,0 +1,38 @@
+{
+  "lock_ok": true,
+  "N_per_setting": 200000,
+  "classical_bound": 2.0,
+  "tsirelson_bound": 2.8284271247461903,
+  "P1_classical": {
+    "bruteforce_max": 2,
+    "mc_S": 1.7692,
+    "mc_se": 0.00209,
+    "sigma_over_2": -110.42,
+    "regime": "LOCAL",
+    "pass": true
+  },
+  "P2_quantum": {
+    "analytic_S": 2.82842712474619,
+    "mc_S": 2.8286,
+    "mc_se": 0.00316,
+    "sigma_over_2": 262.05,
+    "regime": "NONLOCAL_CERTIFIED",
+    "certified_nonlocal": true,
+    "pass": true
+  },
+  "P3_tsirelson": {
+    "pr_box_S": 4.0,
+    "pr_regime": "BEYOND_TSIRELSON_INVALID",
+    "quantum_regime": "NONLOCAL_CERTIFIED",
+    "classical_regime": "LOCAL",
+    "pass": true
+  },
+  "P4_lism_bridge": {
+    "collusion_certifies": false,
+    "entangled_certifies": true,
+    "pass": true
+  },
+  "note": "Bell/CHSH turned into a device-independent correlation certifier: classical (shared-cause) bounded S<=2, quantum certified S~2.828, PR-box S=4 rejected as non-physical. Governance: certify genuine quantum resources, a Tsirelson fraud ceiling, and the device-independent form of LISM's independence law. Layer-3 (LMD/emergent-locality) is interpretation, not measurement. Methodology, not speed.",
+  "honest_reporting": true,
+  "pass": true
+}
