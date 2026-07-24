@@ -1,0 +1,23 @@
+{
+  "title": "Empirical cohorts of the DETERMINISTIC laws (D>=Dmin, F_out=F_eval) across real open-source + scientific substrates -- pre-registered",
+  "date_locked": "2026-07-24",
+  "purpose": "Just as the LINEAR law E=U*D has its validated cohorts (yeast N=4825, GitHub N=992, knowledge/StackExchange N=793, digital swarm), the DETERMINISTIC laws must state and test THEIR cohorts. This locks structural gates over already-frozen, already-merged fixtures (GitHub PR survival, PubMed retraction, HF eval-evidence, bioRxiv publication) plus the deterministic sim, and applies them re-analytically.",
+  "corrections_honored": {
+    "duniya_not_dune": "The temporal incubator regime is DUNIYA (an earlier AI rendering 'Dune' was a hallucination). Corrected throughout.",
+    "barakah_is_probabilistic": "Barakah (E) is PROBABILISTIC (the Duniya/linear E=U*D regime, laʿalla = expectation-without-certainty), NOT deterministic. The DETERMINISTIC regime is the TERMINAL selection gate D>=Dmin (Aakhirah), applied to a completed ledger after time is integrated out. These are Layer-3 interpretive labels, kept strictly separate from the Layer-1 measurements below."
+  },
+  "law_cohorts": {
+    "E=U*D (linear, probabilistic, Duniya regime)": "yeast interactome N=4825 (VIF 1.003); GitHub cohort N=992; knowledge/StackExchange N=793; digital swarm (N>=434). tau_v enforcement-latency: GitHub issue-close, bioRxiv publication latency, PubMed retraction-burden concentration.",
+    "D>=Dmin (threshold, deterministic, Aakhirah terminal gate)": "THIS experiment's cohorts -- real binary hard gates: GitHub merge gate (CI+review); PubMed integrity gate (not-retracted, N~7.8M); HuggingFace eval-evidence gate (reports benchmark eval_results); bioRxiv publication gate (survivor-only).",
+    "F_out=F_eval (decoupling, deterministic, generator/evaluator)": "the knapsack FunSearch sim D1-D5 (honest==lying, gap 0); and the reproduce_all harness catch-record (rejected a synthetic Kaggle CSV, a fabricated GILT script, an OpenAlex-null spin)."
+  },
+  "gates": {
+    "DG1_gates_are_binary_deterministic": "Every D>=Dmin substrate gate is BINARY -- survival s is derived from integer pass/fail counts (a candidate either clears the bar or does not), not a smoothed score. PASS iff all substrate survivals equal pass/(pass+fail) from integer counts.",
+    "DG2_genuine_filter": "Every MEASURABLE substrate gate is a genuine filter: 0 < s < 1 (neither accepts-all nor rejects-all). PASS iff GitHub, PubMed, and HuggingFace all have 0 < s < 1.",
+    "DG3_Dmin_is_a_real_bar": "D_min is a real, gate-specific bar, not a universal constant: the survivals span a wide range across substrates. PASS iff max(s)/min(s) >= 3 across the measurable substrates.",
+    "DG4_biorxiv_untestable": "bioRxiv's publication gate pass-rate is DECLARED UNTESTABLE from the frozen cohort (only PUBLISHED preprints are observed -- survivor-only, no unpublished control). Reported as such, exactly like the E=U*D coupling on bioRxiv. NOT spun."
+  },
+  "symmetric_null": "Report the survivals AS-IS. If a gate is not a genuine filter (s=0 or 1), report it. DG4 is an honest survivor-only limit, not a result. Mega-repos with bot/ghstack-confounded closed counts are excluded from the GitHub gate (declared).",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, all referenced frozen fixtures hash-match, and DG1-DG4 hold. No post-hoc gate changes.",
+  "honest_scope": "This states and grounds the cohorts of the deterministic laws on real substrates; it does not re-derive E=U*D. The two-regime split (Duniya linear E=U*D incubator with tau_v runway; Aakhirah deterministic D>=Dmin terminal gate) is the interpretive frame, kept separate from the measured binary-gate survivals."
+}
