@@ -1,0 +1,18 @@
+{
+  "_provenance": {
+    "source": "GitHub search API via MCP (search_pull_requests total_count)",
+    "fetched_at": "2026-07-24",
+    "metric": "s = merged / (merged + closed_unmerged) = survival fraction of pull requests through the deterministic CI+review gate. Proposals (PRs) are the probabilistic generator; the gate is the deterministic evaluator; merged = survived.",
+    "queries": "repo:<R> is:pr is:merged   and   repo:<R> is:pr is:closed is:unmerged",
+    "exclusion": "Mega-repos whose closed-unmerged count is dominated by bot/ghstack mass-closures are EXCLUDED as confounded. Example (recorded, not used): pytorch/pytorch merged=6534 unmerged=120675 -> s=0.05, a bot/stale artifact, not a real gate rejection rate."
+  },
+  "repos": [
+    {"full_name": "scipy/scipy",           "merged": 11436, "closed_unmerged": 2216},
+    {"full_name": "mitmproxy/mitmproxy",   "merged": 2796,  "closed_unmerged": 635},
+    {"full_name": "biopython/biopython",   "merged": 2570,  "closed_unmerged": 717},
+    {"full_name": "nextflow-io/nextflow",  "merged": 1829,  "closed_unmerged": 702}
+  ],
+  "excluded_confounded": [
+    {"full_name": "pytorch/pytorch", "merged": 6534, "closed_unmerged": 120675, "reason": "bot/ghstack mass-closure dominates the unmerged count"}
+  ]
+}
