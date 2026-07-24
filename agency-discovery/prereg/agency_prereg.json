@@ -1,0 +1,23 @@
+{
+  "title": "AlphaAgency: a DeepMind-style discovery pipeline that evolves a VERIFIED agency-allocation algorithm from the three telemetry laws -- pre-registered BEFORE running",
+  "date_locked": "2026-07-24",
+  "thesis": "Just as FunSearch/AlphaDev discover verified algorithms by pairing a probabilistic generator with a deterministic evaluator, we discover an AGENCY-allocation algorithm the same way. The generator proposes governance policies; a deterministic evaluator built from the three laws scores them; evolution keeps the winner. The discovery is trustworthy because F_out=F_eval -- a hallucinating/lying generator cannot corrupt the verified result.",
+  "the_three_laws_as_the_evaluator": {
+    "E=U*D (coupling)": "realized agency of agent i = U_i * D_enc_i * D_dec_i (multiplicative: either hop -> 0 zeroes the term). This is the OBJECTIVE the evaluator maximizes over the network: E_total = sum_i e_i.",
+    "tau_v (enforcement latency)": "a hard COLLAPSE FLOOR: if an agent's weakest hop < d_floor, its enforcement latency exceeds tolerance and it COLLAPSES -- e_i = 0 minus a spreading penalty. This is the deterministic constraint.",
+    "F_out=F_eval (decoupling)": "the evaluator scores realized E_total deterministically and IGNORES any self-report from the generator; a lying generator that inflates its own score is rejected."
+  },
+  "problem": "A governor has an integer budget B of enforcement/attention units to invest across N agents (each unit raises an agent's WEAKEST fidelity hop by a step, concave, capped). Maximize E_total subject to the collapse floor. A POLICY maps agent features (need, capacity, below-floor flag) to a per-unit allocation priority; its parameters (alpha,beta,gamma) are evolved. Fitness = mean E_total over a suite of T seeded random networks. Everything deterministic given seeds.",
+  "baselines": "equal split; greedy-by-capacity; greedy-by-need; random; and a near-optimal greedy-MARGINAL oracle (allocate each unit where delta-E is largest).",
+  "gates": {
+    "A1_discovery_beats_naive": "The EVOLVED policy's mean E_total strictly exceeds EVERY naive baseline (equal, greedy-capacity, greedy-need, random). PASS iff evolved > max(naive baselines).",
+    "A2_near_optimal": "The evolved simple 3-parameter policy is competitive with the expensive greedy-marginal oracle: evolved >= 0.95 * oracle. PASS iff so (a simple interpretable policy nearly matches the oracle).",
+    "A3_decoupling_verified": "The evaluator is deterministic (same policy -> same fitness across repeats and a fresh process), and an HONEST vs a LYING generator (inflated self-reports) evolve to the SAME best fitness (gap 0), because the evaluator discards self-reports. PASS iff determinism holds AND gap == 0.",
+    "A4_monotone_ratchet": "best-so-far fitness is monotone non-decreasing over generations. PASS iff non-decreasing.",
+    "A5_tau_v_is_load_bearing": "The collapse floor (tau_v term) matters: the evolved floor-aware policy strictly beats an otherwise-identical policy that IGNORES the floor (gamma forced to 0 / no triage). PASS iff floor-aware > floor-blind."
+  },
+  "discovered_structure_claim": "We PREDICT (and will report whatever is actually found) that the evolved optimum is a TRIAGE-THEN-CAPACITY allocator: first rescue below-floor agents (because the multiplicative collapse + penalty makes their marginal value huge), then invest remaining budget by capacity-weighted need. If the search finds something else, that is reported honestly.",
+  "symmetric_null": "Report the measured mean-E for every policy AS-IS. A3's gap and determinism are EXACT (0); if nonzero, that is a FAIL, reported not rounded. If the evolved policy does NOT beat a baseline or the oracle, report the failure -- do not retune the gates.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest and A1-A5 all hold on the seeded deterministic simulation. No post-hoc gate changes.",
+  "honest_scope": "This is a DISCOVERY PIPELINE that finds a verified better agency-allocation algorithm at a modest, fully-reproducible scale -- the honest analog of a DeepMind discovery, NOT a claim of solving a famous open problem. Its value is architectural: the discovered algorithm is trustworthy by construction (deterministic evaluator), and it operationalizes E=U*D + tau_v + F_out=F_eval together for the first time."
+}
