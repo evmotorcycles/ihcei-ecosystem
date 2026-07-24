@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install pytest
-        run: python3 -m pip install --quiet pytest
+      - name: Install dependencies
+        run: python3 -m pip install --quiet -r requirements.txt
       - name: Reproduce the whole stack
         run: bash reproduce_all.sh
