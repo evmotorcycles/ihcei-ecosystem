@@ -6,8 +6,18 @@ authors:
     given-names: Labib
     affiliation: "Novora Research Initiative, Open Science Division"
 type: software
+version: "1.0.0"
+date-released: 2026-07-20
 repository-code: "https://github.com/evmotorcycles/ihcei-ecosystem"
 license: MIT
+identifiers:
+  - type: other
+    value: "sha256-merkle:2f638700d9110e0021c06f7e7610a9b34b1c9ed62b5c00f30eeaa45dfe40582e"
+    description: >-
+      Cryptographic provenance (Merkle root) over the frozen scientific record —
+      all pre-registration specs, corpora, fixtures, and manuscripts. A faithful
+      reproduction recomputes this root; verify with provenance/verify_provenance.py.
+      This is the checkable reference back to the origin.
 keywords:
   - network science
   - information fidelity

@@ -1,0 +1,6 @@
+{
+  "spec_sha256": "e3f422a3aef10b730185a636dd06d1a362ada90c528ca8e44ba3cf4b24c47d47",
+  "fixture_sha256": "537bfb3de2c9852c5a0f81b954195bdb9c49d5988b82d5c0a24912ad8d48818b",
+  "locked_at": "2026-07-22",
+  "algo": "SHA-256 (canonical sorted-key for spec; raw bytes for fixture)"
+}

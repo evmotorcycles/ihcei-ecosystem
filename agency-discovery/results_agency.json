@@ -1,0 +1,45 @@
+{
+  "spec_sha256": "f805bde70347de26d06094b50d214539337afe96c4d8ff131bcc27b131d5394c",
+  "lock_ok": true,
+  "means": {
+    "random": 21.32,
+    "equal": 27.11,
+    "greedy_capacity": 27.11,
+    "greedy_need": 26.52,
+    "floor_blind": 11.39,
+    "evolved": 30.56,
+    "greedy_1step_myopic": 20.75,
+    "strong_localsearch_ref_exploratory": 55.76
+  },
+  "honest_note": "the pre-registered greedy-marginal 'oracle' is 1-step and MYOPIC at the collapse cliff (20.75, below baselines); A2 passes as written but does NOT establish near-optimality. The evolved triage policy beats it and is within 55% of the exploratory strong local-search reference.",
+  "near_optimal_vs_strong_ref": {
+    "evolved": 30.56,
+    "strong_ref": 55.76,
+    "ratio": 0.548
+  },
+  "evolved_params": {
+    "need": 0.0,
+    "capacity": 0.236,
+    "triage": 1.769
+  },
+  "A1_beats_naive": true,
+  "A2_near_optimal": {
+    "evolved": 30.56,
+    "oracle": 20.75,
+    "pass": true
+  },
+  "A3_decoupling": {
+    "deterministic": true,
+    "honest_vs_lying_gap": 0.0,
+    "pass": true
+  },
+  "A4_monotone": true,
+  "A5_tau_v_load_bearing": {
+    "floor_aware": 30.56,
+    "floor_blind": 11.39,
+    "pass": true
+  },
+  "discovered": "triage-then-capacity allocator (rescue below-floor agents first)",
+  "honest_reporting": true,
+  "pass": true
+}

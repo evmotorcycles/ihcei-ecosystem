@@ -1,0 +1,20 @@
+{
+  "title": "The Two-Regime Telemetry Law: when the RETIRED equations (D>Dmin, E=U*D^2) are each correct -- pre-registered BEFORE running",
+  "date_locked": "2026-07-24",
+  "motivation": "After the DeepMind generator/evaluator study, the equations retired earlier are not wrong -- they describe the DETERMINISTIC regime, which was conflated with the probabilistic one. LISM's linear E=U*D holds when the verification hop is SOFT (probabilistic, continuous fidelity) -- 'free will as bounded choice within capacity'. A hard evaluator (a compiler / test suite / evidence bar -- N157/Barakah evidence-based knowledge is deterministic) is a THRESHOLD, D>Dmin. Two deterministic hops in SERIES (encode-check AND decode-check, DeepMind's compiler+tests) multiply: E=U*D_enc*D_dec, symmetric => U*D^2. Each equation is the correct law in ITS regime.",
+  "regimes": {
+    "R1_soft_linear": "PROBABILISTIC regime. A soft verifier accepts a candidate with probability = its fidelity d. Expected yield Y(d) = U*d -- LINEAR (this is E=U*D). Test: sweep d, the accepted fraction is linear in d.",
+    "R2_hard_threshold": "DETERMINISTIC regime. A hard gate accepts iff quality q >= Dmin (zero false-accept). The accept function is a STEP at Dmin, not a line (this is the retired D>Dmin). Test: a threshold model reproduces it EXACTLY (residual 0); the best straight line CANNOT (residual > 0).",
+    "R3_serial_quadratic": "TWO deterministic hops in series. Independent gates pass with prob p1, p2; survival = p1*p2. Symmetric p1=p2=d => survival = d^2 -- QUADRATIC (this is the retired E=U*D^2). Test: two-gate survival matches d^2, and lies strictly below the single-gate linear line for d in (0,1)."
+  },
+  "gates": {
+    "R1_linear": "soft-verifier yield vs d is linear. PASS if OLS R^2 >= 0.98 AND slope in [0.9, 1.1].",
+    "R2_threshold": "hard-gate accept is a threshold, not a line. PASS if the threshold model residual == 0 AND the best linear-fit residual > 0 (a straight line provably cannot fit the step).",
+    "R3_quadratic": "two-serial-gate survival is quadratic in d. PASS if OLS of survival vs d^2 has R^2 >= 0.98 AND slope in [0.9, 1.1] AND two_gate(0.5) < single_gate(0.5) (quadratic strictly below linear).",
+    "G_github_gate_is_real": "On REAL open-source repos, the deterministic CI/review gate passes a measurable fraction s = merged/(merged+closed_unmerged) of proposals. PASS if every clean cohort repo has 0 < s < 1 (a genuine filter -- neither accepts-all nor rejects-all). Mega-repos whose closed-unmerged count is dominated by bot/ghstack mass-closures (e.g. pytorch) are EXCLUDED as confounded, and that exclusion is declared, not hidden."
+  },
+  "symmetric_null": "Report the fits AS-IS. R2's claim is EXACT (threshold residual 0, linear residual > 0); if a line fit the step, that would be a FAIL. The GitHub s values are real counts; report them and the excluded confounded repos honestly.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, the frozen GitHub fixture hash matches, and R1, R2, R3, G all hold. No post-hoc gate changes.",
+  "interpretation_layer3": "Layer-3 reading, kept separate from the measured Layer-1: bounded-choice free will is the SOFT/linear regime (agency within capacity U); evidence-based knowledge (N157/Barakah, OQM) is the HARD/threshold regime (a claim clears the evidence bar or it does not); a verified pipeline that must pass BOTH encode and decode checks is the serial/quadratic regime. Both a deterministic and a probabilistic framework are required in the Novora stack -- this is the formal statement of that.",
+  "honest_scope": "Proves the three regimes on a clean deterministic testbed and grounds the deterministic gate on real GitHub data. It does NOT re-open E=U*D^2 as a COUPLING law for viability (that was correctly retired for the probabilistic single-hop coupling); it shows D^2 is the correct SURVIVAL law for two serial deterministic hops. Complements E=U*D and the tau_v enforcement-latency law."
+}

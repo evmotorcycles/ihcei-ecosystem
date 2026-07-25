@@ -1,0 +1,49 @@
+{
+  "title": "Colab reproduction suite \u2014 pre-registered expected results (run elsewhere, verify here)",
+  "date_locked": "2026-07-22",
+  "protocol": "colab_suite.py is self-contained (paste into Google Colab). It prints RESULTS_SHA256 over environment-STABLE quantities. A faithful run anywhere reproduces the expected_results_sha256 below. Raw LMD distances carry cross-BLAS float noise and are DISPLAYED but excluded from the hash.",
+  "tests": {
+    "T1_lmd_ring": "LMD ring-lattice coupler sweep -> log-log slope EXACTLY -0.5, R^2=1.0 (algebraic; matches the user's Colab: slope -0.500000, R^2 1.000000).",
+    "T2_lmd_metric": "effective-resistance distance is a metric -> 0 triangle violations / 100 random graphs.",
+    "T3_lism": "E=U*D linear beats quadratic on a seeded cohort (R2 lin > quad).",
+    "T4_swarm": "multi-hop fidelity decays with depth (corr < -0.5).",
+    "T5_echo": "Echo hash-chain Merkle root is fixed; a one-record tamper changes the root.",
+    "T6_tau_v": "failed repos have higher enforcement latency; Mann-Whitney separates them.",
+    "T7_hoffman": "Fitness-Beats-Truth: fitness-tuned share -> 1.0 under selection."
+  },
+  "expected_results": {
+    "T1_lmd_ring": {
+      "slope": -0.5,
+      "r2": 1.0
+    },
+    "T2_lmd_metric": {
+      "trials": 100,
+      "triangle_violations": 0
+    },
+    "T3_lism": {
+      "r2_linear": 0.959878,
+      "r2_quadratic": 0.93251,
+      "linear_wins": true
+    },
+    "T4_swarm": {
+      "decay_corr": -0.922084,
+      "decays": true
+    },
+    "T5_echo": {
+      "merkle_root": "744fabcf2eac47549c8574f40dbbff091feae2849984b460e394851365ab9521",
+      "tamper_changes_root": true
+    },
+    "T6_tau_v": {
+      "mean_failed": 54.9,
+      "mean_surv": 19.2,
+      "U_min": 0.0,
+      "separates": true
+    },
+    "T7_hoffman": {
+      "fitness_final_share": 1.0
+    }
+  },
+  "expected_results_sha256": "aebdd9b7723bf6c516283ebed15112f0227109ada7cb2e0bf9ced86464b56e51",
+  "acceptance": "A returned Colab RESULTS_SHA256 that EQUALS expected_results_sha256 = independent reproduction confirmed. A mismatch is investigated field-by-field (verify_colab.py) -- an honest divergence (e.g., a numpy/BLAS issue on a stable field, or a real code change) is reported, not hidden.",
+  "honest_scope": "This suite covers the DETERMINISTIC, portable core of the stack (LMD, LISM, swarm, Echo Merkle, tau_v, Hoffman). HELM/PAGES/EI-LLM use JS-specific RNG/regex and are verified in-repo via node (reproduce_all.sh); their Python-portable governance logic is a future addition to this suite."
+}

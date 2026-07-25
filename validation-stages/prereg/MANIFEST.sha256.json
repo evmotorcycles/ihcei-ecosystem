@@ -1,0 +1,7 @@
+{
+  "spec_sha256": "15c73e2c9a8441977dacfab6fe8b81a9d2b5a412e4c67c5ad1a42b6efdc7f9d5",
+  "evasive_coercion_sha256": "0e19d31d051744f5d45f73fa9bd91e0f2560638002b4833ef69e98a5e3f3edee",
+  "emergency_calibration_sha256": "21a995b935a58d6e3609bba6d0b52cb5687c2b94864557c2df7159f8cf6f5c60",
+  "locked_at": "2026-07-19",
+  "algo": "SHA-256 (canonical for spec, raw bytes for corpora)"
+}

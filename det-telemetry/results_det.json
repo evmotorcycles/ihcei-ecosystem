@@ -1,0 +1,42 @@
+{
+  "instance": {
+    "n_items": 24,
+    "capacity": 244,
+    "total_value": 460
+  },
+  "spec_sha256": "d9ea4e6ceb9bbf6eec86ce906b07b0fdaddff993e15b7297818aefd9f77b9de4",
+  "lock_ok": true,
+  "D1_evaluator_determinism": {
+    "scores": [
+      243,
+      243,
+      243,
+      243,
+      243
+    ],
+    "pass": true
+  },
+  "D2_generator_variance": {
+    "pass": true
+  },
+  "D3_honesty_decoupling": {
+    "honest_true": 400,
+    "lying_true": 400,
+    "gap": 0,
+    "pass": true
+  },
+  "D4_monotone_ratchet": {
+    "final": 400,
+    "pass": true
+  },
+  "D5_architecture_control": {
+    "self_verify_true": null,
+    "self_verify_invalid": true,
+    "deterministic_true": 400,
+    "self_verify_claimed": 422,
+    "pass": true
+  },
+  "decoupling_law": "F_out = F_eval, independent of F_gen (dF_out/dF_gen = 0)",
+  "honest_reporting": true,
+  "pass": true
+}

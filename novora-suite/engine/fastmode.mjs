@@ -49,12 +49,27 @@ function agencyRead(text) {
 const PRODUCTS = {
   // PAGES — methodology / grounding press. Higher = better grounded.
   pages(text) {
-    const meth = count(text, /\b(?:RCT|N\s*=\s*\d|p\s*[=<]\s*0|95%\s*CI|confidence interval|pre-?regist|randomi[sz]ed|NCT\d|DOI|ΔAIC|SHA-?256|dataset|methodology|control group|sample size)\b/gi);
+    const meth = count(text, /\b(?:RCT|N\s*=\s*\d+|p\s*[=<≈~]\s*\d|95%\s*CI|confidence interval|pre-?regist\w*|randomi[sz]ed|NCT\d|DOI|ΔAIC|SHA-?256|dataset|methodolog\w*|control group|sample size|VIF|AUC|interactome\w*|cohort)\b/gi);
     const hollow = count(text, /\b(?:all (?:experts|economists|scientists) agree|settled science|everyone knows|unquestionable|obviously|it'?s clear that|proven fact|no doubt|inevitable)\b/gi);
     const numbers = groundFast(text, text).addedNumbers.length; // reflexive: any hard numbers at all
     const score = clip(0.35 + 0.14 * meth - 0.22 * hollow + 0.03 * Math.min(numbers, 3));
     const attack = hollow >= 2 ? 'T5_authority_cascade' : 'none';
-    return { score, verdict: band(score, ['Hollow Assertion', 'Partially Grounded', 'Solid'], [0.35, 0.7]),
+    // AGENCY + SECURITY (not speed): the amount of gradable grounding evidence in
+    // the text. Without this, PAGES emits a precise-looking ~0.35 both when a claim
+    // is genuinely middling AND when there is simply nothing to grade — false
+    // precision that misleads the reader. `confidence` separates the two, and when
+    // there is NO gradable signal PAGES ABSTAINS ('Insufficient Evidence') instead
+    // of dressing a non-judgement as a grounding verdict.
+    const signal = meth + hollow + Math.min(numbers, 3);
+    const confidence = signal >= 3 ? 'high' : signal >= 1 ? 'medium' : 'low';
+    if (confidence === 'low') {
+      return { score, confidence, insufficient_evidence: true, signal,
+        verdict: 'Insufficient Evidence',
+        d_enc: clip(0.3), d_dec: clip(0.3), f_ground: clip(0.2), attack_detected: attack,
+        flags: ['INSUFFICIENT_SIGNAL', 'ABSTAIN'] };
+    }
+    return { score, confidence, insufficient_evidence: false, signal,
+      verdict: band(score, ['Hollow Assertion', 'Partially Grounded', 'Solid'], [0.35, 0.7]),
       d_enc: clip(0.3 + 0.12 * meth), d_dec: clip(0.3 + 0.1 * meth), f_ground: clip(0.2 + 0.16 * meth - 0.2 * hollow),
       attack_detected: attack, flags: hollow ? ['AUTHORITY_CASCADE'] : meth ? ['METHODOLOGY_PRESENT'] : ['NO_METHODOLOGY'] };
   },

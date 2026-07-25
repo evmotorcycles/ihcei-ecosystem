@@ -1,0 +1,15 @@
+{
+  "title": "Novora stack self-assessment + one shipped improvement (pre-registered)",
+  "date_locked": "2026-07-23",
+  "purpose_statement": "The Novora governance stack optimizes for AGENCY and SECURITY, NOT speed. So the improvement target is calibration and honesty of judgement, not throughput.",
+  "finding_under_test": "Across this session's real-data experiments (HF models, HF media, GitHub, Kaggle scaffolds), PAGES (screen('pages', text)) emitted a precise-looking score (~0.35-0.49) EVEN WHEN the text carried no gradable grounding signal. That conflates 'genuinely middling grounding' with 'nothing here to grade' -- false precision that erodes the reader's agency and creates false confidence (a security risk on adversarially-empty or trivial input).",
+  "improvement": "PAGES now computes a `signal` count (methodology cues + hollow cues + hard numbers) and a `confidence` in {low, medium, high}. When confidence is low (zero gradable signal), PAGES ABSTAINS: verdict 'Insufficient Evidence', flags ['INSUFFICIENT_SIGNAL','ABSTAIN']. A numeric score is still returned so downstream aggregation never sees NaN.",
+  "acceptance": {
+    "abstains_on_zero_signal": "zero-signal texts ('ok thanks', '', emoji) -> verdict 'Insufficient Evidence', confidence 'low'.",
+    "no_regression_signal_rich": "a methodology-rich claim stays high-confidence and still outscores a hollow assertion (direction preserved).",
+    "no_regression_downstream": "real card/prose text keeps its graded ~0.49 band and does NOT abstain, so hf-media / hf-cohort / suite distributions are unchanged.",
+    "full_suite_green": "the entire reproduce_all.sh stays green after the change."
+  },
+  "honest_scope": "This is ONE calibrated, conservative improvement that fires only at zero signal. It does not change any score on gradable text. It is an honesty/calibration fix (agency + security), not a capability or speed change. Deeper semantic paraphrase-vs-substance remains deep mode's job.",
+  "other_documented_opportunities": "Recorded in FINDINGS.md and NOT claimed as done: (a) extend the same confidence field to HELM/EI on short metadata; (b) per-domain calibration corpora; (c) surface Page Code deny-reasons in the client. These are honest backlog, not results."
+}

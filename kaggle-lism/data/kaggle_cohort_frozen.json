@@ -1,0 +1,7 @@
+{
+  "status": "UNFILLED",
+  "_note": "Placeholder. Awaiting a REAL Kaggle export from the user (Kaggle is network-blocked from the analysis session; no data is fabricated). Drop real rows into 'records', set 'frozen_at' to the export date, set 'status' to 'REAL', then hash into prereg/MANIFEST.sha256.json and run. The runner refuses to run while status is UNFILLED.",
+  "source_command": "kaggle datasets list --sort-by votes --csv   (one or more pages)",
+  "frozen_at": null,
+  "records": []
+}

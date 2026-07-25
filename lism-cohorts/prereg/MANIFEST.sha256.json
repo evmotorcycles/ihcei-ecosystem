@@ -1,0 +1,7 @@
+{
+  "spec_sha256": "2e2cc89054c75c73897fdd162d32bc49ebb7e549f6a7c76353968b119d65da00",
+  "canonical": "json.dumps(spec, sort_keys=True, separators=(',',':'))",
+  "locked_at": "2026-07-20",
+  "algo": "SHA-256",
+  "note": "Runner re-hashes cohorts_prereg.json this exact way and refuses to run on mismatch."
+}

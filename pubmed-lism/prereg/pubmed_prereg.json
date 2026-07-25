@@ -1,0 +1,18 @@
+{
+  "title": "LISM self-correction FAILURE BURDEN on real PubMed retractions, and why retraction LATENCY is untestable here (pre-registered)",
+  "date_locked": "2026-07-23",
+  "layer": "Layer-1, offline (runs on the frozen fixture), $0. Tests two STRUCTURAL LISM predictions -- concentration (heavy tail) and field-dependence -- on a new real biomedical-governance substrate: PubMed retractions. It also HONESTLY declares that the retraction-LATENCY tau_v is not cleanly instrumentable via this connector.",
+  "substrate": "Real PubMed total_count values (via MCP search_articles) for 8 biomedical fields over a fixed 2004-2023 publication window. For each field: total papers (denominator) and retracted papers (numerator). retraction_rate = retracted / total = the realized self-correction FAILURE BURDEN of that field.",
+  "construct_validity_firewall": {
+    "what_is_measured": "The retraction RATE (a realized failure/enforcement burden), NOT the enforcement LATENCY tau_v (days from publication to retraction). These are different observables.",
+    "what_is_NOT_measured": "tau_v latency. This connector returns each article's ORIGINAL publication date but not a paired retraction-notice date: 'Retraction of Publication' notice records are not retrievable through it, and related-article links are word-similarity, not the notice. So the days-to-retraction latency cannot be computed non-circularly here."
+  },
+  "gates": {
+    "H1_heavy_tail": "The retraction rate is right-skewed with a heavy upper tail (a small number of fields carry a disproportionate failure burden). PASS if mean > median AND max/median >= 2.0.",
+    "H2_field_dependence": "The retraction rate differs across biomedical fields. PASS if (max field rate)/(min field rate) >= 2.0.",
+    "H3_latency_untestable": "The tau_v retraction LATENCY (publication -> retraction days) is DECLARED UNTESTABLE via this offline connector (no paired retraction date; see construct_validity_firewall). Reported as untestable -- exactly like the bioRxiv H3 coupling and the legislation/judicial channel. NOT forced into a latency claim."
+  },
+  "symmetric_null": "Report the measured rates AS-IS. If H1 or H2 fails, report the failure; do not retune fields or window. H3 is an honest construct limit, not a result. The rate controls for field size (it is a ratio), so it is not merely a proxy for how much a field publishes.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, the fixture hash matches, H1 and H2 pass on the real frozen counts, and H3 is reported as untestable (not spun into a tau_v claim).",
+  "honest_scope": "8 fields, one 20-year window -- illustrative, not a powered scientometric study. It tests the STRUCTURAL signature (concentration + field-dependence) that LISM's hazard theory predicts, on a real self-correction substrate. It does NOT measure tau_v latency here, and makes NO E=U*D coupling claim. Validated LISM coupling cohorts remain yeast/GitHub/knowledge/swarm; the tau_v latency law is measured on GitHub and bioRxiv."
+}
