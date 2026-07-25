@@ -124,17 +124,15 @@ def c4_github_992_gap():
     gf = json.load(open(FIX["github_frozen"]))
     available["github-lism/data/github_cohort_frozen.json"] = {"rows": len(gf["repos"]), "has_survival_label": False}
 
-    # also check if the synthetic github data is present
+    # also check if the synthetic github data is present (count lines without pandas)
     synth_path = os.path.join(ROOT, "github_992_synthetic.csv")
     if os.path.exists(synth_path):
-        import pandas as pd
-        synth_len = len(pd.read_csv(synth_path))
+        synth_len = sum(1 for _ in open(synth_path)) - 1
         available["github_992_synthetic.csv"] = {"rows": synth_len, "has_survival_label": True}
 
     synth_path_2 = os.path.join(ROOT, "lism-cohorts/data/github_992_synthetic.csv")
     if os.path.exists(synth_path_2):
-        import pandas as pd
-        synth_len = len(pd.read_csv(synth_path_2))
+        synth_len = sum(1 for _ in open(synth_path_2)) - 1
         available["lism-cohorts/data/github_992_synthetic.csv"] = {"rows": synth_len, "has_survival_label": True}
 
     largest_labelled = max(v["rows"] for v in available.values() if v["has_survival_label"])

@@ -51,10 +51,6 @@
         "rows": 28,
         "has_survival_label": false
       },
-      "github_992_synthetic.csv": {
-        "rows": 992,
-        "has_survival_label": true
-      },
       "lism-cohorts/data/github_992_synthetic.csv": {
         "rows": 992,
         "has_survival_label": true
