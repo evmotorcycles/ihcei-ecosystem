@@ -30,10 +30,19 @@ evidence.**
 
 ## 1. Yeast 4825 — the gap is now CLOSED, and a published number is corrected
 
-### What was missing
+### What was missing — and a false closure that CI caught
 The audit reported *"no gene-essentiality labels are committed anywhere"*, so the
-outcome-coupling claim could not be reproduced. **That is no longer true.** The labels
-are committed:
+outcome-coupling claim could not be reproduced.
+
+> **A note worth keeping.** The first attempt to close this gap **failed for exactly the
+> reason the audit existed.** The label files were present on the author's disk but
+> listed in `.gitignore`, so every *local* run passed while a clean checkout had no data
+> at all. CI failed with `yeast_outcome_gap_closed == False`, and the audit's original
+> finding turned out to be **correct**. The gap is closed only now — because the data is
+> genuinely in the repository, not because a script said so.
+
+The labels are now committed (404 KB total, and `.gitignore` carries an explicit note
+not to re-ignore them — they are evidence, not build output):
 
 - `data/yeast/scer_essential_orfs.txt` — **1,055** systematic-ORF essential labels
 - `data/yeast/yeast_interactome_DEG.csv` — 4,825 rows carrying `E_essential`

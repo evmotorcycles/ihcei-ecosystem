@@ -152,6 +152,14 @@
       <p>Built from raw <strong>DEG2001 (S. cerevisiae) → systematic ORFs via BioGRID</strong>, joined to the
         STRING v12 channel. Essentiality is wet-lab data and is <strong>never derived from topology</strong>,
         so the outcome is non-circular. Four gates, each of which could have failed:</p>
+      <div class="correction" style="border-color:var(--stamp);margin-top:6px">
+        <div class="lab" style="color:var(--stamp)">The first attempt at this closure was false — CI caught it</div>
+        <p class="tight">The label files sat on the author’s disk but were listed in <code>.gitignore</code>, so
+          every <em>local</em> run passed while a clean checkout had no data at all. CI failed with
+          <code>yeast_outcome_gap_closed == False</code> and the audit’s original finding —
+          <em>“no essentiality labels are committed anywhere”</em> — proved <strong>correct</strong>. The gap is
+          closed only now, because the data is genuinely in the repository rather than because a script said so.</p>
+      </div>
     </div>
     <div class="gates">
       <div class="g"><div class="gid">Y1 · labels join</div><div class="gt">Join succeeds</div>
