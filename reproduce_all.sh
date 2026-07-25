@@ -77,6 +77,7 @@ run "adversarial-kernel: dF_out/dF_gen=0 — safety kernel rejects hallucinated 
 run "agency-constitution: 3-law allocator beats naive+triage on GitHub/HF; Law-2-in-objective falsified (pre-registered)" py agency-constitution/test_constitution.py
 run "biomedical-agency: 4 telemetry laws on real yeast/PubMed/bioRxiv/GitHub (OQM case study, firewalled, pre-registered)" py biomedical-agency/test_biomedical.py
 run "bell-telemetry: Bell/CHSH nonlocality as device-independent telemetry (classical 2, quantum 2√2, PR-box rejected)" py bell-telemetry/test_bell.py
+run "knowledge-breakthroughs: status vs fidelity on real GitHub/HF/bioRxiv/PubMed — thesis FALSIFIED, null locked" py knowledge-breakthroughs/test_knowledge.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py
