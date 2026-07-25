@@ -18,7 +18,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install pytest
-        run: python3 -m pip install --quiet pytest
+      - name: Install pytest + the scientific stack
+        # requirements.txt carries the analysis deps (numpy/scipy/statsmodels/
+        # scikit-learn/pandas/networkx). Without them 5 suites — the yeast channel,
+        # the gap-closure protocol, the 4-cohort meta, the colab hash and the 3D
+        # coordinate test — fail on import rather than on their science.
+        run: python3 -m pip install --quiet pytest -r requirements.txt
       - name: Reproduce the whole stack
         run: bash reproduce_all.sh
