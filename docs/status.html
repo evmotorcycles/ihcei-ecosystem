@@ -1,0 +1,184 @@
+<title>Status — why 992 failed, and the 59/59 re-test</title>
+<style>
+  :root{
+    --bg:#f4f5f2; --card:#fff; --sunk:#eaece7; --line:#d8ddd4;
+    --ink:#14180f; --mid:#4d5449; --faint:#87907f;
+    --ink-accent:#2f5d3a; --ok:#2f7d52; --bad:#b4453a; --warn:#a9761c;
+    --sans:"Helvetica Neue",Arial,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+    --bg:#0e120e; --card:#151a15; --sunk:#121712; --line:#262e26;
+    --ink:#e9eee7; --mid:#9aa596; --faint:#69746a;
+    --ink-accent:#7cc08e; --ok:#54c084; --bad:#e0736a; --warn:#d9a441;}}
+  :root[data-theme="dark"]{
+    --bg:#0e120e; --card:#151a15; --sunk:#121712; --line:#262e26;
+    --ink:#e9eee7; --mid:#9aa596; --faint:#69746a;
+    --ink-accent:#7cc08e; --ok:#54c084; --bad:#e0736a; --warn:#d9a441;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  header{padding:58px 0 30px;border-bottom:2px solid var(--ink)}
+  .kick{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-accent);margin-bottom:16px}
+  h1{font-size:clamp(29px,5.4vw,50px);line-height:1.03;letter-spacing:-.025em;font-weight:800;margin:0;max-width:20ch;text-wrap:balance}
+  .lede{color:var(--mid);font-size:17.5px;margin-top:15px;max-width:64ch}
+  .big{display:flex;gap:28px;flex-wrap:wrap;margin-top:24px;font-family:var(--mono)}
+  .big div{display:flex;flex-direction:column}
+  .big b{font-size:30px;font-weight:700;letter-spacing:-.02em}
+  .big span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:2px}
+  section{padding:38px 0;border-bottom:1px solid var(--line)}
+  h2{font-size:12.5px;font-family:var(--mono);letter-spacing:.15em;text-transform:uppercase;color:var(--faint);margin:0 0 18px;font-weight:600}
+  h3{font-size:19px;margin:0 0 8px;font-weight:700;letter-spacing:-.01em}
+  p{margin:0 0 12px;max-width:66ch;color:var(--mid)} p.tight{margin-bottom:0}
+  strong{color:var(--ink)}
+  pre{background:var(--sunk);border:1px solid var(--line);border-radius:5px;padding:15px 17px;overflow-x:auto;
+    font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--ink);margin:0 0 14px}
+  pre .hl{color:var(--bad);font-weight:700}
+  code{font-family:var(--mono);font-size:12.5px;background:var(--sunk);border:1px solid var(--line);border-radius:3px;padding:1px 5px}
+  .cause{border:1px solid var(--bad);border-left:5px solid var(--bad);border-radius:5px;background:var(--card);padding:20px 22px}
+  .cause .lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bad);font-weight:700;margin-bottom:9px}
+  .good{border:1px solid var(--ok);border-left:5px solid var(--ok);border-radius:5px;background:var(--card);padding:20px 22px}
+  .good .lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ok);font-weight:700;margin-bottom:9px}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--faint);
+     text-align:left;padding:0 11px 9px;font-weight:600;border-bottom:1px solid var(--line)}
+  td{padding:11px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--mid)}
+  td:first-child{color:var(--ink);font-weight:650}
+  td.r{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .tick{color:var(--ok);font-weight:700;font-family:var(--mono)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .g{background:var(--card);padding:13px 15px}
+  .g .n{font-size:14px;font-weight:650;color:var(--ink)}
+  .g .s{font-family:var(--mono);font-size:12px;color:var(--ok);margin-top:3px}
+  ol{color:var(--mid);max-width:66ch;padding-left:20px} ol li{margin-bottom:7px}
+  footer{padding:28px 0 56px;font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+  @media (max-width:620px){table,thead,tbody,tr,td,th{display:block}thead{display:none}
+    td{border:none;padding:4px 11px}tr{border-bottom:1px solid var(--line);padding:9px 0;display:block}}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="kick">Novora / IHCEI — status report</div>
+    <h1>Nothing is falling apart.</h1>
+    <p class="lede">A clean checkout of HEAD reproduces every suite. What changed is not the science —
+      an audit was added that separates <em>“we have a conclusion”</em> from <em>“we committed the data.”</em>
+      It found a packaging bug that bit twice, and the logs you supplied settle the 992 question exactly.</p>
+    <div class="big">
+      <div><b style="color:var(--ok)">59/59</b><span>suites, clean checkout</span></div>
+      <div><b style="color:var(--ok)">0</b><span>failures</span></div>
+      <div><b style="color:var(--bad)">1</b><span>line of .gitignore</span></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>Why GitHub 992 is not reproducible — from your logs</h2>
+    <p>Run <span class="mono">74994532125</span>. The science ran, and ran correctly:</p>
+<pre>[fetch] 992 unique repositories
+[save]  per-repo data -> <span class="hl">govphys_quadratic_results.csv</span>  (N=992)
+N=992  fail=750  surv=242
+VIF(D_enc,D_dec)=1.02  (gate &lt;5.0)   r=+0.141
+PRIMARY dAIC(quad-lin)=-3.48  perm z=+9.32
+Third Law: tau_fail=50.61  tau_surv=19.76
+VERDICT: QUADRATIC_DISCONFIRMED
+
+Artifact name: govphys-quadratic-results
+Uploaded bytes 59283
+SHA256 ... 43d7419141d7c9e774f71c001e269e52d46c71a1dca8abd50e6232e9e7f90a01</pre>
+    <div class="cause">
+      <div class="lab">The cause — one line</div>
+      <h3><code>govphys_quadratic_results.csv</code> is line 7 of <code>.gitignore</code>.</h3>
+      <p>The 992 per-repo rows were written to the runner’s disk, uploaded as a 59 KB artifact — and then
+        <strong>discarded</strong>, because that exact filename could never enter the repository. The
+        workflow run has since expired (now <strong>404</strong>), so those rows are <strong>unrecoverable</strong>.</p>
+      <p class="tight">This is a <strong>packaging failure, not a scientific one</strong>. Nobody faked
+        anything and nobody ran it wrong. Evidence was produced, then thrown away.</p>
+    </div>
+    <p style="margin-top:16px"><strong>Does it weaken LISM?</strong> Narrowly, and honestly: the N = 992 cohort
+      cannot be <em>cited</em> as offline-reproducible, so the linear-coupling claim rests on the two substrates
+      that <em>are</em> committed. It does <strong>not</strong> mean the 992 result was wrong.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The same bug bit the yeast labels — and CI caught it</h2>
+    <p>Identical failure mode, days earlier: <code>scer_essential_orfs.txt</code> sat on disk while listed in
+      <code>.gitignore</code>. Every <em>local</em> run passed; a clean checkout had nothing. The first
+      “gap closed” claim was <strong>false</strong>, CI failed it, and the audit’s original finding was
+      <strong>correct</strong>. The labels are now genuinely committed and the gap is closed for real.</p>
+    <div class="good">
+      <div class="lab">The root-cause fix, now in CI</div>
+      <p class="tight"><code>test_no_ignored_evidence.py</code> makes the class loud: any gitignored data file
+        must be a <strong>declared gap carrying a reason and a remedy</strong>, and the yeast labels are asserted
+        to be <strong>git-tracked</strong> (<code>git ls-files --error-unmatch</code>) rather than merely present
+        on disk — exactly the check that catches a false closure on the spot.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Full re-test — every named system, from a clean worktree</h2>
+    <div class="grid">
+      <div class="g"><div class="n">IHCEI / NERE kernel</div><div class="s">3/3 PASS</div></div>
+      <div class="g"><div class="n">HELM</div><div class="s">core+parity+prereg PASS</div></div>
+      <div class="g"><div class="n">Page Code</div><div class="s">PASS</div></div>
+      <div class="g"><div class="n">Echo (hash-chain DB)</div><div class="s">PASS</div></div>
+      <div class="g"><div class="n">Cross-stack / agency internet</div><div class="s">PASS</div></div>
+      <div class="g"><div class="n">Novora suite</div><div class="s">PASS</div></div>
+      <div class="g"><div class="n">Novora PAGES</div><div class="s">PASS</div></div>
+      <div class="g"><div class="n">EI</div><div class="s">2/2 PASS</div></div>
+      <div class="g"><div class="n">EI-LLM</div><div class="s">2/2 PASS</div></div>
+      <div class="g"><div class="n">Gorilla Problem (Russell)</div><div class="s">PASS</div></div>
+      <div class="g"><div class="n">Hinton “Grand Canyon”</div><div class="s">PASS</div></div>
+      <div class="g"><div class="n">Digital swarms</div><div class="s">2/2 PASS</div></div>
+      <div class="g"><div class="n">Deterministic F_out = F_eval</div><div class="s">PASS</div></div>
+      <div class="g"><div class="n">Adversarial kernel</div><div class="s">∂F/∂F_gen = 0 PASS</div></div>
+      <div class="g"><div class="n">Agency algorithm / methodology</div><div class="s">3/3 PASS</div></div>
+      <div class="g"><div class="n">LMD</div><div class="s">2/2 PASS</div></div>
+      <div class="g"><div class="n">GitHub / HF / PubMed / bioRxiv</div><div class="s">all PASS</div></div>
+      <div class="g"><div class="n">Cohort audit + guards</div><div class="s">3/3 PASS</div></div>
+    </div>
+    <p style="margin-top:16px" class="tight"><strong>59/59 suites, 0 failures</strong>, run from
+      <code>git worktree add /tmp/verify HEAD</code> — nothing from a working directory.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What the audit changed — and why it can look like decay</h2>
+    <table>
+      <thead><tr><th>Before</th><th>After</th></tr></thead>
+      <tbody>
+        <tr><td>“four cohorts”</td><td>2 backed by committed data · 1 unrecoverable gap · 2 simulations</td></tr>
+        <tr><td>“quadratic AUC 0.47, anti-predictive”</td><td>a <strong>non-converged solver artifact</strong> (in-sample 0.4275); converged quadratic 0.591, still beaten by linear 0.666</td></tr>
+        <tr><td>“popularity carries zero information”</td><td><strong>refuted</strong> — stars discriminate default at AUC 0.74 on a non-circular outcome</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:16px">Losing claims that were never backed is not the framework weakening — it is the
+      framework <strong>becoming checkable</strong>. What survived is independent, non-circular and reproduces
+      offline: the yeast interactome (N = 4,825, VIF 1.0026, linear 0.666 &gt; quadratic 0.591) and a real
+      434-package dependency graph (quadratic Δ 0.000).</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>If you want 992 back</h2>
+    <ol>
+      <li>Remove <code>govphys_quadratic_results.csv</code> from <code>.gitignore</code> (or write to <code>data/</code>).</li>
+      <li>Re-run the pre-registered fetch — spec <code>cac34f44…</code>, needs a <code>GITHUB_TOKEN</code>; the original took ~47 minutes.</li>
+      <li><strong>Commit the CSV.</strong> The evidence guard will then permit the cohort to be cited.</li>
+    </ol>
+    <p class="tight">Until then the gap stays declared, with its cause and remedy attached wherever it is quoted.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">reproduce: <code>bash reproduce_all.sh</code> → 59/59 · exit 0 means “reproduces including its
+    gaps, nulls and missed predictions” — not “every claim held.”</div>
+</footer>
