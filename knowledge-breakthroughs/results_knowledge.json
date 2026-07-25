@@ -1,0 +1,68 @@
+{
+  "lock_ok": true,
+  "fixture_sha256": {
+    "github": "d5b105905cab0460208d337e278d03817c5362279091295006d8a421d20d1564",
+    "hf": "3885e06905d1d067fc07b63fa3376464711835ac7c242d213dfaa252d46a5909",
+    "biorxiv": "aa3600d10c0fe6cbe0eb5f1b90949f8c8cd742e2f42956f8acca351d638c7103",
+    "pubmed": "70b75ad503f2c158cad020c87c284183c893cf42d0fd35d1d5e85bdeeff7262f",
+    "synthetic_control": "a9a3d65967cee22d289f13cab29e46696e762af1b1cbaa75670911fdb5c3468f"
+  },
+  "thesis_supported": false,
+  "reproduced_including_nulls": true,
+  "data_integrity": "Gates K1-K4 use REAL frozen substrates (GitHub, HuggingFace, bioRxiv, PubMed). K5 uses the committed N=793 knowledge fixture which is SYNTHETIC (synthetic:true, seed 20260720) and is an estimator control only, carrying zero real-world evidence.",
+  "K1_fidelity_beats_status": {
+    "hf_rho_status_alone": 0.4035,
+    "hf_rho_fidelity_adjusted": 0.0123,
+    "gh_rho_status_alone": 0.8763,
+    "gh_rho_fidelity_adjusted": 0.514,
+    "prediction": "rho(fidelity-adjusted) > rho(status alone)",
+    "falsified": true,
+    "conclusion": "FALSIFIED on both real substrates. The yield proxies (downloads, forks) are themselves popularity measures, so status predicts them well; the fidelity legs measure trustworthiness, a different axis. Reach != verified quality -- which is exactly what K4 establishes.",
+    "pass": false
+  },
+  "K2_independence": {
+    "vif_hf": 1.0647,
+    "vif_github": 1.1741,
+    "pre_registered_gate": 1.1,
+    "standard_collinearity_gate": 5.0,
+    "circular_control_rejected": true,
+    "partial": true,
+    "conclusion": "HuggingFace intact; GitHub 1.174 exceeds the pre-registered 1.10 under this substrate's non-circular leg definition (still far below the standard 5.0 gate). Recorded as a partial failure; the threshold was NOT moved.",
+    "untestable_single_leg": [
+      "bioRxiv",
+      "PubMed"
+    ],
+    "pass": false
+  },
+  "K3_capacity_inert": {
+    "pubmed_rho_size_vs_integrity": 0.1905,
+    "pubmed_N": 8,
+    "biorxiv_rho_team_vs_latency_fidelity": -0.093,
+    "biorxiv_N": 40,
+    "pass": true
+  },
+  "K4_decoupled": {
+    "hf_rankings_differ": true,
+    "hf_popular_but_below_floor": [
+      "coqui/XTTS-v2"
+    ],
+    "github_popular_but_below_floor": [
+      "trimstray/the-book-of-secret-knowledge",
+      "tensorflow/tensorflow",
+      "AUTOMATIC1111/stable-diffusion-webui",
+      "huggingface/transformers",
+      "Hack-with-Github/Awesome-Hacking"
+    ],
+    "pass": true
+  },
+  "K5_synthetic_control": {
+    "fixture_is_synthetic": true,
+    "N": 793,
+    "vif": 1.0032,
+    "real_world_evidence": false,
+    "pass": true
+  },
+  "note": "Tests whether fidelity, not status, tracks realized knowledge yield on real substrates. Methodology, not speed: secure the channel first, then speed is safe to apply. Declared limits: PubMed N=8; bioRxiv survivor-only and single-leg; GitHub D_dec is outcome-derived and excluded from K1 by construction; the N=793 knowledge fixture is synthetic.",
+  "honest_reporting": true,
+  "pass": true
+}
