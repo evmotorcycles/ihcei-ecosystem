@@ -1,0 +1,14 @@
+{
+  "title": "LISM enforcement-latency (tau_v) on bioRxiv scientific publishing (pre-registered)",
+  "date_locked": "2026-07-22",
+  "layer": "Layer-1, offline (runs on the frozen fixture), $0. Measures the LISM THIRD LAW -- enforcement latency tau_v -- on a new real substrate: bioRxiv preprint -> journal-publication latency.",
+  "substrate": "Real published bioRxiv preprints (search_published_preprints via MCP). tau_v = days from preprint posting to formal journal publication -- a direct, non-circular latency measurement analogous to the GitHub issue-close tau_v cohort already in this repo.",
+  "gates": {
+    "H1_heavy_tail": "tau_v is right-skewed with a wide upper tail (the hazard signature). PASS if mean > median AND p90/median >= 2.0.",
+    "H2_field_variation": "tau_v differs across scientific fields. PASS if (max category median)/(min category median) >= 2.0 among categories with n>=2.",
+    "H3_coupling_untestable": "The two-hop E=U*D SURVIVAL coupling is NOT cleanly instrumentable on this metadata (only the PUBLISHED subset is observed, there is no independent second fidelity hop, and no non-circular binary survival outcome). This is declared UNTESTABLE for coupling and reported as such -- exactly like the legislation/judicial channel in this repo. NOT spun as support."
+  },
+  "symmetric_null": "Report the measured tau_v distribution AS-IS. If H1 or H2 fails, report the failure; do not retune. H3 is an honest construct-validity limit, not a result.",
+  "acceptance": "GREEN when the spec re-hashes to the manifest, the fixture hash matches, H1 and H2 pass on the real data, and H3 is reported as untestable (not forced into a coupling claim).",
+  "honest_scope": "This is a first tau_v measurement on scientific publishing (N=40 published preprints, Feb 2024) -- illustrative, not a powered epidemiology study. It measures the latency law, NOT the E=U*D coupling. The validated LISM coupling cohorts remain yeast/GitHub/knowledge/swarm."
+}

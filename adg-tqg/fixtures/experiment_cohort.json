@@ -1,0 +1,228 @@
+{
+ "description": "Real open-source GitHub repositories with telemetry (stars, closed-issue count, tau_v, push date, archived, lifecycle E) fetched via the deployed api/gh-issues endpoint. Substrate for empirically testing the ADG C_dev and TQG-CFE Psi equations as ORGANIZATION-GRAPH TELEMETRY (Layer-1), analogous to E=U*D in LISM. E=0 failed (archived or push>365d), E=1 survived.",
+ "fetched_at": "2026-07-17",
+ "n": 22,
+ "repos": [
+  {
+   "repo": "gohugoio/hugo",
+   "stargazers": 89000,
+   "n_closed": 74,
+   "tau_v": 2.52,
+   "pushed_at": "2026-07-13",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 4
+  },
+  {
+   "repo": "expressjs/express",
+   "stargazers": 69371,
+   "n_closed": 32,
+   "tau_v": 2.72,
+   "pushed_at": "2026-07-12",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 5
+  },
+  {
+   "repo": "sveltejs/svelte",
+   "stargazers": 87638,
+   "n_closed": 51,
+   "tau_v": 3.11,
+   "pushed_at": "2026-07-16",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 1
+  },
+  {
+   "repo": "psf/requests",
+   "stargazers": 54145,
+   "n_closed": 27,
+   "tau_v": 3.38,
+   "pushed_at": "2026-07-09",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 8
+  },
+  {
+   "repo": "vitejs/vite",
+   "stargazers": 82090,
+   "n_closed": 51,
+   "tau_v": 4.45,
+   "pushed_at": "2026-07-16",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 1
+  },
+  {
+   "repo": "pallets/flask",
+   "stargazers": 71951,
+   "n_closed": 76,
+   "tau_v": 10.56,
+   "pushed_at": "2026-06-10",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 37
+  },
+  {
+   "repo": "gulpjs/gulp",
+   "stargazers": 32957,
+   "n_closed": 194,
+   "tau_v": 24.06,
+   "pushed_at": "2026-02-09",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 158
+  },
+  {
+   "repo": "facebook/create-react-app",
+   "stargazers": 103310,
+   "n_closed": 19,
+   "tau_v": 38.06,
+   "pushed_at": "2025-02-15",
+   "archived": false,
+   "E": 0,
+   "days_since_push": 517
+  },
+  {
+   "repo": "jashkenas/underscore",
+   "stargazers": 27336,
+   "n_closed": 140,
+   "tau_v": 76.74,
+   "pushed_at": "2026-07-13",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 4
+  },
+  {
+   "repo": "moment/moment",
+   "stargazers": 47943,
+   "n_closed": 85,
+   "tau_v": 88.46,
+   "pushed_at": "2024-08-14",
+   "archived": false,
+   "E": 0,
+   "days_since_push": 702
+  },
+  {
+   "repo": "bower/bower",
+   "stargazers": 14919,
+   "n_closed": 199,
+   "tau_v": 121.7,
+   "pushed_at": "2024-10-13",
+   "archived": false,
+   "E": 0,
+   "days_since_push": 642
+  },
+  {
+   "repo": "request/request",
+   "stargazers": 25535,
+   "n_closed": 136,
+   "tau_v": 251.29,
+   "pushed_at": "2024-08-14",
+   "archived": false,
+   "E": 0,
+   "days_since_push": 702
+  },
+  {
+   "repo": "angular/angular.js",
+   "stargazers": 58575,
+   "n_closed": 126,
+   "tau_v": 6.12,
+   "pushed_at": "2024-04-12",
+   "archived": true,
+   "E": 0,
+   "days_since_push": 826
+  },
+  {
+   "repo": "jashkenas/backbone",
+   "stargazers": 28109,
+   "n_closed": 147,
+   "tau_v": 73.1,
+   "pushed_at": "2026-04-22",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 86
+  },
+  {
+   "repo": "strongloop/loopback",
+   "stargazers": 13162,
+   "n_closed": 239,
+   "tau_v": 104.55,
+   "pushed_at": "2023-10-09",
+   "archived": false,
+   "E": 0,
+   "days_since_push": 1012
+  },
+  {
+   "repo": "twbs/bootstrap",
+   "stargazers": 174479,
+   "n_closed": 35,
+   "tau_v": 8.01,
+   "pushed_at": "2026-07-16",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 1
+  },
+  {
+   "repo": "jquery/jquery",
+   "stargazers": 59804,
+   "n_closed": 56,
+   "tau_v": 10.86,
+   "pushed_at": "2026-07-14",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 3
+  },
+  {
+   "repo": "d3/d3",
+   "stargazers": 113232,
+   "n_closed": 177,
+   "tau_v": 15.25,
+   "pushed_at": "2026-05-28",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 50
+  },
+  {
+   "repo": "mrdoob/three.js",
+   "stargazers": 113779,
+   "n_closed": 49,
+   "tau_v": 1.04,
+   "pushed_at": "2026-07-16",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 1
+  },
+  {
+   "repo": "less/less.js",
+   "stargazers": 17034,
+   "n_closed": 73,
+   "tau_v": 133.33,
+   "pushed_at": "2026-07-12",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 5
+  },
+  {
+   "repo": "chartjs/Chart.js",
+   "stargazers": 67587,
+   "n_closed": 56,
+   "tau_v": 23.01,
+   "pushed_at": "2026-05-27",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 51
+  },
+  {
+   "repo": "gatsbyjs/gatsby",
+   "stargazers": 55953,
+   "n_closed": 14,
+   "tau_v": 31.85,
+   "pushed_at": "2026-07-16",
+   "archived": false,
+   "E": 1,
+   "days_since_push": 1
+  }
+ ],
+ "label_rule": "E=0 (failed) iff archived or days_since_push>365; else E=1 (survived)"
+}

@@ -1,0 +1,35 @@
+{
+  "spec_sha256": "ca2c72e3bb301dd807e1adad0f12a369a706bf99e1296144f2de88de15d3aafb",
+  "fixture_sha256": "d168c846867f38ec0f4bc0ff794af71a932e77a7ec3b9312069d4fed5da1ff8e",
+  "lock_ok": true,
+  "R1_soft_linear": {
+    "slope": 0.9993,
+    "r2": 0.9999,
+    "pass": true
+  },
+  "R2_hard_threshold": {
+    "threshold_residual": 0.0,
+    "linear_residual": 6.7338,
+    "Dmin": 0.6,
+    "pass": true
+  },
+  "R3_serial_quadratic": {
+    "slope_vs_d2": 0.9992,
+    "r2_vs_d2": 1.0,
+    "two_at_0.5": 0.2502,
+    "soft_at_0.5": 0.4985,
+    "pass": true
+  },
+  "G_github_gate": {
+    "survival": {
+      "scipy/scipy": 0.8377,
+      "mitmproxy/mitmproxy": 0.8149,
+      "biopython/biopython": 0.7819,
+      "nextflow-io/nextflow": 0.7226
+    },
+    "pass": true
+  },
+  "note": "each retired/current equation is the correct law in its regime: soft->linear, hard->threshold, serial->quadratic.",
+  "honest_reporting": true,
+  "pass": true
+}

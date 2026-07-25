@@ -1,0 +1,69 @@
+{
+  "lock_ok": true,
+  "spec_sha256": "30024662faef893dab1455fb77ba68b90d061885492336dbae5269ba1ce7c0d6",
+  "fixture_sha256": {
+    "github": "d5b105905cab0460208d337e278d03817c5362279091295006d8a421d20d1564",
+    "hf": "3885e06905d1d067fc07b63fa3376464711835ac7c242d213dfaa252d46a5909"
+  },
+  "substrates": [
+    {
+      "name": "GitHub",
+      "n": 28,
+      "below": 23,
+      "budget": 69,
+      "applicable": true,
+      "floor": 0.3,
+      "tau_ref": 264.5,
+      "E_constitution": 37.834,
+      "E_capacity": 30.262,
+      "E_equal": 27.107,
+      "E_triage_prior": 35.49,
+      "E_throttle_in_objective": 33.692,
+      "dE_throttle": -4.142,
+      "vif_enc_dec": 1.0039,
+      "G1": true,
+      "counts_nonzero": 17
+    },
+    {
+      "name": "HuggingFace",
+      "n": 19,
+      "below": 8,
+      "budget": 24,
+      "applicable": true,
+      "floor": 0.28,
+      "tau_ref": 1.0,
+      "E_constitution": 23.128,
+      "E_capacity": 20.094,
+      "E_equal": 21.213,
+      "E_triage_prior": 22.643,
+      "E_throttle_in_objective": 23.128,
+      "dE_throttle": 0.0,
+      "vif_enc_dec": 1.0647,
+      "G1": true,
+      "counts_nonzero": 9
+    }
+  ],
+  "G1_two_hop_beats_all_baselines": true,
+  "G2_independence_gate": true,
+  "G2_hoarder_rejected": true,
+  "G2_real_nodes_pass": true,
+  "G2_vif": {
+    "GitHub": 1.0039,
+    "HuggingFace": 1.0647
+  },
+  "G3_prediction": "dE_throttle >= 0 (Law 2 in objective helps)",
+  "G3_dE_throttle_github": -4.142,
+  "G3_falsified": true,
+  "G3_conclusion": "Law 2 (enforcement latency) HURTS as an objective term on real GitHub (dE=-4.142); it belongs in the separate safety/authority layer, not the yield objective -- an empirically forced epistemic firewall.",
+  "G4_E_by_claim": [
+    37.833993,
+    37.833993,
+    37.833993,
+    37.833993
+  ],
+  "G4_variance": 0.0,
+  "G4_decoupled": true,
+  "note": "The recommended allocator (Law 1 two-hop + independence gate + Law 3 shield) strictly beats capacity, equal, AND the prior triage allocator on real GitHub + Hugging Face (G1), and is immune to self-certification (G2) and forged self-reports (G4, variance 0). Folding Law 2 into the yield objective is FALSIFIED (G3) -- the null relocates enforcement latency to the safety layer. Methodology, not speed; nulls prioritized.",
+  "honest_reporting": true,
+  "pass": true
+}

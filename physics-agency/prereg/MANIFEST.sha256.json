@@ -1,0 +1,6 @@
+{
+  "spec": "telemetric_prereg.json",
+  "canonical_sha256": "011b7b53e9df4d12cc54e7689639209b82a282b3199b88f4d9ce481e6fdb7e3c",
+  "locked_at": "2026-07-18",
+  "algo": "SHA-256 over echo.canonical(spec)"
+}

@@ -1,0 +1,29 @@
+{
+  "_provenance": {
+    "source": "Hugging Face Hub via MCP (hub_repo_search, filters text-to-video / text-to-audio / text-to-speech, sort by likes)",
+    "fetched_by": "authenticated HF MCP user Mago1234",
+    "fetched_at": "2026-07-22",
+    "note": "Real open-source video/audio GENERATION tools, frozen for offline reproducibility. license/arxiv/flags transcribed from the live tag lists."
+  },
+  "models": [
+    {"id": "hexgrad/Kokoro-82M", "modality": "audio", "task": "text-to-speech", "likes": 6572, "downloads": 10300000, "license": "apache-2.0", "arxiv": true, "eval_results": false, "base_model": "yl4579/StyleTTS2-LJSpeech", "flags": []},
+    {"id": "coqui/XTTS-v2", "modality": "audio", "task": "text-to-speech", "likes": 3680, "downloads": 9500000, "license": "other", "arxiv": false, "eval_results": false, "base_model": null, "flags": ["voice-cloning"]},
+    {"id": "nari-labs/Dia-1.6B", "modality": "audio", "task": "text-to-speech", "likes": 2898, "downloads": 9600, "license": "apache-2.0", "arxiv": true, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "microsoft/VibeVoice-1.5B", "modality": "audio", "task": "text-to-speech", "likes": 2431, "downloads": 46200, "license": "mit", "arxiv": true, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "sesame/csm-1b", "modality": "audio", "task": "text-to-speech", "likes": 2413, "downloads": 256300, "license": "apache-2.0", "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "tencent/HunyuanVideo", "modality": "video", "task": "text-to-video", "likes": 2224, "downloads": 828, "license": "other", "arxiv": true, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "SulphurAI/Sulphur-2-base", "modality": "video", "task": "text-to-video", "likes": 1904, "downloads": 446000, "license": null, "arxiv": false, "eval_results": false, "base_model": "Lightricks/LTX-2.3", "flags": []},
+    {"id": "Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice", "modality": "audio", "task": "text-to-speech", "likes": 1793, "downloads": 2500000, "license": "apache-2.0", "arxiv": true, "eval_results": false, "base_model": null, "flags": ["voice-cloning"]},
+    {"id": "Lightricks/LTX-2", "modality": "video", "task": "image-to-video", "likes": 1764, "downloads": 450100, "license": null, "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "ResembleAI/chatterbox", "modality": "audio", "task": "text-to-speech", "likes": 1699, "downloads": 2600000, "license": null, "arxiv": false, "eval_results": false, "base_model": null, "flags": ["voice-cloning"]},
+    {"id": "2Noise/ChatTTS", "modality": "audio", "task": "text-to-audio", "likes": 1663, "downloads": 2300, "license": "cc-by-nc-4.0", "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "Lightricks/LTX-2.3", "modality": "video", "task": "image-to-video", "likes": 1653, "downloads": 2100000, "license": null, "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "suno/bark", "modality": "audio", "task": "text-to-speech", "likes": 1541, "downloads": 38400, "license": "mit", "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "Wan-AI/Wan2.1-T2V-14B", "modality": "video", "task": "text-to-video", "likes": 1538, "downloads": 64300, "license": "apache-2.0", "arxiv": false, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "stabilityai/stable-audio-open-1.0", "modality": "audio", "task": "text-to-audio", "likes": 1536, "downloads": 18400, "license": "other", "arxiv": true, "eval_results": false, "base_model": null, "flags": []},
+    {"id": "genmo/mochi-1-preview", "modality": "video", "task": "text-to-video", "likes": 1337, "downloads": 4600, "license": "apache-2.0", "arxiv": false, "eval_results": false, "base_model": null, "flags": ["preview"]},
+    {"id": "tencent/HunyuanVideo-1.5", "modality": "video", "task": "text-to-video", "likes": 1023, "downloads": 4500, "license": "other", "arxiv": true, "eval_results": true, "base_model": null, "flags": []},
+    {"id": "ByteDance/AnimateDiff-Lightning", "modality": "video", "task": "text-to-video", "likes": 993, "downloads": 11500, "license": "creativeml-openrail-m", "arxiv": true, "eval_results": false, "base_model": "stable-diffusion", "flags": []},
+    {"id": "ali-vilab/text-to-video-ms-1.7b", "modality": "video", "task": "text-to-video", "likes": 671, "downloads": 111100, "license": "cc-by-nc-4.0", "arxiv": true, "eval_results": false, "base_model": null, "flags": []}
+  ]
+}
