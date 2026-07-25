@@ -91,6 +91,7 @@ run "knowledge cohort: Barakah SE reproduces OFFLINE" py repro/test_se_offline.p
 run "LISM circuit breaker: drop-in agent-pipeline guard" py lism-cohorts/test_circuit_breaker.py
 run "hardware template: coupler-sweep prediction (no fabrication)" py hardware_interfaces/test_mock_willow_sweep.py
 run "provenance: cryptographic origin lock verifies" py provenance/test_provenance.py
+run "financial-system: Mudaraba Ledger + Sabbath Lock" py financial-system/test_financial_system.py
 
 bar; echo "  Physics-agency: Telemetric Metric (Python)"; bar
 run "physics: metric + scaling + discriminator" py physics-agency/test_telemetric_metric.py
