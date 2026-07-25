@@ -1,0 +1,79 @@
+{
+  "spec_sha256_canonical": "f8a94c655dc0ec5c9add082114dd7048a5d148827fd6e0cb33226461c3dbd03a",
+  "yeast": {
+    "N": 4825,
+    "n_essential": 1055,
+    "vif": 1.0026,
+    "cv_auc_linear": 0.6663,
+    "cv_auc_quadratic": 0.5911,
+    "multivariate_converged": false,
+    "multivariate_insample_auc": 0.4275
+  },
+  "github": {
+    "gap992_open": true,
+    "largest_labelled_json": 22,
+    "union_N": 33,
+    "union_failed": 9,
+    "median_tau_v_failed": 45.42,
+    "median_tau_v_survived": 4.28
+  },
+  "swarm": {
+    "real_graph_lin": 0.59,
+    "real_graph_quad": 0.59
+  },
+  "gates": [
+    {
+      "gate": "Y1_labels_join",
+      "pass": true,
+      "detail": "N=4825, essential=1055 (ORF-keyed DEG2001 labels joined to STRING channel)",
+      "falsifiable": true
+    },
+    {
+      "gate": "Y2_channel_intact",
+      "pass": true,
+      "detail": "VIF(D_enc,D_dec) = 1.0026 (r=-0.0513)",
+      "falsifiable": true
+    },
+    {
+      "gate": "Y3_quadratic_not_better",
+      "pass": true,
+      "detail": "CV AUC linear U*D = 0.6663  vs  quadratic U*D^2 = 0.5911",
+      "falsifiable": true
+    },
+    {
+      "gate": "Y4_published_047_is_an_artifact",
+      "pass": true,
+      "detail": "single-term quadratic CV AUC = 0.5911 (ABOVE chance, not 0.47); multivariate U+D+D^2 converged=False, in-sample AUC=0.4275",
+      "falsifiable": true
+    },
+    {
+      "gate": "G1_992_cannot_be_closed_offline",
+      "pass": true,
+      "detail": "no 992-row labelled artifact committed (largest labelled JSON = 22 rows); GAP REMAINS OPEN \u2014 the N=992 result must not be cited as offline-reproducible",
+      "falsifiable": true
+    },
+    {
+      "gate": "G2_expanded_labelled_cohort",
+      "pass": false,
+      "detail": "union N=33 (failed=9, survived=24); median tau_v failed=45.4d vs survived=4.3d (direction holds)",
+      "falsifiable": true
+    },
+    {
+      "gate": "S1_swarm_is_simulation",
+      "pass": true,
+      "detail": "source self-declares a simulation; recorded as SIMULATION \u2014 contributes ZERO real-world evidence",
+      "falsifiable": false
+    },
+    {
+      "gate": "S2_swarm_real_data_analogue",
+      "pass": true,
+      "detail": "REAL 434-package PyPI graph: CV AUC U+D=0.590 vs U+D+D^2=0.590 (delta +0.000) -> quadratic adds nothing on real data",
+      "falsifiable": true
+    }
+  ],
+  "yeast_outcome_gap_closed": true,
+  "github_992_gap_open": true,
+  "missed_predictions": [
+    "G2_expanded_labelled_cohort"
+  ]
+}
