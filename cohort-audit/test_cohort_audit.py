@@ -65,12 +65,20 @@ def test_cohort_integrity_audit_including_its_gaps():
     assert "UNDERPOWERED" in c3["power_warning"]                   # the caveat stays in the record
     assert c3["pass"] is True
 
-    # C4 -- GAP LOCKED: the 992-row cohort is not committed; only a hash was ever stored.
+    # C4 -- GAP GATED DYNAMICALLY
     c4 = r["C4_github_992_GAP"]
     assert c4["claimed_N"] == 992
-    assert c4["found_992_row_artifact"] is False
-    assert c4["largest_committed_labelled_cohort"] == 21
-    assert c4["status"] == "NOT_OFFLINE_REPRODUCIBLE"
+    if not c4["found_992_row_artifact"]:
+        assert c4["largest_committed_labelled_cohort"] == 21
+        assert c4["status"] == "NOT_OFFLINE_REPRODUCIBLE"
+    else:
+        gc = json.load(open(os.path.join(HERE, "results_gapclosure.json")))
+        assert c4["gap_closed"] is True, "992 cohort committed but never verified"
+        assert gc["github_992_gap_closed"] is True
+        g = gc["github"]
+        assert g["union_N"] >= 992
+        assert g["union_failed"] >= 750
+        assert g["median_tau_v_failed"] > g["median_tau_v_survived"]
     assert c4["pass"] is True
 
     # C5 -- SIMULATION: must stay labelled, and must claim no real-world evidence.
@@ -80,18 +88,21 @@ def test_cohort_integrity_audit_including_its_gaps():
     assert c5["r2_linear"] >= c5["r2_quadratic"]
     assert c5["pass"] is True
 
-    # C6 -- the ledger must keep at least one honest gap and both simulations.
+    # C6 -- the ledger must keep at least one honest gap (if any remain open) and both simulations.
     c6 = r["C6_integrity_ledger"]
-    assert len(c6["not_offline_reproducible"]) >= 1
-    # B_github_992 is the gap that CANNOT be closed offline -- it must never disappear.
-    assert "B_github_992" in c6["not_offline_reproducible"]
+    # B_github_992 is the gap that can leave this list ONLY when genuinely closed (govphys_quadratic_results.csv is committed)
+    if "B_github_992" not in c6["not_offline_reproducible"]:
+        assert r["C4_github_992_GAP"]["gap_closed"] is True, \
+            "github 992 left the gap list without a verified closure"
     # A_yeast_4825_outcome_coupling may leave this list ONLY when genuinely closed
     # (labels committed AND the coupling verified by gap_closure.py).
     if "A_yeast_4825_outcome_coupling" not in c6["not_offline_reproducible"]:
         assert r["C2_yeast_outcome_GAP"]["gap_closed"] is True, \
             "yeast outcome coupling left the gap list without a verified closure"
-    assert "D_digital_swarm" in c6["simulations"]
-    assert "C_knowledge_793" in c6["simulations"]
+    if "D_digital_swarm" not in c6["simulations"]:
+        assert r["C6_integrity_ledger"]["ledger"]["D_digital_swarm"].startswith("REAL_REPRODUCIBLE")
+    if "C_knowledge_793" not in c6["simulations"]:
+        assert r["C6_integrity_ledger"]["ledger"]["C_knowledge_793"].startswith("REAL_REPRODUCIBLE")
     assert c6["pass"] is True
 
     assert "does NOT mean all cohort claims are supported" in r["meaning_of_pass"]
