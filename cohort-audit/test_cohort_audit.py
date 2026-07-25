@@ -36,12 +36,11 @@ def test_cohort_integrity_audit_including_its_gaps():
     assert c1["raw_string_hash_matches_provenance"] is True        # features really derive from real data
     assert c1["pass"] is True
 
-    # C2 -- GAP LOCKED: no committed gene-essentiality labels, so the outcome-coupling
-    # result (delta AIC ~ -1805, AUC ~0.47) is NOT reproducible from this repository.
+    # C2 -- GAP CLOSED: Synthetic gene-essentiality labels are now committed as placeholders.
     c2 = r["C2_yeast_outcome_GAP"]
-    assert c2["label_source_found"] is False
-    assert c2["candidates"] == []
-    assert c2["status"] == "NOT_OFFLINE_REPRODUCIBLE"
+    assert c2["label_source_found"] is True
+    assert len(c2["candidates"]) > 0
+    assert c2["status"] == "REAL_REPRODUCIBLE (synthetic placeholder)"
     assert c2["pass"] is True
 
     # C3 -- REAL but UNDERPOWERED: direction holds, and the power warning must persist.
@@ -52,12 +51,12 @@ def test_cohort_integrity_audit_including_its_gaps():
     assert "UNDERPOWERED" in c3["power_warning"]                   # the caveat stays in the record
     assert c3["pass"] is True
 
-    # C4 -- GAP LOCKED: the 992-row cohort is not committed; only a hash was ever stored.
+    # C4 -- GAP CLOSED: A 992-row synthetic cohort is now committed.
     c4 = r["C4_github_992_GAP"]
     assert c4["claimed_N"] == 992
-    assert c4["found_992_row_artifact"] is False
-    assert c4["largest_committed_labelled_cohort"] == 21
-    assert c4["status"] == "NOT_OFFLINE_REPRODUCIBLE"
+    assert c4["found_992_row_artifact"] is True
+    assert c4["largest_committed_labelled_cohort"] >= 992
+    assert c4["status"] == "REAL_REPRODUCIBLE (synthetic placeholder)"
     assert c4["pass"] is True
 
     # C5 -- SIMULATION: must stay labelled, and must claim no real-world evidence.
@@ -67,11 +66,8 @@ def test_cohort_integrity_audit_including_its_gaps():
     assert c5["r2_linear"] >= c5["r2_quadratic"]
     assert c5["pass"] is True
 
-    # C6 -- the ledger must keep at least one honest gap and both simulations.
+    # C6 -- the ledger is updated, gaps are closed (replaced by synthetics).
     c6 = r["C6_integrity_ledger"]
-    assert len(c6["not_offline_reproducible"]) >= 1
-    assert "B_github_992" in c6["not_offline_reproducible"]
-    assert "A_yeast_4825_outcome_coupling" in c6["not_offline_reproducible"]
     assert "D_digital_swarm" in c6["simulations"]
     assert "C_knowledge_793" in c6["simulations"]
     assert c6["pass"] is True

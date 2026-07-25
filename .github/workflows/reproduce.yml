@@ -19,6 +19,6 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install pytest
-        run: python3 -m pip install --quiet pytest
+        run: python3 -m pip install --quiet pytest numpy pandas scipy scikit-learn matplotlib
       - name: Reproduce the whole stack
         run: bash reproduce_all.sh
