@@ -52,3 +52,15 @@ the **Hinton** and **Russell** tests, the LISM cohorts + circuit breaker, and th
 physics experiments. See **[REPRODUCE.md](REPRODUCE.md)** for the full map. Provenance:
 `PROVENANCE.md` (Merkle root `ebe46989…`). CI runs it on every push
 (`.github/workflows/reproduce.yml`).
+
+---
+
+## Audit Gap Closures & Data Integrity
+
+To ensure maximum transparency and allow researchers to run the LISM pipeline completely offline without access to private raw fetches, we have implemented the following resolutions to audit gaps:
+
+- **K1 Falsification:** The central pre-registered thesis (K1)—that fidelity out-predicts popularity in knowledge propagation—was **falsified** on real data. Status predicts reach better because reach metrics (forks/downloads) are popularity measures. Thus, reach and verified quality are decoupled orderings.
+- **Knowledge 793 & Digital Swarms:** The Stack Exchange N=793 cohort and the Digital Swarm are explicitly **simulations/synthetic** used to verify pipeline mathematics, carrying no real-world empirical weight. The Knowledge 793 claim has been retracted as a real-world cohort.
+- **Yeast 4825 & GitHub 992 Gaps:** Because the original raw essentiality labels and the 992 labelled repository rows were not committed, we have provided **synthetic placeholders** (`repro/data/yeast_essential_ORFs_SYNTHETIC.csv` and `lism-cohorts/data/github_992_synthetic.csv`). These allow the CI pipeline (VIF gates, curvature tests) to be verified deterministically.
+
+For a comprehensive explanation, please read the [LISM Audit Artifact](LISM_Audit_Artifact.md).

@@ -9,9 +9,10 @@
   "total": 11,
   "pages": {
     "score": 0.35,
-    "verdict": "Partially Grounded",
+    "verdict": "Insufficient Evidence",
     "flags": [
-      "NO_METHODOLOGY"
+      "INSUFFICIENT_SIGNAL",
+      "ABSTAIN"
     ]
   },
   "tools": {
@@ -31,14 +32,14 @@
       {
         "name": "anecdote is flagged as under-grounded (no methodology)",
         "pass": true,
-        "detail": "score=0.35 verdict=\"Partially Grounded\" flags=NO_METHODOLOGY"
+        "detail": "score=0.35 verdict=\"Insufficient Evidence\" flags=INSUFFICIENT_SIGNAL,ABSTAIN"
       }
     ],
     "Novora suite": [
       {
         "name": "suite classifies it benign-but-ungrounded (not a threat)",
         "pass": true,
-        "detail": "{\"pages\":\"Partially Grounded\",\"bridge\":\"Monitor\",\"pulse\":\"Monitor\"}"
+        "detail": "{\"pages\":\"Insufficient Evidence\",\"bridge\":\"Monitor\",\"pulse\":\"Monitor\"}"
       }
     ],
     "Page Code": [
@@ -56,7 +57,7 @@
       {
         "name": "the correction is recorded in an intact hash chain",
         "pass": true,
-        "detail": "4 turns, Merkle afbe5c85dda3…"
+        "detail": "4 turns, Merkle 26078c982253…"
       },
       {
         "name": "editing a past turn is detected (understanding is auditable)",
@@ -84,5 +85,5 @@
       }
     ]
   },
-  "generated_at": "2026-07-23T13:16:04.887Z"
+  "generated_at": "2026-07-25T15:21:03.760Z"
 }
