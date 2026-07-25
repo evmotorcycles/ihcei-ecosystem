@@ -1,0 +1,38 @@
+{
+  "spec_sha256_canonical": "fbe085fcf4cc2a7f5b3bf386a7e81f1542cda6f6f826996ca75ef41162f0d62a",
+  "N": 27,
+  "defaults": 6,
+  "auc_tau_v": 0.7143,
+  "auc_stars": 0.7381,
+  "portfolio": {
+    "conventional_default_rate": 0.1538,
+    "sovereign_default_rate": 0.0769
+  },
+  "spearman_stars_tauv": -0.3034,
+  "gates": [
+    {
+      "gate": "B1_tauv_beats_stars",
+      "pass": false,
+      "detail": "AUC(tau_v -> default) = 0.7143   vs   AUC(low-stars -> default) = 0.7381"
+    },
+    {
+      "gate": "B2_popularity_is_near_chance",
+      "pass": false,
+      "detail": "AUC(stars) = 0.7381 (pre-registered near-chance band [0.30, 0.70])"
+    },
+    {
+      "gate": "B3_portfolio_default_rate",
+      "pass": true,
+      "detail": "loan book of 13: conventional (top stars) defaults 15.4%  |  sovereign (low tau_v) defaults 7.7%"
+    },
+    {
+      "gate": "B4_two_axes_not_collinear",
+      "pass": true,
+      "detail": "spearman(stars, tau_v) = -0.3034  -> popularity and enforcement latency are independent orderings"
+    }
+  ],
+  "gates_not_met": [
+    "B1_tauv_beats_stars",
+    "B2_popularity_is_near_chance"
+  ]
+}
