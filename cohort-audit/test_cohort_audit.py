@@ -36,12 +36,25 @@ def test_cohort_integrity_audit_including_its_gaps():
     assert c1["raw_string_hash_matches_provenance"] is True        # features really derive from real data
     assert c1["pass"] is True
 
-    # C2 -- GAP LOCKED: no committed gene-essentiality labels, so the outcome-coupling
-    # result (delta AIC ~ -1805, AUC ~0.47) is NOT reproducible from this repository.
+    # C2 -- NO SILENT UPGRADE. Originally this locked an absence (no essentiality labels).
+    # Labels were later genuinely committed (DEG2001 -> systematic ORFs), so the gap is
+    # allowed to close -- but ONLY together with a reproducing result. The upgrade path is
+    # gated on the actual numbers, so a cohort still cannot be promoted by assertion alone.
     c2 = r["C2_yeast_outcome_GAP"]
-    assert c2["label_source_found"] is False
-    assert c2["candidates"] == []
-    assert c2["status"] == "NOT_OFFLINE_REPRODUCIBLE"
+    if not c2["label_source_found"]:
+        assert c2["candidates"] == []
+        assert c2["status"] == "NOT_OFFLINE_REPRODUCIBLE"
+    else:
+        gc = json.load(open(os.path.join(HERE, "results_gapclosure.json")))
+        assert c2["gap_closed"] is True, "labels committed but coupling never verified"
+        assert gc["yeast_outcome_gap_closed"] is True
+        y = gc["yeast"]
+        assert y["N"] == 4825 and 1000 <= y["n_essential"] <= 1100
+        assert y["vif"] < 1.10                                     # channel still intact
+        assert y["cv_auc_linear"] > y["cv_auc_quadratic"]          # quadratic adds nothing
+        # the published 'anti-predictive 0.47' must remain identified as a non-converged artifact
+        assert y["multivariate_converged"] is False
+        assert y["cv_auc_quadratic"] >= 0.55                       # above chance under a real fit
     assert c2["pass"] is True
 
     # C3 -- REAL but UNDERPOWERED: direction holds, and the power warning must persist.
@@ -70,8 +83,13 @@ def test_cohort_integrity_audit_including_its_gaps():
     # C6 -- the ledger must keep at least one honest gap and both simulations.
     c6 = r["C6_integrity_ledger"]
     assert len(c6["not_offline_reproducible"]) >= 1
+    # B_github_992 is the gap that CANNOT be closed offline -- it must never disappear.
     assert "B_github_992" in c6["not_offline_reproducible"]
-    assert "A_yeast_4825_outcome_coupling" in c6["not_offline_reproducible"]
+    # A_yeast_4825_outcome_coupling may leave this list ONLY when genuinely closed
+    # (labels committed AND the coupling verified by gap_closure.py).
+    if "A_yeast_4825_outcome_coupling" not in c6["not_offline_reproducible"]:
+        assert r["C2_yeast_outcome_GAP"]["gap_closed"] is True, \
+            "yeast outcome coupling left the gap list without a verified closure"
     assert "D_digital_swarm" in c6["simulations"]
     assert "C_knowledge_793" in c6["simulations"]
     assert c6["pass"] is True
