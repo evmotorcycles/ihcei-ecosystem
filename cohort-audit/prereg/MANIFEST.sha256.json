@@ -1,0 +1,9 @@
+{
+  "spec_sha256": "96a33ebf9739dfbb59f9733035e9bb635abe2f1b99d81f5feb3d799b2c98dbd8",
+  "fixture_sha256": {
+    "yeast_channel": "48a42fb35509c7a5210e15baa0e0282f9acff18380ad2af2452955ec5e8e5dcc",
+    "yeast_raw_string": "5993baacdd7cdc116dcc7e4e0542a440e1d38fffe980e6ce3fdd2387f58ab2f9",
+    "github_tauv": "f1feeab9c683c6e73f1b6aa78001286e39f6bdaa5f901fd5d0558175c3d3022f",
+    "github_frozen": "d5b105905cab0460208d337e278d03817c5362279091295006d8a421d20d1564"
+  }
+}

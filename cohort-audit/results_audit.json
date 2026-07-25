@@ -1,0 +1,96 @@
+{
+  "lock_ok": true,
+  "fixture_sha256": {
+    "yeast_channel": "48a42fb35509c7a5210e15baa0e0282f9acff18380ad2af2452955ec5e8e5dcc",
+    "yeast_raw_string": "5993baacdd7cdc116dcc7e4e0542a440e1d38fffe980e6ce3fdd2387f58ab2f9",
+    "github_tauv": "f1feeab9c683c6e73f1b6aa78001286e39f6bdaa5f901fd5d0558175c3d3022f",
+    "github_frozen": "d5b105905cab0460208d337e278d03817c5362279091295006d8a421d20d1564"
+  },
+  "meaning_of_pass": "exit 0 == the audit reproduces INCLUDING its declared gaps; it does NOT mean all cohort claims are supported.",
+  "C1_yeast_channel_REAL": {
+    "N": 4825,
+    "vif": 1.0026,
+    "channel_intact": true,
+    "collinear_control_rejected": true,
+    "raw_string_hash_matches_provenance": true,
+    "n_edges": 70201,
+    "pass": true
+  },
+  "C2_yeast_outcome_GAP": {
+    "searched_for": "committed yeast gene-essentiality / DEG label artifact",
+    "label_source_found": false,
+    "candidates": [],
+    "claim_affected": "linear-vs-quadratic outcome coupling on yeast (reported delta AIC ~ -1805, quadratic AUC ~0.47)",
+    "status": "NOT_OFFLINE_REPRODUCIBLE",
+    "pass": true
+  },
+  "C3_github_tau_v_REAL_underpowered": {
+    "N": 21,
+    "n_failed": 4,
+    "n_survived": 17,
+    "median_tau_v_failed": 121.67,
+    "median_tau_v_survived": 3.99,
+    "auc_tau_v_failed_vs_survived": 0.9559,
+    "prediction": "failed repos have HIGHER tau_v (AUC > 0.5)",
+    "direction_holds": true,
+    "power_warning": "SEVERELY UNDERPOWERED: only 4 failures. Even a positive result is WEAK evidence; no p-value or confidence claim is manufactured from it.",
+    "pass": true
+  },
+  "C4_github_992_GAP": {
+    "claimed_N": 992,
+    "claimed_split": "750 fail / 242 survive",
+    "claimed_verdict": "QUADRATIC DISCONFIRMED (linear AUC ~0.73, quad CV AUC ~0.59, VIF 1.003)",
+    "committed_artifacts": {
+      "repro/tauv_cohort.json": {
+        "rows": 21,
+        "has_survival_label": true
+      },
+      "github-lism/data/github_cohort_frozen.json": {
+        "rows": 28,
+        "has_survival_label": false
+      }
+    },
+    "largest_committed_labelled_cohort": 21,
+    "found_992_row_artifact": false,
+    "status": "NOT_OFFLINE_REPRODUCIBLE",
+    "note": "lism-cohorts/results_meta.json stores only a spec HASH for the N=992 cohort, not the rows. The N=992 result must not be cited as offline-reproducible from this repository.",
+    "pass": true
+  },
+  "C5_swarm_SIMULATION": {
+    "self_declared_simulation": true,
+    "runner_exit": 0,
+    "n_nodes": 500,
+    "max_depth": 39,
+    "r2_linear": 0.9296,
+    "r2_quadratic": 0.9008,
+    "fidelity_decays_with_depth": true,
+    "linear_at_least_as_good": true,
+    "real_world_evidence": false,
+    "note": "A seeded simulation reproducing itself is a CODE-CORRECTNESS check, not empirical support for the law.",
+    "pass": true
+  },
+  "C6_integrity_ledger": {
+    "ledger": {
+      "A_yeast_4825_channel": "REAL_REPRODUCIBLE",
+      "A_yeast_4825_outcome_coupling": "NOT_OFFLINE_REPRODUCIBLE",
+      "B_github_992": "NOT_OFFLINE_REPRODUCIBLE",
+      "B_github_tau_v_21": "REAL_REPRODUCIBLE (underpowered, n_fail=4)",
+      "B_github_frozen_28": "REAL_REPRODUCIBLE (no survival label)",
+      "C_knowledge_793": "SIMULATION (retracted as real-world, PR #111)",
+      "D_digital_swarm": "SIMULATION",
+      "hf_media_19 / biorxiv_40 / pubmed_8": "REAL_REPRODUCIBLE"
+    },
+    "not_offline_reproducible": [
+      "A_yeast_4825_outcome_coupling",
+      "B_github_992"
+    ],
+    "simulations": [
+      "C_knowledge_793",
+      "D_digital_swarm"
+    ],
+    "pass": true
+  },
+  "note": "Yeast channel invariants are backed by committed real STRING v12 data (VIF 1.0026 at N=4825). The yeast OUTCOME coupling and the entire N=992 GitHub cohort are NOT offline-reproducible from this repository. The digital swarm is a seeded simulation. This does not disprove the LISM mathematics; it establishes precisely what this repository can substantiate offline.",
+  "honest_reporting": true,
+  "pass": true
+}
