@@ -1,0 +1,44 @@
+{
+  "config": {
+    "reps": 400,
+    "n": 250,
+    "seed": 1,
+    "json": "methodology_results.json"
+  },
+  "summary": {
+    "NULL": {
+      "naive_correct": 76.0,
+      "firewall_correct": 92.0
+    },
+    "LINEAR": {
+      "naive_correct": 100.0,
+      "firewall_correct": 95.5
+    },
+    "QUADRATIC": {
+      "naive_correct": 0.0,
+      "firewall_correct": 53.2
+    },
+    "TRAP_VIF": {
+      "naive_correct": 0.0,
+      "firewall_correct": 100.0
+    },
+    "TRAP_SEP": {
+      "naive_correct": 0.0,
+      "firewall_correct": 100.0
+    },
+    "false_discovery": {
+      "NULL": {
+        "naive": 24.0,
+        "firewall": 8.0
+      },
+      "TRAP_VIF": {
+        "naive": 100.0,
+        "firewall": 0.0
+      },
+      "TRAP_SEP": {
+        "naive": 35.5,
+        "firewall": 0.0
+      }
+    }
+  }
+}

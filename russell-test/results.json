@@ -61,9 +61,9 @@
       {
         "name": "every control decision is recorded in an intact, auditable chain",
         "pass": true,
-        "detail": "Merkle bf2d1281df87…"
+        "detail": "Merkle ef44dc23582c…"
       }
     ]
   },
-  "generated_at": "2026-07-23T13:16:04.972Z"
+  "generated_at": "2026-07-25T18:19:49.037Z"
 }

@@ -1,0 +1,65 @@
+{
+  "title": "Gap-closure pre-registration: Yeast 4825 outcome coupling, GitHub 992, Digital swarm",
+  "version": "1.0",
+  "date": "2026-07-25",
+  "follows": "cohort-audit PR #112 (two declared gaps, two simulations) and knowledge PR #111 (falsification locked)",
+  "honesty_disclosure": {
+    "type": "CONFIRMATORY reproduction pre-registration, NOT a blind discovery",
+    "statement": "The yeast outcome-coupling values (CV AUC linear ~0.67 / quadratic ~0.61, and the non-converged multivariate artifact at ~0.49) and the PyPI dependency-graph values were OBSERVED EARLIER IN THIS SESSION on 2026-07-10/12 before this spec was written. Declaring them blind would be false. The value of locking them here is that the predicted numbers are fixed BEFORE the reproduction script is written, so the script cannot be tuned to produce them, and any deviation is visible. Bands are stated as intervals, not point-fits."
+  },
+  "gates": {
+    "Y1_labels_join": {
+      "claim": "committed ORF-keyed essentiality labels join to the STRING-derived channel",
+      "predicted": "N_nodes == 4825 AND 1000 <= n_essential <= 1100",
+      "can_fail": "yes - ORF key mismatch, wrong taxon, or truncated label file would break the join"
+    },
+    "Y2_channel_intact": {
+      "claim": "the two fidelity hops remain independent on the rebuilt cohort",
+      "predicted": "VIF(D_enc, D_dec) < 1.10",
+      "can_fail": "yes - a collapsed channel would void the coupling test"
+    },
+    "Y3_quadratic_not_better": {
+      "claim": "the quadratic term does NOT beat the linear term out-of-sample",
+      "predicted": "cv_auc_linear > cv_auc_quadratic, with cv_auc_linear in [0.60, 0.72]",
+      "can_fail": "yes - the quadratic could win, which would overturn the linear law on this cohort"
+    },
+    "Y4_published_047_is_an_artifact": {
+      "claim": "the published 'quadratic AUC ~0.47, anti-predictive' does NOT reproduce under a converged fit; it was a separation-degenerate multivariate artifact",
+      "predicted": "single-term quadratic CV AUC >= 0.55 (i.e. ABOVE chance, contradicting 0.47) AND the multivariate U+D+D^2 logit reports converged == False",
+      "can_fail": "yes - if the converged fit also returns ~0.47, the published number stands and this prediction is wrong"
+    },
+    "G1_992_cannot_be_closed_offline": {
+      "claim": "the N=992 cohort cannot be reconstructed from committed data or refetched within rate limits",
+      "predicted": "no committed 992-row labelled artifact exists; the gap REMAINS OPEN",
+      "can_fail": "yes - if a 992-row labelled artifact is found committed, this prediction is wrong and the gap closes",
+      "note": "refetching 992 repos needs ~2 API calls each at 60 req/hr unauthenticated (~33 h); not attempted"
+    },
+    "G2_expanded_labelled_cohort": {
+      "claim": "unioning every committed real tau_v dataset yields a larger labelled cohort than the 21 rows the audit found",
+      "predicted": "N_union >= 35 AND n_failed >= 8 AND median tau_v(failed) > median tau_v(survived)",
+      "can_fail": "yes - the direction could reverse, or the union could stay at 21"
+    },
+    "S1_swarm_is_simulation": {
+      "claim": "the digital swarm remains a seeded simulation, not evidence",
+      "predicted": "source self-declares simulation; status stays SIMULATION",
+      "can_fail": "NO - this is a provenance check, not a test. Recorded as a label, never counted as support."
+    },
+    "S2_swarm_real_data_analogue": {
+      "claim": "the swarm's substantive claim (linear >= quadratic on a dependency network) is testable on a REAL dependency graph",
+      "predicted": "on the 434-package PyPI graph, quadratic does NOT improve out-of-sample CV AUC over U+D (delta <= +0.01)",
+      "can_fail": "yes - the quadratic could improve, refuting the swarm's claim on real data"
+    }
+  },
+  "pre_committed_consequences": {
+    "if_Y3_fails": "the linear law is overturned on the yeast cohort and must be retracted for this substrate",
+    "if_Y4_fails": "the published AUC 0.47 stands and my artifact diagnosis is withdrawn",
+    "if_G2_direction_reverses": "the tau_v law is reported as unsupported on the expanded committed cohort",
+    "if_S2_fails": "the swarm's linear claim is refuted on real data and must not be cited"
+  },
+  "scope_limits_declared_in_advance": [
+    "Closing Y1-Y4 makes the yeast OUTCOME COUPLING offline-reproducible; it does NOT make the GitHub 992 cohort reproducible.",
+    "G2 raises power but does NOT reach N=992; the 992 claim stays uncitable as offline-reproducible.",
+    "S1 is a label, not evidence. Only S2 carries falsifiable weight for the swarm's claim.",
+    "The yeast essentiality labels are wet-lab DEG2001 data mapped to systematic ORFs via BioGRID; essentiality is never derived from topology (non-circular)."
+  ]
+}

@@ -1,0 +1,312 @@
+<title>The Cohort Ledger — what this repository can prove</title>
+<style>
+  :root{
+    --paper:#f2f3f0; --card:#ffffff; --sunk:#e9ebe6; --rule:#d5d9d2;
+    --ink:#161a17; --mid:#4e564f; --faint:#868f88;
+    --stamp:#2d4a7c;
+    --real:#2f7d52; --gap:#b4453a; --sim:#6b6486;
+    --sans:"Helvetica Neue",Arial,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,"SF Mono","JetBrains Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#101311; --card:#171b18; --sunk:#131714; --rule:#282f29;
+      --ink:#e8ede9; --mid:#9aa69d; --faint:#69756c;
+      --stamp:#7ea3d8; --real:#54c084; --gap:#e0736a; --sim:#a79ec4;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#101311; --card:#171b18; --sunk:#131714; --rule:#282f29;
+    --ink:#e8ede9; --mid:#9aa69d; --faint:#69756c;
+    --stamp:#7ea3d8; --real:#54c084; --gap:#e0736a; --sim:#a79ec4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  a{color:var(--stamp)}
+  /* masthead */
+  header{padding:60px 0 30px;border-bottom:2px solid var(--ink)}
+  .kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--stamp);margin-bottom:18px}
+  h1{font-size:clamp(30px,5.6vw,54px);line-height:1.02;letter-spacing:-.025em;font-weight:800;
+    margin:0;text-wrap:balance;max-width:19ch}
+  .standfirst{color:var(--mid);font-size:17.5px;margin-top:16px;max-width:62ch}
+  .counts{display:flex;flex-wrap:wrap;gap:26px;margin-top:26px;font-family:var(--mono)}
+  .counts div{display:flex;flex-direction:column;gap:2px}
+  .counts b{font-size:26px;font-weight:700;letter-spacing:-.02em}
+  .counts span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  /* sections */
+  section{padding:38px 0;border-bottom:1px solid var(--rule)}
+  h2{font-size:13px;font-family:var(--mono);letter-spacing:.15em;text-transform:uppercase;
+    color:var(--faint);margin:0 0 20px;font-weight:600}
+  h3{font-size:19px;margin:0 0 8px;letter-spacing:-.01em;font-weight:700}
+  p{margin:0 0 12px;max-width:66ch;color:var(--mid)}
+  p.tight{margin-bottom:0}
+  strong{color:var(--ink)}
+  /* the ledger */
+  .ledger{width:100%;border-collapse:collapse;font-size:14.5px}
+  .ledger th{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--faint);text-align:left;padding:0 12px 9px;font-weight:600;border-bottom:1px solid var(--rule)}
+  .ledger td{padding:13px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+  .ledger tr td:first-child{border-left:3px solid transparent;font-weight:650;color:var(--ink)}
+  tr.r-real td:first-child{border-left-color:var(--real)}
+  tr.r-gap  td:first-child{border-left-color:var(--gap)}
+  tr.r-sim  td:first-child{border-left-color:var(--sim)}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:13.5px;color:var(--mid)}
+  .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;
+    letter-spacing:.07em;padding:3px 9px;border-radius:3px;white-space:nowrap}
+  .c-real{color:var(--real);background:color-mix(in srgb,var(--real) 15%,transparent)}
+  .c-gap{color:var(--gap);background:color-mix(in srgb,var(--gap) 15%,transparent)}
+  .c-sim{color:var(--sim);background:color-mix(in srgb,var(--sim) 18%,transparent)}
+  /* correction band — the loudest thing on the page, deliberately */
+  .correction{border:1px solid var(--gap);border-left:5px solid var(--gap);border-radius:4px;
+    background:var(--card);padding:20px 22px}
+  .correction .lab{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--gap);font-weight:700;margin-bottom:10px}
+  .correction h3{color:var(--ink)}
+  /* gate strip */
+  .gates{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1px;
+    background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden;margin-top:6px}
+  .g{background:var(--card);padding:14px 16px}
+  .g .gid{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--stamp);font-weight:700}
+  .g .gt{font-size:13.5px;margin-top:5px;color:var(--ink);font-weight:600}
+  .g .gv{font-family:var(--mono);font-size:12.5px;color:var(--mid);margin-top:5px;font-variant-numeric:tabular-nums}
+  /* two-col compare */
+  .cmp{width:100%;border-collapse:collapse;font-size:14px;margin-top:4px}
+  .cmp th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--faint);text-align:right;padding:0 10px 8px;font-weight:600;border-bottom:1px solid var(--rule)}
+  .cmp th:first-child{text-align:left}
+  .cmp td{padding:10px;border-bottom:1px solid var(--rule);text-align:right;
+    font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--mid)}
+  .cmp td:first-child{text-align:left;font-family:var(--sans);color:var(--ink)}
+  .win{color:var(--ink);font-weight:700}
+  /* callout */
+  .quote{border-left:3px solid var(--stamp);padding:14px 0 14px 20px;margin:6px 0 0}
+  .quote p{color:var(--ink);font-size:16px;max-width:64ch;margin:0}
+  /* code */
+  pre{background:var(--sunk);border:1px solid var(--rule);border-radius:4px;padding:16px 18px;
+    overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.75;color:var(--ink);margin:0}
+  pre .c{color:var(--faint)}
+  code{font-family:var(--mono);font-size:12.5px;background:var(--sunk);border:1px solid var(--rule);
+    border-radius:3px;padding:1px 5px}
+  .locks{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
+  .lk{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;font-family:var(--mono);font-size:11.5px}
+  .lk b{color:var(--faint);font-weight:600;letter-spacing:.08em;text-transform:uppercase;flex:0 0 auto}
+  .lk span{color:var(--mid);word-break:break-all}
+  footer{padding:30px 0 60px;color:var(--faint);font-family:var(--mono);font-size:11.5px}
+  .stack{display:flex;flex-direction:column;gap:20px}
+  @media (max-width:640px){ .ledger thead{display:none}
+    .ledger td{display:block;border:none;padding:5px 12px}
+    .ledger tr{display:block;border-bottom:1px solid var(--rule);padding:10px 0}
+    .ledger tr td:first-child{border-left:3px solid var(--rule)} }
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Novora Research Initiative · cohort integrity audit</div>
+    <h1>What this repository can actually prove.</h1>
+    <p class="standfirst">A reproducibility claim can only rest on what is committed. So we asked, cohort
+      by cohort: is the underlying data here, or only the conclusion? One gap closed, one still open, two
+      “cohorts” that are simulations — and one published number that turned out to be an artifact.</p>
+    <div class="counts">
+      <div><b style="color:var(--real)">3</b><span>backed by real data</span></div>
+      <div><b style="color:var(--gap)">1</b><span>gap still open</span></div>
+      <div><b style="color:var(--sim)">2</b><span>simulations</span></div>
+      <div><b>57/57</b><span>suites reproduce</span></div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>The ledger</h2>
+    <div style="overflow-x:auto">
+      <table class="ledger">
+        <thead><tr><th>Cohort claim</th><th>Status</th><th>The number</th></tr></thead>
+        <tbody>
+          <tr class="r-real"><td>Yeast 4825 — channel invariants</td><td><span class="chip c-real">REAL</span></td>
+            <td class="num">STRING v12 · 4,825 proteins / 70,201 edges · VIF = 1.0026</td></tr>
+          <tr class="r-real"><td>Yeast 4825 — outcome coupling</td><td><span class="chip c-real">REAL · GAP CLOSED</span></td>
+            <td class="num">1,055 essential ORFs · CV AUC linear 0.666 &gt; quadratic 0.591</td></tr>
+          <tr class="r-gap"><td>GitHub 992</td><td><span class="chip c-gap">GAP</span></td>
+            <td class="num">rows never committed · largest labelled artifact = 22 rows</td></tr>
+          <tr class="r-real"><td>GitHub τ_v union</td><td><span class="chip c-real">REAL · underpowered</span></td>
+            <td class="num">N = 33 (9 failed) · median τ_v 45.4 d vs 4.3 d</td></tr>
+          <tr class="r-sim"><td>Knowledge 793</td><td><span class="chip c-sim">SIMULATION · retracted</span></td>
+            <td class="num">fixture declares synthetic: true, seed 20260720</td></tr>
+          <tr class="r-sim"><td>Digital swarm</td><td><span class="chip c-sim">SIMULATION</span></td>
+            <td class="num">source self-declares “simulates the swarm” · 500 nodes, fixed seed</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack">
+    <div>
+      <h2>Yeast 4825 — the gap is closed</h2>
+      <h3>The essentiality labels were the missing piece. They are now committed.</h3>
+      <p>Built from raw <strong>DEG2001 (S. cerevisiae) → systematic ORFs via BioGRID</strong>, joined to the
+        STRING v12 channel. Essentiality is wet-lab data and is <strong>never derived from topology</strong>,
+        so the outcome is non-circular. Four gates, each of which could have failed:</p>
+      <div class="correction" style="border-color:var(--stamp);margin-top:6px">
+        <div class="lab" style="color:var(--stamp)">The first attempt at this closure was false — CI caught it</div>
+        <p class="tight">The label files sat on the author’s disk but were listed in <code>.gitignore</code>, so
+          every <em>local</em> run passed while a clean checkout had no data at all. CI failed with
+          <code>yeast_outcome_gap_closed == False</code> and the audit’s original finding —
+          <em>“no essentiality labels are committed anywhere”</em> — proved <strong>correct</strong>. The gap is
+          closed only now, because the data is genuinely in the repository rather than because a script said so.</p>
+      </div>
+    </div>
+    <div class="gates">
+      <div class="g"><div class="gid">Y1 · labels join</div><div class="gt">Join succeeds</div>
+        <div class="gv">N = 4,825 · essential = 1,055</div></div>
+      <div class="g"><div class="gid">Y2 · channel intact</div><div class="gt">Hops independent</div>
+        <div class="gv">VIF = 1.0026 (r = −0.0513)</div></div>
+      <div class="g"><div class="gid">Y3 · curvature</div><div class="gt">Quadratic adds nothing</div>
+        <div class="gv">CV AUC 0.6663 vs 0.5911</div></div>
+      <div class="g"><div class="gid">Y4 · the 0.47</div><div class="gt">Identified as an artifact</div>
+        <div class="gv">converged = False · 0.4275</div></div>
+    </div>
+    <div class="correction">
+      <div class="lab">Correction — a published figure retired</div>
+      <h3>“Quadratic anti-predictive, AUC ≈ 0.47” is a fitting artifact, not a finding.</h3>
+      <p>Under a <strong>converged</strong> single-term fit the quadratic scores <strong>CV AUC 0.5911</strong> —
+        above chance, not anti-predictive. The only way to reproduce a sub-chance value is the
+        <strong>non-converged</strong> multivariate <code>U + D + D²</code> fit, which returns
+        <strong>in-sample 0.4275</strong> — essentially the published 0.47.</p>
+      <p class="tight">The qualitative conclusion LISM relies on — <em>adding D² does not improve prediction</em> —
+        <strong>survives</strong> (0.591 &lt; 0.666). The specific number does not, and should stop being quoted
+        as evidence of anti-predictive behaviour.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack">
+    <div>
+      <h2>GitHub 992 — still open, and a prediction I missed</h2>
+      <p>No 992-row labelled artifact is committed anywhere; the largest labelled JSON holds
+        <strong>22 rows</strong>. Refetching needs ~2 API calls per repository at 60 requests/hour
+        unauthenticated — roughly <strong>33 hours</strong> — so it was not attempted.</p>
+      <div class="quote"><p><strong>The N = 992 result (750 fail / 242 survive, AUC ≈ 0.73) must not be cited
+        as offline-reproducible from this repository.</strong></p></div>
+      <p style="margin-top:14px">This does not mean the original analysis was wrong — it may have been run
+        correctly against data never committed here. It means this repository cannot substantiate it, which is
+        the only thing a reproducibility claim can rest on.</p>
+    </div>
+    <div class="correction" style="border-color:var(--gap)">
+      <div class="lab">Missed prediction — recorded, not rescued</div>
+      <h3>I pre-registered N ≥ 35 for the union cohort. It reached 33.</h3>
+      <p>The direction held strongly — median τ_v <strong>45.4 d</strong> failed vs <strong>4.3 d</strong>
+        survived — and failures rose from 4 to <strong>9</strong>, materially improving power. But the number
+        I committed to was missed.</p>
+      <p class="tight"><strong>The threshold was not moved from 35 to 30.</strong> The test asserts
+        <code>union_N == 33</code> and that this gate stays in <code>missed_predictions</code>, so rescuing it
+        later breaks CI.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack">
+    <div>
+      <h2>Knowledge 793 — retracted as real, and the thesis falsified</h2>
+      <p>Two separate things, which must not be conflated. <strong>The retraction:</strong> the committed
+        N = 793 fixture is <strong>synthetic</strong> (<code>synthetic: true, seed: 20260720</code>). Any
+        narrative citing it as a real Stack Exchange measurement is not supported here. It serves only as a
+        labelled estimator control — and it does that job, recovering independent hops at VIF 1.0032.</p>
+      <p><strong>The falsification (K1):</strong> the pre-registered claim that fidelity-adjusted capacity
+        would out-predict raw status was tested on four <em>real</em> substrates and failed badly.</p>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="cmp">
+        <thead><tr><th>Real substrate</th><th>ρ status alone</th><th>ρ fidelity-adjusted</th></tr></thead>
+        <tbody>
+          <tr><td>Hugging Face · likes → downloads (N=19)</td><td class="win">+0.4035</td><td>+0.0123</td></tr>
+          <tr><td>GitHub · stars → forks (N=28)</td><td class="win">+0.8763</td><td>+0.5140</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <p><strong>Diagnosis, not a rescue.</strong> The only available yield proxies — downloads and forks —
+        are themselves popularity measures. Popularity predicts popularity. The fidelity legs measure
+        <em>trustworthiness</em>, a different axis. The thesis conflated reach with quality.</p>
+      <p><strong>What survived is sharper:</strong> capacity does not buy fidelity (K3: PubMed ρ = +0.19,
+        bioRxiv ρ = −0.09), and prestige ordering ≠ verified ordering (K4: all five of GitHub’s most-starred
+        repos sit below the fidelity floor). <strong>K2 partially failed and was not papered over</strong> —
+        GitHub VIF <strong>1.1741</strong> exceeds the pre-registered 1.10 gate. Threshold not moved.</p>
+      <div class="quote"><p>The corrected conclusion: it is not that fidelity predicts reach — it plainly
+        doesn’t. It is that <strong>reach and trustworthiness are separate, measurably different orderings</strong>,
+        which is exactly why an evaluator must measure fidelity separately instead of inferring it from popularity.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack">
+    <div>
+      <h2>Digital swarm — a label, plus a test that can fail</h2>
+      <p>The swarm source self-declares <em>“simulates the swarm”</em> (500 nodes, fixed seed). A seeded
+        simulation reproducing itself is a <strong>code-correctness check, not evidence</strong>. In the test
+        suite this gate is explicitly marked <code>falsifiable: false</code>, and an assertion prevents it from
+        ever being counted as support.</p>
+      <p>So the swarm’s substantive claim — linear ≥ quadratic on a dependency network — was tested on
+        something real instead: a <strong>434-package PyPI dependency graph</strong>.</p>
+    </div>
+    <div class="gates">
+      <div class="g"><div class="gid">S1 · provenance</div><div class="gt">Simulation, zero evidence</div>
+        <div class="gv">falsifiable: false</div></div>
+      <div class="g"><div class="gid">S2 · real graph</div><div class="gt">Quadratic adds nothing</div>
+        <div class="gv">CV AUC 0.590 vs 0.590 (Δ +0.000)</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The precise, defensible statement</h2>
+    <p>Replacing “robustly validated across Yeast N=4,825 and repository-lifecycle N=992”:</p>
+    <div class="quote">
+      <p>The linear form is supported on the yeast interactome (N = 4,825, channel VIF 1.0026, CV AUC linear
+        0.666 &gt; quadratic 0.591) and on a real 434-package dependency graph (quadratic Δ = 0.000), with a
+        directionally consistent but underpowered τ_v cohort (N = 33). The N = 992 repository cohort is
+        <strong>not</strong> offline-reproducible from this repository and is not cited as support.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Reproduce it yourself — offline, $0, no API keys</h2>
+<pre><span class="c"># the ledger: which claims are backed, which are gaps, which are simulations</span>
+python3 cohort-audit/cohort_audit.py
+
+<span class="c"># yeast CLOSED · GitHub 992 open · the G2 miss recorded</span>
+python3 cohort-audit/gap_closure.py
+
+<span class="c"># the falsification, on real GitHub / Hugging Face / bioRxiv / PubMed</span>
+python3 knowledge-breakthroughs/knowledge.py
+
+<span class="c"># VIF recomputed from raw STRING v12, no network</span>
+python3 repro/reproduce_yeast.py
+
+bash reproduce_all.sh            <span class="c"># 57/57 ALL GREEN</span></pre>
+    <p style="margin-top:16px"><strong><code>exit 0</code> means “reproduces as pre-registered, including gaps
+      left open, nulls, and predictions missed.”</strong> It does not mean every claim held. Several did not —
+      and the tests assert those failures, so they cannot later be flipped into wins.</p>
+    <div class="locks">
+      <div class="lk"><b>Gap-closure spec</b><span>f8a94c655dc0ec5c9add082114dd7048a5d148827fd6e0cb33226461c3dbd03a</span></div>
+      <div class="lk"><b>Provenance merkle</b><span>478547943d4403fa005b15c9451e228697925e054e370ebd5ce0e5959b7a567a</span></div>
+    </div>
+    <p style="margin-top:14px" class="tight">Specs were locked <strong>before</strong> the runners were written,
+      so a runner cannot be tuned to produce its own predictions.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Novora Research Initiative · methodology, not speed — finding the gap is the result.</div>
+</footer>
