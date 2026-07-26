@@ -1,0 +1,131 @@
+{
+  "spec_sha256_canonical": "ed71c3fc7aeae48df66946d49a96e7b0deaaa9cef19da6aa943ff8fd11dd781e",
+  "csv_sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+  "N": 992,
+  "defaults": 750,
+  "imputed_rows": 126,
+  "mesh_capital": -285750,
+  "conventional_capital": -133040,
+  "mesh_staged": 186,
+  "mesh_exited": 204,
+  "mesh_abstained": 126,
+  "borrower_stdev_mesh": 34.36,
+  "borrower_stdev_conventional": 449.87,
+  "ablations": [
+    {
+      "component": "admission",
+      "capital_without": -74655,
+      "delta": 211095,
+      "earns_its_place": false
+    },
+    {
+      "component": "structure",
+      "capital_without": -335950,
+      "delta": -50200,
+      "earns_its_place": true
+    },
+    {
+      "component": "reserve",
+      "capital_without": -285750,
+      "delta": 0,
+      "earns_its_place": false
+    },
+    {
+      "component": "telemetry",
+      "capital_without": -361440,
+      "delta": -75690,
+      "earns_its_place": true
+    },
+    {
+      "component": "abstention",
+      "capital_without": -285750,
+      "delta": 0,
+      "earns_its_place": false
+    },
+    {
+      "component": "staged_response",
+      "capital_without": -318600,
+      "delta": -32850,
+      "earns_its_place": true
+    },
+    {
+      "component": "audit_ledger",
+      "capital_without": -285750.0,
+      "delta": 0.0,
+      "earns_its_place": false,
+      "note": "no cash-flow effect by construction \u2014 a governance control, not an economic one"
+    }
+  ],
+  "dead_weight": [
+    "admission",
+    "reserve",
+    "abstention",
+    "audit_ledger"
+  ],
+  "abstain_capital": -285750,
+  "act_on_imputed_capital": -285750,
+  "binary_exit_capital": -318600,
+  "depositor_shortfall_full_reserve": 0.0,
+  "depositor_shortfall_levered": 186550,
+  "ledger_entries": 992,
+  "ledger_head": "204425a885048e83b0da40ba2e33fadb33fa8d0d375e9550e2aa1fa7d8b08859",
+  "posthoc_NOT_GATES": {
+    "imputed_tau_v_distinct_values": [
+      30.0
+    ],
+    "imputed_rows_able_to_trigger_stage1": 0,
+    "mesh_capital_per_contract": -288.05,
+    "conventional_capital_per_contract": -268.23,
+    "conventional_book_size": 496,
+    "conventional_default_rate": 0.5121
+  },
+  "gates": [
+    {
+      "gate": "NP1_the_mesh_beats_the_conventional_baseline",
+      "pass": false,
+      "detail": "mesh -285750  vs  conventional -133040  (delta -152710). The conventional book screens on prestige, runs at 5x leverage and carries no telemetry.",
+      "weight": "full"
+    },
+    {
+      "gate": "NP2_every_component_earns_its_place",
+      "pass": false,
+      "detail": "3 of 7 components earn their place. DEAD WEIGHT: ['admission', 'reserve', 'abstention', 'audit_ledger']",
+      "weight": "full"
+    },
+    {
+      "gate": "NP3_abstention_on_imputed_telemetry_pays",
+      "pass": false,
+      "detail": "abstain on 126 imputed rows: -285750   vs   act on them as if measured: -285750 (delta +0)",
+      "weight": "full"
+    },
+    {
+      "gate": "NP4_staged_response_beats_a_binary_exit",
+      "pass": true,
+      "detail": "staged (hold/halve/exit): -285750   vs   binary exit at 60d only: -318600 (delta +32850); the middle stage charged a 10% cost on 186 reductions",
+      "weight": "full"
+    },
+    {
+      "gate": "NP5_no_component_contribution_is_claimed_without_its_ablation",
+      "pass": true,
+      "detail": "7/7 components have a measured ablation arm",
+      "weight": "excluded"
+    },
+    {
+      "gate": "NP6_full_reserve_eliminates_depositor_shortfall",
+      "pass": true,
+      "detail": "full reserve shortfall 0 (definitional); the same book at 5x leverage shows a depositor shortfall of 186550",
+      "weight": "excluded"
+    },
+    {
+      "gate": "NP7_the_audit_ledger_is_tamper_evident",
+      "pass": true,
+      "detail": "chain of 992 decisions verifies (204425a885048e83...); mutating one entry breaks it: True",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "NP1_the_mesh_beats_the_conventional_baseline",
+    "NP2_every_component_earns_its_place",
+    "NP3_abstention_on_imputed_telemetry_pays"
+  ]
+}
