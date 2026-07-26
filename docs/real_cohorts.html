@@ -1,4 +1,4 @@
-<title>LISM — the two simulations are gone</title>
+<title>LISM — 992 recovered, and the bank tested until it broke</title>
 <style>
   :root{
     --paper:#F1F3F2; --ink:#121A1F; --ink-2:#3A464C; --muted:#727E83;
@@ -145,16 +145,17 @@
 <div class="wrap">
 
 <header>
-  <p class="eyebrow">Pre-registration 4e83893b · reproduced 61/61 · offline</p>
-  <h1>The two simulations are gone. <em>Here is what the real data said.</em></h1>
-  <p class="standfirst">Both cohorts the audit had called <em>simulation</em> now have a real,
-  committed substitute: 540 live PyPI packages. The locked gates scored five of eight —
-  and the three misses are the part worth reading.</p>
+  <p class="eyebrow">Pre-registrations 4e83893b · 00d5d277 · reproduced 63/63 · offline</p>
+  <h1>The lost cohort came back. <em>Then it broke the bank we built on it.</em></h1>
+  <p class="standfirst">N=992 was recovered and verified by recomputation from its own rows.
+  Two simulated cohorts were replaced with a real 540-package PyPI graph. And the
+  prescriptive banking design — the one meant to survive the earlier failures — failed
+  worse, for a reason the data now names exactly.</p>
   <div class="scoreline">
-    <span class="tag">gates <b>5/8</b></span>
-    <span class="tag hot">knowledge thesis <b>falsified ×2</b></span>
-    <span class="tag hot">banking <b>2/4 → 1/4</b></span>
-    <span class="tag">992 <b>still open</b></span>
+    <span class="tag">992 <b>recovered · verified 7/7</b></span>
+    <span class="tag">PyPI gates <b>5/8</b></span>
+    <span class="tag hot">bank on N=992 <b>3/5</b></span>
+    <span class="tag hot">the floor <b>anti-selects</b></span>
   </div>
 </header>
 
@@ -338,10 +339,30 @@ R² quadratic  (U·D²) = 0.0099</div>
 </section>
 
 <section>
-  <h2><span class="n">Refused</span>You cannot restore lost data by generating it</h2>
-  <p>A proposal arrived to "restore" the unrecoverable N=992 cohort by generating a
-  deterministic synthetic CSV whose statistics match the published ones, then letting the
-  audit read it and report the gap <em>closed</em>.</p>
+  <h2><span class="n">Recovered</span>The 992 cohort came back — and was made to prove it</h2>
+  <p>The artifact was supplied from an off-repository copy of the expired CI upload. A file
+  arriving with the right name proves nothing, so the closure rests entirely on
+  <strong>recomputation from the 992 rows</strong>, using the repository's own pre-registered
+  estimator, compared against the CI log independently of the bundled summary.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Check</th><th>Recomputed from rows</th><th>CI log</th></tr></thead>
+      <tbody>
+        <tr><td>shape</td><td class="num">992 · 750 failed · 242 performing</td><td class="num">identical</td></tr>
+        <tr><td>channel</td><td class="num">r 0.1412 · VIF 1.0203</td><td class="num">+0.141 · 1.02</td></tr>
+        <tr><td>primary</td><td class="num">dAIC −3.483</td><td class="num">−3.48</td></tr>
+        <tr><td>third law</td><td class="num">τ 50.61 d / 19.76 d</td><td class="num">identical</td></tr>
+        <tr><td>verdict</td><td class="num">QUADRATIC_DISCONFIRMED</td><td class="num">identical</td></tr>
+      </tbody>
+      <caption>7/7. The spec the artifact names re-hashes live to cac34f44 — the same
+      pre-registration committed here. Closed by verification, not by assertion.</caption>
+    </table>
+  </div>
+  <p class="reading"><strong>The earlier refusal was vindicated.</strong> A proposal had
+  arrived to "restore" the cohort by generating a synthetic CSV matching the published
+  statistics. The real dAIC is <strong>−3.483</strong>; that proposal reported
+  <strong>−3.16</strong>. Had it been committed, this repository would now hold a fabricated
+  cohort contradicting the genuine one.</p>
   <div class="refusal">
     <ol>
       <li><strong>A file engineered to reproduce a target statistic is curve-fitting, not
@@ -354,11 +375,110 @@ R² quadratic  (U·D²) = 0.0099</div>
       <code>QUADRATIC_DISCONFIRMED</code> verdict it claimed to confirm.</li>
     </ol>
   </div>
-  <p>The 992 rows were computed, uploaded as a 59,283-byte artifact, then discarded because
-  <code>govphys_quadratic_results.csv</code> is line 7 of <code>.gitignore</code>. The run
-  now 404s and the artifact has expired. <strong>They are unrecoverable; the gap stays
-  open.</strong> The guard now fails loudly if any 992-row file appears while that gap is
-  still declared.</p>
+  <p>The rows were originally lost because <code>govphys_quadratic_results.csv</code> is line 7
+  of <code>.gitignore</code> — computed, uploaded, discarded. That bare filename
+  <em>stays</em> ignored, since it was the root cause; the recovered copy lives under
+  <code>data/github/</code> and is explicitly un-ignored. The guard now requires that any
+  committed 992-row cohort be <em>the exact file that passed recomputation</em>, by sha256,
+  so generated data can never close a gap here.</p>
+</section>
+
+<section>
+  <h2><span class="n">The bank · prereg 00d5d277 · N=992</span>Designed prescriptively, tested until it broke</h2>
+  <p>The N=44 failure prompted a reframe: raw capacity carries <strong>momentum</strong> in an
+  unguided environment, so a <em>descriptive</em> survival contest rewards status over protocol
+  work. The answer proposed was a <em>prescriptive</em> design — impose a fidelity floor
+  <code>D ≥ D_min</code>, hold full reserves, deploy equity rather than debt.</p>
+  <div class="refusal">
+    <p><strong>That reframe is coherent — and one step from being unfalsifiable.</strong>
+    "The test failed, which proves the environment is broken, which validates our design"
+    immunises a theory against all future evidence. The pre-registration names that hazard in
+    its own text and refuses it, by converting the claim into a prediction that can come out
+    wrong:</p>
+    <p class="reading"><strong>P1.</strong> If capacity momentum is what <em>masks</em>
+    fidelity, then within strata of similar capacity the fidelity signal must reappear. If it
+    doesn't, the masking explanation is simply false.</p>
+  </div>
+
+  <div class="gates">
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">P1 — fidelity survives stratification</span>
+        <span class="verdict">Failed</span></div>
+        <p class="claim">The make-or-break gate. It failed — but read <em>which</em> clause.</p>
+        <div class="nums">weighted within-stratum AUC = 0.7487   (threshold 0.55)  ✓ cleared
+pooled, unstratified AUC      = 0.7462   → stratifying did NOT destroy the signal
+usable strata                 = 2 of 5   (needed 3)                ✗ FAILED HERE</div>
+        <p class="reading">Three of the five star strata are <strong>100% default</strong>, so
+        AUC is undefined there — unforeseeable at lock time. In the two strata where
+        discrimination is measurable, τ_v scores 0.73 and 0.77. The threshold was
+        <strong>not</strong> moved; the gate is recorded as failed with the diagnosis beside it.</p>
+      </div>
+    </div>
+
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">P3 — a better tail, not a better mean</span>
+        <span class="verdict">Failed badly</span></div>
+        <div class="nums">conventional book (top stars)   mean 46.4%   95th pct 50.3%
+sovereign book (floor + low τ_v) mean 87.5%   95th pct 90.1%</div>
+        <p class="reading">Not marginally worse — nearly twice the default rate. The earlier
+        design predicted a lower <em>mean</em> and lost that at N=44; this gate tested the
+        <em>downside</em> instead, and lost that too.</p>
+      </div>
+    </div>
+
+    <div class="gate p">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">P2 — the floor binds · P6 — evaluation is decoupled</span>
+        <span class="verdict">Held</span></div>
+        <div class="nums">floor excludes 76.8% of top-status nodes    spearman(stars, D) = −0.4702</div>
+      </div>
+    </div>
+
+    <div class="gate n">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">P4 — inflated capacity predicts collapse</span>
+        <span class="verdict">Passed on noise</span></div>
+        <div class="nums">high-status, degraded fidelity  2.6%  (n=152)
+high-status, sound fidelity     2.2%  (n=46)     gap = +0.5 points</div>
+        <p class="reading">It met its gate, and that is recorded. But a 0.5-point margin with
+        46 nodes in one arm is not support. A test asserts the margin stays under 2 points
+        <strong>so it can never be cited as a result</strong>. P5, the full-reserve invariant,
+        holds by construction and is marked <code>falsifiable: false</code> — excluded from the
+        score entirely.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Why it failed — the mechanism, which is the actual finding</h3>
+  <p>The fidelity floor <strong>anti-selects</strong>. Splitting the cohort on it:</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Population</th><th>Median stars</th><th>Default rate</th></tr></thead>
+      <tbody>
+        <tr><td>clears the floor (<code>D ≥ D_min</code>)</td><td class="num">935</td><td class="num worse">89.9%</td></tr>
+        <tr><td>below the floor (<code>D &lt; D_min</code>)</td><td class="num">16,807</td><td class="num">54.0%</td></tr>
+      </tbody>
+      <caption>Capacity overwhelmingly drives survival here — the top star quintile defaults at
+      2.5% against a 75.6% base rate. So the admission rule systematically buys the failing half
+      of the population. The book's tail is worse <em>because the floor works exactly as
+      specified</em>.</caption>
+    </table>
+  </div>
+
+  <h3>The deepest problem this exposed</h3>
+  <p>On the real PyPI graph, ρ(capacity, D) = <strong>+0.5695</strong>. On the real GitHub
+  cohort, <strong>−0.4702</strong>. Two real, committed substrates <strong>disagree on the
+  sign</strong>. <code>D</code> is therefore not yet measuring a stable construct, and every
+  claim resting on "fidelity" inherits that instability.</p>
+  <p class="reading">This is a <strong>measurement</strong> problem, to be fixed by re-deriving
+  <code>D</code> — never by reinterpreting a gate. A test keeps the disagreement visible so it
+  cannot quietly drop out of the record.</p>
 </section>
 
 <section>
@@ -369,7 +489,8 @@ R² quadratic  (U·D²) = 0.0099</div>
       <ul>
         <li>Yeast interactome, N=4,825 — channel VIF 1.0026; CV AUC linear 0.666 &gt; quadratic 0.591</li>
         <li>Two-hop fidelity <strong>decays with dependency depth</strong> (PyPI, N=540)</li>
-        <li>τ_v as a descriptive signal — failed repos close issues at 44.2 d vs 4.8 d median</li>
+        <li>τ_v as a descriptive signal — failed repos close issues at 50.6 d vs 19.8 d (N=992)</li>
+        <li>GitHub 992 — <strong>recovered and verified</strong> by recomputation, 7/7</li>
       </ul>
     </div>
     <div class="col lost">
@@ -377,9 +498,11 @@ R² quadratic  (U·D²) = 0.0099</div>
       <ul>
         <li>Knowledge exchange — twice, on independent real substrates</li>
         <li>"Status is inert" — refuted, ρ(U,D) = +0.57</li>
-        <li>Decoupled underwriting as a portfolio advantage — did not replicate</li>
+        <li>Decoupled underwriting as a portfolio advantage — did not replicate (N=44)</li>
+        <li>The <strong>prescriptive</strong> fidelity floor — fails worse (N=992): it
+        anti-selects, buying the failing population</li>
         <li><code>E=U·D</code> vs <code>E=U·D²</code> on reuse — <em>neither</em> works</li>
-        <li>GitHub 992 — unrecoverable</li>
+        <li><code>D</code> flips sign against capacity between two real substrates — unresolved</li>
       </ul>
     </div>
   </div>
@@ -389,9 +512,9 @@ R² quadratic  (U·D²) = 0.0099</div>
 </section>
 
 <footer>
-  bash reproduce_all.sh → 61/61 · exit 0 means "reproduces including its gaps, nulls and
+  bash reproduce_all.sh → 63/63 · exit 0 means "reproduces including its gaps, nulls and
   missed predictions", never "every claim held" · provenance merkle root 93fb0abf ·
-  pre-registration 4e83893b committed before the data it governs
+  pre-registrations 4e83893b and 00d5d277 committed before the data and gates they govern
 </footer>
 
 </div>

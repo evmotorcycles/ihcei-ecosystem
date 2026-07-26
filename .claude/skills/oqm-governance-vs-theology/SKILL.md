@@ -126,15 +126,43 @@ Cite these accurately if the user asks what OQM/LISM has actually shown:
   was *missed* (R² 0.0083 linear vs 0.0099 quadratic) — but both explain ~1% of variance.
   The honest statement is "neither coupling explains reuse here," **not** "quadratic
   wins." `[L1]`
-- **Not offline-reproducible:** the N = 992 GitHub cohort. Do not cite it as support.
+- **RECOVERED + VERIFIED (2026-07-26):** the N = 992 GitHub cohort. Supplied from an
+  off-repository copy of the expired CI artifact and closed by **recomputation from its
+  own rows** (7/7): VIF 1.0203, dAIC **−3.483**, τ_fail 50.61 d vs τ_surv 19.76 d,
+  QUADRATIC_DISCONFIRMED, under prereg `cac34f44…`. It may now be cited. `[L1]`
   A synthetic file engineered to match its published statistics was **proposed and
-  refused** — reproducing a target statistic is curve-fitting, not evidence. `[L1]`
+  refused** beforehand — and the refusal was vindicated: the real dAIC is −3.483, the
+  proposal reported −3.16. Reproducing a target statistic is curve-fitting. `[L1]`
+- **The prescriptive fidelity floor fails WORSE than the descriptive design** (N = 992,
+  prereg `00d5d277…`, 3/5): a `D ≥ D_min` admission rule **anti-selects**. Nodes clearing
+  the floor have median 935 stars and default at **89.9%**; nodes below it have median
+  16,807 stars and default at **54.0%**. The sovereign book defaulted at 87.5% against the
+  prestige book's 46.4%. Do not present the floor as a risk improvement. `[L1]`
+- **The "capacity momentum masks fidelity" defence is only half-supported.** Its
+  falsifiable consequence (P1) was pre-registered: hold capacity constant and the signal
+  must reappear. Weighted within-stratum AUC(τ_v) = 0.7487 vs pooled 0.7462 — stratifying
+  did *not* destroy the signal — **but** 3 of 5 star strata are 100% default, so only 2
+  strata were usable and the gate **failed on coverage**. State both halves. `[L1]`
+- **MEASUREMENT ALARM — `D` is not yet a stable construct.** ρ(capacity, D) = **+0.5695**
+  on real PyPI but **−0.4702** on the real GitHub cohort. Two real committed substrates
+  disagree on the *sign*. Until resolved by re-deriving `D`, treat every "fidelity" claim
+  as resting on an unstable measurement, and never repair this by reinterpreting a gate. `[L1]`
 - **No longer simulations:** the knowledge and digital-swarm cohorts now have a real,
   committed substitute (live PyPI, N = 540, depth 3, 1,287 edges). The seeded
   simulations carry zero evidential weight and must not be cited as support.
 
 **Standing rule for this skill:** when a newer, larger, pre-registered run contradicts an
 older, smaller one, the newer result governs. Never quote the friendlier sample.
+
+**Anti-immunisation rule (mandatory).** "The test failed, which shows the environment is
+unguided/broken, which validates the prescriptive design" is an **unfalsifiable move** and
+must be refused whenever it appears — including when the user makes it, and including when
+the underlying reasoning is persuasive. The descriptive/prescriptive distinction
+(*Dunya* vs *Aakhirah* in the governance register) is legitimate **only** when the
+prescriptive claim is given a consequence that can come out wrong. The worked example is
+gate P1 above: it was pre-registered as the falsifiable consequence of the momentum
+defence, and it was allowed to fail. A prescriptive claim with no failing condition is
+`[L3]` — an ontological prior, never evidence.
 
 ## How to respond
 

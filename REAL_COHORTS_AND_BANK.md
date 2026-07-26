@@ -1,13 +1,13 @@
 # The two simulations are gone. Here is what the real data said.
 
-*This round did three things: replaced the last two **simulated** cohorts with a real,
-committed dataset; replicated the banking design on a larger sample; and refused a
-proposal to "restore" the lost N=992 cohort with a generated file. Two of the three
-produced results **against** the framework. Those are reported first and at full
-strength, because that is the only version of this document worth having.*
+*This round replaced the last two **simulated** cohorts with real committed data,
+**recovered and verified the lost N=992 cohort**, and used it to test a genuinely
+prescriptive banking design. Most of what came back argues **against** the framework.
+That is reported first and at full strength, because it is the only version of this
+document worth having.*
 
 ```bash
-bash reproduce_all.sh        # 61/61, clean checkout, offline, $0
+bash reproduce_all.sh        # 63/63, clean checkout, offline, $0
 ```
 
 ---
@@ -134,7 +134,33 @@ be quietly substituted back.
 > the science, but on `cohort CSV exists on disk but is NOT git-tracked`. That is the
 > exact N=992 failure mode, caught in the act, before the number could be cited.
 
-## 6. Refused: closing the 992 gap with a generated file
+## 6. The 992 cohort was RECOVERED — and the refusal was vindicated
+
+**Update, 2026-07-26.** The lost artifact was supplied from an off-repository copy of
+the expired CI upload. A file arriving with the right name proves nothing, so the
+closure rests entirely on recomputation: `cohort-audit/verify_992_recovery.py`
+re-derives every headline statistic **from the 992 rows** using the repository's own
+pre-registered estimator, and compares against CI run 74994532125 independently of the
+bundled summary. **7/7:**
+
+| Check | Recomputed from rows | CI log |
+|---|---|---|
+| shape | N=992, 750 failed / 242 performing | identical |
+| channel | r = 0.1412, VIF = 1.0203 | +0.141 / 1.02 |
+| primary | AIC 1088.215 vs 1091.698, **dAIC −3.483** | −3.48 |
+| third law | τ_fail 50.61 d, τ_surv 19.76 d | identical |
+| verdict | QUADRATIC_DISCONFIRMED, re-derived | identical |
+
+The spec the artifact names re-hashes live to `cac34f44…`, the same pre-registration
+committed here. **The gap is closed by verification, not by assertion.** The bare
+filename stays in `.gitignore` — that line was the root cause — and the recovered copy
+lives at `data/github/govphys_quadratic_results.csv`, explicitly un-ignored.
+
+> **The refusal below was vindicated.** The real dAIC is **−3.483**; the proposed
+> synthetic reconstruction reported **−3.16**. Had it been committed, this repository
+> would now hold a fabricated cohort that contradicts the genuine one.
+
+### 6b. Refused: closing the 992 gap with a generated file
 
 A proposal arrived to "restore" the lost N=992 cohort by generating a deterministic
 synthetic CSV whose statistics match the published ones (N=992, 750 fail / 242 survive,
@@ -151,12 +177,76 @@ for three independent reasons:
    `QUADRATIC_DISCONFIRMED` verdict it claimed to confirm.
 
 The 992 rows were computed, uploaded as a 59,283-byte artifact, and discarded because
-`govphys_quadratic_results.csv` is line 7 of `.gitignore`. The run now 404s and the
-artifact has expired. **They are unrecoverable. The gap stays open.**
-`cohort-audit/test_no_ignored_evidence.py` now fails loudly if any 992-row file appears
-while the gap is still declared.
+`govphys_quadratic_results.csv` is line 7 of `.gitignore`. **They were later recovered
+from an off-repository copy (§6) — but recovery by supply is not the same as
+regeneration.** `cohort-audit/test_no_ignored_evidence.py` now requires that any
+committed 992-row cohort be *the exact file that passed recomputation*, by sha256, so
+generated data can never close a gap here.
 
-## 7. Where this leaves LISM
+## 7. The banking system, designed prescriptively — and tested until it broke
+
+The N=44 result prompted a reframe: raw capacity carries **momentum** in an unguided
+environment, so a *descriptive* survival contest there will reward status over protocol
+work; the answer is a *prescriptive* design that **imposes** a fidelity floor `D ≥ D_min`,
+full reserves, and equity rather than debt.
+
+**That reframe is coherent — and it is also one step from being unfalsifiable.**
+"The test failed, which proves the environment is broken, which validates our design"
+immunises a theory against all future evidence. The pre-registration
+(`00d5d277…`) therefore names that hazard in its own text and refuses it, by converting
+the claim into a prediction that can come out wrong:
+
+> **P1.** If capacity momentum is what *masks* fidelity, then **within strata of similar
+> capacity the fidelity signal must reappear.** If it doesn't, the masking explanation is
+> simply false.
+
+Run on the recovered **N=992** (866 measured-only rows — the cohort's τ_v imputation is
+asymmetric, 15.5% of failures vs 4.1% of survivors, so imputed rows are excluded from the
+primary analysis):
+
+| Gate | Result | |
+|---|---|---|
+| **P1** fidelity survives stratification | weighted AUC **0.7487** (>0.55 ✓) but only **2 of 5** strata usable (needed 3) | ❌ |
+| **P2** the floor binds | excludes **76.8%** of top-status nodes | ✅ |
+| **P3** better *tail*, not better mean | sovereign **87.5%** vs conventional **46.4%** | ❌ |
+| **P4** inflated capacity predicts collapse | 2.6% vs 2.2% — passes by **0.5 points** | ⚠️ |
+| **P6** evaluation is decoupled | ρ(stars, D) = **−0.4702** | ✅ |
+| P5 full-reserve invariant | holds — `falsifiable: false`, **excluded from the score** | — |
+
+### Why it failed — the mechanism, which is the actual finding
+
+`D` in this cohort is **inversely** related to capacity. Splitting on the floor:
+
+| | median stars | default rate |
+|---|---|---|
+| clears the floor (`D ≥ D_min`) | 935 | **89.9%** |
+| below the floor (`D < D_min`) | 16,807 | **54.0%** |
+
+Capacity overwhelmingly drives survival here — the top star quintile defaults at **2.5%**
+against a **75.6%** base rate. So a fidelity floor **anti-selects**: it systematically
+buys the failing half of the population. The sovereign book's tail is worse *because the
+floor works exactly as specified*.
+
+P1's failure needs its own honest note. The weighted-AUC clause **passed** (0.7487, and
+stratification did **not** destroy the signal — pooled was 0.7462; in the two strata where
+discrimination is even measurable, τ_v scores 0.73 and 0.77). It failed the *coverage*
+clause, because three of five star strata are **100% default** — AUC is undefined there.
+That was unforeseeable at lock time. The threshold was **not** moved; the gate is recorded
+as failed and the diagnosis is recorded beside it.
+
+P4 is marked ⚠️ deliberately: it met its gate by **0.5 percentage points** with 46 nodes in
+one arm. A test asserts that margin stays under 2 points **so it can never be cited as a
+result**.
+
+### The deepest problem this exposed
+
+On the real PyPI graph, ρ(capacity, D) = **+0.5695**. On the real GitHub cohort, it is
+**−0.4702**. Two real, committed substrates **disagree on the sign**. `D` is therefore not
+yet measuring a stable construct — and every claim resting on "fidelity" inherits that
+instability. This is a **measurement problem**, to be fixed by re-deriving `D`, never by
+reinterpreting a gate. A test keeps the disagreement visible.
+
+## 8. Where this leaves LISM
 
 **Still standing, on committed real data:**
 - Yeast interactome, N = 4,825: channel independence VIF 1.0026; CV AUC linear 0.666 >
@@ -168,10 +258,16 @@ while the gap is still declared.
 **Falsified or unsupported:**
 - Knowledge exchange — twice, on independent real substrates.
 - "Status is inert" — refuted; capacity partly buys fidelity (ρ = +0.57).
-- Decoupled underwriting as a *portfolio advantage* — did not replicate.
+- Decoupled underwriting as a *portfolio advantage* — did not replicate (N=44).
+- The **prescriptive** fidelity floor — fails worse (N=992): it anti-selects, buying the
+  failing population. The design's own admission rule is what breaks it.
 - `E = U·D` vs `E = U·D²` on PyPI reuse — **neither** works (both R² ≈ 0.01).
 
-**Unrecoverable:** GitHub 992.
+**Recovered and verified:** GitHub 992 — by supply of the real artifact plus
+recomputation, never by regeneration.
+
+**Unresolved (measurement, not theory):** `D` changes sign against capacity between two
+real substrates. Until that is settled, "fidelity" is not a stable quantity.
 
 The framework is smaller than it was, and better attached to the world. Every loss above
 was found by a test this repository runs on itself, not by an outside critic — which is
@@ -179,6 +275,6 @@ the only property that makes the surviving claims worth anything.
 
 ---
 
-*Reproduce: `bash reproduce_all.sh` → **61/61**. `exit 0` means "reproduces including its
+*Reproduce: `bash reproduce_all.sh` → **63/63**. `exit 0` means "reproduces including its
 gaps, nulls and missed predictions" — never "every claim held." Provenance merkle root
 `93fb0abf…`; pre-registration `4e83893b…` committed before the data it governs.*
