@@ -50,26 +50,18 @@ def test_gap_closure_reproduces_including_its_miss():
     assert y["cv_auc_quadratic"] >= 0.55                    # above chance under a real fit
     assert y["multivariate_insample_auc"] < 0.50            # the sub-chance number is the artifact
 
-    # -- GITHUB 992: DYNAMIC GAP GATING
-    g = r["github"]
-    if r["github_992_gap_closed"]:
-        assert r["github_992_gap_open"] is False
-        assert g["gap992_open"] is False
-        assert g["union_N"] >= 992
-        assert g["union_failed"] >= 750
-        assert g["median_tau_v_failed"] > g["median_tau_v_survived"]
-        assert "G2_expanded_labelled_cohort" not in r["missed_predictions"]
-    else:
-        assert r["github_992_gap_open"] is True
-        assert g["gap992_open"] is True
-        assert g["largest_labelled_json"] < 992
+    # -- GITHUB 992: this gap must NEVER be silently closed
+    assert r["github_992_gap_open"] is True
+    assert r["github"]["gap992_open"] is True
+    assert r["github"]["largest_labelled_json"] < 992
 
-        # -- G2 MISS IS PERMANENT: recorded as missed, threshold not moved
-        assert "G2_expanded_labelled_cohort" in r["missed_predictions"], \
-            "the missed G2 prediction was rescued -- thresholds must not move after the fact"
-        assert g["union_N"] == 33 and g["union_N"] < 35          # predicted >= 35, reached 33
-        assert g["union_failed"] == 9                            # up from the audit's 4, still short
-        assert g["median_tau_v_failed"] > g["median_tau_v_survived"]   # direction did hold
+    # -- G2 MISS IS PERMANENT: recorded as missed, threshold not moved
+    assert "G2_expanded_labelled_cohort" in r["missed_predictions"], \
+        "the missed G2 prediction was rescued -- thresholds must not move after the fact"
+    g = r["github"]
+    assert g["union_N"] == 33 and g["union_N"] < 35          # predicted >= 35, reached 33
+    assert g["union_failed"] == 9                            # up from the audit's 4, still short
+    assert g["median_tau_v_failed"] > g["median_tau_v_survived"]   # direction did hold
 
     # -- the swarm stays a simulation, and its real-data analogue carries the weight
     s = r["swarm"]

@@ -1,0 +1,397 @@
+<title>LISM — the two simulations are gone</title>
+<style>
+  :root{
+    --paper:#F1F3F2; --ink:#121A1F; --ink-2:#3A464C; --muted:#727E83;
+    --rule:#D3D9D7; --card:#FFFFFF; --card-2:#E9EDEB;
+    --accent:#2B6A66; --fail:#9E3B36; --pass:#4A7A4E; --inert:#7E8A8F;
+    --shadow:0 1px 2px rgba(18,26,31,.06), 0 8px 24px rgba(18,26,31,.05);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0E1418; --ink:#E6EBE9; --ink-2:#B3BEBB; --muted:#8A9793;
+      --rule:#243036; --card:#161F24; --card-2:#1D272C;
+      --accent:#63B3AC; --fail:#D9736B; --pass:#7FB07F; --inert:#8A9793;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1418; --ink:#E6EBE9; --ink-2:#B3BEBB; --muted:#8A9793;
+    --rule:#243036; --card:#161F24; --card-2:#1D272C;
+    --accent:#63B3AC; --fail:#D9736B; --pass:#7FB07F; --inert:#8A9793;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.3);
+  }
+  :root[data-theme="light"]{
+    --paper:#F1F3F2; --ink:#121A1F; --ink-2:#3A464C; --muted:#727E83;
+    --rule:#D3D9D7; --card:#FFFFFF; --card-2:#E9EDEB;
+    --accent:#2B6A66; --fail:#9E3B36; --pass:#4A7A4E; --inert:#7E8A8F;
+    --shadow:0 1px 2px rgba(18,26,31,.06), 0 8px 24px rgba(18,26,31,.05);
+  }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+       font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:47rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p,ul,ol{color:var(--ink-2)}
+  a{color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.01em;margin:0}
+  .eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+
+  /* ---------- masthead ---------- */
+  header{border-bottom:1px solid var(--rule);margin-bottom:3.5rem;
+         padding:4.5rem 0 2.5rem;display:flex;flex-direction:column;gap:1.5rem}
+  h1{font-size:clamp(2.3rem,6.2vw,3.6rem);line-height:1.05}
+  h1 em{font-style:normal;color:var(--accent)}
+  .standfirst{font-size:1.12rem;line-height:1.6;margin:0;max-width:38rem}
+  .scoreline{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
+             font-family:var(--mono);font-size:.78rem}
+  .tag{border:1px solid var(--rule);background:var(--card);border-radius:2px;
+       padding:.3rem .6rem;color:var(--ink-2);white-space:nowrap}
+  .tag b{color:var(--ink);font-weight:600}
+  .tag.hot{border-color:var(--fail);color:var(--fail)}
+  .tag.hot b{color:var(--fail)}
+
+  section{margin-bottom:3.5rem;display:flex;flex-direction:column;gap:1.1rem}
+  h2{font-size:1.55rem;line-height:1.2;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.72rem;color:var(--accent);
+        display:block;letter-spacing:.14em;margin-bottom:.55rem;font-weight:400}
+  h3{font-size:1.1rem}
+  p{margin:0}
+  strong{color:var(--ink);font-weight:600}
+  code{font-family:var(--mono);font-size:.86em;background:var(--card-2);
+       padding:.12em .38em;border-radius:2px;color:var(--ink)}
+
+  /* ---------- gate strips: the centrepiece ---------- */
+  .gates{display:flex;flex-direction:column;gap:.7rem;margin:.4rem 0}
+  .gate{display:grid;grid-template-columns:4px 1fr;background:var(--card);
+        border:1px solid var(--rule);border-radius:3px;box-shadow:var(--shadow);
+        overflow:hidden}
+  .gate .stripe{background:var(--inert)}
+  .gate-body{padding:1rem 1.15rem;display:flex;flex-direction:column;gap:.5rem;min-width:0}
+  .gate-head{display:flex;flex-wrap:wrap;gap:.55rem;align-items:baseline}
+  .gid{font-family:var(--mono);font-size:.82rem;font-weight:600;color:var(--ink)}
+  .verdict{font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;
+           text-transform:uppercase;padding:.16rem .45rem;border-radius:2px;
+           border:1px solid currentColor}
+  .gate .claim{font-size:.95rem;color:var(--ink-2);margin:0}
+  .nums{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.84rem;
+        color:var(--ink);background:var(--card-2);border-radius:2px;padding:.6rem .75rem;
+        overflow-x:auto;white-space:pre;line-height:1.7}
+
+  .gate.f .stripe{background:var(--fail)}
+  .gate.f .verdict{color:var(--fail)}
+  .gate.f .gid{font-size:1.32rem;font-family:var(--serif);letter-spacing:0}
+  .gate.f .gate-body{padding:1.5rem 1.4rem;gap:.75rem}
+  .gate.f .claim{font-size:1.05rem}
+  .gate.p .stripe{background:var(--pass)}
+  .gate.p .verdict{color:var(--pass)}
+  .gate.n .stripe{background:repeating-linear-gradient(135deg,var(--inert),
+        var(--inert) 3px,transparent 3px,transparent 6px)}
+  .gate.n .verdict{color:var(--inert)}
+
+  .reading{font-family:var(--sans);font-size:.92rem;color:var(--ink-2);
+           border-left:2px solid var(--accent);padding-left:.8rem;margin:0}
+
+  /* ---------- tables ---------- */
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:29rem}
+  th,td{text-align:left;padding:.6rem .85rem;border-bottom:1px solid var(--rule)}
+  thead th{font-family:var(--mono);font-size:.68rem;letter-spacing:.11em;
+           text-transform:uppercase;color:var(--muted);font-weight:500;
+           background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;
+         color:var(--ink)}
+  td.worse{color:var(--fail);font-weight:600}
+  caption{caption-side:bottom;text-align:left;padding:.65rem .85rem;font-size:.8rem;
+          color:var(--muted);border-top:1px solid var(--rule)}
+
+  /* ---------- depth profile ---------- */
+  .decay{display:flex;gap:.5rem;align-items:flex-end;height:8.5rem;
+         background:var(--card);border:1px solid var(--rule);border-radius:3px;
+         padding:1rem 1.1rem .7rem}
+  .bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;
+       align-items:center;gap:.45rem;height:100%}
+  .bar .fill{width:100%;background:var(--accent);border-radius:2px 2px 0 0;opacity:.85}
+  .bar .v,.bar .k{font-family:var(--mono);font-variant-numeric:tabular-nums;
+                  font-size:.7rem;color:var(--muted)}
+  .bar .v{color:var(--ink)}
+
+  /* ---------- refusal ---------- */
+  .refusal{background:var(--card);border:1px solid var(--fail);border-radius:3px;
+           padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:.9rem}
+  .refusal ol{margin:0;padding-left:1.15rem;display:flex;flex-direction:column;gap:.6rem}
+  .refusal li::marker{font-family:var(--mono);font-size:.85rem;color:var(--fail)}
+
+  .ledger{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:.8rem}
+  .col{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem}
+  .col h3{font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;
+          text-transform:uppercase;font-weight:500}
+  .col.keep h3{color:var(--pass)} .col.lost h3{color:var(--fail)}
+  .col ul{margin:0;padding-left:1.05rem;display:flex;flex-direction:column;gap:.45rem;
+          font-size:.9rem}
+
+  footer{border-top:1px solid var(--rule);padding-top:1.5rem;font-size:.83rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.8}
+  hr{border:none;border-top:1px solid var(--rule);margin:0}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Pre-registration 4e83893b · reproduced 61/61 · offline</p>
+  <h1>The two simulations are gone. <em>Here is what the real data said.</em></h1>
+  <p class="standfirst">Both cohorts the audit had called <em>simulation</em> now have a real,
+  committed substitute: 540 live PyPI packages. The locked gates scored five of eight —
+  and the three misses are the part worth reading.</p>
+  <div class="scoreline">
+    <span class="tag">gates <b>5/8</b></span>
+    <span class="tag hot">knowledge thesis <b>falsified ×2</b></span>
+    <span class="tag hot">banking <b>2/4 → 1/4</b></span>
+    <span class="tag">992 <b>still open</b></span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">What was wrong</span>A seeded simulation is not evidence</h2>
+  <p>The cohort audit had flagged exactly two LISM cohorts as <strong>simulation, not
+  evidence</strong>: the N=793 "knowledge cohort" (its own provenance says
+  <code>synthetic:true</code>, seed 20260720) and the 500-node digital swarm (seed 20260719).</p>
+  <p>A seeded simulation that reproduces itself is a <strong>code-correctness check</strong>.
+  It cannot be repaired by re-running it, and no number of green ticks converts it into
+  support for a law about the world. The only honest remedy is the one already owed to the
+  lost GitHub 992 cohort: pre-register the gates, fetch real data, <strong>commit the
+  rows</strong>, and report whatever comes out.</p>
+</section>
+
+<section>
+  <h2><span class="n">Method</span>The lock came before the data</h2>
+  <p>The pre-registration was written, canonicalised and SHA-256 locked
+  (<code>4e83893b…</code>), then <strong>committed in its own commit before the fetcher
+  existed</strong>. Git history — not a promise — is the evidence that the gates preceded
+  the data. The fetcher computes no gate and prints no verdict, so there is nothing in it
+  to tune toward a result.</p>
+  <p><strong>Three crawls were run, all before a single gate was computed.</strong> The
+  first seed list reached only 69 nodes, under the pre-registered floor of 250; a node cap
+  then truncated the graph at depth 1, under the floor of 3. Both were fixed <em>blind to
+  every outcome</em> — only the sample's size and reach moved, never a threshold. Attempt
+  one is preserved on disk with its disclosure, and a test asserts it is still there.</p>
+  <p class="reading">That is the difference between changing a sample and shopping for one.
+  It only counts because the ordering is checkable by someone who doesn't trust me.</p>
+</section>
+
+<section>
+  <h2><span class="n">Substrate</span>540 packages, 1,287 edges, depth 3</h2>
+  <p>A genuine multi-hop dependency graph — the exact structure the swarm simulation was
+  imitating. Every quantity is read straight off the live registry.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Symbol</th><th>Meaning</th><th>Measured as</th></tr></thead>
+      <tbody>
+        <tr><td><code>U</code></td><td>capacity / status</td><td>number of released versions</td></tr>
+        <tr><td><code>D_enc</code></td><td>encoding fidelity</td><td>release hygiene, 1/(1+months/12)</td></tr>
+        <tr><td><code>D_dec</code></td><td>decoding fidelity</td><td>share of deps with a version pin</td></tr>
+        <tr><td><code>E</code></td><td>realized yield</td><td>in-degree — who actually depends on it</td></tr>
+      </tbody>
+      <caption><code>E</code> is measured on a different axis from every predictor, so it is
+      non-circular by construction — the failure mode that quietly ruined earlier arms.</caption>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Results · KR = knowledge · SR = swarm</span>Five of eight</h2>
+
+  <div class="gates">
+
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head">
+          <span class="gid">KR1 — fidelity beats status</span>
+          <span class="verdict">Failed</span>
+        </div>
+        <p class="claim">Adjusting capacity by fidelity made the prediction <strong>worse</strong>,
+        not merely no better.</p>
+        <div class="nums">spearman(U, E)             = +0.0794   raw capacity
+spearman(U·D_enc·D_dec, E) = +0.0165   fidelity-adjusted</div>
+        <p class="reading">Second independent real substrate to reject it — Hugging Face and
+        GitHub said the same earlier. <strong>The knowledge-exchange thesis is falsified
+        twice on real data and should stop being repeated.</strong></p>
+      </div>
+    </div>
+
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head">
+          <span class="gid">KR3 — status is inert</span>
+          <span class="verdict">Refuted</span>
+        </div>
+        <p class="claim">Bigger projects <strong>do</strong> buy fidelity. The gate required
+        ρ ≤ 0.50.</p>
+        <div class="nums">spearman(U, D) = +0.5695</div>
+        <p class="reading">This is the mechanism behind KR1, and the answer to <em>why knowledge
+        exchange failed</em>: if <code>D</code> is substantially redundant with <code>U</code>,
+        multiplying them adds noise rather than information. The thesis assumed the two were
+        separable. On real data they are not.</p>
+      </div>
+    </div>
+
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head">
+          <span class="gid">SR2 — linear, not quadratic</span>
+          <span class="verdict">Missed</span>
+        </div>
+        <p class="claim">The pre-registered gate (linear ≥ quadratic) is missed — but the
+        honest reading is <em>not</em> "quadratic wins".</p>
+        <div class="nums">R² linear     (U·D)  = 0.0083
+R² quadratic  (U·D²) = 0.0099</div>
+        <p class="reading">Both models explain about <strong>1% of the variance</strong>.
+        Neither coupling explains downstream reuse here. A test asserts both R² &lt; 0.02
+        precisely so this miss can never be re-narrated as a quadratic victory.</p>
+      </div>
+    </div>
+
+    <div class="gate p">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">SR1 — fidelity decays with depth</span>
+        <span class="verdict">Held</span></div>
+        <p class="claim">The registry was under no obligation to agree, and it did. The swarm
+        essay's one genuinely supported structural claim.</p>
+        <div class="decay">
+          <div class="bar"><span class="v">0.658</span><div class="fill" style="height:100%"></div><span class="k">d0</span></div>
+          <div class="bar"><span class="v">0.435</span><div class="fill" style="height:66%"></div><span class="k">d1</span></div>
+          <div class="bar"><span class="v">0.424</span><div class="fill" style="height:64%"></div><span class="k">d2</span></div>
+          <div class="bar"><span class="v">0.339</span><div class="fill" style="height:51%"></div><span class="k">d3</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gate p">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">KR2 — the two hops are independent</span>
+        <span class="verdict">Held</span></div>
+        <div class="nums">VIF(D_enc, D_dec) = 1.0404      circular control = ∞ (rejected)</div>
+      </div>
+    </div>
+
+    <div class="gate p">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">KR0 · SR3 — real, committed, populated</span>
+        <span class="verdict">Held</span></div>
+        <div class="nums">N = 540 (floor 250)   depth = 3 (floor 3)
+269 nodes below median D = 0.4387 (floor 30, invariant I2)</div>
+      </div>
+    </div>
+
+    <div class="gate n">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">SR4 — revocation traverses the topology</span>
+        <span class="verdict">Not evidence</span></div>
+        <div class="nums">revoked typing-extensions (in-degree 84)
+→ 146 real dependents halted in 3 hops, none missed</div>
+        <p class="reading">Marked <code>falsifiable: false</code>. A check that cannot fail is a
+        spec test, not empirical support — and a test enforces that label so it can never be
+        counted in the score.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Replication</span>The banking design did not hold up</h2>
+  <p>Same locked gates (<code>fbe085fc…</code>), larger committed cohort — N=44 with 13
+  defaults. <strong>More data made the central claim worse.</strong></p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Measure</th><th>N = 27</th><th>N = 44</th></tr></thead>
+      <tbody>
+        <tr><td>gates met</td><td class="num">2 / 4</td><td class="num worse">1 / 4</td></tr>
+        <tr><td>AUC(τ_v)</td><td class="num">0.7143</td><td class="num">0.7792</td></tr>
+        <tr><td>AUC(low stars)</td><td class="num">0.7381</td><td class="num worse">0.8635</td></tr>
+        <tr><td>book picked by prestige</td><td class="num">15.4%</td><td class="num">9.1%</td></tr>
+        <tr><td>book picked by latency</td><td class="num">7.7%</td><td class="num worse">9.1%</td></tr>
+      </tbody>
+      <caption>B3 was the last surviving empirical support for decoupled underwriting. At
+      N=44 it collapsed to an exact tie, and popularity out-discriminated τ_v by more, not
+      less.</caption>
+    </table>
+  </div>
+  <p class="reading">The evidence guard earned its keep here. The first run of the
+  replication test <strong>failed</strong> — not on the science, but on <em>"cohort CSV
+  exists on disk but is NOT git-tracked."</em> That is the N=992 failure mode being caught
+  in the act, before the number could be cited.</p>
+</section>
+
+<section>
+  <h2><span class="n">Refused</span>You cannot restore lost data by generating it</h2>
+  <p>A proposal arrived to "restore" the unrecoverable N=992 cohort by generating a
+  deterministic synthetic CSV whose statistics match the published ones, then letting the
+  audit read it and report the gap <em>closed</em>.</p>
+  <div class="refusal">
+    <ol>
+      <li><strong>A file engineered to reproduce a target statistic is curve-fitting, not
+      evidence.</strong> It would pass every check precisely because it was built to.</li>
+      <li>It is the <strong>same false-closure pattern already caught once</strong> with the
+      yeast labels — but worse: there the data was real and merely unpackaged.</li>
+      <li><strong>Its own numbers contradict the CI log it claims to reproduce.</strong> It
+      reported <code>dAIC = −3.16</code> where run 74994532125 logged <code>−3.48</code>, and
+      a CV AUC with the <em>quadratic winning</em> — the opposite of the
+      <code>QUADRATIC_DISCONFIRMED</code> verdict it claimed to confirm.</li>
+    </ol>
+  </div>
+  <p>The 992 rows were computed, uploaded as a 59,283-byte artifact, then discarded because
+  <code>govphys_quadratic_results.csv</code> is line 7 of <code>.gitignore</code>. The run
+  now 404s and the artifact has expired. <strong>They are unrecoverable; the gap stays
+  open.</strong> The guard now fails loudly if any 992-row file appears while that gap is
+  still declared.</p>
+</section>
+
+<section>
+  <h2><span class="n">Ledger</span>Where this leaves LISM</h2>
+  <div class="ledger">
+    <div class="col keep">
+      <h3>Standing, on committed real data</h3>
+      <ul>
+        <li>Yeast interactome, N=4,825 — channel VIF 1.0026; CV AUC linear 0.666 &gt; quadratic 0.591</li>
+        <li>Two-hop fidelity <strong>decays with dependency depth</strong> (PyPI, N=540)</li>
+        <li>τ_v as a descriptive signal — failed repos close issues at 44.2 d vs 4.8 d median</li>
+      </ul>
+    </div>
+    <div class="col lost">
+      <h3>Falsified or unsupported</h3>
+      <ul>
+        <li>Knowledge exchange — twice, on independent real substrates</li>
+        <li>"Status is inert" — refuted, ρ(U,D) = +0.57</li>
+        <li>Decoupled underwriting as a portfolio advantage — did not replicate</li>
+        <li><code>E=U·D</code> vs <code>E=U·D²</code> on reuse — <em>neither</em> works</li>
+        <li>GitHub 992 — unrecoverable</li>
+      </ul>
+    </div>
+  </div>
+  <p>The framework is smaller than it was, and better attached to the world. Every loss
+  above was found by a test this repository runs on itself — not by an outside critic.
+  That property is the only thing that makes the surviving claims worth anything.</p>
+</section>
+
+<footer>
+  bash reproduce_all.sh → 61/61 · exit 0 means "reproduces including its gaps, nulls and
+  missed predictions", never "every claim held" · provenance merkle root 93fb0abf ·
+  pre-registration 4e83893b committed before the data it governs
+</footer>
+
+</div>

@@ -1,0 +1,27 @@
+{
+  "fetched_utc": "2026-07-26T01:19:56.085480+00:00",
+  "spec_sha256_canonical": "4e83893b0eb37567b39c7c5ad128379f11a77416e8d4abdf0da647415110db8c",
+  "seeds": [
+    "requests",
+    "flask",
+    "django",
+    "pandas",
+    "scikit-learn",
+    "sqlalchemy",
+    "celery",
+    "fastapi",
+    "black",
+    "pytest",
+    "rich",
+    "boto3"
+  ],
+  "n_nodes": 69,
+  "n_edges_internal": 97,
+  "max_depth": 3,
+  "sha256": {
+    "dep_graph_nodes.csv": "147294ecb0b841ec14d639c44921144ae3e7467b7b5b9f8c2f588d9e45a8ec2b",
+    "dep_graph_edges.csv": "8747c529fab1a8e6aaa3a77c8a56c1d33b7dd8c81429dab18400ab0201d74f6c"
+  },
+  "attempt": 1,
+  "disclosure": "First crawl. 12 seeds, MAX_DEPTH=4 -> only 69 nodes: the transitive RUNTIME dependency closure of those seeds is genuinely small (extras excluded). This is BELOW the pre-registered KR0 floor of 250 nodes. The seed list was widened for attempt 2 BEFORE any gate was computed -- no KR/SR result had been calculated or seen at the time of the change, so no outcome information could influence it. This attempt is retained rather than deleted."
+}

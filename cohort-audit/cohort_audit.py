@@ -141,38 +141,16 @@ def c4_github_992_gap():
     available["repro/tauv_cohort.json"] = {"rows": len(tv["repos"]), "has_survival_label": True}
     gf = json.load(open(FIX["github_frozen"]))
     available["github-lism/data/github_cohort_frozen.json"] = {"rows": len(gf["repos"]), "has_survival_label": False}
-
-    csv_path = os.path.join(ROOT, "govphys_quadratic_results.csv")
-    csv_found = os.path.exists(csv_path)
-    if csv_found:
-        with open(csv_path) as f:
-            rows_count = sum(1 for _ in f) - 1
-        available["govphys_quadratic_results.csv"] = {"rows": rows_count, "has_survival_label": True}
-
     largest_labelled = max(v["rows"] for v in available.values() if v["has_survival_label"])
-    found_992 = largest_labelled >= 992
-
-    closure, closed = os.path.join(ROOT, "cohort-audit", "results_gapclosure.json"), False
-    if os.path.exists(closure):
-        try:
-            closed = bool(json.load(open(closure)).get("github_992_gap_closed"))
-        except Exception:
-            closed = False
-
+    found_992 = any(v["rows"] >= 992 for v in available.values())
     meta = json.load(open(os.path.join(ROOT, "lism-cohorts", "results_meta.json")))
     claimed = meta["cohorts"]["B_github"]
-
-    status = ("NOT_OFFLINE_REPRODUCIBLE" if not found_992
-              else ("REAL_REPRODUCIBLE (gap closed; see cohort-audit/gap_closure.py)" if closed
-                    else "labels present but coupling NOT verified -- re-check"))
-
     return {"claimed_N": claimed["N"], "claimed_split": claimed["split"], "claimed_verdict": claimed["verdict"],
             "committed_artifacts": available, "largest_committed_labelled_cohort": largest_labelled,
             "found_992_row_artifact": found_992,
-            "gap_closed": closed,
-            "status": status,
+            "status": "NOT_OFFLINE_REPRODUCIBLE" if not found_992 else "found -- re-check",
             "note": "lism-cohorts/results_meta.json stores only a spec HASH for the N=992 cohort, not the rows. The N=992 result must not be cited as offline-reproducible from this repository.",
-            "pass": (not found_992) or closed}
+            "pass": not found_992}                   # passes by CORRECTLY DETECTING the gap
 
 
 # ---- C5: the swarm is a SIMULATION -- reproduce it, label it -----------------------
@@ -258,36 +236,21 @@ def main():
     print("      -> %s" % ("PASS" if c5["pass"] else "FAIL"))
 
     # ---- C6: the cross-cohort integrity ledger ------------------------------------
-    closure = os.path.join(HERE, "results_gapclosure.json")
-    knowledge_closed = False
-    swarm_closed = False
-    if os.path.exists(closure):
-        try:
-            gc_data = json.load(open(closure))
-            knowledge_closed = bool(gc_data.get("knowledge_793_gap_closed"))
-            swarm_closed = bool(gc_data.get("digital_swarm_gap_closed"))
-        except Exception:
-            pass
-
     ledger = {
         "A_yeast_4825_channel": "REAL_REPRODUCIBLE",
         "A_yeast_4825_outcome_coupling": ("REAL_REPRODUCIBLE (gap closed 2026-07-25; "
                                           "published AUC 0.47 = non-converged artifact)"
                                           if c2["gap_closed"] else "NOT_OFFLINE_REPRODUCIBLE"),
-        "B_github_992": ("REAL_REPRODUCIBLE (gap closed; govphys_quadratic_results.csv)"
-                         if c4["gap_closed"] else "NOT_OFFLINE_REPRODUCIBLE"),
+        "B_github_992": "NOT_OFFLINE_REPRODUCIBLE",
         "B_github_tau_v_21": "REAL_REPRODUCIBLE (underpowered, n_fail=4)",
         "B_github_frozen_28": "REAL_REPRODUCIBLE (no survival label)",
-        "C_knowledge_793": ("REAL_REPRODUCIBLE (gap closed; knowledge_793_results.csv)"
-                            if knowledge_closed else "SIMULATION (retracted as real-world, PR #111)"),
-        "D_digital_swarm": ("REAL_REPRODUCIBLE (gap closed; digital_swarm_results.csv)"
-                            if swarm_closed else "SIMULATION"),
+        "C_knowledge_793": "SIMULATION (retracted as real-world, PR #111)",
+        "D_digital_swarm": "SIMULATION",
         "hf_media_19 / biorxiv_40 / pubmed_8": "REAL_REPRODUCIBLE",
     }
     not_repro = [k for k, v in ledger.items() if v.startswith("NOT_OFFLINE_REPRODUCIBLE")]
     sims = [k for k, v in ledger.items() if v.startswith("SIMULATION")]
-    # Passes if either there are open gaps we honestly report, or all gaps are successfully closed!
-    c6_pass = True
+    c6_pass = len(not_repro) >= 1
     print("\n C6  CROSS-COHORT INTEGRITY LEDGER:")
     for k, v in ledger.items():
         mark = "  ok " if v.startswith("REAL") else (" SIM " if v.startswith("SIMULATION") else " GAP ")

@@ -1,0 +1,39 @@
+{
+  "spec_sha256_canonical": "fbe085fcf4cc2a7f5b3bf386a7e81f1542cda6f6f826996ca75ef41162f0d62a",
+  "N": 44,
+  "defaults": 13,
+  "auc_tau_v": 0.7792,
+  "auc_stars": 0.8635,
+  "portfolio": {
+    "conventional_default_rate": 0.0909,
+    "sovereign_default_rate": 0.0909
+  },
+  "spearman_stars_tauv": -0.4629,
+  "gates": [
+    {
+      "gate": "B1_tauv_beats_stars",
+      "pass": false,
+      "detail": "AUC(tau_v) = 0.7792   vs   AUC(low-stars) = 0.8635"
+    },
+    {
+      "gate": "B2_popularity_is_near_chance",
+      "pass": false,
+      "detail": "AUC(stars) = 0.8635  (locked near-chance band [0.30, 0.70])"
+    },
+    {
+      "gate": "B3_portfolio_default_rate",
+      "pass": false,
+      "detail": "book of 22: conventional (top stars) 9.1%  |  sovereign (low tau_v) 9.1%"
+    },
+    {
+      "gate": "B4_two_axes_not_collinear",
+      "pass": true,
+      "detail": "spearman(stars, tau_v) = -0.4629"
+    }
+  ],
+  "gates_not_met": [
+    "B1_tauv_beats_stars",
+    "B2_popularity_is_near_chance",
+    "B3_portfolio_default_rate"
+  ]
+}

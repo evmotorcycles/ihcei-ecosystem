@@ -1,0 +1,78 @@
+{
+  "spec_sha256_canonical": "4e83893b0eb37567b39c7c5ad128379f11a77416e8d4abdf0da647415110db8c",
+  "N": 540,
+  "n_edges": 1287,
+  "max_depth": 3,
+  "attempts_disclosed": 3,
+  "rho_status_E": 0.0794,
+  "rho_fidelity_E": 0.0165,
+  "vif_denc_ddec": 1.0404,
+  "rho_U_D": 0.5695,
+  "depth_profile_meanD": {
+    "0": 0.6583,
+    "1": 0.4345,
+    "2": 0.4235,
+    "3": 0.3385
+  },
+  "r2_linear": 0.0083,
+  "r2_quadratic": 0.0099,
+  "n_below_median_D": 269,
+  "revocation_hub": "typing-extensions",
+  "revocation_dependents_halted": 146,
+  "revocation_hops": 3,
+  "gates": [
+    {
+      "gate": "KR0_data_is_real_and_committed",
+      "pass": true,
+      "detail": "N=540 (floor 250), max depth=3 (floor 3), fetched 2026-07-26",
+      "falsifiable": true
+    },
+    {
+      "gate": "KR1_fidelity_beats_status",
+      "pass": false,
+      "detail": "spearman(U, E) = +0.0794   vs   spearman(U*D_enc*D_dec, E) = +0.0165",
+      "falsifiable": true
+    },
+    {
+      "gate": "KR2_independence_gate",
+      "pass": true,
+      "detail": "VIF(D_enc, D_dec) = 1.0404 (gate <5.0) | circular control VIF = inf (must be >=5)",
+      "falsifiable": true
+    },
+    {
+      "gate": "KR3_capacity_does_not_confer_fidelity",
+      "pass": false,
+      "detail": "spearman(U, D) = +0.5695  (gate <= 0.50)",
+      "falsifiable": true
+    },
+    {
+      "gate": "SR1_fidelity_decays_with_depth",
+      "pass": true,
+      "detail": "mean D depth<=1 = 0.4918  ->  depth 3 = 0.3385  | profile {0: 0.6583, 1: 0.4345, 2: 0.4235, 3: 0.3385}",
+      "falsifiable": true
+    },
+    {
+      "gate": "SR2_linear_not_quadratic",
+      "pass": false,
+      "detail": "R2 linear (U*D) = 0.0083   vs   R2 quadratic (U*D^2) = 0.0099   delta = -0.0016",
+      "falsifiable": true
+    },
+    {
+      "gate": "SR3_populated_failing_region",
+      "pass": true,
+      "detail": "269 nodes below median D=0.4387  (floor 30)",
+      "falsifiable": true
+    },
+    {
+      "gate": "SR4_tau_v_propagates_on_real_topology",
+      "pass": true,
+      "detail": "revoked 'typing-extensions' (in-degree 84): 146 real dependents halted in 3 hops; unhalted=0",
+      "falsifiable": false
+    }
+  ],
+  "gates_not_met": [
+    "KR1_fidelity_beats_status",
+    "KR3_capacity_does_not_confer_fidelity",
+    "SR2_linear_not_quadratic"
+  ]
+}

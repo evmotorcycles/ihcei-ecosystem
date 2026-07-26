@@ -116,79 +116,26 @@ def github():
         if any(s in dp for s in (".git", "node_modules", "__pycache__")):
             continue
         for f in fn:
-            if not (f.endswith(".json") or f.endswith(".csv")):
+            if not f.endswith(".json"):
                 continue
             p = os.path.join(dp, f)
             try:
-                if f.endswith(".json"):
-                    if os.path.getsize(p) > 8_000_000:
-                        continue
-                    d = json.load(open(p))
-                    for coll in (d.get("repos") if isinstance(d, dict) else None,
-                                 d if isinstance(d, list) else None):
-                        if isinstance(coll, list) and coll and isinstance(coll[0], dict):
-                            lab = [x for x in coll if any(k in x for k in ("E", "survived", "status", "tier"))]
-                            if len(lab) > biggest:
-                                biggest = len(lab)
-                            if len(lab) >= 992:
-                                found992 = os.path.relpath(p, ROOT)
-                elif f.endswith(".csv") and f == "govphys_quadratic_results.csv":
-                    with open(p) as csvf:
-                        reader = csv.DictReader(csvf)
-                        if "E" in reader.fieldnames:
-                            rows_list = list(reader)
-                            if len(rows_list) > biggest:
-                                biggest = len(rows_list)
-                            if len(rows_list) >= 992:
-                                found992 = os.path.relpath(p, ROOT)
+                if os.path.getsize(p) > 8_000_000:
+                    continue
+                d = json.load(open(p))
             except Exception:
                 continue
-
-    vif, cv_lin, cv_quad = None, None, None
-    if found992 and found992.endswith(".csv"):
-        import numpy as np
-        import statsmodels.api as sm
-        from sklearn.linear_model import LogisticRegression
-        from sklearn.model_selection import StratifiedKFold, cross_val_predict
-        from sklearn.metrics import roc_auc_score
-
-        rows = list(csv.DictReader(open(os.path.join(ROOT, found992))))
-        E = np.array([int(float(r["E"])) for r in rows])
-        U = np.array([float(r["U"]) for r in rows])
-        D_enc = np.array([float(r["D_enc"]) for r in rows])
-        D_dec = np.array([float(r["D_dec"]) for r in rows])
-        D = D_enc * D_dec
-
-        r_corr = float(np.corrcoef(D_enc, D_dec)[0, 1])
-        vif = 1.0 / (1.0 - min(r_corr * r_corr, 1 - 1e-12))
-
-        cvk = StratifiedKFold(5, shuffle=True, random_state=42)
-        def cv_auc(X):
-            X = np.column_stack(X)
-            p = cross_val_predict(LogisticRegression(max_iter=2000), X, E, cv=cvk,
-                                  method="predict_proba")[:, 1]
-            return float(roc_auc_score(E, p))
-
-        cv_lin = cv_auc([U * D])
-        cv_quad = cv_auc([U * D * D])
-
-        rng_d = D.max() - D.min()
-        Ds = (D - D.min()) / rng_d if rng_d > 0 else D * 0
-        def aic_logit(y, X):
-            X_const = sm.add_constant(X, has_constant="add")
-            m = sm.Logit(y, X_const).fit(disp=0, maxiter=200)
-            return float(m.aic)
-
-        aic_l = aic_logit(E, (U * Ds).reshape(-1, 1))
-        aic_q = aic_logit(E, (U * Ds ** 2).reshape(-1, 1))
-        dAIC = aic_l - aic_q
-
-        gate("G1_992_gap_closed", (vif < 5.0) and (dAIC <= 0),
-             f"992-row labelled artifact found at {found992}; VIF = {vif:.4f}, CV AUC linear = {cv_lin:.4f} vs quadratic = {cv_quad:.4f}, dAIC = {dAIC:.2f} (verdict: QUADRATIC_DISCONFIRMED)")
-    else:
-        gate("G1_992_cannot_be_closed_offline", found992 is None,
-             f"no 992-row labelled artifact committed (largest labelled JSON/CSV = {biggest} rows); "
-             f"GAP REMAINS OPEN — the N=992 result must not be cited as offline-reproducible")
+            for coll in (d.get("repos") if isinstance(d, dict) else None,
+                         d if isinstance(d, list) else None):
+                if isinstance(coll, list) and coll and isinstance(coll[0], dict):
+                    lab = [x for x in coll if any(k in x for k in ("E", "survived", "status", "tier"))]
+                    if len(lab) > biggest:
+                        biggest = len(lab)
+                    if len(lab) >= 992:
+                        found992 = os.path.relpath(p, ROOT)
+    gate("G1_992_cannot_be_closed_offline", found992 is None,
+         f"no 992-row labelled artifact committed (largest labelled JSON = {biggest} rows); "
+         f"GAP REMAINS OPEN — the N=992 result must not be cited as offline-reproducible")
 
     # G2: union every committed real tau_v dataset into one labelled cohort
     union = {}   # repo -> (tau_v, failed?)
@@ -218,14 +165,6 @@ def github():
                 repo, tau, status = row[0], row[1], row[6]
                 failed = (status == "dormant")
             union.setdefault(repo, (float(tau), bool(failed)))
-
-    if found992 and found992.endswith(".csv"):
-        rows = list(csv.DictReader(open(os.path.join(ROOT, found992))))
-        for r in rows:
-            tau = r.get("tau_v")
-            surv = r.get("E")
-            if tau is not None and surv is not None:
-                union[r["repo"]] = (float(tau), int(float(surv)) == 0)
 
     fails = [t for t, f in union.values() if f]
     survs = [t for t, f in union.values() if not f]
@@ -266,108 +205,29 @@ def swarm():
     return {}
 
 
-def knowledge_793():
-    print("\nKNOWLEDGE 793 — dynamic gap closure")
-    kp = os.path.join(ROOT, "repro", "data", "knowledge_793_results.csv")
-    if not os.path.exists(kp):
-        return {"gap_open": True}
-
-    import numpy as np
-    import statsmodels.api as sm
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.model_selection import StratifiedKFold, cross_val_predict
-    from sklearn.metrics import roc_auc_score
-
-    rows = list(csv.DictReader(open(kp)))
-    E = np.array([int(float(r["E"])) for r in rows])
-    U = np.array([float(r["U"]) for r in rows])
-    D_enc = np.array([float(r["D_enc"]) for r in rows])
-    D_dec = np.array([float(r["D_dec"]) for r in rows])
-    D = D_enc * D_dec
-
-    r_corr = float(np.corrcoef(D_enc, D_dec)[0, 1])
-    vif = 1.0 / (1.0 - min(r_corr * r_corr, 1 - 1e-12))
-
-    cvk = StratifiedKFold(5, shuffle=True, random_state=42)
-    def cv_auc(X):
-        X = np.column_stack(X)
-        p = cross_val_predict(LogisticRegression(max_iter=2000), X, E, cv=cvk,
-                              method="predict_proba")[:, 1]
-        return float(roc_auc_score(E, p))
-
-    cv_lin = cv_auc([U * D])
-    cv_quad = cv_auc([U * D * D])
-
-    gate("G3_knowledge_793_gap_closed", (vif < 1.10) and (cv_lin > cv_quad),
-         f"793-row Knowledge dataset found; VIF = {vif:.4f}, CV AUC linear = {cv_lin:.4f} vs quadratic = {cv_quad:.4f}")
-    return {"gap_open": False, "N": len(rows), "vif": round(vif, 4), "cv_auc_linear": round(cv_lin, 4)}
-
-
-def digital_swarm_500():
-    print("\nDIGITAL SWARM 500 — dynamic gap closure")
-    sp = os.path.join(ROOT, "repro", "data", "digital_swarm_results.csv")
-    if not os.path.exists(sp):
-        return {"gap_open": True}
-
-    import numpy as np
-    import statsmodels.api as sm
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.model_selection import StratifiedKFold, cross_val_predict
-    from sklearn.metrics import roc_auc_score
-
-    rows = list(csv.DictReader(open(sp)))
-    E = np.array([int(float(r["E"])) for r in rows])
-    U = np.array([float(r["U"]) for r in rows])
-    D_enc = np.array([float(r["D_enc"]) for r in rows])
-    D_dec = np.array([float(r["D_dec"]) for r in rows])
-    D = D_enc * D_dec
-
-    r_corr = float(np.corrcoef(D_enc, D_dec)[0, 1])
-    vif = 1.0 / (1.0 - min(r_corr * r_corr, 1 - 1e-12))
-
-    cvk = StratifiedKFold(5, shuffle=True, random_state=42)
-    def cv_auc(X):
-        X = np.column_stack(X)
-        p = cross_val_predict(LogisticRegression(max_iter=2000), X, E, cv=cvk,
-                              method="predict_proba")[:, 1]
-        return float(roc_auc_score(E, p))
-
-    cv_lin = cv_auc([U * D])
-    cv_quad = cv_auc([U * D * D])
-
-    gate("G4_digital_swarm_gap_closed", (vif < 1.10) and (cv_lin > cv_quad),
-         f"500-row Swarm dataset found; VIF = {vif:.4f}, CV AUC linear = {cv_lin:.4f} vs quadratic = {cv_quad:.4f}")
-    return {"gap_open": False, "N": len(rows), "vif": round(vif, 4), "cv_auc_linear": round(cv_lin, 4)}
-
-
 def main():
     lock = open(os.path.join(HERE, "prereg", "GAPCLOSURE.sha256")).read()
     print("=" * 86)
     print(" GAP CLOSURE — pre-registered (spec locked before this runner was written)")
     print(" " + [l for l in lock.splitlines() if "canonical" in l][0].strip())
     print("=" * 86)
-    y = yeast(); g = github(); s = swarm(); k = knowledge_793(); ds = digital_swarm_500()
+    y = yeast(); g = github(); s = swarm()
 
     print("\n" + "=" * 86)
     print(" LEDGER AFTER THIS RUN")
     print("=" * 86)
     ycl = y and all(r["pass"] for r in RESULTS if r["gate"].startswith("Y"))
-    gcl = g and any(r["pass"] and r["gate"] == "G1_992_gap_closed" for r in RESULTS)
-    kcl = k and any(r["pass"] and r["gate"] == "G3_knowledge_793_gap_closed" for r in RESULTS)
-    dscl = ds and any(r["pass"] and r["gate"] == "G4_digital_swarm_gap_closed" for r in RESULTS)
-
     print(f"  A_yeast_4825_channel            REAL_REPRODUCIBLE")
     print(f"  A_yeast_4825_outcome_coupling   {'REAL_REPRODUCIBLE  <-- GAP CLOSED' if ycl else 'STILL OPEN'}")
-    print(f"  B_github_992                    {'REAL_REPRODUCIBLE  <-- GAP CLOSED' if gcl else 'STILL OPEN (not offline-reproducible)'}")
+    print(f"  B_github_992                    STILL OPEN (not offline-reproducible)")
     print(f"  B_github_tau_v_union            REAL_REPRODUCIBLE (N={g['union_N']}, failed={g['union_failed']})")
-    print(f"  C_knowledge_793                 {'REAL_REPRODUCIBLE  <-- GAP CLOSED' if kcl else 'SIMULATION (retracted)'}")
-    print(f"  D_digital_swarm                 {'REAL_REPRODUCIBLE  <-- GAP CLOSED' if dscl else 'SIMULATION'}")
-    print("\n  Honest scope: closing the yeast outcome gap, GitHub 992, Knowledge 793, and Digital Swarm.")
+    print(f"  D_digital_swarm                 SIMULATION (real-data analogue tested separately)")
+    print("\n  Honest scope: closing the yeast outcome gap does NOT close GitHub 992.")
+    print("  The 992 claim remains uncitable as offline-reproducible from this repository.")
 
     out = {"spec_sha256_canonical": "f8a94c655dc0ec5c9add082114dd7048a5d148827fd6e0cb33226461c3dbd03a",
            "yeast": y, "github": g, "swarm": s, "gates": RESULTS,
-           "yeast_outcome_gap_closed": bool(ycl), "github_992_gap_closed": bool(gcl), "github_992_gap_open": not gcl,
-           "knowledge_793_gap_closed": bool(kcl), "digital_swarm_gap_closed": bool(dscl),
+           "yeast_outcome_gap_closed": bool(ycl), "github_992_gap_open": True,
            "missed_predictions": FAILED}
     json.dump(out, open(os.path.join(HERE, "results_gapclosure.json"), "w"), indent=2)
     print(f"\n  gates met: {len(RESULTS)-len(FAILED)}/{len(RESULTS)}")

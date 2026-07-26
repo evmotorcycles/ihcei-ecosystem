@@ -1,0 +1,48 @@
+{
+  "title": "Decoupled underwriting: does enforcement latency beat popularity at pricing default risk?",
+  "version": "1.0",
+  "date": "2026-07-25",
+  "motivation": "The Knowledge Exchange thesis (K1) was falsified because its yield proxies (downloads, forks) were THEMSELVES popularity measures, so popularity trivially predicted popularity. This test is the corrected form of that question: hold the outcome NON-CIRCULAR (project survival/abandonment, which is not a popularity metric) and ask whether popularity or enforcement latency prices default risk better.",
+  "design": {
+    "substrate": "real open-source GitHub repositories, fetched live via the project-6q4gj gh-issues proxy",
+    "per_repo_fields": ["stargazers (popularity/status)", "tau_v (mean issue-close latency, days)", "archived + pushed_at (lifecycle)"],
+    "outcome_E": "DEFAULT = 1 if archived OR no push in > 730 days, else 0. Derived from lifecycle only — never from stars, forks or downloads, so it is non-circular with respect to popularity.",
+    "two_underwriters": {
+      "conventional_status_based": "score applicants by popularity (stars). Fund the most-starred. This is the 'read quality off prestige' policy.",
+      "sovereign_decoupled": "ignore stars entirely; score applicants by enforcement latency tau_v (low tau_v = funds). This is F_out = F_eval — underwrite on measured behaviour, not self-reported standing."
+    }
+  },
+  "gates": {
+    "B1_tauv_beats_stars": {
+      "claim": "enforcement latency discriminates default better than popularity",
+      "predicted": "AUC(tau_v -> default) > AUC(stars -> default)",
+      "can_fail": "yes - stars could win, which would vindicate status-based underwriting"
+    },
+    "B2_popularity_is_near_chance": {
+      "claim": "popularity carries little information about survival",
+      "predicted": "AUC(stars -> default) within [0.30, 0.70]",
+      "can_fail": "yes - stars could be strongly predictive in either direction"
+    },
+    "B3_portfolio_default_rate": {
+      "claim": "a decoupled loan book defaults less than a prestige-driven one",
+      "predicted": "default rate of the sovereign portfolio (lowest-tau_v half) < default rate of the conventional portfolio (highest-stars half)",
+      "can_fail": "yes - the prestige book could default less"
+    },
+    "B4_two_axes_not_collinear": {
+      "claim": "popularity and enforcement latency are genuinely different axes, not one signal restated",
+      "predicted": "|spearman(stars, tau_v)| < 0.50",
+      "can_fail": "yes - if they are collinear the whole distinction collapses"
+    }
+  },
+  "pre_committed_consequences": {
+    "if_B1_fails": "decoupled underwriting is not justified by this evidence; the design claim is withdrawn for this substrate",
+    "if_B3_fails": "the portfolio argument is retracted regardless of AUC",
+    "if_B4_fails": "the 'two separate orderings' claim collapses and the banking design loses its empirical motivation"
+  },
+  "declared_limits": [
+    "Small N (tens of repositories, not thousands). Underpowered; no p-value or confidence claim is manufactured from it.",
+    "Software-repository default is an ANALOGUE of credit default, not credit data. It tests the UNDERWRITING PRINCIPLE (behaviour vs prestige), not loan performance.",
+    "tau_v is computed from the most recent issue pages only, so it is a recent-behaviour estimate.",
+    "This tests only the evaluator layer of the banking design. The full-reserve and risk-sharing contract layers are architecture, not tested here, and are labelled as such."
+  ]
+}
