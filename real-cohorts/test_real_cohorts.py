@@ -120,16 +120,34 @@ def test_revocation_is_labelled_as_a_traversal_check_not_evidence():
         "a check that cannot fail must never be counted as empirical support"
 
 
-def test_this_does_not_close_the_github_992_gap():
-    """Guard against the exact substitution that was proposed and refused: presenting
-    a different (or generated) dataset as if it restored the lost 992 cohort."""
+def test_this_pypi_graph_is_not_what_closed_the_github_992_gap():
+    """Guard against the substitution that was proposed and refused: presenting a
+    different (or generated) dataset as if it restored the lost 992 cohort.
+
+    UPDATED 2026-07-26. The 992 gap has since been closed — but NOT by this PyPI graph
+    and NOT by generated data. The real CI artifact was supplied from an off-repository
+    copy and verified by recomputation from its own rows (7/7). This guard therefore
+    still asserts that the closure came from that verification, so the PyPI substitute
+    can never be quietly credited with it.
+    """
     spec = json.load(open(os.path.join(HERE, "prereg", "realsub_prereg.json")))
     rel = spec["relationship_to_github_992"]
-    assert "does NOT close" in rel and "unrecoverable" in rel
-    assert "curve-fitting" in rel
+    assert "does NOT close" in rel and "curve-fitting" in rel
 
-    audit = subprocess.run([sys.executable,
-                            os.path.join(ROOT, "cohort-audit", "cohort_audit.py")],
-                           capture_output=True, text=True)
-    assert "NOT_OFFLINE_REPRODUCIBLE" in audit.stdout, \
-        "the 992 gap must still be reported as open"
+    rec = os.path.join(ROOT, "cohort-audit", "results_992_recovery.json")
+    if not os.path.exists(rec):
+        audit = subprocess.run([sys.executable,
+                                os.path.join(ROOT, "cohort-audit", "cohort_audit.py")],
+                               capture_output=True, text=True)
+        assert "NOT_OFFLINE_REPRODUCIBLE" in audit.stdout, \
+            "with no verified recovery on record, the 992 gap must be reported as open"
+        return
+
+    r = json.load(open(rec))
+    assert r["verified"] is True and r["N"] == 992
+    # the closure rests on the REAL artifact, whose rows are a GitHub repo cohort --
+    # nothing to do with the PyPI dependency graph this directory fetched
+    assert r["verdict_recomputed"] == "QUADRATIC_DISCONFIRMED"
+    assert r["csv_sha256"] != json.load(
+        open(os.path.join(ROOT, "data", "pypi", "MANIFEST.json"))
+    )["sha256"]["dep_graph_nodes.csv"]

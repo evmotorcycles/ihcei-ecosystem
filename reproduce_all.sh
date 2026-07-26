@@ -79,7 +79,7 @@ run "biomedical-agency: 4 telemetry laws on real yeast/PubMed/bioRxiv/GitHub (OQ
 run "bell-telemetry: Bell/CHSH nonlocality as device-independent telemetry (classical 2, quantum 2√2, PR-box rejected)" py bell-telemetry/test_bell.py
 run "knowledge-breakthroughs: status vs fidelity on real GitHub/HF/bioRxiv/PubMed — thesis FALSIFIED, null locked" py knowledge-breakthroughs/test_knowledge.py
 run "cohort-audit: Yeast 4825 / GitHub 992 / swarm evidentiary audit — gaps + simulations locked" py cohort-audit/test_cohort_audit.py
-run "cohort-audit: gap closure — yeast outcome CLOSED, GitHub 992 still open, G2 miss recorded" py cohort-audit/test_gap_closure.py
+run "cohort-audit: gap closure — yeast CLOSED, 992 CLOSED by verified recovery, G2 miss recorded" py cohort-audit/test_gap_closure.py
 run "cohort-audit: no evidence file is silently gitignored (root-cause guard)" py cohort-audit/test_no_ignored_evidence.py
 run "sovereign-bank: decoupled underwriting on real GitHub repos — 2/4, central prediction FALSIFIED" py sovereign-bank/test_bank.py
 run "sovereign-bank: N=44 replication — 1/4, portfolio advantage collapsed to a TIE" py sovereign-bank/test_replication.py
