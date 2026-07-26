@@ -1,0 +1,96 @@
+{
+  "spec_sha256_canonical": "00d5d2770abc44510c6367565c773f4b6923bbac89791dc03dba7068a39e54ea",
+  "csv_sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+  "N_full": 992,
+  "N_measured": 866,
+  "defaults_measured": 634,
+  "D_min": 0.010818,
+  "P1_weighted_stratified_auc_measured": 0.7487,
+  "P1_strata_above_half": 2,
+  "P1_pooled_auc_measured": 0.7462,
+  "P1_weighted_stratified_auc_full": 0.74,
+  "P1_per_stratum": [
+    {
+      "stratum": 1,
+      "n": 173,
+      "auc": null,
+      "note": "single-outcome stratum, excluded"
+    },
+    {
+      "stratum": 2,
+      "n": 173,
+      "auc": null,
+      "note": "single-outcome stratum, excluded"
+    },
+    {
+      "stratum": 3,
+      "n": 173,
+      "auc": null,
+      "note": "single-outcome stratum, excluded"
+    },
+    {
+      "stratum": 4,
+      "n": 173,
+      "defaults": 111,
+      "auc": 0.7267,
+      "median_stars": 14352
+    },
+    {
+      "stratum": 5,
+      "n": 174,
+      "defaults": 4,
+      "auc": 0.7706,
+      "median_stars": 55218
+    }
+  ],
+  "P2_excluded_fraction_of_top_quintile": 0.7677,
+  "P3_conventional_p95": 0.5035,
+  "P3_sovereign_p95": 0.9007,
+  "P3_conventional_mean": 0.4643,
+  "P3_sovereign_mean": 0.8752,
+  "P4_inflated_default_rate": 0.0263,
+  "P4_sound_default_rate": 0.0217,
+  "P6_spearman_stars_D": -0.4702,
+  "gates": [
+    {
+      "gate": "P1_fidelity_survives_capacity_stratification",
+      "pass": false,
+      "detail": "weighted within-stratum AUC(tau_v) = 0.7487  (gate > 0.55); strata above 0.5: 2/5\n        pooled (unstratified) AUC = 0.7462  ->  capacity stratification PRESERVES the signal\n        SECONDARY full-sample weighted AUC = 0.7400 (2/5 above 0.5)\n        per stratum: Q1 n=173 auc=None, Q2 n=173 auc=None, Q3 n=173 auc=None, Q4 n=173 auc=0.7267, Q5 n=174 auc=0.7706",
+      "falsifiable": true
+    },
+    {
+      "gate": "P2_the_floor_actually_binds",
+      "pass": true,
+      "detail": "the D >= D_min floor excludes 152 of 198 top-quintile-by-stars nodes = 76.8% (gate >= 20%)",
+      "falsifiable": true
+    },
+    {
+      "gate": "P3_tail_risk_not_mean_risk",
+      "pass": false,
+      "detail": "book size 433 each.  conventional (top stars): mean 46.4%, 95th pct 50.3%\n        sovereign (D>=D_min, then lowest tau_v): mean 87.5%, 95th pct 90.1%\n        the earlier design predicted a lower MEAN and lost that at N=44; this gate tests the DOWNSIDE",
+      "falsifiable": true
+    },
+    {
+      "gate": "P4_unearned_capacity_inflation_predicts_collapse",
+      "pass": true,
+      "detail": "among TOP-QUINTILE-BY-STARS nodes: high capacity on DEGRADED fidelity (D<D_min, n=152) defaults at 2.6%\n        vs high capacity on sound fidelity (D>=D_min, n=46) at 2.2%   ->  gap +0.5 pts",
+      "falsifiable": true
+    },
+    {
+      "gate": "P5_full_reserve_invariant",
+      "pass": true,
+      "detail": "433 equity contracts, deposits 433000, claims issued 433000, breaches 0. Enforced by construction \u2014 reported as conformance, never as evidence.",
+      "falsifiable": false
+    },
+    {
+      "gate": "P6_decoupled_evaluation_changes_the_allocation",
+      "pass": true,
+      "detail": "spearman(stars, D) = -0.4702 (gate |rho| < 0.50); top-decile-by-stars nodes below the fidelity floor: 86",
+      "falsifiable": true
+    }
+  ],
+  "gates_not_met": [
+    "P1_fidelity_survives_capacity_stratification",
+    "P3_tail_risk_not_mean_risk"
+  ]
+}
