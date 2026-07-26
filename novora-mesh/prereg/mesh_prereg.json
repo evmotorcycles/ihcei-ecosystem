@@ -1,0 +1,47 @@
+{
+  "title": "The Novora Sovereign Mesh: an integrated financial system that does NOT underwrite on fidelity, tested by ABLATION on the recovered N=992 (pre-registered and hash-locked BEFORE any gate was computed)",
+  "date_locked": "2026-07-26",
+  "the_paradigm_change_stated_precisely": "Every previous banking design in this repository tried to underwrite by fidelity -- to admit borrowers whose D or tau_v looked good. That approach is dead, and not for want of tuning: four pre-registered runs failed (2/4, 1/4, 3/5, 2/5), the flat floor anti-selected, the stratified floor defaulted at roughly eighteen times the naive capacity baseline, and the mechanism is a SIGN INVERSION -- weighted within-capacity-tier AUC(low D -> default) = 0.3397, below 0.5. Selecting high D selects for failure. The new paradigm therefore REMOVES THE FIDELITY SCREEN ENTIRELY. Admission is open. Fidelity telemetry is retained but moved to a completely different job: continuous monitoring of capital already deployed, where it demonstrably does work (SC7, +42,840 over hold-everything under spec 8bac3099). The system's safety comes from CONTRACT STRUCTURE and STAGED RESPONSE, not from picking winners.",
+  "why_ablation_is_the_only_honest_test_of_an_integrated_system": "A design that assembles many components (telemetry, abstention, staged covenants, risk-sharing, full reserve, decoupled evaluation, an audit ledger) can always be reported as 'working' by pointing at the whole. That proves nothing about the parts, and it is how integration claims usually smuggle in dead weight. This pre-registration therefore commits in advance to REMOVING EACH COMPONENT ONE AT A TIME and measuring the loss. A component that can be deleted without cost is dead weight and MUST be reported as dead weight, not defended. NP2 makes that a scored gate, and it is expected to be at genuine risk: it is quite likely that at least one component of this stack earns nothing.",
+  "components_under_test": {
+    "admission": "OPEN. No fidelity screen, no prestige screen. This is the paradigm change and it is deliberately the null-est possible policy.",
+    "structure": "Proportional co-ownership (mudarabah/musharakah reading): institution 90%, borrower 10%, losses shared in the same ratio as gains, NO RECOURSE. Loss to the borrower ends at their stake.",
+    "reserve": "100% full reserve. The institution issues no claim exceeding deposits received; the credit multiplier is exactly 1.",
+    "telemetry": "LISM tau_v (enforcement latency), measured, never self-reported. The Masjid / F_out = F_eval reading: the counterparty's own account of its health is discarded.",
+    "abstention": "The PAGES confidence/abstain rule. Where telemetry is IMPUTED rather than measured, the system declines to act on it and holds the position unchanged rather than treating a guess as a reading. The N=992 cohort carries a tau_v_imputed flag on 126 rows and its imputation is asymmetric (15.5% of failed vs 4.1% of performing), so this is a real and consequential decision, not a formality.",
+    "staged_response": "The NERE / IHCEI graded-escalation reading. Instead of one binary exit threshold, exposure is reduced in stages: hold below 30 days, halve exposure between 30 and 60 days at a 10% cost on the released portion, exit above 60 days at a 30% cost.",
+    "audit_ledger": "The Echo / Page Code reading: every admission, stage change and exit is appended to a SHA-256 hash chain, so the decision history cannot be silently rewritten."
+  },
+  "data": {
+    "cohort": "data/github/govphys_quadratic_results.csv -- the recovered N=992 cohort (prereg cac34f44), verified by recomputation from its rows (7/7). Committed.",
+    "outcome": "default = (E == 0); 750 of 992. The real default sequence is used unchanged.",
+    "declared_substrate_limitation": "UNCHANGED AND STILL SEVERE. GitHub repositories are a poor analogue for credit borrowers: no balance sheet, no collateral, no obligation to repay, and abandonment tracks whether anyone is funded to maintain the project far more than it tracks governance fidelity. This substrate is used because it is the only real, committed, non-circular outcome sequence at N=992 available here. Every result is a statement about mechanism over a real failure sequence, NOT a claim about credit markets, and NOT a claim that this institution would be viable, competitive or legal."
+  },
+  "contract_parameters_fixed_before_running": {
+    "contract_size": 1000.0,
+    "borrower_stake_fraction": 0.10,
+    "institution_stake_fraction": 0.90,
+    "success_growth_g": 0.20,
+    "recovery_fraction_on_default_phi": 0.40,
+    "debt_markup_r": 0.08,
+    "stage1_tau_v_days": 30.0,
+    "stage1_exposure_retained": 0.50,
+    "stage1_cost_on_released": 0.10,
+    "stage2_tau_v_days": 60.0,
+    "stage2_exit_cost": 0.30,
+    "leverage_for_ablation": 5.0,
+    "note": "Identical economics to spec 8bac3099 where they overlap, so results are comparable across specs. All values round and conventional; none may be adjusted after seeing a result."
+  },
+  "gates": {
+    "NP1_the_mesh_beats_the_conventional_baseline": "The full mesh (open admission + risk-sharing + full reserve + staged covenant + abstention) must end with more institution capital than the conventional baseline (prestige-selected, leveraged, debt-structured). PASS iff strictly greater. CAN FAIL.",
+    "NP2_every_component_earns_its_place": "ABLATION. Remove each component individually and re-run. A component EARNS ITS PLACE iff its removal strictly worsens institution capital. PASS iff EVERY component earns its place. FALSIFIABLE AND EXPECTED TO BE AT REAL RISK: if any component can be deleted at no cost it is dead weight, the gate FAILS, and the dead component must be named explicitly in the results, the README and the skill -- never quietly retained.",
+    "NP3_abstention_on_imputed_telemetry_pays": "The PAGES rule under test. Compare abstaining on the 126 imputed-telemetry rows against acting on the imputed values as if measured. PASS iff abstention yields strictly greater institution capital. FALSIFIABLE BOTH WAYS: acting on imputed values may well be better here precisely because the imputation is correlated with failure, in which case abstention is a cost and must be reported as one.",
+    "NP4_staged_response_beats_a_binary_exit": "Compare the three-stage escalation against a single hard exit at 60 days (the SC7 rule that already worked). PASS iff staged yields strictly greater institution capital. CAN FAIL: the intermediate stage charges a real 10% cost on every reduction including on borrowers who go on to perform.",
+    "NP5_no_component_contribution_is_claimed_without_its_ablation": "META-GATE. Every component listed in components_under_test must have a corresponding ablation arm with a measured delta in the results file. PASS iff the set of ablation arms covers the set of claimed components. DECLARED falsifiable:false -- it is a completeness check on the report itself, enforced by construction, and is EXCLUDED from the score. It exists so that no component can be credited in prose without a number behind it.",
+    "NP6_full_reserve_eliminates_depositor_shortfall": "With the credit multiplier at exactly 1, depositor shortfall is identically zero; the leveraged ablation at m=5 is run to report the contrast. DECLARED falsifiable:false -- zero shortfall under full reserve is definitional, not a discovery. EXCLUDED from the score and reported as a measured contrast only.",
+    "NP7_the_audit_ledger_is_tamper_evident": "Every decision is appended to a SHA-256 hash chain. Recomputing the chain must reproduce the head, and a single mutated decision must break it. DECLARED falsifiable:false -- this is a correctness property of the implementation, cannot come out false if the code is right, and is EXCLUDED from the score. It is reported as conformance, never as evidence that the financial design works."
+  },
+  "symmetric_null": "Every capital figure, delta and ablation contrast is reported with its exact value whether or not it favours the design. NP1, NP2, NP3 and NP4 are genuinely at risk. NP5, NP6 and NP7 are declared non-falsifiable and excluded from the score, because a check that cannot fail is not evidence. Any component found to be dead weight is named in the results, the README and the OQM skill. No threshold or parameter in this file may move after the lock.",
+  "what_a_pass_would_and_would_not_mean": "Passing NP1-NP4 would establish that, over one real failure sequence, an open-admission risk-sharing mesh with staged telemetry-driven de-risking preserves more capital than a prestige-selected leveraged debt book, and that each of its components contributes measurably. It would NOT establish profitability, competitiveness, regulatory viability, or transferability from software repositories to human borrowers. It would NOT validate any theological or normative claim: the OQM vocabulary used here is Layer-2 operational naming, and no Layer-1 result adjudicates a Layer-3 prior.",
+  "acceptance": "GREEN when this spec re-hashes to its published canonical SHA-256, the cohort re-hashes to the sha256 recorded by the recovery verification, and every gate is evaluated exactly as written -- with misses recorded, dead components named, assertions locked in tests, and everything carried into the README. Exit 0 means 'reproduces including its failures', never 'the system is validated'."
+}
