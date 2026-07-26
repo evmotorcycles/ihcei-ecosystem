@@ -7,7 +7,7 @@ That is reported first and at full strength, because it is the only version of t
 document worth having.*
 
 ```bash
-bash reproduce_all.sh        # 65/65, clean checkout, offline, $0
+bash reproduce_all.sh        # 66/66, clean checkout, offline, $0
 ```
 
 ---
@@ -492,3 +492,113 @@ The `oqm-governance-vs-theology-skill.md` supplied is **stale on two points**:
 
 *Reproduce: `bash reproduce_all.sh` → **65/65**. Pre-registrations `4e83893b`, `00d5d277`,
 `95d96f91`, `8bac3099` — each committed before the data and gates it governs.*
+
+---
+
+# Part IV — The Novora Sovereign Mesh, and what the ablation destroyed
+
+*Pre-registration `ed71c3fc…`, locked and committed before any gate ran.*
+
+## 17. The new paradigm, stated plainly
+
+Selection on fidelity is dead — four runs, and the mechanism is a **sign inversion**
+(within-tier AUC 0.3397), so preferring high `D` selects for failure. The mesh therefore
+**removes the fidelity screen entirely** and moves telemetry to the one job where it
+demonstrably works: monitoring capital *already deployed*.
+
+| Component | Stack element | Role |
+|---|---|---|
+| admission | Agency algorithm | **open** — deliberately null |
+| structure | OQM mudarabah/musharakah | 90/10 proportional, **no recourse** |
+| reserve | — | multiplier exactly 1 |
+| telemetry | LISM + Masjid (`F_out = F_eval`) | τ_v; self-report discarded |
+| abstention | Novora PAGES | hold where τ_v is **imputed** |
+| staged response | NERE + IHCEI | hold → halve → exit |
+| audit ledger | Echo + Page Code | SHA-256 hash chain |
+
+**Why ablation.** An integrated design can always be declared "working" by pointing at
+the whole. That proves nothing about the parts, and it is how integration claims smuggle
+in dead weight. So the spec committed *in advance* to removing each component and
+measuring the loss — with any component that earns nothing **named** as dead weight.
+
+## 18. Result: 1 of 4. The ablation is why it was worth running.
+
+```
+FULL MESH      capital  -285,750    held=992 staged=186 exited=204 abstained=126
+CONVENTIONAL   capital  -133,040    (prestige screen, 5x leverage, debt, no telemetry)
+```
+
+| Component removed | Capital without it | Δ | Verdict |
+|---|---:|---:|---|
+| **admission** (screen put back) | −74,655 | **+211,095** | ✗ dead weight |
+| structure | −335,950 | −50,200 | ✓ earns its place |
+| reserve | −285,750 | 0 | ✗ (metric-blind — see below) |
+| telemetry | −361,440 | −75,690 | ✓ earns its place |
+| abstention | −285,750 | 0 | ✗ (untestable here — see below) |
+| staged response | −318,600 | −32,850 | ✓ earns its place |
+| audit ledger | −285,750 | 0 | ✗ governance control, not economic |
+
+### The finding that hurts
+
+**Putting the prestige screen back gains +211,095 — more than every other component's
+contribution combined.** On this substrate, capacity screening is the single most
+valuable lever, and the paradigm's central move — removing it — is its most expensive
+feature.
+
+That is the opposite of what the design was built on. It is reported at full strength and
+asserted in the test suite, so it cannot be softened later.
+
+### Two failures with mechanical explanations — which do **not** rescue the gates
+
+- **NP3 (abstention).** All 126 imputed rows carry `τ_v = 30.00` **exactly** — the
+  imputation constant — and **0** of them can cross the 30-day stage boundary. Acting and
+  abstaining are therefore *identical by construction of the imputation*. This cohort
+  **cannot test** the PAGES rule. That is *untestable-here*, not *refuted* — and the gate
+  still counts as **NOT MET**.
+- **NP1 (vs baseline).** Confounded twice: the conventional book holds **496** contracts
+  to the mesh's 992, and its default rate is **51.2%** against **75.6%** because prestige
+  screening genuinely selects survivors. Per contract: **−268.23 vs −288.05**. The mesh is
+  still worse — by 7%, not by 2.1× — and the gate still counts as **NOT MET**.
+
+### What the capital metric could not see
+
+**Full reserve** scored a Δ of exactly 0 because the ablation metric is *capital*, and
+full reserve's benefit is *depositor shortfall*: **0** under full reserve versus
+**186,550** at 5× leverage on the same book. It is listed as dead weight because the
+pre-registered metric says so — and the real effect is recorded beside it rather than
+argued into the score. The **audit ledger** is likewise a governance control: 992 chained
+decisions, head `204425a8…`, and mutating one entry breaks the chain. Neither is defended
+as an economic contributor.
+
+## 19. The design the evidence actually supports
+
+Stripping everything that did not earn its place across **six** pre-registered runs:
+
+1. **Screen on capacity, not fidelity.** Uncomfortable, repeatedly measured, and by far
+   the largest single effect (+211,095).
+2. **Structure the contract as proportional, no-recourse risk-sharing.** Earns −50,200
+   when removed; compresses borrower dispersion 11.25× (386.52 → 34.36) and caps the worst
+   borrower outcome at their stake (−780 → −60).
+3. **Use τ_v as a monitoring covenant, never as an admission gate.** Earns −75,690 when
+   removed; +42,840 over hold-everything under spec `8bac3099`.
+4. **Escalate in stages, not binary.** Earns −32,850, with a real cost charged on all 186
+   reductions.
+5. **Hold full reserves** — justified by depositor shortfall (0 vs 186,550), *not* by
+   returns.
+
+That is a coherent institution. It is also **not** the one the OQM framing originally
+implied, and the difference is the whole value of having run the tests.
+
+## 20. Limits, restated
+
+The substrate limitation is unchanged and severe: GitHub repositories have **no balance
+sheet, no collateral and no obligation to repay**, and abandonment tracks *funding* more
+than governance fidelity. These are statements about **mechanism over a real failure
+sequence** — not claims about credit markets, profitability, competitiveness, or legal
+viability. The filings arm that would have tested a genuine financial substrate remains
+**BLOCKED** on a `403`.
+
+---
+
+*Reproduce: `bash reproduce_all.sh` → **66/66**. Pre-registrations `4e83893b`, `00d5d277`,
+`95d96f91`, `8bac3099`, `ed71c3fc` — each committed before the data and gates it governs.*

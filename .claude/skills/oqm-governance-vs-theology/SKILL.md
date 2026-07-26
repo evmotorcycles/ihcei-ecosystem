@@ -206,6 +206,41 @@ obligation to repay, and abandonment tracks funding rather than governance fidel
 These are statements about contract mechanics over a real failure sequence, **not** about
 credit markets.
 
+### The design six pre-registered runs actually support
+
+Not the one the OQM framing originally implied. Deltas are the measured cost of removing
+each rule (`ed71c3fc…`, ablation on real N=992):
+
+| Rule | Evidence |
+|---|---|
+| Screen on **capacity**, not fidelity | **+211,095** — largest single effect |
+| Proportional **no-recourse** risk-sharing | −50,200; dispersion 11.25× lower |
+| τ_v as a **covenant**, never an admission gate | −75,690; +42,840 vs hold-all |
+| **Staged** escalation, not binary | −32,850 |
+| Full reserves — justified by **shortfall**, not returns | 0 vs 186,550 at 5× |
+
+**Removing the fidelity screen was the most expensive decision in the whole programme.**
+The integrated mesh scored **1/4**; putting the prestige screen back gained more than every
+other component combined. State this whenever a "new paradigm" is proposed that drops
+capacity-based admission. `[L1]`
+
+**Ablation rule (mandatory).** An integrated design assembling many components can always
+be reported as "working" by pointing at the whole — that proves nothing about the parts and
+is how integration claims smuggle in dead weight. Any multi-component system must be tested
+by **removing each component and measuring the loss**, and every component that earns
+nothing must be **named** as dead weight, not defended. Of seven mesh components, **four
+were dead weight** (admission, reserve, abstention, audit ledger). Two of those four are
+dead only *against the chosen metric* — full reserve's benefit is depositor shortfall, and
+the ledger is a governance control — and that is recorded beside them rather than argued
+back into the score. `[L1]`
+
+**Untestable-here is not refuted.** All 126 imputed rows in the N=992 cohort carry
+`τ_v = 30.00` exactly, and none can cross the 30-day stage boundary, so abstaining and
+acting are identical *by construction of the imputation*. The PAGES abstention rule was
+**not tested** by that cohort. The gate still counts as NOT MET — a miss is a miss — but the
+rule must not be described as falsified. Distinguish these three states always:
+**refuted · untestable-here · blocked**. `[L1]`
+
 **Simulator rule (mandatory).** A simulation that *generates* a population containing the
 structure a proposed fix exploits cannot be evidence that the fix works — it will always
 succeed, by construction. This has now been refused three times: the synthetic N=992

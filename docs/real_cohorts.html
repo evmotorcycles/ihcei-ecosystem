@@ -1,4 +1,4 @@
-<title>LISM — selection was never the claim</title>
+<title>LISM — the ablation that killed the paradigm</title>
 <style>
   :root{
     --paper:#F1F3F2; --ink:#121A1F; --ink-2:#3A464C; --muted:#727E83;
@@ -145,17 +145,17 @@
 <div class="wrap">
 
 <header>
-  <p class="eyebrow">Prereg 4e83893b · 00d5d277 · 95d96f91 · 8bac3099 · reproduced 65/65</p>
-  <h1>Four designs failed at picking winners. <em>Because that was never the claim.</em></h1>
-  <p class="standfirst">Every banking trial tested <strong>selection</strong> — can fidelity
-  pick better counterparties than prestige? Four times, no. The fifth test stopped asking
-  that and tested <strong>structure</strong> instead, with selection conceded mechanically.
-  It scored 4/5 — and the gate that failed was my own prediction.</p>
+  <p class="eyebrow">5 pre-registrations · 6 runs · reproduced 66/66 · offline · $0</p>
+  <h1>We built the whole stack into one bank. <em>Then we ablated it.</em></h1>
+  <p class="standfirst">The new paradigm removed the fidelity screen entirely — open
+  admission, risk-sharing, staged telemetry. The ablation says its central move is its most
+  expensive feature: putting the prestige screen <em>back</em> gains more than every other
+  component combined.</p>
   <div class="scoreline">
-    <span class="tag hot">selection <b>falsified 4×</b></span>
+    <span class="tag hot">mesh <b>1/4</b></span>
+    <span class="tag hot">open admission <b>−211k</b></span>
     <span class="tag">structure <b>4/5</b></span>
-    <span class="tag">992 <b>recovered · 7/7</b></span>
-    <span class="tag">filings <b>blocked 403 ×5</b></span>
+    <span class="tag">dead weight <b>4 of 7 named</b></span>
   </div>
 </header>
 
@@ -677,6 +677,118 @@ SC6  depositor shortfall 0 at m=1 (definitional), first appears at leverage m=3<
 </section>
 
 <section>
+  <h2><span class="n">The mesh · prereg ed71c3fc · N=992</span>Integrate the whole stack, then try to break it</h2>
+  <p>Selection on fidelity is dead — four runs, and the mechanism is a sign inversion. So the
+  mesh <strong>removes the screen entirely</strong> and moves telemetry to the one job where
+  it works: monitoring capital already deployed.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Component</th><th>Stack element</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td>admission</td><td>Agency algorithm</td><td><strong>open</strong> — deliberately null</td></tr>
+        <tr><td>structure</td><td>OQM mudarabah/musharakah</td><td>90/10 proportional, no recourse</td></tr>
+        <tr><td>reserve</td><td>—</td><td>multiplier exactly 1</td></tr>
+        <tr><td>telemetry</td><td>LISM + Masjid <code>F_out=F_eval</code></td><td>τ_v; self-report discarded</td></tr>
+        <tr><td>abstention</td><td>Novora PAGES</td><td>hold where τ_v is imputed</td></tr>
+        <tr><td>staged response</td><td>NERE + IHCEI</td><td>hold → halve → exit</td></tr>
+        <tr><td>audit ledger</td><td>Echo + Page Code</td><td>SHA-256 hash chain</td></tr>
+      </tbody>
+      <caption>An integrated design can always be declared "working" by pointing at the
+      whole. So the spec committed IN ADVANCE to removing each component and measuring the
+      loss — naming anything that earns nothing as dead weight.</caption>
+    </table>
+  </div>
+
+  <div class="gates">
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">The ablation — 3 of 7 components earn their place</span>
+        <span class="verdict">NP2 failed</span></div>
+        <div class="nums">component removed        capital without        delta
+admission (screen back)      −74,655         +211,095   ✗ DEAD WEIGHT
+structure                   −335,950          −50,200   ✓ earns it
+reserve                     −285,750                0   ✗ metric-blind
+telemetry                   −361,440          −75,690   ✓ earns it
+abstention                  −285,750                0   ✗ untestable here
+staged response             −318,600          −32,850   ✓ earns it
+audit ledger                −285,750                0   ✗ governance only</div>
+        <p class="reading"><strong>Putting the prestige screen back gains +211,095 — more
+        than every other component's contribution combined.</strong> On this substrate
+        capacity screening is the single most valuable lever, and the paradigm's central
+        move is its most expensive feature. That is the opposite of what the design was
+        built on, and a test asserts it so it cannot be softened later.</p>
+      </div>
+    </div>
+
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">NP1 · NP3 — explained, but not rescued</span>
+        <span class="verdict">Still not met</span></div>
+        <div class="nums">NP3  all 126 imputed rows carry τ_v = 30.00 exactly — the imputation constant
+     0 of them can cross the 30-day boundary → acting and abstaining are IDENTICAL
+     by construction. Untestable here, not refuted. Gate stays NOT MET.
+
+NP1  baseline holds 496 contracts to the mesh's 992, at 51.2% default vs 75.6%
+     per contract: −268.23 vs −288.05 → worse by 7%, not by 2.1×. Stays NOT MET.</div>
+        <p class="reading">Both explanations are true. Neither changes a score. They are
+        recorded as post-hoc and a test asserts the gates remain failed.</p>
+      </div>
+    </div>
+
+    <div class="gate p">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">NP4 — staged escalation beats a binary exit</span>
+        <span class="verdict">Held</span></div>
+        <div class="nums">staged (hold/halve/exit) −285,750   vs   binary exit only −318,600   → +32,850
+a real 10% cost charged on all 186 reductions, including on borrowers who performed</div>
+      </div>
+    </div>
+
+    <div class="gate n">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">What the capital metric could not see</span>
+        <span class="verdict">Recorded, not scored</span></div>
+        <div class="nums">full reserve   depositor shortfall  0  vs  186,550 at 5× leverage
+audit ledger   992 chained decisions, head 204425a8…, mutation breaks the chain</div>
+        <p class="reading">Full reserve scored Δ=0 because the pre-registered metric is
+        capital, and its benefit is <em>shortfall</em>. It is listed as dead weight because
+        the metric says so — with the real effect recorded beside it rather than argued into
+        the score.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">What survived six runs</span>The design the evidence actually supports</h2>
+  <p>Strip everything that did not earn its place, and a coherent institution remains — just
+  not the one the original framing implied.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Rule</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>Screen on <strong>capacity</strong>, not fidelity</td><td class="num">+211,095</td></tr>
+        <tr><td>Proportional, <strong>no-recourse</strong> risk-sharing</td><td class="num">−50,200 · 11.25× less dispersion</td></tr>
+        <tr><td>τ_v as a <strong>covenant</strong>, never an admission gate</td><td class="num">−75,690 · +42,840</td></tr>
+        <tr><td><strong>Staged</strong> escalation, not binary</td><td class="num">−32,850</td></tr>
+        <tr><td>Full reserves — justified by <em>shortfall</em>, not returns</td><td class="num">0 vs 186,550</td></tr>
+      </tbody>
+      <caption>Deltas are the cost of removing each rule. The difference between this list
+      and the design we started with is the entire value of having run the tests.</caption>
+    </table>
+  </div>
+  <p class="reading"><strong>Limits, restated.</strong> GitHub repositories have no balance
+  sheet, no collateral and no obligation to repay, and abandonment tracks funding more than
+  governance fidelity. This is mechanism over a real failure sequence — not a claim about
+  credit markets, profitability, or legal viability. The filings arm that would have tested a
+  genuine financial substrate remains blocked on a 403.</p>
+</section>
+
+<section>
   <h2><span class="n">Ledger</span>Where this leaves LISM</h2>
   <div class="ledger">
     <div class="col keep">
@@ -705,6 +817,7 @@ SC6  depositor shortfall 0 at m=1 (definitional), first appears at leverage m=3<
         <li><code>E=U·D</code> vs <code>E=U·D²</code> on reuse — <em>neither</em> works</li>
         <li><code>D</code> flips sign against capacity between two real substrates — unresolved</li>
         <li>Selection on <code>D</code> in <em>any</em> form — four runs, sign inverted</li>
+        <li><strong>Open admission</strong> — removing the screen cost 211k, the largest single effect</li>
       </ul>
     </div>
   </div>
@@ -714,9 +827,9 @@ SC6  depositor shortfall 0 at m=1 (definitional), first appears at leverage m=3<
 </section>
 
 <footer>
-  bash reproduce_all.sh → 65/65 · exit 0 means "reproduces including its gaps, nulls and
+  bash reproduce_all.sh → 66/66 · exit 0 means "reproduces including its gaps, nulls and
   missed predictions", never "every claim held" · provenance merkle root 93fb0abf ·
-  pre-registrations 4e83893b · 00d5d277 · 95d96f91 · 8bac3099, each committed before the data and gates it governs
+  pre-registrations 4e83893b · 00d5d277 · 95d96f91 · 8bac3099 · ed71c3fc, each committed before the data and gates it governs
 </footer>
 
 </div>
