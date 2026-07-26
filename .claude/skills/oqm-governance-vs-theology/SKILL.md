@@ -143,16 +143,43 @@ Cite these accurately if the user asks what OQM/LISM has actually shown:
   must reappear. Weighted within-stratum AUC(τ_v) = 0.7487 vs pooled 0.7462 — stratifying
   did *not* destroy the signal — **but** 3 of 5 star strata are 100% default, so only 2
   strata were usable and the gate **failed on coverage**. State both halves. `[L1]`
+- **The STRATIFIED relative floor also fails** (real N=992, prereg `95d96f91…`, 2/5).
+  Replacing the flat floor with capacity-tier-local floors *does* repair ~23 points of the
+  flat floor's self-inflicted damage (56.9% vs 80.1%) — but it defaults at **56.9% against
+  a capacity-only baseline's 3.2%**, roughly **18×** worse. The design mitigates its own
+  wound and gains nothing over doing nothing clever. Its tail is worse too (62.5% vs 5.6%).
+  Do not describe stratification as a "protection shield". `[L1]`
+- **THE ROOT CAUSE — `D` is INVERTED, not merely uninformative.** Weighted within-capacity-
+  tier AUC(low `D` → default) = **0.3397**, below 0.5, and every usable tier agrees
+  (0.2701, 0.4088). **Within a tier, LOW fidelity predicts SURVIVAL.** So any admission
+  rule that selects *high* `D` actively selects for failure. This invalidates flat floors,
+  tier-local floors, and every future variant that keeps sorting the same direction —
+  the problem is not the threshold, it is the sign. `[L1]`
 - **MEASUREMENT ALARM — `D` is not yet a stable construct.** ρ(capacity, D) = **+0.5695**
   on real PyPI but **−0.4702** on the real GitHub cohort. Two real committed substrates
   disagree on the *sign*. Until resolved by re-deriving `D`, treat every "fidelity" claim
   as resting on an unstable measurement, and never repair this by reinterpreting a gate. `[L1]`
+- **BLOCKED, not absent:** LISM on real regulatory filings (FinancialReports connector,
+  arm F of `95d96f91…`). Every live endpoint returns **HTTP 403** "User profile not found
+  for the provided token"; only a bundled static taxonomy resolves. 0/5, all gates counted
+  as NOT MET. Remedy is account linkage, not code. Never fill a blocked arm with
+  synthetic, simulated or recalled data. `[L1]`
 - **No longer simulations:** the knowledge and digital-swarm cohorts now have a real,
   committed substitute (live PyPI, N = 540, depth 3, 1,287 edges). The seeded
   simulations carry zero evidential weight and must not be cited as support.
 
 **Standing rule for this skill:** when a newer, larger, pre-registered run contradicts an
 older, smaller one, the newer result governs. Never quote the friendlier sample.
+
+**Simulator rule (mandatory).** A simulation that *generates* a population containing the
+structure a proposed fix exploits cannot be evidence that the fix works — it will always
+succeed, by construction. This has now been refused three times: the synthetic N=992
+"restoration", the seeded digital swarm, and the stratified-floor ledger engine that
+enforced ρ ≈ −0.47 and then reported stratification helping. When a simulator and real
+data disagree, the real data governs; in this case the simulator's conventional baseline
+(60%) was wrong by a factor of ~19 (real: 3.2%), and that baseline was the entire
+comparison that decided the question. Always test a remedy where the exploited structure
+was **measured**, not imposed.
 
 **Anti-immunisation rule (mandatory).** "The test failed, which shows the environment is
 unguided/broken, which validates the prescriptive design" is an **unfalsifiable move** and

@@ -1,4 +1,4 @@
-<title>LISM — 992 recovered, and the bank tested until it broke</title>
+<title>LISM — the sign is wrong, not the threshold</title>
 <style>
   :root{
     --paper:#F1F3F2; --ink:#121A1F; --ink-2:#3A464C; --muted:#727E83;
@@ -145,17 +145,18 @@
 <div class="wrap">
 
 <header>
-  <p class="eyebrow">Pre-registrations 4e83893b · 00d5d277 · reproduced 63/63 · offline</p>
-  <h1>The lost cohort came back. <em>Then it broke the bank we built on it.</em></h1>
-  <p class="standfirst">N=992 was recovered and verified by recomputation from its own rows.
-  Two simulated cohorts were replaced with a real 540-package PyPI graph. And the
-  prescriptive banking design — the one meant to survive the earlier failures — failed
-  worse, for a reason the data now names exactly.</p>
+  <p class="eyebrow">Pre-registrations 4e83893b · 00d5d277 · 95d96f91 · reproduced 64/64</p>
+  <h1>The lost cohort came back. <em>Then it showed the sign was wrong, not the threshold.</em></h1>
+  <p class="standfirst">N=992 was recovered and verified by recomputation. Two simulated
+  cohorts were replaced with real PyPI data. Then two successive banking designs — a flat
+  fidelity floor and its stratified repair — both failed, and the third test finally
+  explained why: within a capacity tier, <em>low</em> fidelity predicts survival.</p>
   <div class="scoreline">
-    <span class="tag">992 <b>recovered · verified 7/7</b></span>
-    <span class="tag">PyPI gates <b>5/8</b></span>
-    <span class="tag hot">bank on N=992 <b>3/5</b></span>
-    <span class="tag hot">the floor <b>anti-selects</b></span>
+    <span class="tag">992 <b>recovered · 7/7</b></span>
+    <span class="tag">PyPI <b>5/8</b></span>
+    <span class="tag hot">flat floor <b>3/5</b></span>
+    <span class="tag hot">stratified <b>2/5 · 18× worse</b></span>
+    <span class="tag">filings <b>blocked 403</b></span>
   </div>
 </header>
 
@@ -482,6 +483,99 @@ high-status, sound fidelity     2.2%  (n=46)     gap = +0.5 points</div>
 </section>
 
 <section>
+  <h2><span class="n">The remedy · prereg 95d96f91</span>Stratified floors: a repaired wound, and no gain</h2>
+  <p>The proposed fix for anti-selection was to stop comparing a corner shop with a
+  conglomerate: segment applicants into capacity tiers and apply the fidelity floor
+  <em>within</em> each tier. It arrived supported by a simulator that
+  <strong>generates</strong> a population with the capacity–fidelity correlation
+  (ρ ≈ −0.47) <em>deliberately enforced</em>, then shows stratification helping.</p>
+  <p class="reading">A population built to contain the structure a fix exploits will always
+  show the fix working. That is the third time this pattern has appeared here — the
+  synthetic 992, the seeded swarm, now the ledger engine. So the remedy was tested where
+  the correlation was <strong>measured</strong>: the real, recovered N=992.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Book (216 each)</th><th>Simulator said</th><th>Real N=992</th></tr></thead>
+      <tbody>
+        <tr><td>conventional — capacity only</td><td class="num">60.0%</td><td class="num">3.2%</td></tr>
+        <tr><td>flat floor</td><td class="num">91.0%</td><td class="num">80.1%</td></tr>
+        <tr><td>stratified — tier-local</td><td class="num">72.0%</td><td class="num worse">56.9%</td></tr>
+      </tbody>
+      <caption>The simulator's ordering of flat-vs-stratified survived. Its conventional
+      baseline did not — 60% predicted against 3.2% measured, wrong by a factor of ~19, and
+      it is precisely the comparison that decides the question.</caption>
+    </table>
+  </div>
+
+  <div class="gates">
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">T5 — does fidelity discriminate within a tier?</span>
+        <span class="verdict">Inverted</span></div>
+        <p class="claim">The mechanism gate, and the deepest result of the programme.</p>
+        <div class="nums">weighted within-tier AUC(low D → default) = 0.3397   (gate > 0.55)
+  tier 3   n=216   AUC 0.2701
+  tier 4   n=217   AUC 0.4088
+  tiers 1–2        100% default — unusable</div>
+        <p class="reading">Below 0.5 means the relationship runs <strong>backwards</strong>:
+        within a capacity tier, <strong>low fidelity predicts survival</strong>. The floor is
+        not sorting on noise — it is sorting in the wrong direction, so admitting high-<code>D</code>
+        nodes <em>actively selects for failure</em>. This does not just kill the flat floor and
+        the stratified floor. <strong>It kills every future variant that keeps selecting on high
+        <code>D</code>.</strong> The problem is not where the threshold sits. It is the sign.</p>
+      </div>
+    </div>
+
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">T2 — does it beat doing nothing clever?</span>
+        <span class="verdict">Failed 18×</span></div>
+        <div class="nums">stratified 56.9%   vs   conventional capacity-only 3.2%</div>
+        <p class="reading">Named in the pre-registration as make-or-break, before the result
+        was known. The design mitigates a wound it inflicted on itself and gains nothing over
+        the naive baseline. T3 says the same of the tail: 62.5% vs 5.6%.</p>
+      </div>
+    </div>
+
+    <div class="gate p">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">T1 · T4 — what stratification genuinely did</span>
+        <span class="verdict">Held · low bar</span></div>
+        <div class="nums">recovers 23 points over the flat floor   56.9% vs 80.1%
+restores capacity access                median 2,872 vs 950</div>
+        <p class="reading">Both real, both logged at reduced weight — T1 as a
+        <em>low-value sanity check</em> (beating a design already known to anti-select proves
+        little), T4 as <em>construction-favoured</em> (tier-local floors admit large nodes by
+        design).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Arm F · blocked</span>The filings substrate stays honestly empty</h2>
+  <p>LISM on real regulatory filings would have been a genuinely new substrate — <code>τ_v</code>
+  redefined as the days between fiscal period end and annual-report release, an institution's
+  own latency in discharging a mandatory obligation, with <strong>delisting</strong> as a
+  non-circular outcome. It could not run.</p>
+  <div class="nums">403  filings_list          account isn't linked to the signed-in identity
+403  companies_list        same
+403  filing_types_list     "User profile not found for the provided token"
+200  get_fr_filing_type_taxonomy   ← bundled STATIC table, no records, supports no gate</div>
+  <p>Blanket upstream authorization failure, not rate limiting and not endpoint-specific.
+  <strong>Remedy: link a FinancialReports account at financialreports.eu/signup using the same
+  email as the signed-in identity.</strong> No code change is needed — the runner is written and
+  will execute the locked gates unchanged the moment it authorizes.</p>
+  <p class="reading">Under the spec a blocked gate counts as <strong>NOT MET, never as
+  absent</strong>: arm F is recorded 0/5. No filings cohort was synthesized, simulated, or
+  recalled from training knowledge to fill it.</p>
+</section>
+
+<section>
   <h2><span class="n">Ledger</span>Where this leaves LISM</h2>
   <div class="ledger">
     <div class="col keep">
@@ -501,6 +595,10 @@ high-status, sound fidelity     2.2%  (n=46)     gap = +0.5 points</div>
         <li>Decoupled underwriting as a portfolio advantage — did not replicate (N=44)</li>
         <li>The <strong>prescriptive</strong> fidelity floor — fails worse (N=992): it
         anti-selects, buying the failing population</li>
+        <li>The <strong>stratified</strong> floor — repairs 23 points of that, still 18×
+        worse than doing nothing clever</li>
+        <li><strong>Any</strong> admission rule selecting high <code>D</code> — the
+        within-tier sign is inverted</li>
         <li><code>E=U·D</code> vs <code>E=U·D²</code> on reuse — <em>neither</em> works</li>
         <li><code>D</code> flips sign against capacity between two real substrates — unresolved</li>
       </ul>
@@ -512,9 +610,9 @@ high-status, sound fidelity     2.2%  (n=46)     gap = +0.5 points</div>
 </section>
 
 <footer>
-  bash reproduce_all.sh → 63/63 · exit 0 means "reproduces including its gaps, nulls and
+  bash reproduce_all.sh → 64/64 · exit 0 means "reproduces including its gaps, nulls and
   missed predictions", never "every claim held" · provenance merkle root 93fb0abf ·
-  pre-registrations 4e83893b and 00d5d277 committed before the data and gates they govern
+  pre-registrations 4e83893b · 00d5d277 · 95d96f91, each committed before the data and gates it governs
 </footer>
 
 </div>

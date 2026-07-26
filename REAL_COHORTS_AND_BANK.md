@@ -7,7 +7,7 @@ That is reported first and at full strength, because it is the only version of t
 document worth having.*
 
 ```bash
-bash reproduce_all.sh        # 63/63, clean checkout, offline, $0
+bash reproduce_all.sh        # 64/64, clean checkout, offline, $0
 ```
 
 ---
@@ -278,3 +278,99 @@ the only property that makes the surviving claims worth anything.
 *Reproduce: `bash reproduce_all.sh` → **63/63**. `exit 0` means "reproduces including its
 gaps, nulls and missed predictions" — never "every claim held." Provenance merkle root
 `93fb0abf…`; pre-registration `4e83893b…` committed before the data it governs.*
+
+---
+
+# Addendum — the stratified remedy, and the filings arm
+
+*Pre-registration `95d96f91…`, locked and committed before either arm ran.*
+
+## 9. Why the simulator could not settle it
+
+The stratified fix arrived supported by a simulator that **generates** a synthetic
+population of 992 nodes with the capacity–fidelity correlation (ρ ≈ −0.47) *deliberately
+enforced*, then demonstrates that stratification helps. A population built to contain the
+structure a fix exploits will always show the fix working.
+
+This is the third time this pattern has come up here — the synthetic 992 "restoration",
+the seeded digital swarm, and now the ledger engine. So the remedy was tested where the
+correlation was **measured**: the real, recovered, verified N=992.
+
+**The simulator's ordering of flat-vs-stratified survived. Its baseline did not.**
+
+| Book | Simulator | **Real N=992** |
+|---|---|---|
+| conventional (capacity only) | 60.0% | **3.2%** |
+| flat floor | 91.0% | 80.1% |
+| stratified (tier-local) | 72.0% | 56.9% |
+
+The simulator put the conventional baseline at 60%. On real data it is **3.2%** — wrong by
+a factor of ~19, and it is precisely the comparison that decides the question.
+
+## 10. Result: 2 of 5. The remedy repairs its own wound and gains nothing.
+
+Three books of 216 each, measured-only N=866, 73.2% base default rate:
+
+- ✅ **T1** — stratification recovers **23 points** over the flat floor (56.9% vs 80.1%).
+  Real, and logged as a **low-value sanity check**: beating a design already known to
+  anti-select proves little.
+- ❌ **T2 (make-or-break)** — **56.9% vs 3.2%**. The stratified mesh defaults at roughly
+  **eighteen times** the rate of simply selecting on capacity. Named in the
+  pre-registration as the gate that decides whether the design earns its complexity. It
+  does not.
+- ❌ **T3** — the tail is worse too: 62.5% vs 5.6% at the 95th percentile.
+- ✅ **T4** — capacity access is genuinely restored (median 2,872 vs 950). Declared
+  **construction-favoured**, supporting only.
+- ❌ **T5 (mechanism)** — the root cause, below.
+
+### T5: the sign is wrong, not the threshold
+
+```
+weighted within-tier AUC(low D → default) = 0.3397        (gate > 0.55)
+  tier 3  n=216  AUC 0.2701
+  tier 4  n=217  AUC 0.4088
+  tiers 1–2      100% default — unusable
+```
+
+**Below 0.5 means the relationship is inverted: within a capacity tier, LOW fidelity
+predicts SURVIVAL.** The tier-local floor is not sorting on noise — it is sorting in the
+wrong direction, so admitting high-`D` nodes *actively selects for failure*.
+
+This is the deepest result of the whole programme, because it does not just kill the flat
+floor and the stratified floor. **It kills every future variant that keeps selecting on
+high `D`.** The problem is not where the threshold sits. It is the sign.
+
+Combined with the PyPI/GitHub sign flip (ρ = +0.57 vs −0.47), the conclusion is that `D`
+as currently operationalised is **not a valid fidelity measurement**. Until it is
+re-derived and re-validated against a non-circular outcome on more than one substrate,
+no admission rule built on it can be trusted — and no amount of re-tiering will fix it.
+
+## 11. The filings arm is BLOCKED — and stays honestly empty
+
+LISM on real regulatory filings would have been a genuinely new substrate, with
+`τ_v` redefined as **the days between fiscal period end and annual-report release** — an
+institution's own latency in discharging a mandatory obligation — and **delisting** as a
+non-circular outcome.
+
+It could not run:
+
+```
+403  filings_list          "account isn't linked to the identity you signed in with"
+403  companies_list        same
+403  filing_types_list     "User profile not found for the provided token"
+200  get_fr_filing_type_taxonomy   ← bundled STATIC table, no records, supports no gate
+```
+
+Blanket upstream authorization failure. **Remedy: link a FinancialReports account at
+financialreports.eu/signup using the same email as the signed-in identity** — no code
+change needed; `financial-lism/arm_f_filings.py` is written and will execute the locked
+gates unchanged the moment it authorizes.
+
+Under the spec, **a blocked gate counts as NOT MET, never as absent**: arm F is recorded
+**0/5**. No filings cohort was synthesized, simulated, or recalled from training knowledge
+to fill it. The evidence is committed in `financial-lism/connector_probe.json`.
+
+---
+
+*Reproduce: `bash reproduce_all.sh` → **64/64**. Pre-registrations `4e83893b`, `00d5d277`,
+`95d96f91` — each committed before the data and gates it governs.*
