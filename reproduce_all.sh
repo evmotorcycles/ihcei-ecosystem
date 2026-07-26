@@ -82,6 +82,8 @@ run "cohort-audit: Yeast 4825 / GitHub 992 / swarm evidentiary audit — gaps + 
 run "cohort-audit: gap closure — yeast outcome CLOSED, GitHub 992 still open, G2 miss recorded" py cohort-audit/test_gap_closure.py
 run "cohort-audit: no evidence file is silently gitignored (root-cause guard)" py cohort-audit/test_no_ignored_evidence.py
 run "sovereign-bank: decoupled underwriting on real GitHub repos — 2/4, central prediction FALSIFIED" py sovereign-bank/test_bank.py
+run "sovereign-bank: N=44 replication — 1/4, portfolio advantage collapsed to a TIE" py sovereign-bank/test_replication.py
+run "real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 FAIL" py real-cohorts/test_real_cohorts.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py

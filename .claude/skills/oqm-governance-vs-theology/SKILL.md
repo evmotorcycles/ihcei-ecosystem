@@ -103,9 +103,38 @@ Cite these accurately if the user asks what OQM/LISM has actually shown:
   explaining knowledge *reach*. Popularity won. `[L1]`
 - **Refuted (newer):** "popularity carries zero information about survival." On a real
   27-repo cohort with a non-circular outcome, stars discriminated default at AUC 0.74
-  — *better* than enforcement latency (0.71). What survived is narrower: a loan book
-  chosen by latency defaulted at half the rate of one chosen by prestige. `[L1]`
+  — *better* than enforcement latency (0.71). `[L1]`
+- **Falsified at scale (newest, supersedes the above):** the surviving banking claim —
+  "a loan book chosen by latency defaults at half the rate of one chosen by prestige" —
+  **did not replicate.** On a committed N = 44 cohort under the *same* locked gates
+  (`fbe085fc…`), the score fell from 2/4 to **1/4**: AUC(τ_v) 0.7792 vs AUC(low-stars)
+  **0.8635**, and the portfolio advantage collapsed to an **exact tie** (9.1% vs 9.1%).
+  More data made the central claim worse. Do **not** cite the 7.7%-vs-15.4% figure. `[L1]`
+- **Falsified twice on real data:** the knowledge-exchange thesis. Previously null on
+  HF/GitHub; now null again on a real, committed **540-package live PyPI graph**
+  (`4e83893b…`): fidelity-adjusted capacity scored ρ = **+0.0165** against realized
+  reuse versus raw capacity's ρ = **+0.0794** — fidelity did *worse*, not merely no
+  better. `[L1]`
+- **"Status is inert" is refuted:** on the same real graph, ρ(U, D) = **+0.5695** — bigger
+  projects *do* buy fidelity. This is most likely *why* the knowledge thesis keeps
+  failing: D is partly redundant with U, so multiplying by it adds noise. This is the
+  answer to "why did knowledge exchange fail." `[L1]`
+- **Survived on real data:** two-hop fidelity genuinely **decays with dependency depth**
+  (mean D 0.658 → 0.339 across depths 0→3, real PyPI), and the two hops remain
+  independent (VIF 1.0404) with the circular control rejected. `[L1]`
+- **Unsupported in both forms:** on the real graph the linear-vs-quadratic coupling gate
+  was *missed* (R² 0.0083 linear vs 0.0099 quadratic) — but both explain ~1% of variance.
+  The honest statement is "neither coupling explains reuse here," **not** "quadratic
+  wins." `[L1]`
 - **Not offline-reproducible:** the N = 992 GitHub cohort. Do not cite it as support.
+  A synthetic file engineered to match its published statistics was **proposed and
+  refused** — reproducing a target statistic is curve-fitting, not evidence. `[L1]`
+- **No longer simulations:** the knowledge and digital-swarm cohorts now have a real,
+  committed substitute (live PyPI, N = 540, depth 3, 1,287 edges). The seeded
+  simulations carry zero evidential weight and must not be cited as support.
+
+**Standing rule for this skill:** when a newer, larger, pre-registered run contradicts an
+older, smaller one, the newer result governs. Never quote the friendlier sample.
 
 ## How to respond
 

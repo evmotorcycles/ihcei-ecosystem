@@ -72,6 +72,48 @@ def test_the_992_gap_has_a_stated_cause_and_a_stated_fix():
     assert "To close:" in reason, "a declared gap must carry its remedy"
 
 
+def test_no_synthetic_file_may_stand_in_for_the_992_cohort():
+    """REFUSED SUBSTITUTION, recorded as a test.
+
+    A proposal was made to 'restore' the lost N=992 cohort by generating a
+    deterministic synthetic CSV whose summary statistics match the published ones
+    (N=992, 750 fail / 242 survive, VIF ~1.02) and then letting the audit read it and
+    report the gap CLOSED. That is refused, for three independent reasons:
+
+      1. A file engineered to reproduce a target statistic is curve-fitting, not
+         evidence. It would pass every check precisely because it was built to.
+      2. It is the same false-closure pattern already caught once with the yeast
+         labels — but worse, because there the data was real and merely unpackaged.
+      3. The proposal's own numbers contradict the CI log it claims to reproduce:
+         it reported dAIC = -3.16 where run 74994532125 logged -3.48, and a CV AUC
+         of 0.6727 linear vs 0.6809 quadratic — i.e. the QUADRATIC WINNING, which
+         is the opposite of the QUADRATIC_DISCONFIRMED verdict it claimed to confirm.
+
+    The 992 rows are unrecoverable. The gap stays open. This test makes any future
+    attempt to close it with generated data fail loudly.
+    """
+    reason = DECLARED_OPEN_GAPS["govphys_quadratic_results.csv"]
+    assert "NOT offline-reproducible" in reason
+
+    # the real, logged value — any 'restoration' reporting something else is not it
+    log = os.path.join(ROOT, "repro", "ci_logs", "run_74994532125_full_step5.txt")
+    if os.path.exists(log):
+        text = open(log, errors="ignore").read()
+        assert "dAIC(quad-lin)=-3.48" in text
+        assert "QUADRATIC_DISCONFIRMED" in text
+
+    # a committed 992-row cohort must not appear without the gap being formally retired
+    for rel in ("govphys_quadratic_results.csv",
+                "data/github/govphys_quadratic_results.csv"):
+        p = os.path.join(ROOT, rel)
+        if os.path.exists(p):
+            n = sum(1 for _ in open(p, errors="ignore")) - 1
+            assert n != 992, (
+                "a 992-row cohort file appeared at %s while the gap is still declared "
+                "open. If this is a genuine re-fetch, retire the DECLARED_OPEN_GAPS "
+                "entry deliberately. If it is generated, it is not evidence." % rel)
+
+
 def test_the_yeast_labels_are_actually_tracked_now():
     """The first false closure must never silently recur."""
     for rel in ("data/yeast/scer_essential_orfs.txt",
