@@ -1,0 +1,36 @@
+{
+  "probe_utc": "2026-07-26",
+  "connector": "FinancialReports (FinancialFilings MCP)",
+  "purpose": "Evidence of the exact state of the connector at lock time, so ARM F is recorded as BLOCKED with its real error rather than skipped, faked, or filled in from memory.",
+  "signed_in_identity": "labibmago0@gmail.com",
+  "calls_attempted": [
+    {
+      "tool": "mcp__FinancialFilings__filings_list",
+      "args": {"fiscal_year": 2024, "fiscal_period": "FY", "page_size": 4, "view": "full",
+               "ordering": "-release_datetime"},
+      "http_status": 403,
+      "error": "upstream filings_list returned 403. Your FinancialReports account isn't linked to the identity you signed in with."
+    },
+    {
+      "tool": "mcp__FinancialFilings__companies_list",
+      "args": {"search": "Siemens", "page_size": 3, "view": "full"},
+      "http_status": 403,
+      "error": "upstream companies_list returned 403. Your FinancialReports account isn't linked to the identity you signed in with."
+    },
+    {
+      "tool": "mcp__FinancialFilings__filing_types_list",
+      "args": {"page_size": 3},
+      "http_status": 403,
+      "error": "Error 403 Forbidden: {\"detail\": \"User profile not found for the provided token.\"}"
+    },
+    {
+      "tool": "mcp__FinancialFilings__get_fr_filing_type_taxonomy",
+      "args": {},
+      "http_status": 200,
+      "note": "SUCCEEDED — but this is a bundled STATIC resource (a 31-code reference table shipped with the server), not live data. It proves the MCP transport works and isolates the failure to upstream authorization. It contains no company, filing or financial record and therefore cannot support any gate."
+    }
+  ],
+  "diagnosis": "Blanket upstream authorization failure, not an endpoint-specific or rate-limit problem: three independent live endpoints all return 403 with the same cause, while the static taxonomy resolves normally. The FinancialReports account is not linked to the signed-in identity.",
+  "remedy": "Create or link a FinancialReports account at https://financialreports.eu/signup using the SAME email as the signed-in identity (labibmago0@gmail.com), or contact support@financialreports.eu if an account already exists. No code change is required — financial-lism/arm_f_filings.py is written and will execute the pre-registered gates the moment the connector authorizes.",
+  "what_was_NOT_done": "No filings cohort was synthesized, simulated, estimated, or recalled from training knowledge to fill this arm. Under the locked spec (95d96f91) a blocked gate counts as NOT MET, never as absent, and never as passed."
+}

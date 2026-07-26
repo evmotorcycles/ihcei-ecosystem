@@ -1,0 +1,43 @@
+{
+  "arm": "F",
+  "spec_sha256_canonical": "95d96f917f7351c35da801034ccc3f1cc5cf7f008bc5881100f85d209fecdbf8",
+  "status": "BLOCKED",
+  "reason": "Blanket upstream authorization failure, not an endpoint-specific or rate-limit problem: three independent live endpoints all return 403 with the same cause, while the static taxonomy resolves normally. The FinancialReports account is not linked to the signed-in identity.",
+  "remedy": "Create or link a FinancialReports account at https://financialreports.eu/signup using the SAME email as the signed-in identity (labibmago0@gmail.com), or contact support@financialreports.eu if an account already exists. No code change is required \u2014 financial-lism/arm_f_filings.py is written and will execute the pre-registered gates the moment the connector authorizes.",
+  "http_status_live_endpoints": 403,
+  "gates": [
+    {
+      "gate": "F0_connector_returns_data",
+      "pass": false,
+      "status": "BLOCKED"
+    },
+    {
+      "gate": "F1_latency_is_real_and_varies",
+      "pass": false,
+      "status": "BLOCKED"
+    },
+    {
+      "gate": "F2_third_law_on_filings",
+      "pass": false,
+      "status": "BLOCKED"
+    },
+    {
+      "gate": "F3_channel_independence",
+      "pass": false,
+      "status": "BLOCKED"
+    },
+    {
+      "gate": "F4_linear_not_quadratic",
+      "pass": false,
+      "status": "BLOCKED"
+    }
+  ],
+  "gates_not_met": [
+    "F0_connector_returns_data",
+    "F1_latency_is_real_and_varies",
+    "F2_third_law_on_filings",
+    "F3_channel_independence",
+    "F4_linear_not_quadratic"
+  ],
+  "data_synthesized": false
+}

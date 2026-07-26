@@ -1,0 +1,110 @@
+{
+  "arm": "T",
+  "spec_sha256_canonical": "95d96f917f7351c35da801034ccc3f1cc5cf7f008bc5881100f85d209fecdbf8",
+  "csv_sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+  "N_measured": 866,
+  "book_size": 216,
+  "flat_D_min": 0.010818,
+  "tiers": [
+    {
+      "tier": 1,
+      "n": 216,
+      "local_D_min": 0.016803,
+      "admitted": 130,
+      "median_stars": 100,
+      "default_rate": 1.0
+    },
+    {
+      "tier": 2,
+      "n": 217,
+      "local_D_min": 0.013384,
+      "admitted": 130,
+      "median_stars": 951,
+      "default_rate": 1.0
+    },
+    {
+      "tier": 3,
+      "n": 216,
+      "local_D_min": 0.010459,
+      "admitted": 130,
+      "median_stars": 5559,
+      "default_rate": 0.8981
+    },
+    {
+      "tier": 4,
+      "n": 217,
+      "local_D_min": 0.005606,
+      "admitted": 130,
+      "median_stars": 45263,
+      "default_rate": 0.0323
+    }
+  ],
+  "default_rate_conventional": 0.0324,
+  "default_rate_flat_floor": 0.8009,
+  "default_rate_stratified": 0.5694,
+  "p95_conventional": 0.0556,
+  "p95_stratified": 0.625,
+  "median_capacity_stratified_pool": 2872,
+  "median_capacity_flat_pool": 950,
+  "T5_weighted_within_tier_auc": 0.3397,
+  "T5_usable_tiers": 2,
+  "T5_per_tier": [
+    {
+      "tier": 1,
+      "n": 216,
+      "auc_lowD_predicts_default": null
+    },
+    {
+      "tier": 2,
+      "n": 217,
+      "auc_lowD_predicts_default": null
+    },
+    {
+      "tier": 3,
+      "n": 216,
+      "auc_lowD_predicts_default": 0.2701
+    },
+    {
+      "tier": 4,
+      "n": 217,
+      "auc_lowD_predicts_default": 0.4088
+    }
+  ],
+  "gates": [
+    {
+      "gate": "T1_stratified_beats_flat_floor",
+      "pass": true,
+      "detail": "stratified 56.9% vs flat floor 80.1%  (delta -23.1 pts). The flat floor is already known to anti-select, so this is a sanity check, not merit.",
+      "weight": "low"
+    },
+    {
+      "gate": "T2_stratified_beats_conventional_baseline",
+      "pass": false,
+      "detail": "stratified 56.9% vs conventional capacity-only 3.2%  (delta +53.7 pts).\n        This is the gate that decides whether the design earns its complexity.",
+      "weight": "full"
+    },
+    {
+      "gate": "T3_stratified_tail_is_better",
+      "pass": false,
+      "detail": "bootstrap 95th pct of default rate: stratified 62.5% vs conventional 5.6%",
+      "weight": "full"
+    },
+    {
+      "gate": "T4_capacity_access_is_preserved",
+      "pass": true,
+      "detail": "median capacity of the admitted pool: stratified 2872 vs flat floor 950",
+      "weight": "supporting"
+    },
+    {
+      "gate": "T5_within_tier_fidelity_actually_discriminates",
+      "pass": false,
+      "detail": "weighted within-tier AUC(low D -> default) = 0.3397 over 2 usable tier(s) (gate > 0.55 and >= 2 usable)\n        per tier: T1 n=216 auc=None, T2 n=217 auc=None, T3 n=216 auc=0.2701, T4 n=217 auc=0.4088\n        If fidelity carries no within-tier information, a tier-local floor is sorting on noise.",
+      "weight": "full"
+    }
+  ],
+  "gates_not_met": [
+    "T2_stratified_beats_conventional_baseline",
+    "T3_stratified_tail_is_better",
+    "T5_within_tier_fidelity_actually_discriminates"
+  ]
+}
