@@ -7,7 +7,7 @@ That is reported first and at full strength, because it is the only version of t
 document worth having.*
 
 ```bash
-bash reproduce_all.sh        # 64/64, clean checkout, offline, $0
+bash reproduce_all.sh        # 65/65, clean checkout, offline, $0
 ```
 
 ---
@@ -374,3 +374,121 @@ to fill it. The evidence is committed in `financial-lism/connector_probe.json`.
 
 *Reproduce: `bash reproduce_all.sh` → **64/64**. Pre-registrations `4e83893b`, `00d5d277`,
 `95d96f91` — each committed before the data and gates it governs.*
+
+---
+
+# Part III — What is actually wrong with the financial system
+
+*Pre-registration `8bac3099…`, locked and committed before any gate ran.*
+
+## 12. The question, answered
+
+> *"If OQM shows the right terminology but testing in the real world fails, what's the
+> problem? Is it supposed to be like a khalifa?"*
+
+The problem is that **four pre-registered runs all tested the same thing — SELECTION —
+and the terminology was never a selection rule.**
+
+| Run | Claim | Result |
+|---|---|---|
+| N=27 | latency picks better borrowers than prestige | 2/4 |
+| N=44 | same, larger sample | 1/4, advantage → exact tie |
+| N=992 flat floor | impose `D ≥ D_min` | 3/5, **anti-selects** |
+| N=992 stratified | tier-local floors | 2/5, **18× worse** than doing nothing |
+
+And the mechanism is not a threshold that needs moving: **within a capacity tier the sign
+is inverted** (AUC 0.3397). Every admission rule preferring high `D` selects for failure.
+
+**Khilafah, mudarabah and musharakah are not screening rules.** They describe how
+*delegated capacity is held to account* — how it is shared, bounded, monitored and
+unwound. Reading a stewardship structure as an admission filter is a category error, and
+it is the error that produced four falsifications. A khalifa is not selected *by* fidelity;
+a khalifa is *given* capacity and made answerable for it.
+
+So this round stopped testing selection and tested **structure**, with selection conceded
+mechanically: the *same* 992 borrowers, the *same* 750 real defaults, in both books.
+
+## 13. Result: 4 of 5 — the first design that mostly worked
+
+| Gate | Result | |
+|---|---|---|
+| **SC2** borrower loss dispersion | debt σ 386.52 → equity σ **34.36** (11.25×) | ✅ |
+| **SC4** risk-sharing costs the institution | **my prediction — WRONG** | ❌ |
+| **SC5** can it stay solvent here? | **59.5%** of capital retained at 75.6% defaults | ✅ |
+| **SC7** τ_v as covenant, not screen | **+42,840** over hold-everything | ✅ |
+| SC3 worst-case borrower loss | −780 → **−60**, capped at the stake | ✅ *supporting* |
+| SC1 selection conceded · SC6 leverage | excluded — cannot fail | — |
+
+### The gate that failed was mine
+
+I pre-registered that risk-sharing would **cost** the institution capital. It did the
+opposite: **equity −361,440 vs debt −430,640** on identical borrowers.
+
+The reason is economic. *A priority claim is only worth having if the asset can actually
+be recovered.* At 40% recovery the lender still eats 600 per failure **and** forfeits all
+upside, while proportional participation collects 20% on every survivor. A post-hoc sweep
+(clearly labelled, never scored) shows equity ahead across the entire 0.20–0.95 recovery
+range. **Debt's "protection" is largely illusory in a high-failure, low-recovery
+population** — which is precisely the population conventional banking claims to be
+protecting itself against.
+
+### τ_v earned a narrow second life
+
+The signal that failed as an **admission screen** four times **passed as a monitoring
+covenant**: exiting contracts breaching 60 days earned **+42,840**, while paying the full
+30% haircut on all **204** exits — including **17 false positives** on borrowers who would
+not have defaulted. Screening and monitoring are different problems. The same signal can
+lose one and win the other.
+
+### Full reserve, quantified
+
+Depositor shortfall is **zero at m=1** by construction, and first appears at leverage
+**m=3**, reaching 331,440 by m=10. That is not a discovery — it is definitional, so it is
+**excluded from the score** and reported as a measured threshold only.
+
+## 14. What this does and does not license
+
+**It does not rescue anything that was falsified.** Selection on `D` is still dead. `D`
+still flips sign between substrates. The knowledge-exchange thesis is still null twice.
+
+**And the substrate limit is severe and declared in the spec, not discovered afterwards:**
+GitHub repositories are a poor analogue for borrowers — no balance sheet, no collateral,
+no obligation to repay, and abandonment tracks *funding* far more than governance
+fidelity. These are statements about **contract mechanics over a real failure sequence**,
+not about credit markets.
+
+The honest summary: **the terminology was never wrong; it was being applied to the wrong
+question.** Fidelity is not a way to pick winners. Stewardship structure is a way to bound
+what happens when you are wrong — and that, tested properly, held up.
+
+## 15. The filings arm, retried — still blocked
+
+Retried across **five distinct live endpoints**, twice. All `403`; only the bundled static
+taxonomy resolves.
+
+```
+403  companies_list · filings_list · filing_types_list · isins_list   (+ retries)
+200  get_fr_filing_type_taxonomy   ← static table, no records, supports no gate
+```
+
+Not rate limiting, not transient, not endpoint-specific. **Remedy: link a FinancialReports
+account at financialreports.eu/signup using the same email as the signed-in identity.**
+Arm F remains **0/5, BLOCKED** — counted as NOT MET, never as absent, and never filled in.
+
+## 16. Two corrections to the uploaded OQM skill file
+
+The `oqm-governance-vs-theology-skill.md` supplied is **stale on two points**:
+
+1. **"The GitHub 992-Row Dataset … unrecoverable, and the gap remains permanently open."**
+   No longer true. It was recovered from an off-repository copy and closed by
+   **recomputation from its own rows** (7/7): VIF 1.0203, dAIC −3.483, τ 50.61/19.76,
+   `QUADRATIC_DISCONFIRMED`, under prereg `cac34f44…`. It is committed and citable. The
+   *refusal of synthetic restoration* was right and still stands — that is what made the
+   genuine recovery distinguishable from a forgery.
+2. **The latency law figures mix cohorts.** "44.2 vs 4.8 days" are the **N=44** medians;
+   the **N=992** figures are **50.61 vs 19.76 days** (means). Quote one cohort at a time.
+
+---
+
+*Reproduce: `bash reproduce_all.sh` → **65/65**. Pre-registrations `4e83893b`, `00d5d277`,
+`95d96f91`, `8bac3099` — each committed before the data and gates it governs.*

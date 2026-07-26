@@ -171,6 +171,41 @@ Cite these accurately if the user asks what OQM/LISM has actually shown:
 **Standing rule for this skill:** when a newer, larger, pre-registered run contradicts an
 older, smaller one, the newer result governs. Never quote the friendlier sample.
 
+### The selection/structure distinction — the answer to "why does OQM keep failing?"
+
+Four pre-registered banking runs failed at **one task: selection.** A fifth, testing
+**structure** with selection held mechanically fixed, scored **4/5**. Sort every financial
+claim into these two boxes before assessing it, because they have opposite track records:
+
+| | Claim shape | Status |
+|---|---|---|
+| **Selection** | "fidelity picks better counterparties than prestige" | **falsified 4×** — and the within-tier sign is *inverted*, so it cannot be repaired by re-tiering |
+| **Structure** | "how delegated capacity is shared, bounded and unwound changes outcomes" | **4/5 on real N=992** (`8bac3099…`) |
+
+Khilafah, mudarabah and musharakah in the governance register are **stewardship
+structures, not screening rules**. They say how delegated capacity is held to account —
+not who to admit. Reading them as an admission filter is the category error that produced
+four falsifications. `[L2]`
+
+**Monitoring ≠ screening.** τ_v failed as an admission screen four times, then **passed as
+a covenant trigger**: exiting contracts breaching 60 days earned **+42,840** over
+hold-everything, while paying a full 30% haircut on all 204 exits including 17 false
+positives. A signal can lose one problem and win the other. `[L1]`
+
+**Risk-sharing was not the costlier structure.** The pre-registered prediction that equity
+would cost the institution capital **failed**: equity −361,440 vs debt −430,640 on the
+same borrowers. A priority claim is only worth having if the asset can be recovered; at
+40% recovery the lender still eats 600 per failure *and* forfeits all upside. `[L1]`
+Full-reserve equity retained **59.5%** of capital over a 75.6%-default population —
+solvent, not unscathed. Depositor shortfall is zero at m=1 by construction and first
+appears at leverage **m=3**. `[L1]`
+
+**Declared substrate limit, always to be repeated with these numbers:** GitHub
+repositories are a poor analogue for borrowers — no balance sheet, no collateral, no
+obligation to repay, and abandonment tracks funding rather than governance fidelity.
+These are statements about contract mechanics over a real failure sequence, **not** about
+credit markets.
+
 **Simulator rule (mandatory).** A simulation that *generates* a population containing the
 structure a proposed fix exploits cannot be evidence that the fix works — it will always
 succeed, by construction. This has now been refused three times: the synthetic N=992

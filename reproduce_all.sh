@@ -86,6 +86,7 @@ run "sovereign-bank: N=44 replication — 1/4, portfolio advantage collapsed to 
 run "real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 FAIL" py real-cohorts/test_real_cohorts.py
 run "cohort-audit: N=992 RECOVERED — verified by recomputation from the rows (7/7)" python3 cohort-audit/verify_992_recovery.py
 run "sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECTS" py sovereign-bank/test_prescriptive.py
+run "stewardship-contract: STRUCTURE not selection on N=992 — 4/5, SC4 (my prediction) FAILED" py stewardship-contract/test_stewardship.py
 run "financial-lism: stratified relative floors — 2/5, T2 FAILS 18x, within-tier D INVERTED; arm F BLOCKED 403" py financial-lism/test_financial_lism.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py

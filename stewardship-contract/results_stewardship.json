@@ -1,0 +1,142 @@
+{
+  "spec_sha256_canonical": "8bac3099bb472b40bb51300ff287d177f8a1e8f2f60b5e8c825ca31d3c05e773",
+  "csv_sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+  "N": 992,
+  "defaults": 750,
+  "default_rate": 0.756,
+  "debt_institution_pnl": -430640.0,
+  "equity_institution_pnl": -361440.0,
+  "equity_terminal_capital": 531360.0,
+  "capital_retained_fraction": 0.5952,
+  "borrower_stdev_debt": 386.52,
+  "borrower_stdev_equity": 34.36,
+  "borrower_worst_debt": -780.0,
+  "borrower_worst_equity": -60.0,
+  "leverage_scan": [
+    {
+      "multiplier": 1.0,
+      "own_capital": 992000.0,
+      "depositor_claims": 0.0,
+      "recoverable": 561360.0,
+      "depositor_shortfall": 0.0
+    },
+    {
+      "multiplier": 2.0,
+      "own_capital": 496000.0,
+      "depositor_claims": 496000.0,
+      "recoverable": 561360.0,
+      "depositor_shortfall": 0.0
+    },
+    {
+      "multiplier": 3.0,
+      "own_capital": 330667.0,
+      "depositor_claims": 661333.0,
+      "recoverable": 561360.0,
+      "depositor_shortfall": 99973.0
+    },
+    {
+      "multiplier": 5.0,
+      "own_capital": 198400.0,
+      "depositor_claims": 793600.0,
+      "recoverable": 561360.0,
+      "depositor_shortfall": 232240.0
+    },
+    {
+      "multiplier": 8.0,
+      "own_capital": 124000.0,
+      "depositor_claims": 868000.0,
+      "recoverable": 561360.0,
+      "depositor_shortfall": 306640.0
+    },
+    {
+      "multiplier": 10.0,
+      "own_capital": 99200.0,
+      "depositor_claims": 892800.0,
+      "recoverable": 561360.0,
+      "depositor_shortfall": 331440.0
+    }
+  ],
+  "first_insolvent_multiplier": 3.0,
+  "covenant_pnl": -318600.0,
+  "covenant_exits": 204,
+  "covenant_false_positive_exits": 17,
+  "posthoc_recovery_sweep_NOT_A_GATE": [
+    {
+      "recovery_phi": 0.2,
+      "debt_pnl": -580640,
+      "equity_pnl": -496440,
+      "debt_wins": false
+    },
+    {
+      "recovery_phi": 0.4,
+      "debt_pnl": -430640,
+      "equity_pnl": -361440,
+      "debt_wins": false
+    },
+    {
+      "recovery_phi": 0.6,
+      "debt_pnl": -280640,
+      "equity_pnl": -226440,
+      "debt_wins": false
+    },
+    {
+      "recovery_phi": 0.8,
+      "debt_pnl": -130640,
+      "equity_pnl": -91440,
+      "debt_wins": false
+    },
+    {
+      "recovery_phi": 0.95,
+      "debt_pnl": -18140,
+      "equity_pnl": 9810,
+      "debt_wins": false
+    }
+  ],
+  "gates": [
+    {
+      "gate": "SC1_selection_is_conceded_mechanically",
+      "pass": true,
+      "detail": "both books hold the identical 992 borrowers and the identical 750 real defaults; no fidelity quantity reorders, excludes or reweights anyone",
+      "weight": "excluded"
+    },
+    {
+      "gate": "SC2_borrower_loss_dispersion_is_lower_under_equity",
+      "pass": true,
+      "detail": "stdev of borrower net outcome:  debt 386.52  vs  equity 34.36  (ratio 11.25x)",
+      "weight": "full"
+    },
+    {
+      "gate": "SC3_worst_case_borrower_loss_is_bounded",
+      "pass": true,
+      "detail": "worst single borrower outcome:  debt -780.00  vs  equity -60.00  \u2014 under equity liability ends at the 100 stake",
+      "weight": "supporting"
+    },
+    {
+      "gate": "SC4_risk_sharing_costs_the_institution_capital",
+      "pass": false,
+      "detail": "institution terminal P&L:  debt -430640  vs  equity -361440  (difference +69200).\n        A pass here is the design's PRICE, measured \u2014 not a win.",
+      "weight": "full"
+    },
+    {
+      "gate": "SC5_can_a_risk_sharing_institution_even_survive_this_population",
+      "pass": true,
+      "detail": "deployed 892800, terminal capital 531360 (59.5% of capital retained) over a 75.6% default population",
+      "weight": "full"
+    },
+    {
+      "gate": "SC6_full_reserve_bounds_systemic_shortfall",
+      "pass": true,
+      "detail": "leveraged DEBT institution first shows a depositor shortfall at multiplier 3.0; full-reserve equity issues no claim exceeding deposits so its shortfall is identically 0 \u2014 definitional, reported not scored.\n        scan: m=1 short=0, m=2 short=0, m=3 short=99973, m=5 short=232240, m=8 short=306640, m=10 short=331440",
+      "weight": "excluded"
+    },
+    {
+      "gate": "SC7_tau_v_as_a_covenant_trigger_rather_than_an_admission_gate",
+      "pass": true,
+      "detail": "covenant P&L -318600  vs  hold-everything baseline -361440  (gain +42840)\n        triggered on 204 of 992 contracts; 17 of those exits were on borrowers who would NOT have defaulted (false positives, each charged the full 30% haircut)",
+      "weight": "full"
+    }
+  ],
+  "gates_not_met": [
+    "SC4_risk_sharing_costs_the_institution_capital"
+  ]
+}

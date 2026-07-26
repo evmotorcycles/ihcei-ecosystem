@@ -1,4 +1,4 @@
-<title>LISM — the sign is wrong, not the threshold</title>
+<title>LISM — selection was never the claim</title>
 <style>
   :root{
     --paper:#F1F3F2; --ink:#121A1F; --ink-2:#3A464C; --muted:#727E83;
@@ -145,18 +145,17 @@
 <div class="wrap">
 
 <header>
-  <p class="eyebrow">Pre-registrations 4e83893b · 00d5d277 · 95d96f91 · reproduced 64/64</p>
-  <h1>The lost cohort came back. <em>Then it showed the sign was wrong, not the threshold.</em></h1>
-  <p class="standfirst">N=992 was recovered and verified by recomputation. Two simulated
-  cohorts were replaced with real PyPI data. Then two successive banking designs — a flat
-  fidelity floor and its stratified repair — both failed, and the third test finally
-  explained why: within a capacity tier, <em>low</em> fidelity predicts survival.</p>
+  <p class="eyebrow">Prereg 4e83893b · 00d5d277 · 95d96f91 · 8bac3099 · reproduced 65/65</p>
+  <h1>Four designs failed at picking winners. <em>Because that was never the claim.</em></h1>
+  <p class="standfirst">Every banking trial tested <strong>selection</strong> — can fidelity
+  pick better counterparties than prestige? Four times, no. The fifth test stopped asking
+  that and tested <strong>structure</strong> instead, with selection conceded mechanically.
+  It scored 4/5 — and the gate that failed was my own prediction.</p>
   <div class="scoreline">
+    <span class="tag hot">selection <b>falsified 4×</b></span>
+    <span class="tag">structure <b>4/5</b></span>
     <span class="tag">992 <b>recovered · 7/7</b></span>
-    <span class="tag">PyPI <b>5/8</b></span>
-    <span class="tag hot">flat floor <b>3/5</b></span>
-    <span class="tag hot">stratified <b>2/5 · 18× worse</b></span>
-    <span class="tag">filings <b>blocked 403</b></span>
+    <span class="tag">filings <b>blocked 403 ×5</b></span>
   </div>
 </header>
 
@@ -576,6 +575,108 @@ restores capacity access                median 2,872 vs 950</div>
 </section>
 
 <section>
+  <h2><span class="n">The question</span>What is actually wrong with the financial system</h2>
+  <p><em>"If OQM shows the right terminology but testing in the real world fails — what's
+  the problem? Is it supposed to be like a khalifa?"</em></p>
+  <p>The problem is that four pre-registered runs all tested <strong>the same thing</strong>,
+  and the terminology was never that thing.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Run</th><th>Claim tested</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>N=27</td><td>latency picks better borrowers than prestige</td><td class="num">2/4</td></tr>
+        <tr><td>N=44</td><td>same, larger sample</td><td class="num worse">1/4 · tie</td></tr>
+        <tr><td>N=992 flat floor</td><td>impose <code>D ≥ D_min</code></td><td class="num worse">3/5 · anti-selects</td></tr>
+        <tr><td>N=992 stratified</td><td>tier-local floors</td><td class="num worse">2/5 · 18× worse</td></tr>
+      </tbody>
+      <caption>All four are SELECTION claims. And the mechanism is not a threshold that
+      needs moving — within a capacity tier the sign is inverted (AUC 0.3397).</caption>
+    </table>
+  </div>
+  <div class="refusal">
+    <p><strong>Khilafah, mudarabah and musharakah are not screening rules.</strong> They
+    describe how <em>delegated capacity is held to account</em> — how it is shared, bounded,
+    monitored and unwound. A khalifa is not <em>selected by</em> fidelity; a khalifa is
+    <em>given</em> capacity and made answerable for it.</p>
+    <p class="reading">Reading a stewardship structure as an admission filter is a category
+    error — and it is the error that produced four falsifications. So this round conceded
+    selection mechanically (same 992 borrowers, same 750 real defaults, both books) and
+    tested structure instead.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Structure · prereg 8bac3099 · N=992</span>4 of 5 — and the failed gate was mine</h2>
+
+  <div class="gates">
+    <div class="gate f">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">SC4 — risk-sharing should cost the institution</span>
+        <span class="verdict">My prediction, wrong</span></div>
+        <p class="claim">I pre-registered that absorbing borrower losses would show up as
+        lower capital. It did the opposite.</p>
+        <div class="nums">institution P&L on identical borrowers
+  debt    −430,640
+  equity  −361,440      ← risk-sharing preserved MORE capital</div>
+        <p class="reading">A priority claim is only worth having if the asset can actually be
+        recovered. At 40% recovery the lender still eats 600 per failure <em>and</em> forfeits
+        all upside, while proportional participation collects 20% on every survivor. A
+        post-hoc sweep — labelled, never scored — shows equity ahead across the whole
+        0.20–0.95 recovery range. <strong>Debt's protection is largely illusory in exactly
+        the population it claims to protect against.</strong></p>
+      </div>
+    </div>
+
+    <div class="gate p">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">SC7 — τ_v as a covenant, not a screen</span>
+        <span class="verdict">Held</span></div>
+        <p class="claim">The signal that failed admission four times earned a narrow second
+        life in a different role.</p>
+        <div class="nums">covenant  −318,600   vs   hold-everything  −361,440   → +42,840
+triggered on 204 of 992 · 17 were false positives · full 30% haircut paid on every exit</div>
+        <p class="reading">Screening and monitoring are different problems. Once capital is
+        already deployed, a signal with genuine discrimination can pay for itself even while
+        charging a real cost on its own mistakes.</p>
+      </div>
+    </div>
+
+    <div class="gate p">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">SC2 · SC5 — what risk-sharing actually bought</span>
+        <span class="verdict">Held</span></div>
+        <div class="nums">borrower outcome dispersion   σ 386.52 → 34.36   (11.25×)
+worst single borrower        −780 → −60   (capped at the stake)
+institution solvency         59.5% of capital retained at a 75.6% default rate</div>
+        <p class="reading">Solvent — <em>not</em> unscathed. A test asserts the retained
+        fraction stays reported between 55% and 65% so it cannot be restated as robustness.</p>
+      </div>
+    </div>
+
+    <div class="gate n">
+      <div class="stripe"></div>
+      <div class="gate-body">
+        <div class="gate-head"><span class="gid">SC1 · SC6 — excluded from the score</span>
+        <span class="verdict">Cannot fail</span></div>
+        <div class="nums">SC1  same 992 borrowers, same 750 defaults — selection conceded by construction
+SC6  depositor shortfall 0 at m=1 (definitional), first appears at leverage m=3</div>
+        <p class="reading">An honesty gate and a definitional one. Both reported, neither
+        counted — a check that cannot fail is not evidence.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="reading"><strong>Declared in the spec, not discovered afterwards:</strong> GitHub
+  repositories are a poor analogue for borrowers — no balance sheet, no collateral, no
+  obligation to repay, and abandonment tracks funding far more than governance fidelity.
+  These are statements about contract mechanics over a real failure sequence, <strong>not
+  about credit markets</strong>.</p>
+</section>
+
+<section>
   <h2><span class="n">Ledger</span>Where this leaves LISM</h2>
   <div class="ledger">
     <div class="col keep">
@@ -585,6 +686,8 @@ restores capacity access                median 2,872 vs 950</div>
         <li>Two-hop fidelity <strong>decays with dependency depth</strong> (PyPI, N=540)</li>
         <li>τ_v as a descriptive signal — failed repos close issues at 50.6 d vs 19.8 d (N=992)</li>
         <li>GitHub 992 — <strong>recovered and verified</strong> by recomputation, 7/7</li>
+        <li>Contract <strong>structure</strong> (not selection) — 4/5 on real N=992</li>
+        <li>τ_v as a <strong>monitoring covenant</strong> — +42,840 with costs charged</li>
       </ul>
     </div>
     <div class="col lost">
@@ -601,6 +704,7 @@ restores capacity access                median 2,872 vs 950</div>
         within-tier sign is inverted</li>
         <li><code>E=U·D</code> vs <code>E=U·D²</code> on reuse — <em>neither</em> works</li>
         <li><code>D</code> flips sign against capacity between two real substrates — unresolved</li>
+        <li>Selection on <code>D</code> in <em>any</em> form — four runs, sign inverted</li>
       </ul>
     </div>
   </div>
@@ -610,9 +714,9 @@ restores capacity access                median 2,872 vs 950</div>
 </section>
 
 <footer>
-  bash reproduce_all.sh → 64/64 · exit 0 means "reproduces including its gaps, nulls and
+  bash reproduce_all.sh → 65/65 · exit 0 means "reproduces including its gaps, nulls and
   missed predictions", never "every claim held" · provenance merkle root 93fb0abf ·
-  pre-registrations 4e83893b · 00d5d277 · 95d96f91, each committed before the data and gates it governs
+  pre-registrations 4e83893b · 00d5d277 · 95d96f91 · 8bac3099, each committed before the data and gates it governs
 </footer>
 
 </div>
