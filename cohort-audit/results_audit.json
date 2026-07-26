@@ -52,12 +52,17 @@
       "github-lism/data/github_cohort_frozen.json": {
         "rows": 28,
         "has_survival_label": false
+      },
+      "data/github/govphys_quadratic_results.csv": {
+        "rows": 992,
+        "has_survival_label": true
       }
     },
-    "largest_committed_labelled_cohort": 21,
-    "found_992_row_artifact": false,
-    "status": "NOT_OFFLINE_REPRODUCIBLE",
-    "note": "lism-cohorts/results_meta.json stores only a spec HASH for the N=992 cohort, not the rows. The N=992 result must not be cited as offline-reproducible from this repository.",
+    "largest_committed_labelled_cohort": 992,
+    "found_992_row_artifact": true,
+    "recovery_verified": true,
+    "status": "REAL_REPRODUCIBLE (recovered 2026-07-26; verified by recomputation)",
+    "note": "The recovered artifact re-derives VIF 1.0203, dAIC -3.483 and tau_fail/surv 50.61/19.76 directly FROM THE ROWS, matching CI run 74994532125 and the pre-registration cac34f44. See cohort-audit/verify_992_recovery.py.",
     "pass": true
   },
   "C5_swarm_SIMULATION": {
@@ -77,23 +82,21 @@
     "ledger": {
       "A_yeast_4825_channel": "REAL_REPRODUCIBLE",
       "A_yeast_4825_outcome_coupling": "REAL_REPRODUCIBLE (gap closed 2026-07-25; published AUC 0.47 = non-converged artifact)",
-      "B_github_992": "NOT_OFFLINE_REPRODUCIBLE",
+      "B_github_992": "REAL_REPRODUCIBLE (recovered + verified by recomputation)",
       "B_github_tau_v_21": "REAL_REPRODUCIBLE (underpowered, n_fail=4)",
       "B_github_frozen_28": "REAL_REPRODUCIBLE (no survival label)",
       "C_knowledge_793": "SIMULATION (retracted as real-world, PR #111)",
       "D_digital_swarm": "SIMULATION",
       "hf_media_19 / biorxiv_40 / pubmed_8": "REAL_REPRODUCIBLE"
     },
-    "not_offline_reproducible": [
-      "B_github_992"
-    ],
+    "not_offline_reproducible": [],
     "simulations": [
       "C_knowledge_793",
       "D_digital_swarm"
     ],
     "pass": true
   },
-  "note": "Yeast channel invariants are backed by committed real STRING v12 data (VIF 1.0026 at N=4825). The yeast OUTCOME coupling and the entire N=992 GitHub cohort are NOT offline-reproducible from this repository. The digital swarm is a seeded simulation. This does not disprove the LISM mathematics; it establishes precisely what this repository can substantiate offline.",
+  "note": "Yeast channel invariants are backed by committed real STRING v12 data (VIF 1.0026 at N=4825). The yeast outcome coupling was closed by committing the essentiality labels, and the N=992 GitHub cohort was recovered from an off-repository copy of the expired CI artifact and VERIFIED BY RECOMPUTATION (7/7) rather than by assertion. The digital swarm and knowledge cohorts were seeded simulations and now have a real committed substitute (real-cohorts/, live PyPI N=540). This establishes precisely what this repository can substantiate offline.",
   "honest_reporting": true,
   "pass": true
 }

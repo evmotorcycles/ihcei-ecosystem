@@ -65,12 +65,26 @@ def test_cohort_integrity_audit_including_its_gaps():
     assert "UNDERPOWERED" in c3["power_warning"]                   # the caveat stays in the record
     assert c3["pass"] is True
 
-    # C4 -- GAP LOCKED: the 992-row cohort is not committed; only a hash was ever stored.
+    # C4 -- RECOVERED 2026-07-26. This gate was previously "the gap must stay open".
+    # The real artifact was supplied and committed, so the honest gate is now
+    # state-aware and has exactly two acceptable worlds -- while still FAILING in the
+    # dangerous one (a 992-row file present that has NOT passed recomputation).
     c4 = r["C4_github_992_GAP"]
     assert c4["claimed_N"] == 992
-    assert c4["found_992_row_artifact"] is False
-    assert c4["largest_committed_labelled_cohort"] == 21
-    assert c4["status"] == "NOT_OFFLINE_REPRODUCIBLE"
+    if not c4["found_992_row_artifact"]:
+        assert c4["status"] == "NOT_OFFLINE_REPRODUCIBLE"
+        assert c4["largest_committed_labelled_cohort"] == 21
+    else:
+        assert c4["recovery_verified"] is True, (
+            "a 992-row cohort is committed but was not verified by recomputation")
+        assert c4["largest_committed_labelled_cohort"] == 992
+        assert c4["status"].startswith("REAL_REPRODUCIBLE")
+        rec = json.load(open(os.path.join(HERE, "results_992_recovery.json")))
+        assert rec["verified"] is True and not rec["checks_failed"]
+        assert rec["n_fail"] == 750 and rec["n_surv"] == 242
+        assert rec["verdict_recomputed"] == "QUADRATIC_DISCONFIRMED"
+        # the real value, which the refused synthetic 'restoration' got wrong (-3.16)
+        assert abs(rec["dAIC_recomputed"] - (-3.483)) < 0.02
     assert c4["pass"] is True
 
     # C5 -- SIMULATION: must stay labelled, and must claim no real-world evidence.
@@ -80,11 +94,14 @@ def test_cohort_integrity_audit_including_its_gaps():
     assert c5["r2_linear"] >= c5["r2_quadratic"]
     assert c5["pass"] is True
 
-    # C6 -- the ledger must keep at least one honest gap and both simulations.
+    # C6 -- the ledger must stay ACCURATE. It previously required >= 1 open gap; both
+    # gaps have since been closed the hard way (yeast labels committed; 992 recovered
+    # and verified), so the invariant is now that nothing is quietly promoted.
     c6 = r["C6_integrity_ledger"]
-    assert len(c6["not_offline_reproducible"]) >= 1
-    # B_github_992 is the gap that CANNOT be closed offline -- it must never disappear.
-    assert "B_github_992" in c6["not_offline_reproducible"]
+    if "B_github_992" not in c6["not_offline_reproducible"]:
+        assert c4["recovery_verified"] is True, \
+            "the 992 cohort left the gap list without a verified recovery"
+        assert "verified" in c6["ledger"]["B_github_992"]
     # A_yeast_4825_outcome_coupling may leave this list ONLY when genuinely closed
     # (labels committed AND the coupling verified by gap_closure.py).
     if "A_yeast_4825_outcome_coupling" not in c6["not_offline_reproducible"]:

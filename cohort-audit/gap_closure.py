@@ -133,9 +133,25 @@ def github():
                         biggest = len(lab)
                     if len(lab) >= 992:
                         found992 = os.path.relpath(p, ROOT)
-    gate("G1_992_cannot_be_closed_offline", found992 is None,
-         f"no 992-row labelled artifact committed (largest labelled JSON = {biggest} rows); "
-         f"GAP REMAINS OPEN — the N=992 result must not be cited as offline-reproducible")
+    # RECOVERED 2026-07-26: the CSV artifact was supplied from an off-repository copy
+    # and verified by recomputation. G1 predicted the gap would STAY OPEN. That
+    # prediction is now WRONG, and it is recorded as wrong rather than reworded.
+    recp = os.path.join(HERE, "results_992_recovery.json")
+    rec = json.load(open(recp)) if os.path.exists(recp) else None
+    verified = bool(rec and rec.get("verified") and not rec.get("checks_failed"))
+    csv992 = os.path.join(ROOT, "data", "github", "govphys_quadratic_results.csv")
+    if verified and os.path.exists(csv992):
+        gate("G1_992_closed_by_verified_recovery", True,
+             "PREDICTION OVERTURNED. G1 predicted this gap could never be closed offline. "
+             "The real artifact was recovered and re-derives VIF %.4f, dAIC %+.3f and "
+             "tau_fail/surv %.2f/%.2f FROM THE ROWS, matching CI run 74994532125 and "
+             "prereg cac34f44 (7/7 checks). Recovered by supply, not by regeneration."
+             % (rec["vif_recomputed"], rec["dAIC_recomputed"],
+                rec["tau_fail_recomputed"], rec["tau_surv_recomputed"]))
+    else:
+        gate("G1_992_cannot_be_closed_offline", found992 is None,
+             f"no verified 992-row cohort committed (largest labelled JSON = {biggest} rows); "
+             f"GAP REMAINS OPEN -- the N=992 result must not be cited as offline-reproducible")
 
     # G2: union every committed real tau_v dataset into one labelled cohort
     union = {}   # repo -> (tau_v, failed?)

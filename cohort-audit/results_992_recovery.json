@@ -1,0 +1,54 @@
+{
+  "spec_sha256": "cac34f44b2cea0ee3346921d708f00913f6b67cc36376e0b2e4630b9e77001f7",
+  "verified": true,
+  "N": 992,
+  "n_fail": 750,
+  "n_surv": 242,
+  "vif_recomputed": 1.0203,
+  "pearson_recomputed": 0.1412,
+  "aic_lin_recomputed": 1088.215,
+  "aic_quad_recomputed": 1091.698,
+  "dAIC_recomputed": -3.483,
+  "tau_fail_recomputed": 50.61,
+  "tau_surv_recomputed": 19.76,
+  "verdict_recomputed": "QUADRATIC_DISCONFIRMED",
+  "csv_sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+  "checks": [
+    {
+      "check": "R1_prereg_spec_hash",
+      "pass": true,
+      "detail": "live re-hash cac34f44b2cea0ee... | artifact names cac34f44b2cea0ee..."
+    },
+    {
+      "check": "R2_cohort_shape",
+      "pass": true,
+      "detail": "N=992  fail=750  surv=242   (log: N=992 fail=750 surv=242)"
+    },
+    {
+      "check": "R3_vif_recomputed",
+      "pass": true,
+      "detail": "recomputed r=0.1412 VIF=1.0203  |  log r=+0.141 VIF=1.02"
+    },
+    {
+      "check": "R4_primary_dAIC_recomputed",
+      "pass": true,
+      "detail": "recomputed AIC_lin=1088.215 AIC_quad=1091.698 dAIC=-3.483  |  log dAIC=-3.48"
+    },
+    {
+      "check": "R5_third_law_recomputed",
+      "pass": true,
+      "detail": "recomputed tau_fail=50.61 tau_surv=19.76  |  log 50.61 / 19.76"
+    },
+    {
+      "check": "R6_verdict_from_rows",
+      "pass": true,
+      "detail": "recomputed verdict = QUADRATIC_DISCONFIRMED (dAIC<=0, VIF<5, N_fail=750>=100); log agrees"
+    },
+    {
+      "check": "R7_summary_matches_rows",
+      "pass": true,
+      "detail": "the bundled summary.json is consistent with what the rows actually compute"
+    }
+  ],
+  "checks_failed": []
+}

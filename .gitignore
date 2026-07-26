@@ -4,7 +4,6 @@ __pycache__/
 github_repositories_SYNTHETIC.csv
 yeast_feats_*.csv
 dgap_high_powered_results.csv
-govphys_quadratic_results.csv
 yeast_name_orf_map.csv
 
 # NOTE: yeast_interactome_DEG.csv, scer_essential_genes_DEG.csv and
@@ -27,3 +26,9 @@ scratchpad/
 !.env.example
 *.pem
 *.key
+
+# RECOVERED 2026-07-26: the N=992 cohort was supplied from an off-repository copy of
+# the expired CI artifact and VERIFIED by recomputation (cohort-audit/verify_992_recovery.py).
+# It is committed under data/github/ so the gap that this very line caused cannot reopen.
+!data/github/govphys_quadratic_results.csv
+!data/github/govphys_quadratic_summary.json
