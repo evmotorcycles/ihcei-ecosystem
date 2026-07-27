@@ -93,6 +93,7 @@ run "hardware template: coupler-sweep prediction (no fabrication)" py hardware_i
 run "provenance: cryptographic origin lock verifies" py provenance/test_provenance.py
 run "financial-system: Mudaraba Ledger + Sabbath Lock" py financial-system/test_financial_system.py
 run "financial-system: Sovereign Mesh Telemetry" py financial-system/test_sovereign_mesh_telemetry.py
+run "financial-system: Fidelity Translation Layer" py financial-system/test_fidelity_translation_layer.py
 
 bar; echo "  Physics-agency: Telemetric Metric (Python)"; bar
 run "physics: metric + scaling + discriminator" py physics-agency/test_telemetric_metric.py

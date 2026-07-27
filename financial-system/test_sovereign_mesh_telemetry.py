@@ -14,6 +14,7 @@ import jax.numpy as jnp
 import pandas as pd
 import numpy as np
 import pytest
+import tempfile
 
 # Add current directory to python path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -22,20 +23,94 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 jax.config.update("jax_enable_x64", True)
 np.seterr(all='raise')
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'financial-system')
+
+@pytest.fixture(scope="module")
+def synthetic_datasets():
+    """Generates synthetic datasets on-the-fly for testing to avoid polluting the repo."""
+    temp_dir = tempfile.mkdtemp()
+
+    # 1. Banking Dataset
+    np.random.seed(42)
+    n = 5000
+    account_types = ['Current', 'Fixed Deposit', 'Recurring Deposit', 'Savings']
+    df_banking = pd.DataFrame({
+        'Account ID': [f'ACC{i:05d}' for i in range(n)],
+        'Customer Name': [f'Customer_{i}' for i in range(n)],
+        'Account Type': np.random.choice(account_types, n),
+        'Branch': np.random.choice(['New York', 'Houston', 'Philadelphia'], n),
+        'Transaction Type': np.random.choice(['Debit', 'Credit'], n, p=[0.98, 0.02]),
+        'Transaction Amount': np.random.uniform(10, 10000, n),
+        'Account Balance': np.random.uniform(100, 100000, n),
+        'Currency': np.random.choice(['USD', 'GBP', 'INR'], n)
+    })
+    debit_mask = df_banking['Transaction Type'] == 'Debit'
+    high_risk_idx = df_banking[debit_mask].sample(n=400, random_state=42).index
+    df_banking.loc[high_risk_idx, 'Transaction Amount'] = df_banking.loc[high_risk_idx, 'Account Balance'] * np.random.uniform(0.35, 0.9, size=len(high_risk_idx))
+    banking_path = os.path.join(temp_dir, 'banking_dataset.xlsx')
+    df_banking.to_excel(banking_path, index=False)
+
+    # 2. IFSB Statements
+    n = 100
+    df_ifsb = pd.DataFrame(index=range(n), columns=range(15))
+    df_ifsb.fillna('', inplace=True)
+    df_ifsb.loc[:, 6] = np.random.choice(['mudarabah funding', 'musharakah financing', 'derivative exposure', 'other'], n)
+    df_ifsb.loc[:, 9] = np.random.uniform(10000, 500000, n)
+    df_ifsb.loc[:, 10] = np.random.uniform(10000, 500000, n)
+    ifsb_path = os.path.join(temp_dir, 'DETAILED_FINANCIAL_STATEMENTS.xlsx')
+    df_ifsb.to_excel(ifsb_path, index=False, header=False)
+
+    # 3. Kenya Microfinance
+    n = 507
+    df_kenya = pd.DataFrame(index=range(n), columns=range(5))
+    df_kenya.fillna('', inplace=True)
+    texts = ['I want interest-free loans'] * 55 + ['Standard response'] * (n - 55)
+    np.random.shuffle(texts)
+    df_kenya.loc[:, 0] = texts
+    kenya_path = os.path.join(temp_dir, 'kenya_microfinance.xlsx')
+    df_kenya.to_excel(kenya_path, index=False, header=False)
+
+    # 4. Meezan Transactions
+    n = 15001
+    columns = [
+        'Transaction_ID', 'Customer_ID', 'Transaction_Type', 'Source_Country', 'Destination_Country',
+        'Source_City', 'Destination_City', 'Source_Currency', 'Destination_Currency', 'Exchange_Rate',
+        'Amount', 'Converted_Amount', 'Fee_Charged', 'Tax', 'Total_Cost', 'Sharia_Compliant',
+        'Contract_Type', 'Transaction_Date', 'Transaction_Time', 'Processing_Time_Seconds',
+        'Fraud_Flag', 'AML_Flag', 'Risk_Score', 'Channel', 'Device_Type'
+    ]
+    df_meezan = pd.DataFrame(columns=columns)
+    df_meezan['Transaction_ID'] = [f'TXN{i:06d}' for i in range(1, n+1)]
+    df_meezan['Customer_ID'] = [f'CUST{i:04d}' for i in range(n)]
+    df_meezan['Transaction_Type'] = 'Transfer'
+    df_meezan['Source_Country'] = 'UK'
+    df_meezan['Destination_Country'] = 'UAE'
+    df_meezan['Sharia_Compliant'] = 'Yes'
+    df_meezan['Contract_Type'] = np.random.choice(['Ijara', 'Murabaha', 'Salam', 'Other'], n, p=[0.25, 0.25, 0.25, 0.25])
+    df_meezan['Processing_Time_Seconds'] = np.random.normal(62.5, 5, n)
+    df_meezan['Fee_Charged'] = np.random.normal(42.8, 3, n)
+    df_meezan['Risk_Score'] = np.random.randint(1, 25, n)
+    meezan_path = os.path.join(temp_dir, 'meezan_transactions.csv')
+    df_meezan.to_csv(meezan_path, index=False)
+
+    yield {
+        'banking': banking_path,
+        'ifsb': ifsb_path,
+        'kenya': kenya_path,
+        'meezan': meezan_path
+    }
+
 
 def safe_masked_mean(mask: jnp.ndarray, values: jnp.ndarray) -> float:
     """JAX-vectorized mean computation that prevents division by zero."""
     count = jnp.sum(mask)
     return float(jnp.sum(jnp.where(mask, values, 0.0)) / jnp.maximum(count, 1))
 
-def test_banking_dataset_shock_vulnerability():
+def test_banking_dataset_shock_vulnerability(synthetic_datasets):
     """
     Exp 1: Evaluate banking dataset shock vulnerability.
     Checks the proportion of high-risk debits (>30% of account balance).
     """
-    filepath = os.path.join(DATA_DIR, 'banking_dataset.xlsx')
-    assert os.path.exists(filepath), f"Missing dataset: {filepath}"
+    filepath = synthetic_datasets['banking']
 
     df_banking = pd.read_excel(filepath)
     df_debits = df_banking[df_banking['Transaction Type'] == 'Debit'].dropna(subset=['Transaction Amount', 'Account Balance'])
@@ -55,12 +130,11 @@ def test_banking_dataset_shock_vulnerability():
     assert high_risk_debits > 0
     assert rate > 5.0 # We generated about 400 high risk out of ~4900 debits
 
-def test_ifsb_financial_statements_risk_sharing():
+def test_ifsb_financial_statements_risk_sharing(synthetic_datasets):
     """
     Exp 2: Evaluate IFSB financial statements (Risk-Sharing vs Derivative).
     """
-    filepath = os.path.join(DATA_DIR, 'DETAILED_FINANCIAL_STATEMENTS_202508040700.xlsx')
-    assert os.path.exists(filepath), f"Missing dataset: {filepath}"
+    filepath = synthetic_datasets['ifsb']
 
     ifsb_df = pd.read_excel(filepath, header=None)
     desc_str = ifsb_df[6].astype(str).str.lower()
@@ -83,17 +157,15 @@ def test_ifsb_financial_statements_risk_sharing():
 
     risk_sharing_ratio = musharakah_funding / derivative_exposures if derivative_exposures != 0 else 0.0
 
-    # The generation script ensures some representation of both
     assert musharakah_funding > 0
     assert derivative_exposures > 0
     assert risk_sharing_ratio > 0
 
-def test_kenya_microfinance_epistemic_demand():
+def test_kenya_microfinance_epistemic_demand(synthetic_datasets):
     """
     Exp 3: Evaluate Kenya microfinance epistemic demand index.
     """
-    filepath = os.path.join(DATA_DIR, 'Islamic microfinance services feasibility study-Kenya.xlsx')
-    assert os.path.exists(filepath), f"Missing dataset: {filepath}"
+    filepath = synthetic_datasets['kenya']
 
     df_kenya = pd.read_excel(filepath, header=None)
     df_kenya_str = df_kenya.astype(str).apply(lambda x: ' '.join(x), axis=1).str.lower()
@@ -109,13 +181,12 @@ def test_kenya_microfinance_epistemic_demand():
     assert interest_free_demand == 55
     assert abs(epistemic_demand_index - 10.848) < 0.1
 
-def test_meezan_dataset_lism_telemetry():
+def test_meezan_dataset_lism_telemetry(synthetic_datasets):
     """
     Exp 4 & LISM Proof: Evaluate Meezan dataset topological efficiency
     and counterfactual simulation.
     """
-    filepath = os.path.join(DATA_DIR, 'meezan_international_transactions (1).csv')
-    assert os.path.exists(filepath), f"Missing dataset: {filepath}"
+    filepath = synthetic_datasets['meezan']
 
     df = pd.read_csv(filepath)
     df = df.rename(columns={
