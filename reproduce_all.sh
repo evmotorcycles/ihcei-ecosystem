@@ -92,6 +92,7 @@ run "LISM circuit breaker: drop-in agent-pipeline guard" py lism-cohorts/test_ci
 run "hardware template: coupler-sweep prediction (no fabrication)" py hardware_interfaces/test_mock_willow_sweep.py
 run "provenance: cryptographic origin lock verifies" py provenance/test_provenance.py
 run "financial-system: Mudaraba Ledger + Sabbath Lock" py financial-system/test_financial_system.py
+run "financial-system: Sovereign Mesh Telemetry" py financial-system/test_sovereign_mesh_telemetry.py
 
 bar; echo "  Physics-agency: Telemetric Metric (Python)"; bar
 run "physics: metric + scaling + discriminator" py physics-agency/test_telemetric_metric.py
