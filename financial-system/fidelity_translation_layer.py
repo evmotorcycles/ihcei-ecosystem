@@ -1,26 +1,29 @@
 import jax
 import jax.numpy as jnp
 
-class FidelityTranslationLayer:
+class HybridSovereignMesh:
     """
-    The Fidelity Translation Layer (FTL) implements a hybrid routing architecture
-    designed to escape the Anti-Selection Trap.
+    The Hybrid Sovereign Mesh implements a routing architecture designed to escape
+    the Anti-Selection Trap while neutralizing the 'Debt Trap' of fractional-reserve finance.
 
-    Rather than acting as a rigid Sovereign block that enforces isolation (which
-    causes U to collapse), the FTL couples with the global network. It maps
-    OQM operational protocols to measurable thermodynamic variables:
-      - Al Baya (Trade/Risk-Sharing): High fidelity (D_enc -> 1.0), low friction.
-      - Riba (Usury/Synthetic Debt): Introduces measureable friction/latency (tau_v)
-        and say-do dissonance (sigma), which degrades D per hop.
+    Rather than acting as a rigid block that enforces absolute isolation (which
+    causes capacity U to collapse), the Mesh couples with the global network. It maps
+    operational protocols to measurable thermodynamic variables:
+      - True Risk-Sharing (100% Full Reserve, delta U = 0): High fidelity (D_enc -> 1.0),
+        low systemic friction. It preserves structural integrity over time.
+      - Synthetic Debt (Fractional Reserve, delta U > 0): Temporarily inflates capacity (U),
+        but introduces measurable systemic friction/latency (tau_v) and structural
+        dissonance (sigma). This imposes an exponential, inescapable compounding penalty
+        that degrades D per hop/time-step.
 
     The router seeks to maximize total Thermodynamic Yield (E = U * D^n), balancing
-    the massive capacity (U) of conventional hubs against the high fidelity (D) of
-    Sovereign nodes.
+    the massively inflated capacity (U) of synthetic-debt hubs against the
+    high-fidelity structural permanence (D) of risk-sharing Sovereign nodes.
     """
 
-    def __init__(self, base_d_baya=0.98, base_d_riba=0.85, zombie_floor=0.50):
-        self.base_d_baya = float(base_d_baya)
-        self.base_d_riba = float(base_d_riba)
+    def __init__(self, base_d_risk_sharing=0.98, base_d_synthetic_debt=0.85, zombie_floor=0.50):
+        self.base_d_risk_sharing = float(base_d_risk_sharing)
+        self.base_d_synthetic_debt = float(base_d_synthetic_debt)
         self.zombie_floor = float(zombie_floor)
 
     @staticmethod
@@ -37,38 +40,41 @@ class FidelityTranslationLayer:
 
     def evaluate_paths(self,
                        capacities: jnp.ndarray,
-                       say_do_dissonance: jnp.ndarray,
+                       structural_dissonance: jnp.ndarray,
                        hop_counts: jnp.ndarray,
-                       is_riba: jnp.ndarray) -> dict:
+                       is_synthetic_debt: jnp.ndarray) -> dict:
         """
-        Evaluates a set of parallel routing paths.
+        Evaluates a set of parallel routing paths, modeling the Debt Trap reversal.
 
         Args:
-            capacities (U): The raw throughput/capacity of the path.
-            say_do_dissonance (sigma): Measured operational friction (0.0 to 1.0).
-            hop_counts (n): Number of intermediaries.
-            is_riba: Boolean array indicating if the path relies on conventional
-                     synthetic debt (True) or risk-sharing Al Baya (False).
+            capacities (U): The raw throughput/capacity of the path (inflated if synthetic).
+            structural_dissonance (sigma): Measured operational friction (0.0 to 1.0).
+            hop_counts (n): Number of intermediaries or time steps.
+            is_synthetic_debt: Boolean array indicating if the path relies on
+                               synthetic debt (True) or true risk-sharing (False).
 
         Returns:
             Dictionary containing computed fidelity, yield E, and optimal path index.
         """
-        # Determine base fidelity based on protocol (Riba vs Al Baya)
-        base_fidelities = jnp.where(is_riba, self.base_d_riba, self.base_d_baya)
+        # Determine base fidelity based on protocol
+        base_fidelities = jnp.where(is_synthetic_debt, self.base_d_synthetic_debt, self.base_d_risk_sharing)
 
-        # Operational dissonance (sigma) further degrades fidelity
-        # D_actual = D_base * (1 - sigma)
-        actual_fidelities = base_fidelities * (1.0 - say_do_dissonance)
+        # Operational dissonance (sigma) further degrades fidelity.
+        # This models the "Debt Trap": as debt compounds, structural dissonance rises,
+        # degrading the baseline fidelity.
+        actual_fidelities = base_fidelities * (1.0 - structural_dissonance)
 
         # Cap fidelity to avoid negative or >1 values
         actual_fidelities = jnp.clip(actual_fidelities, 0.01, 1.0)
 
+        # The compounding penalty over n hops/time-steps
         retained_fidelities = actual_fidelities ** hop_counts
 
         # Calculate Thermodynamic Yield E
+        # Synthetic debt paths may have massive U, but their low D imposes a heavy penalty over time.
         yields = self.calculate_yield(capacities, actual_fidelities, hop_counts)
 
-        # Penalize paths that breach the epistemic zombie floor
+        # Penalize paths that breach the epistemic zombie floor (default/collapse)
         zombie_mask = retained_fidelities < self.zombie_floor
         # If it breaches, yield is zeroed out as the information/value is effectively lost
         effective_yields = jnp.where(zombie_mask, 0.0, yields)

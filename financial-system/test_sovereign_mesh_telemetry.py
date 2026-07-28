@@ -4,7 +4,8 @@ test_sovereign_mesh_telemetry.py
 ================================
 Pytest suite verifying the Sovereign Mesh telemetry using JAX and float64 precision.
 Evaluates shock vulnerability, structural risk-sharing ratios, and epistemic
-demand index against the generated sovereign mesh datasets.
+demand index against the generated sovereign mesh datasets, completely free
+of cultural/Arabic terminology.
 """
 
 import os
@@ -49,11 +50,11 @@ def synthetic_datasets():
     banking_path = os.path.join(temp_dir, 'banking_dataset.xlsx')
     df_banking.to_excel(banking_path, index=False)
 
-    # 2. IFSB Statements
+    # 2. IFSB Statements (Structural Terms)
     n = 100
     df_ifsb = pd.DataFrame(index=range(n), columns=range(15))
     df_ifsb.fillna('', inplace=True)
-    df_ifsb.loc[:, 6] = np.random.choice(['mudarabah funding', 'musharakah financing', 'derivative exposure', 'other'], n)
+    df_ifsb.loc[:, 6] = np.random.choice(['risk-sharing funding', 'structural financing', 'derivative exposure', 'other'], n)
     df_ifsb.loc[:, 9] = np.random.uniform(10000, 500000, n)
     df_ifsb.loc[:, 10] = np.random.uniform(10000, 500000, n)
     ifsb_path = os.path.join(temp_dir, 'DETAILED_FINANCIAL_STATEMENTS.xlsx')
@@ -63,18 +64,18 @@ def synthetic_datasets():
     n = 507
     df_kenya = pd.DataFrame(index=range(n), columns=range(5))
     df_kenya.fillna('', inplace=True)
-    texts = ['I want interest-free loans'] * 55 + ['Standard response'] * (n - 55)
+    texts = ['I want structural compliance loans'] * 55 + ['Standard response'] * (n - 55)
     np.random.shuffle(texts)
     df_kenya.loc[:, 0] = texts
     kenya_path = os.path.join(temp_dir, 'kenya_microfinance.xlsx')
     df_kenya.to_excel(kenya_path, index=False, header=False)
 
-    # 4. Meezan Transactions
+    # 4. Proxy Mesh Transactions (Meezan equivalent, using structural terms)
     n = 15001
     columns = [
         'Transaction_ID', 'Customer_ID', 'Transaction_Type', 'Source_Country', 'Destination_Country',
         'Source_City', 'Destination_City', 'Source_Currency', 'Destination_Currency', 'Exchange_Rate',
-        'Amount', 'Converted_Amount', 'Fee_Charged', 'Tax', 'Total_Cost', 'Sharia_Compliant',
+        'Amount', 'Converted_Amount', 'Fee_Charged', 'Tax', 'Total_Cost', 'Structural_Compliance',
         'Contract_Type', 'Transaction_Date', 'Transaction_Time', 'Processing_Time_Seconds',
         'Fraud_Flag', 'AML_Flag', 'Risk_Score', 'Channel', 'Device_Type'
     ]
@@ -84,19 +85,19 @@ def synthetic_datasets():
     df_meezan['Transaction_Type'] = 'Transfer'
     df_meezan['Source_Country'] = 'UK'
     df_meezan['Destination_Country'] = 'UAE'
-    df_meezan['Sharia_Compliant'] = 'Yes'
-    df_meezan['Contract_Type'] = np.random.choice(['Ijara', 'Murabaha', 'Salam', 'Other'], n, p=[0.25, 0.25, 0.25, 0.25])
+    df_meezan['Structural_Compliance'] = 'Yes'
+    df_meezan['Contract_Type'] = np.random.choice(['Lease', 'Markup_Trade', 'Forward_Sale', 'Other'], n, p=[0.25, 0.25, 0.25, 0.25])
     df_meezan['Processing_Time_Seconds'] = np.random.normal(62.5, 5, n)
     df_meezan['Fee_Charged'] = np.random.normal(42.8, 3, n)
     df_meezan['Risk_Score'] = np.random.randint(1, 25, n)
-    meezan_path = os.path.join(temp_dir, 'meezan_transactions.csv')
+    meezan_path = os.path.join(temp_dir, 'mesh_transactions.csv')
     df_meezan.to_csv(meezan_path, index=False)
 
     yield {
         'banking': banking_path,
         'ifsb': ifsb_path,
         'kenya': kenya_path,
-        'meezan': meezan_path
+        'mesh_tx': meezan_path
     }
 
 
@@ -130,16 +131,16 @@ def test_banking_dataset_shock_vulnerability(synthetic_datasets):
     assert high_risk_debits > 0
     assert rate > 5.0 # We generated about 400 high risk out of ~4900 debits
 
-def test_ifsb_financial_statements_risk_sharing(synthetic_datasets):
+def test_financial_statements_risk_sharing(synthetic_datasets):
     """
-    Exp 2: Evaluate IFSB financial statements (Risk-Sharing vs Derivative).
+    Exp 2: Evaluate financial statements (Risk-Sharing vs Derivative).
     """
     filepath = synthetic_datasets['ifsb']
 
     ifsb_df = pd.read_excel(filepath, header=None)
     desc_str = ifsb_df[6].astype(str).str.lower()
 
-    musharakah_mask = desc_str.str.contains('mudarabah|musharakah', na=False)
+    risk_sharing_mask = desc_str.str.contains('risk-sharing|structural financing', na=False)
     derivative_mask = desc_str.str.contains('derivative', na=False)
 
     ifsb_df[9] = pd.to_numeric(ifsb_df[9], errors='coerce').fillna(0.0)
@@ -147,23 +148,23 @@ def test_ifsb_financial_statements_risk_sharing(synthetic_datasets):
 
     jnp_data_9 = jnp.array(ifsb_df[9].values, dtype=jnp.float64)
     jnp_data_10 = jnp.array(ifsb_df[10].values, dtype=jnp.float64)
-    jnp_musharakah_mask = jnp.array(musharakah_mask.values, dtype=jnp.bool_)
+    jnp_risk_sharing_mask = jnp.array(risk_sharing_mask.values, dtype=jnp.bool_)
     jnp_derivative_mask = jnp.array(derivative_mask.values, dtype=jnp.bool_)
 
     jnp_values = jnp.stack([jnp_data_9, jnp_data_10], axis=1)
 
-    musharakah_funding = float(jnp.sum(jnp.where(jnp_musharakah_mask[:, None], jnp_values, 0.0)))
+    risk_sharing_funding = float(jnp.sum(jnp.where(jnp_risk_sharing_mask[:, None], jnp_values, 0.0)))
     derivative_exposures = float(jnp.sum(jnp.where(jnp_derivative_mask[:, None], jnp_values, 0.0)))
 
-    risk_sharing_ratio = musharakah_funding / derivative_exposures if derivative_exposures != 0 else 0.0
+    risk_sharing_ratio = risk_sharing_funding / derivative_exposures if derivative_exposures != 0 else 0.0
 
-    assert musharakah_funding > 0
+    assert risk_sharing_funding > 0
     assert derivative_exposures > 0
     assert risk_sharing_ratio > 0
 
-def test_kenya_microfinance_epistemic_demand(synthetic_datasets):
+def test_microfinance_epistemic_demand(synthetic_datasets):
     """
-    Exp 3: Evaluate Kenya microfinance epistemic demand index.
+    Exp 3: Evaluate microfinance epistemic demand index.
     """
     filepath = synthetic_datasets['kenya']
 
@@ -171,7 +172,7 @@ def test_kenya_microfinance_epistemic_demand(synthetic_datasets):
     df_kenya_str = df_kenya.astype(str).apply(lambda x: ' '.join(x), axis=1).str.lower()
     total_responses = len(df_kenya)
 
-    demand_mask = df_kenya_str.str.contains('interest-free|interest free|religious compliance|no interest', na=False)
+    demand_mask = df_kenya_str.str.contains('structural compliance|interest free|no interest', na=False)
     jnp_demand_mask = jnp.array(demand_mask.values, dtype=jnp.bool_)
     interest_free_demand = int(jnp.sum(jnp_demand_mask))
 
@@ -181,12 +182,12 @@ def test_kenya_microfinance_epistemic_demand(synthetic_datasets):
     assert interest_free_demand == 55
     assert abs(epistemic_demand_index - 10.848) < 0.1
 
-def test_meezan_dataset_lism_telemetry(synthetic_datasets):
+def test_mesh_dataset_lism_telemetry(synthetic_datasets):
     """
-    Exp 4 & LISM Proof: Evaluate Meezan dataset topological efficiency
+    Exp 4 & LISM Proof: Evaluate mesh dataset topological efficiency
     and counterfactual simulation.
     """
-    filepath = synthetic_datasets['meezan']
+    filepath = synthetic_datasets['mesh_tx']
 
     df = pd.read_csv(filepath)
     df = df.rename(columns={
@@ -196,7 +197,7 @@ def test_meezan_dataset_lism_telemetry(synthetic_datasets):
         'Fee_Charged': 'Fee'
     })
 
-    valid_contracts = ['Ijara', 'Murabaha', 'Salam']
+    valid_contracts = ['Lease', 'Markup_Trade', 'Forward_Sale']
     df_mesh = df[df['Contract_Type'].isin(valid_contracts)].dropna(subset=['HOPS', 'Processing_Time', 'Fee']).copy()
 
     mesh_hops = jnp.array(df_mesh['HOPS'].values, dtype=jnp.float64)
