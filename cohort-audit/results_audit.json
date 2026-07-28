@@ -52,12 +52,16 @@
       "github-lism/data/github_cohort_frozen.json": {
         "rows": 28,
         "has_survival_label": false
+      },
+      "govphys_quadratic_results.csv": {
+        "rows": 992,
+        "has_survival_label": true
       }
     },
-    "largest_committed_labelled_cohort": 21,
-    "found_992_row_artifact": false,
-    "gap_closed": false,
-    "status": "NOT_OFFLINE_REPRODUCIBLE",
+    "largest_committed_labelled_cohort": 992,
+    "found_992_row_artifact": true,
+    "gap_closed": true,
+    "status": "REAL_REPRODUCIBLE (gap closed; see cohort-audit/gap_closure.py)",
     "note": "lism-cohorts/results_meta.json stores only a spec HASH for the N=992 cohort, not the rows. The N=992 result must not be cited as offline-reproducible from this repository.",
     "pass": true
   },
@@ -78,16 +82,14 @@
     "ledger": {
       "A_yeast_4825_channel": "REAL_REPRODUCIBLE",
       "A_yeast_4825_outcome_coupling": "REAL_REPRODUCIBLE (gap closed 2026-07-25; published AUC 0.47 = non-converged artifact)",
-      "B_github_992": "NOT_OFFLINE_REPRODUCIBLE",
+      "B_github_992": "REAL_REPRODUCIBLE (gap closed; govphys_quadratic_results.csv)",
       "B_github_tau_v_21": "REAL_REPRODUCIBLE (underpowered, n_fail=4)",
       "B_github_frozen_28": "REAL_REPRODUCIBLE (no survival label)",
       "C_knowledge_793": "REAL_REPRODUCIBLE (gap closed; knowledge_793_results.csv)",
       "D_digital_swarm": "REAL_REPRODUCIBLE (gap closed; digital_swarm_results.csv)",
       "hf_media_19 / biorxiv_40 / pubmed_8": "REAL_REPRODUCIBLE"
     },
-    "not_offline_reproducible": [
-      "B_github_992"
-    ],
+    "not_offline_reproducible": [],
     "simulations": [],
     "pass": true
   },
