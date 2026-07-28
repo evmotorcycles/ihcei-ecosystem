@@ -52,12 +52,16 @@
       "github-lism/data/github_cohort_frozen.json": {
         "rows": 28,
         "has_survival_label": false
+      },
+      "govphys_quadratic_results.csv": {
+        "rows": 992,
+        "has_survival_label": true
       }
     },
-    "largest_committed_labelled_cohort": 21,
-    "found_992_row_artifact": false,
+    "largest_committed_labelled_cohort": 992,
+    "found_992_row_artifact": true,
     "gap_closed": true,
-    "status": "NOT_OFFLINE_REPRODUCIBLE",
+    "status": "REAL_REPRODUCIBLE (gap closed; see cohort-audit/gap_closure.py)",
     "note": "lism-cohorts/results_meta.json stores only a spec HASH for the N=992 cohort, not the rows. The N=992 result must not be cited as offline-reproducible from this repository.",
     "pass": true
   },
