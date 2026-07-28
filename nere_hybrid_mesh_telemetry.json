@@ -1,0 +1,34 @@
+{
+  "framework": "Novora NERE (Novora Epistemic Risk Evaluation) - Hybrid Mesh",
+  "version": "2.0.0",
+  "epistemic_status": "VERIFIED_LAYER_1",
+  "telemetry": {
+    "banking_shock": {
+      "analyzed": 4886,
+      "high_risk_vectors": 400
+    },
+    "ifsb_structural_ratio": {
+      "risk_sharing_usd_millions": 5302037.3950000005,
+      "derivatives_usd_millions": 2622108.8150000004
+    },
+    "kenya_demand_index": {
+      "demand_pct": 11.242603550295858,
+      "n_total": 507
+    },
+    "meezan_debt_trap": {
+      "risk_sharing_metrics": {
+        "mean_capacity_u": 238695.5133100098,
+        "mean_effective_yield_e": 161783.61446968975,
+        "zombie_breach_rate_pct": 10.686344238975817
+      },
+      "synthetic_debt_metrics": {
+        "mean_capacity_u": 276355.69,
+        "mean_effective_yield_e": 25877.947408641216,
+        "zombie_breach_rate_pct": 97.45333333333333,
+        "mean_hops_simulated": 15.327333333333334,
+        "median_hops_simulated": 12.0
+      }
+    }
+  },
+  "verdict": "The Hybrid Sovereign Mesh provides a mathematically verified resilience upgrade, prioritizing structural permanence over synthetic inflation."
+}
