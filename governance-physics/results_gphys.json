@@ -1,0 +1,86 @@
+{
+  "spec_sha256_canonical": "6a7877dbc9f361027939f3f8f22d84a46d916d5be7a2c499c0264c458e46dd88",
+  "seed": 20260726,
+  "pypi_nodes": 540,
+  "pypi_component": 527,
+  "triangle_checks": 300000,
+  "triangle_violations": 0,
+  "spearman_d_vs_degree": 0.8686,
+  "slope_pypi": -0.5,
+  "r2_pypi": 1.0,
+  "null_z": 7.43,
+  "real_mean_d": 1.113106,
+  "null_mean_d": 1.050101,
+  "null_sd": 0.008475,
+  "coupled_pairs": 1262,
+  "min_d_among_maximally_coupled": 0.200115,
+  "n_coupled_pairs_with_zero_distance": 0,
+  "slope_yeast": -0.5,
+  "r2_yeast": 1.0,
+  "layer3_terms_leaked_into_scored_gates": [],
+  "identity_controls_NOT_A_GATE": {
+    "random": {
+      "slope": -0.5,
+      "r2": 1.0
+    },
+    "path": {
+      "slope": -0.5,
+      "r2": 1.0
+    }
+  },
+  "evidential_gates": [
+    "GP1_metric_emerges_on_a_real_graph",
+    "GP2_the_metric_is_not_just_degree",
+    "GP4_a_degree_preserving_null_destroys_the_structure",
+    "GP5_maximal_coupling_does_NOT_imply_zero_distance"
+  ],
+  "identity_gates_excluded": [
+    "GP3_the_scaling_exponent_matches_the_sharp_prediction",
+    "GP6_the_exponent_replicates_on_a_second_real_substrate"
+  ],
+  "gates": [
+    {
+      "gate": "GP1_metric_emerges_on_a_real_graph",
+      "pass": true,
+      "detail": "300000 triangle checks -> 0 violations | symmetry err 2.89e-15 | all off-diagonal distances > 0: True | zero self-distance: yes",
+      "weight": "full"
+    },
+    {
+      "gate": "GP2_the_metric_is_not_just_degree",
+      "pass": true,
+      "detail": "spearman(d, 1/sqrt(deg_i*deg_j)) = +0.8686  (gate |rho| < 0.90) \u2014 the emergent geometry carries structure beyond raw capacity",
+      "weight": "full"
+    },
+    {
+      "gate": "GP3_the_scaling_exponent_matches_the_sharp_prediction",
+      "pass": true,
+      "detail": "fitted slope = -0.5000  (predicted exactly -0.5000)   R^2 = 1.00000000  on the REAL PyPI graph\n        *** EVIDENTIAL DOWNGRADE (post-hoc, disclosed): this exponent is an ALGEBRAIC IDENTITY. Controls with no relation to the substrates give the same answer: {'random': {'slope': -0.5, 'r2': 1.0}, 'path': {'slope': -0.5, 'r2': 1.0}}. Passed as pre-registered, but excluded from the evidential score \u2014 a test that cannot fail is not evidence.",
+      "weight": "identity"
+    },
+    {
+      "gate": "GP4_a_degree_preserving_null_destroys_the_structure",
+      "pass": true,
+      "detail": "real mean d = 1.113106 vs degree-preserving null 1.050101 +/- 0.008475  ->  z = +7.43 (gate |z| > 3) over 20 rewires",
+      "weight": "full"
+    },
+    {
+      "gate": "GP5_maximal_coupling_does_NOT_imply_zero_distance",
+      "pass": true,
+      "detail": "over 1262 maximally coupled (directly connected) real pairs: MINIMUM emergent distance = 0.200115, mean 0.614069, and 0 of them have d = 0.\n        The framework's entanglement inference requires d = 0 here. It is REFUTED on its own formalism:\n        commute time is a round-TRIP transport quantity, and correlation does not drive it to zero \u2014 which is the same reason no-signalling holds.",
+      "weight": "full"
+    },
+    {
+      "gate": "GP6_the_exponent_replicates_on_a_second_real_substrate",
+      "pass": true,
+      "detail": "yeast channel (STRING v12, 4825 nodes committed; 600 used, largest component 598): slope = -0.5000, R^2 = 1.00000000  (gate [-0.52, -0.48])\n        *** EVIDENTIAL DOWNGRADE (post-hoc, disclosed): this exponent is an ALGEBRAIC IDENTITY. Controls with no relation to the substrates give the same answer: {'random': {'slope': -0.5, 'r2': 1.0}, 'path': {'slope': -0.5, 'r2': 1.0}}. Passed as pre-registered, but excluded from the evidential score \u2014 a test that cannot fail is not evidence.",
+      "weight": "identity"
+    },
+    {
+      "gate": "GP7_no_layer_3_claim_is_scored",
+      "pass": true,
+      "detail": "scored gates reference no Layer-3 notion ('rendered', 'headset', 'conscious', 'observer', 'nafs', 'simulation', 'universe', 'spacetime'); leaked terms: none",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": []
+}

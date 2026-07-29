@@ -54,3 +54,28 @@ was equally able to return the fundamental verdict.
 
 Reuses the already-merged, validated endpoint functions in
 `physics-agency/telemetric_metric.py` (identical code path — no reinvention).
+
+---
+
+## CORRECTION (2026-07-26) — the −0.5 slope is an ALGEBRAIC IDENTITY, not a verified prediction
+
+The H2 result reported here ("median slope −0.5000, predicted −0.5000, R² ≈ 1") **is not
+empirical**. It follows from the definitions by algebra:
+
+```
+W → sW   ⟹   L → sL   ⟹   L⁺ → L⁺/s   ⟹   R → R/s   ⟹   d = √R → d/√s
+so   log d = −0.5·log s + const     EXACTLY, for EVERY graph
+```
+
+Controls with no relation to any substrate — a random graph and a path graph — return the
+identical −0.5000 with R² = 1.00000000. See `governance-physics/gphys.py`, which
+reproduces this and **excludes the corresponding gates from its evidential score** under
+the repository rule that *a test which cannot fail is not evidence*.
+
+**What this does and does not change.** H1 (a metric with zero triangle violations) still
+stands as an implementation-and-connectivity check. What must no longer be claimed is that
+the −0.5 exponent is a *confirmed prediction of Latency-Metric Duality*: any definition of
+the form `d = √(κ·τ)` with `τ` homogeneous of degree −1 in the coupling produces it
+automatically. The genuinely empirical content on real graphs is in
+`governance-physics/` — GP2 (the metric is not merely degree, ρ = +0.8686) and GP4
+(distinguishable from a degree-preserving null, z = +7.43).
