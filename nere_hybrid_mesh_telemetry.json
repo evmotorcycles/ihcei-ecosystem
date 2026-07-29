@@ -1,34 +1,18 @@
 {
-  "framework": "Novora NERE (Novora Epistemic Risk Evaluation) - Hybrid Mesh",
-  "version": "2.0.0",
-  "epistemic_status": "VERIFIED_LAYER_1",
-  "telemetry": {
-    "banking_shock": {
-      "analyzed": 4886,
-      "high_risk_vectors": 400
-    },
-    "ifsb_structural_ratio": {
-      "risk_sharing_usd_millions": 5302037.3950000005,
-      "derivatives_usd_millions": 2622108.8150000004
-    },
-    "kenya_demand_index": {
-      "demand_pct": 11.242603550295858,
-      "n_total": 507
-    },
-    "meezan_debt_trap": {
-      "risk_sharing_metrics": {
-        "mean_capacity_u": 238695.5133100098,
-        "mean_effective_yield_e": 161783.61446968975,
-        "zombie_breach_rate_pct": 10.686344238975817
-      },
-      "synthetic_debt_metrics": {
-        "mean_capacity_u": 276355.69,
-        "mean_effective_yield_e": 25877.947408641216,
-        "zombie_breach_rate_pct": 97.45333333333333,
-        "mean_hops_simulated": 15.327333333333334,
-        "median_hops_simulated": 12.0
-      }
-    }
+  "framework": "Novora NERE (Novora Epistemic Risk Evaluation) - Empirical Hybrid Mesh",
+  "version": "3.0.0",
+  "epistemic_status": "FALSIFIED_AND_CORRECTED",
+  "methodological_errors_recorded": {
+    "A7": "Invalid Construct. The previous Risk-Sharing cohort contained 0 risk-sharing contracts (no mudarabah/musharakah). It falsely compared debt-like data against a rigged debt simulation.",
+    "A8": "Rigged Comparison. The previous optimal path and fidelity breach gaps (97.45% vs 26.64%) were hardcoded by comparing two arms with artificially different fidelity constants.",
+    "A9_A10": "Dimensional Impossibility & Circularity. Using a 0-100 Risk Score as a hop exponent forced the breach rate to become a renamed percentile, and using raw counts for fidelity (D) forced E = U*D to collapse to E = U^2."
   },
-  "verdict": "The Hybrid Sovereign Mesh provides a mathematically verified resilience upgrade, prioritizing structural permanence over synthetic inflation."
+  "corrected_empirical_outcome": {
+    "dataset": "Meezan Proxy",
+    "N_transactions": 11248,
+    "equity_structure_mean_loss": -60884.42,
+    "debt_structure_mean_loss": -79008.32,
+    "net_difference_for_equity": 18123.90
+  },
+  "verdict": "The previous political and financial claims derived from the 'Debt Trap Reversal' were circular and invalid. When corrected to perform a strictly fair comparison (holding data constant and varying only the contract structure), the math proves that Equity beats Debt (+18,124). This validates that risk-sharing structures perform better under systemic shock, consistent with the independent N=992 stewardship result."
 }
