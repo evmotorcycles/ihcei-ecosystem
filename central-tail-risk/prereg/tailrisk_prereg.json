@@ -1,0 +1,46 @@
+{
+  "title": "The unmeasured half: does concentration actually cost what the mesh's defenders claim?",
+  "date_locked": "2026-07-29",
+  "status": "LOCKED BEFORE ANY IMPLEMENTATION OR RESULT EXISTED",
+  "what_is_being_tested": "A specific argument was put to this programme: the settlement mesh is not failing, the test suite is 'measuring the wrong game'. The argument has three parts, and all three are testable rather than rhetorical. (1) The centralised arm posts zero routine failures ONLY because it creates credit -- it operates on a fractional-reserve substrate where dU > 0 -- while the mesh enforces dU = 0 and therefore cannot fabricate liquidity. (2) This is why local pooling was priced at 17-18% and not 90%: a full-reserve pool can only re-route existing capital. (3) The centralised arm carries single-point dependence 1.0000 and would suffer a total meltdown under stress, while the mesh at k=2 is 'immune (blast quarantined)' at 0.0100. Parts 1 and 3 are asserted in a summary table as OUTCOMES. Neither has ever been measured. This spec measures them.",
+
+  "why_this_is_not_a_free_win_for_either_side": "The argument is being tested, not assumed, and it can lose. The centralised comparator already committed in settlement-mesh/mesh.py moves reserves from issuer to centre on every issuance and never lends beyond them -- on inspection it appears to be FULL RESERVE. If that is confirmed by measurement, then the centralised arm beat the mesh 2,458 to 0 WITHOUT creating a single unit of credit, and the 'it only wins because of credit creation' explanation is refuted on the programme's own committed code. Equally, the 'mesh is immune' half can lose: single-point dependence is a STRUCTURAL ratio, not an outcome, and a network that spreads value thinly may simply fail everywhere at once instead of in one place.",
+
+  "the_simulation_trap_being_avoided_again": "SEVENTH appearance. The proposal offered was to write and execute 'test_catastrophic_center_meltdown.py' to 'simulate a 50% systemic liquidity freeze and measure the exact insolvency threshold of the 1.0000 centralised balance sheet versus the 0.0100 sub-mesh'. A simulation written to demonstrate a meltdown will produce a meltdown; the numbers 1.0000 and 0.0100 are structural ratios already known before any run, and quoting them as the expected answer is assuming the conclusion. This spec instead applies an IDENTICAL, ABSOLUTE value freeze to two arms that differ ONLY in topology, inside the settlement engine already built and attacked, driven by the same committed real shock sequence. Every number reported is a MEASURED output of that engine.",
+
+  "fixed_parameters": {
+    "shock_source": "data/colab-audit/banking_dataset.xlsx, hash-pinned, Debit rows, Transaction Amount / Account Balance clipped to [0,1]",
+    "n_shocks_expected": 4886,
+    "n_nodes": 200,
+    "seed": 20260729,
+    "freeze_fractions_swept": [0.0, 0.1, 0.25, 0.5, 0.75, 0.9],
+    "headline_freeze": 0.5,
+    "leverage_multiples_swept": [1, 3, 5, 10],
+    "fairness_rule": "The frozen amount is the SAME ABSOLUTE VALUE in every arm, computed as f * total_system_value where total_system_value is measured identically in all arms (all node reserves plus any centre reserves). In the centralised arm it is taken from the centre first, because the centre is the single point; in the mesh it is taken proportionally across all nodes, because no centre exists. That difference in WHERE the value is taken from is the hypothesis under test, not a parameter advantage."
+  },
+
+  "gates": {
+    "C1_the_centralised_arm_creates_credit": "MEASURE total claims outstanding against total real value held, in both arms, over the identical replay. The argument predicts the centralised arm shows dU > 0 (claims exceed backing by more than 1% of base value) and the mesh shows dU = 0. PASS = the centralised arm's credit creation exceeds 1% of base value. This gate is written so that it FAILS if the committed centralised comparator turns out to be full-reserve, which would refute the credit-creation explanation for its routine advantage.",
+    "C2_credit_creation_is_what_buys_smoothness": "Add a genuinely fractional-reserve arm at leverage m and replay. PASS = at m >= 5 the fractional arm's routine settlement failures fall below 25% of the full-reserve mesh's failures. This tests part 2 of the argument: that fabricating liquidity is what produces smoothness. It can fail if leverage does not help.",
+    "C3_concentration_is_catastrophic_under_stress": "At the headline freeze of 0.5, PASS = the centralised arm's post-freeze settlement failure rate exceeds 50%. This is NOT tautological: at f=0.5 the centre retains half its book and can still meet obligations, so a low failure rate is a possible and permitted outcome.",
+    "C4_the_mesh_is_materially_better_under_the_same_freeze": "At the same absolute freeze, PASS = the mesh's post-freeze failure rate is at most HALF the centralised arm's. Recorded separately and NOT as part of the score: whether the mesh is 'immune', pre-defined as a post-freeze failure rate below 5%. The word immune appears in the argument's summary table and is tested as stated.",
+    "C5_the_mesh_wins_on_the_COMBINED_ledger": "Total settlement failures across routine replay PLUS the tail event, summed, at the headline freeze. PASS = the mesh's combined total is lower than the centralised arm's. This is the whole question: the mesh pays ~2,430 routine failures for its topology, and this gate asks whether the tail event ever repays that premium. It can fail, and if it fails the mesh's trade is a bad one at this freeze level.",
+    "C6_identical_inputs_across_arms": "Structural check: same shock array, same seed, same node count, same seeded obligations. Cannot fail by design; EXCLUDED from the score.",
+    "C7_no_architecture_specific_constant": "Structural check: no constant differs per arm other than the topology and the declared leverage multiple. EXCLUDED from the score.",
+    "C8_no_tuned_formula_anywhere": "Structural check: no reported quantity is a closed-form expression of the swept parameter. EXCLUDED from the score."
+  },
+
+  "predictions_recorded_in_advance": {
+    "C1": "EXPECTED TO FAIL. The committed centralised comparator conserves value on inspection. If so, the centralised arm's routine advantage comes from POOLING -- one book meeting obligations no single node could -- and not from credit creation. This would be a correction to the argument being tested, not a confirmation of it.",
+    "C2": "EXPECTED TO PASS. Leverage should buy routine smoothness. Note the consequence if C1 fails and C2 passes: credit creation is SUFFICIENT for smoothness but not NECESSARY, because a full-reserve central book already achieved zero failures.",
+    "C3": "EXPECTED TO PASS. Removing half the value from a single balance sheet that intermediates every obligation should break a large fraction of settlements.",
+    "C4": "GENUINELY UNCERTAIN, and this is the gate that matters. The mesh is expected to be better, but the 'immune' claim is expected to FAIL: spreading the same absolute loss across 200 nodes degrades every node rather than quarantining the damage. Blast radius measures WHERE a failure originates, not how much value survives it.",
+    "C5": "GENUINELY UNCERTAIN. The mesh must repay roughly 2,430 routine failures out of a single tail event. Whether it does depends entirely on how large the tail event is, and at a single freeze level the answer may well be no."
+  },
+
+  "what_would_refute_the_whole_reframe": "If C1 fails and C5 fails, then the 'wrong game' argument is wrong twice over: the centralised arm does not win by creating credit, and the mesh does not win once tail risk IS measured. The reframe would then be an unfalsifiable rescue of a design that lost on the metric it was given. This outcome is permitted and will be reported as the headline if it occurs.",
+
+  "anti_immunisation_clause": "If the mesh loses C5, that result may NOT be rescued by asserting that the freeze was unrealistic, that the real world would freeze differently, or that the mesh's value is qualitative. Any such move converts the claim to Layer 3 and it will be recorded as an ontological prior, never as evidence. The freeze is swept across six levels precisely so that the level at which the trade turns favourable -- if any -- is a MEASURED quantity rather than an argument.",
+
+  "terminology_rule": "Plain English throughout the mechanism and the gates, continuing the directive under which the settlement mesh was built. The governance and morphological reading belongs in the README as Layer 2 design commentary and carries no evidential weight."
+}
