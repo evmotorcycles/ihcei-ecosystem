@@ -1,0 +1,323 @@
+<title>What measurement adds to OQM — and the line it is not allowed to cross</title>
+<style>
+  :root{
+    --paper:#E9EDF1; --ink:#0F1720; --ink-2:#3A4652; --muted:#6E7C8A;
+    --rule:#C9D2DB; --card:#FFFFFF; --card-2:#DFE6EC;
+    --l1:#1F6F5C; --l2:#A8761F; --l3:#6B5E8C; --refuted:#A63A2B;
+    --shadow:0 1px 2px rgba(15,23,32,.05), 0 12px 30px rgba(15,23,32,.06);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Charter","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#0C1117; --ink:#E3E9EF; --ink-2:#A8B4C0; --muted:#75838F;
+      --rule:#1E2833; --card:#131B23; --card-2:#1A242E;
+      --l1:#4FB79C; --l2:#D6A44E; --l3:#A392C7; --refuted:#E0705C;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  }
+  :root[data-theme="dark"]{ --paper:#0C1117; --ink:#E3E9EF; --ink-2:#A8B4C0; --muted:#75838F;
+    --rule:#1E2833; --card:#131B23; --card-2:#1A242E;
+    --l1:#4FB79C; --l2:#D6A44E; --l3:#A392C7; --refuted:#E0705C;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  :root[data-theme="light"]{ --paper:#E9EDF1; --ink:#0F1720; --ink-2:#3A4652; --muted:#6E7C8A;
+    --rule:#C9D2DB; --card:#FFFFFF; --card-2:#DFE6EC;
+    --l1:#1F6F5C; --l2:#A8761F; --l3:#6B5E8C; --refuted:#A63A2B;
+    --shadow:0 1px 2px rgba(15,23,32,.05), 0 12px 30px rgba(15,23,32,.06); }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;
+       line-height:1.68;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:48rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p,ul,ol{color:var(--ink-2)} p{margin:0}
+  ul{margin:0;padding-left:1.15rem;display:flex;flex-direction:column;gap:.45rem}
+  :focus-visible{outline:2px solid var(--l1);outline-offset:3px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.011em;margin:0}
+  strong{color:var(--ink);font-weight:600}
+
+  /* the page's one structural idea: measured quantities are ALWAYS mono */
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.9em;color:var(--ink)}
+
+  .eyebrow{font-family:var(--mono);font-size:.69rem;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+  header{border-bottom:1px solid var(--rule);margin-bottom:3.4rem;padding:4.5rem 0 2.4rem;
+         display:flex;flex-direction:column;gap:1.3rem}
+  h1{font-size:clamp(2rem,5.4vw,3.15rem);line-height:1.08}
+  h1 em{font-style:italic;color:var(--l1)}
+  .standfirst{font-size:1.08rem;max-width:39rem}
+  section{margin-bottom:3.4rem;display:flex;flex-direction:column;gap:1.1rem}
+  h2{font-size:1.5rem;line-height:1.22;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.68rem;color:var(--muted);display:block;
+        letter-spacing:.16em;margin-bottom:.55rem;font-weight:400;text-transform:uppercase}
+  h3{font-size:1.02rem}
+
+  /* layer chips — colour encodes evidentiary status, everywhere on the page */
+  .chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;padding:.15rem .42rem;
+        border-radius:2px;border:1px solid currentColor;white-space:nowrap;font-weight:500}
+  .c1{color:var(--l1)} .c2{color:var(--l2)} .c3{color:var(--l3)} .cx{color:var(--refuted)}
+
+  .stack{display:flex;flex-direction:column;gap:0}
+  .band{background:var(--card);border:1px solid var(--rule);padding:1.05rem 1.25rem;
+        display:flex;flex-direction:column;gap:.5rem}
+  .band:first-child{border-radius:3px 3px 0 0}
+  .band:last-child{border-radius:0 0 3px 3px}
+  .band + .band{border-top:none}
+  .band .hd{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+  .band .hd b{font-family:var(--serif);font-size:1.02rem}
+  .band.b1{border-left:3px solid var(--l1)}
+  .band.b2{border-left:3px solid var(--l2)}
+  .band.b3{border-left:3px solid var(--l3)}
+  .firewall{display:flex;align-items:center;gap:.7rem;padding:.55rem 0;
+            font-family:var(--mono);font-size:.66rem;letter-spacing:.13em;
+            text-transform:uppercase;color:var(--refuted)}
+  .firewall::before,.firewall::after{content:"";height:0;flex:1;
+            border-top:2px dashed var(--refuted);opacity:.55}
+
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.15rem 1.3rem;display:flex;flex-direction:column;gap:.75rem;
+       box-shadow:var(--shadow)}
+  .box.warn{border-left:3px solid var(--refuted)}
+  .box.good{border-left:3px solid var(--l1)}
+  .lab{font-family:var(--mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase}
+  .box.warn .lab{color:var(--refuted)} .box.good .lab{color:var(--l1)}
+  .eq{font-family:var(--mono);font-size:1.02rem;color:var(--ink);background:var(--card-2);
+      border:1px solid var(--rule);border-radius:3px;padding:1rem 1.1rem;text-align:center;
+      overflow-x:auto;white-space:nowrap}
+  .nums{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.81rem;
+        color:var(--ink);background:var(--card-2);border:1px solid var(--rule);
+        border-radius:3px;padding:.8rem .95rem;overflow-x:auto;white-space:pre;line-height:1.72}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:30rem}
+  th,td{text-align:left;padding:.58rem .8rem;border-bottom:1px solid var(--rule);
+        vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--muted);font-weight:500;background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right}
+  .note{font-size:.92rem;color:var(--ink-2);border-left:2px solid var(--rule);
+        padding-left:.9rem}
+  footer{border-top:1px solid var(--rule);padding-top:1.4rem;font-size:.8rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.85}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Marvelous Quran · methodology note</p>
+  <h1>What measurement adds to OQM — and the line it is <em>not allowed</em> to cross.</h1>
+  <p class="standfirst">LISM and LMD do not make the framework more persuasive. They make it
+  more <strong>falsifiable</strong> — and the record of what they have already forced it to
+  retract is the strongest thing on this page.</p>
+  <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+    <span class="chip c1">L1 MEASURED</span>
+    <span class="chip c2">L2 OPERATIONAL</span>
+    <span class="chip c3">L3 INTERPRETIVE</span>
+    <span class="chip cx">RETRACTED</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">The claim</span>Comprehensiveness comes from the boundary, not the parallels</h2>
+  <p>It is tempting to argue that because a linguistic structure and a physical formalism can
+  both be written as operators acting on invariants, the parallel <em>supports</em> both. It
+  does not. Two systems being describable in similar terms is a fact about description.</p>
+  <p>What actually makes a framework comprehensive is that it states, in advance, which of its
+  claims can be shown to be wrong — and then publishes the ones that were. That is the entire
+  function of the three-layer stack.</p>
+
+  <div class="stack">
+    <div class="band b1">
+      <div class="hd"><span class="chip c1">L1</span><b>Measured, falsifiable</b></div>
+      <p>Network telemetry on committed data, under a pre-registration locked before the run.
+      <strong>The only layer that counts as evidence.</strong></p>
+    </div>
+    <div class="band b2">
+      <div class="hd"><span class="chip c2">L2</span><b>Operational definitions</b></div>
+      <p>The term → function mapping. The morphological operator model. Defensible as method
+      and as vocabulary. <strong>Not itself a finding.</strong></p>
+    </div>
+    <div class="band b3">
+      <div class="hd"><span class="chip c3">L3</span><b>Interpretive prior</b></div>
+      <p>The ontological reading. A philosophical axiom. <strong>No dataset adjudicates it</strong>,
+      and none is claimed to.</p>
+    </div>
+  </div>
+  <div class="firewall">nothing crosses upward</div>
+  <p class="note">A Layer-2 claim never becomes Layer-1 by being relabelled, and an elegant
+  structural parallel never becomes evidence by being drawn more carefully.</p>
+</section>
+
+<section>
+  <h2><span class="n">I. LISM</span>A measurement layer underneath the reading</h2>
+  <div class="eq">E = U · D<sub>enc</sub> · D<sub>dec</sub></div>
+  <p>Yield couples <strong>linearly</strong> to a two-hop fidelity: an inward encoding hop and
+  an outward distribution hop. The claim is not poetic — it is a model with a rival
+  (<span class="m">E = U·D²</span>) that can beat it on data, and sometimes does.</p>
+
+  <div class="box good">
+    <span class="lab">Where linear coupling won</span>
+    <div class="nums">yeast interactome  N=4,825   VIF 1.0026
+                   CV AUC  linear 0.666  >  quadratic 0.591
+
+GitHub cohort      N=992     VIF 1.0203
+                   dAIC -3.483   → QUADRATIC_DISCONFIRMED</div>
+  </div>
+
+  <div class="box warn">
+    <span class="lab">Where it won nothing — stated with equal weight</span>
+    <p>On a real, committed <span class="m">540</span>-package PyPI graph the coupling gate was
+    <strong>missed</strong>: <span class="m">R² 0.0083</span> linear against
+    <span class="m">0.0099</span> quadratic. Both explain about <strong>1% of variance</strong>.</p>
+    <p>The honest sentence is <em>"neither coupling explains reuse here"</em> — not
+    "quadratic wins", and emphatically not that the linear result generalises everywhere.</p>
+  </div>
+
+  <h3>The τ<sub>v</sub> lesson: a signal can lose one problem and win the other</h3>
+  <p>Enforcement latency failed <strong>four times</strong> as an admission screen — who to
+  let in. It then <em>passed</em> as a covenant trigger — when to act on someone already
+  admitted, earning <span class="m">+42,840</span> over holding everything, while paying a
+  full haircut on <span class="m">204</span> exits including <span class="m">17</span> false
+  positives.</p>
+  <p class="note"><strong>Monitoring is not screening.</strong> This distinction was not
+  available before the measurements; it was forced by them. That is what a telemetry layer
+  buys you.</p>
+</section>
+
+<section>
+  <h2><span class="n">II. LMD</span>Two corrections that must travel with the claim</h2>
+  <p>Latency–Metric Duality is often stated as <span class="m">d² = κ·τ_rt</span> and filed
+  under "validated physics." <strong>On this programme's own testing, two of its headline
+  claims did not survive.</strong> Anyone presenting LMD is obliged to carry both.</p>
+
+  <div class="box warn">
+    <span class="lab">Correction 1 — the −0.5 exponent is an algebraic identity</span>
+    <p>Scaling every coupling by <span class="m">s</span> gives
+    <span class="m">W→sW ⟹ R→R/s ⟹ d→d/√s</span>, so
+    <span class="m">log d = −0.5 log s</span> holds <strong>for every graph whatsoever</strong>.</p>
+    <div class="nums">random control   slope -0.5000   R² = 1.000
+path control     slope -0.5000   R² = 1.000
+star control     slope -0.5000   R² = 1.000</div>
+    <p>A result that is exactly the predicted value with <span class="m">R² = 1</span> is a
+    signal to look for an identity, not a triumph. This was <strong>our own gate, and it
+    passed</strong> — it was downgraded anyway, and the earlier published claim corrected.</p>
+  </div>
+
+  <div class="box warn">
+    <span class="lab">Correction 2 — "entanglement ⇒ zero distance" is refuted</span>
+    <p>Tested on <span class="m">1,262</span> maximally coupled real pairs:
+    minimum <span class="m">d = 0.200115</span>, and <strong>zero pairs</strong> reach
+    <span class="m">d = 0</span>. Correlation is not transport latency — which is the same
+    reason no-signalling holds.</p>
+  </div>
+
+  <div class="box good">
+    <span class="lab">What did survive — about graphs, and only graphs</span>
+    <div class="nums">a metric emerges from pure coupling   0 violations in 300,000 triples
+it is not merely degree                rho = +0.8686
+it beats a degree-preserving null      z   = +7.43</div>
+    <p>These are <strong>statements about networks</strong>. A physical-geometry claim needs a
+    physical experiment — benchtop OTOC scrambling on real hardware — and none has been run
+    here. <span class="chip c1">L1 for graphs</span> <span class="chip c3">L3 for spacetime</span></p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">III. Morphology</span>A generator for design, never a warrant for truth</h2>
+  <p>The root-and-template system is genuinely non-concatenative: a consonantal root carries an
+  abstract invariant, a vocalic template applies a transformation. That is a real structural
+  fact, and it is a <strong>useful generator</strong> — fix the operator set, sweep the roots,
+  and the cells that come out empty are <strong>gaps in your design</strong>.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Operator</th><th>Applied to "a promise held against value"</th><th>Component</th></tr></thead>
+      <tbody>
+        <tr><td>agent</td><td>who holds the promise</td><td>issuer node</td></tr>
+        <tr><td>object</td><td>the promise itself</td><td>obligation</td></tr>
+        <tr><td><strong>locus</strong></td><td><strong>where promises pool</strong></td><td><strong>← empty → produced the cluster pool</strong></td></tr>
+        <tr><td>intensive</td><td>the extreme case</td><td>the tail-event test</td></tr>
+        <tr><td>causative</td><td>what forces settlement</td><td>covenant trigger</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="box warn">
+    <span class="lab">And then it was measured</span>
+    <p>The sweep produced the cluster pool. The engine priced it:</p>
+    <div class="nums">k       failures   vs baseline
+1           2430        —
+2           1982     -18.4%     ← best
+20          2024     -16.7%     ← the predicted "sweet spot"
+200         2046     -15.8%</div>
+    <p>Flat at <strong>16–18%</strong> across a hundredfold range, against a published
+    prediction of <strong>over 90%</strong>. <strong>A structurally elegant component is not
+    a working one.</strong> The generator takes credit for surfacing the gap and none at all
+    for whether the thing that filled it worked.</p>
+  </div>
+
+  <p class="note"><strong>On composite roots.</strong> Reading multi-root words as composed
+  operators is a legitimate <em>naming device</em>. But proposed decompositions of specific
+  words into component roots are <strong>contested philology</strong> — standard lexicography
+  often treats such words as unanalysable or as loans. Use the pattern freely; never assert a
+  particular decomposition as established, and never build a claim on one.
+  <span class="chip c2">L2</span></p>
+</section>
+
+<section>
+  <h2><span class="n">IV. The ledger</span>What was retracted, and why that is the point</h2>
+  <p>A framework that only ever accumulates confirmations has not been tested. This is the
+  running record.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Claim</th><th>Status</th><th>Measured</th></tr></thead>
+      <tbody>
+        <tr><td>Two-hop coupling is linear, not quadratic</td><td><span class="chip c1">HOLDS</span></td><td class="num">dAIC −3.483</td></tr>
+        <tr><td>Fidelity decays with dependency depth</td><td><span class="chip c1">HOLDS</span></td><td class="num">0.658 → 0.339</td></tr>
+        <tr><td>τ<sub>v</sub> as a covenant trigger</td><td><span class="chip c1">HOLDS</span></td><td class="num">+42,840</td></tr>
+        <tr><td>The N=793 knowledge cohort</td><td><span class="chip cx">SYNTHETIC</span></td><td class="num">retracted</td></tr>
+        <tr><td>Fidelity out-predicts prestige</td><td><span class="chip cx">FALSIFIED 4×</span></td><td class="num">AUC 0.3397</td></tr>
+        <tr><td>Entanglement ⇒ zero distance</td><td><span class="chip cx">REFUTED</span></td><td class="num">min d 0.200115</td></tr>
+        <tr><td>The −0.5 scaling exponent</td><td><span class="chip cx">IDENTITY</span></td><td class="num">R² = 1</td></tr>
+        <tr><td>Local pooling cuts friction &gt;90%</td><td><span class="chip cx">WRONG</span></td><td class="num">16.7%</td></tr>
+        <tr><td>Concentration wins by creating credit</td><td><span class="chip cx">REFUTED</span></td><td class="num">ΔU = 0.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">The most recent entry is the newest: a centralised settlement book was
+  measured at <strong>full reserve</strong> — <span class="m">unbacked claims 0.0</span> — and
+  still posted zero routine failures. It wins by <em>pooling</em>, not by fabricating money.
+  Adding leverage made settlement monotonically <strong>worse</strong>. A widely-held
+  mechanism story did not survive contact with the engine.</p>
+</section>
+
+<section>
+  <h2><span class="n">V. The answer</span>Why this makes OQM more comprehensive</h2>
+  <p>Not because the parallels are beautiful. Because the framework now has a place to put a
+  claim that <strong>lost</strong>.</p>
+  <ul>
+    <li><strong>It can be wrong in public.</strong> Nine entries above, four of them
+    corrections to this programme's own published claims.</li>
+    <li><strong>Its terms have measurements, not just meanings.</strong> An operational
+    definition that never touches data is a synonym; one with a gate attached is a hypothesis.</li>
+    <li><strong>It distinguishes three kinds of "no".</strong> Refuted, untestable-here, and
+    blocked are not the same verdict, and collapsing them is how frameworks quietly immunise
+    themselves.</li>
+    <li><strong>It refuses the rescue.</strong> "The test failed, which shows the environment
+    is broken, which validates the design" is unfalsifiable — and is rejected even when the
+    reasoning is persuasive, and even when it comes from us.</li>
+  </ul>
+  <p class="note">A reading of a text is not made truer by a graph. What measurement offers is
+  narrower and more valuable: a way to find out that a <em>particular operational claim</em>
+  built on that reading was mistaken — before it is built on further.</p>
+</section>
+
+<footer>
+  every figure on this page is a measured output of a committed run under a
+  pre-registration locked before the data was seen ·
+  <span style="color:var(--refuted)">no figure here is evidence about physics, scripture, or
+  the world</span> — they are statements about the graphs and cohorts named beside them ·
+  bash reproduce_all.sh → 71/71
+</footer>
+
+</div>

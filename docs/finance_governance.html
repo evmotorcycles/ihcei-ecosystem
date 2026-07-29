@@ -1,0 +1,272 @@
+<title>The unmeasured half, measured — conventional finance as a governance system</title>
+<style>
+  :root{
+    --paper:#F0EFEC; --ink:#1C1B19; --ink-2:#46443F; --muted:#7A766D;
+    --rule:#D6D2C8; --card:#FBFAF7; --card-2:#E5E1D8;
+    --red:#8C2F39; --blue:#26456B; --gold:#8A6A1E;
+    --shadow:0 1px 2px rgba(28,27,25,.05), 0 12px 30px rgba(28,27,25,.06);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Charter","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#111110; --ink:#E6E3DC; --ink-2:#ADA89D; --muted:#7E7970;
+      --rule:#2A2825; --card:#191816; --card-2:#22201C;
+      --red:#D46B72; --blue:#7FA5CE; --gold:#C9A354;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  }
+  :root[data-theme="dark"]{ --paper:#111110; --ink:#E6E3DC; --ink-2:#ADA89D; --muted:#7E7970;
+    --rule:#2A2825; --card:#191816; --card-2:#22201C;
+    --red:#D46B72; --blue:#7FA5CE; --gold:#C9A354;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  :root[data-theme="light"]{ --paper:#F0EFEC; --ink:#1C1B19; --ink-2:#46443F; --muted:#7A766D;
+    --rule:#D6D2C8; --card:#FBFAF7; --card-2:#E5E1D8;
+    --red:#8C2F39; --blue:#26456B; --gold:#8A6A1E;
+    --shadow:0 1px 2px rgba(28,27,25,.05), 0 12px 30px rgba(28,27,25,.06); }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;
+       line-height:1.68;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:48rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p{margin:0;color:var(--ink-2)}
+  ul{margin:0;padding-left:1.15rem;color:var(--ink-2);display:flex;flex-direction:column;gap:.45rem}
+  :focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.011em;margin:0}
+  strong{color:var(--ink);font-weight:600}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.9em;color:var(--ink)}
+
+  .eyebrow{font-family:var(--mono);font-size:.69rem;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+  header{border-bottom:2px solid var(--ink);margin-bottom:3.4rem;padding:4.5rem 0 2.2rem;
+         display:flex;flex-direction:column;gap:1.25rem}
+  h1{font-size:clamp(2rem,5.4vw,3.2rem);line-height:1.07}
+  h1 em{font-style:italic;color:var(--red)}
+  .standfirst{font-size:1.08rem;max-width:39rem}
+  .tags{display:flex;flex-wrap:wrap;gap:.45rem;font-family:var(--mono);font-size:.74rem}
+  .tag{border:1px solid var(--rule);background:var(--card);border-radius:2px;
+       padding:.28rem .58rem;color:var(--ink-2);white-space:nowrap}
+  .tag b{color:var(--ink)}
+  .tag.hot{border-color:var(--red);color:var(--red)} .tag.hot b{color:var(--red)}
+
+  section{margin-bottom:3.4rem;display:flex;flex-direction:column;gap:1.1rem}
+  h2{font-size:1.5rem;line-height:1.22;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.68rem;color:var(--muted);display:block;
+        letter-spacing:.16em;margin-bottom:.55rem;font-weight:400;text-transform:uppercase}
+  h3{font-size:1.02rem}
+
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.15rem 1.3rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:var(--shadow)}
+  .box.fail{border-left:3px solid var(--red)}
+  .box.hold{border-left:3px solid var(--blue)}
+  .box.warn{border-left:3px solid var(--gold)}
+  .lab{font-family:var(--mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase}
+  .box.fail .lab{color:var(--red)} .box.hold .lab{color:var(--blue)}
+  .box.warn .lab{color:var(--gold)}
+  .nums{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.81rem;
+        color:var(--ink);background:var(--card-2);border:1px solid var(--rule);
+        border-radius:3px;padding:.8rem .95rem;overflow-x:auto;white-space:pre;line-height:1.74}
+  .note{font-size:.92rem;color:var(--ink-2);border-left:2px solid var(--rule);padding-left:.9rem}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:30rem}
+  th,td{text-align:left;padding:.58rem .8rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--muted);font-weight:500;background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  td.no{color:var(--red);font-weight:600} td.yes{color:var(--blue);font-weight:600}
+  footer{border-top:1px solid var(--rule);padding-top:1.4rem;font-size:.8rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.85}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Prereg bf5a27f0 · locked before implementation · 2/5</p>
+  <h1>The centre wins at full reserve. <em>It was never the money-printing.</em></h1>
+  <p class="standfirst">A defence was offered for the settlement mesh: it is not failing, the
+  test measures the wrong game — concentration only wins because it creates credit, and the
+  mesh is quarantined against the tail. Both halves were testable. Both lost.</p>
+  <div class="tags">
+    <span class="tag hot">credit-creation story <b>refuted</b></span>
+    <span class="tag hot">leverage <b>made it worse</b></span>
+    <span class="tag hot">combined ledger <b>3,256 vs 73</b></span>
+    <span class="tag">central unbacked claims <b>0.0</b></span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">First, fairly</span>The conventional system, at its strongest</h2>
+  <p>A bank transforms maturity and liquidity: depositors want money on demand, borrowers want
+  it committed for years. This is a real answer to a real coordination problem, and it works —
+  modern payment systems clear enormous volume with essentially no routine settlement failure.</p>
+  <p class="note">Our own measurements confirm it, repeatedly and against our preferences. On an
+  identical replay of <span class="m">4,886</span> real recorded debits, the centralised
+  comparator posted <strong>0 routine failures</strong> against the mesh's
+  <strong><span class="m">2,548</span></strong>. A governance reading that cannot account for
+  that is not a reading — it is a complaint.</p>
+</section>
+
+<section>
+  <h2><span class="n">The transform</span>What changes when you read finance as governance</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Object</th><th>Governance reading</th><th>Measured as</th></tr></thead>
+      <tbody>
+        <tr><td>Money</td><td>a claim — a promise with a counterparty</td><td>claims vs value held</td></tr>
+        <tr><td>Reserve ratio</td><td>how much of a promise is actually backed</td><td>ΔU = claims − backing</td></tr>
+        <tr><td>Default</td><td>a fidelity failure, not a moral event</td><td>unmet obligation value</td></tr>
+        <tr><td>Bailout</td><td><strong>enforcement latency</strong> — consequence deferred, not cancelled</td><td>τ<sub>v</sub></td></tr>
+        <tr><td>Systemic risk</td><td><strong>topology</strong> — where failure can propagate from</td><td>single-point dependence</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The last two rows are what earn the reframe its keep. They prompt a measurement the
+  conventional reading does not: not <em>how much capital is held</em>, but <strong>how long
+  until the holder finds out they were wrong</strong>.</p>
+</section>
+
+<section>
+  <h2><span class="n">The test</span>Three claims, each given a way to come out wrong</h2>
+
+  <div class="box fail">
+    <span class="lab">C1 failed — and this is the finding</span>
+    <p>The claim: the centre posts zero failures <em>only because</em> it creates credit.</p>
+    <div class="nums">centralised arm   unbacked claims = 0.0
+mesh              unbacked claims = 0.0</div>
+    <p><strong>The centralised comparator is full reserve.</strong> It moves value from issuer
+    to centre and never lends beyond it. Its zero failures were bought with <strong>pooling</strong>
+    — one book meeting obligations no single node could — not with money creation. The
+    pre-registration predicted this failure in writing, before the run.</p>
+    <p class="note">This reaches past the gate. The governance critique of conventional finance
+    <strong>cannot rest on credit creation alone</strong>. Concentration by itself, at
+    <span class="m">ΔU = 0</span> throughout, produces the entire routine advantage.</p>
+  </div>
+
+  <div class="box fail">
+    <span class="lab">C2 failed — in the opposite direction to the prediction</span>
+    <p>A genuinely fractional-reserve arm was added, differing only in leverage <span class="m">m</span>.
+    Leverage was expected to buy smoothness.</p>
+    <div class="nums">m = 1  (full reserve)        0   failures
+m = 3                    3,262
+m = 5                    3,912
+m = 10                   4,362
+full-reserve mesh        2,548</div>
+    <p>Strictly and monotonically <strong>worse</strong>. The claims leverage manufactures still
+    have to be paid. <strong>Full reserve was the smoothest configuration tested.</strong>
+    "Fabricating liquidity is what produces smoothness" is not merely unsupported — it is
+    backwards.</p>
+  </div>
+
+  <div class="box warn">
+    <span class="lab">C4 passed — and the pass is an artefact, disclosed not banked</span>
+    <p>The mesh's unmet fraction is <span class="m">0.50</span> against the centre's
+    <span class="m">1.00</span>, clearing the locked gate. But the two arms carry
+    incomparable books — the centre clears continuously and holds <span class="m">21.9</span>
+    outstanding; the mesh accumulates and holds <span class="m">4,345</span>.</p>
+    <div class="nums">mesh      2,172.5  unmet
+central      21.9  unmet     →  the mesh loses 99x more actual value</div>
+    <p>The threshold was <strong>not moved</strong> and the gate was <strong>not re-scored</strong>.
+    But on the quantity a creditor cares about, this gate points the other way. The
+    <em>"immune / blast quarantined"</em> claim failed as stated: blast radius measures
+    <strong>where</strong> a failure starts, not how much value survives it.</p>
+  </div>
+
+  <div class="box fail">
+    <span class="lab">C5 failed decisively — this was the whole question</span>
+    <div class="nums">              routine    tail    combined
+mesh            3,109      147      3,256
+central            71        2         73</div>
+    <p>Across the full <strong>18-cell sweep</strong> — three strike points × six freeze levels
+    — there is <strong>no cell where the mesh's combined ledger wins</strong>. The tail event
+    never repays the routine premium.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Method</span>Three harness corrections, all disclosed</h2>
+  <p>None converted a mechanism failure into a pass — the mesh lost C5 before and after all
+  three. Each was forced by a <strong>degenerate measurement</strong>, not a disliked answer.</p>
+  <ul>
+    <li>The freeze was first sized against the <strong>initial</strong> base; after the replay
+    drains the system that removed 100% of everything left, and every level returned an
+    identical, meaningless <span class="m">1.000</span>.</li>
+    <li>The strike first landed <strong>after</strong> the whole replay, when the centralised
+    book had cleared to <span class="m">0.0</span>. An empty book cannot be stressed.</li>
+    <li>Issuance ran once at seeding, so the centre still carried nothing at strike time.</li>
+  </ul>
+  <p class="note">Gate C6 was then converted into a structural <strong>non-empty-book guard</strong>
+  — and it still <strong>fails</strong>, honestly reporting that the centralised book empties at
+  the <span class="m">0.75</span> strike. It is excluded from the score precisely so it can
+  report bad news.</p>
+</section>
+
+<section>
+  <h2><span class="n">History</span>Read as latency engineering — with three corrections</h2>
+  <p>Each innovation lengthened the interval between a decision and its consequence, and moved
+  the consequence onto someone who did not make the decision.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Change</th><th>Latency effect</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1694</strong> perpetual principal, interest from taxation</td><td>consequence <strong>never arrives</strong> for the borrower</td></tr>
+        <tr><td><strong>early 1800s</strong> cross-border sovereign debt market</td><td>consequence <strong>dispersed</strong> across holders who cannot act on it</td></tr>
+        <tr><td><strong>1913</strong> a permanent automatic buyer for state debt</td><td>consequence <strong>absorbed</strong> by an actor that cannot refuse</td></tr>
+        <tr><td><strong>1979–82</strong> rate shock plus conditional refinancing</td><td>consequence <strong>redirected</strong> onto populations who never borrowed</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box warn">
+    <span class="lab">Corrections to the narrative as received</span>
+    <p><strong>The Rothschild–Waterloo story is substantially legend.</strong> The claim that
+    advance news of Waterloo produced a market coup traces largely to <em>Satan</em>, an 1846
+    pamphlet by Georges Dairnvaell that was explicitly antisemitic propaganda; later archival
+    work finds no such coup. <strong>The structural point survives without it</strong> — a
+    cross-border sovereign debt market genuinely was built in this period. The anecdote should
+    be dropped, not softened.</p>
+    <p><strong>"Pay off the debt and the money supply collapses overnight" is overstated.</strong>
+    Bank deposits are extinguished as loans are repaid, so most <em>broad</em> money contracts —
+    central bank reserves and physical currency do not vanish. The defensible version, that broad
+    money is predominantly a by-product of lending, is enough for the argument.</p>
+    <p class="note">None of this section is evidence about how a payment system behaves. It is
+    context. The evidence is the engine output above.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Standing</span>Where the reframe is left</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Claim</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Central posts ~0 routine failures</td><td class="yes">yes — at ΔU = 0</td></tr>
+        <tr><td>It does so by creating credit</td><td class="no">refuted</td></tr>
+        <tr><td>Leverage buys smoothness</td><td class="no">backwards</td></tr>
+        <tr><td>The centre cannot pay after a 50% freeze</td><td class="yes">yes</td></tr>
+        <tr><td>The mesh is immune / quarantined</td><td class="no">no — 99× the absolute loss</td></tr>
+        <tr><td>The tail repays the routine premium</td><td class="no">at no cell in the sweep</td></tr>
+        <tr><td>Concentration defers consequence (τ<sub>v</sub>)</td><td>not tested here</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>The structural critique — that permitting synthetic debt wrappers as an "interim measure"
+  became a permanent default — is untouched by this, and <strong>structure is the box with the
+  good record</strong>. What the experiment removes is a specific <em>mechanism story</em>
+  attached to it.</p>
+  <p class="note"><strong>The anti-immunisation clause applies.</strong> The C5 loss may not be
+  rescued by asserting the freeze was unrealistic or the mesh's value is qualitative. It was
+  swept across eighteen cells precisely so the level at which the trade turns favourable would
+  be a <em>measured</em> quantity. It never turned. The remaining live question is
+  τ<sub>v</sub> — whether concentration's real cost is deferred consequence rather than
+  fragility. That has not been run.</p>
+</section>
+
+<footer>
+  Mesh and Central imported UNCHANGED from the engine already built and attacked over 200,000
+  operations · shock source 4,886 real recorded debits, hash-pinned ·
+  bash reproduce_all.sh → 71/71 · exit 0 means "reproduces including its failures", never
+  "the mesh works"
+</footer>
+
+</div>
