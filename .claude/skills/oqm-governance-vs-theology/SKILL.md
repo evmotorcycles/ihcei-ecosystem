@@ -277,6 +277,29 @@ error). Step 4 — produce a discriminating prediction — is not optional.
 - What *did* reproduce exactly: 4,886/400 debits, all four Meezan figures, EO counts
   112/132/907/1061, hearing counts 3,567/8,245/11,404/15,738. **Give that credit.** `[L1]`
 
+**The Reciprocal Settlement Mesh — built from scratch, 2/5** (`a5f49a6e…`). The first
+decentralised design specified without legacy data, tested by the only pre-deployment
+methods that exist:
+- **Held:** the full-reserve invariant over 200,000 operations, **0 violations** (a theorem
+  about the mechanism, not an observation). All **6 named attacks blocked**, 0 false
+  positives. `[L1]`
+- **POOLING BEATS THE MESH.** On an identical 4,886 real-shock replay with no per-arm
+  constants: mesh **2,458** failed settlements vs centralised **0**. A central book holds
+  every issuer's reserves and meets obligations no node could. Contagion 2.95 vs 0.00.
+  **Never claim a mesh absorbs routine shocks better — it does not.** `[L1]`
+- **The verifier quorum is DEAD WEIGHT:** removing it changes settlement outcomes by
+  exactly 0 while costing 3.20 verifications/claim. Netting (+35) and the latency covenant
+  (+93) earn their place. `[L1]`
+- **Declared limitation, never a result:** single-point dependence is 0.0086 (mesh) vs
+  1.0000 (central). No locked gate tests catastrophic centre failure, so the trade
+  "frequent small failures for no single point of collapse" is **unmeasured**. It is the
+  named next step, not a claim. `[L2]`
+
+**Terminology-neutrality option.** When a design must be judged on its mechanics, strip the
+inherited vocabulary entirely and define every term by its measurement. The mesh spec uses
+plain English throughout with a gate asserting no Arabic or theological term appears. This
+removes reader bias and forces each term to earn its definition.
+
 **Count-vs-intensity rule (mandatory).** A raw COUNT of anything (hearings, issues, files,
 citations) scales with the size of the thing counted. Using one as a *fidelity* makes
 `E = U·D` collapse toward `U²` and the result circular. Always convert to an **intensity**

@@ -1,0 +1,215 @@
+<title>The Reciprocal Settlement Mesh — built, then attacked</title>
+<style>
+  :root{
+    --paper:#F5F6F4; --ink:#14181A; --ink-2:#3E464A; --muted:#77807F;
+    --rule:#D6DBD7; --card:#FFFFFF; --card-2:#E8EDE8;
+    --accent:#1F5B63; --held:#3F6E52; --failed:#8E3B2F; --cost:#8A6A22;
+    --shadow:0 1px 2px rgba(20,24,26,.05), 0 10px 28px rgba(20,24,26,.05);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#0F1214; --ink:#E9EDEA; --ink-2:#B0B8B6; --muted:#828B89;
+      --rule:#232A2B; --card:#171B1D; --card-2:#1E2325;
+      --accent:#5FA6AE; --held:#7FAE8C; --failed:#D2705E; --cost:#CBA255;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px rgba(0,0,0,.35); }
+  }
+  :root[data-theme="dark"]{ --paper:#0F1214; --ink:#E9EDEA; --ink-2:#B0B8B6; --muted:#828B89;
+    --rule:#232A2B; --card:#171B1D; --card-2:#1E2325;
+    --accent:#5FA6AE; --held:#7FAE8C; --failed:#D2705E; --cost:#CBA255;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px rgba(0,0,0,.35); }
+  :root[data-theme="light"]{ --paper:#F5F6F4; --ink:#14181A; --ink-2:#3E464A; --muted:#77807F;
+    --rule:#D6DBD7; --card:#FFFFFF; --card-2:#E8EDE8;
+    --accent:#1F5B63; --held:#3F6E52; --failed:#8E3B2F; --cost:#8A6A22;
+    --shadow:0 1px 2px rgba(20,24,26,.05), 0 10px 28px rgba(20,24,26,.05); }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;
+       line-height:1.65;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:47rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p,ul,ol{color:var(--ink-2)} a{color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.012em;margin:0}
+  .eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.17em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+  header{border-bottom:1px solid var(--rule);margin-bottom:3.3rem;padding:4.4rem 0 2.3rem;
+         display:flex;flex-direction:column;gap:1.35rem}
+  h1{font-size:clamp(2.1rem,5.8vw,3.4rem);line-height:1.06}
+  h1 em{font-style:italic;color:var(--accent)}
+  .standfirst{font-size:1.09rem;margin:0;max-width:38rem}
+  .scoreline{display:flex;flex-wrap:wrap;gap:.5rem;font-family:var(--mono);font-size:.76rem}
+  .tag{border:1px solid var(--rule);background:var(--card);border-radius:2px;
+       padding:.3rem .6rem;color:var(--ink-2);white-space:nowrap}
+  .tag b{color:var(--ink)} .tag.hot{border-color:var(--failed);color:var(--failed)}
+  .tag.hot b{color:var(--failed)}
+  section{margin-bottom:3.3rem;display:flex;flex-direction:column;gap:1.05rem}
+  h2{font-size:1.48rem;line-height:1.22;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.69rem;color:var(--accent);display:block;
+        letter-spacing:.15em;margin-bottom:.5rem;font-weight:400}
+  h3{font-size:1.04rem} p{margin:0} strong{color:var(--ink);font-weight:600}
+  code{font-family:var(--mono);font-size:.86em;background:var(--card-2);
+       padding:.12em .38em;border-radius:2px;color:var(--ink)}
+  .nums{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.82rem;
+        color:var(--ink);background:var(--card-2);border-radius:3px;padding:.75rem .9rem;
+        overflow-x:auto;white-space:pre;line-height:1.72;border:1px solid var(--rule)}
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.2rem 1.35rem;display:flex;flex-direction:column;gap:.8rem;box-shadow:var(--shadow)}
+  .box.held{border-left:3px solid var(--held)}
+  .box.failed{border-left:3px solid var(--failed)}
+  .box.cost{border-left:3px solid var(--cost)}
+  .lab{font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;text-transform:uppercase}
+  .box.held .lab{color:var(--held)} .box.failed .lab{color:var(--failed)}
+  .box.cost .lab{color:var(--cost)}
+  .reading{font-size:.92rem;color:var(--ink-2);border-left:2px solid var(--accent);
+           padding-left:.85rem;margin:0}
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:28rem}
+  th,td{text-align:left;padding:.58rem .82rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--muted);font-weight:500;background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  td.dead{color:var(--failed);font-weight:600}
+  footer{border-top:1px solid var(--rule);padding-top:1.4rem;font-size:.81rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.8}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Prereg a5f49a6e · locked before any implementation existed</p>
+  <h1>We built the decentralised system. <em>Then it lost.</em></h1>
+  <p class="standfirst">A settlement mesh specified from first principles, tested by
+  invariant proof, six attacks, a shared real-shock replay and ablation. Its reserve
+  invariant held and every attack was blocked — and a centralised balance sheet absorbed
+  shocks better, because pooling is a real advantage the mesh does not have.</p>
+  <div class="scoreline">
+    <span class="tag">gates <b>2/5</b></span>
+    <span class="tag">invariant <b>0 violations / 200k ops</b></span>
+    <span class="tag hot">pooling <b>2,458 vs 0</b></span>
+    <span class="tag hot">quorum <b>dead weight</b></span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">First, a refusal</span>The JAX cell is not a test</h2>
+  <div class="nums">simulate_medina_mesh:   D_enc = D_dec = 0.95        # constant
+simulate_firaun_node:   D = exp(-0.005 * U)         # the collapse IS this
+                        tau = 4.8 + (U/120)**2.5    # the breach IS this</div>
+  <p>No data enters. The verdict is fixed by the two function bodies. This is the
+  <strong>fifth</strong> appearance of the tuned-baseline pattern in this project, so gate
+  <strong>M7</strong> now enforces structurally that <strong>no architecture-specific
+  constant may differ between arms</strong> — the exact gate that cell would fail.</p>
+  <p class="reading">A system that does not exist cannot have empirical support. What it
+  can have: <strong>invariants</strong> (theorems), <strong>adversarial resistance</strong>
+  (the attacker wins or doesn't), a <strong>shared real-shock replay</strong> (4,886
+  recorded debits, identical for both arms), and <strong>ablation</strong>.</p>
+</section>
+
+<section>
+  <h2><span class="n">What held</span>The mechanism is coherent and attack-resistant</h2>
+  <div class="box held">
+    <span class="lab">M1 · M2 — held</span>
+    <div class="nums">200,000 randomised operations (issue / net / settle),
+including deliberate over-issuance attempts
+  → 0 states where pledged exceeded reserves
+
+6 / 6 attacks blocked · 0 false positives on 50 honest issuances
+  issue-without-reserve · double-pledge · forged attestation
+  collusion with k−1 verifiers · self-reported reserves · cycling</div>
+    <p class="reading">M1 is a <strong>theorem about the mechanism</strong>, not an
+    observation about the world. That distinction is the whole point of testing a design
+    before it exists.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">What failed</span>Pooling beats the mesh, and it isn't close</h2>
+  <div class="box failed">
+    <span class="lab">M3 — failed</span>
+    <div class="nums">identical 4,886-shock sequence · identical parameters · no per-arm constants
+
+  mesh failed settlements    2,458
+  centralised                    0</div>
+    <p class="reading">A centralised balance sheet <strong>holds every issuer's
+    reserves</strong> and can meet obligations no individual node could. The mesh has no
+    pool. <strong>This is the single most important thing to know before building it.</strong></p>
+  </div>
+  <div class="box failed">
+    <span class="lab">M4 · M5 — failed</span>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Component removed</th><th>Failed settlements</th><th>Δ</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>multilateral netting</td><td class="num">2,493</td><td class="num">+35</td><td>earns its place</td></tr>
+          <tr><td>verifier quorum</td><td class="num">2,458</td><td class="num">+0</td><td class="dead">DEAD WEIGHT</td></tr>
+          <tr><td>latency covenant</td><td class="num">2,551</td><td class="num">+93</td><td>earns its place</td></tr>
+        </tbody>
+        <caption>Contagion: 2.95 counterparties impaired per node failure vs 0.00 centralised.</caption>
+      </table>
+    </div>
+    <p class="reading">Removing the quorum changes settlement outcomes by <strong>exactly
+    zero</strong> while costing <strong>3.20 verifications per claim</strong>. The
+    full-reserve check at issuance already catches everything it was meant to catch. Named,
+    not quietly retained.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Disclosed</span>Three defects in my own measurements</h2>
+  <div class="box cost">
+    <span class="lab">Harness fixes — each disclosed in source</span>
+    <div class="nums">1  the cycle attack was a disjunction whose second term was an HONEST,
+   fully-backed issuance by a different solvent node
+2  the contagion metric compared obligations to reserves AFTER settle()
+   had already written them down — it returned 0.00 for both arms
+3  the terminology scan was scanning the file that DEFINES the banned list</div>
+    <p class="reading">Fixing a broken measurement is not moving a threshold.
+    <strong>No fix converted a mechanism failure into a pass</strong> — M3, M4 and M5
+    failed before the fixes and fail after them.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">The limitation</span>What the locked metric cannot see</h2>
+  <div class="nums">share of all obligations resting on ONE entity
+  mesh      0.0086
+  central   1.0000</div>
+  <p>M3 counts <strong>routine</strong> failed settlements, and pooling wins that contest.
+  But <strong>no locked gate tests catastrophic centre failure</strong> — the failure mode
+  pooling creates. The mesh appears to trade <em>frequent small failures</em> for <em>no
+  single point of collapse</em>, and the pre-registered metrics measure only the first half
+  of that trade.</p>
+  <p class="reading"><strong>That is not a result.</strong> No test of it was
+  pre-registered, so it is not claimed. Building it is the named next step — and it is the
+  test that would show whether the trade is worth making.</p>
+</section>
+
+<section>
+  <h2><span class="n">Status</span>Honest ledger of the design</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Established</th><th>Not established</th></tr></thead>
+      <tbody>
+        <tr><td>Reserve invariant holds under every operation tried</td><td>That it is legally permissible</td></tr>
+        <tr><td>Six named attacks blocked, no false positives</td><td>That it is economically viable or liquid</td></tr>
+        <tr><td>Netting and the latency covenant carry weight</td><td>That it beats existing institutions</td></tr>
+        <tr><td>The quorum does not, and costs 3.2 verifications/claim</td><td><strong>Anything at all about the world</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>No such system has been deployed. Simulating a design is not evidence about reality,
+  and this does not claim otherwise. <strong>What the evidence says right now: a
+  peer-to-peer mesh without pooling absorbs routine shocks worse than a central balance
+  sheet.</strong> If the design proceeds, that is the problem to solve.</p>
+</section>
+
+<footer>
+  bash reproduce_all.sh → 69/69 · prereg a5f49a6e committed before the implementation ·
+  shock source = 4,886 real recorded debits, committed and hash-pinned · exit 0 means
+  "reproduces including its failures", never "the mesh works"
+</footer>
+
+</div>

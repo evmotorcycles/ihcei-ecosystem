@@ -5,7 +5,7 @@ datasets are now committed and hash-pinned — the original run read files commi
 nowhere, which by itself made it unreviewable.*
 
 ```bash
-bash reproduce_all.sh        # 68/68, clean checkout, offline, $0
+bash reproduce_all.sh        # 69/69, clean checkout, offline, $0
 ```
 
 **Verdict: 7/14 gates. 4 REPRODUCED · 2 NOT REPRODUCED · 3 INVALID · 1 CIRCULAR.**

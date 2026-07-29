@@ -1,0 +1,124 @@
+{
+  "spec_sha256_canonical": "a5f49a6e4a6728f64f3668cc40925d472f930da3e929eedef36f8b1769c9b436",
+  "n_shocks": 4886,
+  "M1_operations": 200000,
+  "M1_violations": 0,
+  "M2_attacks": [
+    {
+      "attack": "issue_without_reserve",
+      "blocked": true
+    },
+    {
+      "attack": "double_pledge_same_reserve",
+      "blocked": true
+    },
+    {
+      "attack": "forge_verifier_attestation",
+      "blocked": true
+    },
+    {
+      "attack": "collude_with_k_minus_1_verifiers",
+      "blocked": true
+    },
+    {
+      "attack": "inflate_reserves_by_self_report",
+      "blocked": true
+    },
+    {
+      "attack": "cycle_through_intermediaries",
+      "blocked": true
+    }
+  ],
+  "M2_honest_success": 50,
+  "M3_mesh_failed": 2458,
+  "M3_central_failed": 0,
+  "M4_mesh_contagion": 2.95,
+  "M4_central_contagion": 0.0,
+  "M5_ablation": [
+    {
+      "component": "multilateral_netting",
+      "failed_without": 2493,
+      "delta": 35,
+      "earns_its_place": true
+    },
+    {
+      "component": "verifier_quorum",
+      "failed_without": 2458,
+      "delta": 0,
+      "earns_its_place": false
+    },
+    {
+      "component": "latency_covenant",
+      "failed_without": 2551,
+      "delta": 93,
+      "earns_its_place": true
+    }
+  ],
+  "M5_dead_weight": [
+    "verifier_quorum"
+  ],
+  "M6_verifications": 3588,
+  "M6_verifications_per_claim": 3.2,
+  "M7_differing_constants": {},
+  "M8_banned_terms_found": [],
+  "posthoc_NOT_A_GATE": {
+    "mesh_max_single_point_dependence": 0.0086,
+    "central_max_single_point_dependence": 1.0,
+    "note": "M3 measures routine absorption, where pooling wins. No locked gate tests catastrophic centre failure; that test is named as the next step and is NOT claimed here."
+  },
+  "gates": [
+    {
+      "gate": "M1_the_full_reserve_invariant_holds_under_every_admissible_operation",
+      "pass": true,
+      "detail": "200000 operations (issue / net / settle, including deliberate over-issuance attempts): 0 states where pledged exceeded reserves. This is a property of the mechanism, not an observation about the world.",
+      "weight": "full"
+    },
+    {
+      "gate": "M2_unearned_capacity_inflation_is_detected_with_no_false_positives",
+      "pass": true,
+      "detail": "6/6 attacks blocked ; honest fully-backed issuance succeeded 50/50 (zero false positives)",
+      "weight": "full"
+    },
+    {
+      "gate": "M3_shared_shock_replay",
+      "pass": false,
+      "detail": "identical 4886-shock sequence, identical structural parameters, no architecture-specific constants.\n        mesh failed settlements: 2458   |   centralised: 0   (difference +2458)",
+      "weight": "full"
+    },
+    {
+      "gate": "M4_contagion_is_bounded",
+      "pass": false,
+      "detail": "one node failed at random, 500 trials. mean nodes pushed into shortfall \u2014 mesh 2.95  |  centralised 0.00",
+      "weight": "full"
+    },
+    {
+      "gate": "M5_every_mechanism_component_earns_its_place",
+      "pass": false,
+      "detail": "2 of 3 components earn their place. DEAD WEIGHT: ['verifier_quorum']",
+      "weight": "full"
+    },
+    {
+      "gate": "M6_the_meshs_cost_is_measured_not_hidden",
+      "pass": true,
+      "detail": "3588 independent verification operations for 1120 live claims = 3.20 verifications per claim. A centralised book needs none. This is the design's price, measured.",
+      "weight": "excluded"
+    },
+    {
+      "gate": "M7_no_architecture_specific_constant_differs_between_arms",
+      "pass": true,
+      "detail": "shared keys ['initial_reserves', 'n_nodes', 'seed', 'verifier_quorum_k'] identical across both arms; differing: none. The arms differ in MECHANISM only. The published JAX cell would fail this gate: it gives the decentralised arm a constant 0.95 fidelity and the centralised arm an exponential decay.",
+      "weight": "excluded"
+    },
+    {
+      "gate": "M8_no_theological_or_arabic_terminology_appears",
+      "pass": true,
+      "detail": "scanned the implementation against 22 banned terms; found: none",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "M3_shared_shock_replay",
+    "M4_contagion_is_bounded",
+    "M5_every_mechanism_component_earns_its_place"
+  ]
+}
