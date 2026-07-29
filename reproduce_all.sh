@@ -86,6 +86,7 @@ run "sovereign-bank: N=44 replication — 1/4, portfolio advantage collapsed to 
 run "real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 FAIL" py real-cohorts/test_real_cohorts.py
 run "cohort-audit: N=992 RECOVERED — verified by recomputation from the rows (7/7)" python3 cohort-audit/verify_992_recovery.py
 run "sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECTS" py sovereign-bank/test_prescriptive.py
+run "submesh-pools: local pooling swept k=1..200 — 3/5; friction curve FLAT, k=20 prediction wrong" py submesh-pools/test_submesh.py
 run "settlement-mesh: decentralised mesh built from scratch — 2/5; pooling wins, quorum DEAD" py settlement-mesh/test_mesh.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py

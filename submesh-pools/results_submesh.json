@@ -1,0 +1,202 @@
+{
+  "spec_sha256_canonical": "9091d0567ca9b3d7bf6a9fee5d8515dfe774ce86ca717d7412b4db2cbcedc87a",
+  "n_shocks": 4886,
+  "baseline_failed_k1": 2430,
+  "sweep": [
+    {
+      "k": 1,
+      "failed": 2430,
+      "blast_radius": 0.005,
+      "value_before": 20000.0,
+      "value_after": 969.103966,
+      "shock_withdrawn": 19030.896034,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 0
+    },
+    {
+      "k": 2,
+      "failed": 1982,
+      "blast_radius": 0.01,
+      "value_before": 20000.0,
+      "value_after": 1790.130983,
+      "shock_withdrawn": 18209.869017,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 891
+    },
+    {
+      "k": 4,
+      "failed": 1996,
+      "blast_radius": 0.02,
+      "value_before": 20000.0,
+      "value_after": 1383.783992,
+      "shock_withdrawn": 18616.216008,
+      "unexplained_drift": 0.0,
+      "bad_draws": 0,
+      "draws": 842
+    },
+    {
+      "k": 5,
+      "failed": 1991,
+      "blast_radius": 0.025,
+      "value_before": 20000.0,
+      "value_after": 1412.523088,
+      "shock_withdrawn": 18587.476912,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 837
+    },
+    {
+      "k": 8,
+      "failed": 2019,
+      "blast_radius": 0.04,
+      "value_before": 20000.0,
+      "value_after": 1344.160836,
+      "shock_withdrawn": 18655.839164,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 795
+    },
+    {
+      "k": 10,
+      "failed": 2024,
+      "blast_radius": 0.05,
+      "value_before": 20000.0,
+      "value_after": 1352.824642,
+      "shock_withdrawn": 18647.175358,
+      "unexplained_drift": 0.0,
+      "bad_draws": 0,
+      "draws": 785
+    },
+    {
+      "k": 20,
+      "failed": 2024,
+      "blast_radius": 0.1,
+      "value_before": 20000.0,
+      "value_after": 1303.577015,
+      "shock_withdrawn": 18696.422985,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 775
+    },
+    {
+      "k": 25,
+      "failed": 2035,
+      "blast_radius": 0.125,
+      "value_before": 20000.0,
+      "value_after": 1282.433535,
+      "shock_withdrawn": 18717.566465,
+      "unexplained_drift": 0.0,
+      "bad_draws": 0,
+      "draws": 762
+    },
+    {
+      "k": 40,
+      "failed": 2026,
+      "blast_radius": 0.2,
+      "value_before": 20000.0,
+      "value_after": 1312.325345,
+      "shock_withdrawn": 18687.674655,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 768
+    },
+    {
+      "k": 50,
+      "failed": 2021,
+      "blast_radius": 0.25,
+      "value_before": 20000.0,
+      "value_after": 1285.94684,
+      "shock_withdrawn": 18714.05316,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 772
+    },
+    {
+      "k": 100,
+      "failed": 2028,
+      "blast_radius": 0.5,
+      "value_before": 20000.0,
+      "value_after": 1292.969592,
+      "shock_withdrawn": 18707.030408,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 763
+    },
+    {
+      "k": 200,
+      "failed": 2046,
+      "blast_radius": 1.0,
+      "value_before": 20000.0,
+      "value_after": 1272.042138,
+      "shock_withdrawn": 18727.957862,
+      "unexplained_drift": -0.0,
+      "bad_draws": 0,
+      "draws": 744
+    }
+  ],
+  "max_value_drift": 0.0,
+  "best_k": 2,
+  "best_failed": 1982,
+  "operating_zone_k": [],
+  "k20_failures": 2024,
+  "k20_reduction_pct": 16.7,
+  "k20_blast_radius": 0.1,
+  "total_draws": 8734,
+  "bad_draws": 0,
+  "gates": [
+    {
+      "gate": "S1_pooling_does_not_create_value",
+      "pass": true,
+      "detail": "maximum UNEXPLAINED drift across the sweep = 0.000e+00 (gross change 19030.9, which is exactly the exogenous shock withdrawals). Pooling moves reserves between nodes and pools; it never manufactures them.",
+      "weight": "full"
+    },
+    {
+      "gate": "S2_local_pooling_reduces_routine_friction",
+      "pass": true,
+      "detail": "pure mesh (k=1) failed 2430. 11 of 11 cluster sizes beat it; best is k=2 at 1982 failures (81.6% of baseline)",
+      "weight": "full"
+    },
+    {
+      "gate": "S3_an_operating_zone_exists_that_is_both_liquid_and_quarantined",
+      "pass": false,
+      "detail": "cluster sizes meeting BOTH <50% of baseline failures AND blast radius <0.10: NONE.\n        The two objectives are in direct tension \u2014 larger clusters absorb more friction and expose more of the network.",
+      "weight": "full"
+    },
+    {
+      "gate": "S4_no_draw_exceeds_what_the_pool_actually_holds",
+      "pass": true,
+      "detail": "8734 draws executed across the sweep; 0 exceeded the pool balance or drove it negative",
+      "weight": "full"
+    },
+    {
+      "gate": "S5_the_published_k20_prediction_is_tested_as_stated",
+      "pass": false,
+      "detail": "predicted: failures drop >90% at blast radius ~0.02.\n        measured at k=20: 2024 failures vs baseline 2430 = 16.7% reduction, blast radius 0.1000",
+      "weight": "full"
+    },
+    {
+      "gate": "S6_the_blast_radius_ordering_is_monotone_in_k",
+      "pass": true,
+      "detail": "blast radius across the sweep: [0.005, 0.01, 0.02, 0.025, 0.04, 0.05, 0.1, 0.125, 0.2, 0.25, 0.5, 1.0]",
+      "weight": "excluded"
+    },
+    {
+      "gate": "S7_no_architecture_specific_constant_differs_across_k",
+      "pass": true,
+      "detail": "every k arm used an identical parameter set apart from k itself (1 distinct parameter signatures across 12 arms). The published JAX cell would fail this: its friction is exp(-0.15*(k-1)), a formula, not a measurement.",
+      "weight": "excluded"
+    },
+    {
+      "gate": "S8_no_theological_or_arabic_terminology_appears",
+      "pass": true,
+      "detail": "scanned the implementation against 22 terms; found: none",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "S3_an_operating_zone_exists_that_is_both_liquid_and_quarantined",
+    "S5_the_published_k20_prediction_is_tested_as_stated"
+  ]
+}

@@ -4,7 +4,7 @@
 All terms are plain English by directive: the logic is kept, the vocabulary is not.*
 
 ```bash
-bash reproduce_all.sh        # 69/69, clean checkout, offline, $0
+bash reproduce_all.sh        # 70/70, clean checkout, offline, $0
 ```
 
 **Result: 2 of 5 scored gates. The mesh lost where it matters most — and that is the
