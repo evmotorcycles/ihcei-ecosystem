@@ -1,0 +1,834 @@
+{
+  "spec_sha256_canonical": "bf5a27f012d2c926489e136b0fe5f24df968ee558e4e43e63ce555a8e0dedd4b",
+  "n_shocks": 4886,
+  "base_value": 20000.0,
+  "mesh_routine_failed": 2548,
+  "central_routine_failed": 0,
+  "central_unbacked": 0.0,
+  "mesh_unbacked": 1.1368683772161603e-13,
+  "leverage_sweep": {
+    "1": {
+      "m": 1,
+      "failed": 0,
+      "unbacked": 0.0,
+      "claims": 0.0
+    },
+    "3": {
+      "m": 3,
+      "failed": 3262,
+      "unbacked": 8126.24827086718,
+      "claims": 8126.24827086718
+    },
+    "5": {
+      "m": 5,
+      "failed": 3912,
+      "unbacked": 9771.497925040605,
+      "claims": 9771.497925040605
+    },
+    "10": {
+      "m": 10,
+      "failed": 4362,
+      "unbacked": 11005.435165670682,
+      "claims": 11005.435165670682
+    }
+  },
+  "sweep": [
+    {
+      "strike_at": 0.25,
+      "freeze": 0.0,
+      "mesh": {
+        "failed_before": 633,
+        "failed_after": 2476,
+        "claims_at_strike": 8813.39707766124,
+        "held_at_strike": 8876.968210206338,
+        "frozen_value": 0.0,
+        "unmet_pre": 1.936228954946273e-13,
+        "unmet_value": 1.936228954946273e-13,
+        "unmet_count": 0,
+        "unmet_fraction": 2.1969156023321697e-17,
+        "combined_failed": 3109
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 92.56856302873207,
+        "held_at_strike": 997.4333677485589,
+        "frozen_value": 0.0,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 1148,
+        "failed_after": 3664,
+        "claims_at_strike": 18940.84806455128,
+        "held_at_strike": 6190.883165396515,
+        "frozen_value": 0.0,
+        "unmet_pre": 18940.84806455128,
+        "unmet_value": 18940.84806455128,
+        "unmet_count": 199,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5011
+      }
+    },
+    {
+      "strike_at": 0.25,
+      "freeze": 0.1,
+      "mesh": {
+        "failed_before": 633,
+        "failed_after": 2486,
+        "claims_at_strike": 8813.39707766124,
+        "held_at_strike": 8876.968210206338,
+        "frozen_value": 887.6968210206338,
+        "unmet_pre": 1.936228954946273e-13,
+        "unmet_value": 832.3452679674771,
+        "unmet_count": 163,
+        "unmet_fraction": 0.09444091314995552,
+        "combined_failed": 3282
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 92.56856302873207,
+        "held_at_strike": 997.4333677485589,
+        "frozen_value": 99.74333677485589,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 1148,
+        "failed_after": 3664,
+        "claims_at_strike": 18940.84806455128,
+        "held_at_strike": 6190.883165396515,
+        "frozen_value": 619.0883165396516,
+        "unmet_pre": 18940.84806455128,
+        "unmet_value": 18940.84806455128,
+        "unmet_count": 199,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5011
+      }
+    },
+    {
+      "strike_at": 0.25,
+      "freeze": 0.25,
+      "mesh": {
+        "failed_before": 633,
+        "failed_after": 2488,
+        "claims_at_strike": 8813.39707766124,
+        "held_at_strike": 8876.968210206338,
+        "frozen_value": 2219.2420525515845,
+        "unmet_pre": 1.936228954946273e-13,
+        "unmet_value": 2156.0124741784643,
+        "unmet_count": 167,
+        "unmet_fraction": 0.24462899551447337,
+        "combined_failed": 3288
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 370,
+        "claims_at_strike": 92.56856302873207,
+        "held_at_strike": 997.4333677485589,
+        "frozen_value": 249.35834193713973,
+        "unmet_pre": 0.0,
+        "unmet_value": 92.56856302873207,
+        "unmet_count": 16,
+        "unmet_fraction": 1.0,
+        "combined_failed": 386
+      },
+      "fractional_m5": {
+        "failed_before": 1148,
+        "failed_after": 3664,
+        "claims_at_strike": 18940.84806455128,
+        "held_at_strike": 6190.883165396515,
+        "frozen_value": 1547.7207913491288,
+        "unmet_pre": 18940.84806455128,
+        "unmet_value": 18940.84806455128,
+        "unmet_count": 199,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5011
+      }
+    },
+    {
+      "strike_at": 0.25,
+      "freeze": 0.5,
+      "mesh": {
+        "failed_before": 633,
+        "failed_after": 2488,
+        "claims_at_strike": 8813.39707766124,
+        "held_at_strike": 8876.968210206338,
+        "frozen_value": 4438.484105103169,
+        "unmet_pre": 1.936228954946273e-13,
+        "unmet_value": 4375.140675339389,
+        "unmet_count": 167,
+        "unmet_fraction": 0.4964193303429822,
+        "combined_failed": 3288
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 406,
+        "claims_at_strike": 92.56856302873207,
+        "held_at_strike": 997.4333677485589,
+        "frozen_value": 498.71668387427945,
+        "unmet_pre": 0.0,
+        "unmet_value": 92.56856302873207,
+        "unmet_count": 16,
+        "unmet_fraction": 1.0,
+        "combined_failed": 422
+      },
+      "fractional_m5": {
+        "failed_before": 1148,
+        "failed_after": 3664,
+        "claims_at_strike": 18940.84806455128,
+        "held_at_strike": 6190.883165396515,
+        "frozen_value": 3095.4415826982577,
+        "unmet_pre": 18940.84806455128,
+        "unmet_value": 18940.84806455128,
+        "unmet_count": 199,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5011
+      }
+    },
+    {
+      "strike_at": 0.25,
+      "freeze": 0.75,
+      "mesh": {
+        "failed_before": 633,
+        "failed_after": 2488,
+        "claims_at_strike": 8813.39707766124,
+        "held_at_strike": 8876.968210206338,
+        "frozen_value": 6657.7261576547535,
+        "unmet_pre": 1.936228954946273e-13,
+        "unmet_value": 6594.268876500315,
+        "unmet_count": 167,
+        "unmet_fraction": 0.7482096651714911,
+        "combined_failed": 3288
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 371,
+        "claims_at_strike": 92.56856302873207,
+        "held_at_strike": 997.4333677485589,
+        "frozen_value": 748.0750258114192,
+        "unmet_pre": 0.0,
+        "unmet_value": 92.56856302873207,
+        "unmet_count": 16,
+        "unmet_fraction": 1.0,
+        "combined_failed": 387
+      },
+      "fractional_m5": {
+        "failed_before": 1148,
+        "failed_after": 3664,
+        "claims_at_strike": 18940.84806455128,
+        "held_at_strike": 6190.883165396515,
+        "frozen_value": 4643.162374047386,
+        "unmet_pre": 18940.84806455128,
+        "unmet_value": 18940.84806455128,
+        "unmet_count": 199,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5011
+      }
+    },
+    {
+      "strike_at": 0.25,
+      "freeze": 0.9,
+      "mesh": {
+        "failed_before": 633,
+        "failed_after": 2480,
+        "claims_at_strike": 8813.39707766124,
+        "held_at_strike": 8876.968210206338,
+        "frozen_value": 7989.271389185705,
+        "unmet_pre": 1.936228954946273e-13,
+        "unmet_value": 7925.745797196871,
+        "unmet_count": 167,
+        "unmet_fraction": 0.8992838660685964,
+        "combined_failed": 3280
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 330,
+        "claims_at_strike": 92.56856302873207,
+        "held_at_strike": 997.4333677485589,
+        "frozen_value": 897.6900309737031,
+        "unmet_pre": 0.0,
+        "unmet_value": 92.56856302873207,
+        "unmet_count": 16,
+        "unmet_fraction": 1.0,
+        "combined_failed": 346
+      },
+      "fractional_m5": {
+        "failed_before": 1148,
+        "failed_after": 3663,
+        "claims_at_strike": 18940.84806455128,
+        "held_at_strike": 6190.883165396515,
+        "frozen_value": 5571.794848856864,
+        "unmet_pre": 18940.84806455128,
+        "unmet_value": 18940.84806455128,
+        "unmet_count": 199,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5010
+      }
+    },
+    {
+      "strike_at": 0.5,
+      "freeze": 0.0,
+      "mesh": {
+        "failed_before": 1566,
+        "failed_after": 1543,
+        "claims_at_strike": 4345.0085386612445,
+        "held_at_strike": 4345.0085386612445,
+        "frozen_value": 0.0,
+        "unmet_pre": 1.2301271112846734e-13,
+        "unmet_value": 1.2301271112846734e-13,
+        "unmet_count": 0,
+        "unmet_fraction": 2.831127028495304e-17,
+        "combined_failed": 3109
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 21.925772665359432,
+        "held_at_strike": 297.5063147969141,
+        "frozen_value": 0.0,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 2369,
+        "failed_after": 2443,
+        "claims_at_strike": 25742.025702686973,
+        "held_at_strike": 1834.0603402223728,
+        "frozen_value": 0.0,
+        "unmet_pre": 25742.025702686973,
+        "unmet_value": 25742.025702686973,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.5,
+      "freeze": 0.1,
+      "mesh": {
+        "failed_before": 1566,
+        "failed_after": 1543,
+        "claims_at_strike": 4345.0085386612445,
+        "held_at_strike": 4345.0085386612445,
+        "frozen_value": 434.5008538661245,
+        "unmet_pre": 1.2301271112846734e-13,
+        "unmet_value": 434.50085386612426,
+        "unmet_count": 147,
+        "unmet_fraction": 0.09999999999999995,
+        "combined_failed": 3256
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 21.925772665359432,
+        "held_at_strike": 297.5063147969141,
+        "frozen_value": 29.750631479691414,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 2369,
+        "failed_after": 2443,
+        "claims_at_strike": 25742.025702686973,
+        "held_at_strike": 1834.0603402223728,
+        "frozen_value": 183.4060340222373,
+        "unmet_pre": 25742.025702686973,
+        "unmet_value": 25742.025702686973,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.5,
+      "freeze": 0.25,
+      "mesh": {
+        "failed_before": 1566,
+        "failed_after": 1543,
+        "claims_at_strike": 4345.0085386612445,
+        "held_at_strike": 4345.0085386612445,
+        "frozen_value": 1086.2521346653111,
+        "unmet_pre": 1.2301271112846734e-13,
+        "unmet_value": 1086.2521346653111,
+        "unmet_count": 147,
+        "unmet_fraction": 0.25,
+        "combined_failed": 3256
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 21.925772665359432,
+        "held_at_strike": 297.5063147969141,
+        "frozen_value": 74.37657869922853,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 2369,
+        "failed_after": 2443,
+        "claims_at_strike": 25742.025702686973,
+        "held_at_strike": 1834.0603402223728,
+        "frozen_value": 458.5150850555932,
+        "unmet_pre": 25742.025702686973,
+        "unmet_value": 25742.025702686973,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.5,
+      "freeze": 0.5,
+      "mesh": {
+        "failed_before": 1566,
+        "failed_after": 1543,
+        "claims_at_strike": 4345.0085386612445,
+        "held_at_strike": 4345.0085386612445,
+        "frozen_value": 2172.5042693306223,
+        "unmet_pre": 1.2301271112846734e-13,
+        "unmet_value": 2172.504269330622,
+        "unmet_count": 147,
+        "unmet_fraction": 0.4999999999999999,
+        "combined_failed": 3256
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 71,
+        "claims_at_strike": 21.925772665359432,
+        "held_at_strike": 297.5063147969141,
+        "frozen_value": 148.75315739845706,
+        "unmet_pre": 0.0,
+        "unmet_value": 21.925772665359432,
+        "unmet_count": 2,
+        "unmet_fraction": 1.0,
+        "combined_failed": 73
+      },
+      "fractional_m5": {
+        "failed_before": 2369,
+        "failed_after": 2443,
+        "claims_at_strike": 25742.025702686973,
+        "held_at_strike": 1834.0603402223728,
+        "frozen_value": 917.0301701111864,
+        "unmet_pre": 25742.025702686973,
+        "unmet_value": 25742.025702686973,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.5,
+      "freeze": 0.75,
+      "mesh": {
+        "failed_before": 1566,
+        "failed_after": 1543,
+        "claims_at_strike": 4345.0085386612445,
+        "held_at_strike": 4345.0085386612445,
+        "frozen_value": 3258.7564039959334,
+        "unmet_pre": 1.2301271112846734e-13,
+        "unmet_value": 3258.756403995933,
+        "unmet_count": 147,
+        "unmet_fraction": 0.7499999999999999,
+        "combined_failed": 3256
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 34,
+        "claims_at_strike": 21.925772665359432,
+        "held_at_strike": 297.5063147969141,
+        "frozen_value": 223.1297360976856,
+        "unmet_pre": 0.0,
+        "unmet_value": 21.925772665359432,
+        "unmet_count": 2,
+        "unmet_fraction": 1.0,
+        "combined_failed": 36
+      },
+      "fractional_m5": {
+        "failed_before": 2369,
+        "failed_after": 2443,
+        "claims_at_strike": 25742.025702686973,
+        "held_at_strike": 1834.0603402223728,
+        "frozen_value": 1375.5452551667795,
+        "unmet_pre": 25742.025702686973,
+        "unmet_value": 25742.025702686973,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.5,
+      "freeze": 0.9,
+      "mesh": {
+        "failed_before": 1566,
+        "failed_after": 1543,
+        "claims_at_strike": 4345.0085386612445,
+        "held_at_strike": 4345.0085386612445,
+        "frozen_value": 3910.50768479512,
+        "unmet_pre": 1.2301271112846734e-13,
+        "unmet_value": 3910.50768479512,
+        "unmet_count": 147,
+        "unmet_fraction": 0.9,
+        "combined_failed": 3256
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 25,
+        "claims_at_strike": 21.925772665359432,
+        "held_at_strike": 297.5063147969141,
+        "frozen_value": 267.75568331722275,
+        "unmet_pre": 0.0,
+        "unmet_value": 21.925772665359432,
+        "unmet_count": 2,
+        "unmet_fraction": 1.0,
+        "combined_failed": 27
+      },
+      "fractional_m5": {
+        "failed_before": 2369,
+        "failed_after": 2443,
+        "claims_at_strike": 25742.025702686973,
+        "held_at_strike": 1834.0603402223728,
+        "frozen_value": 1650.6543062001356,
+        "unmet_pre": 25742.025702686973,
+        "unmet_value": 25742.025702686973,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.75,
+      "freeze": 0.0,
+      "mesh": {
+        "failed_before": 2395,
+        "failed_after": 714,
+        "claims_at_strike": 2130.267405072035,
+        "held_at_strike": 2130.267405072035,
+        "frozen_value": 0.0,
+        "unmet_pre": 7.061018436615996e-14,
+        "unmet_value": 7.061018436615996e-14,
+        "unmet_count": 0,
+        "unmet_fraction": 3.3146160053916925e-17,
+        "combined_failed": 3109
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 0.0,
+        "held_at_strike": 170.68646014911334,
+        "frozen_value": 0.0,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 3590,
+        "failed_after": 1222,
+        "claims_at_strike": 29276.746772598006,
+        "held_at_strike": 320.2288833321287,
+        "frozen_value": 0.0,
+        "unmet_pre": 29276.746772598006,
+        "unmet_value": 29276.746772598006,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.75,
+      "freeze": 0.1,
+      "mesh": {
+        "failed_before": 2395,
+        "failed_after": 714,
+        "claims_at_strike": 2130.267405072035,
+        "held_at_strike": 2130.267405072035,
+        "frozen_value": 213.02674050720353,
+        "unmet_pre": 7.061018436615996e-14,
+        "unmet_value": 213.0267405072035,
+        "unmet_count": 129,
+        "unmet_fraction": 0.09999999999999999,
+        "combined_failed": 3238
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 0.0,
+        "held_at_strike": 170.68646014911334,
+        "frozen_value": 17.068646014911334,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 3590,
+        "failed_after": 1222,
+        "claims_at_strike": 29276.746772598006,
+        "held_at_strike": 320.2288833321287,
+        "frozen_value": 32.02288833321287,
+        "unmet_pre": 29276.746772598006,
+        "unmet_value": 29276.746772598006,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.75,
+      "freeze": 0.25,
+      "mesh": {
+        "failed_before": 2395,
+        "failed_after": 714,
+        "claims_at_strike": 2130.267405072035,
+        "held_at_strike": 2130.267405072035,
+        "frozen_value": 532.5668512680088,
+        "unmet_pre": 7.061018436615996e-14,
+        "unmet_value": 532.5668512680088,
+        "unmet_count": 129,
+        "unmet_fraction": 0.25,
+        "combined_failed": 3238
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 0.0,
+        "held_at_strike": 170.68646014911334,
+        "frozen_value": 42.671615037278336,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 3590,
+        "failed_after": 1222,
+        "claims_at_strike": 29276.746772598006,
+        "held_at_strike": 320.2288833321287,
+        "frozen_value": 80.05722083303218,
+        "unmet_pre": 29276.746772598006,
+        "unmet_value": 29276.746772598006,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.75,
+      "freeze": 0.5,
+      "mesh": {
+        "failed_before": 2395,
+        "failed_after": 714,
+        "claims_at_strike": 2130.267405072035,
+        "held_at_strike": 2130.267405072035,
+        "frozen_value": 1065.1337025360176,
+        "unmet_pre": 7.061018436615996e-14,
+        "unmet_value": 1065.1337025360176,
+        "unmet_count": 129,
+        "unmet_fraction": 0.5,
+        "combined_failed": 3238
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 0.0,
+        "held_at_strike": 170.68646014911334,
+        "frozen_value": 85.34323007455667,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 3590,
+        "failed_after": 1222,
+        "claims_at_strike": 29276.746772598006,
+        "held_at_strike": 320.2288833321287,
+        "frozen_value": 160.11444166606435,
+        "unmet_pre": 29276.746772598006,
+        "unmet_value": 29276.746772598006,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.75,
+      "freeze": 0.75,
+      "mesh": {
+        "failed_before": 2395,
+        "failed_after": 714,
+        "claims_at_strike": 2130.267405072035,
+        "held_at_strike": 2130.267405072035,
+        "frozen_value": 1597.7005538040264,
+        "unmet_pre": 7.061018436615996e-14,
+        "unmet_value": 1597.7005538040266,
+        "unmet_count": 129,
+        "unmet_fraction": 0.7500000000000001,
+        "combined_failed": 3238
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 0.0,
+        "held_at_strike": 170.68646014911334,
+        "frozen_value": 128.014845111835,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 3590,
+        "failed_after": 1222,
+        "claims_at_strike": 29276.746772598006,
+        "held_at_strike": 320.2288833321287,
+        "frozen_value": 240.17166249909653,
+        "unmet_pre": 29276.746772598006,
+        "unmet_value": 29276.746772598006,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    },
+    {
+      "strike_at": 0.75,
+      "freeze": 0.9,
+      "mesh": {
+        "failed_before": 2395,
+        "failed_after": 714,
+        "claims_at_strike": 2130.267405072035,
+        "held_at_strike": 2130.267405072035,
+        "frozen_value": 1917.2406645648318,
+        "unmet_pre": 7.061018436615996e-14,
+        "unmet_value": 1917.2406645648318,
+        "unmet_count": 129,
+        "unmet_fraction": 0.9,
+        "combined_failed": 3238
+      },
+      "central": {
+        "failed_before": 0,
+        "failed_after": 0,
+        "claims_at_strike": 0.0,
+        "held_at_strike": 170.68646014911334,
+        "frozen_value": 153.617814134202,
+        "unmet_pre": 0.0,
+        "unmet_value": 0.0,
+        "unmet_count": 0,
+        "unmet_fraction": 0.0,
+        "combined_failed": 0
+      },
+      "fractional_m5": {
+        "failed_before": 3590,
+        "failed_after": 1222,
+        "claims_at_strike": 29276.746772598006,
+        "held_at_strike": 320.2288833321287,
+        "frozen_value": 288.20599499891586,
+        "unmet_pre": 29276.746772598006,
+        "unmet_value": 29276.746772598006,
+        "unmet_count": 200,
+        "unmet_fraction": 1.0,
+        "combined_failed": 5012
+      }
+    }
+  ],
+  "headline_freeze": 0.5,
+  "strikes_swept": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "mesh_unmet_fraction": 0.4999999999999999,
+  "central_unmet_fraction": 1.0,
+  "mesh_is_immune": false,
+  "mesh_unmet_value": 2172.504269330622,
+  "central_unmet_value": 21.925772665359432,
+  "absolute_value_ratio_mesh_over_central": 99.08450217414529,
+  "metric_confound_disclosed": "C4 passes on the pre-registered FRACTION metric but inverts on absolute value; the two arms carry structurally different outstanding books. Threshold not moved, gate not re-scored, confound recorded.",
+  "non_empty_book_guard": {
+    "mesh": 2130.267405072035,
+    "central": 0.0,
+    "fractional_m5": 18940.84806455128
+  },
+  "mesh_combined": 3256,
+  "central_combined": 73,
+  "freeze_levels_where_mesh_wins_combined": [],
+  "gates": [
+    {
+      "gate": "C1_the_centralised_arm_creates_credit",
+      "pass": false,
+      "detail": "centralised arm unbacked claims = 0.0 (threshold 200.0 = 1% of base 20000)\n        mesh unbacked claims       = 0.0\n        claims/backing  central 0.0 / 100.0    mesh 936.3 / 936.3\n        *** The committed centralised comparator is FULL RESERVE. It moves\n        value from issuer to centre and never lends beyond it. Its zero routine\n        failures were therefore NOT bought with credit creation -- they were\n        bought with POOLING: one book meeting obligations no single node could.\n        The credit-creation explanation for its advantage is REFUTED on this\n        programme's own committed code.",
+      "weight": "full"
+    },
+    {
+      "gate": "C2_credit_creation_is_what_buys_smoothness",
+      "pass": false,
+      "detail": "leverage m=5 routine failures 3912 vs full-reserve mesh 2548 (threshold 637)\n        sweep: m=1:0  m=3:3262  m=5:3912  m=10:4362",
+      "weight": "full"
+    },
+    {
+      "gate": "C3_concentration_is_catastrophic_under_stress",
+      "pass": true,
+      "detail": "at freeze 0.50 the centralised arm cannot pay 100.0% of its outstanding obligation value\n        (21.9 of 21.9); 2 creditor nodes take a haircut",
+      "weight": "full"
+    },
+    {
+      "gate": "C4_the_mesh_is_materially_better_under_the_same_freeze",
+      "pass": true,
+      "detail": "mesh unmet fraction 0.5000 vs central 1.0000 (needs <= 0.5000)\n        IMMUNE claim, tested as stated in the argument's table (< 0.05): FAILS -- the mesh is degraded, not quarantined\n        mesh unmet value 2172.5 of 4345.0 claims across 147 nodes\n\n        *** DISCLOSURE \u2014 THIS PASS IS AN ARTEFACT OF THE PRE-REGISTERED METRIC.\n        The gate turns on a FRACTION, and the two arms do not carry comparable books.\n        In absolute value the result INVERTS: mesh 2172.5 unmet vs central 21.9 \u2014 the mesh\n        loses 99x more actual value from the same proportional shock. The centre\n        clears obligations continuously and carries 21.9 outstanding; the mesh accumulates\n        bilateral obligations and carries 4345.0, so there is simply far more unsettled\n        value sitting in the mesh for a shock to destroy. The threshold is NOT moved and\n        the gate is NOT re-scored \u2014 but the pre-registered metric was the wrong choice,\n        and on the quantity that matters to a creditor this gate points the other way.",
+      "weight": "full"
+    },
+    {
+      "gate": "C5_the_mesh_wins_on_the_COMBINED_ledger",
+      "pass": false,
+      "detail": "at freeze 0.50: mesh 3109 routine + 147 tail = 3256;  central 71 routine + 2 tail = 73\n        freeze levels where the mesh's combined ledger wins: NONE at any swept level",
+      "weight": "full"
+    },
+    {
+      "gate": "C6_identical_inputs_across_arms",
+      "pass": false,
+      "detail": "same 4886 shocks, seed 20260729, 200 nodes, same seeded obligations in every arm\n        NON-EMPTY BOOK GUARD (added after two degenerate runs): minimum claims outstanding\n        at strike time \u2014 mesh 2130.3  central 0.0  fractional_m5 18940.8\n        A freeze applied to an empty book measures nothing; this gate fails if that recurs.",
+      "weight": "excluded"
+    },
+    {
+      "gate": "C7_no_architecture_specific_constant",
+      "pass": true,
+      "detail": "the ONLY per-arm constant is the declared leverage multiple m on the Fractional arm;\n        Mesh and Central are imported UNCHANGED from the committed engine",
+      "weight": "excluded"
+    },
+    {
+      "gate": "C8_no_tuned_formula_anywhere",
+      "pass": true,
+      "detail": "no reported quantity is a closed-form expression of freeze or leverage; every number\n        is read out of the settlement engine's state after the replay",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "C1_the_centralised_arm_creates_credit",
+    "C2_credit_creation_is_what_buys_smoothness",
+    "C5_the_mesh_wins_on_the_COMBINED_ledger"
+  ],
+  "score": "2/5"
+}
