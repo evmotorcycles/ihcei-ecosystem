@@ -1,0 +1,207 @@
+{
+  "spec_sha256_canonical": "9a3e4a3e1ef4c219d026725f7e1eb743d82d19935ff1486f69c901bbd184f3eb",
+  "A1": {
+    "debits": 4886,
+    "high_risk": 400
+  },
+  "A2": {
+    "n": 11248,
+    "mean_U": 238959.66,
+    "breach_pct": 26.64,
+    "mean_E": 104378.76
+  },
+  "A3": {
+    "recomputed_pct": 12.23,
+    "claimed_pct": 11.24,
+    "rows": 507,
+    "hits": 62
+  },
+  "A4_U": {
+    "Macroeconomics": 112,
+    "Banking & Finance": 132,
+    "Defense & Security": 907,
+    "Govt Operations": 1061
+  },
+  "A5_hearings": {
+    "Macroeconomics": 3567,
+    "Banking & Finance": 8245,
+    "Defense & Security": 11404,
+    "Govt Operations": 15738
+  },
+  "A6_D_enc": {
+    "Macroeconomics": 88.46,
+    "Banking & Finance": 107.4,
+    "Defense & Security": 98.36,
+    "Govt Operations": 92.79
+  },
+  "A6_claimed": {
+    "Macroeconomics": 117.59,
+    "Banking & Finance": 91.05,
+    "Defense & Security": 196.88,
+    "Govt Operations": 91.31
+  },
+  "A7_contract_composition": {
+    "Murabaha": 3837,
+    "Ijara": 3764,
+    "Salam": 3647
+  },
+  "A9_threshold": 13.513,
+  "A9_quantile_pct": 26.64,
+  "A10_claimed_D": [
+    419450.43,
+    750698.13,
+    2245229.4,
+    1437080.37
+  ],
+  "C2_equity_mean": -60884.42,
+  "C2_debt_mean": -79008.32,
+  "C3_D_rebuilt": {
+    "Macroeconomics": 0.8236,
+    "Banking & Finance": 0.9978,
+    "Defense & Security": 0.5434,
+    "Govt Operations": 0.3227
+  },
+  "C4_median_latency_days": {
+    "Macroeconomics": 171.0,
+    "Banking & Finance": 244.0,
+    "Defense & Security": 197.0,
+    "Govt Operations": 288.5
+  },
+  "C4_n_dated": {
+    "Macroeconomics": 15,
+    "Banking & Finance": 69,
+    "Defense & Security": 91,
+    "Govt Operations": 404
+  },
+  "C5_E_corrected": {
+    "Macroeconomics": 92.25,
+    "Banking & Finance": 131.71,
+    "Defense & Security": 492.9,
+    "Govt Operations": 342.35
+  },
+  "C6_spearman_U_vs_rawcount": 1.0,
+  "C6_spearman_U_vs_intensity": -0.8,
+  "gates": [
+    {
+      "gate": "A1_banking_shock_reproduces",
+      "pass": true,
+      "verdict": "REPRODUCED",
+      "detail": "recomputed 4886 debits, 400 above the 30% threshold \u2014 matches the claimed 4,886 / 400 exactly",
+      "weight": "full"
+    },
+    {
+      "gate": "A2_meezan_headline_numbers_reproduce",
+      "pass": true,
+      "verdict": "REPRODUCED",
+      "detail": "n=11248  meanU=238959.66  breach=26.64%  meanE=104378.76 \u2014 all four match the claimed 11,248 / 238959.66 / 26.64% / 104378.76",
+      "weight": "full"
+    },
+    {
+      "gate": "A3_kenya_index_reproduces",
+      "pass": false,
+      "verdict": "NOT_REPRODUCED",
+      "detail": "recomputed 12.23% (62 of 507 rows), NOT the claimed 11.24%. The denominator is also wrong in kind: it counts every spreadsheet ROW, including header and layout rows, not respondents.",
+      "weight": "full"
+    },
+    {
+      "gate": "A4_executive_order_capacity_counts_reproduce",
+      "pass": true,
+      "verdict": "REPRODUCED",
+      "detail": "recomputed U = [112, 132, 907, 1061] \u2014 matches the claimed 112 / 132 / 907 / 1061 exactly",
+      "weight": "full"
+    },
+    {
+      "gate": "A5_legislative_D_dec_reproduces",
+      "pass": true,
+      "verdict": "REPRODUCED",
+      "detail": "recomputed hearing counts [3567, 8245, 11404, 15738] \u2014 matches the claimed 3567 / 8245 / 11404 / 15738",
+      "weight": "full"
+    },
+    {
+      "gate": "A6_legislative_D_enc_reproduces",
+      "pass": false,
+      "verdict": "NOT_REPRODUCED",
+      "detail": "recomputed mean description length [88.46, 107.4, 98.36, 92.79] vs claimed [117.59, 91.05, 196.88, 91.31] \u2014 different values AND a different rank order (Defense recomputes to 98.36, not 196.88)",
+      "weight": "full"
+    },
+    {
+      "gate": "A7_the_risk_sharing_cohort_actually_contains_risk_sharing",
+      "pass": false,
+      "verdict": "INVALID",
+      "detail": "the file contains ONLY {'Murabaha': 3837, 'Ijara': 3764, 'Salam': 3647}. Not one mudarabah or musharakah contract exists. Murabaha is cost-plus sale, Ijara is lease, Salam is forward purchase \u2014 all sale-based, debt-like in payoff. The cohort labelled 'Risk-Sharing (Data)' contains ZERO risk-sharing contracts.",
+      "weight": "full"
+    },
+    {
+      "gate": "A8_the_debt_comparison_is_not_rigged",
+      "pass": false,
+      "verdict": "INVALID",
+      "detail": "the 'Synthetic Debt' arm is not measured. Its capacity is set to a 'Target Mean Capacity' (276355.69), its fidelity to a 'Tuned' constant (0.75) against the comparator's 0.95, and its hop distribution is marked 'Tuned'. Two arms with different fidelity constants cannot be compared: the winner is fixed before any data is read.",
+      "weight": "full"
+    },
+    {
+      "gate": "A9_zombie_breach_is_not_a_relabelled_quantile",
+      "pass": false,
+      "verdict": "CIRCULAR",
+      "detail": "P(Risk_Score > 13.513) = 26.64%, identical to the reported breach rate of 26.64%. 0.95**Risk_Score < 0.5 is algebraically Risk_Score > 13.513, so the 'zombie breach rate' is a renamed percentile of an input column and carries no independent information.",
+      "weight": "full"
+    },
+    {
+      "gate": "A10_legislative_fidelity_is_dimensionally_valid",
+      "pass": false,
+      "verdict": "INVALID",
+      "detail": "reported D values [419450.43, 750698.13, 2245229.4, 1437080.37]. In E = U*D a fidelity must lie in [0,1]; these are character-count times hearing-count, up to 2.2 million. E = U*D is therefore uninterpretable, and the reported yields (up to 2.03e9) have no units.",
+      "weight": "full"
+    },
+    {
+      "gate": "C1_contracts_are_classified_by_their_actual_economic_form",
+      "pass": true,
+      "verdict": "CORRECTION",
+      "detail": "true composition: {'Murabaha': 3837, 'Ijara': 3764, 'Salam': 3647}. All three are sale/lease/forward forms. Under Harris Irfan's own critique these are the SYNTHETIC-DEBT wrappers, not the risk-sharing alternative. The Colab's two arms were therefore debt-like data versus tuned debt-like simulation.",
+      "weight": "excluded"
+    },
+    {
+      "gate": "C2_a_fair_like_for_like_comparison_replaces_the_tuned_one",
+      "pass": true,
+      "verdict": "CORRECTION",
+      "detail": "SAME 11248 transactions, SAME fidelity input, only the payoff structure differs.\n        equity (90% proportional): mean -60884.42 per contract\n        debt   (8% markup, priority): mean -79008.32 per contract\n        difference +18123.90 \u2014 computed, not targeted. Note this is a STRUCTURE comparison on debt-like data; it is not evidence that risk-sharing contracts perform better, because no risk-sharing contracts are present.",
+      "weight": "full"
+    },
+    {
+      "gate": "C3_legislative_fidelity_is_rebuilt_in_[0,1]",
+      "pass": true,
+      "verdict": "CORRECTION",
+      "detail": "D_enc normalised, D_dec rebuilt as hearings PER ENACTED LAW then normalised:\n        Macroeconomics D=0.8236 | Banking & Finance D=0.9978 | Defense & Security D=0.5434 | Govt Operations D=0.3227",
+      "weight": "full"
+    },
+    {
+      "gate": "C4_a_real_legislative_tau_v_is_measured_not_asserted",
+      "pass": false,
+      "verdict": "CORRECTION",
+      "detail": "median days from introduction to signature, computed from the committed file:\n        Macroeconomics 171d (n=15) | Banking & Finance 244d (n=69) | Defense & Security 197d (n=91) | Govt Operations 288d (n=404)\n        The Colab asserted a '69-day' / '~70-day' enforcement latency and never computed one. The real medians are far larger, so that figure is REFUTED on these data.",
+      "weight": "full"
+    },
+    {
+      "gate": "C5_the_corrected_yield_ordering_is_reported_whatever_it_is",
+      "pass": true,
+      "verdict": "CORRECTION",
+      "detail": "corrected E = U * D (D now a true fidelity):\n        Macroeconomics 92.2 | Banking & Finance 131.7 | Defense & Security 492.9 | Govt Operations 342.4\n        ordering: Defense & Security > Govt Operations > Banking & Finance > Macroeconomics",
+      "weight": "excluded"
+    },
+    {
+      "gate": "C6_capacity_and_fidelity_are_not_the_same_quantity",
+      "pass": true,
+      "verdict": "CORRECTION",
+      "detail": "the Colab's raw hearing COUNT ranks with capacity at spearman +1.00 \u2014 it is a size measure, so E = U*D was approximately U-squared and the comparison was circular. The rebuilt INTENSITY ranks with capacity at -0.80 (gate |rho| < 0.90).",
+      "weight": "full"
+    }
+  ],
+  "gates_not_met": [
+    "A3_kenya_index_reproduces",
+    "A6_legislative_D_enc_reproduces",
+    "A7_the_risk_sharing_cohort_actually_contains_risk_sharing",
+    "A8_the_debt_comparison_is_not_rigged",
+    "A9_zombie_breach_is_not_a_relabelled_quantile",
+    "A10_legislative_fidelity_is_dimensionally_valid",
+    "C4_a_real_legislative_tau_v_is_measured_not_asserted"
+  ]
+}
