@@ -5,7 +5,7 @@ pre-registered experiment (`6a7877db…`), and two results that went **against**
 framework — one of them against a gate I wrote myself.*
 
 ```bash
-bash reproduce_all.sh        # 67/67, clean checkout, offline, $0
+bash reproduce_all.sh        # 68/68, clean checkout, offline, $0
 ```
 
 ---

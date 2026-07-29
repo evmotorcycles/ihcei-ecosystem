@@ -260,6 +260,28 @@ error). Step 4 — produce a discriminating prediction — is not optional.
 - Spacetime-as-interface, Ψ-as-generative-space, observation-as-rendering: **interpretations
   `[L3]`**, never evidence. Bell ⇒ "cannot be lied to" is **overreach**. `[L2]`
 
+**Colab "Hybrid Sovereign Mesh" — refereed, 7/14** (`9a3e4a3e…`). Cite these corrections:
+- The cohort labelled **"Risk-Sharing (Data)" contains ZERO risk-sharing contracts** —
+  only Murabaha 3,837 / Ijara 3,764 / Salam 3,647. Under Harris Irfan's own critique those
+  *are* the synthetic-debt wrappers. Never cite that comparison as risk-sharing beating debt. `[L1]`
+- The **"Synthetic Debt" arm was tuned**: `# Target Mean Capacity`, `# Tuned base fidelity`
+  0.75 against the comparator's 0.95. Different fidelity constants ⇒ no comparison. `[L1]`
+- **"Zombie Breach Rate" = P(Risk_Score > 13.513) = 26.64%**, a renamed percentile of an
+  input column. `Risk_Score` (0–100) was also used as a hop exponent. `[L1]`
+- Legislative **D values up to 2,245,229 cannot be fidelities**; in `E = U·D`, D ∈ [0,1]. `[L1]`
+- **The political finding was circular:** ρ(U, raw hearing count) = **+1.00**, so E = U·D
+  was ≈ U². Rebuilt as hearings *per law*, it **reverses** — Banking has the **highest**
+  fidelity (0.9978), not the lowest. `[L1]`
+- The asserted **"69-day" latency was never computed**. Measured: **171–288 days** by
+  domain. Refuted — though the correction itself is underpowered for Macro (n=15). `[L1]`
+- What *did* reproduce exactly: 4,886/400 debits, all four Meezan figures, EO counts
+  112/132/907/1061, hearing counts 3,567/8,245/11,404/15,738. **Give that credit.** `[L1]`
+
+**Count-vs-intensity rule (mandatory).** A raw COUNT of anything (hearings, issues, files,
+citations) scales with the size of the thing counted. Using one as a *fidelity* makes
+`E = U·D` collapse toward `U²` and the result circular. Always convert to an **intensity**
+(per unit of output) and report ρ(U, D); if |ρ| ≈ 1, the finding is size, not fidelity.
+
 **Too-perfect rule (mandatory).** A result of exactly the predicted value with R² = 1 is a
 signal to look for an identity, not a triumph. Before reporting any sharp match, run a
 control on an unrelated structure; if it returns the same answer, the gate is
