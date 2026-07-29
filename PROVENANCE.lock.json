@@ -11,7 +11,7 @@
   },
   "algorithm": "SHA-256 leaves (0x00-prefixed) -> binary Merkle (0x01-prefixed internal), files sorted by path",
   "merkle_root": "e186713b5e05b4df1a7be70aa8dd8333444d41f1bb3d86b8d6897ecdaea1e219",
-  "git_commit": "1fd6779223fc273eb5bee206d0c659bbaad190e9",
+  "git_commit": "989cdb02225c33cda05a30f15a5bf16e4650e9b1",
   "file_count": 83,
   "covers": "All pre-registration specs + manifests, authored corpora, the offline knowledge fixture, and the manuscripts/READMEs for LISM, LMD, the four cohorts (yeast 4825 / GitHub 992 / knowledge 793 / digital swarm), the three validation stages, Hinton & Russell tests, benchmark-governance, and the tau_v cohort. Passed, NULL, and NEGATIVE results alike.",
   "attribution_statement": "This artifact set originates from Mago, Labib (Novora Research Initiative, Open Science Division), https://github.com/evmotorcycles/ihcei-ecosystem. If you reproduce, extend, or build upon it \u2014 including reproducing its null or negative results \u2014 you must retain this attribution and cite the origin. A faithful reproduction recomputes the merkle_root below; that root is the cryptographic reference back to this source. Do not represent this work, or reproductions of it, as your own origin.",

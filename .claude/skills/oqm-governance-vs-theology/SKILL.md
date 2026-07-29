@@ -290,10 +290,51 @@ methods that exist:
 - **The verifier quorum is DEAD WEIGHT:** removing it changes settlement outcomes by
   exactly 0 while costing 3.20 verifications/claim. Netting (+35) and the latency covenant
   (+93) earn their place. `[L1]`
-- **Declared limitation, never a result:** single-point dependence is 0.0086 (mesh) vs
-  1.0000 (central). No locked gate tests catastrophic centre failure, so the trade
-  "frequent small failures for no single point of collapse" is **unmeasured**. It is the
-  named next step, not a claim. `[L2]`
+- ~~**Declared limitation, never a result:** single-point dependence is 0.0086 (mesh) vs
+  1.0000 (central). No locked gate tests catastrophic centre failure.~~ **NOW MEASURED —
+  see below.**
+
+**THE TAIL RISK IS NO LONGER UNMEASURED, and the reframe that depended on it LOST**
+(`bf5a27f0…`, 2/5). The argument "the mesh is not failing, the test suite measures the wrong
+game" was tested rather than accepted. Cite these against any future version of it:
+- **The credit-creation explanation is REFUTED on our own committed code.** The centralised
+  comparator's unbacked claims are **0.0** — it is **full reserve**, moving value from issuer
+  to centre and never lending beyond it. Its 0 routine failures were bought with **POOLING**,
+  not with `ΔU > 0`. Never again say concentration wins only because it creates credit. `[L1]`
+- **Leverage made settlement monotonically WORSE**, not better: m=1 → **0** failures,
+  m=3 → 3,262, m=5 → 3,912, m=10 → 4,362, against the full-reserve mesh's 2,548. **Full
+  reserve was the smoothest configuration tested.** "Fabricating liquidity produces
+  smoothness" is backwards here. `[L1]`
+- **The mesh is NOT "immune" or "blast quarantined."** Unmet fraction **0.50**, not < 0.05.
+  Blast radius measures *where* a failure starts, not how much value survives it. `[L1]`
+- **The tail NEVER repays the routine premium.** Combined ledger **3,256 vs 73**; across an
+  18-cell strike × freeze sweep there is **no cell** where the mesh wins. `[L1]`
+- **Metric confound, disclosed not banked:** gate C4 passes on the pre-registered *fraction*
+  but **inverts 99×** on absolute value (mesh 2,172.5 unmet vs central 21.9), because the
+  centre clears continuously (21.9 outstanding) while the mesh accumulates (4,345). The
+  threshold was not moved and the gate was not re-scored. When two arms carry structurally
+  different books, **a ratio is not a comparison.** `[L1]`
+- Three harness corrections disclosed, each forced by a **degenerate measurement** (freeze
+  sized against a drained base; strike landing on an already-cleared book; issuance running
+  only at seeding) — none converted a mechanism failure into a pass. Gate C6 became a
+  structural **non-empty-book guard** and still fails honestly. `[L1]`
+- **Still untested:** whether concentration's real cost is *deferred consequence* (`τ_v`)
+  rather than fragility. That is the named next step now. `[L2]`
+
+**Seventh refusal of the tuned-simulation pattern:** a proposed
+`test_catastrophic_center_meltdown.py` quoted 1.0000 and 0.0100 — structural ratios known
+before any run — as the expected answer. A simulation written to demonstrate a meltdown
+produces a meltdown.
+
+**Historical-narrative rule (new, mandatory).** When a governance reading leans on a
+historical anecdote, check the historiography before building on it. The
+Rothschild–Waterloo "market coup" is **substantially legend**, traceable largely to
+*Satan* (Dairnvaell, 1846), an explicitly antisemitic pamphlet; archival work finds no such
+coup. The structural point — a cross-border sovereign debt market was genuinely built in
+that period — **survives without it**, so drop the anecdote rather than soften it. Likewise
+"pay off the debt and the money supply collapses overnight" is overstated: broad money
+contracts as loans are repaid, but reserves and currency do not vanish. `[L1]` on the
+historiography, `[L2]` on the structural reading.
 
 **Terminology-neutrality option.** When a design must be judged on its mechanics, strip the
 inherited vocabulary entirely and define every term by its measurement. The mesh spec uses
