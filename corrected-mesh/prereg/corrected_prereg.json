@@ -1,0 +1,53 @@
+{
+  "title": "The surgical correction: keep pooling, cut the three corruptions, and test whether equity risk-sharing is a mechanism or a relabelling",
+  "date_locked": "2026-07-29",
+  "status": "LOCKED BEFORE ANY IMPLEMENTATION OR RESULT EXISTED",
+
+  "what_the_telemetry_already_established_and_is_NOT_retested_here": [
+    "A centralised book at dU = 0.0 clears 4,886 real debits with ZERO routine settlement failures (bf5a27f0, C1). Pooling is a sound coordination mechanism and is KEPT.",
+    "Fractional credit leverage makes settlement monotonically WORSE: m=1 -> 0, m=3 -> 3,262, m=5 -> 3,912, m=10 -> 4,362 (bf5a27f0, C2). Credit creation is CUT, and the telemetry, not the doctrine, is the reason.",
+    "Local k-neighbour pooling reduces friction by a FLAT 16-18% from k=2 to k=200, not the >90% predicted, and k=2 is the best cell (9091d056). Any design asserting 'low failures' from k=10-20 pooling contradicts a committed measurement."
+  ],
+
+  "the_claim_actually_under_test": "The proposed corrected architecture replaces one-way fixed debt with symmetrical profit-and-loss participation notes, on a full-reserve substrate, in local pools, with latency monitoring. The load-bearing and UNTESTED part is the participation note. A fixed obligation that cannot be paid is recorded as a settlement FAILURE. A participation claim that cannot be paid is written down and recorded as... nothing. THIS SPEC EXISTS TO PREVENT THAT FROM COUNTING AS AN IMPROVEMENT. If equity merely renames a shortfall, claimant value delivered is unchanged and the architecture has bought nothing. If it genuinely reduces the loss reaching claimants, it has.",
+
+  "the_redefinition_trap_named_in_advance": "Scoring the equity arm on 'settlement failures' would hand it a near-perfect result by construction, because writing a claim down is not a failure event. That would be a test that cannot fail, and it is refused. EVERY primary gate in this spec is scored on CLAIMANT VALUE SHORTFALL -- promised value minus value actually delivered to the holder -- which is defined identically for a debt claim and an equity claim and cannot be improved by relabelling.",
+
+  "a_correction_to_every_previous_run_in_this_programme": "All prior experiments replayed only the 4,886 Debit rows. The committed dataset also contains 5,114 Credit rows. A downside-only sequence structurally cannot show an upside-sharing mechanism, so every previous test of risk-sharing was biased against it. This spec replays BOTH, 10,000 events in recorded order, identically in every arm. This makes the test FAIRER TO THE PROPOSAL, and it is declared before any result is seen.",
+
+  "the_simulation_trap_being_avoided_again": "EIGHTH appearance. The proposal offered was to write 'simulate_fullreserve_submesh.py' in JAX float64 and 'output the exact routine-friction vs blast-radius trade-off curves'. Blast radius in this design is k/n, a closed form known before any run, and a curve computed from a closed form is not a measurement. Every number in this spec is read out of a settlement engine already built, attacked over 200,000 operations, and beaten by pooling.",
+
+  "fixed_parameters": {
+    "shock_source": "data/colab-audit/banking_dataset.xlsx, hash-pinned; BOTH Debit and Credit rows, recorded order",
+    "n_events_expected": 10000,
+    "n_nodes": 200,
+    "seed": 20260729,
+    "cluster_sizes_swept": [1, 2, 5, 10, 20, 50],
+    "headline_k": 2,
+    "note_on_headline_k": "k=2 is the headline because the committed sub-mesh sweep measured it as the best cell. The proposal specifies k=10-20; those are swept too and reported, but k=20 is not privileged over a measurement that already found it no better than k=2."
+  },
+
+  "gates": {
+    "F1_full_reserve_invariant_holds_exactly": "Across every operation in every arm, claims outstanding may never exceed the real value pledged against them. dU must be 0 to within 1e-6. This is a theorem about the mechanism and CAN FAIL on an implementation bug.",
+    "F2_equity_reduces_claimant_value_shortfall_rather_than_relabelling_it": "PRIMARY. Total claimant value shortfall (promised minus delivered) in the equity arm must be at least 20% below the fixed-debt arm on the identical event sequence. PASS requires a real reduction in value lost by holders. If equity merely renames the same shortfall, this gate FAILS and the architecture's central innovation is a relabelling.",
+    "F3_equity_reduces_CASCADE_which_is_the_only_mechanism_by_which_it_could_win": "A fixed default is a discrete event that propagates: A cannot pay B, so B cannot pay C. A written-down participation claim absorbs loss without triggering that event. PASS = secondary (knock-on) failures in the equity arm are at least 30% below the debt arm. This is the mechanism the proposal implicitly relies on, stated so it can fail.",
+    "F4_the_corrected_architecture_approaches_the_central_book": "PASS = the corrected arm's claimant value shortfall is within 25% of the centralised full-reserve book's on the same sequence. The centre is the benchmark to beat because the telemetry already showed it wins at dU = 0.",
+    "F5_the_one_over_K_blast_radius_claim_tested_as_stated": "The proposal asserts single-point dependency drops to 1/K, quoted as approximately 0.0100, and that failure is 'strictly quarantined within that cluster'. MEASURE the actual fraction of the network whose delivered value is impaired when one cluster is wiped. PASS = measured impairment does not exceed 1/K by more than 25% relative. Note in advance: with n=200 and k=20 there are 10 clusters, so 1/K = 0.10, not 0.0100 -- the quoted figure appears to conflate cluster count with cluster size, and the gate tests the STRUCTURAL claim rather than the arithmetic slip.",
+    "F6_ABLATION_every_component_earns_its_place": "MANDATORY. Remove each of the four components in turn -- full reserve, local pooling, equity participation, latency covenant -- and measure the change in claimant value shortfall. PASS = every one of the four produces a measurable loss when removed. Any component whose removal changes nothing must be NAMED as dead weight, not defended.",
+    "F7_identical_inputs_and_a_live_book_guard": "Structural: same events, seed, node count in every arm, and every arm carries a non-empty book at measurement time. EXCLUDED from the score.",
+    "F8_no_closed_form_reporting": "Structural: no reported quantity is a closed-form expression of a swept parameter. EXCLUDED from the score."
+  },
+
+  "predictions_recorded_in_advance": {
+    "F1": "EXPECTED TO PASS. Full reserve is enforced at issuance in the committed engine.",
+    "F2": "EXPECTED TO FAIL. This is the honest prior. Writing a claim down moves the loss from the issuer to the holder; it does not make the loss smaller. Absent upside participation actually paying out, equity should relabel roughly the same shortfall. The Credit rows give it a genuine chance to beat this prediction.",
+    "F3": "GENUINELY UNCERTAIN, and this is where equity has a real mechanism. Absorbing loss without a hard default event should suppress knock-on failures. If F3 passes while F2 fails, the finding is that equity is a CONTAGION control, not a loss reducer -- which would be a precise and useful result.",
+    "F4": "EXPECTED TO FAIL. The committed sub-mesh sweep found pooling flat at 16-18%, nowhere near closing a 2,548-to-0 gap. Nothing in this design obviously changes that.",
+    "F5": "EXPECTED TO FAIL AS STATED. The tail-risk run already refuted 'immune / blast quarantined': spreading value thinly degrades every node rather than quarantining damage. Blast radius measures where a failure ORIGINATES, not how much value survives it.",
+    "F6": "UNCERTAIN per component. Prior evidence says the admission screen was worth +211,095 and the verifier quorum was worth exactly 0. Expect at least one of these four to be dead weight."
+  },
+
+  "anti_immunisation_clause": "If F2 and F4 fail, the corrected architecture may NOT be rescued by asserting that equity's benefit is qualitative, that the event sequence is unrepresentative, or that the real world would behave differently. Those moves convert the claim to Layer 3 and it will be recorded as an ontological prior, never as evidence. Equally, a PASS on F3 with a FAIL on F2 must be reported as the narrow finding it is -- contagion control -- and must not be widened into 'risk-sharing works'.",
+
+  "terminology_rule": "Plain English throughout the mechanism and the gates. The morphological and governance reading belongs in the README as Layer 2 design commentary and carries no evidential weight. Naming a component after a root does not give it that root's properties."
+}
