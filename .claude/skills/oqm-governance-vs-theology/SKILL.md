@@ -241,6 +241,31 @@ acting are identical *by construction of the imputation*. The PAGES abstention r
 rule must not be described as falsified. Distinguish these three states always:
 **refuted · untestable-here · blocked**. `[L1]`
 
+**Container skills.** For moving a field between frames, use `rational-thinking-framework`
+(state the RT reading at full strength + the RT-side firewall) and `governance-framework`
+(the four-step crossover + the three verdicts: rival theory / interpretation / category
+error). Step 4 — produce a discriminating prediction — is not optional.
+
+**Physics crossover status** (`6a7877db…`, 4/4 evidential on real graphs):
+- **Category error, measured:** "entanglement ⇒ τ_rt = 0 ⇒ d = 0" is **refuted on the
+  framework's own formalism**. On 1,262 maximally coupled real pairs, min d = **0.200115**
+  and **zero** pairs have d = 0. Correlation is not transport latency — the same reason
+  no-signalling holds. Do not repeat this claim. `[L1]`
+- **The −0.5 exponent is an ALGEBRAIC IDENTITY, not a prediction.** `W→sW ⟹ R→R/s ⟹ d→d/√s`,
+  so log d = −0.5 log s exactly for **every** graph; random and path controls both give
+  −0.5000 with R² = 1. This **corrects the committed `physics-agency/lmd` H2 claim**. `[L1]`
+- **Survives, about graphs only:** a metric emerges from pure coupling (0 violations in
+  300k triples), is not merely degree (ρ = **+0.8686**, clearing 0.90 by just 0.03), and
+  beats a degree-preserving null (z = **+7.43**). `[L1]`
+- Spacetime-as-interface, Ψ-as-generative-space, observation-as-rendering: **interpretations
+  `[L3]`**, never evidence. Bell ⇒ "cannot be lied to" is **overreach**. `[L2]`
+
+**Too-perfect rule (mandatory).** A result of exactly the predicted value with R² = 1 is a
+signal to look for an identity, not a triumph. Before reporting any sharp match, run a
+control on an unrelated structure; if it returns the same answer, the gate is
+construction-confirming and must be excluded from the evidential score — **even when it is
+your own gate and it passed.**
+
 **Simulator rule (mandatory).** A simulation that *generates* a population containing the
 structure a proposed fix exploits cannot be evidence that the fix works — it will always
 succeed, by construction. This has now been refused three times: the synthetic N=992

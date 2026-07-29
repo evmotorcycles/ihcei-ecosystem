@@ -1,0 +1,221 @@
+<title>Governance Physics — the crossover, checked</title>
+<style>
+  :root{
+    --paper:#F4F2F0; --ink:#17130F; --ink-2:#443B34; --muted:#7C716A;
+    --rule:#DAD3CD; --card:#FFFFFF; --card-2:#EBE5E0;
+    --accent:#7A4A2B; --fail:#8E3324; --pass:#4C6B45; --inert:#8A807A;
+    --shadow:0 1px 2px rgba(23,19,15,.06), 0 10px 28px rgba(23,19,15,.05);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#14110F; --ink:#EDE7E1; --ink-2:#BEB4AC; --muted:#8E837B;
+      --rule:#2C2621; --card:#1C1815; --card-2:#242019;
+      --accent:#C98A5E; --fail:#D2705E; --pass:#8AAE7E; --inert:#8E837B;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px rgba(0,0,0,.35); }
+  }
+  :root[data-theme="dark"]{ --paper:#14110F; --ink:#EDE7E1; --ink-2:#BEB4AC; --muted:#8E837B;
+    --rule:#2C2621; --card:#1C1815; --card-2:#242019;
+    --accent:#C98A5E; --fail:#D2705E; --pass:#8AAE7E; --inert:#8E837B;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px rgba(0,0,0,.35); }
+  :root[data-theme="light"]{ --paper:#F4F2F0; --ink:#17130F; --ink-2:#443B34; --muted:#7C716A;
+    --rule:#DAD3CD; --card:#FFFFFF; --card-2:#EBE5E0;
+    --accent:#7A4A2B; --fail:#8E3324; --pass:#4C6B45; --inert:#8A807A;
+    --shadow:0 1px 2px rgba(23,19,15,.06), 0 10px 28px rgba(23,19,15,.05); }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;
+       line-height:1.65;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:46rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p,ul,ol{color:var(--ink-2)} a{color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.012em;margin:0}
+  .eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+  header{border-bottom:1px solid var(--rule);margin-bottom:3.5rem;padding:4.5rem 0 2.5rem;
+         display:flex;flex-direction:column;gap:1.4rem}
+  h1{font-size:clamp(2.2rem,6vw,3.5rem);line-height:1.06}
+  h1 em{font-style:italic;color:var(--accent)}
+  .standfirst{font-size:1.1rem;margin:0;max-width:37rem}
+  .scoreline{display:flex;flex-wrap:wrap;gap:.5rem;font-family:var(--mono);font-size:.76rem}
+  .tag{border:1px solid var(--rule);background:var(--card);border-radius:2px;
+       padding:.3rem .6rem;color:var(--ink-2);white-space:nowrap}
+  .tag b{color:var(--ink)} .tag.hot{border-color:var(--fail);color:var(--fail)}
+  .tag.hot b{color:var(--fail)}
+  section{margin-bottom:3.5rem;display:flex;flex-direction:column;gap:1.1rem}
+  h2{font-size:1.5rem;line-height:1.22;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.7rem;color:var(--accent);display:block;
+        letter-spacing:.15em;margin-bottom:.5rem;font-weight:400}
+  h3{font-size:1.06rem} p{margin:0} strong{color:var(--ink);font-weight:600}
+  code{font-family:var(--mono);font-size:.86em;background:var(--card-2);
+       padding:.12em .38em;border-radius:2px;color:var(--ink)}
+  .nums{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.83rem;
+        color:var(--ink);background:var(--card-2);border-radius:3px;padding:.75rem .9rem;
+        overflow-x:auto;white-space:pre;line-height:1.7;border:1px solid var(--rule)}
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.87rem;min-width:28rem}
+  th,td{text-align:left;padding:.6rem .85rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--muted);font-weight:500;background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  caption{caption-side:bottom;text-align:left;padding:.65rem .85rem;font-size:.79rem;
+          color:var(--muted);border-top:1px solid var(--rule)}
+  .verdict-ce{color:var(--fail);font-weight:600}
+  .verdict-in{color:var(--muted)}
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.3rem 1.4rem;display:flex;flex-direction:column;gap:.85rem;box-shadow:var(--shadow)}
+  .box.alarm{border-color:var(--fail)}
+  .box.win{border-left:3px solid var(--pass)}
+  .reading{font-size:.92rem;color:var(--ink-2);border-left:2px solid var(--accent);
+           padding-left:.85rem;margin:0}
+  footer{border-top:1px solid var(--rule);padding-top:1.5rem;font-size:.82rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.8}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Prereg 6a7877db · locked before the runner · 67/67 · offline</p>
+  <h1>We ran the crossover on physics. <em>It refuted two of our own claims.</em></h1>
+  <p class="standfirst">One was the framework's entanglement inference — tested inside its
+  own formalism and measured false. The other was a gate I wrote myself, which returned a
+  perfect result because it could not have returned anything else.</p>
+  <div class="scoreline">
+    <span class="tag">evidential <b>4/4</b></span>
+    <span class="tag hot">entanglement claim <b>refuted</b></span>
+    <span class="tag hot">−0.5 slope <b>an identity</b></span>
+    <span class="tag">Layer-3 scored <b>0</b></span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">The two containers</span>Reframing is legitimate — and it has a bar</h2>
+  <p>Two skills are now saved: <code>rational-thinking-framework</code> states a field's RT
+  reading <strong>at full strength</strong> (a reframe that beats a strawman has proved
+  nothing), and <code>governance-framework</code> runs the crossover and assigns a verdict.</p>
+  <p>Reframing really is how science advances — thermodynamics became information theory,
+  mechanics became variational principles. But each of those paid for itself in <strong>new
+  derivations</strong>, not new vocabulary. That is the bar, and it is why the protocol's
+  fourth step — <em>produce a discriminating prediction</em> — is not optional.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Verdict</th><th>Meaning</th><th>May claim</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Rival theory</strong></td><td>changes a prediction</td><td>must be tested; may be wrong</td></tr>
+        <tr><td><strong>Interpretation</strong></td><td>empirically equivalent</td><td>coherence only — never the field's predictive credit</td></tr>
+        <tr><td><strong>Category error</strong></td><td>contradicts a measurement or no-go theorem</td><td>withdraw or repair</td></tr>
+      </tbody>
+      <caption>Most reframes are interpretations. Saying so is not a defeat — it is the
+      difference between an honest reframe and an overclaim.</caption>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Verdicts</span>The quantum crossover, claim by claim</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Claim</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>Spacetime is emergent / a rendered interface</td><td class="verdict-in"><code>[L3]</code> interpretation — live research, but nothing here adjudicates it</td></tr>
+        <tr><td>Ψ is a generative probability space</td><td class="verdict-in">Interpretation — earns coherence, not confirmation</td></tr>
+        <tr><td>Observation is a rendering optimisation</td><td class="verdict-in">Interpretation, and strained — decoherence recovers the statistics with <em>no</em> observer</td></tr>
+        <tr><td>Bell ⇒ "the evaluator cannot be lied to"</td><td class="verdict-in">Overreach — device-independent certification is real but narrow</td></tr>
+        <tr><td><strong>Entanglement ⇒ τ_rt = 0 ⇒ d = 0</strong></td><td class="verdict-ce">CATEGORY ERROR — and now measured</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">GP5 · the gate written so the framework could lose</span>The category error, measured</h2>
+  <p>This claim is checkable <strong>inside the framework's own formalism</strong>, with no
+  physics required. In LMD, <code>τ_rt</code> is realised as <strong>commute time</strong> —
+  a round-<em>trip transport</em> quantity. So the claim reduces to: <em>maximal correlation
+  forces commute time to zero.</em></p>
+  <div class="box alarm">
+    <div class="nums">1,262 maximally coupled real pairs (PyPI dependency graph)
+
+  minimum emergent distance   0.200115
+  mean emergent distance      0.614069
+  pairs with d = 0            ZERO</div>
+    <p class="reading"><strong>Refuted on its own terms.</strong> Correlation is not
+    transport latency — which is exactly why <strong>no-signalling</strong> holds in physics:
+    perfect correlation transmits <strong>zero bits</strong>. The "they sit at the same
+    coordinate on the CPU" reading inverts the very theorem it appeals to.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">GP3 · GP6</span>The result that was too perfect to be data</h2>
+  <p>The sharp prediction was a scaling exponent of exactly <strong>−0.5000</strong>. It came
+  back at −0.5000 with R² = 1.00000000 — and that is the tell.</p>
+  <div class="box alarm">
+    <div class="nums">W → sW  ⟹  L → sL  ⟹  L⁺ → L⁺/s  ⟹  R → R/s  ⟹  d = √R → d/√s
+
+  so   log d = −0.5·log s + const     EXACTLY, for EVERY graph
+
+CONTROLS, unrelated to any substrate:
+  random G(60, 0.15)   slope −0.500000   R² 1.00000000
+  path graph n = 40    slope −0.500000   R² 1.00000000
+  star graph n = 30    slope −0.500000   R² 1.00000000</div>
+    <p class="reading">Both gates <strong>passed as pre-registered</strong>, and both are
+    <strong>algebraic identities</strong>. Under this repository's own rule — <em>a test that
+    cannot fail is not evidence</em> — both are excluded from the evidential score.</p>
+  </div>
+  <p><strong>This also corrects a claim already committed here.</strong>
+  <code>physics-agency/lmd</code> reports the same −0.5000 slope on seeded graphs as a
+  <em>verified prediction of Latency-Metric Duality</em>. It is not one: any definition of
+  the form <code>d = √(κ·τ)</code> with <code>τ</code> homogeneous of degree −1 in the
+  coupling produces it automatically. That README now carries the correction, and a test
+  enforces it.</p>
+</section>
+
+<section>
+  <h2><span class="n">What survives</span>Four evidential gates — about graphs</h2>
+  <div class="box win">
+    <div class="nums">GP1  metric emerges on a real graph      0 violations / 300,000 triples
+GP2  not merely degree relabelled        ρ = +0.8686   (gate < 0.90)
+GP4  survives a degree-preserving null   z = +7.43     (real 1.113 vs null 1.050 ± 0.008)
+GP5  maximal coupling ⇏ zero distance    min d = 0.200115</div>
+  </div>
+  <p class="reading"><strong>GP2 is the one to watch.</strong> It clears its gate by
+  <strong>0.03</strong>. The emergent geometry is <em>substantially</em> degree, and a test
+  pins that margin between 0.80 and 0.90 so it can never be reported as "independent of
+  capacity."</p>
+  <p><strong>GP7</strong> (excluded, cannot fail) asserts that no Layer-3 term — <em>rendered,
+  headset, conscious, observer, spacetime, simulation</em> — appears in any scored gate. None
+  does. The physics interpretation acquires <strong>no</strong> empirical support here, and
+  none is claimed.</p>
+</section>
+
+<section>
+  <h2><span class="n">The answer</span>Did the crossover answer the unanswerable questions?</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Applied to</th><th>What the crossover bought</th></tr></thead>
+      <tbody>
+        <tr><td>Scripture</td><td>Operational definitions that <strong>generate falsifiable tests</strong> — a genuine success of the method</td></tr>
+        <tr><td>Finance</td><td>Four falsifications and one 4/5 — the falsifications came from the method <em>working</em></td></tr>
+        <tr><td>Physics</td><td>One narrow <code>[L1]</code> result about graphs, several interpretations, and <strong>one category error the experiment caught</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>So: <strong>not yet, and not this way.</strong> The container change is a legitimate
+  move, but it buys new answers only where it produces new <em>derivations</em>. Here it
+  produced a redescription plus one inference that measurement refutes.</p>
+  <p class="reading">The framework's credibility does not come from the physics being right.
+  It comes from the physics being <strong>checkable</strong> — and from what happened when it
+  was checked.</p>
+</section>
+
+<footer>
+  bash reproduce_all.sh → 67/67 · prereg 6a7877db committed before the runner existed ·
+  exit 0 means "reproduces including its failures and its downgrades", never "Governance
+  Physics is validated"
+</footer>
+
+</div>
