@@ -1,0 +1,179 @@
+{
+  "spec_sha256_canonical": "dca3694c5610c5225ef23e4ad26041be3fc831e80bd0fe6eb98bd791acfe0fb3",
+  "n_events": 10000,
+  "n_debits": 4886,
+  "n_credits": 5114,
+  "shortfall_equity": 94.35316099118745,
+  "shortfall_debt": 2465.0339295079793,
+  "shortfall_central": 2184.365919015888,
+  "equity_reduction_pct": 96.17233824404111,
+  "secondary_equity": 121,
+  "secondary_debt": 190,
+  "primary_equity": 156,
+  "primary_debt": 224,
+  "primary_central": 0,
+  "unbacked_max": 0.0,
+  "k_sweep": [
+    {
+      "k": 1,
+      "shortfall": 285.9832278101781,
+      "n_clusters": 200,
+      "one_over_K": 0.005,
+      "primary": 201,
+      "secondary": 161
+    },
+    {
+      "k": 2,
+      "shortfall": 94.35316099118745,
+      "n_clusters": 100,
+      "one_over_K": 0.01,
+      "primary": 156,
+      "secondary": 121
+    },
+    {
+      "k": 5,
+      "shortfall": 94.35316099118745,
+      "n_clusters": 40,
+      "one_over_K": 0.025,
+      "primary": 148,
+      "secondary": 115
+    },
+    {
+      "k": 10,
+      "shortfall": 94.35316099118745,
+      "n_clusters": 20,
+      "one_over_K": 0.05,
+      "primary": 148,
+      "secondary": 115
+    },
+    {
+      "k": 20,
+      "shortfall": 94.35316099118745,
+      "n_clusters": 10,
+      "one_over_K": 0.1,
+      "primary": 148,
+      "secondary": 115
+    },
+    {
+      "k": 50,
+      "shortfall": 94.35316099118745,
+      "n_clusters": 4,
+      "one_over_K": 0.25,
+      "primary": 148,
+      "secondary": 115
+    }
+  ],
+  "k20_clusters": 10,
+  "k20_one_over_K": 0.1,
+  "k20_measured_impaired": 0.935,
+  "ablation": {
+    "full_reserve": {
+      "shortfall": 8187.458752763532,
+      "delta": 8093.105591772344,
+      "unbacked": 0.0
+    },
+    "local_pooling": {
+      "shortfall": 285.9832278101781,
+      "delta": 191.63006681899066,
+      "unbacked": 0.0
+    },
+    "equity_participation": {
+      "shortfall": 16.101996600172072,
+      "delta": -78.25116439101538,
+      "unbacked": 0.0
+    },
+    "latency_covenant": {
+      "shortfall": 220.29140006740954,
+      "delta": 125.93823907622209,
+      "unbacked": 0.0
+    }
+  },
+  "dead_weight": [
+    "equity_participation"
+  ],
+  "harmful_components": [
+    "equity_participation"
+  ],
+  "control_2x2": {
+    "equity=True,prepay=True": {
+      "shortfall": 94.35316099118745,
+      "primary": 156,
+      "secondary": 121
+    },
+    "equity=True,prepay=False": {
+      "shortfall": 4059.3341979058278,
+      "primary": 161,
+      "secondary": 129
+    },
+    "equity=False,prepay=True": {
+      "shortfall": 16.101996600172072,
+      "primary": 185,
+      "secondary": 148
+    },
+    "equity=False,prepay=False": {
+      "shortfall": 2465.0339295079793,
+      "primary": 224,
+      "secondary": 190
+    }
+  },
+  "central_with_prepay": 1105.702518072838,
+  "participation_helps_when_prepay_held_fixed": false,
+  "participation_reduces_cascade_in_both_columns": true,
+  "confound_disclosed": "F2 and F4 pass on the pre-registered comparisons, but the 2x2 control shows the gain is attributable to PREPAYMENT, not participation: holding distribution policy fixed, equity is worse than debt in both columns. Thresholds not moved, gates not re-scored, confound recorded.",
+  "gates": [
+    {
+      "gate": "F1_full_reserve_invariant_holds_exactly",
+      "pass": false,
+      "detail": "max unbacked claims 0.000e+00; invariant violations \u2014 corrected arm 0, fixed-debt arm 11\n        *** The CORRECTED architecture holds full reserve exactly. The FIXED-DEBT comparator\n        does not: after a shortfall its residual claim survives with no reserve behind it,\n        which is what an unbacked debt IS. The gate says 'in every arm', so it FAILS as\n        written \u2014 and the reason is a property of debt, not a bug in the build.",
+      "weight": "full"
+    },
+    {
+      "gate": "F2_equity_reduces_claimant_value_shortfall_rather_than_relabelling_it",
+      "pass": true,
+      "detail": "equity 94.4 vs fixed debt 2465.0  -> 96.2% reduction (needs >= 20%)\n        promised  equity 91297.6 / debt 92197.6   delivered  equity 98685.2 / debt 89732.5\n\n        *** DISCLOSURE \u2014 THIS PASS IS ENTIRELY ATTRIBUTABLE TO PREPAYMENT, NOT PARTICIPATION.\n        The 2x2 control holds the distribution policy fixed and the ranking INVERTS:\n            prepay ON    equity 94.4   vs   fixed debt 16.1\n            prepay OFF   equity 4059.3   vs   fixed debt 2465.0\n        In BOTH columns equity is WORSE than debt. The operative ingredient is the\n        discipline of distributing inflows continuously, which is orthogonal to whether\n        the claim is fixed or variable. Mechanism: writing a claim down EXTINGUISHES it,\n        so the holder can never be made whole from later inflows, whereas a residual debt\n        survives and is recoverable. The threshold is NOT moved and the gate is NOT\n        re-scored, but the architecture's central innovation is not what is working.",
+      "weight": "full"
+    },
+    {
+      "gate": "F3_equity_reduces_CASCADE_which_is_the_only_mechanism_by_which_it_could_win",
+      "pass": true,
+      "detail": "secondary (knock-on) failures: equity 121 vs debt 190 -> 36.3% reduction (needs >= 30%)\n        *** THIS IS THE ONE GATE THAT SURVIVES THE 2x2 CONTROL. Holding the\n        distribution policy fixed, participation reduces cascade in BOTH columns:\n            prepay ON    equity 121 vs debt 148  (18.2% fewer)\n            prepay OFF   equity 129 vs debt 190  (32.1% fewer)\n        So participation IS a real mechanism \u2014 but a CONTAGION control, not a\n        loss reducer. Absorbing a loss without a hard default event genuinely\n        stops it propagating; it does not make the loss smaller. Note the effect\n        weakens to 18.2% once prepayment is present, below this gate's own threshold.",
+      "weight": "full"
+    },
+    {
+      "gate": "F4_the_corrected_architecture_approaches_the_central_book",
+      "pass": true,
+      "detail": "corrected 94.4 vs central full-reserve book 2184.4 (needs <= 2730.5); ratio 0.04x\n        *** DISCLOSURE: the central comparator does NOT prepay. Given the same\n        distribution discipline it scores 1105.7 \u2014 so this gate compares distribution\n        policies, not topologies. On equal terms the central book is behind.",
+      "weight": "full"
+    },
+    {
+      "gate": "F5_the_one_over_K_blast_radius_claim_tested_as_stated",
+      "pass": false,
+      "detail": "at k=20 there are 10 clusters so 1/K = 0.1000 (the proposal quoted 0.0100, which\n        conflates cluster COUNT with cluster SIZE). MEASURED fraction of the network\n        whose delivered value is impaired: 0.9350 \u2014 9.3x the claimed quarantine.\n        Damage is NOT confined to one cluster.",
+      "weight": "full"
+    },
+    {
+      "gate": "F6_ABLATION_every_component_earns_its_place",
+      "pass": false,
+      "detail": "removing each component changes claimant shortfall by: full_reserve +8093.1  local_pooling +191.6  equity_participation -78.3  latency_covenant +125.9\n        DID NOT EARN ITS PLACE (removal did not cost anything): ['equity_participation']\n        *** WORSE THAN DEAD WEIGHT \u2014 removing these IMPROVED the outcome: ['equity_participation']\n        The equity ablation holds prepayment ON, so it isolates participation itself.",
+      "weight": "full"
+    },
+    {
+      "gate": "F7_identical_inputs_and_a_live_book_guard",
+      "pass": true,
+      "detail": "same 10000 events, seed 20260729, 200 nodes in every arm; promised value booked \u2014 corrected 91297.6  debt 92197.6  central 98724.4",
+      "weight": "excluded"
+    },
+    {
+      "gate": "F8_no_closed_form_reporting",
+      "pass": true,
+      "detail": "1/K is reported ONLY as the proposal's claim to be tested against a measured\n        impairment fraction; every other number is read out of engine state",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "F1_full_reserve_invariant_holds_exactly",
+    "F5_the_one_over_K_blast_radius_claim_tested_as_stated",
+    "F6_ABLATION_every_component_earns_its_place"
+  ],
+  "score": "3/6"
+}
