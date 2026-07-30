@@ -1,0 +1,123 @@
+{
+  "spec_sha256_canonical": "0b2328c54836ec5281c54e4c1ff0afdb6a779172a51975ed5703d020a13c6402",
+  "n_events": 10000,
+  "arms": [
+    "irfan",
+    "alqudah_m3",
+    "alqudah_m1",
+    "tworegister"
+  ],
+  "distribution_off": {
+    "irfan": {
+      "shortfall": 4103.200189910607,
+      "secondary": 135,
+      "primary": 177,
+      "unbacked": 0.0,
+      "promised": 93154.01887418496
+    },
+    "alqudah_m3": {
+      "shortfall": 6621.578823461405,
+      "secondary": 616,
+      "primary": 638,
+      "unbacked": 1585.875732860508,
+      "promised": 100018.24808013585
+    },
+    "alqudah_m1": {
+      "shortfall": 3321.2205179519597,
+      "secondary": 166,
+      "primary": 212,
+      "unbacked": 4.547473508864641e-13,
+      "promised": 92802.52229711924
+    },
+    "tworegister": {
+      "shortfall": 2983.739946432427,
+      "secondary": 177,
+      "primary": 223,
+      "unbacked": 4.547473508864641e-13,
+      "promised": 92607.61891963179
+    }
+  },
+  "distribution_on": {
+    "irfan": {
+      "shortfall": 128.3130861229332,
+      "secondary": 123,
+      "primary": 156,
+      "unbacked": 2.2737367544323206e-13,
+      "promised": 91476.30493604403
+    },
+    "alqudah_m3": {
+      "shortfall": 237.02626773042493,
+      "secondary": 672,
+      "primary": 694,
+      "unbacked": 930.6005859641461,
+      "promised": 97784.43245503107
+    },
+    "alqudah_m1": {
+      "shortfall": 88.52252527062637,
+      "secondary": 142,
+      "primary": 176,
+      "unbacked": 0.0,
+      "promised": 90811.56999782744
+    },
+    "tworegister": {
+      "shortfall": 96.69136459332839,
+      "secondary": 151,
+      "primary": 184,
+      "unbacked": 2.2737367544323206e-13,
+      "promised": 90956.5207797935
+    }
+  },
+  "spread_off": 3637.8388770289775,
+  "spread_on": 148.50374245979856,
+  "spread_retained": 0.04082196806392963,
+  "fewest_cascades_arm": "irfan",
+  "alqudah_substrate_ratio": 1.9937185103097643,
+  "gates": [
+    {
+      "gate": "B1_the_full_reserve_arms_hold_the_invariant_and_the_constrained_arm_does_not",
+      "pass": true,
+      "detail": "unbacked claims \u2014 irfan 0.0  alqudah_m1 0.0  tworegister 0.0  |  alqudah_m3 1585.9 (needs > 200.0)",
+      "weight": "full"
+    },
+    {
+      "gate": "B2_architecture_comparison_on_SHORTFALL_with_distribution_OFF_everywhere",
+      "pass": true,
+      "detail": "shortfall \u2014 tworegister 2983.7  vs  irfan 4103.2  and  alqudah_m3 6621.6\n        (our arm must not be worse than BOTH; written so we can lose)",
+      "weight": "full"
+    },
+    {
+      "gate": "B3_architecture_comparison_on_CASCADE_with_distribution_OFF_everywhere",
+      "pass": true,
+      "detail": "secondary failures \u2014 irfan 135  alqudah_m3 616  alqudah_m1 166  tworegister 177\n        fewest: irfan (the contagion-control prediction says irfan)",
+      "weight": "full"
+    },
+    {
+      "gate": "B4_DOES_THE_DOCTRINAL_DIFFERENCE_SURVIVE_CONTINUOUS_DISTRIBUTION",
+      "pass": false,
+      "detail": "spread between best and worst arm on shortfall:\n            distribution OFF        3637.8\n            distribution ON          148.5\n        retained 4.1% (needs >= 25%)\n        *** A FAIL means a payment-timing rule none of the three positions names\n        dominates the dispute between them \u2014 including ours.",
+      "weight": "full"
+    },
+    {
+      "gate": "B5_the_substrate_critique_is_correct_on_measurement",
+      "pass": true,
+      "detail": "identical contracts, different substrate: m=3 6621.6 vs m=1 3321.2 (needs m=3 >= 4151.5)\n        ratio 1.99x \u2014 the practitioner critique says the substrate is what matters",
+      "weight": "full"
+    },
+    {
+      "gate": "B6_identical_inputs_and_live_books",
+      "pass": true,
+      "detail": "same 10000 events, seed 20260731, 200 nodes; promised booked in every arm \u2014 irfan 93154  alqudah_m3 100018  alqudah_m1 92803  tworegister 92608",
+      "weight": "excluded"
+    },
+    {
+      "gate": "B7_no_arm_is_scored_on_a_metric_it_alone_defines",
+      "pass": true,
+      "detail": "every gate names ONE metric applied identically to all four arms; no combined\n        objective exists in this spec",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "B4_DOES_THE_DOCTRINAL_DIFFERENCE_SURVIVE_CONTINUOUS_DISTRIBUTION"
+  ],
+  "score": "4/5"
+}
