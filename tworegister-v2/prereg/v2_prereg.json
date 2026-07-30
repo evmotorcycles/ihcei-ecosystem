@@ -1,0 +1,53 @@
+{
+  "title": "Two-Register Network v2: Al-Qudah's contracts in the recovery register, participation confined to containment, and the seed-robustness check this programme has never run",
+  "date_locked": "2026-07-30",
+  "status": "LOCKED BEFORE ANY IMPLEMENTATION OR RESULT EXISTED",
+
+  "what_changed_and_why": "The three-proposal benchmark (0b2328c5) returned three things that force a redesign. (1) Continuous distribution collapsed the entire three-way spread from 3637.8 to 148.5 -- 4.1% retained -- so payment timing dominates contract architecture by roughly two orders of magnitude. (2) Al-Qudah's asset-backed and diminishing co-ownership contracts, run at full reserve with distribution on, scored 88.5 and BEAT our own arm's 96.7. (3) Irfan's all-participation arm recorded the fewest cascades, 135. v2 therefore stops treating asset-backed contracts as wrappers to be replaced, adopts them as the recovery-register primitive, confines participation to containment, and re-centres the headline on distribution.",
+
+  "the_thing_that_makes_this_test_honest": "At containment share 0.0 this architecture IS Al-Qudah's arm, and at share 1.0 it IS Irfan's arm. The sweep therefore interpolates between two named positions rather than comparing our design against strawmen, and any advantage we claim must appear as an interior point beating both of its own endpoints. If no interior share beats the endpoints, v2 adds nothing and must be reported as adding nothing.",
+
+  "no_combined_objective_again": "Shortfall and cascade are reported separately and never merged. The ed80430a run locked equal weights and then found the terms differed 90x in dynamic range, which made the objective a shortfall metric wearing a disguise. v2 states a TRADE-OFF BAND instead: an interior share must deliver a named cascade reduction while staying inside a named shortfall cost. Both numbers are fixed here, before any run.",
+
+  "fixed_parameters": {
+    "event_source": "data/colab-audit/banking_dataset.xlsx, hash-pinned; BOTH Debit and Credit rows, recorded order",
+    "n_events_expected": 10000,
+    "n_nodes": 200,
+    "primary_seed": 20260801,
+    "robustness_seeds": [20260801, 20260802, 20260803, 20260804, 20260805],
+    "k_pool": 2,
+    "containment_shares_swept": [0.0, 0.1, 0.25, 0.4, 0.6, 0.8, 1.0],
+    "recovery_primitive": "coown -- amortising asset-backed co-ownership, the institution's ownership share absorbing a proportion of loss with the remainder recoverable",
+    "containment_primitive": "participation -- proportional absorption, claim extinguished, no default event",
+    "institution_ownership_share": 0.5,
+    "amortisation_per_settlement": 0.02,
+    "leverage": 1.0,
+    "distribution_on_by_default": true
+  },
+
+  "gates": {
+    "V1_full_reserve_holds_at_every_containment_share": "Unbacked claims must be below 1e-6 at every swept share. A theorem about the mechanism; CAN FAIL on an implementation bug.",
+    "V2_an_interior_share_beats_BOTH_of_its_own_endpoints_inside_a_declared_band": "PRIMARY. There must exist a containment share strictly between 0.0 and 1.0 that reduces secondary failures by at least 15% relative to share 0.0, while costing no more than 25% additional claimant value shortfall relative to share 0.0. Both thresholds are fixed here. FAIL means the mix adds nothing over simply choosing one of the two named positions outright, and v2 ships as a recommendation to pick an endpoint.",
+    "V3_continuous_distribution_still_dominates_on_the_NEW_composition": "Re-measure the distribution effect on v2 rather than assuming it carries over. PASS = disabling continuous distribution increases claimant shortfall by at least 5x at the headline share. This can fail: the previous +194.5 was measured on a composition using fixed claims, not amortising co-ownership, and amortisation may already be doing that work.",
+    "V4_v2_actually_improves_on_v1": "PASS = v2 at its best interior share records lower claimant value shortfall than the ORIGINAL two-register composition (fixed claims in the recovery register) run under identical conditions. This is the direct test of whether adopting Al-Qudah's contracts was an improvement rather than a lateral move. It can fail.",
+    "V5_SEED_ROBUSTNESS_the_check_this_programme_has_never_run": "MANDATORY AND NEW. Every result in this programme to date rests on a single seed. Re-run the full sweep across 5 declared seeds. PASS = the identity of the best interior share is stable across at least 4 of 5 seeds, AND the coefficient of variation of shortfall at the headline share is below 0.25. FAIL means the single-seed findings in this repository are not robust and every one of them must be re-reported with that caveat attached.",
+    "V6_identical_inputs_and_no_arm_specific_constants": "Structural: same events, same node count, same contract constants at every share; only the containment share differs. EXCLUDED from the score.",
+    "V7_endpoints_reproduce_the_named_positions": "Structural: share 0.0 must reproduce the Al-Qudah full-reserve arm and share 1.0 the Irfan arm, confirming the sweep really does interpolate between them. EXCLUDED from the score."
+  },
+
+  "predictions_recorded_in_advance": {
+    "V1": "EXPECTED TO PASS.",
+    "V2": "GENUINELY UNCERTAIN and this is the gate that decides whether v2 exists. Participation buys cascade reduction and costs shortfall; whether an interior point lands inside the declared band is not knowable in advance.",
+    "V3": "EXPECTED TO PASS but less strongly than before. Amortisation already moves value continuously, so the marginal effect of distribution on THIS composition may be smaller than the +194.5 measured on fixed claims.",
+    "V4": "UNCERTAIN, leaning pass. Al-Qudah's contracts beat our fixed claims head to head with distribution on (88.5 vs 96.7), so importing them should help -- but the containment register is present in both, and the earlier ablation found it worse than dead weight on shortfall.",
+    "V5": "GENUINELY UNCERTAIN, and the most consequential gate in the spec. If the best share moves around across seeds, then the interior optimum is noise and v2's central claim dissolves. This gate is written to expose that, and a failure here retroactively weakens single-seed results elsewhere in this repository."
+  },
+
+  "anti_immunisation_clause": "If V2 fails, v2 may not be rescued by widening the band, by adding a routing model (refuted at ed80430a), or by switching to a metric on which an interior share wins. If V5 fails, the failure may not be confined to this run -- it applies to every single-seed result in the repository and must be reported as such.",
+
+  "what_this_does_NOT_do": "It does not replace Al-Qudah's model. At share 0.0 the architecture IS his model, and if V2 fails that is the recommended configuration. It does not adjudicate any jurisprudential question. A settlement outcome is not a ruling, and no reader should treat it as one.",
+
+  "the_simulation_trap_being_avoided_again": "ELEVENTH appearance. No arm is defined by a formula whose output is the reported result. Every number is read out of the settlement engine already built, attacked over 200,000 operations, and driven by the committed real event sequence.",
+
+  "peer_review_notes": "For an external reviewer: the spec hash is computed over the canonical JSON serialisation of this file and is verified by the runner before any measurement. The event source is hash-pinned against a committed manifest and the run aborts if it has changed. All gates, thresholds and seeds appear above and none may be altered after the run. Failures are reported, not repaired."
+}
