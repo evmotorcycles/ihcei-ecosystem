@@ -1,0 +1,59 @@
+{
+  "title": "Three proposals for Islamic banking, put on the same engine: Irfan's full-reserve participation notes, Al-Qudah's asset-backed contracts under regulatory constraint, and the Two-Register Network",
+  "date_locked": "2026-07-30",
+  "status": "LOCKED BEFORE ANY IMPLEMENTATION OR RESULT EXISTED",
+
+  "why_this_test_exists": "Three named positions disagree about what Islamic banking should be. Harris Irfan (practitioner critic) says abandon fractional-reserve banking entirely and issue full-reserve profit-participating notes. Dr Main Al-Qudah (contemporary scholar) says work within real regulatory constraints using asset-backed sale and lease contracts and diminishing co-ownership, accepting necessity where pure forms are unavailable. The Two-Register Network says hold full reserve, distribute inflows continuously, and split claims between a recovery register and a containment register. These have never been compared on one engine with one event sequence. The disagreement is usually conducted in jurisprudence; here it is conducted in settlement outcomes.",
+
+  "the_confound_that_would_wreck_this_test_if_left_alone": "CONTINUOUS DISTRIBUTION of inflows was measured at delta J = +194.5 in the previous run -- two orders of magnitude larger than any other component, and larger than any difference the three proposals dispute. It is a named component of the Two-Register proposal and NOT of the other two. Handing it to our own arm alone would guarantee our arm wins, on a mechanism the doctrinal argument is not even about. It is therefore treated as an INDEPENDENT FACTOR: every arm is run BOTH with and without it, and the architecture comparison is scored with it OFF in every arm. This is declared before any result is seen and it is the single most important design decision in this spec.",
+
+  "the_arms": {
+    "irfan_full_reserve_participation": "100% full reserve (no credit creation). Every claim is a profit-participation note: on a shortfall the claim absorbs the loss proportionally and is EXTINGUISHED, with no default event. No fixed claims anywhere.",
+    "alqudah_asset_backed_under_constraint": "Asset-backed sale and lease plus diminishing co-ownership, operating on the fractional-reserve substrate the position explicitly accepts as a regulatory reality. Claims amortise on a schedule; the institution retains an ownership share that absorbs a PROPORTION of any loss while the remainder survives as a recoverable claim. Leverage m > 1.",
+    "alqudah_at_full_reserve_CONTROL": "Identical contract mechanics to the above but at m = 1. This separates the CONTRACT DESIGN from the SUBSTRATE it is constrained to operate on, so a loss cannot be blamed on the wrong one. Required, not optional.",
+    "two_register": "Full reserve. A fixed policy mix of recovery-register (fixed, survives, recoverable) and containment-register (participation, extinguishes) claims at the share carried forward from the previous run. NO routing model -- routing was refuted at prereg ed80430a and is not reinstated here."
+  },
+
+  "fixed_parameters": {
+    "event_source": "data/colab-audit/banking_dataset.xlsx, hash-pinned; BOTH Debit and Credit rows, recorded order",
+    "n_events_expected": 10000,
+    "n_nodes": 200,
+    "seed": 20260731,
+    "k_pool": 2,
+    "leverage_for_constrained_arm": 3.0,
+    "containment_share_two_register": 0.25,
+    "alqudah_institution_ownership_share": 0.5,
+    "alqudah_amortisation_per_settlement": 0.02,
+    "distribution_factor_levels": ["off", "on"]
+  },
+
+  "primary_metric": "CLAIMANT VALUE SHORTFALL = value promised minus value delivered, summed per holder with no netting of surpluses against deficits. Defined identically for a fixed claim, a participation claim and an amortising co-ownership claim, so no arm can improve its score by relabelling what it calls a default. Secondary failures (knock-on) are reported alongside and are scored in their own gate, never merged into a single number with unstated weights.",
+
+  "the_two_objective_trap_closed_again": "The previous run locked a combined objective with equal weights and then discovered the two terms had dynamic ranges differing by 90x, so the weights were not equal in effect. That mistake is not repeated. THERE IS NO COMBINED OBJECTIVE IN THIS SPEC. Each gate names exactly one metric, and any claim that an arm 'wins overall' must be stated as winning on a named metric or not stated at all.",
+
+  "gates": {
+    "B1_the_full_reserve_arms_hold_the_invariant_and_the_constrained_arm_does_not": "MEASURE unbacked claims in every arm. PASS = both full-reserve arms show unbacked claims < 1e-6 AND the constrained fractional arm shows unbacked claims > 1% of base value. This gate tests whether the substrate difference is real in the implementation rather than nominal. It can fail in either direction.",
+    "B2_architecture_comparison_on_SHORTFALL_with_distribution_OFF_everywhere": "Rank the four arms by claimant value shortfall with continuous distribution disabled in all of them. PASS = the Two-Register arm is not worse than BOTH other named proposals. Stated so our own arm can lose.",
+    "B3_architecture_comparison_on_CASCADE_with_distribution_OFF_everywhere": "Rank the same four arms by secondary failures. PASS = the Irfan all-participation arm records the FEWEST secondary failures. This is the prediction that follows from the previous run's finding that participation is a contagion control, and it is tested on someone else's architecture rather than ours.",
+    "B4_DOES_THE_DOCTRINAL_DIFFERENCE_SURVIVE_CONTINUOUS_DISTRIBUTION": "PRIMARY. Turn distribution ON in every arm and re-rank. PASS = the spread between the best and worst arm on shortfall remains at least 25% of the spread measured with distribution OFF. FAIL means continuous distribution -- a mechanism none of the three positions argues about -- dominates the entire dispute, and the doctrinal disagreement is largely moot at the settlement layer. FAILURE HERE IS THE MOST INTERESTING OUTCOME AND APPLIES TO ALL THREE PROPOSALS INCLUDING OURS.",
+    "B5_the_substrate_critique_is_correct_on_measurement": "Compare the constrained arm at m = 3 against the identical contract at m = 1. PASS = the fractional substrate produces materially worse shortfall (at least 25% worse) than the same contracts at full reserve. This tests the central empirical claim of the practitioner critique -- that the substrate, not the contract label, is what matters -- WITHOUT assuming it.",
+    "B6_identical_inputs_and_live_books": "Structural: same events, seed, node count in every arm; every arm carries a non-empty book. EXCLUDED from the score.",
+    "B7_no_arm_is_scored_on_a_metric_it_alone_defines": "Structural: every gate names one metric applied identically to all arms. EXCLUDED from the score."
+  },
+
+  "predictions_recorded_in_advance": {
+    "B1": "EXPECTED TO PASS. Full reserve is enforced at issuance; the fractional arm is defined to lend beyond backing.",
+    "B2": "UNCERTAIN. Our arm holds fixed recoverable claims for 75% of nodes, which favours shortfall, but the constrained arm's amortising claims also survive. We may lose this.",
+    "B3": "EXPECTED TO PASS. Full extinguishment should stop propagation best. If Irfan's arm does NOT record the fewest cascades, the contagion-control finding from the previous run does not generalise beyond our own implementation and must be narrowed.",
+    "B4": "EXPECTED TO FAIL, and this is the honest prior. Continuous distribution measured 30x larger than any structural component. If it compresses the three-way difference below a quarter of its unaided size, then the entire doctrinal dispute is being conducted about a smaller effect than a payment-timing rule none of the three parties named. That result would be uncomfortable for all three positions and it is the reason this gate is primary.",
+    "B5": "EXPECTED TO PASS. Leverage made settlement monotonically worse in every previous run. If it fails, the practitioner critique's central empirical claim does not hold on this substrate and must be reported as unsupported."
+  },
+
+  "what_this_test_cannot_settle": "Nothing here adjudicates a jurisprudential question. An arm scoring better on settlement outcomes is not thereby permissible, and an arm scoring worse is not thereby impermissible. The test measures what these architectures DO under a recorded event sequence. Any reader converting a settlement result into a ruling has left the evidence behind, and the README will say so.",
+
+  "anti_immunisation_clause": "If our own Two-Register arm loses B2, that loss may not be rescued by adding the routing model back, by re-tuning the containment share after seeing results, or by switching to a metric on which it wins. The containment share is fixed in this spec at 0.25 before the run. If B4 fails, the conclusion that the doctrinal dispute is dominated by payment timing may not be softened for any of the three positions, including ours.",
+
+  "the_simulation_trap_being_avoided_again": "TENTH appearance. No arm is described by a formula whose output is the reported result. All four arms are implemented as settlement mechanics inside the engine already built, attacked over 200,000 operations, and driven by the same committed real event sequence.",
+
+  "terminology_rule": "Mechanism and gates in plain English. The morphological and governance reading belongs in the README and carries no evidential weight."
+}
