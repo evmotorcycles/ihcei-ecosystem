@@ -2,9 +2,22 @@ import numpy as np
 
 def run_simulation(N_agents=1000, T_steps=100, shock_prob=0.05, shock_magnitude=0.5):
     """
-    Simulate wealth concentration in two financial systems:
-    Model A: Debt-Trap (Fractional Reserve, Perpetual Interest)
-    Model B: OQM (Full-Reserve, Risk-Sharing, Continuous Distribution)
+    Simulate wealth concentration in two financial systems, framed as Latency Engineering:
+
+    Model A: The Debt Trap (Latency Engineered)
+    Each innovation lengthened the interval between a decision and its consequence,
+    and moved the consequence onto someone who did not make the decision:
+    1. 1694 (Paterson): Perpetual principal -> consequence never arrives for the borrower.
+    2. 1800s: Cross-border market -> consequence dispersed across holders who cannot act.
+    3. 1913 (Morgan): Automatic buyer -> consequence absorbed by an actor that cannot refuse.
+    4. 1979-82 (Volcker): Rate shock/refinancing -> consequence redirected onto non-borrowing populations.
+
+    Model B: OQM Governance Physics (Zero Latency)
+    Full-Reserve, Risk-Sharing, Continuous Distribution. Consequences are absorbed
+    symmetrically and immediately (Delta U = 0), preventing compounding extraction.
+
+    Note: This historical framework provides context; the mathematical engine below
+    provides the evidence. Broad money contracts predominantly as a byproduct of lending.
     """
     np.random.seed(42)
 
@@ -32,10 +45,10 @@ def run_simulation(N_agents=1000, T_steps=100, shock_prob=0.05, shock_magnitude=
         index = np.arange(1, n + 1)
         return ((np.sum((2 * index - n - 1) * w)) / (n * np.sum(w)))
 
-    # Debt parameters for Model A
+    # Model A: Latency Engineered Debt Trap
     # Agents take out loans (credit expansion). Initial loan is 50.
     debt_A = np.full(N_agents, 50.0)
-    interest_rate_A = 0.08  # 8% perpetual interest (Paterson)
+    interest_rate_A = 0.08  # 8% perpetual interest (Consequence never arrives for the borrower)
 
     # Capital provided by Bank in Model B
     investment_B = np.full(N_agents, 50.0) # Bank invests 50 in each agent
@@ -79,8 +92,9 @@ def run_simulation(N_agents=1000, T_steps=100, shock_prob=0.05, shock_magnitude=
         # Unpaid interest added to debt (compounding)
         debt_A[cannot_pay_A] += (interest_due_A[cannot_pay_A] - paid_A)
 
-        # Artificial Credit Expansion (Infinite Debt)
-        # The bank creates new money to lend to struggling agents to keep them afloat
+        # Artificial Credit Expansion (Automatic Buyer / Refinancing)
+        # The bank creates new money to lend to struggling agents to keep them afloat,
+        # redirecting consequence and ensuring broad money is a byproduct of lending.
         new_loans = np.zeros(N_agents)
         needs_bailout = wealth_A_agents < 10
         new_loans[needs_bailout] = 20
