@@ -1,0 +1,191 @@
+{
+  "model_name": "Two-Register Settlement Network",
+  "spec_sha256_canonical": "ed80430a7349da34ab6a76fcc5d60ecd30999cc1f857389b7acbe3a62a94c539",
+  "n_events": 10000,
+  "J_all_recovery": 1.0,
+  "J_all_containment": 9.983963021460124,
+  "shortfall_all_recovery": 7.801766868964023,
+  "shortfall_all_containment": 149.55320469824807,
+  "secondary_all_recovery": 164,
+  "secondary_all_containment": 131,
+  "sweep": [
+    {
+      "share": 0.0,
+      "shortfall": 7.801766868964023,
+      "secondary": 164,
+      "J": 1.0,
+      "J_range_balanced_POSTHOC": 0.5
+    },
+    {
+      "share": 0.1,
+      "shortfall": 31.02998525253878,
+      "secondary": 164,
+      "J": 2.488651146189605,
+      "J_range_balanced_POSTHOC": 0.5819329198323522
+    },
+    {
+      "share": 0.25,
+      "shortfall": 50.70185768100134,
+      "secondary": 155,
+      "J": 3.7219440020814196,
+      "J_range_balanced_POSTHOC": 0.5149579003663941
+    },
+    {
+      "share": 0.4,
+      "shortfall": 56.087910440374344,
+      "secondary": 153,
+      "J": 4.061028042263305,
+      "J_range_balanced_POSTHOC": 0.5036530997880586
+    },
+    {
+      "share": 0.5,
+      "shortfall": 61.381918021964395,
+      "secondary": 151,
+      "J": 4.394213086786328,
+      "J_range_balanced_POSTHOC": 0.4920236281545559
+    },
+    {
+      "share": 0.6,
+      "shortfall": 76.10427081118274,
+      "secondary": 136,
+      "J": 5.292008213614025,
+      "J_range_balanced_POSTHOC": 0.3166810718016781
+    },
+    {
+      "share": 0.75,
+      "shortfall": 105.81890670368404,
+      "secondary": 134,
+      "J": 7.190263627520823,
+      "J_range_balanced_POSTHOC": 0.3911905088271542
+    },
+    {
+      "share": 0.9,
+      "shortfall": 142.23046803042718,
+      "secondary": 132,
+      "J": 9.517711911883843,
+      "J_range_balanced_POSTHOC": 0.4893220181814742
+    },
+    {
+      "share": 1.0,
+      "shortfall": 149.55320469824807,
+      "secondary": 131,
+      "J": 9.983963021460124,
+      "J_range_balanced_POSTHOC": 0.5
+    }
+  ],
+  "best": {
+    "share": 0.0,
+    "shortfall": 7.801766868964023,
+    "secondary": 164,
+    "J": 1.0,
+    "J_range_balanced_POSTHOC": 0.5
+  },
+  "headline_share": 0.25,
+  "headline": {
+    "share": 0.25,
+    "shortfall": 50.70185768100134,
+    "secondary": 155,
+    "J": 3.7219440020814196,
+    "J_range_balanced_POSTHOC": 0.5149579003663941
+  },
+  "random_control": {
+    "mean": 2.5692088186277764,
+    "sd": 0.759462602947801,
+    "min": 1.5690071185355368,
+    "p5": 1.762276306740679,
+    "draws": [
+      1.8081287016210519,
+      1.8102256762335025,
+      1.9649494310289735,
+      3.527260672451005,
+      4.154245739284786,
+      2.5531392640651056,
+      2.0206177382479225,
+      3.206111906138607,
+      2.966142372791957,
+      2.0240061118964583,
+      2.4081935208319982,
+      1.5690071185355368,
+      2.7083704960452084,
+      1.8506783436095458,
+      3.682806250811229,
+      2.3593530510165643,
+      3.7299171672886433,
+      2.0926618817521625,
+      3.175912559627486,
+      1.7724483692777917
+    ]
+  },
+  "targeted_J": 3.7219440020814196,
+  "routing_auc": 0.44471153846153844,
+  "routing_rho_vs_size": -0.033294210344682836,
+  "ablation": {
+    "continuous_distribution": 198.22676847352056,
+    "local_pooling": 4.252492757441194,
+    "containment_register": 1.0,
+    "recovery_register": 9.983963021460124
+  },
+  "dead_weight": [
+    "containment_register"
+  ],
+  "objective_defect_disclosed": {
+    "shortfall_term_span": 18.16914555511537,
+    "cascade_term_span": 0.2012195121951219,
+    "shortfall_dominance_factor": 90.29514760724004,
+    "note": "J was locked with equal 0.5/0.5 weights but the terms have very different dynamic ranges, so J is effectively a shortfall metric. Nothing was re-scored; a range-balanced sensitivity is reported post-hoc and changes no gate.",
+    "posthoc_best_share": 0.6,
+    "posthoc_best_J": 0.3166810718016781
+  },
+  "gates": [
+    {
+      "gate": "N1_the_two_register_model_beats_both_pure_strategies",
+      "pass": false,
+      "detail": "at share 0.25  J 3.7219  vs  all-recovery 1.0000  and all-containment 9.9840\n        NOTE: the spec calls this the WEAK gate. Two instruments with different failure\n        modes usually beat either alone; a pass here is close to uninformative alone.",
+      "weight": "full"
+    },
+    {
+      "gate": "N2_TARGETED_ROUTING_BEATS_RANDOM_AT_THE_SAME_SHARE",
+      "pass": false,
+      "detail": "targeted J 3.7219   random-assignment J over 20 draws: mean 2.5692  sd 0.7595  min 1.5690  5th pct 1.7623\n        needs <= 2.3123 (10% below mean) AND < 1.7623 (5th pct)\n        *** The routing signal must beat a coin flip at the same share, or the mix ratio\n        is doing all the work and the risk model is decoration.",
+      "weight": "full"
+    },
+    {
+      "gate": "N3_an_interior_optimum_exists",
+      "pass": false,
+      "detail": "best J 1.0000 at containment share 0.00  \u2014 an ENDPOINT under the locked objective\n        *** CAVEAT, DISCLOSED: the locked J is dominated 90x by the shortfall term,\n        so this gate largely restates 'shortfall favours fixed claims'. Under a post-hoc\n        RANGE-BALANCED version of the same two objectives an INTERIOR optimum DOES appear\n        at share 0.60 (J' 0.3167 vs 0.5000 and 0.5000 at the endpoints). The gate is NOT re-scored\n        and N3 stands as FAILED, but 'the two-register idea is refuted' would be too strong:\n        what is refuted is ROUTING (N2, N4), not the existence of a mix.",
+      "weight": "full"
+    },
+    {
+      "gate": "N4_the_routing_signal_actually_predicts_CASCADE_and_is_non_circular",
+      "pass": false,
+      "detail": "AUC(out-degree -> involved in a cascade) = 0.4447 (needs > 0.60)\n        Spearman rho(signal, promised value) = -0.0333 (needs |rho| < 0.90 so the signal\n        is not merely a restatement of node size)",
+      "weight": "full"
+    },
+    {
+      "gate": "N5_ABLATION_each_element_of_the_model_earns_its_place",
+      "pass": false,
+      "detail": "continuous_distribution +194.5048  local_pooling +0.5305  containment_register -2.7219  recovery_register +6.2620\n        DEAD WEIGHT (removal did not degrade J): ['containment_register']",
+      "weight": "full"
+    },
+    {
+      "gate": "N6_identical_inputs_and_a_live_book_guard",
+      "pass": true,
+      "detail": "same 10000 events, seed 20260730, 200 nodes; promised booked in every arm (recovery 90844.2 / containment 91849.7); full-reserve violations 0/0",
+      "weight": "excluded"
+    },
+    {
+      "gate": "N7_no_closed_form_reporting_and_no_single_metric_scoring",
+      "pass": true,
+      "detail": "J is the only scored quantity and combines BOTH objectives at weights fixed in\n        the spec; no gate turns on shortfall or cascade alone",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "N1_the_two_register_model_beats_both_pure_strategies",
+    "N2_TARGETED_ROUTING_BEATS_RANDOM_AT_THE_SAME_SHARE",
+    "N3_an_interior_optimum_exists",
+    "N4_the_routing_signal_actually_predicts_CASCADE_and_is_non_circular",
+    "N5_ABLATION_each_element_of_the_model_earns_its_place"
+  ],
+  "score": "0/5"
+}

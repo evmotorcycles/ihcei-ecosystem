@@ -1,0 +1,320 @@
+<title>The Two-Register Settlement Network — a model that shipped smaller</title>
+<style>
+  :root{
+    --paper:#EDEFEC; --ink:#16201C; --ink-2:#3E4A45; --muted:#74807A;
+    --rule:#CBD3CE; --card:#FAFBF9; --card-2:#DFE5E1;
+    --rec:#1D5E52; --con:#9A5B34; --bad:#A3342F;
+    --shadow:0 1px 2px rgba(22,32,28,.05), 0 12px 30px rgba(22,32,28,.06);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Charter","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#0D1210; --ink:#E2E8E4; --ink-2:#A6B0AA; --muted:#75817B;
+      --rule:#212A26; --card:#141A17; --card-2:#1C2420;
+      --rec:#58AD9B; --con:#CF9166; --bad:#DE6B5F;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  }
+  :root[data-theme="dark"]{ --paper:#0D1210; --ink:#E2E8E4; --ink-2:#A6B0AA; --muted:#75817B;
+    --rule:#212A26; --card:#141A17; --card-2:#1C2420;
+    --rec:#58AD9B; --con:#CF9166; --bad:#DE6B5F;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  :root[data-theme="light"]{ --paper:#EDEFEC; --ink:#16201C; --ink-2:#3E4A45; --muted:#74807A;
+    --rule:#CBD3CE; --card:#FAFBF9; --card-2:#DFE5E1;
+    --rec:#1D5E52; --con:#9A5B34; --bad:#A3342F;
+    --shadow:0 1px 2px rgba(22,32,28,.05), 0 12px 30px rgba(22,32,28,.06); }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;
+       line-height:1.68;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:49rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p{margin:0;color:var(--ink-2)}
+  ul{margin:0;padding-left:1.15rem;color:var(--ink-2);display:flex;flex-direction:column;gap:.5rem}
+  :focus-visible{outline:2px solid var(--rec);outline-offset:3px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.011em;margin:0}
+  strong{color:var(--ink);font-weight:600}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.9em;color:var(--ink)}
+
+  .eyebrow{font-family:var(--mono);font-size:.69rem;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+  header{border-bottom:1px solid var(--rule);margin-bottom:3.4rem;padding:4.5rem 0 2.3rem;
+         display:flex;flex-direction:column;gap:1.25rem}
+  h1{font-size:clamp(2rem,5.2vw,3.1rem);line-height:1.08}
+  h1 em{font-style:italic;color:var(--rec)}
+  .standfirst{font-size:1.08rem;max-width:39rem}
+  .tags{display:flex;flex-wrap:wrap;gap:.45rem;font-family:var(--mono);font-size:.74rem}
+  .tag{border:1px solid var(--rule);background:var(--card);border-radius:2px;
+       padding:.28rem .58rem;color:var(--ink-2);white-space:nowrap}
+  .tag b{color:var(--ink)}
+  .tag.hot{border-color:var(--bad);color:var(--bad)} .tag.hot b{color:var(--bad)}
+
+  section{margin-bottom:3.4rem;display:flex;flex-direction:column;gap:1.1rem}
+  h2{font-size:1.5rem;line-height:1.22;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.68rem;color:var(--muted);display:block;
+        letter-spacing:.16em;margin-bottom:.55rem;font-weight:400;text-transform:uppercase}
+  h3{font-size:1.02rem}
+
+  /* the page's structural device: two registers, always side by side */
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:34rem){.pair{grid-template-columns:1fr}}
+  .reg{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem;box-shadow:var(--shadow)}
+  .reg.r{border-top:3px solid var(--rec)} .reg.c{border-top:3px solid var(--con)}
+  .reg .nm{font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;text-transform:uppercase}
+  .reg.r .nm{color:var(--rec)} .reg.c .nm{color:var(--con)}
+  .reg .big{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:1.6rem;
+            color:var(--ink);line-height:1}
+  .reg .sub{font-size:.82rem;color:var(--muted)}
+  .reg p{font-size:.92rem}
+
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.15rem 1.3rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:var(--shadow)}
+  .box.bad{border-left:3px solid var(--bad)}
+  .box.warn{border-left:3px solid var(--con)}
+  .box.good{border-left:3px solid var(--rec)}
+  .lab{font-family:var(--mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase}
+  .box.bad .lab{color:var(--bad)} .box.warn .lab{color:var(--con)}
+  .box.good .lab{color:var(--rec)}
+  .nums{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.81rem;
+        color:var(--ink);background:var(--card-2);border:1px solid var(--rule);
+        border-radius:3px;padding:.8rem .95rem;overflow-x:auto;white-space:pre;line-height:1.74}
+  .note{font-size:.92rem;color:var(--ink-2);border-left:2px solid var(--rule);padding-left:.9rem}
+
+  /* random-control strip */
+  .strip{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+         padding:1.3rem 1.2rem .9rem;position:relative}
+  .track{position:relative;height:2.6rem;border-bottom:1px solid var(--rule)}
+  .dot{position:absolute;top:1.1rem;width:9px;height:9px;border-radius:50%;
+       background:var(--rec);opacity:.55;transform:translateX(-50%)}
+  .mark{position:absolute;top:0;bottom:0;width:2px;background:var(--bad);transform:translateX(-50%)}
+  .mark span{position:absolute;top:-1.05rem;left:50%;transform:translateX(-50%);
+             font-family:var(--mono);font-size:.66rem;color:var(--bad);white-space:nowrap}
+  .axis{display:flex;justify-content:space-between;font-family:var(--mono);
+        font-size:.66rem;color:var(--muted);padding-top:.35rem}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:31rem}
+  th,td{text-align:left;padding:.58rem .8rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--muted);font-weight:500;background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  td.up{color:var(--rec);font-weight:600} td.dn{color:var(--bad);font-weight:600}
+  footer{border-top:1px solid var(--rule);padding-top:1.4rem;font-size:.8rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.85}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Prereg ed80430a · locked before implementation · 0/5</p>
+  <h1>Two registers. One of them stopped being <em>routable.</em></h1>
+  <p class="standfirst">Risk-sharing serves network health; latency engineering serves
+  something else. That split holds. What did not hold is the idea that you can decide
+  <strong>which claims go where</strong> — the routing rule was beaten by 18 of 20 coin
+  flips.</p>
+  <div class="tags">
+    <span class="tag hot">routing <b>refuted</b></span>
+    <span class="tag hot">signal AUC <b>0.4447</b></span>
+    <span class="tag">5th falsified <b>selection rule</b></span>
+    <span class="tag">predicted to fail <b>in advance</b></span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">The name</span>Named from the mechanism, not from a tradition</h2>
+  <p>The morphological sweep was used only as a <strong>design generator</strong>. Invariant:
+  <em>a claim under stress</em>. Sweeping the operators gave holder / claim / <strong>the
+  place a claim is sorted to</strong> / the cascade / what forces the sort. The
+  <strong>locus</strong> cell was empty in every previous design, and filling it is the
+  whole model.</p>
+  <div class="pair">
+    <div class="reg r">
+      <span class="nm">Recovery register</span>
+      <span class="big">16.1</span>
+      <span class="sub">claimant value shortfall</span>
+      <p>Fixed claims. The residual <strong>survives</strong> a shock, so later inflows still
+      reach the holder.</p>
+    </div>
+    <div class="reg c">
+      <span class="nm">Containment register</span>
+      <span class="big">121</span>
+      <span class="sub">secondary failures</span>
+      <p>Participation claims. Loss is absorbed with <strong>no default event</strong>, so it
+      does not propagate — but the claim <strong>extinguishes</strong>.</p>
+    </div>
+  </div>
+  <p class="note">Neither instrument wins both: fixed claims cost <span class="m">148</span>
+  secondary failures, participation costs <span class="m">94.4</span> in shortfall. A test
+  asserts the model name and the entire results file contain no Arabic or theological terms
+  — the design must be judged on its mechanics.</p>
+</section>
+
+<section>
+  <h2><span class="n">What died</span>Routing is beaten by chance</h2>
+  <p>The claim under test was never "does mixing help" — two instruments with different
+  failure modes usually beat either alone, and the spec writes that gate off as weak in
+  advance. It was that assigning claims to registers <strong>by a contagion-risk
+  signal</strong> beats assigning the same share <strong>at random</strong>.</p>
+
+  <div class="strip">
+    <div class="track">
+      <div class="dot" style="left:2.5%"></div><div class="dot" style="left:9.7%"></div>
+      <div class="dot" style="left:11.0%"></div><div class="dot" style="left:11.1%"></div>
+      <div class="dot" style="left:12.5%"></div><div class="dot" style="left:16.6%"></div>
+      <div class="dot" style="left:18.6%"></div><div class="dot" style="left:18.7%"></div>
+      <div class="dot" style="left:21.2%"></div><div class="dot" style="left:30.7%"></div>
+      <div class="dot" style="left:32.4%"></div><div class="dot" style="left:37.6%"></div>
+      <div class="dot" style="left:43.1%"></div><div class="dot" style="left:52.4%"></div>
+      <div class="dot" style="left:59.9%"></div><div class="dot" style="left:60.9%"></div>
+      <div class="dot" style="left:72.4%"></div><div class="dot" style="left:78.0%"></div>
+      <div class="dot" style="left:79.6%"></div><div class="dot" style="left:94.8%"></div>
+      <div class="mark" style="left:79.4%"><span>targeted 3.7219</span></div>
+    </div>
+    <div class="axis"><span>1.50 — better</span><span>20 random assignments, same share</span><span>worse — 4.30</span></div>
+  </div>
+
+  <div class="box bad">
+    <span class="lab">N2 — the primary gate</span>
+    <div class="nums">targeted                     J = 3.7219
+random, 20 draws   mean 2.5692   min 1.5690   max 4.1542</div>
+    <p><strong>Targeted sits at the 90th percentile of random.</strong> Eighteen of twenty
+    coin flips beat it. Two are worse, so it is not literally last — the finding is that
+    routing is <em>reliably</em> beaten by chance, not that it is the worst possible
+    allocation.</p>
+  </div>
+
+  <div class="box bad">
+    <span class="lab">N4 — and here is exactly why</span>
+    <div class="nums">AUC(out-degree → cascade involvement) = 0.4447   BELOW 0.5
+Spearman rho(signal, node size)       = -0.0333</div>
+    <p>The routing signal is <strong>mildly anti-predictive</strong>. It is not a size proxy
+    — it is simply wrong. Routing on it puts participation on the wrong nodes, so a coin
+    flip does better.</p>
+  </div>
+
+  <p class="note"><strong>This is the fifth falsified selection rule in this programme</strong>,
+  and the pre-registration said so before the run: <em>"EXPECTED TO FAIL… four selection
+  rules have been falsified, one of them with an INVERTED sign."</em> The model therefore
+  ships <strong>without the routing claim</strong>, as a fixed policy mix needing no scoring
+  apparatus — cheaper and more robust than what was proposed.</p>
+</section>
+
+<section>
+  <h2><span class="n">Self-audit</span>A defect in my own pre-registered objective</h2>
+  <div class="box warn">
+    <span class="lab">Disclosed, not repaired</span>
+    <p>The combined objective was locked with equal <span class="m">0.5/0.5</span> weights.
+    On this substrate the shortfall term spans <span class="m">18.17</span> and the cascade
+    term spans <span class="m">0.20</span> — shortfall dominates <strong>90×</strong>, so J
+    is effectively a shortfall metric despite its weights.</p>
+    <p><strong>Nothing was re-scored and no threshold moved.</strong> The consequences:
+    N1, N3 and N5 largely restate "shortfall favours fixed claims" and their interpretation
+    is compromised. <strong>N2 and N4 are untouched</strong> — same-share comparisons and a
+    diagnostic AUC.</p>
+    <p>Under a post-hoc <em>range-balanced</em> version of the same two objectives, an
+    interior optimum <strong>does</strong> appear at share <span class="m">0.60</span>
+    (<span class="m">J′ 0.3167</span> against <span class="m">0.5000</span> at both
+    endpoints). So <em>"the two-register idea is refuted"</em> would be too strong.
+    <strong>What is refuted is routing.</strong></p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">The sleeper</span>The largest effect was never a named component</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Remove</th><th>ΔJ</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><strong>continuous distribution</strong></td><td class="num up">+194.5048</td><td>overwhelmingly dominant</td></tr>
+        <tr><td>recovery register</td><td class="num up">+6.2620</td><td>earns its place</td></tr>
+        <tr><td>local pooling</td><td class="num up">+0.5305</td><td>earns its place</td></tr>
+        <tr><td>containment register</td><td class="num dn">−2.7219</td><td>removal <em>improves</em> J here</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p><strong>Distributing inflows continuously is the single largest effect in the entire
+  financial programme — and it appeared in no proposal as a named component.</strong> It is
+  not risk-sharing, not full reserve, not pooling. It is the discipline of paying holders
+  down as money arrives instead of warehousing it.</p>
+</section>
+
+<section>
+  <h2><span class="n">Adoption</span>The same pitch to both sectors</h2>
+  <div class="pair">
+    <div class="reg r">
+      <span class="nm">Conventional banks</span>
+      <ul>
+        <li><strong>Continuous distribution</strong> on distressed exposures — the largest
+        measured effect by two orders of magnitude.</li>
+        <li><strong>Full reserve beats leverage.</strong> Measured: m=1 → 0 failures,
+        m=3 → 3,262, m=5 → 3,912, m=10 → 4,362.</li>
+        <li><strong>Participation as a circuit breaker</strong>, not a return strategy —
+        18–32% fewer knock-on failures.</li>
+        <li><strong>Do not buy a risk-routing model.</strong> Ours lost to 18 of 20 coin
+        flips.</li>
+      </ul>
+    </div>
+    <div class="reg c">
+      <span class="nm">Islamic banks</span>
+      <ul>
+        <li><strong>Full reserve is vindicated on measurement, not doctrine</strong> —
+        <span class="m">ΔU = 0</span> was the smoothest configuration tested. No theological
+        premise required.</li>
+        <li><strong>But risk-sharing does not lower your losses.</strong> Measured, it
+        raises them — 94.4 against 16.1 — because writing a claim down extinguishes it and
+        forecloses recovery.</li>
+        <li><strong>Its real value is systemic.</strong> Sold as prudential infrastructure it
+        is defensible; sold as a superior return profile it is not.</li>
+        <li><strong>The audit story is the differentiator.</strong> The oxymoron charge lands
+        because labels are unverifiable; a hash-chained register makes the label testable.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="note">A sector that adopts participation expecting lower losses will be
+  disappointed by arithmetic, not by markets.</p>
+</section>
+
+<section>
+  <h2><span class="n">The stack</span>What each layer does here</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Component</th><th>Role in financial network health</th></tr></thead>
+      <tbody>
+        <tr><td><strong>LISM</strong> <span class="m">E = U·D<sub>enc</sub>·D<sub>dec</sub></span></td><td>The health reading: capacity × how well two hops carry. Linear coupling confirmed on yeast (N=4,825) and GitHub (N=992, dAIC −3.483); <strong>null on PyPI</strong>, where neither coupling explained reuse.</td></tr>
+        <tr><td><strong>τ<sub>v</sub></strong></td><td>Latency engineering, running alongside. Failed 4× as an admission screen; passed as a <strong>covenant trigger</strong> (+42,840). Governs <em>when to act on an exposure you hold</em>, never who to admit.</td></tr>
+        <tr><td><strong>ADG</strong> <span class="m">C_dev</span> · <strong>TQG-CFE</strong> <span class="m">Ψ</span></td><td>Organisation-graph telemetry — explicitly <em>not</em> physical laws with SI units. The aggregate dashboard above per-claim metrics. Layer-1 telemetry reading only.</td></tr>
+        <tr><td><strong>IHCEI / NERE</strong></td><td>The probabilistic kernel underneath everything — calibrated verdicts rather than scores.</td></tr>
+        <tr><td><strong>HELM</strong></td><td>Runs that kernel <strong>entirely on-device</strong>; no network call in the kernel and a test proves it. Lets a participant be audited without their book leaving the premises.</td></tr>
+        <tr><td><strong>Echo</strong></td><td><strong>The claim register itself.</strong> Content-audited writes, append-only tamper-evidence, Merkle-provable inclusion — this is what makes "which register was this claim in" checkable rather than asserted.</td></tr>
+        <tr><td><strong>Page Code</strong></td><td>Default-deny permission table over the agent that changes the settlement engine; every audited change hash-chained into Echo.</td></tr>
+        <tr><td><strong>EI-LLM</strong></td><td>Receiver-side attestation. Generates nothing, censors nothing — answers verifiable questions. The counterparty-verification seat.</td></tr>
+        <tr><td><strong>Novora / PAGES</strong></td><td>Confidence-and-abstain. Honest status: the abstention rule was <strong>untestable</strong> on N=992 by construction of that cohort — untestable-here, not refuted.</td></tr>
+        <tr><td><strong>AlphaAgency</strong></td><td>The discovery methodology. <span class="m">F_out = F_eval</span> — a deterministic evaluator decides, so a hallucinating generator cannot corrupt the result. Its own README reports a pre-registered framing that turned out false.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">The point</span>Why 0/5 is the deliverable</h2>
+  <p>The strength on display is not the model. It is the <strong>method engaging the
+  telemetry</strong>: the model was designed from prior measurements, its central new claim
+  was pre-registered <em>with its own predicted failure written down</em>, the failure
+  arrived on schedule, and the model shipped smaller.</p>
+  <p>Nine consecutive runs have now declined a tuned simulation. What remains is what
+  survived a genuine attempt to kill it.</p>
+  <p class="note">A framework that cannot lose an argument to its own instruments is not a
+  framework.</p>
+</section>
+
+<footer>
+  10,000 committed real events, both sides of the ledger, hash-pinned · full-reserve
+  violations 0 in every arm · the supplied $1.0M worked scenario is recorded as
+  <span style="color:var(--bad)">illustrative arithmetic, not telemetry</span>, and no gate
+  turns on it · bash reproduce_all.sh → 73/73 · exit 0 means "reproduces including its
+  failures"
+</footer>
+
+</div>
