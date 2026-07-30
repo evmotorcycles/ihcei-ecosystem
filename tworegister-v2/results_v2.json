@@ -1,0 +1,463 @@
+{
+  "model": "Two-Register Settlement Network v2",
+  "spec_sha256_canonical": "f14596f111c9378ae33c3ffa1e490a535086205692269bebeb8652215b8bb5cd",
+  "n_events": 10000,
+  "sweep": [
+    {
+      "share": 0.0,
+      "shortfall": 36.07331267965537,
+      "secondary": 121,
+      "primary": 162,
+      "unbacked": 0.0
+    },
+    {
+      "share": 0.1,
+      "shortfall": 46.235072646873164,
+      "secondary": 119,
+      "primary": 160,
+      "unbacked": 0.0
+    },
+    {
+      "share": 0.25,
+      "shortfall": 70.96060125195191,
+      "secondary": 119,
+      "primary": 159,
+      "unbacked": 0.0
+    },
+    {
+      "share": 0.4,
+      "shortfall": 76.97991994082275,
+      "secondary": 119,
+      "primary": 158,
+      "unbacked": 0.0
+    },
+    {
+      "share": 0.6,
+      "shortfall": 107.77574103645361,
+      "secondary": 109,
+      "primary": 150,
+      "unbacked": 0.0
+    },
+    {
+      "share": 0.8,
+      "shortfall": 138.74607125517434,
+      "secondary": 108,
+      "primary": 149,
+      "unbacked": 0.0
+    },
+    {
+      "share": 1.0,
+      "shortfall": 167.6200982911513,
+      "secondary": 101,
+      "primary": 142,
+      "unbacked": 0.0
+    }
+  ],
+  "endpoint_alqudah": {
+    "share": 0.0,
+    "shortfall": 36.07331267965537,
+    "secondary": 121,
+    "primary": 162,
+    "unbacked": 0.0
+  },
+  "endpoint_irfan": {
+    "share": 1.0,
+    "shortfall": 167.6200982911513,
+    "secondary": 101,
+    "primary": 142,
+    "unbacked": 0.0
+  },
+  "best_interior": null,
+  "headline_share": 0.25,
+  "distribution_on": {
+    "shortfall": 70.96060125195191,
+    "secondary": 119,
+    "primary": 159,
+    "unbacked": 0.0
+  },
+  "distribution_off": {
+    "shortfall": 3609.440952277413,
+    "secondary": 155,
+    "primary": 190,
+    "unbacked": 0.0
+  },
+  "distribution_ratio": 50.86542234136056,
+  "v1_fixed_claims_comparator": {
+    "shortfall": 51.81199985113739,
+    "secondary": 121,
+    "primary": 162,
+    "unbacked": 0.0
+  },
+  "v4_multi_seed": [
+    {
+      "seed": 20260801,
+      "v2_coown": 70.96060125195191,
+      "v1_fixed": 51.81199985113739,
+      "v2_better": false
+    },
+    {
+      "seed": 20260802,
+      "v2_coown": 63.75825804929036,
+      "v1_fixed": 59.11104696048312,
+      "v2_better": false
+    },
+    {
+      "seed": 20260803,
+      "v2_coown": 69.90525274959421,
+      "v1_fixed": 63.065922333099536,
+      "v2_better": false
+    },
+    {
+      "seed": 20260804,
+      "v2_coown": 34.686697038484226,
+      "v1_fixed": 32.00061039102968,
+      "v2_better": false
+    },
+    {
+      "seed": 20260805,
+      "v2_coown": 61.883315569513286,
+      "v1_fixed": 60.707483676678294,
+      "v2_better": false
+    }
+  ],
+  "v4_v2_better_on_n_seeds": 0,
+  "v5_modal_criterion_vacuous": true,
+  "seed_robustness": {
+    "per_seed": {
+      "20260801": {
+        "sweep": [
+          {
+            "share": 0.0,
+            "shortfall": 36.07331267965537,
+            "secondary": 121,
+            "primary": 162,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.1,
+            "shortfall": 46.235072646873164,
+            "secondary": 119,
+            "primary": 160,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.25,
+            "shortfall": 70.96060125195191,
+            "secondary": 119,
+            "primary": 159,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.4,
+            "shortfall": 76.97991994082275,
+            "secondary": 119,
+            "primary": 158,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.6,
+            "shortfall": 107.77574103645361,
+            "secondary": 109,
+            "primary": 150,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.8,
+            "shortfall": 138.74607125517434,
+            "secondary": 108,
+            "primary": 149,
+            "unbacked": 0.0
+          },
+          {
+            "share": 1.0,
+            "shortfall": 167.6200982911513,
+            "secondary": 101,
+            "primary": 142,
+            "unbacked": 0.0
+          }
+        ],
+        "best_share": null,
+        "shortfall_at_headline": 70.96060125195191
+      },
+      "20260802": {
+        "sweep": [
+          {
+            "share": 0.0,
+            "shortfall": 52.09832803746781,
+            "secondary": 135,
+            "primary": 174,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.1,
+            "shortfall": 59.18661744318126,
+            "secondary": 129,
+            "primary": 168,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.25,
+            "shortfall": 63.75825804929036,
+            "secondary": 131,
+            "primary": 170,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.4,
+            "shortfall": 71.39412320526066,
+            "secondary": 130,
+            "primary": 169,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.6,
+            "shortfall": 86.96131886157676,
+            "secondary": 127,
+            "primary": 165,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.8,
+            "shortfall": 91.85650548498936,
+            "secondary": 120,
+            "primary": 158,
+            "unbacked": 0.0
+          },
+          {
+            "share": 1.0,
+            "shortfall": 109.24856566396502,
+            "secondary": 120,
+            "primary": 157,
+            "unbacked": 0.0
+          }
+        ],
+        "best_share": null,
+        "shortfall_at_headline": 63.75825804929036
+      },
+      "20260803": {
+        "sweep": [
+          {
+            "share": 0.0,
+            "shortfall": 54.58210763981751,
+            "secondary": 116,
+            "primary": 172,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.1,
+            "shortfall": 61.62620610719617,
+            "secondary": 112,
+            "primary": 169,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.25,
+            "shortfall": 69.90525274959421,
+            "secondary": 112,
+            "primary": 168,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.4,
+            "shortfall": 74.76056224806354,
+            "secondary": 108,
+            "primary": 164,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.6,
+            "shortfall": 91.02807245398523,
+            "secondary": 107,
+            "primary": 163,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.8,
+            "shortfall": 107.46312106233594,
+            "secondary": 106,
+            "primary": 160,
+            "unbacked": 0.0
+          },
+          {
+            "share": 1.0,
+            "shortfall": 123.36983031433991,
+            "secondary": 96,
+            "primary": 148,
+            "unbacked": 0.0
+          }
+        ],
+        "best_share": null,
+        "shortfall_at_headline": 69.90525274959421
+      },
+      "20260804": {
+        "sweep": [
+          {
+            "share": 0.0,
+            "shortfall": 23.02045132250629,
+            "secondary": 128,
+            "primary": 168,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.1,
+            "shortfall": 23.020451322506347,
+            "secondary": 128,
+            "primary": 167,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.25,
+            "shortfall": 34.686697038484226,
+            "secondary": 131,
+            "primary": 170,
+            "unbacked": 2.2737367544323206e-13
+          },
+          {
+            "share": 0.4,
+            "shortfall": 38.04046020901842,
+            "secondary": 132,
+            "primary": 171,
+            "unbacked": 2.2737367544323206e-13
+          },
+          {
+            "share": 0.6,
+            "shortfall": 31.305183701643557,
+            "secondary": 128,
+            "primary": 167,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.8,
+            "shortfall": 55.4523268716427,
+            "secondary": 118,
+            "primary": 154,
+            "unbacked": 0.0
+          },
+          {
+            "share": 1.0,
+            "shortfall": 68.1728716274946,
+            "secondary": 117,
+            "primary": 155,
+            "unbacked": 0.0
+          }
+        ],
+        "best_share": null,
+        "shortfall_at_headline": 34.686697038484226
+      },
+      "20260805": {
+        "sweep": [
+          {
+            "share": 0.0,
+            "shortfall": 33.450035802542516,
+            "secondary": 114,
+            "primary": 158,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.1,
+            "shortfall": 49.168051253139936,
+            "secondary": 110,
+            "primary": 153,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.25,
+            "shortfall": 61.883315569513286,
+            "secondary": 109,
+            "primary": 151,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.4,
+            "shortfall": 95.08691100914143,
+            "secondary": 108,
+            "primary": 150,
+            "unbacked": 2.2737367544323206e-13
+          },
+          {
+            "share": 0.6,
+            "shortfall": 114.3895564130903,
+            "secondary": 107,
+            "primary": 148,
+            "unbacked": 0.0
+          },
+          {
+            "share": 0.8,
+            "shortfall": 117.10496799009707,
+            "secondary": 107,
+            "primary": 147,
+            "unbacked": 0.0
+          },
+          {
+            "share": 1.0,
+            "shortfall": 138.59175281477866,
+            "secondary": 104,
+            "primary": 144,
+            "unbacked": 0.0
+          }
+        ],
+        "best_share": null,
+        "shortfall_at_headline": 61.883315569513286
+      }
+    },
+    "best_shares": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "modal_share": null,
+    "modal_count": 5,
+    "cv": 0.21978055852759026
+  },
+  "gates": [
+    {
+      "gate": "V1_full_reserve_holds_at_every_containment_share",
+      "pass": true,
+      "detail": "max unbacked claims across all 7 shares: 0.000e+00",
+      "weight": "full"
+    },
+    {
+      "gate": "V2_an_interior_share_beats_BOTH_of_its_own_endpoints_inside_a_declared_band",
+      "pass": false,
+      "detail": "band: cascades <= 102.8 (15% below share 0's 121) AND shortfall <= 45.1 (25% above share 0's 36.1)\n        NO interior share satisfies both conditions; the mix adds nothing over picking an endpoint",
+      "weight": "full"
+    },
+    {
+      "gate": "V3_continuous_distribution_still_dominates_on_the_NEW_composition",
+      "pass": true,
+      "detail": "at share 0.25: distribution ON 71.0 vs OFF 3609.4 -> 50.9x (needs >= 5x)\n        measured on amortising co-ownership, NOT carried over from the fixed-claim composition",
+      "weight": "full"
+    },
+    {
+      "gate": "V4_v2_actually_improves_on_v1",
+      "pass": false,
+      "detail": "identical conditions, share 0.25: v2 (co-ownership recovery) 71.0 vs v1 (fixed claims) 51.8\n        adopting Al-Qudah's contracts did NOT improve the model\n        MULTI-SEED CHECK (disclosed, non-scoring): v2 beats v1 on 0 of 5 seeds \u2014\n        s1 71.0/51.8  s2 63.8/59.1  s3 69.9/63.1  s4 34.7/32.0  s5 61.9/60.7\n        The single-seed verdict is CONFIRMED across seeds.",
+      "weight": "full"
+    },
+    {
+      "gate": "V5_SEED_ROBUSTNESS_the_check_this_programme_has_never_run",
+      "pass": true,
+      "detail": "best interior share across 5 seeds: [None, None, None, None, None]\n        modal share None appears 5/5 (needs >= 4)\n        shortfall at share 0.25: mean 60.2, sd 13.2, CV 0.220 (needs < 0.25)\n        *** DISCLOSURE: with V2 failing, NO seed has a qualifying interior share, so the\n        modal-share criterion is satisfied VACUOUSLY (None appears 5/5) and tests nothing.\n        Only the CV criterion carries information here, and it is the part that matters:\n        single-seed results in this repository carry roughly +/-22% variation.\n        *** A FAILURE HERE would apply to every single-seed result in this repository.",
+      "weight": "full"
+    },
+    {
+      "gate": "V6_identical_inputs_and_no_arm_specific_constants",
+      "pass": true,
+      "detail": "same 10000 events, 200 nodes, identical contract constants at every share; only the\n        containment share differs",
+      "weight": "excluded"
+    },
+    {
+      "gate": "V7_endpoints_reproduce_the_named_positions",
+      "pass": true,
+      "detail": "share 0.00 = Al-Qudah full-reserve arm (shortfall 36.1, cascades 121)\n        share 1.00 = Irfan all-participation arm (shortfall 167.6, cascades 101)\n        the sweep interpolates between two NAMED positions, not against strawmen",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "V2_an_interior_share_beats_BOTH_of_its_own_endpoints_inside_a_declared_band",
+    "V4_v2_actually_improves_on_v1"
+  ],
+  "score": "3/5"
+}
