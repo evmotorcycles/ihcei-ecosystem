@@ -1,0 +1,53 @@
+{
+  "title": "The Two-Register Settlement Network: does ROUTING claims between a recovery register and a containment register earn anything over simply mixing them?",
+  "date_locked": "2026-07-30",
+  "status": "LOCKED BEFORE ANY IMPLEMENTATION OR RESULT EXISTED",
+
+  "the_model_being_finalised": "Six pre-registered runs converged on a split that no single instrument serves. FIXED DEBT with continuous distribution minimises claimant value shortfall, because a residual claim survives a shock and later inflows still reach the holder. PARTICIPATION minimises cascade, because absorbing a loss without a hard default event stops it propagating -- but it EXTINGUISHES the claim, foreclosing recovery. Measured on 10,000 real events (dca3694c): shortfall 16.1 debt vs 94.4 participation; secondary failures 121 participation vs 148 debt with distribution on, 129 vs 190 with it off. The model therefore sorts every claim into one of two REGISTERS: a RECOVERY register (fixed claim, survives, captures later inflows) and a CONTAINMENT register (participation claim, extinguishes, stops propagation). Continuous distribution of inflows applies to BOTH, because it was the single largest driver measured and it is orthogonal to the register.",
+
+  "the_claim_actually_under_test": "That ROUTING is worth doing. It is easy to show a mixed portfolio beats a pure one; that can follow from having any two instruments with different failure modes. The load-bearing claim is that assigning claims to registers BY A CONTAGION-RISK SIGNAL beats assigning the same proportion AT RANDOM. If targeted routing does not beat random assignment at the same share, then the mix ratio is doing all the work, the risk model is decoration, and the honest recommendation is a fixed policy mix requiring no scoring apparatus at all.",
+
+  "why_this_specific_gate_is_expected_to_fail": "Routing by a risk score IS A SELECTION RULE, and selection has been falsified four times in this programme: fidelity-based admission lost to prestige, the flat floor anti-selected, the stratified floor was 18x worse than doing nothing clever, and the within-tier sign was INVERTED at AUC 0.3397. Structure claims have a good record here; selection claims have a uniformly bad one. N2 is written to give this programme's worst-performing claim shape one more clean chance to fail, and it is predicted to fail.",
+
+  "the_two_objective_trap_named_in_advance": "With two objectives -- value shortfall and cascade -- any design can be declared a winner by quoting whichever metric it happens to win. That is refused. A SINGLE combined objective is fixed here, before any run, with equal weights and an explicit normaliser: J = 0.5*(shortfall / shortfall_all_debt) + 0.5*(secondary / secondary_all_debt). Lower is better. The all-debt arm scores exactly 1.0 by construction. No gate in this spec may be scored on a single component, and the weights may not be revisited after seeing results.",
+
+  "the_simulation_trap_being_avoided_again": "NINTH appearance. The proposal offered was 'simulate_khalifa_mesh.py' to 'model this dual portfolio allocation strategy and plot the exact cascade vs recovery curves'. A simulator written to display a dual-portfolio advantage will display one. Every number here is read out of the settlement engine already built, attacked over 200,000 operations, beaten by pooling, and driven by the same committed real event sequence.",
+
+  "an_illustration_is_not_a_measurement": "A worked 1.0M apartment-building scenario was supplied alongside the proposal, with a claim written down from 700k to 420k. Those figures are ILLUSTRATIVE ARITHMETIC, not telemetry. They appear nowhere in this spec, nothing is fitted to them, and no gate turns on them. Only the committed event sequence adjudicates.",
+
+  "fixed_parameters": {
+    "event_source": "data/colab-audit/banking_dataset.xlsx, hash-pinned; BOTH Debit and Credit rows, recorded order",
+    "n_events_expected": 10000,
+    "n_nodes": 200,
+    "seed": 20260730,
+    "k_pool": 2,
+    "distribution_on_in_every_arm": true,
+    "containment_shares_swept": [0.0, 0.1, 0.25, 0.4, 0.5, 0.6, 0.75, 0.9, 1.0],
+    "headline_share": 0.25,
+    "n_random_control_draws": 20,
+    "routing_signal": "Structural out-degree in the seeded obligation graph -- the number of distinct counterparties holding a claim on a node -- computed BEFORE the event replay begins. A node with many creditors propagates widely when it fails. This is a pre-event structural measure and is not derived from any outcome.",
+    "routing_rule": "Nodes ranked by the routing signal; the top `share` fraction is assigned to the CONTAINMENT register (participation). All remaining nodes use the RECOVERY register (fixed claims). Distribution of inflows is ON everywhere."
+  },
+
+  "gates": {
+    "N1_the_two_register_model_beats_both_pure_strategies": "PASS = at the headline share, J(targeted two-register) < J(all recovery/debt) AND < J(all containment/participation). Both pure arms are run on the identical sequence.",
+    "N2_TARGETED_ROUTING_BEATS_RANDOM_AT_THE_SAME_SHARE": "PRIMARY, and the reason this spec exists. Assign the SAME containment share at random, 20 independent draws, same seed family. PASS = targeted J is at least 10% below the MEAN random J, and below the 5th percentile of the random distribution. FAIL means the routing signal earns nothing and the recommendation collapses to a fixed policy mix with no scoring apparatus.",
+    "N3_an_interior_optimum_exists": "Sweep the containment share across the nine declared levels. PASS = the best J occurs at an INTERIOR share, strictly between 0.0 and 1.0. If the best J sits at an endpoint, the two-register idea is refuted in favour of a single instrument.",
+    "N4_the_routing_signal_actually_predicts_CASCADE_and_is_non_circular": "PASS = AUC of the pre-event routing signal against realised secondary-failure involvement exceeds 0.60, AND the signal is not merely a proxy for node size -- |Spearman rho(signal, total promised value)| < 0.90. Both conditions required. A signal that only restates size would make the routing rule circular.",
+    "N5_ABLATION_each_element_of_the_model_earns_its_place": "MANDATORY. Remove in turn: continuous distribution, local pooling, the containment register, the recovery register. PASS = every removal degrades J. Anything whose removal improves or does not change J is NAMED as dead weight, not defended.",
+    "N6_identical_inputs_and_a_live_book_guard": "Structural: same events, seed, node count in every arm; every arm carries a non-empty book. EXCLUDED from the score.",
+    "N7_no_closed_form_reporting_and_no_single_metric_scoring": "Structural: no reported quantity is a closed form of a swept parameter, and no scored gate turns on shortfall or cascade alone. EXCLUDED from the score."
+  },
+
+  "predictions_recorded_in_advance": {
+    "N1": "EXPECTED TO PASS, and it is the WEAK gate. Two instruments with different failure modes will usually beat either alone. A pass here is close to uninformative on its own and must not be reported as validating the model.",
+    "N2": "EXPECTED TO FAIL. This is the honest prior and it follows the programme's record: four selection rules have been falsified, one of them with an INVERTED sign. If routing fails here too, the finding is that the POLICY MIX carries the benefit and the RISK MODEL is decoration -- which is a cheaper and more robust recommendation than the one being proposed.",
+    "N3": "GENUINELY UNCERTAIN. If distribution already captures most of the shortfall benefit, the optimum may sit at or near an endpoint.",
+    "N4": "UNCERTAIN. Out-degree may well predict cascade, but it may also be too close to size, in which case the non-circularity condition fails and the routing rule is exposed as a restatement of how big a node is.",
+    "N5": "Distribution is expected to dominate. At least one component is expected to be dead weight, on the record of the last ablation where participation came out worse than dead weight at -78.3."
+  },
+
+  "anti_immunisation_clause": "If N2 fails, the two-register model may NOT be rescued by asserting that a better risk signal would work, that the substrate is unrepresentative, or that routing has qualitative value. A failed routing gate means the model ships WITHOUT the routing claim, as a fixed policy mix. Proposing a new signal after seeing this result and reporting it as a pass would be fitting to the test set, and any such follow-up must be separately pre-registered and reported as a second attempt with the first disclosed.",
+
+  "naming_rule": "The model is named in plain English after the mechanism it implements, with no Arabic or theological terminology, per standing directive. The name must describe what the system DOES -- sort claims into two registers -- and must not borrow prestige from any tradition. The morphological sweep is used ONLY as a design generator to surface the missing component, per the geometric-root-translation boundary, and contributes no evidence."
+}
