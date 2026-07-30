@@ -1,0 +1,347 @@
+<title>Two registers, explained without the jargon — a print shop, a flood, and what the bank does next</title>
+<style>
+  :root{
+    --paper:#F2F0EB; --ink:#1F1D19; --ink-2:#4A473F; --muted:#7C776C;
+    --rule:#D8D3C7; --card:#FCFBF8; --card-2:#E7E2D7;
+    --rec:#1D5E52; --con:#9A5B34; --bad:#A3342F; --hi:#8A6A14;
+    --shadow:0 1px 2px rgba(31,29,25,.05), 0 12px 30px rgba(31,29,25,.06);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Charter","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#100F0D; --ink:#E9E5DC; --ink-2:#B0AAA0; --muted:#7E7970;
+      --rule:#282520; --card:#191713; --card-2:#221F1A;
+      --rec:#58AD9B; --con:#CF9166; --bad:#DE6B5F; --hi:#CBA84E;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  }
+  :root[data-theme="dark"]{ --paper:#100F0D; --ink:#E9E5DC; --ink-2:#B0AAA0; --muted:#7E7970;
+    --rule:#282520; --card:#191713; --card-2:#221F1A;
+    --rec:#58AD9B; --con:#CF9166; --bad:#DE6B5F; --hi:#CBA84E;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  :root[data-theme="light"]{ --paper:#F2F0EB; --ink:#1F1D19; --ink-2:#4A473F; --muted:#7C776C;
+    --rule:#D8D3C7; --card:#FCFBF8; --card-2:#E7E2D7;
+    --rec:#1D5E52; --con:#9A5B34; --bad:#A3342F; --hi:#8A6A14;
+    --shadow:0 1px 2px rgba(31,29,25,.05), 0 12px 30px rgba(31,29,25,.06); }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17.5px;
+       line-height:1.7;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:47rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p{margin:0;color:var(--ink-2)}
+  ul{margin:0;padding-left:1.15rem;color:var(--ink-2);display:flex;flex-direction:column;gap:.5rem}
+  :focus-visible{outline:2px solid var(--rec);outline-offset:3px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.011em;margin:0}
+  strong{color:var(--ink);font-weight:600}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.9em;color:var(--ink)}
+
+  .eyebrow{font-family:var(--mono);font-size:.69rem;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+  header{border-bottom:1px solid var(--rule);margin-bottom:3.4rem;padding:4.5rem 0 2.3rem;
+         display:flex;flex-direction:column;gap:1.25rem}
+  h1{font-size:clamp(2rem,5.2vw,3.05rem);line-height:1.09}
+  h1 em{font-style:italic;color:var(--rec)}
+  .standfirst{font-size:1.1rem;max-width:38rem}
+
+  section{margin-bottom:3.4rem;display:flex;flex-direction:column;gap:1.15rem}
+  h2{font-size:1.52rem;line-height:1.22;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.68rem;color:var(--muted);display:block;
+        letter-spacing:.16em;margin-bottom:.55rem;font-weight:400;text-transform:uppercase}
+  h3{font-size:1.04rem}
+
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:36rem){.pair{grid-template-columns:1fr}}
+  .reg{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.6rem;box-shadow:var(--shadow)}
+  .reg.r{border-top:3px solid var(--rec)} .reg.c{border-top:3px solid var(--con)}
+  .reg .nm{font-family:var(--mono);font-size:.64rem;letter-spacing:.13em;text-transform:uppercase}
+  .reg.r .nm{color:var(--rec)} .reg.c .nm{color:var(--con)}
+  .reg p{font-size:.94rem} .reg ul{font-size:.94rem}
+
+  /* the worked example: a vertical timeline */
+  .steps{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--rule);
+         padding-left:1.4rem;margin-left:.4rem}
+  .step{position:relative;padding-bottom:1.6rem;display:flex;flex-direction:column;gap:.55rem}
+  .step:last-child{padding-bottom:0}
+  .step::before{content:"";position:absolute;left:-1.87rem;top:.45rem;width:11px;height:11px;
+                border-radius:50%;background:var(--paper);border:2px solid var(--rec)}
+  .step .hd{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;
+            text-transform:uppercase;color:var(--rec)}
+  .step h3{font-size:1.08rem}
+
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.15rem 1.3rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:var(--shadow)}
+  .box.warn{border-left:3px solid var(--hi)}
+  .box.bad{border-left:3px solid var(--bad)}
+  .box.good{border-left:3px solid var(--rec)}
+  .lab{font-family:var(--mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase}
+  .box.warn .lab{color:var(--hi)} .box.bad .lab{color:var(--bad)} .box.good .lab{color:var(--rec)}
+  .note{font-size:.94rem;color:var(--ink-2);border-left:2px solid var(--rule);padding-left:.9rem}
+  .pull{font-family:var(--serif);font-size:1.24rem;line-height:1.42;color:var(--ink);
+        border-left:3px solid var(--rec);padding-left:1.1rem;margin:.3rem 0}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:29rem}
+  th,td{text-align:left;padding:.6rem .82rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--muted);font-weight:500;background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  footer{border-top:1px solid var(--rule);padding-top:1.4rem;font-size:.8rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.85}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Plain-English companion · prereg ed80430a · 0/5</p>
+  <h1>A print shop, a flood, and <em>who the bank protects.</em></h1>
+  <p class="standfirst">We built a lending system with two settings and a clever way to pick
+  between them. We tested the clever part against flipping a coin. <strong>The coin won 18
+  times out of 20</strong>, so we deleted it and shipped the rest.</p>
+</header>
+
+<section>
+  <h2><span class="n">First</span>What the technical headline actually says</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Jargon</th><th>English</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Pre-registered</strong></td><td>We wrote down what would count as success <em>before</em> running the test and locked the file with a tamper-proof fingerprint — so we couldn't quietly move the goalposts afterwards.</td></tr>
+        <tr><td><strong>AUC 0.4447</strong></td><td>A score for "how good is this predictor?" <span class="m">0.5</span> means useless — a coin flip. <strong>Below 0.5 means it points the wrong way.</strong> Ours did.</td></tr>
+        <tr><td><strong>Selection rule</strong></td><td>Any rule shaped like "pick the good ones using this signal." We've tried five. All five failed.</td></tr>
+        <tr><td><strong>Claimant value shortfall</strong></td><td>Money someone was promised, minus money they actually got.</td></tr>
+        <tr><td><strong>Cascade</strong></td><td>Business B fails <em>because</em> business A failed first. The domino effect.</td></tr>
+        <tr><td><strong>Full reserve</strong></td><td>The lender lends money that actually exists. Nothing created out of nothing.</td></tr>
+        <tr><td><strong>0/5</strong></td><td>All five checks came back negative. We predicted the main one would, in writing, beforehand.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">The model</span>Two lists, and which one you're on decides who gets protected</h2>
+  <p>Every loan sits in one of two <strong>registers</strong>. A register is just a list. Which
+  list your loan is on decides what happens when things go wrong.</p>
+  <div class="pair">
+    <div class="reg r">
+      <span class="nm">Recovery register</span>
+      <ul>
+        <li>A normal fixed claim</li>
+        <li>Bad month → <strong>you still owe it</strong></li>
+        <li>Good year later → the lender gets paid</li>
+        <li>Protects <strong>the lender</strong></li>
+      </ul>
+    </div>
+    <div class="reg c">
+      <span class="nm">Containment register</span>
+      <ul>
+        <li>A share-in-the-outcome claim</li>
+        <li>Bad month → <strong>it gets written down</strong></li>
+        <li>Good year later → <strong>that money is gone forever</strong></li>
+        <li>Protects <strong>everyone downstream of you</strong></li>
+      </ul>
+    </div>
+  </div>
+  <p class="pull">Neither one is better. They protect different people. That is the whole
+  model.</p>
+  <p>And running underneath both is the piece that turned out to matter most — and which
+  appeared in nobody's proposal: <strong>you don't pay on the 1st of the month. You pay a
+  share of every payment as it arrives.</strong></p>
+</section>
+
+<section>
+  <h2><span class="n">Worked example</span>Sam's print shop</h2>
+  <div class="box warn">
+    <span class="lab">Read this first</span>
+    <p><strong>This example is an illustration, not a measurement.</strong> The numbers are
+    invented to show how the mechanism works. The actual evidence comes from 10,000 real
+    recorded transactions and is further down. We keep the two strictly apart.</p>
+  </div>
+  <p>Sam runs a small print shop. He needs <strong>£20,000</strong> for a new machine. The
+  shop normally takes about <strong>£8,000 a month</strong>.</p>
+
+  <div class="steps">
+    <div class="step">
+      <span class="hd">Step 1 · where the money comes from</span>
+      <h3>Savings that already exist — not new money</h3>
+      <p>Under a conventional loan the bank creates most of that £20,000 as a new deposit
+      when it writes the loan. Here it comes from savers' money that already exists.</p>
+      <p class="note"><strong>Why it matters:</strong> when we tested creating money against
+      not creating it, creating it made settlement <strong>worse every single time</strong> —
+      more leverage, more failed payments. That's a measurement, not a principle.</p>
+    </div>
+
+    <div class="step">
+      <span class="hd">Step 2 · a normal week</span>
+      <h3>Money in, share out, same hour</h3>
+      <div class="scroll">
+        <table>
+          <tbody>
+            <tr><td>Monday</td><td>Sam invoices a customer <strong>£3,000</strong></td></tr>
+            <tr><td>Wednesday</td><td>The customer pays</td></tr>
+            <tr><td>Wednesday, same hour</td><td><strong>£1,500 goes to the funder. £1,500 stays with Sam.</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>No monthly due date. No "did the direct debit clear?" The payment <em>is</em> a
+      share of what came in.</p>
+    </div>
+
+    <div class="step">
+      <span class="hd">Step 3 · a bad quarter</span>
+      <h3>Sam's biggest client leaves. Revenue falls to £2,000.</h3>
+      <p><strong>Old way:</strong> Sam owes his fixed payment on the 1st regardless. He can't
+      pay. He is now <strong>in default</strong> — credit damaged, penalties running — and he
+      stops paying his paper supplier and his part-time staff to cover the bank.</p>
+      <p><strong>This model:</strong> £2,000 comes in, so <strong>£1,000 goes to the
+      funder</strong>. That's it. Sam paid exactly what he was supposed to pay.
+      <strong>He is not in default. He was never late.</strong></p>
+      <p class="pull">Most small businesses don't fail because they're unprofitable. They
+      fail because a fixed payment date met a variable income.</p>
+    </div>
+
+    <div class="step">
+      <span class="hd">Step 4 · a real loss</span>
+      <h3>A flood destroys stock. £6,000 is genuinely gone.</h3>
+      <div class="pair">
+        <div class="reg r">
+          <span class="nm">If Sam is in RECOVERY</span>
+          <ul>
+            <li>Sam still owes the £6,000; it stays on the books</li>
+            <li>Two years on, trading well, it gets paid</li>
+            <li><strong>The funder gets almost everything back</strong></li>
+            <li>But Sam carried that debt through his whole recovery — and his supplier felt it</li>
+          </ul>
+        </div>
+        <div class="reg c">
+          <span class="nm">If Sam is in CONTAINMENT</span>
+          <ul>
+            <li>The £6,000 is <strong>written down</strong>. Gone.</li>
+            <li>Sam is clear immediately and <strong>keeps paying his supplier and staff</strong></li>
+            <li>So they don't fail either</li>
+            <li><strong>The funder never sees that £6,000 again</strong> — not even if Sam has a record year</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="hd">Step 5 · who decides</span>
+      <h3>Not an algorithm. We tried, and it lost to a coin.</h3>
+      <p>Our risk model was <strong>beaten by 18 of 20 random assignments</strong>, because
+      the signal it used turned out to point slightly the <em>wrong</em> way. So the register
+      is a <strong>policy set in advance and applied uniformly</strong> — for example, "all
+      trade credit in our food-distribution chain goes in containment; all equipment finance
+      goes in recovery." Simple, cheap, and it beat our clever version.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">The evidence</span>10,000 real transactions, one change at a time</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Finding</th><th>Measured</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Paying as money arrives beats everything else</strong></td><td>removing it was <strong>30× worse</strong> than removing any other feature</td></tr>
+        <tr><td>Lending money that exists beats creating it</td><td class="num">0 → 3,262 → 3,912 → 4,362 failures as leverage rose</td></tr>
+        <tr><td>Write-downs protect the network, not the lender</td><td>lender loses <strong>~6× more</strong>; <strong>18–32% fewer</strong> businesses dragged down</td></tr>
+        <tr><td>Our risk-routing model was useless</td><td>beaten by <strong>18 of 20</strong> random assignments</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box bad">
+    <span class="lab">Two things we got wrong, published anyway</span>
+    <p><strong>Our own scoring formula was broken.</strong> We combined two goals at "equal
+    50/50 weights", but on this data one term was <strong>90× larger</strong> than the other,
+    so the formula really only measured one of them. We did <em>not</em> rewrite it
+    afterwards — we reported the result as scored and flagged that three of the five gates
+    are compromised by it.</p>
+    <p><strong>We overstated a finding and corrected it.</strong> We first wrote that the
+    routing lost to <em>every</em> random draw. It lost to 18 of 20; two were worse. The
+    corrected claim is the one that stands.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">For a bank</span>What to use, what to skip, what we did not achieve</h2>
+  <div class="box good">
+    <span class="lab">Use tomorrow — no new infrastructure</span>
+    <ul>
+      <li><strong>Pay-as-you-collect on distressed exposures.</strong> Biggest measured effect
+      in the whole programme, and it is mostly a change to collection <em>timing</em>.</li>
+      <li><strong>Full reserve in the settlement layer</strong> — not as ideology, as the
+      configuration with the fewest failed settlements.</li>
+      <li><strong>Write-down tranches as a circuit breaker</strong>, where one customer's
+      failure would take out three others.</li>
+      <li><strong>A tamper-evident claim register</strong>, so "which register was this loan
+      in?" is provable rather than asserted.</li>
+    </ul>
+  </div>
+  <div class="box bad">
+    <span class="lab">Do not buy</span>
+    <ul>
+      <li><strong>A risk-routing model.</strong> Ours failed. Be sceptical of anyone selling
+      one who hasn't tested it against random assignment at the same share.</li>
+      <li><strong>Risk-sharing as a way to lose less money.</strong> It measurably loses you
+      more.</li>
+    </ul>
+  </div>
+  <div class="box warn">
+    <span class="lab">What we did NOT achieve — the commercially relevant fact</span>
+    <p><strong>We never beat a conventional central clearing book on routine friction.</strong>
+    A single full-reserve central book posted <strong>zero</strong> failed settlements against
+    our decentralised mesh's <strong>2,548</strong>. We tested whether the mesh repays that
+    cost during a crisis across eighteen scenarios. <strong>It never did.</strong></p>
+    <p>So this is <strong>not</strong> a replacement for a clearing house, and anyone claiming
+    otherwise is not reading our numbers. It is four specific, separately-testable practices —
+    plus one honest warning about the practice everyone expects to be the star.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Both sectors</span>The same pitch, with one correction each</h2>
+  <div class="pair">
+    <div class="reg r">
+      <span class="nm">Conventional banks</span>
+      <p>No cultural framing required. Pay as you collect, don't lend what you haven't got,
+      use write-downs surgically where contagion is the real exposure, and don't buy a
+      scoring model that hasn't been tested against chance.</p>
+    </div>
+    <div class="reg c">
+      <span class="nm">Islamic banks</span>
+      <p><strong>Full reserve is vindicated by measurement, not doctrine</strong> — it was
+      simply the best-performing configuration tested, which is a stronger argument and needs
+      nobody to share your premises.</p>
+      <p><strong>But risk-sharing raises your losses, not lowers them</strong> — 94.4 against
+      16.1. Its genuine value is systemic. Sold as prudential infrastructure it is
+      defensible; sold as a better return profile it is not.</p>
+    </div>
+  </div>
+  <p class="note">The "oxymoron" charge lands because labels are unverifiable. A
+  tamper-evident register makes the label <strong>checkable</strong> — that is the real
+  differentiator, and it is available to both sectors equally.</p>
+</section>
+
+<section>
+  <h2><span class="n">Last</span>Why publish a failure</h2>
+  <p>A model that only ever produces confirmations hasn't been tested. We designed this from
+  earlier measurements, wrote down in advance what would prove the new idea wrong, ran it,
+  watched the idea fail exactly as predicted, and shipped the system <strong>smaller</strong>
+  than planned.</p>
+  <p>Nine times in a row now we've declined to write a simulation whose output would have
+  been decided by its own formula.</p>
+  <p class="pull">What's left is what survived a real attempt to kill it. That is the only
+  kind of finding worth putting in front of a risk committee.</p>
+</section>
+
+<footer>
+  the print-shop example is illustrative arithmetic and no result depends on it · the
+  evidence is 10,000 committed real transactions, both sides of the ledger, hash-pinned ·
+  bash reproduce_all.sh → 73/73 · exit 0 means "reproduces including its failures", never
+  "the model works"
+</footer>
+
+</div>
