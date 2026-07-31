@@ -1,0 +1,144 @@
+{
+  "title": "The Tusko test: does enforcement latency scale as a power law of capacity, and does naive linear extrapolation across orders of magnitude fail catastrophically?",
+  "locked_before": "any extrapolation error, any cross-validated comparison, and any invariance statistic was computed",
+  "the_idea_being_tested_and_where_it_came_from": {
+    "layer": "L3 - ontological prior. This is where the hypothesis came from, NOT evidence for it.",
+    "tusko_1962": "Researchers estimating a safe LSD dose for an elephant took a cat's safe dose and multiplied it linearly by body mass, arriving at 297 mg. The elephant died. The error was assuming a quantity that scales as m^k for k < 1 scales as m^1.",
+    "kleiber": "Metabolic rate scales as m^(3/4); heart rate as m^(-1/4) and lifespan as m^(+1/4), whose product is scale-invariant -- the 'one billion heartbeats' regularity.",
+    "the_boundary_being_enforced": "Neither the Tusko incident nor Kleiber's law is evidence about software repositories. Biology GENERATED the hypothesis and supplies the vocabulary. It cannot confirm it. Nothing in this run may be reported as biological confirmation, and a test asserts the results file makes no such claim. If software latency scales at 3/4 that would be a striking coincidence to report, not a law inherited from mammals.",
+    "the_LISM_question": "LISM asserts E = U * D_enc * D_dec, linear in fidelity. It says nothing about how enforcement latency tau_v scales with CAPACITY U. If tau_v scales as a fractional power of U, then any calibration transferred linearly across orders of magnitude in capacity -- a supervisory threshold, a service-level target, a governance rule tuned on small institutions and applied to large ones -- is a Tusko error."
+  },
+  "what_this_session_could_and_could_not_reach": {
+    "requested": "open-source GitHub projects and Hugging Face datasets, across three arms: biological allometry, multi-scale code and AI model lineages, and SME financial ledgers.",
+    "arm_1_biological_allometry": {
+      "status": "BLOCKED",
+      "evidence": "genomics.senescence.info:443 -- gateway answered 403 to CONNECT (policy denial). The AnAge multi-species mass/heart-rate/lifespan database is unreachable from this session.",
+      "distinction": "BLOCKED is not REFUTED and is not UNTESTABLE-HERE. The data exists and the test is well-posed; this session's egress policy cannot fetch it."
+    },
+    "arm_2b_hugging_face": {
+      "status": "BLOCKED",
+      "evidence": "huggingface.co:443 and datasets-server.huggingface.co:443 -- gateway answered 403 to CONNECT (policy denial), recorded in the proxy status endpoint.",
+      "what_exists_offline": "hf-cohort/data/hf_cohort_frozen.json holds 24 models from a trending-sort snapshot. That is a trending sample, not a capacity-stratified one, and 24 is far below the N > 500 the design calls for. It is NOT used, because running a scaling test on 24 trending models would produce a number with no power to fail.",
+      "what_would_unblock_it": "allow-listing huggingface.co for this session's egress policy."
+    },
+    "arm_2a_github": {
+      "status": "RUNNABLE, and is the whole of this experiment",
+      "live_api_limitation": "api.github.com/rate_limit answers 200 at 15,000/hour, but every repository endpoint outside this session's scope answers 403 'GitHub access to this repository is not enabled for this session'. No new repositories can be sampled. The cohort is therefore the one already collected and committed in this repository.",
+      "consequence": "The capacity range cannot be extended below 99 stars. The design called for 1 star upward; the floor here is 99."
+    },
+    "arm_3_sme_ledgers": {
+      "status": "BLOCKED / does not exist in reach",
+      "note": "Transaction-level SME loan ledgers with pass-through timestamps are not public data and no supplied dataset contains them. Recorded rather than substituted."
+    }
+  },
+  "data_provenance": {
+    "file": "data/github/govphys_quadratic_results.csv",
+    "sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+    "what_it_is": "992 real public GitHub repositories collected and committed earlier in this programme, stratified as thriving / aging / at-risk / failed, each carrying stars, a server-computed issue-close latency tau_v in days, and a flag marking whether tau_v was measured or imputed.",
+    "analysis_set": "the 866 rows with tau_v_imputed == 0. THE 126 IMPUTED ROWS ARE EXCLUDED ENTIRELY. An imputed latency is a model output and cannot test how latency scales.",
+    "declared_shape_before_analysis": {
+      "rows_total": 992,
+      "rows_measured": 866,
+      "stars_min": 99,
+      "stars_max": 442738,
+      "orders_of_magnitude_spanned": 3.65,
+      "measured_rows_per_star_decade": {"1e1": 44, "1e2": 362, "1e3": 185, "1e4": 253, "1e5": 22}
+    }
+  },
+  "DISCLOSURE_OF_WHAT_WAS_INSPECTED_BEFORE_THIS_LOCK": {
+    "what_was_seen": "While checking whether the cohort could support the test at all, the MEDIAN tau_v within each star decade was printed: 49.97, 35.30, 33.43, 10.74, 4.26 days for decades 1e1 through 1e5.",
+    "why_this_matters": "That sequence determines the SIGN and roughly the MAGNITUDE of the scaling exponent. It implies a negative exponent near -0.27. I therefore already know the answer to 'which way does tau_v scale', and a gate on that question could not fail.",
+    "consequence_enforced_here": "G6, the exponent's sign and value, is carried at weight 'descriptive' and SCORES NOTHING. It is reported because it is the headline number, and it is unscored because I saw it first.",
+    "why_the_scoring_gates_are_still_clean": "G3, G4 and G5 are not determined by decade medians. G3 depends on out-of-sample extrapolation error, which is driven by within-decade spread; G4 asks whether a fitted power law beats a constant under cross-validation, which a trend in medians does not settle when spread is large; G5 asks whether normalising by a held-out exponent actually flattens two decades that were not used to fit it. None of those three was computed, estimated or glimpsed before this lock."
+  },
+  "operational_definitions": {
+    "layer": "L2",
+    "U_capacity": "stargazers_count. The raw scale variable, the analogue of body mass. Chosen because the Tusko question is specifically about extrapolating across orders of magnitude of raw size.",
+    "tau_v": "server-computed mean issue-close latency in days, as collected in the frozen cohort. Not recomputed here.",
+    "decade": "floor(log10(stars))",
+    "dex": "median absolute base-10 log ratio between predicted and actual tau_v. One dex is a factor of ten. This is the error metric throughout, because the whole question is about errors that compound multiplicatively across scale.",
+    "model_LINEAR_the_Tusko_rule": "tau_hat = k * U, with k = median(tau_i / U_i) over the calibration set. Dose proportional to mass. This is the rule that killed the elephant.",
+    "model_POWER": "tau_hat = 10^c * U^alpha, with alpha and c from ordinary least squares of log10(tau) on log10(U) over the calibration set.",
+    "model_CONSTANT": "tau_hat = median(tau) over the calibration set. Capacity ignored entirely. Present because if capacity carries no usable information, the constant wins and the allometric framing is empty for this substrate."
+  },
+  "gates": [
+    {
+      "id": "G1_data_integrity",
+      "weight": "full",
+      "test": "The CSV SHA-256 matches. 992 rows total, 866 with tau_v_imputed == 0. Stars run 99 to 442,738. The measured per-decade counts match the declared table exactly.",
+      "prediction": "EXPECTED TO PASS; shapes were checked before the lock and the run aborts on mismatch."
+    },
+    {
+      "id": "G2_the_failing_region_is_populated_across_scale",
+      "weight": "full",
+      "test": "Every one of the five star decades carries at least 20 measured repositories.",
+      "why": "LISM invariant I2, in its scaling form. A scaling law cannot be tested on a range where one end is empty. The top decade carries 22, so this gate is close to its bar and could have failed on a slightly different cohort.",
+      "prediction": "EXPECTED TO PASS, narrowly."
+    },
+    {
+      "id": "G3_THE_TUSKO_GATE",
+      "weight": "full",
+      "primary": true,
+      "test": "Calibrate on decades 1e1 and 1e2 only -- the small animals, n = 406. Predict decade 1e5 -- the elephant, n = 22. Gate met if median dex error of the LINEAR rule is at least 2.0 times the median dex error of the POWER rule.",
+      "margin_declared_at": "a factor of 2.0 on the dex ratio, fixed before any extrapolation was run.",
+      "prediction": "GENUINELY UNCERTAIN. The linear rule is anchored on repositories of ~100 to ~1000 stars, so extrapolating it to 442,738 stars multiplies the prediction by roughly a thousand. Whether the power law's own extrapolation is more than twice as accurate depends on within-decade spread, which was not inspected.",
+      "what_a_miss_means": "If the power law is not at least twice as good, the Tusko analogy does not transfer to this substrate at this range, and that is reported as such rather than reframed.",
+      "reference_arm_reported_alongside": "the CONSTANT model's dex on the same extrapolation. If the constant beats the power law, that is the substantive result and must be stated first in the results file."
+    },
+    {
+      "id": "G4_the_power_law_beats_a_constant_under_cross_validation",
+      "weight": "full",
+      "test": "5-fold cross-validation over all 866 measured rows, folds assigned by seeded shuffle with seed 20260801. On each held-out fold compute median dex for the POWER model and for the CONSTANT model, both fitted on the other four folds. Gate met if mean held-out power dex < mean held-out constant dex - 0.02.",
+      "margin_declared_at": "0.02 dex, about a 5 percent difference in fold error, fixed now.",
+      "why": "The ablation rule, and the gate most likely to kill the entire framing. Repository latency is dominated by project-specific practice. If capacity explains nothing once spread is accounted for, a fitted exponent is a decoration on noise.",
+      "prediction": "GENUINELY UNCERTAIN, and this is the gate I would bet against."
+    },
+    {
+      "id": "G5_HELD_OUT_SCALE_INVARIANCE",
+      "weight": "full",
+      "test": "Fit alpha on the three MIDDLE decades only (1e2, 1e3, 1e4). Then on the two HELD-OUT decades (1e1 and 1e5), compute the decade median of tau / U^alpha. Gate met if BOTH conditions hold: (a) the two held-out normalised medians agree within a factor of 2, |log10 ratio| <= 0.301; and (b) the RAW tau_v medians of those same two decades do NOT agree within a factor of 2, |log10 ratio| > 0.301.",
+      "why_both_conditions": "Condition (a) alone could be satisfied by a normalisation that flattens everything including signal. Condition (b) requires that there was something to flatten. Together they test the Kleiber-style claim that a fractional-power normalisation reveals a scale-invariant quantity -- the 'one billion heartbeats' structure -- out of sample.",
+      "non_circularity": "alpha is fitted on decades that are not used to evaluate the invariance. The two decades tested are the ones the exponent never saw.",
+      "prediction": "UNCERTAIN. Condition (b) is likely given the disclosed decade medians; condition (a) is not, and is the part that can fail."
+    },
+    {
+      "id": "G6_the_exponent_itself",
+      "weight": "descriptive",
+      "scores": "zero, in either direction",
+      "test": "Report alpha fitted on all 866 measured rows, its sign, and the per-decade medians.",
+      "why_it_scores_nothing": "The per-decade medians were printed before this lock, as disclosed above. A gate whose answer I already know is not a test. This is the headline number and it is reported without credit.",
+      "what_will_be_stated_carefully": "If alpha is negative, LARGER repositories close issues FASTER. That inverts the naive reading of the analogy, in which bigger systems are assumed slower. It is also the direction Kleiber's law predicts for a RATE: heart rate falls as m^(-1/4) and per-unit-mass metabolism falls with size, so a per-unit latency falling with capacity is the biologically analogous direction rather than a contradiction of it. That sentence is an interpretation, is Layer 3, and scores nothing."
+    },
+    {
+      "id": "G7_hugging_face_model_lineage_arm",
+      "weight": "excluded",
+      "status": "BLOCKED",
+      "reason": "huggingface.co:443 answers 403 at the egress gateway. The 24-model frozen fixture is a trending snapshot, not capacity-stratified, and is deliberately NOT substituted.",
+      "distinction_preserved": "BLOCKED, not REFUTED and not UNTESTABLE-HERE."
+    },
+    {
+      "id": "G8_biological_allometry_arm",
+      "weight": "excluded",
+      "status": "BLOCKED",
+      "reason": "genomics.senescence.info:443 answers 403 at the egress gateway. No multi-species mass / heart-rate / lifespan table is reachable.",
+      "note": "This arm is also the one whose absence matters least to the inference, because biology is the SOURCE of the hypothesis, not evidence for it. Fetching AnAge would let us reproduce Kleiber; it would not tell us anything about repositories."
+    }
+  ],
+  "anti_immunisation": {
+    "thresholds_frozen": [
+      "G2: at least 20 measured repositories in every decade",
+      "G3: linear dex at least 2.0x power dex",
+      "G4: power CV dex below constant CV dex by at least 0.02",
+      "G5: held-out normalised medians within factor 2 AND raw medians outside factor 2"
+    ],
+    "rule": "No threshold moves after a run. The calibration and target decades for G3, and the fitted and held-out decades for G5, are fixed here and may not be reselected after seeing an error. The 126 imputed rows stay excluded regardless of what including them would do.",
+    "simulator_rule": "Nothing is simulated. Every tau_v and every star count is a recorded observation about a real public repository. No synthetic repository is generated, and no cascade, re-routing or counterfactual is run.",
+    "too_perfect_rule": "A held-out dex below 0.05 for any model, or an alpha within 0.01 of exactly -0.25 or 0.75, is to be treated as suspected artefact and investigated before being reported as a match to biology.",
+    "count_vs_intensity": "Repositories are counted per decade and errors are reported as medians of a per-repository quantity. The two are never mixed into a single figure.",
+    "censoring_to_be_disclosed": "5 measured rows sit at exactly 365.0 days, which is a collection ceiling rather than an observation, and 6 sit below 0.01 days, which is almost certainly automated closure. Both groups are RETAINED -- removing them after seeing results would be a threshold move -- and both are reported in the disclosures with the effect of excluding them shown alongside."
+  },
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That across 866 real public repositories spanning 3.65 orders of magnitude in stars, enforcement latency followed a fractional power of capacity well enough that a rule calibrated at small scale and extrapolated linearly to large scale erred by a stated factor.",
+    "would_not": "Any claim that software obeys Kleiber's law. Any claim about biology. Any claim about financial institutions, which are not in this dataset. Any causal claim -- stars are not a cause of latency and both may follow from project maturity. Any extrapolation below 99 stars or above 442,738, which are the observed limits."
+  }
+}
