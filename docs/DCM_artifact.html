@@ -1,0 +1,514 @@
+<title>DCM — the Discriminating Capacity Model</title>
+<style>
+  :root {
+    --paper:      #F1F4F3;
+    --card:       #FFFFFF;
+    --ink:        #131A20;
+    --ink-soft:   #4C5A60;
+    --ink-faint:  #7C8A8E;
+    --rule:       #CBD4D2;
+    --rule-soft:  #E1E7E5;
+    --accent:     #0F6C6B;
+    --accent-dim: #E2EDEC;
+    --pass:       #416E52;
+    --pass-bg:    #E4EDE7;
+    --fail:       #9C4A32;
+    --fail-bg:    #F5E5DF;
+    --shadow:     0 1px 2px rgba(19,26,32,.05), 0 6px 18px -12px rgba(19,26,32,.18);
+
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+
+    --measure: 34rem;
+    --wide: 60rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:      #0D1215;
+      --card:       #151C20;
+      --ink:        #E4EAE9;
+      --ink-soft:   #A3B0B2;
+      --ink-faint:  #748184;
+      --rule:       #2B363A;
+      --rule-soft:  #202A2E;
+      --accent:     #46AEA6;
+      --accent-dim: #14302F;
+      --pass:       #7FB893;
+      --pass-bg:    #172C1F;
+      --fail:       #D68566;
+      --fail-bg:    #33190F;
+      --shadow:     0 1px 2px rgba(0,0,0,.4), 0 6px 20px -14px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#0D1215; --card:#151C20; --ink:#E4EAE9; --ink-soft:#A3B0B2; --ink-faint:#748184;
+    --rule:#2B363A; --rule-soft:#202A2E; --accent:#46AEA6; --accent-dim:#14302F;
+    --pass:#7FB893; --pass-bg:#172C1F; --fail:#D68566; --fail-bg:#33190F;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px -14px rgba(0,0,0,.8);
+  }
+  :root[data-theme="light"] {
+    --paper:#F1F4F3; --card:#FFFFFF; --ink:#131A20; --ink-soft:#4C5A60; --ink-faint:#7C8A8E;
+    --rule:#CBD4D2; --rule-soft:#E1E7E5; --accent:#0F6C6B; --accent-dim:#E2EDEC;
+    --pass:#416E52; --pass-bg:#E4EDE7; --fail:#9C4A32; --fail-bg:#F5E5DF;
+    --shadow: 0 1px 2px rgba(19,26,32,.05), 0 6px 18px -12px rgba(19,26,32,.18);
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 1.5rem 6rem; }
+  .col  { max-width: var(--measure); }
+
+  /* ---------- masthead ---------- */
+  .mast {
+    border-bottom: 1px solid var(--rule);
+    padding: 3.5rem 0 2rem;
+    display: flex; flex-direction: column; gap: 1.25rem;
+  }
+  .eyebrow {
+    font-family: var(--mono); font-size: .7rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--accent); font-weight: 600;
+  }
+  h1 {
+    font-family: var(--mono); font-weight: 600;
+    font-size: clamp(1.9rem, 5.5vw, 3rem); line-height: 1.06;
+    letter-spacing: -.025em; text-wrap: balance; margin: 0;
+  }
+  h1 .expand { display: block; color: var(--ink-soft); font-size: .42em;
+               letter-spacing: .01em; font-weight: 400; margin-top: .7rem; }
+  .thesis {
+    font-size: clamp(1.15rem, 2.6vw, 1.4rem); line-height: 1.42;
+    max-width: 30rem; text-wrap: balance; margin: 0; color: var(--ink);
+  }
+  .stamps { display: flex; flex-wrap: wrap; gap: .5rem 1.75rem; align-items: baseline;
+            font-family: var(--mono); font-size: .74rem; color: var(--ink-faint); }
+  .stamps b { color: var(--ink-soft); font-weight: 600; }
+  .hash { word-break: break-all; }
+
+  /* ---------- rhythm ---------- */
+  section { padding-top: 3.5rem; display: flex; flex-direction: column; gap: 1.15rem; }
+  h2 {
+    font-family: var(--mono); font-size: .78rem; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--accent); font-weight: 600;
+    margin: 0; padding-bottom: .3rem; border-bottom: 1px solid var(--rule-soft);
+  }
+  h3 { font-family: var(--mono); font-size: 1rem; font-weight: 600; margin: 0;
+       letter-spacing: -.01em; text-wrap: balance; }
+  p  { margin: 0; }
+  .lede { font-size: 1.1rem; }
+  em.term { font-style: normal; font-family: var(--mono); font-size: .9em;
+            background: var(--accent-dim); color: var(--accent);
+            padding: .05em .35em; border-radius: 2px; }
+
+  /* ---------- tables ---------- */
+  .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px;
+            background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-family: var(--mono);
+          font-size: .78rem; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: .62rem .85rem; border-bottom: 1px solid var(--rule-soft);
+           vertical-align: top; }
+  thead th { font-size: .66rem; letter-spacing: .09em; text-transform: uppercase;
+             color: var(--ink-faint); font-weight: 600; white-space: nowrap;
+             border-bottom: 1px solid var(--rule); }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { text-align: right; white-space: nowrap; }
+  .why { font-family: var(--serif); font-size: .92rem; line-height: 1.45; color: var(--ink-soft); }
+  .why b { color: var(--ink); font-weight: 600; }
+
+  .verdict { font-size: .66rem; letter-spacing: .08em; font-weight: 600;
+             padding: .16em .5em; border-radius: 2px; white-space: nowrap; }
+  .v-pass { background: var(--pass-bg); color: var(--pass); }
+  .v-fail { background: var(--fail-bg); color: var(--fail); }
+  .v-none { background: var(--rule-soft); color: var(--ink-faint); }
+
+  /* ---------- the product ---------- */
+  .product { display: flex; flex-wrap: wrap; align-items: stretch; gap: .75rem; }
+  .factor {
+    flex: 1 1 13rem; background: var(--card); border: 1px solid var(--rule);
+    border-radius: 3px; padding: 1rem 1.05rem; box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: .5rem;
+  }
+  .factor .glyph { font-family: var(--mono); font-size: 1.6rem; font-weight: 600;
+                   color: var(--accent); line-height: 1; }
+  .factor .name  { font-family: var(--mono); font-size: .68rem; letter-spacing: .1em;
+                   text-transform: uppercase; color: var(--ink-faint); }
+  .factor .def   { font-family: var(--mono); font-size: .78rem; color: var(--ink); }
+  .factor .names { font-size: .88rem; line-height: 1.4; color: var(--ink-soft); }
+  .factor .names b { color: var(--ink); font-weight: 600; }
+  .times { display: flex; align-items: center; font-family: var(--mono);
+           font-size: 1.3rem; color: var(--ink-faint); padding: 0 .1rem; }
+  @media (max-width: 640px) { .times { display: none; } }
+
+  .formula {
+    font-family: var(--mono); font-size: clamp(1.3rem, 4vw, 1.9rem); font-weight: 600;
+    letter-spacing: .02em; color: var(--ink); padding: 1.1rem 0;
+    border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+    text-align: center;
+  }
+
+  /* ---------- auc bars ---------- */
+  .bars { display: flex; flex-direction: column; gap: .55rem;
+          background: var(--card); border: 1px solid var(--rule); border-radius: 3px;
+          padding: 1.1rem 1.15rem; }
+  .bar { display: grid; grid-template-columns: 8.5rem 1fr 3.2rem;
+         align-items: center; gap: .7rem; font-family: var(--mono); font-size: .74rem; }
+  @media (max-width: 560px) { .bar { grid-template-columns: 6.5rem 1fr 3rem; font-size: .68rem; } }
+  .bar .lab { color: var(--ink-soft); }
+  .bar .track { height: 9px; background: var(--rule-soft); border-radius: 1px; overflow: hidden; }
+  .bar .fill { height: 100%; background: var(--accent); border-radius: 1px; }
+  .bar .fill.muted { background: var(--ink-faint); }
+  .bar .val { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  /* ---------- callouts ---------- */
+  .note {
+    border-left: 3px solid var(--accent); background: var(--card);
+    padding: 1.1rem 1.25rem; border-radius: 0 3px 3px 0;
+    display: flex; flex-direction: column; gap: .7rem; box-shadow: var(--shadow);
+  }
+  .note.warn { border-left-color: var(--fail); }
+  .note h3 { color: var(--ink); }
+  .note.warn h3 { color: var(--fail); }
+  .note p { font-size: .95rem; }
+
+  .pull {
+    font-family: var(--mono); font-size: clamp(1rem, 2.6vw, 1.25rem); font-weight: 600;
+    line-height: 1.34; color: var(--ink); text-wrap: balance;
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: 1.35rem 0; margin: .4rem 0;
+  }
+  .pull span { color: var(--ink-faint); font-weight: 400; display: block; margin-top: .5rem;
+               font-size: .78em; }
+
+  .collapse { display: flex; flex-direction: column; gap: .4rem; font-family: var(--mono);
+              font-size: .78rem; }
+  .collapse .row { display: grid; grid-template-columns: 11rem 1fr 3.4rem;
+                   gap: .7rem; align-items: center; }
+  @media (max-width: 560px) { .collapse .row { grid-template-columns: 8rem 1fr 3rem; font-size: .7rem; } }
+  .collapse .track { height: 22px; background: var(--rule-soft); border-radius: 2px; overflow: hidden; }
+  .collapse .fill { height: 100%; background: var(--fail); opacity: .8; }
+  .collapse .fill.ok { background: var(--accent); opacity: 1; }
+  .collapse .v { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  code { font-family: var(--mono); font-size: .88em; background: var(--rule-soft);
+         padding: .08em .32em; border-radius: 2px; }
+  pre { font-family: var(--mono); font-size: .76rem; background: var(--card);
+        border: 1px solid var(--rule); border-radius: 3px; padding: .95rem 1.1rem;
+        overflow-x: auto; line-height: 1.6; margin: 0; }
+  a { color: var(--accent); }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  footer { margin-top: 4.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule);
+           font-family: var(--mono); font-size: .72rem; color: var(--ink-faint);
+           display: flex; flex-direction: column; gap: .5rem; }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <div class="eyebrow">Novora open-source initiative · model two</div>
+    <h1>DCM<span class="expand">the Discriminating Capacity Model</span></h1>
+    <p class="thesis">Before you test a claim, measure whether your data could ever have
+      answered it.</p>
+    <div class="stamps">
+      <span><b>spec</b> <span class="hash">3a33d53e178b9c6f9178a77fe9d2e60780eff74d63c5606878b8bf61f9947ffe</span></span>
+      <span><b>locked</b> before any draw</span>
+      <span><b>score</b> 5/6</span>
+      <span><b>substrates</b> GitHub · PyPI</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Why this model exists</h2>
+    <div class="col" style="display:flex;flex-direction:column;gap:1.15rem">
+      <p class="lede">LISM was model one — it asks what makes an institution stable. Across
+        this programme's pre-registered runs, <b>the nulls outnumbered the passes</b>. Lined
+        up together, they shared a structure that had nothing to do with whether the
+        mechanism was real.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead>
+          <tr><th>Run</th><th>Spec</th><th class="num">Score</th><th>What actually went wrong</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Contract schedules</td><td>02e6bbba</td><td class="num">3/6</td>
+              <td class="why">Property value: <b>min 400,000, max 400,000, sd 0</b>. No adverse event ever occurred</td></tr>
+          <tr><td>Outcome panels</td><td>caacef84</td><td class="num">2/5</td>
+              <td class="why">Financier's balance fell <b>exactly &minus;85.0% at every event</b> while the asset moved under 2%</td></tr>
+          <tr><td>IFSB panel</td><td>0d52c844</td><td class="num">1/6</td>
+              <td class="why">Kuwait and Palestine booked <b>exactly zero</b> equity income across all 12 and all 21 quarters</td></tr>
+          <tr><td>Interbank network</td><td>db8c3a4f</td><td class="num">3/5</td>
+              <td class="why"><b>No column in 74</b> distinguished a fixed claim from a participation</td></tr>
+          <tr><td>Allometry</td><td>6666f1a9</td><td class="num">3/5</td>
+              <td class="why">A constant beat the fitted power law under cross-validation</td></tr>
+          <tr><td>Two-register</td><td>ed80430a</td><td class="num">0/5</td>
+              <td class="why">Every gate missed</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pull">In none of these was a model shown to be wrong.<br>The data was shown
+      to be incapable.
+      <span>And sample size was never the problem. The outcome panels had 720 rows — a power
+        calculation would have said that was plenty.</span></div>
+  </section>
+
+  <section>
+    <h2>The model</h2>
+    <div class="formula">&Delta; &nbsp;=&nbsp; V &nbsp;&middot;&nbsp; I &nbsp;&middot;&nbsp; C</div>
+
+    <div class="product">
+      <div class="factor">
+        <div class="glyph">V</div>
+        <div class="name">variation</div>
+        <div class="def">1 &minus; modal fraction of Y</div>
+        <div class="names"><b>The outcome never moves.</b> The contract schedules' constant
+          asset value.</div>
+      </div>
+      <div class="times">&times;</div>
+      <div class="factor">
+        <div class="glyph">I</div>
+        <div class="name">incidence</div>
+        <div class="def">4p(1&minus;p)</div>
+        <div class="names"><b>No populated failing region.</b> LISM's invariant I2, made
+          continuous.</div>
+      </div>
+      <div class="times">&times;</div>
+      <div class="factor">
+        <div class="glyph">C</div>
+        <div class="name">coupling</div>
+        <div class="def">distinct values of Y &divide; n</div>
+        <div class="names"><b>Administrative, not measured.</b> The flat &minus;85%, the fixed
+          0.15 multiplier.</div>
+      </div>
+    </div>
+
+    <div class="col" style="display:flex;flex-direction:column;gap:1.15rem">
+      <p>Each factor is one line of arithmetic with <b>no free parameter</b>. That is
+        deliberate — a capacity index with tunable weights could be fitted to any outcome and
+        would not be falsifiable.</p>
+      <p><b>None of the three reads the association between group and outcome.</b> They are
+        functions of the outcome's value distribution and the group sizes only. A test
+        enforces this by scanning the source.</p>
+      <p><b>Why multiplicative.</b> This was the model's substantive, falsifiable claim: the
+        three do not compensate. An enormous, perfectly balanced dataset whose outcome is a
+        policy constant adjudicates nothing, and no amount of the other two factors rescues
+        it. The form is inherited from LISM's own <code>D_enc &middot; D_dec</code> — a chain
+        fails at its weakest link. <em class="term">The form is inherited. No evidence
+        is.</em></p>
+      <p><b>DCM is not a power calculation.</b> Power asks how many observations you need
+        given an effect size and a working measurement. DCM asks whether the measurement can
+        express the effect <em>at all</em> — which is prior to, and independent of, N.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The test</h2>
+    <div class="col" style="display:flex;flex-direction:column;gap:1.15rem">
+      <p><b>The risky prediction:</b> &Delta;, computed from a dataset's structure alone and
+        before any hypothesis is tested, predicts whether a test on that dataset will detect a
+        relationship that is genuinely present — and predicts it better than sample size
+        does.</p>
+      <p>Two real open-source substrates, chosen because they are naturally opposite. Within
+        one substrate V and C barely move — they are properties of how that substrate records
+        things. Pooling a clean substrate with a degenerate one is what gives &Delta; a range
+        to be tested over.</p>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th></th><th>GitHub</th><th>PyPI</th></tr></thead>
+        <tbody>
+          <tr><td class="why"><b>Rows</b></td><td>866 repos, measured &tau;<sub>v</sub></td><td>540 packages</td></tr>
+          <tr><td class="why"><b>Task</b></td>
+              <td class="why">does survival status separate issue-close latency?</td>
+              <td class="why">do widely-depended-on packages differ in pin clarity?</td></tr>
+          <tr><td class="why"><b>Distinct outcome values</b></td>
+              <td>862 of 866 — naturally clean</td>
+              <td>26 of 540, 49% share one value</td></tr>
+          <tr><td class="why"><b>Mean C in draws</b></td><td>0.999</td><td>0.125</td></tr>
+          <tr><td class="why"><b>Detection rate</b></td><td>56%</td><td>2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col">
+      <p><b>400 sub-datasets</b>, grid declared before any draw: n &isin; {20, 40, 80, 160,
+        320} &times; minority proportion p &isin; {0.05, 0.15, 0.30, 0.50} &times; 10 seeded
+        replicates &times; 2 substrates. Detection is a seeded 200-draw permutation of the
+        group labels. <b>Resampling real rows is not simulation</b> — every row is a real
+        observation, and the relationship detected is whatever is genuinely there.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Results — 5/6</h2>
+
+    <div class="bars">
+      <div class="bar"><span class="lab">&Delta; = V&middot;I&middot;C</span>
+        <span class="track"><span class="fill" style="width:94.4%"></span></span>
+        <span class="val">0.944</span></div>
+      <div class="bar"><span class="lab">V alone</span>
+        <span class="track"><span class="fill" style="width:92.1%"></span></span>
+        <span class="val">0.921</span></div>
+      <div class="bar"><span class="lab">C alone</span>
+        <span class="track"><span class="fill muted" style="width:80.8%"></span></span>
+        <span class="val">0.808</span></div>
+      <div class="bar"><span class="lab">I alone</span>
+        <span class="track"><span class="fill muted" style="width:69.1%"></span></span>
+        <span class="val">0.691</span></div>
+      <div class="bar"><span class="lab">sample size n</span>
+        <span class="track"><span class="fill muted" style="width:67.0%"></span></span>
+        <span class="val">0.670</span></div>
+    </div>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Gate</th><th>Locked bar</th><th class="num">Measured</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr><td>K1 &nbsp;integrity</td><td>hashes, shapes, ranges</td><td class="num">—</td>
+              <td><span class="verdict v-pass">PASS</span></td></tr>
+          <tr><td>K2 &nbsp;populated region</td><td>10–90% detected</td><td class="num">29.0%</td>
+              <td><span class="verdict v-pass">PASS</span></td></tr>
+          <tr><td>K3 &nbsp;&Delta; predicts detection</td><td>AUC &ge; 0.70</td><td class="num">0.944</td>
+              <td><span class="verdict v-pass">PASS</span></td></tr>
+          <tr><td>K4 &nbsp;&Delta; beats sample size</td><td>gap &ge; 0.05</td><td class="num">+0.274</td>
+              <td><span class="verdict v-pass">PASS</span></td></tr>
+          <tr><td>K5 &nbsp;product beats best factor</td><td>gap &ge; 0.03</td><td class="num">+0.024</td>
+              <td><span class="verdict v-fail">FAIL</span></td></tr>
+          <tr><td>K6 &nbsp;holds within each substrate</td><td>AUC &ge; 0.65 each</td><td class="num">0.875 / 0.669</td>
+              <td><span class="verdict v-pass">PASS</span></td></tr>
+          <tr><td>K7 &nbsp;C on panel data</td><td>—</td><td class="num">—</td>
+              <td><span class="verdict v-none">UNTESTABLE-HERE</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <h3>K4 passed against my own written prediction</h3>
+      <p>The spec recorded K4 as <b>expected to fail</b> — sample size is the incumbent
+        explanation for why a test does or does not detect, it is trivially available, and it
+        varies 16-fold across the grid. &Delta; scored <b>0.944 against n's 0.670</b>. That is
+        a genuine surprise and the strongest result here: whether a dataset can see an effect
+        is not mainly a question of how big it is.</p>
+    </div>
+
+    <div class="note warn">
+      <h3>K5 failed — and it tested what the model actually asserts</h3>
+      <p>The pre-registration named multiplicativity as <em>"the substantive and falsifiable
+        content of the model."</em> It was tested, and it did not earn its keep. V alone
+        scores <b>0.921</b> against the product's <b>0.944</b> — an improvement of 0.024
+        against a locked bar of 0.03. <b>A one-factor model — does the outcome actually move? —
+        does nearly all the work.</b></p>
+      <p>The formula is <b>not</b> being rewritten to fit this. DCM is reported as specified
+        with K5 recorded as failed. Rewriting after seeing the AUC is exactly the immunisation
+        move the pre-registration exists to prevent.</p>
+      <p>One caveat in the model's favour, pre-disclosed before the run: <b>V and C are
+        correlated by construction</b>, both being functions of the outcome's value
+        distribution. Two substrates where they move together cannot separate them. That makes
+        the test weak on this point — not the result discountable.</p>
+    </div>
+
+    <div class="note warn">
+      <h3>Two passes that should not be read as support</h3>
+      <p><b>The pooled 0.944 is partly a substrate label.</b> It sits just under the 0.95
+        too-perfect trigger and is not the model's accuracy. GitHub is naturally clean, PyPI
+        naturally degenerate, so much of the pooled separation is &Delta; acting as a substrate
+        indicator — exactly what K6 was written to catch. The honest figures are
+        within-substrate: <b>0.875 and 0.669</b>.</p>
+      <p><b>K6 passed on the PyPI side on four events.</b> Only 4 of 200 PyPI sub-datasets
+        detected anything, so its 0.669 AUC rests on 4 positive cases and clears the 0.65 bar
+        by 0.019. <b>That is not a result.</b> The gate stands because the threshold was locked
+        and is not being moved; the weakness is disclosed rather than absorbed into the
+        score.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The clearest demonstration scores nothing</h2>
+    <div class="col">
+      <p>Coarsen the <b>recording</b> while leaving the relationship completely untouched:</p>
+    </div>
+
+    <div class="bars">
+      <div class="collapse">
+        <div class="row"><span>natural</span>
+          <span class="track"><span class="fill ok" style="width:29%"></span></span>
+          <span class="v">29.0%</span></div>
+        <div class="row"><span>quantised to 10</span>
+          <span class="track"><span class="fill" style="width:5.5%"></span></span>
+          <span class="v">5.5%</span></div>
+        <div class="row"><span>quantised to 3</span>
+          <span class="track"><span class="fill" style="width:0.5%"></span></span>
+          <span class="v">0.5%</span></div>
+      </div>
+    </div>
+
+    <div class="col" style="display:flex;flex-direction:column;gap:1.15rem">
+      <p><b>The effect was still there. The data stopped being able to see it.</b></p>
+      <p>That is DCM's central claim visible directly — and it is <b>excluded from the
+        score</b> by the locked spec, because it is a manipulation of real data rather than an
+        observation. The quantised-3 arm carries 2 detections in 400, so its AUC is meaningless
+        and is not quoted. It is reported for the detection collapse only.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What a low &Delta; does not mean</h2>
+    <div class="pull">A low &Delta; says: this dataset cannot settle this question.<br>It never
+      says the claim is false.</div>
+    <div class="col" style="display:flex;flex-direction:column;gap:1.15rem">
+      <p>Using &Delta; to dismiss someone's claim would invert the model's entire purpose,
+        which is to stop nulls being read as refutations.</p>
+      <p>Worked from this programme's own record: the contract schedules scored 3/6 and the
+        outcome panels 2/5. <b>Neither is evidence that Islamic contracts are debt.</b> Both
+        are evidence that the supplied data could not tell the difference. DCM exists so that
+        distinction is measurable in advance instead of argued about afterwards.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Open gaps</h2>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Gap</th><th>What closes it</th></tr></thead>
+        <tbody>
+          <tr><td>K7 — C on panel data</td>
+              <td class="why">The sharpest coupling failure — successive values following a fixed multiplicative rule, as in the &minus;85%-every-period write-downs — needs repeated observations per unit. Both substrates are cross-sectional</td></tr>
+          <tr><td>V and C are entangled</td>
+              <td class="why">A substrate with wide-ranging values but few distinct ones: high V, low C</td></tr>
+          <tr><td>PyPI detects almost nothing</td>
+              <td class="why">A second degenerate substrate carrying a stronger true effect</td></tr>
+          <tr><td>&Delta; is uncalibrated</td>
+              <td class="why">No threshold on &Delta; is claimed or implied by this run</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Reproduce</h2>
+    <pre>python3 dcm/dcm.py
+python3 -m pytest -q dcm/test_dcm.py
+bash reproduce_all.sh</pre>
+    <div class="col">
+      <p>Both substrates are hash-pinned and the runner aborts if the spec or either file
+        changed. Exit 0 means <b>"reproduces including its failures"</b> — never "the model is
+        validated."</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Novora Research Initiative · Open Science Division</span>
+    <span>DCM spec 3a33d53e &middot; LISM is model one &middot; 82/82 suites reproduce</span>
+  </footer>
+
+</div>

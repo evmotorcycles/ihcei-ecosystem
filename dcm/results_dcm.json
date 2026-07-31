@@ -1,0 +1,153 @@
+{
+  "auc": {
+    "C": 0.8084,
+    "I": 0.6912,
+    "V": 0.9207,
+    "delta": 0.9442,
+    "n_rows": 0.67
+  },
+  "auc_within_substrate": {
+    "github": 0.8754,
+    "pypi": 0.669
+  },
+  "best_single_factor": "V",
+  "degraded_arm_scores_nothing": {
+    "quantised_to_10_levels": {
+      "auc_delta": 0.6241,
+      "detection_rate": 0.055,
+      "mean_C": 0.1161,
+      "n_subdatasets": 400
+    },
+    "quantised_to_3_levels": {
+      "auc_delta": 0.9322,
+      "detection_rate": 0.005,
+      "mean_C": 0.0572,
+      "n_subdatasets": 400
+    }
+  },
+  "detection_rate": 0.29,
+  "formula": "DELTA = V * I * C",
+  "gates": [
+    {
+      "detail": "github 866 rows, pypi 540 rows, 400 natural sub-datasets, all V/I/C/DELTA in [0,1]=True",
+      "id": "K1_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "116 of 400 natural sub-datasets detected = 29.0% (band 10-90%)",
+      "id": "K2_the_failing_region_is_populated",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC(DELTA) = 0.9442 (needs >= 0.70)",
+      "id": "K3_DELTA_PREDICTS_DETECTION",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC(DELTA) 0.9442 vs AUC(n) 0.6700, delta +0.2742 (needs >= 0.05)",
+      "id": "K4_DELTA_BEATS_SAMPLE_SIZE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC(DELTA) 0.9442 vs best single factor V 0.9207, delta +0.0235 (needs >= 0.03). all singles: {'V': 0.9207, 'I': 0.6912, 'C': 0.8084}",
+      "id": "K5_THE_PRODUCT_BEATS_ITS_BEST_SINGLE_FACTOR",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "within-substrate AUC(DELTA): {'github': 0.8754, 'pypi': 0.669} (each needs >= 0.65)",
+      "id": "K6_IT_HOLDS_ON_BOTH_SUBSTRATES_SEPARATELY",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. The sharpest coupling failure -- successive outcome values following a fixed multiplicative rule -- needs panel data. Both substrates are cross-sectional and the distinct-value proxy for C is a weaker instrument.",
+      "id": "K7_the_C_factor_on_longitudinal_data",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "CONTROLLED DEGRADATION OF REAL DATA, not simulation of a mechanism: the relationship is untouched and only the recording is coarsened. Scores nothing, by the locked spec, so that no gate rests on a manipulation. {'quantised_to_10_levels': {'n_subdatasets': 400, 'detection_rate': 0.055, 'auc_delta': 0.6241, 'mean_C': 0.1161}, 'quantised_to_3_levels': {'n_subdatasets': 400, 'detection_rate': 0.005, 'auc_delta': 0.9322, 'mean_C': 0.0572}}",
+      "id": "K8_degraded_recording_arm",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "K5_THE_PRODUCT_BEATS_ITS_BEST_SINGLE_FACTOR"
+  ],
+  "model": "DCM - the Discriminating Capacity Model",
+  "n_natural_subdatasets": 400,
+  "post_run_disclosures": {
+    "D1_what_a_low_DELTA_does_NOT_mean": {
+      "statement": "A low DELTA says THIS DATASET CANNOT SETTLE THIS QUESTION. It never says the claim is false. Using DELTA to dismiss a claim would invert the model's entire purpose, which is to stop nulls being read as refutations.",
+      "worked_example_from_this_programme": "The contract schedules scored 3/6 and the outcome panels 2/5. Neither result is evidence that Islamic contracts are debt. Both are evidence that the supplied data could not tell the difference."
+    },
+    "D2_V_and_C_are_correlated_by_construction": {
+      "note": "Both are computed from the outcome's value distribution, so a degenerate outcome depresses both. They are not independent channels and DELTA is not a variance decomposition. K5 is the gate that tests whether combining them earns anything over the best single one."
+    },
+    "D3_per_substrate_profile": {
+      "github": {
+        "detection_rate": 0.56,
+        "mean_C": 0.999,
+        "mean_I": 0.635,
+        "mean_V": 0.9797,
+        "mean_delta": 0.6219,
+        "n": 200
+      },
+      "pypi": {
+        "detection_rate": 0.02,
+        "mean_C": 0.1248,
+        "mean_I": 0.635,
+        "mean_V": 0.5093,
+        "mean_delta": 0.0388,
+        "n": 200
+      }
+    },
+    "D4_the_relationship_being_detected_is_real": {
+      "github": "failed repositories close issues more slowly -- established independently in this programme at 50.6 vs 19.8 days and surviving a within-decade check at 2.7x.",
+      "pypi": "widely-depended-on packages versus the rest, on pin clarity. Whether this relationship is strong is NOT assumed; the harness detects whatever is there, and a weak true effect is a legitimate reason for low detection."
+    },
+    "D5_THE_POOLED_AUC_IS_PARTLY_SUBSTRATE_SEPARATION": {
+      "note": "The pooled 0.9442 sits just under the 0.95 too-perfect trigger and should NOT be read as the model's accuracy. GitHub is naturally clean and PyPI naturally degenerate, so a large part of the pooled separation is DELTA acting as a substrate label -- exactly what K6 was written to catch. THE HONEST FIGURES ARE THE WITHIN-SUBSTRATE ONES: 0.8754 and 0.6690. The second of those clears its 0.65 bar by 0.019 and is the weakest number in the run.",
+      "pooled": 0.9442,
+      "within_github": 0.8754,
+      "within_pypi": 0.669
+    },
+    "D6_K5_FAILED_SO_THE_MULTIPLICATIVE_CLAIM_IS_NOT_EARNED": {
+      "best_single_auc": 0.9207,
+      "best_single_factor": "V",
+      "delta_auc": 0.9442,
+      "improvement_from_multiplying": 0.0235,
+      "locked_bar": 0.03,
+      "the_honest_caveat_in_the_models_favour": "V and C were pre-disclosed as correlated by construction, both being functions of the outcome's value distribution. Two substrates in which they move together cannot separate them. A substrate where the outcome varies widely but takes few distinct values -- high V, low C -- would decouple them, and none was available here. That is a reason the test is weak on this point, not a reason to discount the result.",
+      "what_is_NOT_being_done": "The model is not being redefined to fit this result, and DELTA is not being quietly replaced by V. DCM is reported as specified, with K5 recorded as failed. Rewriting the formula after seeing the AUC is the immunisation move the pre-registration exists to prevent.",
+      "what_the_next_spec_must_do": "Either find a substrate that decouples V from C, or drop to the one-factor model and pre-register it against this same harness before claiming anything for it.",
+      "what_this_means": "The pre-registration named multiplicativity as 'the substantive and falsifiable content of the model'. It was tested and IT DID NOT EARN ITS KEEP: V alone scores 0.9207 against the product's 0.9442, an improvement of 0.0235 against a locked bar of 0.03. On this evidence a ONE-FACTOR model -- does the outcome actually move? -- does nearly all the work."
+    },
+    "D7_K6_PASSED_ON_THE_PYPI_SIDE_ON_FOUR_EVENTS": {
+      "bar": 0.65,
+      "note": "K6 is recorded as MET because the locked rule was met. It should not be read as support. Only 4 of 200 PyPI sub-datasets detected anything, so the 0.669 AUC rests on 4 positive cases and clears its 0.65 bar by 0.019. THAT IS NOT A RESULT. The gate stands as passed because the threshold was locked and is not being moved, and the weakness is recorded here rather than absorbed into the score.",
+      "pypi_auc": 0.669,
+      "pypi_detection_rate": 0.02,
+      "pypi_detections": 4,
+      "pypi_subdatasets": 200,
+      "why_pypi_detects_almost_nothing": "Its outcome, pin clarity, takes 26 distinct values across 540 packages with 49 percent sharing one value. Mean C in the PyPI draws is 0.125 against GitHub's 0.999. That is the model's own prediction about this substrate coming true -- which is consistent with DCM but is NOT independent evidence for it, because the same degeneracy drives both DELTA and the non-detection."
+    },
+    "D8_the_degraded_arm_directionally_agrees_but_is_underpowered": {
+      "detection_rate_natural": 0.29,
+      "detection_rate_quantised_10": 0.055,
+      "detection_rate_quantised_3": 0.005,
+      "note": "Coarsening the RECORDING while leaving the relationship untouched drops detection from 29.0 percent to 5.5 percent to 0.5 percent. That is the model's central claim visible directly: the effect was still there and the data stopped being able to see it. But the quantised-3 arm carries 2 detections in 400, so its AUC of 0.9322 is meaningless and is not quoted as support. The arm scores nothing by the locked spec and is reported for the detection-rate collapse only."
+    }
+  },
+  "primary_verdict": "K3 MET at AUC 0.9442. DELTA beat sample size (0.9442 vs 0.6700) and did NOT beat its best single factor V (0.9207).",
+  "score": "5/6",
+  "simulated_mechanisms": 0,
+  "spec_sha256": "3a33d53e178b9c6f9178a77fe9d2e60780eff74d63c5606878b8bf61f9947ffe",
+  "too_perfect_flag": []
+}
