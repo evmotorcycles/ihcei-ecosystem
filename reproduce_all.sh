@@ -98,6 +98,7 @@ run "contract-audit: three schedules — 3/6; no dataset can distinguish risk-sh
 run "outcome-audit: three outcome panels — 2/5; write-downs are policy, not asset-driven" py outcome-audit/test_outcomes.py
 run "interbank-2016: real Q1→Q2 network — 3/5; the QUADRATIC rival beat LISM" py interbank-2016/test_network.py
 run "ifsb-equity: 117 country-quarters — 1/6; loss-absorbing funding share is at the noise mean" py ifsb-equity/test_ifsb.py
+run "allometry: Tusko scaling on 866 real repos — 3/5; the CONSTANT beat the power law" py allometry/test_allometry.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py

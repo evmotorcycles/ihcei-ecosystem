@@ -272,6 +272,30 @@ repositories with directly measured latency preserves it (p ≈ 10⁻²⁹), and
 fraction was higher in the failed group (0.15 vs. 0.04), which biases against rather than
 toward the finding. τ_v is a strong, measured leading indicator of failure.
 
+**A scale confound, disclosed, and the check that addresses it.** A separate pre-registered
+scaling analysis of this same cohort (spec
+`6666f1a958139c6b661b6df61b42c5c2863d4bd7001ab60aa6599b03d8c32710`) establishes that τ_v
+*falls* with repository scale across 3.65 orders of magnitude, with a fitted exponent of
+−0.174. That creates a confound for the result above, because the two strata differ sharply
+in scale: median stars are 42,966 for thriving repositories against 4,237 for failed ones, a
+factor of ten. Part of the 50.6-versus-19.8-day gap could therefore be size, not governance.
+
+The following check was **not pre-registered and is reported as post-hoc**. Restricting to a
+single star decade removes the scale difference by construction. Only the 10⁴ decade carries
+at least twenty measured repositories in both strata:
+
+| stratum, 10⁴-star decade | n | median τ_v |
+|---|---|---|
+| failed | 35 | 21.8 days |
+| thriving | 218 | 8.0 days |
+
+The effect survives at 2.7×, attenuated from the pooled 2.6× ratio of means but in the same
+direction. **This is one decade, chosen because it is the only one that supports the
+comparison, and it is not a substitute for a stratified pre-registration.** The honest status
+is that τ_v remains a leading indicator after the most obvious scale confound is controlled
+in the one place the data permits, and that a properly scale-stratified test has not been
+run.
+
 ## 4. Discussion
 
 Across the two domains where a valid, independent two-hop test was possible — a dense

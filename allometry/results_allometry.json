@@ -1,0 +1,204 @@
+{
+  "alpha_all_measured": -0.1741,
+  "blocked_arms": {
+    "genomics.senescence.info": "403 at egress gateway",
+    "github_repos_outside_session_scope": "403, no new sampling",
+    "huggingface.co": "403 at egress gateway"
+  },
+  "cross_validation": {
+    "constant_dex_per_fold": [
+      0.4672,
+      0.4278,
+      0.4188,
+      0.4028,
+      0.4088
+    ],
+    "folds": 5,
+    "mean_constant": 0.4251,
+    "mean_power": 0.4728,
+    "power_dex_per_fold": [
+      0.4987,
+      0.4232,
+      0.5077,
+      0.4749,
+      0.4594
+    ],
+    "seed": 20260801
+  },
+  "decade_medians_tau_v": {
+    "1e1": 49.965,
+    "1e2": 35.295,
+    "1e3": 33.43,
+    "1e4": 10.739,
+    "1e5": 4.26
+  },
+  "gates": [
+    {
+      "detail": "992 rows, 866 measured, stars 99..442738, per-decade {'1e1': 44, '1e2': 362, '1e3': 185, '1e4': 253, '1e5': 22}",
+      "id": "G1_data_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "smallest decade carries 22 measured repositories (needs >= 20); {'1e1': 44, '1e2': 362, '1e3': 185, '1e4': 253, '1e5': 22}",
+      "id": "G2_the_failing_region_is_populated_across_scale",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "calibrated on decades 1e1+1e2 (n=406), extrapolated to 1e5 (n=22). median dex: linear 3.644, power 1.626, constant 0.921. ratio linear/power = 2.24 (needs >= 2.0)",
+      "id": "G3_THE_TUSKO_GATE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "5-fold CV seed 20260801: mean held-out dex power 0.4728 vs constant 0.4251, improvement -0.0477 (needs > 0.02)",
+      "id": "G4_the_power_law_beats_a_constant_under_cross_validation",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "alpha fitted on decades 1e2/1e3/1e4 = -0.1465. held-out 1e1 vs 1e5: normalised medians 97.97 vs 25.07, gap 0.592 dex (needs <= 0.301); raw medians 49.965 vs 4.260, gap 1.069 dex (needs > 0.301)",
+      "id": "G5_HELD_OUT_SCALE_INVARIANCE",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "alpha over all 866 measured rows = -0.1741, intercept 1.8156. Per-decade median tau_v: {'1e1': 49.965, '1e2': 35.295, '1e3': 33.43, '1e4': 10.739, '1e5': 4.26}. SCORES NOTHING -- these medians were inspected before the spec was locked, as disclosed in the pre-registration, so a gate on the exponent's sign could not have failed.",
+      "id": "G6_the_exponent_itself",
+      "met": null,
+      "weight": "descriptive"
+    },
+    {
+      "detail": "BLOCKED: huggingface.co:443 answered 403 to CONNECT at the egress gateway. BLOCKED is not REFUTED and is not UNTESTABLE-HERE -- the data exists and the test is well posed; this session cannot reach it. No substitute dataset was used.",
+      "id": "G7_hugging_face_model_lineage_arm",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "BLOCKED: genomics.senescence.info:443 answered 403 to CONNECT at the egress gateway. BLOCKED is not REFUTED and is not UNTESTABLE-HERE -- the data exists and the test is well posed; this session cannot reach it. No substitute dataset was used.",
+      "id": "G8_biological_allometry_arm",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "G4_the_power_law_beats_a_constant_under_cross_validation",
+    "G5_HELD_OUT_SCALE_INVARIANCE"
+  ],
+  "held_out_invariance": {
+    "alpha_from_middle_decades": -0.1465,
+    "gap_normalised_dex": 0.5919,
+    "gap_raw_dex": 1.0692,
+    "normalised_medians": {
+      "1e1": 97.97273564095414,
+      "1e5": 25.070244649004223
+    },
+    "raw_medians": {
+      "1e1": 49.965,
+      "1e5": 4.26
+    }
+  },
+  "layer_3_boundary": "Tusko and Kleiber generated this hypothesis and supplied its vocabulary. Neither is evidence about software. No biological law is confirmed, tested or invoked as support anywhere in this file.",
+  "measured_per_decade": {
+    "1e1": 44,
+    "1e2": 362,
+    "1e3": 185,
+    "1e4": 253,
+    "1e5": 22
+  },
+  "n_imputed_excluded": 126,
+  "n_measured": 866,
+  "n_rows_total": 992,
+  "orders_of_magnitude": 3.651,
+  "post_run_disclosures": {
+    "D1_censoring_and_bot_closures_retained": {
+      "at_the_365_day_ceiling": 5,
+      "below_0_01_days": 6,
+      "effect_if_they_were_dropped": "alpha would be -0.1812 instead of -0.1741, a change of 0.0071. Reported so the reader can see the sensitivity without the gate being re-scored on it.",
+      "note": "The 365.0 values are a collection ceiling, not observations, and the sub-15-minute values are almost certainly automated closure. Both groups are RETAINED because the spec said so and removing them after seeing results would be a threshold move.",
+      "repos": [
+        "immersive-limit/coco-manager",
+        "lanqiao-courses/python-100",
+        "JaredMHall/RaspberryCloud",
+        "ctwxdd/Tensorflow-ACGAN-Anime-Generation",
+        "charleshberlin/O-RLY-Book-Generator"
+      ],
+      "repos_fast": [
+        "geekcomputers/Python",
+        "anthropics/claude-plugins-official",
+        "google/hdrnet",
+        "guoziqingbupt/Locality-sensitive-hashing",
+        "vpulim/mango",
+        "fikrado/JOKER-burtal-force"
+      ]
+    },
+    "D2_what_the_sign_of_alpha_means": {
+      "alpha": -0.1741,
+      "no_biological_confirmation_is_claimed": true,
+      "reading": "alpha is negative, so LARGER repositories close issues FASTER. That inverts the naive reading of the analogy, in which bigger systems are assumed slower and more sclerotic.",
+      "the_biological_parallel_is_LAYER_3_AND_SCORES_NOTHING": "Kleiber's law also gives a RATE that falls with mass -- heart rate as m^(-1/4). A latency falling with capacity is therefore the analogous direction rather than a contradiction. This sentence is an interpretation. It is not evidence and nothing is inferred from it."
+    },
+    "D3_what_stars_are_not": {
+      "note": "Stars are not a cause of latency. Both plausibly follow from project maturity, funding and maintainer count, none of which are in this cohort. Every result here is an association across scale, not a mechanism, and no intervention is implied."
+    },
+    "D4_the_range_actually_covered": {
+      "note": "The design asked for 1 star upward. This session cannot sample new repositories -- GitHub endpoints outside session scope answer 403 -- so the floor is 99. Nothing here extrapolates below 99 or above 442,738, and the Tusko lesson applies to this result too.",
+      "stars_max": 442738,
+      "stars_min": 99
+    },
+    "D5_THE_CALIBRATION_SLOPE_HAS_THE_OPPOSITE_SIGN_TO_THE_GLOBAL_SLOPE": {
+      "alpha_fitted_on_the_small_decades_1e1_1e2": 0.3211,
+      "alpha_over_all_866_measured_rows": -0.1741,
+      "finding": "Fitting the power law on the SMALL end alone gives +0.3211. Fitting it on the whole range gives -0.1741. THE SIGN FLIPS. At small scale latency appears to RISE with capacity; across the full range it FALLS.",
+      "why_this_is_the_sharpest_form_of_the_Tusko_error": "The 1962 error was using the wrong EXPONENT, 1 instead of a fractional one. This is worse: the small-scale data supports the wrong DIRECTION. Any law fitted at small scale and extrapolated is not merely mis-scaled, it points the wrong way, which is why the power law extrapolates to a 42-fold error while simply assuming no change errs by 8-fold."
+    },
+    "D6_THE_CONSTANT_MODEL_WINS_BOTH_COMPARISONS": {
+      "cross_validated_mean_dex": {
+        "constant": 0.4251,
+        "power": 0.4728
+      },
+      "extrapolation_fold_errors": {
+        "constant": 8.34,
+        "linear": 4406.2,
+        "power": 42.25
+      },
+      "stated_first_as_the_spec_required": "The locked spec said that if the constant model beat the power law this must be stated first. IT DID, in both comparisons. On extrapolation to the top decade the constant errs 8.3-fold against the power law's 42-fold, and under 5-fold cross-validation the constant's mean held-out dex is LOWER. G4 is recorded as failed on exactly this.",
+      "the_honest_conclusion": "Across 866 real repositories spanning 3.65 decades, capacity does not predict enforcement latency well enough to extrapolate with. The correct operational lesson from Tusko here is NOT 'use a power law instead of a linear rule'. It is 'a rule calibrated at one scale should not be extrapolated to another at all'. The linear rule is catastrophic, the power law is bad, and assuming nothing changes is merely poor."
+    },
+    "D7_G5_flattened_the_gap_but_not_to_invariance": {
+      "normalised_gap_dex": 0.5919,
+      "note": "Normalising by the held-out exponent cut the 1e1-vs-1e5 gap from 1.069 dex to 0.592 dex -- a real reduction, from a 12-fold difference to a 4-fold one. But the locked bar was a factor of 2 and 4-fold misses it. There is no scale-invariant latency constant here. The 'one billion heartbeats' structure does not appear in this substrate at this range, and the partial flattening is reported without credit.",
+      "raw_gap_dex": 1.0692
+    }
+  },
+  "score": "3/5",
+  "simulated_quantities": 0,
+  "spec_sha256": "6666f1a958139c6b661b6df61b42c5c2863d4bd7001ab60aa6599b03d8c32710",
+  "stars_range": [
+    99,
+    442738
+  ],
+  "tusko_extrapolation": {
+    "calibrated_on_decades": [
+      1,
+      2
+    ],
+    "calibration_params": {
+      "alpha": 0.321055,
+      "c": 0.517535,
+      "constant": 35.518727,
+      "k": 0.058701
+    },
+    "constant_fold_error": 8.34,
+    "extrapolated_to_decade": 5,
+    "linear_fold_error": 4406.2,
+    "linear_over_power": 2.241,
+    "median_dex_constant": 0.9213,
+    "median_dex_linear": 3.6441,
+    "median_dex_power": 1.6258,
+    "n_calibration": 406,
+    "n_target": 22,
+    "power_fold_error": 42.25
+  }
+}
