@@ -1,0 +1,49 @@
+{
+  "title": "Auditing three Islamic-contract schedules: can they distinguish risk-sharing from debt?",
+  "date_locked": "2026-07-31",
+  "status": "LOCKED BEFORE ANY IMPLEMENTATION OR RESULT EXISTED",
+
+  "why_this_audit_exists": "The three-proposal benchmark modelled Al-Qudah's position from a written description because no contract data existed to audit it against. Three schedules have now been supplied -- murabahah cost-plus (5 rows), ijarah asset lease (5 rows), musharakah real estate (10 rows). The question this spec answers is NOT whether these contracts perform well. It is the prior question: CAN THESE DATASETS AUDIT ANYTHING? A dataset can only test a claim it is capable of discriminating.",
+
+  "the_discriminability_question_stated_plainly": "The central claim distinguishing these contracts from conventional debt is that the financier bears ownership or asset risk rather than holding a fixed claim. That claim has an observable consequence: WHEN THE ASSET LOSES VALUE, THE FINANCIER'S POSITION MUST FALL WITH IT. If a dataset contains no adverse event -- no value movement, no missed payment, no default -- then the risk-bearing claim produces exactly the same cash flows as its debt equivalent, and the dataset cannot tell them apart. This is a property of the DATA, not of the contracts, and it is checkable before any performance question is asked.",
+
+  "sample_size_declaration_made_before_looking": "N = 5, 5 and 10 rows. These are CONTRACT SCHEDULES, not outcome records. No statistical inference of any kind is licensed by them -- no significance test, no effect size, no generalisation to a portfolio. Anything this audit reports is a STRUCTURAL property of the schedules, checkable by arithmetic. This limitation is stated here, before the files were analysed, so it cannot be quietly dropped if a result looks interesting.",
+
+  "fixed_parameters": {
+    "sources": ["data/islamic-contracts/murabahah_cost_plus.csv",
+                "data/islamic-contracts/ijarah_asset_lease.csv",
+                "data/islamic-contracts/musharakah_real_estate.csv"],
+    "hash_pinned_against": "data/islamic-contracts/MANIFEST.json",
+    "debt_equivalent_construction": "For each schedule, build the cash-flow-matched conventional debt instrument: for murabahah, a fixed-instalment loan of the same principal and term; for ijarah, a secured amortising loan whose payments equal the lease payments; for musharakah, a declining-balance amortising loan whose interest equals the rental and whose principal repayment equals the equity acquisition payment. Compare period-by-period cash flows.",
+    "adverse_event_tested": "a 25% fall in the underlying asset value, applied at the midpoint of each schedule",
+    "cash_flow_identity_tolerance_usd": 0.01
+  },
+
+  "gates": {
+    "A1_the_schedules_are_internally_consistent": "Every derived column must reconcile from its inputs to within 0.01 USD: murabahah total = cost + markup and instalment = total / term; ijarah total = fixed + variable; musharakah total = rental + equity acquisition, and ownership percentages must sum to 100 and move monotonically. CAN FAIL on a data error.",
+    "A2_the_murabahah_markup_prices_time_or_does_not": "MEASURE the markup as a percentage of cost, and the implied annualised rate, across all five rows. If the flat markup is constant while the implied annualised rate varies with tenor, the instrument is NOT a constant-rate loan in disguise. If the annualised rate is constant while the flat markup varies, it IS. Reported as measured; either outcome is a finding.",
+    "A3_the_ijarah_places_ownership_risk_with_the_owner": "MEASURE who bears maintenance cost and who holds legal title across the schedule. PASS = the schedule shows variable maintenance borne by the party holding legal title. A lease in which the non-owner pays all maintenance while the owner holds title has moved the ownership burden without moving the ownership risk, and that is checkable arithmetic rather than an opinion.",
+    "A4_the_musharakah_asset_value_moves": "MEASURE the variance of the recorded asset value across the schedule. PASS = the asset value changes at least once. A co-ownership schedule with a constant asset value cannot exhibit co-ownership risk, because no event occurs for the co-owner to share in.",
+    "A5_ANY_DATASET_CAN_DISTINGUISH_RISK_SHARING_FROM_DEBT": "PRIMARY. For each schedule, construct the cash-flow-matched debt equivalent and compare period by period. PASS = at least ONE of the three schedules produces cash flows that differ from its debt twin by more than 0.01 USD in at least one period, WITHOUT introducing an adverse event. FAIL means all three are cash-flow-identical to debt as recorded, and therefore CANNOT audit the risk-sharing claim -- which would be a fact about the data, not a criticism of the contracts.",
+    "A6_the_adverse_event_separates_them": "Apply the declared 25% asset-value fall and re-compare. PASS = at least one schedule's financier position diverges from its debt twin under the shock. This gate tests whether the CONTRACTS differ even though the RECORDED DATA does not, and is the constructive half of the audit.",
+    "A7_hash_pinned_and_no_row_dropped": "Structural: all three files hash to the committed manifest and every row is used. EXCLUDED from the score.",
+    "A8_no_statistical_claim_is_made": "Structural: the audit emits no p-value, no confidence interval and no generalisation from N = 5, 5, 10. EXCLUDED from the score."
+  },
+
+  "predictions_recorded_in_advance": {
+    "A1": "EXPECTED TO PASS. These look like generated schedules and should reconcile exactly.",
+    "A2": "UNCERTAIN. A flat markup constant across tenors would mean the implied annualised rate varies several-fold, which cuts AGAINST the disguised-interest reading rather than for it. A constant annualised rate would cut for it.",
+    "A3": "EXPECTED TO FAIL. Lease schedules of this form typically bill maintenance to the lessee while the financier retains title.",
+    "A4": "EXPECTED TO FAIL. A generated co-ownership schedule almost certainly holds the property value fixed.",
+    "A5": "EXPECTED TO FAIL, and this is the point of the audit. Without an adverse event, a risk-bearing claim and a fixed claim pay identically. If so, the honest report is that these datasets DO NOT make the model auditable, and the reason is specific and fixable.",
+    "A6": "EXPECTED TO PASS. Under a value shock the co-ownership position should diverge from debt even though the recorded schedule does not."
+  },
+
+  "what_a_failure_of_A5_would_and_would_not_mean": "It would NOT mean the contracts are debt. It would mean the RECORDED DATA cannot tell the difference, because it contains no event at which the difference becomes visible. The remedy is not a different contract but a different dataset: one containing realised outcomes -- value movements, arrears, early settlements, defaults, write-downs -- rather than a planned schedule.",
+
+  "anti_immunisation_clause": "If A5 fails, the result may not be rescued by asserting that the contracts are risk-sharing in principle, by pointing to jurisprudential authority, or by substituting a different dataset after the fact. It also may not be inflated into a claim that these contracts ARE disguised debt -- the measurement establishes only that the supplied data cannot discriminate.",
+
+  "the_simulation_trap_being_avoided_again": "TWELFTH appearance. The debt equivalents are CONSTRUCTED FROM THE SUPPLIED ROWS by cash-flow matching, not generated by a formula chosen to produce a difference or a match. Every comparison is arithmetic on committed data.",
+
+  "what_this_audit_cannot_settle": "Nothing here adjudicates whether any contract is permissible. Cash-flow equivalence is not a jurisprudential verdict -- two instruments can pay identically and differ in ownership, liability and recourse, which are legal facts these files do not record. The audit measures what the data can and cannot show, and stops there."
+}

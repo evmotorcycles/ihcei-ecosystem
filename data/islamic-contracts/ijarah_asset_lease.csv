@@ -1,0 +1,6 @@
+Year,Asset_Description,Legal_Owner,Fixed_Rental_Fee_USD,Variable_Maintenance_Fee_USD,Total_Lease_Payment_USD,Transfer_Of_Ownership_Option
+1,Delivery Van,Bank,8000,500,8500,Lease
+2,Delivery Van,Bank,8000,600,8600,Lease
+3,Delivery Van,Bank,8000,550,8550,Lease
+4,Delivery Van,Bank,8000,700,8700,Lease
+5,Delivery Van,Bank,8000,650,8650,Gift_At_Term_End

@@ -1,0 +1,6 @@
+Transaction_ID,Commodity_Type,Cost_Price_USD,Mark_Up_Profit_USD,Total_Selling_Price_USD,Payment_Term_Months,Monthly_Installment_USD
+MUR-2026-001,Steel Coils,100000,10000,110000,12,9166.67
+MUR-2026-002,Copper Wiring,45000,4500,49500,6,8250.0
+MUR-2026-003,Aluminum Sheets,75000,7500,82500,12,6875.0
+MUR-2026-004,Industrial Plastics,30000,3000,33000,3,11000.0
+MUR-2026-005,Raw Cotton,60000,6000,66000,6,11000.0

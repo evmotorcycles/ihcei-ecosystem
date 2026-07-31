@@ -1,0 +1,8 @@
+{
+  "note": "three Islamic-contract schedules supplied for audit; committed so the audit reproduces offline",
+  "sha256": {
+    "ijarah_asset_lease.csv": "75ffb3c6163eaf50945cb4b2e56f8d87329d8e22ea8bef38d901f8cc4c52f357",
+    "murabahah_cost_plus.csv": "f3ed98891a746931a7bc2b5aeb0f608239086f43405b37a2607ed351d74668c5",
+    "musharakah_real_estate.csv": "e2ec839919731363a875acd8c7e0281ec44e8c797618de8211770191079176d3"
+  }
+}
