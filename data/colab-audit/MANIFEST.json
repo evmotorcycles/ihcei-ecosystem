@@ -6,9 +6,10 @@
     "crs_reports.csv": "781af5eccb2064ef4ac5eab634733a7253f4d15e324ba2be74d7ad1bce108da8",
     "executive_orders.csv": "2e06b04ef2f2990678a6055f628ef16cd7f3ade6e25719351c0df81aa0e9a1e5",
     "ifsb_financial_statements.xlsx": "1db87ca81a35355366fb9a569bbe3d6ff8cfd41b4f359eb0f747c6509a967d38",
-    "kenya_microfinance.xlsx": "7c03706a348f56386387461f05db37ad0158ed59c58fa2c12f91378afb115547",
+    "kenya_microfinance.xlsx": "467f482628349c71921ecb61244d706fe173fbc5418f41fdc2cbf8a2d82b5cb6",
     "meezan_transactions.csv": "ef231e58c5f807a0af4d8a72761679330e9b1bf42c3f4756e170f278556ca25d",
     "public_laws.csv": "c29fccfe57d1584805cf4bc42425410b545df8bbf2c10b54ad1584443db4792f",
     "public_laws_titles.csv": "bef786541e16c2ae8f2b7e85ae5e2fdebff31cb1720da47d017daee67b02b1c0"
-  }
+  },
+  "redaction_note": "kenya_microfinance.xlsx was REDACTED 2026-07-31. Removed: respondent and interviewer names, mobile numbers, GPS reading and lat/long/altitude/precision, submission uuid, and group names -- 10 columns, 110 -> 100. The pre-redaction blob was purged from git history by filter-branch and is unreachable from every ref. Redaction does NOT change the A3 result: 12.23%, 62 of 507 rows, identical before and after."
 }
