@@ -1,0 +1,134 @@
+{
+  "spec_sha256_canonical": "caacef8454a34242164a7228befe79305a466981d72e16791fa21d0b09559588",
+  "rows": {
+    "musharakah": 240,
+    "ijarah": 240,
+    "murabahah": 240
+  },
+  "five_remedies_present": {
+    "asset values vary": true,
+    "arrears": true,
+    "defaults": true,
+    "write-downs": true,
+    "recovery": true
+  },
+  "write_down_events": [
+    {
+      "id": "MSH-2026-007",
+      "month": 20,
+      "bank_pct": -85.0,
+      "asset_pct": -1.1017188341352124
+    },
+    {
+      "id": "MSH-2026-007",
+      "month": 21,
+      "bank_pct": -85.0,
+      "asset_pct": 1.6128135493803428
+    },
+    {
+      "id": "MSH-2026-007",
+      "month": 22,
+      "bank_pct": -85.00002990877823,
+      "asset_pct": -0.3748564752228198
+    },
+    {
+      "id": "MSH-2026-007",
+      "month": 23,
+      "bank_pct": -85.00011963535145,
+      "asset_pct": 0.8961032533054486
+    },
+    {
+      "id": "MSH-2026-007",
+      "month": 24,
+      "bank_pct": -85.00026585845696,
+      "asset_pct": 0.18422664517779427
+    }
+  ],
+  "median_loss_to_asset_ratio": 94.85527401202063,
+  "n_events_where_asset_rose": 3,
+  "n_write_down_events": 5,
+  "customer_balance_moved_in_n_events": 0,
+  "decay_ratios": {
+    "MSH-2026-007": {
+      "ratios": [
+        0.15,
+        0.14999970091221773,
+        0.14999880364648552,
+        0.14999734141543045
+      ],
+      "sd": 1.033780008281783e-06
+    }
+  },
+  "constant_decay_accounts": [],
+  "decay_identical_to_4dp": [
+    "MSH-2026-007"
+  ],
+  "o4_marginal_pass_disclosed": "passes on rounding artefact only: measured sd is 3% above the locked 1e-6 threshold, and the ratios are identical to 4dp",
+  "label_leakage_accounts": [
+    "MSH-2026-007",
+    "IJR-2026-005",
+    "IJR-2026-007",
+    "MRB-2026-003",
+    "MRB-2026-007"
+  ],
+  "perfectly_linear_arrears": [
+    "MSH-2026-003",
+    "MSH-2026-005"
+  ],
+  "gates": [
+    {
+      "gate": "O1_the_panels_contain_the_five_named_outcome_types",
+      "pass": true,
+      "detail": "all five remedies named by the earlier audit are present: asset values vary YES, arrears YES, defaults YES, write-downs YES, recovery YES\n        This is a genuine advance over the schedules and is recorded as such.",
+      "weight": "full"
+    },
+    {
+      "gate": "O2_WRITE_DOWNS_TRACK_THE_ASSET_VALUE",
+      "pass": false,
+      "detail": "5 write-down events across 1 accounts\n        financier balance change: -85.0% -85.0% -85.0% -85.0% -85.0%\n        asset value change:       -1.10% +1.61% -0.37% +0.90% +0.18%\n        median |financier%| / |asset%| = 94.9  (band allows <= 3)\n        *** In 3 of 5 events THE ASSET ROSE while the financier wrote down.\n        A write-down that moves 85% while the asset moves 1% is not asset-driven;\n        it records impairment POLICY, not co-ownership loss absorption.",
+      "weight": "full"
+    },
+    {
+      "gate": "O3_the_customer_stake_moves_when_the_financier_stake_does",
+      "pass": false,
+      "detail": "customer balance change in the 5 write-down months: 0.00 0.00 0.00 0.00 0.00\n        moved in 0 of 5 events\n        *** The co-owner's stake is UNTOUCHED while the financier absorbs 100% of the\n        loss. Proportional co-ownership impairs BOTH owners by their shares. Bearing\n        the entire loss is a guarantee structure, not musharakah proportionality.",
+      "weight": "full"
+    },
+    {
+      "gate": "O4_write_downs_are_not_a_closed_form_decay",
+      "pass": true,
+      "detail": "successive financier-balance ratios after a write-down begins:\n            MSH-2026-007  0.1500 0.1500 0.1500 0.1500  sd 1.03e-06\n        *** THIS GATE PASSES ONLY ON A ROUNDING ARTEFACT, AND THE PASS IS DISCLOSED\n        AS MARGINAL. Locked threshold sd < 1e-6; measured sd 1.03e-06 \u2014 above it by 3%.\n        The CSV stores balances to 2 decimal places, and that rounding is the entire\n        source of the variation: the ratios are IDENTICAL to 4 decimal places (0.1500 0.1500 0.1500 0.1500)\n        for 1 of 1 accounts. The balance is multiplied by a fixed 0.15 every\n        period. The threshold is NOT moved and the gate is NOT re-scored, but a\n        provisioning rule applied mechanically is not an observation.",
+      "weight": "full"
+    },
+    {
+      "gate": "O5_outcome_labels_are_DERIVED_from_state_not_stamped_in_advance",
+      "pass": false,
+      "detail": "accounts whose status label is IDENTICAL in month 1 and month 24 despite an adverse\n        event occurring mid-life: 5 \u2014 MSH-2026-007, IJR-2026-005, IJR-2026-007, MRB-2026-003, MRB-2026-007\n        *** The outcome is written onto every row from the start. MSH-2026-007 is labelled\n        'Written-off' in month 1 though the write-down begins in month 20; MSH-2026-005 is\n        'Default (90d+)' in month 1 though the flag flips in month 15. This is LABEL\n        LEAKAGE: the panel cannot be used to predict outcomes from state, because the\n        outcome is already in the row.",
+      "weight": "full"
+    },
+    {
+      "gate": "O6_the_series_show_empirical_irregularity",
+      "pass": false,
+      "detail": "arrears second-difference sd by account: MSH-2026-003 0.00e+00  MSH-2026-005 0.00e+00\n        2 of 2 arrears series accumulate by an EXACTLY constant amount every month.\n        Real arrears are irregular; these are arithmetic sequences.",
+      "weight": "excluded"
+    },
+    {
+      "gate": "O7_hash_pinned_and_every_row_used",
+      "pass": true,
+      "detail": "all three files match the committed manifest; 720 rows used across 30 accounts",
+      "weight": "excluded"
+    },
+    {
+      "gate": "O8_no_statistical_claim_from_thirty_accounts",
+      "pass": true,
+      "detail": "30 accounts x 24 months; no p-value, interval or generalisation emitted",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "O2_WRITE_DOWNS_TRACK_THE_ASSET_VALUE",
+    "O3_the_customer_stake_moves_when_the_financier_stake_does",
+    "O5_outcome_labels_are_DERIVED_from_state_not_stamped_in_advance"
+  ],
+  "score": "2/5"
+}

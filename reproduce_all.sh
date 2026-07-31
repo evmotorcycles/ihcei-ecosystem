@@ -95,6 +95,7 @@ run "three-proposals: Irfan vs Al-Qudah vs Two-Register on one engine — 4/5; d
 run "tworegister-v2: 5-seed robustness + Al-Qudah primitive — 3/5; the mix adds nothing, CV 0.22" py tworegister-v2/test_v2.py
 run "finance-10k: independent peer-review verification of the cohort (8/8)" python3 finance-10k/verify_finance_10k.py
 run "contract-audit: three schedules — 3/6; no dataset can distinguish risk-sharing from debt" py contract-audit/test_contracts.py
+run "outcome-audit: three outcome panels — 2/5; write-downs are policy, not asset-driven" py outcome-audit/test_outcomes.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py

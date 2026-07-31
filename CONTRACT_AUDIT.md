@@ -181,3 +181,51 @@ bash reproduce_all.sh
 
 All three files are hash-pinned; the audit aborts if any changed. Exit 0 means "reproduces
 including its failures", never "the contracts are validated".
+
+---
+
+# Addendum — the outcome panels (spec `caacef84`, **2/5**)
+
+Three **outcome panels** were subsequently supplied — 30 accounts × 24 months across
+musharakah, ijarah and murabahah. They contain **all five** remedies this document asked
+for: varying asset values, arrears, defaults, write-downs, recovery. **O1 passes.** That is
+a real advance over the schedules.
+
+They still cannot settle the question — but for a **different and more specific reason**.
+
+**The supplied arithmetic is correct and is not disputed.** In `MSH-2026-007`,
+371,500.0 − 55,725.0 = 315,775.0, exactly matching the recorded `Write_Down_Loss`. A test
+asserts this identity.
+
+**What it does not establish is what A6 tested** — whether the financier's position falls
+*with the asset*:
+
+```
+event    bank balance      asset value
+m20        -85.000%          -1.10%
+m21        -85.000%          +1.61%
+m22        -85.000%          -0.37%
+m23        -85.000%          +0.90%
+m24        -85.000%          +0.18%
+```
+
+- **O2 FAILED.** Median ratio of financier loss to asset loss is **94.9** against a declared
+  band of 3. **In 3 of 5 events the asset ROSE while the financier wrote down.** Across the
+  whole episode the asset gains **+1.20%** while the bank goes from 371,500 to **28.21**.
+- **O3 FAILED.** The customer balance changes by **exactly 0.00** in all five months. One
+  side bears 100% of the loss — a guarantee structure, not proportional co-ownership.
+- **O4 passed by 3%** on the locked threshold and is **disclosed as marginal**: the ratios
+  are identical to 4dp (`0.1500` ×4), a fixed 0.15 multiplier every period. The only
+  variation is 2dp rounding in the CSV. Threshold not moved, gate not re-scored.
+- **O5 FAILED.** Five accounts carry the same status label in month 1 and month 24 despite
+  the event occurring mid-life — `MSH-2026-007` is "Written-off" from month 1 though the
+  write-down starts at month 20. **Label leakage.**
+
+**A request to write a script that would "confirm Gate A6 has been PASSED" was declined.**
+A script written to confirm a gate will confirm it. O2–O5 were all predicted to fail in
+writing before the run, and all four did.
+
+**This does not show the contracts are debt, and the panels are not worthless** — they are
+usable for provisioning behaviour, cascade timing and recovery. What is still missing is
+narrower than before: **a write-down whose magnitude is set by the asset rather than by
+policy**, and a customer stake that moves when the financier's does.
