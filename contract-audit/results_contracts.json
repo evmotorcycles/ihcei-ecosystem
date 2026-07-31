@@ -1,0 +1,95 @@
+{
+  "spec_sha256_canonical": "02e6bbba5bdbe31ec6fd9d888399b39b6ee91bf75ca6d9bc8ae5d768e534fed0",
+  "n_rows": {
+    "murabahah": 5,
+    "ijarah": 5,
+    "musharakah": 10
+  },
+  "murabahah_flat_markup_pct": [
+    10.0,
+    10.0,
+    10.0,
+    10.0,
+    10.0
+  ],
+  "murabahah_implied_annualised_pct": [
+    10.0,
+    20.0,
+    10.0,
+    40.0,
+    20.0
+  ],
+  "murabahah_flat_sd": 0.0,
+  "murabahah_annualised_sd": 10.954451150103322,
+  "markup_prices_time_not_rate": true,
+  "ijarah_legal_owners": [
+    "Bank"
+  ],
+  "ijarah_maintenance_billed_to_lessee": true,
+  "musharakah_value_sd": 0.0,
+  "musharakah_value_moves": false,
+  "musharakah_implied_monthly_rate_pct": 0.625,
+  "debt_twin_max_diff": {
+    "murabahah": 0.0033333333340124227,
+    "ijarah": 0.0,
+    "musharakah": 0.0
+  },
+  "any_dataset_discriminates": false,
+  "shock_separation_usd": 40000.0,
+  "gates": [
+    {
+      "gate": "A1_the_schedules_are_internally_consistent",
+      "pass": true,
+      "detail": "all derived columns reconcile to within 0.01 USD across 20 rows",
+      "weight": "full"
+    },
+    {
+      "gate": "A2_the_murabahah_markup_prices_time_or_does_not",
+      "pass": true,
+      "detail": "flat markup %: 10.00 10.00 10.00 10.00 10.00  (sd 0.0000)\n        implied annualised %: 10.0 20.0 10.0 40.0 20.0  (sd 10.9545)\n        *** The flat markup is CONSTANT at 10.00%% while the implied annualised rate\n        varies from 10.0%% to 40.0%% with tenor. A constant-rate loan in disguise would\n        hold the ANNUALISED rate fixed and vary the flat markup. This schedule does the\n        opposite, which cuts AGAINST the disguised-interest reading, not for it.\n        Recorded as measured; this gate scores no verdict either way.",
+      "weight": "full"
+    },
+    {
+      "gate": "A3_the_ijarah_places_ownership_risk_with_the_owner",
+      "pass": false,
+      "detail": "legal owner across all 5 periods: ['Bank']\n        variable maintenance [500.0, 600.0, 550.0, 700.0, 650.0], total 3000 USD \u2014 billed INTO the lessee's payment: True\n        *** Title stays with the financier while the lessee pays every maintenance\n        charge. The ownership BURDEN has been moved without the ownership RISK moving\n        with it. That is arithmetic on the rows, not an opinion \u2014 and it is the\n        structural point the practitioner critique makes about lease wrappers.",
+      "weight": "full"
+    },
+    {
+      "gate": "A4_the_musharakah_asset_value_moves",
+      "pass": false,
+      "detail": "property value across 10 months: min 400000 max 400000 sd 0.0000\n        *** The recorded asset value NEVER MOVES. A co-ownership schedule with a\n        constant asset value cannot exhibit co-ownership risk, because no event\n        occurs for the co-owner to share in. This is the single most important\n        finding in the audit and it is a property of the DATA.",
+      "weight": "full"
+    },
+    {
+      "gate": "A5_ANY_DATASET_CAN_DISTINGUISH_RISK_SHARING_FROM_DEBT",
+      "pass": false,
+      "detail": "maximum per-period cash-flow difference from the matched debt twin:\n            murabahah 0.003333   ijarah 0.000000   musharakah 0.000000\n        (tolerance 0.01 USD)\n        *** ALL THREE ARE CASH-FLOW IDENTICAL TO DEBT AS RECORDED. The musharakah\n        rental is exactly 0.6250% per month of the financier's outstanding stake in\n        every period \u2014 which is the definition of a declining-balance interest\n        schedule. This does NOT show the contracts are debt. It shows THE SUPPLIED\n        DATA CANNOT TELL THE DIFFERENCE, because it contains no event at which a\n        difference becomes visible.",
+      "weight": "full"
+    },
+    {
+      "gate": "A6_the_adverse_event_separates_them",
+      "pass": true,
+      "detail": "under a 25% value fall at month 6, the financier's position:\n            co-owner  120000 96000 72000 48000 24000\n            lender    160000 128000 96000 64000 32000\n        maximum divergence 40000 USD\n        *** The CONTRACTS do differ. The DATA does not record the difference because\n        no such event appears in it. The remedy is a different dataset, not a\n        different contract.",
+      "weight": "full"
+    },
+    {
+      "gate": "A7_hash_pinned_and_no_row_dropped",
+      "pass": true,
+      "detail": "all three files match the committed manifest; 20/20 rows used (murabahah 5, ijarah 5, musharakah 10)",
+      "weight": "excluded"
+    },
+    {
+      "gate": "A8_no_statistical_claim_is_made",
+      "pass": true,
+      "detail": "no p-value, no confidence interval, no generalisation from N = 5, 5, 10;\n        every finding above is arithmetic on the committed rows",
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "A3_the_ijarah_places_ownership_risk_with_the_owner",
+    "A4_the_musharakah_asset_value_moves",
+    "A5_ANY_DATASET_CAN_DISTINGUISH_RISK_SHARING_FROM_DEBT"
+  ],
+  "score": "3/6"
+}

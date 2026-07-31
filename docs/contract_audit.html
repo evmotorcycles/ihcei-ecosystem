@@ -1,0 +1,256 @@
+<title>Three contract schedules, audited — and why they can't settle the question</title>
+<style>
+  :root{
+    --paper:#F1EFEB; --ink:#1B1A17; --ink-2:#4A4842; --muted:#7A776F;
+    --rule:#D5D1C6; --card:#FCFBF8; --card-2:#E5E1D6;
+    --ok:#1E6050; --warn:#93671A; --bad:#9F382C; --note:#3A5680;
+    --shadow:0 1px 2px rgba(27,26,23,.05), 0 12px 30px rgba(27,26,23,.06);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Charter","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#100F0D; --ink:#E9E6DE; --ink-2:#ADA99F; --muted:#7D7A72;
+      --rule:#282520; --card:#181713; --card-2:#211E19;
+      --ok:#59B29C; --warn:#CBA351; --bad:#DD6F5F; --note:#89A8D6;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  }
+  :root[data-theme="dark"]{ --paper:#100F0D; --ink:#E9E6DE; --ink-2:#ADA99F; --muted:#7D7A72;
+    --rule:#282520; --card:#181713; --card-2:#211E19;
+    --ok:#59B29C; --warn:#CBA351; --bad:#DD6F5F; --note:#89A8D6;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  :root[data-theme="light"]{ --paper:#F1EFEB; --ink:#1B1A17; --ink-2:#4A4842; --muted:#7A776F;
+    --rule:#D5D1C6; --card:#FCFBF8; --card-2:#E5E1D6;
+    --ok:#1E6050; --warn:#93671A; --bad:#9F382C; --note:#3A5680;
+    --shadow:0 1px 2px rgba(27,26,23,.05), 0 12px 30px rgba(27,26,23,.06); }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;
+       line-height:1.68;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:48rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p{margin:0;color:var(--ink-2)}
+  ul{margin:0;padding-left:1.15rem;color:var(--ink-2);display:flex;flex-direction:column;gap:.45rem}
+  :focus-visible{outline:2px solid var(--ok);outline-offset:3px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.011em;margin:0}
+  strong{color:var(--ink);font-weight:600}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.9em;color:var(--ink)}
+
+  .eyebrow{font-family:var(--mono);font-size:.69rem;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+  header{border-bottom:1px solid var(--rule);margin-bottom:3.4rem;padding:4.5rem 0 2.3rem;
+         display:flex;flex-direction:column;gap:1.25rem}
+  h1{font-size:clamp(2rem,5.2vw,3.05rem);line-height:1.08}
+  h1 em{font-style:italic;color:var(--bad)}
+  .standfirst{font-size:1.09rem;max-width:39rem}
+  .tags{display:flex;flex-wrap:wrap;gap:.45rem;font-family:var(--mono);font-size:.74rem}
+  .tag{border:1px solid var(--rule);background:var(--card);border-radius:2px;
+       padding:.28rem .58rem;color:var(--ink-2);white-space:nowrap}
+  .tag b{color:var(--ink)}
+  .tag.r{border-color:var(--bad);color:var(--bad)} .tag.r b{color:var(--bad)}
+  .tag.g{border-color:var(--ok);color:var(--ok)} .tag.g b{color:var(--ok)}
+
+  section{margin-bottom:3.4rem;display:flex;flex-direction:column;gap:1.12rem}
+  h2{font-size:1.5rem;line-height:1.22;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.68rem;color:var(--muted);display:block;
+        letter-spacing:.16em;margin-bottom:.55rem;font-weight:400;text-transform:uppercase}
+  h3{font-size:1.03rem}
+
+  .g{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+     padding:1.05rem 1.2rem;display:flex;flex-direction:column;gap:.6rem;box-shadow:var(--shadow)}
+  .g.ok{border-left:3px solid var(--ok)} .g.bad{border-left:3px solid var(--bad)}
+  .g.note{border-left:3px solid var(--note)}
+  .g .hd{display:flex;gap:.65rem;align-items:baseline;flex-wrap:wrap}
+  .g .id{font-family:var(--mono);font-size:.72rem;font-weight:600;min-width:1.6rem}
+  .g.ok .id{color:var(--ok)} .g.bad .id{color:var(--bad)} .g.note .id{color:var(--note)}
+  .g h3{flex:1;min-width:11rem}
+  .g .st{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase}
+  .g.ok .st{color:var(--ok)} .g.bad .st{color:var(--bad)} .g.note .st{color:var(--note)}
+
+  .nums{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.81rem;
+        color:var(--ink);background:var(--card-2);border:1px solid var(--rule);
+        border-radius:3px;padding:.8rem .95rem;overflow-x:auto;white-space:pre;line-height:1.74}
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.15rem 1.3rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:var(--shadow)}
+  .box.warn{border-left:3px solid var(--warn)}
+  .box.ok{border-left:3px solid var(--ok)}
+  .lab{font-family:var(--mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase}
+  .box.warn .lab{color:var(--warn)} .box.ok .lab{color:var(--ok)}
+  .note-p{font-size:.93rem;color:var(--ink-2);border-left:2px solid var(--rule);padding-left:.9rem}
+  .pull{font-family:var(--serif);font-size:1.22rem;line-height:1.44;color:var(--ink);
+        border-left:3px solid var(--bad);padding-left:1.1rem}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:29rem}
+  th,td{text-align:left;padding:.57rem .8rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--muted);font-weight:500;background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  footer{border-top:1px solid var(--rule);padding-top:1.4rem;font-size:.8rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.85}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Prereg 02e6bbba · locked before implementation · 3/6</p>
+  <h1>The schedules are clean. <em>They still can't settle it.</em></h1>
+  <p class="standfirst">All three contracts are <strong>cash-flow identical to plain debt as
+  recorded</strong> — but that does not make them debt. It means the data contains no moment
+  at which the difference could show, and that is a fact about the dataset, not the
+  contracts.</p>
+  <div class="tags">
+    <span class="tag r">no dataset <b>discriminates</b></span>
+    <span class="tag r">asset value sd <b>0.0000</b></span>
+    <span class="tag g">under shock, they <b>diverge 40,000</b></span>
+    <span class="tag">N = <b>5, 5, 10</b> schedules</span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">The question</span>Not "do they perform well" — can they audit at all?</h2>
+  <p>A dataset can only test a claim it is capable of <strong>discriminating</strong>. The
+  claim separating these contracts from conventional debt is that the financier bears
+  <strong>asset risk</strong> rather than holding a fixed claim. That has exactly one
+  observable consequence:</p>
+  <p class="pull">When the asset loses value, the financier's position must fall with it.</p>
+  <div class="box warn">
+    <span class="lab">Declared before the files were analysed</span>
+    <p>N = 5, 5 and 10. These are <strong>contract schedules, not outcome records</strong>.
+    No statistical inference is licensed and none is made — no p-value, no interval, no
+    generalisation. A test asserts the results file contains no statistical claim.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Findings</span>Six gates, three failed</h2>
+
+  <div class="g ok">
+    <div class="hd"><span class="id">A1</span><h3>The schedules are clean arithmetic</h3><span class="st">pass</span></div>
+    <p>All 20 rows reconcile to within 0.01 USD. Costs plus markups equal totals, instalments
+    equal totals over terms, ownership percentages sum to 100 and decline monotonically.</p>
+  </div>
+
+  <div class="g note">
+    <div class="hd"><span class="id">A2</span><h3>A surprise that cuts <em>against</em> the usual critique</h3><span class="st">no verdict</span></div>
+    <div class="nums">flat markup       10.00  10.00  10.00  10.00  10.00     sd  0.0000
+implied annual    10.0   20.0   10.0   40.0   20.0      sd 10.9545</div>
+    <p>The standard critique says cost-plus is interest wearing a different hat. <strong>A
+    disguised loan would hold the <em>annualised</em> rate fixed and vary the flat
+    markup.</strong> This does the opposite — a flat 10% margin regardless of tenor, so the
+    implied annual rate swings <strong>fourfold</strong>.</p>
+    <p class="note-p">That is what a price that <strong>does not price time</strong> looks
+    like. Recorded because it ran against the direction expected.</p>
+  </div>
+
+  <div class="g bad">
+    <div class="hd"><span class="id">A3</span><h3>The burden moved; the risk didn't</h3><span class="st">fail</span></div>
+    <p>The bank holds legal title in <strong>all five periods</strong> while the lessee pays
+    <strong>every</strong> maintenance charge — 3,000 USD billed straight into the lease
+    payment. Ownership <em>cost</em> transferred to the non-owner; ownership <em>risk</em>
+    stayed nominal.</p>
+  </div>
+
+  <div class="g bad">
+    <div class="hd"><span class="id">A4</span><h3>The asset value never moves</h3><span class="st">fail</span></div>
+    <div class="nums">property value across 10 months:  min 400000   max 400000   sd 0.0000</div>
+    <p><strong>The most important line in the audit.</strong> A co-ownership schedule with a
+    constant asset value cannot exhibit co-ownership risk, because no event occurs for the
+    co-owner to share in.</p>
+  </div>
+
+  <div class="g bad">
+    <div class="hd"><span class="id">A5</span><h3>No dataset can tell risk-sharing from debt</h3><span class="st">fail · primary</span></div>
+    <div class="nums">max per-period difference from the matched debt twin
+  murabahah   0.003333
+  ijarah      0.000000
+  musharakah  0.000000        tolerance 0.01 USD</div>
+    <p>All three are <strong>cash-flow identical</strong> to their debt equivalents. The
+    musharakah rental is exactly <strong>0.6250% per month of the financier's outstanding
+    stake, in every period</strong> — the definition of a declining-balance interest
+    schedule.</p>
+  </div>
+
+  <div class="g ok">
+    <div class="hd"><span class="id">A6</span><h3>But the contracts <em>do</em> differ</h3><span class="st">pass</span></div>
+    <div class="nums">                month 6    7      8      9      10
+  co-owner      120000   96000  72000  48000  24000
+  lender        160000  128000  96000  64000  32000
+  divergence     40000</div>
+    <p>Apply the pre-declared 25% value fall and the positions separate
+    <strong>immediately and permanently</strong>.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Reading it</span>Stated carefully in both directions</h2>
+  <div class="box warn">
+    <span class="lab">What it does not show</span>
+    <p><strong>It does NOT show these contracts are debt.</strong> A6 shows they genuinely
+    differ the instant something goes wrong. Anyone quoting A5 as proof of "disguised debt"
+    would be misusing it — and the pre-registration forbids that reading in advance, just as
+    it forbids rescuing the result by appeal to principle.</p>
+  </div>
+  <div class="box ok">
+    <span class="lab">What it does show — the oxymoron charge, made precise</span>
+    <p>The charge lands because labels are unverifiable. Here we can say exactly <em>why</em>
+    verification fails: <strong>a planned schedule with no adverse event is structurally
+    incapable of exhibiting risk-sharing</strong>, however the contract is drafted.</p>
+    <p><strong>Publishing schedules can never answer the charge. Only outcome records
+    can.</strong></p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Remedy</span>What would make the model auditable</h2>
+  <p>A different dataset, not a different contract. It must contain at least one event at
+  which a risk-bearer and a fixed claimant would behave differently.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Needed</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Asset values marked over time</strong></td><td>the co-owner's position must be observed <em>moving</em></td></tr>
+        <tr><td>Arrears and missed payments</td><td>a fixed claim accrues; a participation claim absorbs</td></tr>
+        <tr><td><strong>Write-downs actually taken</strong></td><td>the single most discriminating record there is</td></tr>
+        <tr><td>Early settlements</td><td>reveals whether profit was earned or unwound pro-rata</td></tr>
+        <tr><td>Defaults and recovery outcomes</td><td>shows who ended up bearing the loss — the whole question</td></tr>
+        <tr><td>Maintenance and repair incidence</td><td>distinguishes an owner from a titleholder</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pull">One quarter of real portfolio data containing a single write-down would be
+  worth more than a thousand rows of clean schedule.</p>
+  <p>A schedule with no adverse event carries <strong>zero discriminating information</strong>
+  no matter how large it gets.</p>
+</section>
+
+<section>
+  <h2><span class="n">Upstream</span>What this changes, including in our own code</h2>
+  <p>The three-proposal benchmark modelled this position <strong>from a written
+  description</strong> because no data existed. That remains the honest status — these
+  schedules do not replace it, because they cannot adjudicate the property being modelled.</p>
+  <p>What they <em>do</em> establish, and it is not nothing:</p>
+  <ul>
+    <li>the schedules are <strong>arithmetically clean</strong>, so the modelled mechanics were fair</li>
+    <li>the cost-plus markup <strong>does not price time</strong> — supports modelling it as a trade margin, not interest</li>
+    <li>the co-ownership rental <strong>is</strong> a constant rate on the outstanding stake — modelling it as a declining-balance payment was correct</li>
+    <li>the lease bills maintenance to the lessee, <strong>which our model does not reflect</strong></li>
+  </ul>
+  <div class="box warn">
+    <span class="lab">A gap in our own implementation, found by this data</span>
+    <p>That last point is recorded here rather than quietly patched. <strong>Changing the
+    engine after seeing an audit result is exactly what pre-registration exists to
+    prevent.</strong> It belongs in the next spec.</p>
+  </div>
+</section>
+
+<footer>
+  three files hash-pinned; the audit aborts if any changed · 20/20 rows used · no p-value,
+  no interval, no generalisation from N = 5, 5, 10 · cash-flow equivalence is not a
+  jurisprudential verdict — two instruments can pay identically and differ in ownership,
+  liability and recourse, which these files do not record ·
+  bash reproduce_all.sh → 77/77
+</footer>
+
+</div>
