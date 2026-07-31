@@ -1,0 +1,8 @@
+{
+  "note": "three Islamic-contract OUTCOME panels supplied for audit; committed so the audit reproduces offline",
+  "sha256": {
+    "ijarah_audit_outcomes.csv": "741cac550cda1ee60d754d35159d3a025ed8871716c735feb2beac8eff8f71ce",
+    "murabahah_audit_outcomes.csv": "6d4a767f95708508719500b4924c81238a3eea42c9a60652e306172bfa34d7ee",
+    "musharakah_audit_outcomes.csv": "b5aa96d5c62aeae9e4e990c577ac42515412d28f2355b1d894a8a28f159338ac"
+  }
+}

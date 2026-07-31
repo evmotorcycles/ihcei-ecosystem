@@ -1,0 +1,48 @@
+{
+  "title": "Do the outcome panels demonstrate risk-sharing, or record impairment on a schedule?",
+  "date_locked": "2026-07-31",
+  "status": "LOCKED BEFORE ANY IMPLEMENTATION OR RESULT EXISTED",
+
+  "what_changed_and_the_credit_that_is_due": "The earlier audit (02e6bbba) found three contract SCHEDULES could not discriminate risk-sharing from debt because they contained no adverse event, and named the remedy: asset values marked over time, arrears, write-downs, defaults, recovery. Three OUTCOME PANELS have now been supplied and they DO contain all five. That is a real advance over the schedules and this spec records it before testing anything.",
+
+  "the_claim_actually_under_test": "It was put to this programme that account MSH-2026-007 is 'mathematical proof of loss absorption' because the recorded Write_Down_Loss of 315,775.0 exactly equals the fall in Bank_Ownership_Balance from 371,500.0 to 55,725.0, and that this constitutes the Gate A6 divergence showing the structure is not disguised debt. THAT ARITHMETIC IS CORRECT AND IS NOT IN DISPUTE. What it does not by itself establish is the thing A6 tested. A6 asked whether the financier's position FALLS WITH THE ASSET. An internally consistent write-down is consistent with co-ownership loss absorption AND with a formulaic impairment provision that ignores the asset entirely. Only the relationship between the write-down and the contemporaneous asset value can tell them apart, and that relationship is what this spec measures.",
+
+  "why_a_confirmation_script_was_declined": "The proposal was to write a script that would 'confirm that Gate A6 has been PASSED'. A script written to confirm a gate will confirm it. The gates below are written so the data can fail them, and two of them are predicted to fail.",
+
+  "fixed_parameters": {
+    "sources": ["data/islamic-outcomes/musharakah_audit_outcomes.csv",
+                "data/islamic-outcomes/ijarah_audit_outcomes.csv",
+                "data/islamic-outcomes/murabahah_audit_outcomes.csv"],
+    "hash_pinned_against": "data/islamic-outcomes/MANIFEST.json",
+    "n_accounts_per_file": 10,
+    "n_months": 24,
+    "proportionality_tolerance": "a co-ownership write-down must fall within a factor of 3 of the contemporaneous proportional asset move to count as asset-driven",
+    "geometric_decay_tolerance": 1e-6
+  },
+
+  "gates": {
+    "O1_the_panels_contain_the_five_named_outcome_types": "MEASURE presence of: asset values varying over time, non-zero arrears, at least one default flag, at least one write-down, at least one recovery. PASS = all five present in at least one account. This gate exists to give the datasets the credit they are due, and it is expected to pass.",
+    "O2_WRITE_DOWNS_TRACK_THE_ASSET_VALUE": "PRIMARY. For every write-down event, compare the proportional fall in the financier's balance against the proportional change in the contemporaneous asset value. PASS = the median ratio of financier-loss to asset-loss falls inside the declared factor-of-3 band. FAIL means write-downs are decoupled from the asset, and therefore record impairment policy rather than co-ownership loss absorption.",
+    "O3_the_customer_stake_moves_when_the_financier_stake_does": "In genuine co-ownership a fall in asset value impairs BOTH owners in proportion to their shares. PASS = in write-down months the customer balance changes by a non-zero amount. FAIL means the loss allocation is not proportional co-ownership, whatever else it is.",
+    "O4_write_downs_are_not_a_closed_form_decay": "MEASURE the ratio of successive financier balances after a write-down begins. PASS = those ratios are NOT constant to within 1e-6. A constant ratio is a provisioning formula applied mechanically, and a formula is not an observation.",
+    "O5_outcome_labels_are_DERIVED_from_state_not_stamped_in_advance": "MEASURE whether the status label in month 1 already equals the terminal label for accounts whose adverse event occurs later. PASS = labels change over the life of the account. FAIL means the outcome was written onto every row from the start, which is label leakage and makes the panel unusable for predicting outcomes from state.",
+    "O6_the_series_show_empirical_irregularity": "MEASURE the second difference of arrears accumulation and of scheduled balances. PASS = at least one series is irregular. Perfectly linear arrears and perfectly linear amortisation across every account indicate generated series rather than recorded ones. EXCLUDED from the score and reported as provenance evidence.",
+    "O7_hash_pinned_and_every_row_used": "Structural. EXCLUDED from the score.",
+    "O8_no_statistical_claim_from_thirty_accounts": "Structural: 30 accounts over 24 months, with between one and three adverse events per contract type. No p-value, interval or generalisation is emitted. EXCLUDED from the score."
+  },
+
+  "predictions_recorded_in_advance": {
+    "O1": "EXPECTED TO PASS. The five outcome types are visible on inspection of the column headers alone.",
+    "O2": "EXPECTED TO FAIL. Preliminary inspection of a single account is not proof, but the direction is clear enough to state in advance: if a financier writes down 85% while the asset moves about 1%, the write-down is not asset-driven.",
+    "O3": "EXPECTED TO FAIL. If the customer balance is flat through a write-down the loss is being borne entirely by one side, which is a guarantee structure rather than proportional co-ownership.",
+    "O4": "EXPECTED TO FAIL, and this is the most diagnostic gate. A constant successive ratio would show the write-down path is generated by a rule.",
+    "O5": "EXPECTED TO FAIL. Status labels appear constant from month 1.",
+    "O6": "EXPECTED TO FAIL on the arrears series."
+  },
+
+  "what_a_failure_would_and_would_not_mean": "It would NOT mean the contracts are debt, and it would NOT mean the panels are worthless. Panels recording impairment policy are genuinely useful for testing provisioning behaviour, cascade timing and recovery. It WOULD mean these panels cannot settle the risk-sharing question either, for a different and more specific reason than the schedules: the schedules lacked events, while these contain events whose magnitude is set by policy rather than by the asset.",
+
+  "anti_immunisation_clause": "A failure may not be rescued by asserting that the write-downs are asset-driven in principle, nor by substituting a different account after seeing the result. Equally, no failure here licenses the claim that these structures ARE disguised debt -- the audit measures what these panels can and cannot show.",
+
+  "the_simulation_trap_being_avoided_again": "THIRTEENTH appearance, and the first time it has arrived as a request to confirm a specific gate as PASSED. Every quantity below is arithmetic on committed rows and every gate can return either verdict."
+}
