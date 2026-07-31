@@ -1,0 +1,134 @@
+{
+  "title": "Interbank 2016Q1-Q2: does the LISM asymmetric form predict realised funding withdrawal better than the quadratic rival, a size baseline, and the published SRISK measure?",
+  "locked_before": "any predictor was computed, any AUC was evaluated, and any arm was compared",
+  "data_provenance": {
+    "files": [
+      "data/interbank-2016/nodes_2016Q1.csv",
+      "data/interbank-2016/edges_2016Q1.csv",
+      "data/interbank-2016/edges_2016Q2.csv"
+    ],
+    "sha256": {
+      "nodes_2016Q1.csv": "4d2ed9d40387a2a4b2b90a70698d709e6432e11e871cf0fb9314a23b37762e9b",
+      "edges_2016Q1.csv": "5c89a25fca39e472f626c5c12e106e6d63274d27bb81c92dc8e942f52e117a77",
+      "edges_2016Q2.csv": "683c2f6de0f1a8c454108e1a2b180e20d7c4cfcf252050072e9efc5a02c037a7"
+    },
+    "declared_shape_before_analysis": {
+      "nodes": 4548,
+      "node_columns": 74,
+      "edges_Q1": 11631,
+      "edges_Q2": 11632,
+      "edge_pairs_present_in_both_quarters": 7820,
+      "edge_pairs_Q1_only": 3811,
+      "edge_pairs_Q2_only": 3812,
+      "srisk_ratio_populated_for": 266
+    },
+    "what_the_files_are": "A directed, weighted interbank exposure network for two consecutive quarters of 2016, with a 74-column balance-sheet panel attached to the Q1 nodes. The node identifiers are integer indices; no institution names, no country codes and no contract terms are present."
+  },
+  "why_this_dataset_supersedes_nothing": {
+    "claim_being_corrected": "It was put to this programme that these 2016 files 'completely supersede the IFSB aggregate data'. They do not. They answer a DIFFERENT question.",
+    "reason": "There is no contract data of any kind in these files. No column records whether an exposure is a fixed claim or a loss-absorbing participation. The network therefore cannot adjudicate any claim about Islamic contracts, risk-sharing, or participation finance. The IFSB panel is the only supplied dataset that carries an equity-income line at all, so it remains the only route to that question and is pre-registered separately.",
+    "what_this_dataset_CAN_do": "It carries a realised out-of-sample outcome: 3,811 of 11,631 Q1 exposures are gone by Q2. That is observed rewiring, not a model output. It therefore supports a genuine prediction test of the LISM functional form against rivals, on real institutions, with an outcome nobody in this programme generated."
+  },
+  "the_simulation_trap_being_avoided_again": {
+    "occurrence": "FOURTEENTH appearance in this programme.",
+    "the_proposal_declined": "The proposed next step was to re-route the 11,631 real edges under full-reserve participation mechanics, run a cascade under both wirings, and report 'the delta between the conventional network collapse and the risk-sharing network collapse' as the measurement.",
+    "why_it_was_declined": "That delta is the output of the re-routing rule I would have written. It measures my own assumption about how participation edges behave, evaluated on a real topology. Real topology does not make a simulated mechanism an observation. A cascade under a rule I choose can be made to produce any delta by choosing the rule, and there is no external record in these files against which the chosen rule could be falsified.",
+    "what_is_run_instead": "Only predictors computable from Q1 alone are scored, and they are scored against the realised Q2 rewiring. A cascade simulation IS still run, because it is informative about mechanism, but it is carried under gate N6 at weight 'excluded', contributes zero to the score, and the results file must state that it is not evidence."
+  },
+  "the_primary_scientific_question": "LISM asserts E = U * D_enc * D_dec, where the encoding distance and the decoding distance are separate factors. The rival asserts E = U * D^2, a single symmetric distance squared. In yeast, GitHub and the 10,000-institution financial cohort the asymmetric form won. A directed interbank network is the sharpest possible test of that distinction, because in-degree (who has encoded a claim on this bank) and out-degree (who this bank must reach to enforce its own claims) are structurally different quantities in the same graph. If the asymmetric form carries no advantage here, that is evidence against it.",
+  "operational_definitions": {
+    "layer": "L2 - operational definitions, declared before measurement",
+    "U": "Interbank_liabilities / Equity, from the Q1 node panel. The scale of obligation the institution owes into the network per unit of loss-absorbing capital. Institutions with Equity <= 0 are excluded and the exclusion count is reported.",
+    "D_enc": "Q1 in-degree: the number of distinct counterparties that hold a recorded exposure TO this node. The count of places where a claim on this institution has been encoded.",
+    "D_dec": "Q1 out-degree: the number of distinct counterparties this node holds an exposure ON. The count of places this institution must reach to decode and enforce its own position.",
+    "D_symmetric": "Q1 total degree, in-degree + out-degree. The single distance the quadratic rival uses.",
+    "arm_L_LISM": "U * D_enc * D_dec",
+    "arm_Q_quadratic": "U * D_symmetric^2",
+    "arm_B_size_baseline": "Total_assets. The null hypothesis that 'big banks lose funding' explains everything.",
+    "arm_S_srisk": "srisk_ratio as published in the node panel. An external, purpose-built systemic-risk measure computed by someone else from market data this programme does not have. Available for 266 of 4,548 nodes only.",
+    "arm_R_random": "A seeded uniform random score. Present so that every AUC in the results file can be read against a known-null arm."
+  },
+  "the_realised_outcome": {
+    "layer": "L1 - measured",
+    "computed_from": "edges_2016Q2.csv only, never from any predictor",
+    "in_strength_Q1": "sum of Weights on Q1 edges whose Targetid is the node",
+    "in_strength_Q2": "sum of Weights on Q2 edges whose Targetid is the node",
+    "WITHDRAWAL_EVENT": "in_strength_Q2 <= 0.5 * in_strength_Q1. A node lost at least half of the interbank funding recorded against it between the two quarters.",
+    "threshold_declared_at": "0.5, fixed here, before the event count was known. It will not be moved for any reason, including a degenerate event rate.",
+    "eligible_population": "nodes with in_strength_Q1 > 0 and Equity > 0. Nodes with no incoming Q1 exposure cannot lose incoming exposure and are excluded; the exclusion count is reported."
+  },
+  "metric": {
+    "statistic": "Area under the ROC curve, computed as the Mann-Whitney U statistic over withdrawal versus non-withdrawal nodes, implemented directly with ties taking the mean rank. No external statistics library is used, so the number is auditable by hand.",
+    "why_AUC": "It is threshold-free and invariant to any monotone rescaling of a predictor, so no arm can be advantaged by the units its definition happens to produce. U * D_enc * D_dec and U * D^2 live on wildly different scales and a scale-sensitive metric would compare the scalings rather than the forms.",
+    "direction": "Every arm is scored in the direction 'higher score means more likely to suffer withdrawal'. An arm scoring materially BELOW 0.5 is reported as inverted, and the inversion is reported as a finding, never silently flipped."
+  },
+  "gates": [
+    {
+      "id": "N1_data_integrity",
+      "weight": "full",
+      "test": "All three SHA-256 hashes match the values locked above. The node table has 4548 rows. Every Sourceid and Targetid in both edge files resolves to a node index. Edge counts are 11631 and 11632.",
+      "prediction": "EXPECTED TO PASS. Structural facts were checked before the lock; if any fails the run aborts rather than proceeding."
+    },
+    {
+      "id": "N2_the_failing_region_is_populated",
+      "weight": "full",
+      "test": "The withdrawal event occurs for at least 100 eligible nodes AND for no more than 60 percent of eligible nodes.",
+      "why": "LISM invariant I2. A predictor cannot be tested against an outcome that almost never happens or almost always happens; in either case every arm's AUC becomes noise or is undefined. This gate can genuinely fail and if it fails N3, N4 and N5 are reported as UNTESTABLE-HERE rather than as passes.",
+      "prediction": "UNCERTAIN. 3,811 Q1 edges vanish by Q2, which is a large amount of rewiring, but whether it concentrates into half-strength losses at node level is not known at lock time."
+    },
+    {
+      "id": "N3_LISM_BEATS_THE_QUADRATIC_RIVAL",
+      "weight": "full",
+      "primary": true,
+      "test": "AUC(arm_L) - AUC(arm_Q) >= 0.02 on the full eligible sample.",
+      "margin_declared_at": "0.02, chosen as a margin that a coin-flip difference on ~1000+ events would not routinely produce, and fixed before any AUC was computed.",
+      "prediction": "GENUINELY UNCERTAIN. THIS IS THE TEST. If arm_Q matches or beats arm_L, the asymmetric form carries no advantage on this network and that will be reported as evidence AGAINST E = U*D_enc*D_dec, not explained away. The programme has published four datasets where the asymmetric form won; a fifth where it loses is a real result and belongs in the record."
+    },
+    {
+      "id": "N4_LISM_BEATS_THE_SIZE_BASELINE",
+      "weight": "full",
+      "test": "AUC(arm_L) - AUC(arm_B) >= 0.05, where arm_B is Total_assets alone.",
+      "why": "The ablation rule. If a structural measure cannot beat 'how big is it', the structure is decorative. This is the gate that decides whether the measure has any practical value to a supervisor, and it is deliberately set harder than N3.",
+      "prediction": "EXPECTED TO FAIL. Balance-sheet size is a strong and well-documented predictor of interbank behaviour, and arm_L contains a size-adjacent term already. Recorded here so that a pass would be surprising and a failure cannot be presented afterwards as expected all along."
+    },
+    {
+      "id": "N5_LISM_BEATS_THE_PUBLISHED_SRISK_MEASURE",
+      "weight": "full",
+      "test": "On the 266-node subsample where srisk_ratio is populated, AUC(arm_L) >= AUC(arm_S).",
+      "declared_in_advance": "SRISK WINNING IS A LEGITIMATE AND EXPECTED RESULT AND WILL BE REPORTED AS ONE. It is a purpose-built systemic-risk measure built from market data this programme does not possess, computed by researchers who were not testing LISM. Losing to it is not a defect in the experiment; it is the correct calibration of how much a topology-plus-balance-sheet measure is worth.",
+      "prediction": "EXPECTED TO FAIL.",
+      "subsample_caveat_locked_now": "n=266 of 4548. Whatever the event rate turns out to be in that subsample, the comparison is underpowered relative to the full sample and the results file must say so."
+    },
+    {
+      "id": "N6_cascade_on_real_topology",
+      "weight": "excluded",
+      "scores": "zero, in either direction",
+      "test": "A deterministic default cascade is seeded at the highest-U node and propagated through the real Q1 edges under two wirings: fixed-claim (a defaulting node's obligation passes through in full until the counterparty's equity is exhausted) and loss-absorbing (the obligation is written down against the counterparty's equity without triggering onward default while equity remains).",
+      "why_it_is_excluded_from_the_score": "The difference between those two cascades is determined by the two propagation rules, which I write. The real topology constrains the geometry but not the mechanism. There is no record in these files of what actually happened under either wiring, so no outcome can falsify the rule. It is run because the geometry is informative and because refusing to run it would hide the shape of the network, and it is excluded because a number with no possible falsifier is not evidence.",
+      "required_disclosure": "results_network.json must carry the string 'not evidence' against this gate, and the test suite must assert its presence."
+    },
+    {
+      "id": "N7_islamic_contract_discrimination",
+      "weight": "excluded",
+      "status": "UNTESTABLE-HERE",
+      "reason": "These files contain no contract data. No column distinguishes a fixed claim from a participation. This gate is recorded so that the absence is on the record and cannot later be filled by assumption, and it is excluded because the dataset cannot fail it.",
+      "distinction_being_preserved": "UNTESTABLE-HERE is not REFUTED and is not BLOCKED. Nothing about Islamic contracts is disconfirmed by this dataset. The dataset simply cannot see the property."
+    }
+  ],
+  "anti_immunisation": {
+    "thresholds_frozen": [
+      "withdrawal event at 0.5 of Q1 in-strength",
+      "N2 band 100 events minimum, 60 percent maximum",
+      "N3 margin 0.02",
+      "N4 margin 0.05",
+      "N5 no margin, plain inequality"
+    ],
+    "rule": "If a gate misses, the miss is recorded and the threshold stays. No arm may be redefined after seeing an AUC. No node may be excluded after seeing an AUC. The two exclusion rules (Equity <= 0, in_strength_Q1 == 0) are the only exclusions permitted and both are declared above.",
+    "too_perfect_rule": "An AUC above 0.95 for any arm is to be treated as suspected leakage, investigated, and reported as suspect rather than celebrated. rank_next_quarter is present in the node panel and is a FORWARD-LOOKING label of unknown provenance; it is therefore excluded from every arm, and the test suite asserts no arm reads it.",
+    "count_vs_intensity": "The withdrawal outcome is a count of nodes crossing a declared threshold, not an intensity. The mean size of the funding loss is reported alongside, so the two cannot be conflated."
+  },
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That on one real interbank network across one real quarter transition, an asymmetric encode-times-decode structural measure ordered institutions by realised funding withdrawal better than a symmetric quadratic one.",
+    "would_not": "That LISM is validated on financial networks generally. N=1 network, N=1 transition, one banking system, node identities unknown, 2016. No causal claim. No claim about Islamic finance whatsoever."
+  }
+}

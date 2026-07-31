@@ -1,0 +1,128 @@
+{
+  "title": "IFSB 2017Q4-2023Q4: does a higher share of loss-absorbing funding predict lower realised non-performing-financing provisioning, within country?",
+  "locked_before": "any risk-sharing measure was correlated with any provisioning measure, and before any country's direction was known",
+  "data_provenance": {
+    "file": "data/colab-audit/ifsb_financial_statements.xlsx",
+    "sha256": "1db87ca81a35355366fb9a569bbe3d6ff8cfd41b4f359eb0f747c6509a967d38",
+    "source": "Islamic Financial Services Board, Detailed Financial Statements, prudential and structural aggregates reported by national supervisors",
+    "header_row": 7,
+    "raw_rows": 30507,
+    "shape": "long format: Country, Time Period, Indicator Code, Values in USD Millions",
+    "note": "This is a COUNTRY-LEVEL aggregate. There is no institution-level record and no contract-level record. Every limitation below follows from that."
+  },
+  "why_this_dataset_is_not_superseded_by_the_interbank_network": {
+    "claim_being_corrected": "It was put to this programme that the 2016 interbank network files 'completely supersede' this panel. They do not.",
+    "reason": "The interbank files contain no contract data at all. This panel is the ONLY supplied dataset in which a loss-absorbing funding line and a realised loss line are both recorded. It is aggregated and small, which are real weaknesses, but a sharper dataset that cannot see the variable is not an upgrade on a blunter one that can. The two are pre-registered separately because they test different claims."
+  },
+  "the_question": "Islamic banking's structural claim is that some of its funding absorbs loss rather than holding a fixed claim. Profit-Sharing Investment Accounts are exactly that: the holder's principal is not guaranteed. If loss absorption on the funding side does structural work, banking systems that fund themselves that way should, other things equal, book different non-performing-financing provisions than systems that do not. This asks whether the realised provisioning record shows any such difference within a country over time.",
+  "panels": {
+    "PRIMARY_panel_P": {
+      "definition": "country-quarters with BS13_010, BS01, BS03 and IS12_010 all present",
+      "n_country_quarters": 117,
+      "countries": 6,
+      "composition_declared_before_analysis": {
+        "Afghanistan": 25,
+        "Bangladesh": 7,
+        "Kuwait": 12,
+        "Pakistan": 23,
+        "Palestine": 25,
+        "Turkey": 25
+      },
+      "period": "2017Q4 to 2023Q4",
+      "risk_sharing_measure_RS": "BS13_010 / BS01 -- Profit Sharing Investment Accounts (Mudarabah, Musharakah) as a share of the balance sheet. This is the loss-absorbing funding intensity of the system. It is a STOCK on the funding side, which is where the loss-absorption claim actually lives.",
+      "why_this_is_the_primary": "It is the structurally correct variable and it has nearly twice the coverage of the income-share alternative."
+    },
+    "SECONDARY_panel_S": {
+      "definition": "country-quarters with IS01_010_010, IS01_010_020, IS01_010_030, IS12_010 and BS03 all present",
+      "n_country_quarters": 65,
+      "countries": 4,
+      "composition_declared_before_analysis": {
+        "Bangladesh": 7,
+        "Kuwait": 12,
+        "Palestine": 21,
+        "Turkey": 25
+      },
+      "risk_sharing_measure_RS": "IS01_010_030 / (IS01_010_010 + IS01_010_020 + IS01_010_030) -- equity-based financing income as a share of financing income. An INCOME FLOW measure of the asset-side contract mix.",
+      "correction_recorded": "An earlier statement in this programme described this as 65 country-quarters across 9 countries. It is 65 country-quarters across 4. The error is recorded here rather than quietly fixed, and 46 of the 65 come from Palestine and Turkey alone."
+    }
+  },
+  "the_realised_outcome": {
+    "layer": "L1 - measured, reported by supervisors, not generated here",
+    "PROV": "IS12_010 / BS03 -- provisions for non-performing financing over total Shariah-compliant financing. A realised charge, not a projection.",
+    "why_normalised_by_BS03": "Provisions scale with the financing book. An unnormalised provision number would rank countries by size. BS03 is present for every country-quarter in both panels."
+  },
+  "method": {
+    "statistic": "Non-parametric within-country sign comparison. For each country, its own quarters are split at its own median RS. The country's verdict is the sign of median(PROV | RS above own median) - median(PROV | RS below own median). A NEGATIVE sign is the risk-sharing direction.",
+    "why_within_country": "Between-country differences in provisioning are dominated by supervisory practice, IFRS-9 adoption timing, currency crises and macro conditions. A cross-country correlation would measure those. Splitting each country against its own median removes every time-invariant country factor by construction.",
+    "eligibility": "a country enters the sign count only if it has at least 5 quarters in the panel. All 6 countries in panel P and all 4 in panel S meet this at lock time.",
+    "NO_INFERENTIAL_STATISTICS": "n = 117 country-quarters from 6 systems, quarters within a country are serially dependent, and the systems are not a sample of anything. No p-value, no confidence interval, no significance claim and no regression standard error will be computed or reported. The results file is asserted by test to contain no such claim. What is reported is a count of countries and the direction of each."
+  },
+  "gates": [
+    {
+      "id": "F1_data_integrity",
+      "weight": "full",
+      "test": "The workbook SHA-256 matches. Panel P has exactly 117 country-quarters with the declared per-country composition. Panel S has exactly 65 with its declared composition. Every RS lies in [0,1] and every PROV is finite and non-negative.",
+      "prediction": "EXPECTED TO PASS; the shapes were checked before the lock and the run aborts on mismatch."
+    },
+    {
+      "id": "F2_the_failing_region_is_populated",
+      "weight": "full",
+      "test": "In panel P, at least 4 of the 6 countries have a within-country interquartile range of RS of at least 0.02.",
+      "why": "LISM invariant I2. If PSIA share is effectively constant inside each country, then splitting a country at its own median splits it on noise, and every subsequent gate is meaningless regardless of which way it comes out. This gate can genuinely fail and if it fails, F3, F4 and F5 are reported UNTESTABLE-HERE rather than as results.",
+      "prediction": "UNCERTAIN. Funding structure is slow-moving and six years may not be long enough to move it."
+    },
+    {
+      "id": "F3_LOSS_ABSORBING_FUNDING_PREDICTS_LOWER_PROVISIONING",
+      "weight": "full",
+      "primary": true,
+      "test": "In panel P, at least 4 of the 6 countries show the risk-sharing direction (higher-RS quarters have lower median PROV).",
+      "threshold_declared_at": "4 of 6, fixed before any country's direction was computed. Under a coin-flip null, 4-or-more of 6 arises about 34 percent of the time; this is deliberately a weak bar because the panel is small, and the weakness of the bar is disclosed here rather than discovered later.",
+      "prediction": "GENUINELY UNCERTAIN.",
+      "opposite_direction_declared_now": "A majority in the OPPOSITE direction -- higher loss-absorbing funding accompanied by HIGHER provisioning -- is a real and publishable result and will be reported as such. It has a straightforward reading: systems funded by loss-absorbing accounts may take more asset risk precisely because the funding absorbs it. That reading is written down now so that it cannot be presented afterwards as what was expected all along."
+    },
+    {
+      "id": "F4_the_result_is_not_reproduced_by_a_placebo",
+      "weight": "full",
+      "test": "Two placebos are run through the identical machinery. (a) BS04/BS01, the interbank financing share, a contract-mix variable carrying no loss-absorption claim, present for all 117. (b) 200 seeded within-country permutations of RS, seed 20260801. The gate is met if the real RS achieves a country count strictly greater than the BS04 placebo AND strictly greater than the 90th percentile of the permutation distribution.",
+      "why": "The ablation rule. A within-country median split on a slow-moving variable will produce a direction for every country whether or not the variable means anything. If an arbitrary balance-sheet ratio does as well, F3 measures the method and not the variable.",
+      "prediction": "EXPECTED TO FAIL. With 6 countries the permutation distribution is coarse and its 90th percentile is a high bar. Recorded as expected-to-fail so a pass would be genuinely surprising."
+    },
+    {
+      "id": "F5_no_single_country_carries_the_result",
+      "weight": "full",
+      "test": "Leave-one-country-out: the F3 verdict must hold in all 6 replicates, using the proportional threshold (at least ceil(2/3 of remaining countries) in the risk-sharing direction).",
+      "why": "Palestine, Turkey and Afghanistan supply 25 quarters each and Bangladesh supplies 7. A verdict that flips when one system is removed is a fact about that system.",
+      "prediction": "UNCERTAIN, and only evaluated if F3 is met; if F3 misses, F5 is reported as NOT-APPLICABLE and scores as not met."
+    },
+    {
+      "id": "F6_the_secondary_income_share_panel_agrees",
+      "weight": "full",
+      "test": "In panel S, at least 3 of the 4 countries show the same direction that panel P's majority showed.",
+      "why": "Panel S measures the asset side (equity-based income) and panel P the funding side (loss-absorbing accounts). They are different variables on different sides of the balance sheet. Agreement would be informative; disagreement is a finding, not a failure of the data.",
+      "prediction": "UNCERTAIN. Disagreement between the two sides is entirely plausible and will be reported as the substantive result if it occurs."
+    },
+    {
+      "id": "F7_institution_level_discrimination",
+      "weight": "excluded",
+      "status": "UNTESTABLE-HERE",
+      "reason": "Every observation is a national aggregate. Whether an individual bank that funds itself with loss-absorbing accounts provisions differently from one that does not is invisible at this resolution, and no aggregation of these rows can recover it. Recorded so the absence is on the record; excluded because the dataset cannot fail it.",
+      "what_would_close_it": "Institution-level Islamic bank panels with a PSIA line and a provisioning line, which no dataset supplied to this programme so far contains."
+    }
+  ],
+  "anti_immunisation": {
+    "thresholds_frozen": [
+      "F2: 4 of 6 countries, RS interquartile range 0.02",
+      "F3: 4 of 6 countries in the declared direction",
+      "F4: strictly greater than the BS04 placebo and than the permutation 90th percentile",
+      "F5: all 6 leave-one-out replicates",
+      "F6: 3 of 4 countries"
+    ],
+    "rule": "No threshold moves after a run. No country is dropped after seeing its direction. No alternative normaliser is substituted after seeing a result: BS03 for provisions and BS01 for the funding share are fixed here and nowhere else.",
+    "historical_narrative_rule": "The sample spans COVID and several currency crises. Any account of WHY a country moved as it did is narrative, is Layer 3, and does not score. Only the counts score.",
+    "too_perfect_rule": "6 of 6 countries in the same direction on a slow-moving funding ratio would be treated as suspected mechanical artefact of the median split, investigated, and reported as suspect rather than celebrated."
+  },
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That across six Islamic banking systems over 25 quarters, national quarters with a higher share of loss-absorbing funding coincided with lower realised non-performing-financing provisioning, more often than a placebo variable and a permutation null produced.",
+    "would_not": "Any causal claim. Any claim about individual banks. Any claim that Islamic contracts as drafted transfer risk. Any generalisation beyond these six systems and these quarters. Coincidence within a national aggregate is not a mechanism, and the panel contains no instrument, no shock timing and no counterfactual."
+  }
+}
