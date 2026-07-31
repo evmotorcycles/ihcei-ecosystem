@@ -1,0 +1,61 @@
+{
+  "cohort": "Finance 10,000",
+  "source_sha256": "932247a7ecb56fbadb1df482c953fe4b045c4f5750439a852a7263c6390e6b1e",
+  "n_debits": 4886,
+  "n_credits": 5114,
+  "n_events": 10000,
+  "shock_min": 0.00014088312787770163,
+  "shock_max": 1.0,
+  "shock_mean": 0.11241222251597564,
+  "specs_verified": [
+    "corrected-mesh",
+    "two-register",
+    "three-proposals",
+    "tworegister-v2"
+  ],
+  "seed_cv": 0.21978055852759026,
+  "checks": [
+    {
+      "check": "R1",
+      "pass": true,
+      "detail": "source workbook sha256 932247a7ecb56fbadb1df482c953fe4b045c4f5750439a852a7263c6390e6b1e\n           manifest             932247a7ecb56fbadb1df482c953fe4b045c4f5750439a852a7263c6390e6b1e"
+    },
+    {
+      "check": "R2",
+      "pass": true,
+      "detail": "re-derived cohort: 4886 debits + 5114 credits = 10000 events"
+    },
+    {
+      "check": "R3",
+      "pass": true,
+      "detail": "debit transform amount/balance clipped to [0,1]: n=4886 min=0.000141 max=1.000000 mean=0.112412"
+    },
+    {
+      "check": "R4",
+      "pass": true,
+      "detail": "all 4 pre-registrations re-hash to their locked values"
+    },
+    {
+      "check": "R5",
+      "pass": true,
+      "detail": "2/2 runners abort on a changed source workbook"
+    },
+    {
+      "check": "R6",
+      "pass": true,
+      "detail": "clean re-run reproduces committed scores: three-proposals 4/5 -> 4/5  tworegister-v2 3/5 -> 3/5"
+    },
+    {
+      "check": "R7",
+      "pass": true,
+      "detail": "2/2 runners byte-identical across repeated runs"
+    },
+    {
+      "check": "R8",
+      "pass": true,
+      "detail": "seed band recomputed from 5 per-seed records: mean 60.2 sd 13.2 CV 0.220 (reported 0.220)"
+    }
+  ],
+  "failed": [],
+  "verdict": "VERIFIED"
+}

@@ -1,0 +1,286 @@
+<title>Finance 10,000 — the third LISM cohort, verified 8/8 for peer review</title>
+<style>
+  :root{
+    --paper:#EEF0F0; --ink:#141A1A; --ink-2:#414949; --muted:#737C7C;
+    --rule:#CDD4D4; --card:#FAFCFC; --card-2:#E0E6E6;
+    --ok:#1C6157; --warn:#8E6A16; --bad:#9E362F; --alt:#2F5379;
+    --shadow:0 1px 2px rgba(20,26,26,.05), 0 12px 30px rgba(20,26,26,.06);
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:"Iowan Old Style","Charter","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{ --paper:#0C1111; --ink:#E4E9E9; --ink-2:#A8B1B1; --muted:#77807F;
+      --rule:#1F2827; --card:#131A19; --card-2:#1B2322;
+      --ok:#57B3A2; --warn:#C9A452; --bad:#DC6E62; --alt:#7FA3CE;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  }
+  :root[data-theme="dark"]{ --paper:#0C1111; --ink:#E4E9E9; --ink-2:#A8B1B1; --muted:#77807F;
+    --rule:#1F2827; --card:#131A19; --card-2:#1B2322;
+    --ok:#57B3A2; --warn:#C9A452; --bad:#DC6E62; --alt:#7FA3CE;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4); }
+  :root[data-theme="light"]{ --paper:#EEF0F0; --ink:#141A1A; --ink-2:#414949; --muted:#737C7C;
+    --rule:#CDD4D4; --card:#FAFCFC; --card-2:#E0E6E6;
+    --ok:#1C6157; --warn:#8E6A16; --bad:#9E362F; --alt:#2F5379;
+    --shadow:0 1px 2px rgba(20,26,26,.05), 0 12px 30px rgba(20,26,26,.06); }
+
+  *{box-sizing:border-box}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;
+       line-height:1.68;-webkit-font-smoothing:antialiased;margin:0}
+  .wrap{max-width:48rem;margin:0 auto;padding:0 1.5rem 6rem}
+  p{margin:0;color:var(--ink-2)}
+  ul,ol{margin:0;padding-left:1.2rem;color:var(--ink-2);display:flex;flex-direction:column;gap:.5rem}
+  :focus-visible{outline:2px solid var(--ok);outline-offset:3px}
+  h1,h2,h3{text-wrap:balance;color:var(--ink);font-family:var(--serif);font-weight:600;
+           letter-spacing:-.011em;margin:0}
+  strong{color:var(--ink);font-weight:600}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.9em;color:var(--ink)}
+
+  .eyebrow{font-family:var(--mono);font-size:.69rem;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--muted);margin:0}
+  header{border-bottom:1px solid var(--rule);margin-bottom:3.4rem;padding:4.5rem 0 2.3rem;
+         display:flex;flex-direction:column;gap:1.25rem}
+  h1{font-size:clamp(2rem,5.2vw,3.05rem);line-height:1.08}
+  h1 em{font-style:italic;color:var(--ok)}
+  .standfirst{font-size:1.09rem;max-width:39rem}
+  .tags{display:flex;flex-wrap:wrap;gap:.45rem;font-family:var(--mono);font-size:.74rem}
+  .tag{border:1px solid var(--rule);background:var(--card);border-radius:2px;
+       padding:.28rem .58rem;color:var(--ink-2);white-space:nowrap}
+  .tag b{color:var(--ink)}
+  .tag.g{border-color:var(--ok);color:var(--ok)} .tag.g b{color:var(--ok)}
+  .tag.w{border-color:var(--warn);color:var(--warn)} .tag.w b{color:var(--warn)}
+
+  section{margin-bottom:3.4rem;display:flex;flex-direction:column;gap:1.12rem}
+  h2{font-size:1.5rem;line-height:1.22;padding-top:.4rem}
+  h2 .n{font-family:var(--mono);font-size:.68rem;color:var(--muted);display:block;
+        letter-spacing:.16em;margin-bottom:.55rem;font-weight:400;text-transform:uppercase}
+  h3{font-size:1.03rem}
+
+  .box{background:var(--card);border:1px solid var(--rule);border-radius:3px;
+       padding:1.15rem 1.3rem;display:flex;flex-direction:column;gap:.75rem;box-shadow:var(--shadow)}
+  .box.ok{border-left:3px solid var(--ok)}
+  .box.warn{border-left:3px solid var(--warn)}
+  .box.bad{border-left:3px solid var(--bad)}
+  .lab{font-family:var(--mono);font-size:.63rem;letter-spacing:.13em;text-transform:uppercase}
+  .box.ok .lab{color:var(--ok)} .box.warn .lab{color:var(--warn)} .box.bad .lab{color:var(--bad)}
+  .nums{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.81rem;
+        color:var(--ink);background:var(--card-2);border:1px solid var(--rule);
+        border-radius:3px;padding:.8rem .95rem;overflow-x:auto;white-space:pre;line-height:1.74}
+  .note{font-size:.93rem;color:var(--ink-2);border-left:2px solid var(--rule);padding-left:.9rem}
+  .pull{font-family:var(--serif);font-size:1.22rem;line-height:1.44;color:var(--ink);
+        border-left:3px solid var(--ok);padding-left:1.1rem}
+
+  .checks{display:flex;flex-direction:column;gap:.3rem}
+  .ck{display:flex;gap:.7rem;align-items:baseline;background:var(--card);
+      border:1px solid var(--rule);border-radius:3px;padding:.55rem .8rem}
+  .ck .id{font-family:var(--mono);font-size:.72rem;color:var(--ok);font-weight:600;
+          min-width:1.8rem}
+  .ck .tx{font-size:.9rem;color:var(--ink-2);flex:1}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:30rem}
+  th,td{text-align:left;padding:.57rem .8rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.12em;text-transform:uppercase;
+           color:var(--muted);font-weight:500;background:var(--card-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}
+  tr.end td{background:var(--card-2);font-weight:600}
+  .st{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em}
+  .st.y{color:var(--ok)} .st.n{color:var(--bad)} .st.p{color:var(--warn)}
+  footer{border-top:1px solid var(--rule);padding-top:1.4rem;font-size:.8rem;
+         color:var(--muted);font-family:var(--mono);line-height:1.85}
+</style>
+
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Finance 10,000 · 8/8 verified · 76/76 suites green</p>
+  <h1>Three cohorts. <em>Two of them test a different thing.</em></h1>
+  <p class="standfirst">LISM now rests on yeast 4,825, GitHub 992 and Finance 10,000. The
+  first two tested a <strong>coupling law</strong>. The third tests <strong>mechanism
+  design</strong>. Calling them three cohorts is only accurate with that distinction
+  attached.</p>
+  <div class="tags">
+    <span class="tag g">independent verify <b>8/8</b></span>
+    <span class="tag">prereg specs <b>4</b></span>
+    <span class="tag w">scored gates failed <b>13 of 21</b></span>
+    <span class="tag w">single-seed band <b>±22%</b></span>
+  </div>
+</header>
+
+<section>
+  <h2><span class="n">First</span>The three cohorts are not the same kind of evidence</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Cohort</th><th>N</th><th>What it tests</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td>Yeast interactome</td><td class="num">4,825</td><td><strong>coupling law</strong> — linear or quadratic?</td><td>linear won, CV AUC 0.666 vs 0.591</td></tr>
+        <tr><td>GitHub</td><td class="num">992</td><td><strong>coupling law</strong>, replicated</td><td>dAIC −3.483, quadratic disconfirmed</td></tr>
+        <tr class="end"><td>Finance</td><td class="num">10,000</td><td><strong>mechanism design</strong> — what do these architectures <em>do</em>?</td><td>4 prereg runs: 3/6, 0/5, 4/5, 3/5</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box warn">
+    <span class="lab">The distinction a reviewer needs</span>
+    <p><strong>The finance cohort does not test the coupling exponent.</strong> It is a
+    <em>mechanism</em> cohort, not a <em>coupling</em> cohort. A reviewer who assumed all
+    three tested <span class="m">E = U·D</span> against <span class="m">E = U·D²</span>
+    would be misreading the record.</p>
+    <p>It also does not rescue the coupling law where that failed: on a real 540-package
+    PyPI graph <strong>neither</strong> coupling explained reuse (R² ≈ 0.01 both).
+    That null stands.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Verification</span>How a peer reviewer checks it from scratch</h2>
+  <div class="nums">python3 finance-10k/verify_finance_10k.py     # 8/8, no network, ~2 min</div>
+  <p>The script <strong>trusts no results file in this repository</strong>. It is the
+  finance counterpart of the N=992 recovery verifier: a bundled summary proves nothing,
+  because one engineered to match published statistics would pass every check
+  <em>precisely because it was built to</em>.</p>
+  <div class="checks">
+    <div class="ck"><span class="id">R1</span><span class="tx">source workbook hashes to the committed manifest — <span class="m">932247a7…</span></span></div>
+    <div class="ck"><span class="id">R2</span><span class="tx">cohort re-derives to exactly <strong>4,886 debits + 5,114 credits = 10,000</strong></span></div>
+    <div class="ck"><span class="id">R3</span><span class="tx">transform recomputed from the raw workbook <strong>without importing any experiment code</strong> — n=4886, min 0.000141, max 1.000000, mean 0.112412</span></div>
+    <div class="ck"><span class="id">R4</span><span class="tx">all four pre-registrations re-hash to the values their runners enforce</span></div>
+    <div class="ck"><span class="id">R5</span><span class="tx">every runner <strong>aborts</strong> if the source workbook changes</span></div>
+    <div class="ck"><span class="id">R6</span><span class="tx">each experiment re-run from a clean process reproduces its committed score</span></div>
+    <div class="ck"><span class="id">R7</span><span class="tx">runs are <strong>byte-identical</strong> across repetitions</span></div>
+    <div class="ck"><span class="id">R8</span><span class="tx">seed-variation band re-derives from the per-seed record — CV <strong>0.220</strong></span></div>
+  </div>
+  <div class="box bad">
+    <span class="lab">The number to carry into every other section</span>
+    <p class="pull">CV = 0.220. Single-seed results in this repository carry roughly ±22%
+    variation — including in the other two cohorts — until re-run across seeds.</p>
+    <p><strong>13 of 21 scored gates failed.</strong> That is the record, and the failures
+    are why the surviving claims are worth anything.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Upgrade</span>What Finance 10,000 adds to LISM</h2>
+  <ol>
+    <li><strong>D<sub>dec</sub> has a timing dimension, and it dominates.</strong> LISM
+    treated distribution fidelity as <em>how well</em> value propagates. <strong>When</strong>
+    it propagates is worth <strong>50.9×</strong> any structural choice about the channel.
+    Distribution is not a coefficient — it is a <strong>rate</strong>.</li>
+    <li><strong>The two hops trade off.</strong> Optimising one actively costs the other —
+    16.5% cascade reduction for 4.6× shortfall — so the product cannot be maximised by
+    improving both in isolation. An institution must pick an endpoint.</li>
+    <li><strong>D<sub>dec</sub> can be structural rather than discretionary, and structural
+    wins.</strong> This came from Al-Qudah's model, not ours: amortising co-ownership makes
+    value return continuously because the <em>contract</em> is built that way. Measured
+    <strong>36.1 against our 71.0</strong>.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">Specialisation</span>Three models, three jobs, no blend</h2>
+  <p>The five-seed sweep runs from containment share 0.00 to 1.00. At <strong>0.00 the
+  architecture <em>is</em> Al-Qudah's model</strong>; at <strong>1.00 it <em>is</em>
+  Irfan's</strong>. No strawman is available.</p>
+  <div class="nums">containment    shortfall   secondary
+      0.00         36.1         121     ← Al-Qudah — best shortfall tested
+      0.25         71.0         119
+      0.60        107.8         109
+      1.00        167.6         101     ← Irfan — fewest cascades tested</div>
+  <p><strong>No interior point qualifies.</strong> Cascades fall only 16.5% across the whole
+  range while shortfall rises 4.6×. <strong>Deploy an endpoint, not a blend.</strong></p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Model</th><th>Specialises in</th><th>Evidence</th><th>Deploy for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Al-Qudah</strong><br>asset-backed co-ownership, unmixed</td><td>routine value recovery</td><td class="num">36.1</td><td>ordinary business lending, equipment, trade credit</td></tr>
+        <tr><td><strong>Irfan</strong><br>full-reserve participation notes, unmixed</td><td>contagion control</td><td class="num">101</td><td>nodes whose failure takes others down</td></tr>
+        <tr><td><strong>Two-Register</strong><br>the substrate both run on</td><td>payment velocity + audit</td><td class="num">50.9×</td><td>underneath either endpoint</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Deployment</span>What runs, what doesn't, and what I can't vouch for</h2>
+  <div class="box warn">
+    <span class="lab">A limit on what this repository can assert</span>
+    <p>Specific deployment claims — named platforms, firms and roles attached to named
+    individuals — are <strong>user-supplied context this repository has not verified</strong>.
+    I am not publishing factual claims about real people's commercial affiliations on the
+    strength of a summary I cannot audit. They are recorded as context, not findings.</p>
+  </div>
+  <p><strong>What is safely sayable at the category level, and is enough for the
+  argument:</strong></p>
+  <ul>
+    <li><strong>Asset-backed co-ownership finance is an operating model.</strong>
+    Diminishing-partnership home and equipment finance exists commercially. Al-Qudah's arm
+    models <em>a thing that runs</em>.</li>
+    <li><strong>Non-bank participation vehicles are an operating model.</strong> Private
+    placements and equity risk-sharing intermediaries outside bank balance sheets exist.
+    Irfan's arm models <em>a thing that runs</em>.</li>
+    <li><strong>The universal substrate is not deployed anywhere, by anyone, including
+    us.</strong></li>
+  </ul>
+
+  <h3>Honest status of the substrate — the actual work</h3>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Component</th><th>Status</th><th>Measured</th></tr></thead>
+      <tbody>
+        <tr><td>Full reserve, ΔU = 0</td><td class="st p">SIMULATION ONLY</td><td>1.99× substrate penalty</td></tr>
+        <tr><td>Continuous distribution</td><td class="st p">SIMULATION ONLY</td><td><strong>50.9×</strong> — largest effect</td></tr>
+        <tr><td>Echo claim register</td><td class="st y">CODE THAT RUNS</td><td>append-only, Merkle-provable</td></tr>
+        <tr><td>HELM on-device kernel</td><td class="st y">CODE THAT RUNS</td><td>no network call, test-proven</td></tr>
+        <tr><td>Register routing</td><td class="st n">REMOVED ON EVIDENCE</td><td>lost to 18 of 20 coin flips</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Two of five are code that runs; two are designs measured only in a
+  settlement simulator; one was removed on evidence. <strong>That is the deployment status,
+  and the first three lines of any adoption roadmap.</strong></p>
+
+  <div class="box ok">
+    <span class="lab">What honest deployment requires next — in this order</span>
+    <ol>
+      <li><strong>A live pilot of continuous distribution alone</strong>, inside an existing
+      institution, on real receivables. No new infrastructure — it is a change to collection
+      timing — and it carries the largest measured effect. <strong>The cheapest test of the
+      biggest claim, and it has not been done.</strong></li>
+      <li><strong>Echo as the claim register for a real book</strong>, so "which register was
+      this claim in, and was it altered?" is provable rather than asserted.</li>
+      <li><strong>Full reserve last</strong> — the hardest regulatory lift, and its benefit
+      is measured relative to the other two already being in place.</li>
+    </ol>
+    <p><strong>Order matters.</strong> Doing full reserve first would be doing the expensive
+    thing before the cheap thing that measured 50× larger.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">Sectors</span>The same evidence, two audiences</h2>
+  <div class="box">
+    <p><strong>Conventional banks.</strong> No cultural framing needed. Pay as you collect;
+    don't lend what you haven't got; use participation only where contagion is the real
+    exposure; don't buy a risk-routing model.</p>
+    <p><strong>Islamic banks.</strong> The substrate critique is <strong>vindicated on
+    measurement, not doctrine</strong> — identical contracts cost 1.99× more fractional, so
+    the label was never the problem. But <strong>risk-sharing does not lower your losses; it
+    raises them 4.6×.</strong> Its value is systemic. Sold as prudential infrastructure it is
+    defensible; sold as a superior return profile it is not. The audit register is the real
+    differentiator, because the "oxymoron" charge lands on <strong>unverifiability</strong>,
+    which a hash-chained ledger answers directly.</p>
+  </div>
+  <p class="note">The Organic Qur'anic Methodology is governance philosophy — Layer 3,
+  philosophically prior. It supplies the abstract logic used to generate theories and
+  engineer systems, and it supplied the stock-versus-flow reading that pointed at the largest
+  effect here before it was measured. <strong>It did not supply the evidence and cannot.</strong>
+  Nothing here adjudicates a jurisprudential question.</p>
+</section>
+
+<footer>
+  4 pre-registrations, all locked before implementation · 13 of 21 scored gates failed ·
+  source workbook hash-pinned, every runner aborts if it changes · runs byte-identical across
+  repetitions · python3 finance-10k/verify_finance_10k.py → 8/8 ·
+  bash reproduce_all.sh → 76/76 · exit 0 means "reproduces including its failures"
+</footer>
+
+</div>

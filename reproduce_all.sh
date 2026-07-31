@@ -93,6 +93,7 @@ run "corrected-mesh: surgical correction on 10k events — 3/6; equity is a CONT
 run "two-register: routing tested against random — 0/5; targeted beaten by 18 of 20 coin flips" py two-register/test_tworegister.py
 run "three-proposals: Irfan vs Al-Qudah vs Two-Register on one engine — 4/5; doctrinal spread collapses to 4.1%" py three-proposals/test_three.py
 run "tworegister-v2: 5-seed robustness + Al-Qudah primitive — 3/5; the mix adds nothing, CV 0.22" py tworegister-v2/test_v2.py
+run "finance-10k: independent peer-review verification of the cohort (8/8)" python3 finance-10k/verify_finance_10k.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py
