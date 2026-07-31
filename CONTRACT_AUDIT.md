@@ -229,3 +229,20 @@ writing before the run, and all four did.
 usable for provisioning behaviour, cascade timing and recovery. What is still missing is
 narrower than before: **a write-down whose magnitude is set by the asset rather than by
 policy**, and a customer stake that moves when the financier's does.
+
+---
+
+# Addendum 2 — two tests on real supervisory and network data
+
+Two further datasets were pre-registered and run: a real directed interbank network
+(2016Q1→Q2, **3/5**) and the IFSB supervisory panel (117 country-quarters, **1/6**). Both
+missed their primary gate. Full write-up in **`REAL_NETWORK_AND_IFSB.md`**.
+
+The one result that speaks directly to *this* document: **Kuwait reports exactly zero
+equity-based financing income in all 12 of its reported quarters, and Palestine in all 21
+of its.** In two of the four systems for which the IFSB publishes the breakdown, the
+asset-side profit-and-loss-sharing line does not exist on the supervisors' own returns.
+
+That sharpens the gap named above. It is no longer only that the supplied schedules and
+panels cannot *exhibit* risk-sharing. At national-aggregate resolution, in half the systems
+that report the breakdown, there is **nothing booked to exhibit**.

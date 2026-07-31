@@ -231,6 +231,39 @@ language proxy did not lead the collapse. Neither can validate a constitutive re
 point worth stating plainly, because a single failed institution selected on its own outcome
 is a case study, not a test.
 
+### 3.3b An adverse result: a directed interbank network where the quadratic was not beaten
+
+A third cohort was added after this manuscript's earlier revisions and is reported here
+because it ran against the paper's direction. A directed, weighted interbank exposure
+network (4,548 institutions, 11,631 edges in 2016Q1, spec
+`db8c3a4f0454f9d73a97a5e03159b3525e13d62d13e7e104183940ae074b718b`, locked before analysis)
+supplies a realised out-of-sample outcome: 3,811 of the Q1 exposures are absent by 2016Q2.
+Predicting, from Q1 alone, which of the 1,349 funded institutions lost at least half their
+incoming interbank funding by Q2 (291 events, 21.6%), the two forms scored:
+
+| arm | AUC |
+|---|---|
+| `U · D_symmetric²`, D_symmetric = in-degree + out-degree | **0.6109** |
+| `U · D_enc · D_dec`, D_enc = in-degree, D_dec = out-degree | 0.6090 |
+| total assets alone | 0.5920 |
+| seeded random | 0.5016 |
+
+**The quadratic arm edged the product arm by 0.0019.** The pre-registered margin was 0.02
+and was not moved; the gate is recorded as failed.
+
+Three scoping points, none of which are offered as rescues. First, **this is not the
+nested likelihood-ratio test of §2.1.** It is a threshold-free AUC comparison of two
+specific constructions, chosen because the two arms live on incompatible scales; a
+difference of 0.0019 on 291 events is not a discrimination in either direction, and the
+correct reading is *tie*, not *quadratic wins*. Second, the outcome is **funding
+withdrawal, not institutional failure** — a bank that loses interbank funding has not
+collapsed. Third, `D_enc` and `D_dec` here are raw degree counts, not the fidelity
+measures §2.2's VIF gate was designed for, and no VIF gate was applied.
+
+What it does establish is that the linear-vs-quadratic contrast, which separated cleanly in
+the biological and GitHub cohorts, **does not separate at all** on a real financial network
+under a realised outcome. That belongs in the record next to the cohorts where it did.
+
 ### 3.4 Enforcement latency is a robust collapse predictor
 
 Failed repositories had a mean issue-close latency of 50.6 days versus 19.8 for survivors

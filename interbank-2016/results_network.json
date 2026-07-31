@@ -1,0 +1,108 @@
+{
+  "auc": {
+    "arm_B_size": 0.59204,
+    "arm_L_LISM": 0.608998,
+    "arm_Q_quadratic": 0.610921,
+    "arm_R_random": 0.501611
+  },
+  "auc_srisk_subsample": {
+    "arm_L": 0.565288,
+    "arm_S_srisk": 0.492109,
+    "events": 72,
+    "n": 204
+  },
+  "cascade_is_not_evidence": "N6 is excluded from the score and its delta is the output of propagation rules written in network.py, not an observation.",
+  "count_vs_intensity_note": "withdrawal_events is a COUNT of nodes crossing the declared 0.5 threshold; mean_intensity is the average depth of loss among them. They are different quantities.",
+  "eligible": 1349,
+  "excluded_no_Q1_inflow": 3199,
+  "excluded_nonpositive_equity": 0,
+  "gates": [
+    {
+      "detail": "4548 nodes, 11631 Q1 edges, 11632 Q2 edges, all endpoints resolve=True",
+      "id": "N1_data_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "291 withdrawal events of 1349 eligible = 21.6% (band: >=100 and <=60%)",
+      "id": "N2_the_failing_region_is_populated",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC L=0.6090 Q=0.6109 delta=-0.0019 (needs >= 0.02)",
+      "id": "N3_LISM_BEATS_THE_QUADRATIC_RIVAL",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC L=0.6090 size=0.5920 delta=+0.0170 (needs >= 0.05)",
+      "id": "N4_LISM_BEATS_THE_SIZE_BASELINE",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "n=204, 72 events. AUC L=0.5653 srisk=0.4921. UNDERPOWERED relative to the full sample; srisk winning is a pre-declared legitimate outcome.",
+      "id": "N5_LISM_BEATS_THE_PUBLISHED_SRISK_MEASURE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "fixed-claim wiring: 1 defaults in 1 rounds; loss-absorbing wiring: 1 defaults in 1 rounds. This delta is the output of the two propagation rules written in this file and is not evidence: no record in these files can falsify either rule.",
+      "id": "N6_cascade_on_real_topology",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. No column in these files distinguishes a fixed claim from a participation. Not refuted, not blocked -- invisible.",
+      "id": "N7_islamic_contract_discrimination",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "N3_LISM_BEATS_THE_QUADRATIC_RIVAL",
+    "N4_LISM_BEATS_THE_SIZE_BASELINE"
+  ],
+  "mean_intensity_of_loss_among_events": 556.718216,
+  "post_run_disclosures": {
+    "D1_negative_edge_weights_in_Q2": {
+      "affected_target_nodes": 57,
+      "effect_on_the_intensity_figure": "Severe. mean_intensity_of_loss_among_events exceeds 1.0, which is arithmetically impossible for a fraction lost, and is produced entirely by these negative inflows. The value is left in the results file as computed and the corrected figure is reported beside it.",
+      "effect_on_the_primary_outcome": "None in direction. The withdrawal label is in_strength_Q2 <= 0.5 * in_strength_Q1; a node whose Q2 inflow is negative satisfies that regardless of magnitude, so the labels and therefore every AUC are unaffected.",
+      "events_with_negative_Q2_inflow": 21,
+      "found": 57,
+      "mean_intensity_excluding_negative_inflow": 0.908394,
+      "note": "The Q2 edge file contains 57 negative exposure weights, minimum -7,080,587. The Q1 file contains none. N1 did not test edge sign because the locked spec did not declare it, and the gate is NOT re-scored. Disclosed instead."
+    },
+    "D2_the_cascade_did_essentially_nothing": {
+      "note": "Both wirings terminate at 1 default(s) in 1 round(s) -- the seed itself and no one else. The seed has out-degree 3 and all three of its counterparties absorbed the shock without exhausting equity, so the two propagation rules never diverge and the fixed-claim versus loss-absorbing comparison is empty. This is a further reason N6 carries no evidential weight, and it is reported rather than repaired by re-seeding: choosing a seed that produces a cascade is the tuning move the pre-registration exists to prevent.",
+      "seed_node": 499,
+      "seed_out_degree_in_Q1": 3
+    },
+    "D3_seventy_percent_of_nodes_are_not_in_the_test": {
+      "excluded_no_Q1_inflow": 3199,
+      "note": "3,199 of 4,548 nodes receive no interbank exposure in Q1 and cannot lose what they do not have. The exclusion was declared in the locked spec, but it means every AUC describes the 1,349-node funded core, not the whole panel.",
+      "of_total_nodes": 4548
+    },
+    "D4_what_N5_does_and_does_not_show": {
+      "note": "srisk_ratio scored 0.4921, indistinguishable from chance, on this outcome. That was pre-declared as expected to WIN and it lost. It is not evidence that SRISK is a poor measure: SRISK estimates capital shortfall under a market-wide equity crash, which is a different quantity from one-quarter interbank funding withdrawal. The honest reading is that the two measures target different events, on 204 nodes carrying 72 events."
+    }
+  },
+  "primary_verdict": "N3 MISSED. The asymmetric LISM form E = U*D_enc*D_dec scored AUC 0.6090 and the symmetric quadratic rival E = U*D^2 scored 0.6109. The rival won by 0.0019. On this network, at this resolution, separating encoding distance from decoding distance bought nothing. The threshold was not moved and the arms were not redefined.",
+  "rank_next_quarter_excluded": "present in the node panel, forward-looking, unknown provenance, read by no arm",
+  "score": "3/5",
+  "shape": {
+    "Q1_only": 3811,
+    "Q2_only": 3812,
+    "edges_Q1": 11631,
+    "edges_Q2": 11632,
+    "nodes": 4548,
+    "shared_pairs": 7820
+  },
+  "simulation_count_in_scored_gates": 0,
+  "spec_sha256": "db8c3a4f0454f9d73a97a5e03159b3525e13d62d13e7e104183940ae074b718b",
+  "too_perfect_flag": [],
+  "withdrawal_events": 291,
+  "withdrawal_share": 0.215715
+}

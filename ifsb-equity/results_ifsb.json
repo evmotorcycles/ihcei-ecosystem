@@ -1,0 +1,234 @@
+{
+  "countries_in_risk_sharing_direction": {
+    "of": 6,
+    "of_S": 4,
+    "panel_P": 3,
+    "panel_S": 0
+  },
+  "countries_with_no_usable_split": [
+    "Kuwait (panel S)",
+    "Palestine (panel S)"
+  ],
+  "directions_panel_P": {
+    "Afghanistan": {
+      "median_prov_difference": -0.006564,
+      "n_quarters": 25,
+      "note": null,
+      "sign": -1
+    },
+    "Bangladesh": {
+      "median_prov_difference": -0.000456,
+      "n_quarters": 7,
+      "note": null,
+      "sign": -1
+    },
+    "Kuwait": {
+      "median_prov_difference": 0.001233,
+      "n_quarters": 12,
+      "note": null,
+      "sign": 1
+    },
+    "Pakistan": {
+      "median_prov_difference": -0.000349,
+      "n_quarters": 23,
+      "note": null,
+      "sign": -1
+    },
+    "Palestine": {
+      "median_prov_difference": 0.00121,
+      "n_quarters": 25,
+      "note": null,
+      "sign": 1
+    },
+    "Turkey": {
+      "median_prov_difference": 0.001319,
+      "n_quarters": 25,
+      "note": null,
+      "sign": 1
+    }
+  },
+  "directions_panel_S": {
+    "Bangladesh": {
+      "median_prov_difference": 0.002937,
+      "n_quarters": 7,
+      "note": null,
+      "sign": 1
+    },
+    "Kuwait": {
+      "median_prov_difference": null,
+      "n_quarters": 12,
+      "note": "RS is constant across this country's quarters, so a median split leaves one side empty. No direction exists. Counted as NOT in the risk-sharing direction, which is the conservative treatment and is not a threshold move.",
+      "sign": null
+    },
+    "Palestine": {
+      "median_prov_difference": null,
+      "n_quarters": 21,
+      "note": "RS is constant across this country's quarters, so a median split leaves one side empty. No direction exists. Counted as NOT in the risk-sharing direction, which is the conservative treatment and is not a threshold move.",
+      "sign": null
+    },
+    "Turkey": {
+      "median_prov_difference": 0.001369,
+      "n_quarters": 25,
+      "note": null,
+      "sign": 1
+    }
+  },
+  "gates": [
+    {
+      "detail": "panel P 117 obs {'Afghanistan': 25, 'Bangladesh': 7, 'Kuwait': 12, 'Pakistan': 23, 'Palestine': 25, 'Turkey': 25}; panel S 65 obs {'Bangladesh': 7, 'Kuwait': 12, 'Palestine': 21, 'Turkey': 25}; ranges ok=False",
+      "id": "F1_data_integrity",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "4 of 6 countries have within-country RS interquartile range >= 0.02: {'Afghanistan': 0.24725, 'Bangladesh': 0.005757, 'Kuwait': 0.015098, 'Pakistan': 0.129737, 'Palestine': 0.021043, 'Turkey': 0.03724}",
+      "id": "F2_the_failing_region_is_populated",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "3 of 6 countries in the risk-sharing direction (needs >= 4): {'Afghanistan': -1, 'Bangladesh': -1, 'Kuwait': 1, 'Pakistan': -1, 'Palestine': 1, 'Turkey': 1}",
+      "id": "F3_LOSS_ABSORBING_FUNDING_PREDICTS_LOWER_PROVISIONING",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "real RS 3 countries; BS04 interbank-share placebo 1; permutation null (seed 20260801, 200 draws) 90th percentile 5, mean 3.06, max 6",
+      "id": "F4_the_result_is_not_reproduced_by_a_placebo",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "NOT-APPLICABLE: F3 not met, so there is no result to test for fragility. Scored as not met rather than skipped.",
+      "id": "F5_no_single_country_carries_the_result",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "panel P majority sign -1; panel S agrees in 0 of 4 countries (needs >= 3): {'Bangladesh': 1, 'Kuwait': None, 'Palestine': None, 'Turkey': 1}",
+      "id": "F6_the_secondary_income_share_panel_agrees",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. Every observation is a national aggregate; no aggregation of these rows recovers bank-level behaviour.",
+      "id": "F7_institution_level_discrimination",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "F1_data_integrity",
+    "F3_LOSS_ABSORBING_FUNDING_PREDICTS_LOWER_PROVISIONING",
+    "F4_the_result_is_not_reproduced_by_a_placebo",
+    "F5_no_single_country_carries_the_result",
+    "F6_the_secondary_income_share_panel_agrees"
+  ],
+  "historical_narrative_note": "The window spans COVID and several currency crises. Any account of why a country moved as it did is narrative, is Layer 3, and scores nothing.",
+  "leave_one_out": {},
+  "no_inferential_statistics": "n=117 country-quarters from 6 systems, serially dependent within country and not a sample of any population. Counts and directions only.",
+  "panel_P": {
+    "composition": {
+      "Afghanistan": 25,
+      "Bangladesh": 7,
+      "Kuwait": 12,
+      "Pakistan": 23,
+      "Palestine": 25,
+      "Turkey": 25
+    },
+    "n": 117,
+    "prov": "IS12_010/BS03",
+    "rs": "BS13_010/BS01 (PSIA share of balance sheet)"
+  },
+  "panel_S": {
+    "composition": {
+      "Bangladesh": 7,
+      "Kuwait": 12,
+      "Palestine": 21,
+      "Turkey": 25
+    },
+    "n": 65,
+    "rs": "IS01_010_030/(sales+lease+equity income)"
+  },
+  "placebo": {
+    "BS04_interbank_share": 1,
+    "permutation_max": 6,
+    "permutation_mean": 3.065,
+    "permutation_p90": 5,
+    "seed": 20260801
+  },
+  "post_run_disclosures": {
+    "D1_F1_failed_because_MY_SPEC_over_asserted": {
+      "cases": [
+        [
+          "Afghanistan 2018Q2",
+          -0.045249
+        ],
+        [
+          "Afghanistan 2018Q4",
+          -0.009676
+        ],
+        [
+          "Afghanistan 2020Q1",
+          -0.196879
+        ],
+        [
+          "Afghanistan 2020Q2",
+          -0.252874
+        ],
+        [
+          "Afghanistan 2020Q3",
+          -0.410509
+        ],
+        [
+          "Afghanistan 2020Q4",
+          -0.175918
+        ],
+        [
+          "Afghanistan 2023Q1",
+          -0.017682
+        ],
+        [
+          "Pakistan 2022Q1",
+          -0.000503
+        ]
+      ],
+      "what_failed": "The locked F1 required every PROV to be non-negative. Eight country-quarters carry a NEGATIVE provisioning figure.",
+      "whose_error_this_is": "Mine. The spec asserted a range the accounting standard does not impose. The gate is NOT re-scored and F1 stands as failed, because a spec that turns out to be wrong is exactly the case the no-moving-thresholds rule is for. The panel composition -- the part of F1 that tests the DATA -- matched the locked declaration exactly in both panels.",
+      "why_the_data_is_fine": "A negative provision line is a provision RELEASE -- a write-back of amounts previously reserved. It is ordinary and correct accounting, concentrated in Afghanistan 2018-2023 and one Pakistan quarter."
+    },
+    "D2_TWO_SYSTEMS_REPORT_ZERO_EQUITY_BASED_INCOME_THROUGHOUT": {
+      "consequence_for_panel_S": "33 of the 65 country-quarters carry a constant zero, so no median split is possible for those two countries and panel S is effectively Bangladesh and Turkey alone.",
+      "countries": [
+        "Kuwait",
+        "Palestine"
+      ],
+      "finding": "Kuwait reports 0.000 equity-based financing income in all 12 of its quarters and Palestine in all 21 of its. Not small -- exactly zero, in every quarter, for six years. Their entire reported financing income is sales-based and lease-based.",
+      "quarters_each": {
+        "Kuwait": 12,
+        "Palestine": 21
+      },
+      "why_this_matters_more_than_the_score": "The variable on which the risk-sharing claim rests is not merely weak in these systems; on the IFSB's own returns it does not exist. This is a measurement of what is actually booked, made by national supervisors, not a model output."
+    },
+    "D3_the_primary_variable_performed_at_the_permutation_mean": {
+      "note": "The real loss-absorbing funding share put 3 of 6 countries in the risk-sharing direction. Shuffling that same variable within country put 3.06 of 6 there on average. The measured variable performed at the noise mean, not merely below the 90th-percentile bar. That is a cleaner null than a near miss would have been.",
+      "permutation_mean": 3.065,
+      "real": 3
+    },
+    "D4_what_this_does_and_does_not_show": {
+      "does": "It shows that at the resolution the IFSB publishes, no such signal is visible, and that in two of four systems the asset-side risk-sharing line is empty. Both are facts a proponent has to answer.",
+      "does_not": "It does NOT show that loss-absorbing funding fails to reduce fragility. Six national aggregates over 25 quarters cannot detect a bank-level mechanism, and provisioning policy is set by supervisors whose rules differ across these six systems."
+    }
+  },
+  "primary_verdict": "F3 MISSED, 3 of 6. F4 MISSED against its own permutation null at the null's mean. On this panel the loss-absorbing funding share carries no visible information about realised non-performing-financing provisioning.",
+  "score": "1/6",
+  "spec_sha256": "0d52c8446d9f31edd2b117e2730029fb0c194c47f73f6df93fa7fadd5cc14e99",
+  "within_country_rs_iqr": {
+    "Afghanistan": 0.24725,
+    "Bangladesh": 0.005757,
+    "Kuwait": 0.015098,
+    "Pakistan": 0.129737,
+    "Palestine": 0.021043,
+    "Turkey": 0.03724
+  }
+}
