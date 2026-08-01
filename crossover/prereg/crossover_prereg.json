@@ -1,0 +1,170 @@
+{
+  "title": "The RT-to-Governance crossover, executed on quantum physics and on cognitive psychology, with the discriminating prediction each one owes",
+  "locked_before": "any fit, any error metric and any model-recovery rate was computed",
+  "two_theories_named": {
+    "T2O": "Two-Hop Objectivity. Quantum arm. Observer-accessible classical information about a quantum system is the product of an ENCODE hop (how completely the environment records the system) and a DECODE hop (how much of that environment an observer accesses).",
+    "T2R": "Two-Hop Retention. Cognitive arm. Retention is the product of an ENCODE hop (study/attention) and a DECODE hop (retrieval practice), against the standard additive alternative in which the two contribute independently and can compensate."
+  },
+  "THE_CROSSOVER_PROTOCOL_IS_BEING_FOLLOWED_INCLUDING_STEP_4": {
+    "rule": "Step 1 state the RT reading at full strength. Step 2 identify the channel. Step 3 RE-DERIVE a known result, do not re-label. Step 4 PRODUCE A DISCRIMINATING PREDICTION. A crossover that skips step 4 is renaming, not reframing.",
+    "three_verdicts_available": "RIVAL THEORY changes at least one prediction. INTERPRETATION is empirically equivalent and may claim coherence only, never the RT field's predictive credit. CATEGORY ERROR contradicts a measurement or a no-go theorem and must be withdrawn.",
+    "verdicts_will_be_assigned_by_the_run": "Each arm is assigned exactly one verdict, determined by its gates, not by preference. Most reframes are interpretations and saying so is not a defeat."
+  },
+  "the_five_governance_questions_and_why_they_are_governance": {
+    "layer": "L2 - operational definitions. The claim below is NOT that the five questions are secular rather than religious. It is narrower and checkable: EACH ADMITS AN OPERATIONAL READING THAT NAMES A MEASURABLE QUANTITY. That is what makes a question governance-tractable.",
+    "the_test_of_the_claim": "A question is governance-tractable here iff its operational reading names a quantity that could come out other than predicted. If a reading names no such quantity, the reading is an interpretation and is labelled one. This is the only sense in which 'governance not theology' is asserted, and it is a claim about TRACTABILITY, not about what the questions ultimately mean.",
+    "Q1_purpose": {"operational_reading": "what does this system convert capacity into, and at what yield", "measurable": "E = U * D, realised yield against inert capacity", "status_in_this_run": "already measured elsewhere in this programme; not re-tested here"},
+    "Q2_realms": {"operational_reading": "is the rendered layer the only register, or is there a terminal register where trajectories are scored", "measurable": "whether a selection floor D >= D_min exists that a descriptive linear law does not capture", "status_in_this_run": "NOT tested here. Recorded as untested rather than assumed."},
+    "Q3_stewardship": {"operational_reading": "is the demanded operation a single act or a two-hop channel", "measurable": "whether an outcome is better predicted by D_enc * D_dec than by a single fidelity term", "status_in_this_run": "THIS IS THE QUESTION BOTH ARMS TEST. Q3 gates and C3/C4 gates below."},
+    "Q4_reference_lock": {"operational_reading": "does fidelity require a single locked reference frame", "measurable": "whether accessible information degrades when records are calculated against multiple incompatible frames", "status_in_this_run": "partially touched by the quantum arm's pointer-basis assumption; NOT independently tested."},
+    "Q5_failure_and_predictability": {"operational_reading": "can outcomes be shortcut by a closed-form law, or must they be monitored continuously", "measurable": "enforcement latency tau_v as a leading indicator, and computational irreducibility as the reason a static formula fails", "status_in_this_run": "NOT tested here."},
+    "HONEST_SCOPE": "Three of the five questions are not tested by this run at all. Listing an operational reading for a question is Layer 2 and is not evidence that the reading is correct. Only Q3 is put at risk here."
+  },
+  "ARM_1_QUANTUM": {
+    "step_1_the_RT_reading_at_full_strength": {
+      "decoherence_theory": "A system coupled to an environment loses off-diagonal coherence in the pointer basis at a rate set by the coupling and the environment's spectral density. Measurement statistics are recovered WITHOUT any conscious observer. This is settled physics and is not in dispute here.",
+      "quantum_darwinism_Zurek": "The environment is not a monolithic sink. It stores REDUNDANT copies of pointer-basis information, and observers access only FRAGMENTS. Objectivity is explained by many fragments carrying the same record, quantified by redundancy R_delta and displayed as the partial-information plot: mutual information I(S:F) rises steeply with fragment fraction and then PLATEAUS at H(S).",
+      "why_this_matters_for_honesty": "Quantum Darwinism ALREADY distinguishes total system-environment correlation from what a fragment-limited observer can access. Any governance reframe that 'discovers' this has rediscovered an existing theory, and must say so rather than claim novelty."
+    },
+    "step_2_the_channel": {
+      "U": "H(S), the pointer-basis entropy available to be made objective. One bit for an equal-amplitude qubit.",
+      "D_enc": "1 - |Gamma|, where Gamma is the total decoherence factor, the overlap of the two conditional environment states. Set entirely by the coupling angles. Zero when the environment records nothing.",
+      "D_dec": "m/N, the fraction of environment subsystems the observer accesses. A pure access parameter, fixed by the observer and not by the physics.",
+      "why_these_two_are_independent": "D_enc is a property of the interaction; D_dec is a property of who is looking. They are set by different knobs, which is what makes a two-hop claim testable rather than a relabelling of one quantity."
+    },
+    "step_3_re_derivation_target": "The partial-information plateau must be recovered from the exact model before any comparison is run. If it does not appear, the implementation is wrong and the arm aborts.",
+    "the_model": {
+      "system": "Standard pure-dephasing spin-star. Global state (|0>|E_0> + |1>|E_1>)/sqrt(2) with |E_j> a product over N environment qubits.",
+      "exact_result_used": "For a fragment F with complement Ebar, and per-qubit overlaps gamma_k: I(S:F) = h((1+|Gamma|)/2) + h((1+|gamma_F|)/2) - h((1+|gamma_Ebar|)/2), where h is binary entropy, gamma_F is the product over F, gamma_Ebar the product over the complement, and Gamma = gamma_F * gamma_Ebar.",
+      "this_is_a_DERIVATION_not_a_SIMULATION": "The dynamics are given by standard quantum mechanics, not chosen by this programme. Computing a consequence of established physics is derivation and is checkable by anyone with the same equations. The simulator rule forbids generating the structure a claim exploits and then testing the claim on it; nothing here generates the plateau, the plateau is a theorem of the model.",
+      "grid_declared_now": "N = 20 environment qubits. Per-qubit overlap gamma in [0.1, 0.3, 0.5, 0.7, 0.9], uniform across qubits. Fragment size m from 1 to 19. Fragment mutual information computed exactly. 5 * 19 = 95 points."
+    },
+    "gates": [
+      {
+        "id": "Q1_the_plateau_is_recovered",
+        "weight": "full",
+        "test": "For the strongest coupling (gamma = 0.1), I(S:F) reaches at least 0.9 * H(S) by fragment fraction 0.5, and the curve is non-decreasing in m.",
+        "why": "Step 3 of the protocol. A crossover must re-derive a known result before it is allowed to claim anything. This is also the implementation check.",
+        "prediction": "EXPECTED TO PASS. If it fails the arm aborts rather than reporting."
+      },
+      {
+        "id": "Q2_TWO_HOP_LINEAR_BEATS_THE_QUADRATIC_RIVAL",
+        "weight": "full",
+        "primary": true,
+        "test": "Median absolute error of U * D_enc * D_dec against the exact I(S:F) is lower than that of U * (D_enc * D_dec)^2 across all 95 points, by at least 0.02 bits.",
+        "prediction": "GENUINELY UNCERTAIN. This is LISM's linear-versus-quadratic contrast carried into a new field."
+      },
+      {
+        "id": "Q3_THE_SECOND_HOP_EARNS_ITS_KEEP",
+        "weight": "full",
+        "test": "Median absolute error of the two-hop form U * D_enc * D_dec is lower than that of the SINGLE-HOP form U * D_enc, which ignores fragment access entirely, by at least 0.02 bits.",
+        "why": "The ablation rule, and the gate that decides whether the governance reframe bought anything over plain decoherence theory. If knowing the total decoherence is as good as knowing both hops, the second hop is dead weight and must be named as such.",
+        "prediction": "AT GENUINE RISK, AND THE REASONING IS RECORDED NOW: the partial-information PLATEAU means I(S:F) is already near H(S) for small fragment fractions. A form LINEAR in fragment fraction must therefore undershoot badly across most of the range, while the single-hop form is correct on the plateau. I expect the two-hop linear form to LOSE this gate. If it does, that is a refutation of the linear two-hop functional form for this observable and will be reported as one."
+      },
+      {
+        "id": "Q4_where_the_forms_break_is_located_and_reported",
+        "weight": "full",
+        "test": "The fragment fraction at which the best form's absolute error first exceeds 0.1 bits is computed and reported, and the pre-declared expectation -- that the linear form fails in the saturation region rather than at small fragments -- is checked against it.",
+        "why": "A model that fails should fail somewhere specific. Naming the region is worth more than the score.",
+        "prediction": "the linear form is expected to fail in the PLATEAU region, at larger fragment fractions."
+      },
+      {
+        "id": "Q5_the_verdict_under_the_crossover_protocol",
+        "weight": "excluded",
+        "status": "DECLARED IN ADVANCE",
+        "verdict_declared_now": "INTERPRETATION, NOT RIVAL THEORY.",
+        "reason": "The governance channel identification recovers quantum Darwinism, which already separates total system-environment correlation from fragment-limited observer access and already predicts that redistributing records across fragments changes what an observer can obtain. The reframe therefore changes no prediction of physics. It is declared an interpretation BEFORE the run so that a good numerical fit cannot afterwards be presented as a new physical discovery.",
+        "what_the_arm_may_therefore_claim": "Only that a particular FUNCTIONAL FORM does or does not describe an exactly computable quantity. It may not claim the governance reading is confirmed by physics.",
+        "hard_constraint_respected": "Decoherence is not observation. Nothing in this arm makes any outcome depend on a mind, and no zero-latency or signalling claim is made anywhere."
+      }
+    ],
+    "the_laboratory_experiment_this_arm_would_hand_to_a_physics_lab": {
+      "protocol": "Prepare a system qubit dephased by an engineered N-subsystem environment (trapped-ion chain, photonic multi-mode, or NV centre with controlled nuclear-spin bath). HOLD THE TOTAL DECOHERENCE FACTOR |Gamma| FIXED while REDISTRIBUTING the per-subsystem overlaps: configuration A concentrates the record in few subsystems with strong coupling, configuration B spreads it thinly across many.",
+      "measurement": "For each configuration, tomographically reconstruct I(S:F) as a function of fragment size and extract the redundancy R_delta.",
+      "what_it_would_settle": "Whether observer-accessible information at fixed total decoherence depends on the distribution of the record, and which functional form in (D_enc, D_dec) tracks it.",
+      "what_it_would_NOT_settle": "Nothing about governance, institutions or the five questions. It is a physics measurement and would remain one.",
+      "honest_note": "This is close to experiments already performed on quantum Darwinism in photonic and NV systems. It is offered as the experiment this arm implies, NOT as an unprecedented one."
+    }
+  },
+  "ARM_2_COGNITIVE": {
+    "step_1_the_RT_reading_at_full_strength": {
+      "standard_account": "Memory has encoding, storage and retrieval stages. The testing effect and the spacing effect are robust, replicated phenomena. Bjork's New Theory of Disuse ALREADY posits two factors -- storage strength and retrieval strength -- that behave differently, so a two-factor reading of memory is not new and is not claimed as new here.",
+      "what_is_actually_at_issue": "Not whether there are two factors. Whether they COMBINE MULTIPLICATIVELY, so that one at zero cannot be compensated, or ADDITIVELY, so that they trade off."
+    },
+    "step_2_the_channel": {
+      "U": "asymptotic maximum retention for the material",
+      "D_enc": "encoding strength, raised by study time, attention and elaboration",
+      "D_dec": "retrieval strength, raised by retrieval practice and cue availability",
+      "E": "measured retention at test"
+    },
+    "step_4_the_discriminating_prediction": "The multiplicative form forbids something the additive form permits: WITH ONE FACTOR AT OR NEAR ZERO, RETENTION MUST GO TO ZERO REGARDLESS OF THE OTHER. An additive account predicts a non-zero floor at w * U. That is the corner of the design space where the two accounts separate, and it is a real experimental design.",
+    "the_computational_experiment": {
+      "what_it_is": "A MODEL-RECOVERY STUDY. Data are generated from one of the two accounts under measurement noise, both accounts are fitted, and it is recorded whether the generating account is recovered.",
+      "THIS_IS_SIMULATION_AND_IS_LABELLED_AS_SUCH": "Every number in this arm is generated by a model chosen here. It therefore says NOTHING about human memory and a test asserts the results file claims nothing about human memory. What a model-recovery study legitimately produces is a REQUIRED EXPERIMENT: which designs could distinguish the accounts, and which could not. That is its entire deliverable.",
+      "design_space_declared_now": "Encoding levels and retrieval levels each drawn from grids. Design family CORNER includes at least one cell with a factor at or below 0.1; design family INTERIOR restricts both factors to [0.4, 1.0]. Noise sd in [0.02, 0.05, 0.10]. Participants per cell in [20, 50, 100]. Seed 20260801. 200 replicate datasets per configuration.",
+      "recovery_criterion": "The generating model is recovered iff its residual sum of squares is lower than the rival's on held-out cells."
+    },
+    "gates": [
+      {
+        "id": "C1_integrity",
+        "weight": "full",
+        "test": "Both accounts are implemented, all generated retentions lie in [0,1], and the declared design families and replicate counts are produced exactly.",
+        "prediction": "EXPECTED TO PASS."
+      },
+      {
+        "id": "C2_the_failing_region_is_populated",
+        "weight": "full",
+        "test": "Across all configurations the overall recovery rate lies between 0.55 and 0.95.",
+        "why": "If every design recovers, or none does, the arm cannot discriminate designs and C3 and C4 are noise.",
+        "prediction": "UNCERTAIN."
+      },
+      {
+        "id": "C3_THE_CORNER_DESIGN_DISCRIMINATES",
+        "weight": "full",
+        "primary": true,
+        "test": "Mean recovery rate for CORNER designs is at least 0.90 at the lowest noise level.",
+        "prediction": "UNCERTAIN, and this is the design the arm exists to justify."
+      },
+      {
+        "id": "C4_THE_INTERIOR_DESIGN_DOES_NOT",
+        "weight": "full",
+        "test": "Mean recovery rate for INTERIOR designs is at least 0.15 BELOW that of CORNER designs at the same noise level.",
+        "why": "THIS IS THE SUBSTANTIVE CLAIM OF THE ARM. It says the accounts are hard to tell apart in the region most studies actually sample, and that a study which never drives a factor to near zero cannot settle the question however many participants it runs. A miss means the accounts separate everywhere and the corner design is unnecessary.",
+        "prediction": "UNCERTAIN."
+      },
+      {
+        "id": "C5_DCM_DELTA_PREDICTS_WHICH_DESIGNS_DISCRIMINATE",
+        "weight": "full",
+        "test": "Across all configurations, the AUC of DCM's DELTA against the recovered/not-recovered label is at least 0.65. DELTA is computed on each generated dataset by the definitions locked in spec 3a33d53e, without modification.",
+        "why": "Composes this programme's second model with this one. DCM claims to predict whether a dataset can adjudicate a claim; this is a direct out-of-field test of that claim on a substrate DCM was not built from.",
+        "prediction": "GENUINELY UNCERTAIN, and a miss is a real result against DCM, which will be recorded in DCM's file as well as this one."
+      },
+      {
+        "id": "C6_the_verdict_under_the_crossover_protocol",
+        "weight": "excluded",
+        "status": "TO BE ASSIGNED BY THE RUN",
+        "rule_declared_now": "If C3 and C4 both hold, the multiplicative reading forbids something the additive reading permits AT A REACHABLE DESIGN POINT, and the arm is a RIVAL THEORY -- untested against humans, but a rival. If C3 holds and C4 fails, the accounts separate everywhere and the reframe adds no design guidance; verdict INTERPRETATION. If C3 fails, the accounts are not separable even at the corner and the verdict is INTERPRETATION with the stronger note that no feasible experiment distinguishes them.",
+        "why_declared_in_advance": "So the verdict is determined by the gates rather than chosen after seeing them."
+      }
+    ]
+  },
+  "anti_immunisation": {
+    "thresholds_frozen": [
+      "Q1: 0.9 * H(S) by fragment fraction 0.5",
+      "Q2: two-hop linear beats quadratic by >= 0.02 bits median absolute error",
+      "Q3: two-hop beats single-hop by >= 0.02 bits median absolute error",
+      "C2: overall recovery between 0.55 and 0.95",
+      "C3: corner recovery >= 0.90 at lowest noise",
+      "C4: interior at least 0.15 below corner at the same noise",
+      "C5: AUC(DELTA) >= 0.65"
+    ],
+    "rule": "No threshold moves after a run. The quantum grid, the design families, the seed and the recovery criterion are fixed here. If the two-hop form loses in the quantum arm it is reported as losing; it is not rescued by adding a saturation term, because adding a term after seeing the residuals is curve-fitting and not theory.",
+    "morphology_generates_hypotheses_never_evidence": "The root analyses that motivated the two-hop vocabulary -- the encode and decode hops, the pressing protocol, the distinction between surface report and operational content -- are Layer 3. They produced the VOCABULARY and the HYPOTHESIS. They produce no evidence, they do not adjudicate any gate below, and a test asserts the results file cites no root as support for any numerical claim.",
+    "the_five_questions_are_not_evidence_either": "Listing an operational reading for each of the five questions is Layer 2. Three of the five are not tested at all in this run and are recorded as untested.",
+    "simulator_rule_applied_asymmetrically_and_deliberately": "The quantum arm is a DERIVATION from standard quantum mechanics and its gates score. The cognitive arm is a SIMULATION whose gates score only for statements about EXPERIMENTAL DESIGN, never about human memory, and a test enforces that boundary."
+  },
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That a specific functional form does or does not track an exactly computable quantum quantity, and that a specific experimental design can or cannot separate two accounts of retention under stated noise.",
+    "would_not": "Any claim that physics confirms a governance reading. Any claim about human memory. Any claim that the five questions have been answered. Any claim that a reframe which recovers an existing theory has discovered anything."
+  }
+}
