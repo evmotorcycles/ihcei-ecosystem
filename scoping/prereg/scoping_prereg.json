@@ -1,0 +1,116 @@
+{
+  "model_name": "SDL - the Scope Declaration Law",
+  "one_line": "A domain-scoped family of Layer 1 equations is a theory only if the scope condition is measurable from the substrate BEFORE the winning equation is known. Otherwise it is bookkeeping.",
+  "the_design_being_tested": {
+    "as_proposed": "Do not invent a new universal equation when an empirical boundary is found. Keep the Layer 3 framework (the five governance questions), and deploy SCALE-LOCAL, DOMAIN-SPECIFIC Layer 1 theories: E = U * D_enc * D_dec for serial non-redundant channels, single-hop / redundancy accounting for fan-out channels, scale-local calibration instead of extrapolated power laws.",
+    "why_it_is_right_as_far_as_it_goes": "Every empirical result in this programme supports it. The quantum arm showed the product form is 195x worse than the single hop where records are redundant. The allometry arm showed a rule calibrated at one scale extrapolates catastrophically. Forcing one equation across those substrates would be the error.",
+    "THE_HOLE_THAT_MUST_BE_TESTED": "A family of equations plus a free choice of which one applies CANNOT BE REFUTED. If the scope condition is assigned after seeing which equation won, every future failure is absorbed by adding a scope clause, and the framework predicts nothing. THE SCOPE CONDITION IS THE THEORY. If it is not measurable in advance, the architecture is unfalsifiable however well each individual equation performs.",
+    "what_this_run_therefore_tests": "Not whether domain-scoping is a good idea -- it is. Whether a scope selector declared IN ADVANCE, computed from substrate structure ALONE, can predict which Layer 1 form will win."
+  },
+  "the_scope_selector_declared_now": {
+    "R_decode_redundancy_proxy": "The modal share of the decode variable: the fraction of units sharing the single most common value of D_dec. High R means the decode channel repeats itself -- many carriers holding the same value rather than distinct ones.",
+    "computed_from": "the decode column alone. It never reads the outcome, never reads U or D_enc, and never reads which form wins. A test asserts this by scanning the source.",
+    "THE_LOCKED_RULE": "R > 0.5  ->  predict the SINGLE-HOP form U * D_enc wins.   R <= 0.5  ->  predict the TWO-HOP form U * D_enc * D_dec wins.",
+    "threshold_declared_at": "0.5, the midpoint of the range, chosen because it is the only value requiring no justification from the data. It will not be moved.",
+    "IT_IS_A_PROXY_AND_IS_LABELLED_ONE": "Redundancy in the quantum sense means many carriers EACH SUFFICIENT to reconstruct the signal. Modal share means many carriers holding the SAME VALUE. These are related but not identical, and no single first-principles redundancy measure is available across protein interactomes, software repositories, package graphs and environment qubits. That absence is itself part of what this run exposes: if the scope selector must be redefined per domain, the domain-scoping architecture has moved the unfalsifiability rather than removed it.",
+    "connection_to_DCM": "R is DCM's V factor, inverted, applied to the decode channel. That is deliberate: the programme's second model supplies the scope selector for its first."
+  },
+  "substrates": {
+    "note": "Five substrates. Each supplies U, a D_enc, a D_dec and an outcome. The winner is whichever of the two forms better predicts THAT substrate's own outcome.",
+    "S_yeast": {"file": "data/yeast/yeast_interactome_DEG.csv",
+                "sha256": "80cc901cb2327dba45d0cf91b293c0ce55cb8bdcbdc63b1c2062e88f36257aa6",
+                "rows_declared": 4825, "U": "U", "D_enc": "D_enc", "D_dec": "D_dec",
+                "outcome": "E_essential, binary"},
+    "S_github": {"file": "data/github/govphys_quadratic_results.csv",
+                 "sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+                 "rows_declared": 992, "U": "U", "D_enc": "D_enc", "D_dec": "D_dec",
+                 "outcome": "E, binary survival"},
+    "S_pypi": {"file": "data/pypi/dep_graph_nodes.csv",
+               "sha256": "9bdaf2a045c0adeccb589f7cfbe2281420308db4d00fba325fb841f51037b4ff",
+               "rows_declared": 540, "U": "U_versions",
+               "D_enc": "D_enc_release_hygiene", "D_dec": "D_dec_pin_clarity",
+               "outcome": "E_indegree above its median, binary"},
+    "S_interbank": {"files": ["data/interbank-2016/nodes_2016Q1.csv",
+                              "data/interbank-2016/edges_2016Q1.csv"],
+                    "sha256_nodes": "4d2ed9d40387a2a4b2b90a70698d709e6432e11e871cf0fb9314a23b37762e9b",
+                    "sha256_edges": "5c89a25fca39e472f626c5c12e106e6d63274d27bb81c92dc8e942f52e117a77",
+                    "U": "Interbank_liabilities / Equity", "D_enc": "Q1 in-degree",
+                    "D_dec": "Q1 out-degree",
+                    "outcome": "realised Q2 funding withdrawal, binary, as locked in spec db8c3a4f"},
+    "S_quantum": {"source": "closed-form pure-dephasing spin-star, spec 6cb42dcd",
+                  "note": "A DERIVATION, not a dataset. Its winner is ALREADY KNOWN to be the single-hop form, by 195x. IT IS THEREFORE NOT INDEPENDENT EVIDENCE for the rule and is flagged as such in the results. It is included because excluding the one substrate that motivated the scope condition would be worse."}
+  },
+  "how_a_winner_is_decided": {
+    "binary_outcome_substrates": "AUC of each form against the substrate's own outcome, Mann-Whitney with mean ranks. Winner is the higher AUC. Ties within 0.005 AUC are recorded as TIED and count as a miss for any rule that predicted a specific winner.",
+    "quantum": "median absolute error in bits against exact I(S:F). Winner is the lower error.",
+    "why_AUC": "threshold-free and invariant to monotone rescaling, so neither form is advantaged by the units its definition produces."
+  },
+  "gates": [
+    {
+      "id": "S1_integrity",
+      "weight": "full",
+      "test": "All four data files match their locked hashes and their declared row counts. Every R lies in [0,1]. Five substrates produce a winner.",
+      "prediction": "EXPECTED TO PASS; the run aborts on mismatch."
+    },
+    {
+      "id": "S2_the_substrates_do_not_all_agree",
+      "weight": "full",
+      "test": "The five winners are not unanimous: at least one substrate favours each form, or at least one is TIED.",
+      "why": "If every substrate picks the same form, there is nothing for a scope rule to select and S3, S4 and S5 are vacuous. This is LISM invariant I2 applied to the scoping question itself.",
+      "prediction": "GENUINELY UNCERTAIN. The quantum substrate favours the single hop. Whether any data substrate favours the two-hop product is not known at lock time."
+    },
+    {
+      "id": "S3_THE_PRE_DECLARED_RULE_ASSIGNS_THE_WINNER",
+      "weight": "full",
+      "primary": true,
+      "test": "The locked rule -- R > 0.5 predicts single-hop, R <= 0.5 predicts two-hop -- assigns the correct winner in at least 4 of the 5 substrates.",
+      "prediction": "GENUINELY UNCERTAIN for the four data substrates. The quantum substrate is a known case and is scored but flagged as non-independent."
+    },
+    {
+      "id": "S4_SCOPING_BEATS_THE_BEST_SINGLE_GLOBAL_FORM",
+      "weight": "full",
+      "test": "The scoping rule's correct-count strictly exceeds the correct-count of the better of the two always-one-form baselines: always-single-hop and always-two-hop.",
+      "why": "The ablation rule, and the gate that decides whether scoping earned anything at all. If always using one form is right just as often, the scope condition is decoration and the architecture reduces to a single global equation after all.",
+      "prediction": "AT GENUINE RISK. If most substrates favour one form, the always-that-form baseline is hard to beat with five data points."
+    },
+    {
+      "id": "S5_THE_LOCKED_THRESHOLD_IS_DOING_WORK",
+      "weight": "full",
+      "test": "Sweep every threshold t in 0.00, 0.01, ..., 1.00 on R. The locked threshold of 0.5 must score strictly better than at least 80 percent of the 101 alternative thresholds.",
+      "why": "THE FALSIFIABILITY GATE. If almost any threshold produces the same assignment, the locked value was not tested by this data and the rule has not been put at risk -- it has merely been stated. A scope condition that cannot be got wrong is the unfalsifiability the whole run exists to check for.",
+      "prediction": "EXPECTED TO FAIL. With five substrates there are at most six distinct partitions reachable by thresholding a single number, so large bands of thresholds must score identically. Recorded as expected-to-fail so a pass would be genuinely surprising and a failure cannot afterwards be presented as anticipated all along."
+    },
+    {
+      "id": "S6_DCM_SELF_AUDIT_OF_THIS_VERY_EXPERIMENT",
+      "weight": "full",
+      "test": "Compute DCM's DELTA = V * I * C on the five-substrate table, treating the winner as the outcome and R above/below the locked threshold as the grouping, using the definitions locked in spec 3a33d53e without modification. The gate is met if DELTA >= 0.20.",
+      "why": "DCM says a dataset can only adjudicate a claim it is capable of discriminating. This run has FIVE data points. Applying the programme's own instrument to the programme's own experiment is the honest move, and if DELTA comes out low then S3, S4 and S5 must be reported as UNINFORMATIVE whatever their recorded verdicts.",
+      "prediction": "EXPECTED TO FAIL, and this is the most likely headline. Five substrates cannot support a scope-selection test.",
+      "binding_consequence_declared_now": "If S6 is not met, the results file must state that S3, S4 and S5 are UNINFORMATIVE, and no claim may be made for or against the scoping architecture on the strength of them."
+    },
+    {
+      "id": "S7_whether_domain_scoping_is_correct_in_general",
+      "weight": "excluded",
+      "status": "UNTESTABLE-HERE",
+      "reason": "Five substrates, four of them from this programme's own collection, cannot settle whether a scoped family of equations is the right architecture for science. Nothing in this run addresses that question and no result should be quoted as if it did.",
+      "what_would_close_it": "Dozens of substrates, collected by people not testing this architecture, with the scope selector declared before any of them were seen."
+    }
+  ],
+  "anti_immunisation": {
+    "thresholds_frozen": [
+      "R threshold 0.5",
+      "S3: correct in at least 4 of 5",
+      "S4: strictly greater than the better always-one-form baseline",
+      "S5: better than at least 80 percent of alternative thresholds",
+      "S6: DELTA >= 0.20"
+    ],
+    "rule": "No threshold moves after a run. R is not redefined after seeing which form won on any substrate. No substrate is added or dropped after its winner is known. If the rule assigns wrongly, it is reported as assigning wrongly.",
+    "the_specific_immunisation_being_guarded_against": "The move this run exists to prevent is: observe that a form failed on a substrate, then declare that substrate out of scope, and present the surviving fit as a success. That move is available to any scoped architecture and it is what S5 and S6 are for.",
+    "quantum_is_flagged_not_excluded": "The quantum substrate's winner was known before this spec was written. It is scored, because dropping the case that motivated the scope condition would flatter the rule, and it is flagged in the results as non-independent so no reader can mistake it for confirmation.",
+    "too_perfect_rule": "5 of 5 correct assignment is to be treated as suspected circularity -- most likely R having been chosen with the winners in mind -- investigated, and reported as suspect rather than celebrated."
+  },
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That on five substrates a structure-only index computed without reference to any outcome assigned the better of two functional forms more often than always using one of them.",
+    "would_not": "That the domain-scoping architecture is validated. That any particular scope boundary is correct. That E = U * D_enc * D_dec applies wherever R <= 0.5 -- five points cannot calibrate a threshold. And emphatically not that a framework which selects its equation per domain has been shown to be falsifiable in general; only this one selector, on these five substrates, was put at risk."
+  }
+}
