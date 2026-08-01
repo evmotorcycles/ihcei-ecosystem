@@ -1,0 +1,370 @@
+<title>What our failures taught us — OQM and the Five Governance Questions</title>
+<style>
+  :root {
+    --paper:#F5F6F3; --card:#FFFFFF; --ink:#161A17; --soft:#4F574F; --faint:#868D85;
+    --rule:#D6DAD3; --rule2:#E9ECE6;
+    --ac:#2C5D45; --ac-dim:#E2EDE7;
+    --fix:#7A3F5E; --fix-dim:#F3E6EE;
+    --shadow:0 1px 2px rgba(22,26,23,.04), 0 10px 26px -18px rgba(22,26,23,.3);
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --disp: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --measure:35rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#0F1310; --card:#191E1A; --ink:#E9EDE8; --soft:#A8B0A6; --faint:#79806F;
+      --rule:#2C332D; --rule2:#212722; --ac:#6FB48F; --ac-dim:#152A20;
+      --fix:#C98CAD; --fix-dim:#2E1826;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -20px rgba(0,0,0,.95); }
+  }
+  :root[data-theme="dark"] { --paper:#0F1310; --card:#191E1A; --ink:#E9EDE8; --soft:#A8B0A6;
+    --faint:#79806F; --rule:#2C332D; --rule2:#212722; --ac:#6FB48F; --ac-dim:#152A20;
+    --fix:#C98CAD; --fix-dim:#2E1826;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -20px rgba(0,0,0,.95); }
+  :root[data-theme="light"] { --paper:#F5F6F3; --card:#FFFFFF; --ink:#161A17; --soft:#4F574F;
+    --faint:#868D85; --rule:#D6DAD3; --rule2:#E9ECE6; --ac:#2C5D45; --ac-dim:#E2EDE7;
+    --fix:#7A3F5E; --fix-dim:#F3E6EE;
+    --shadow:0 1px 2px rgba(22,26,23,.04), 0 10px 26px -18px rgba(22,26,23,.3); }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--body);
+         font-size:18px; line-height:1.68; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:58rem; margin:0 auto; padding:0 1.5rem 6rem; }
+  .col { max-width:var(--measure); display:flex; flex-direction:column; gap:1.15rem; }
+
+  .mast { padding:4.5rem 0 2.4rem; border-bottom:1px solid var(--rule);
+          display:flex; flex-direction:column; gap:1.3rem; }
+  .kick { font-family:var(--mono); font-size:.7rem; letter-spacing:.15em;
+          text-transform:uppercase; color:var(--ac); font-weight:600; }
+  h1 { font-family:var(--disp); font-size:clamp(2.1rem,5.6vw,3.2rem); line-height:1.08;
+       letter-spacing:-.02em; font-weight:600; margin:0; max-width:19ch; text-wrap:balance; }
+  .lede { font-size:clamp(1.12rem,2.5vw,1.34rem); max-width:34rem; margin:0;
+          color:var(--soft); text-wrap:balance; }
+
+  section { padding-top:3.6rem; display:flex; flex-direction:column; gap:1.2rem; }
+  h2 { font-family:var(--disp); font-size:clamp(1.4rem,3.1vw,1.85rem); font-weight:600;
+       margin:0; letter-spacing:-.015em; text-wrap:balance; }
+  h3 { font-size:1.06rem; font-weight:650; margin:0; letter-spacing:-.01em; }
+  p { margin:0; }
+  .big { font-size:1.06rem; }
+
+  .analogy { background:var(--ac-dim); border-radius:5px; padding:1.2rem 1.35rem;
+             font-family:var(--disp); font-size:1.06rem; line-height:1.5;
+             color:var(--ink); }
+  .analogy b { font-weight:600; }
+
+  .scroll { overflow-x:auto; border:1px solid var(--rule); border-radius:4px;
+            background:var(--card); }
+  table { border-collapse:collapse; width:100%; font-size:.88rem; }
+  th,td { text-align:left; padding:.68rem .9rem; border-bottom:1px solid var(--rule2);
+          vertical-align:top; line-height:1.45; }
+  thead th { font-family:var(--mono); font-size:.63rem; letter-spacing:.09em;
+             text-transform:uppercase; color:var(--faint);
+             border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:none; }
+  td.m { font-family:var(--mono); font-size:.74rem; white-space:nowrap; color:var(--soft); }
+  td b { font-weight:650; }
+  td.s { color:var(--soft); }
+
+  .q { background:var(--card); border:1px solid var(--rule); border-radius:4px;
+       padding:1.35rem 1.45rem; display:flex; flex-direction:column; gap:.8rem;
+       box-shadow:var(--shadow); }
+  .q .num { font-family:var(--mono); font-size:.68rem; letter-spacing:.12em;
+            text-transform:uppercase; color:var(--ac); font-weight:600; }
+  .q .plain { font-family:var(--disp); font-size:1.12rem; line-height:1.45;
+              font-weight:600; }
+  .q .sharp { font-size:.96rem; color:var(--soft); line-height:1.55; }
+  .q .sharp b { color:var(--ink); font-weight:650; }
+  .qgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(19rem,1fr)); gap:.85rem; }
+
+  .note { border-left:3px solid var(--ac); background:var(--card);
+          padding:1.15rem 1.3rem; border-radius:0 4px 4px 0; box-shadow:var(--shadow);
+          display:flex; flex-direction:column; gap:.7rem; }
+  .note.fix { border-left-color:var(--fix); }
+  .note h4 { margin:0; font-size:1.02rem; font-weight:650; }
+  .note.fix h4 { color:var(--fix); }
+  .note p { font-size:.96rem; }
+
+  blockquote { margin:0; padding:1.5rem 0; border-top:1px solid var(--rule);
+               border-bottom:1px solid var(--rule); font-family:var(--disp);
+               font-weight:600; font-size:clamp(1.15rem,2.9vw,1.45rem); line-height:1.36;
+               text-wrap:balance; }
+  blockquote span { display:block; margin-top:.6rem; font-size:.68em; font-weight:400;
+                    font-family:var(--body); color:var(--soft); line-height:1.55; }
+
+  .layer { display:flex; flex-wrap:wrap; gap:.6rem; }
+  .layer div { flex:1 1 13rem; border:1px solid var(--rule); border-radius:4px;
+               padding:.95rem 1.1rem; background:var(--card); }
+  .layer .tag { font-family:var(--mono); font-size:.64rem; letter-spacing:.1em;
+                text-transform:uppercase; color:var(--faint); }
+  .layer .h { font-weight:650; margin:.25rem 0 .35rem; }
+  .layer .d { font-size:.9rem; color:var(--soft); line-height:1.45; }
+
+  code { font-family:var(--mono); font-size:.86em; background:var(--rule2);
+         padding:.08em .34em; border-radius:2px; }
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--rule);
+           font-family:var(--mono); font-size:.7rem; color:var(--faint);
+           display:flex; flex-direction:column; gap:.45rem; }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">For the Marvelous Quran Channel · plain language</div>
+  <h1>What our failures taught us</h1>
+  <p class="lede">Most of our tests did not work. That is the good news — and this page
+    explains, without jargon, exactly how each failure made the Five Governance Questions
+    smaller, clearer and harder to fake.</p>
+</header>
+
+<section>
+  <h2>Start with the master key</h2>
+  <div class="analogy">
+    Imagine claiming you have a <b>master key</b> that opens every door in a large building.
+    You could say it forever and never be wrong — until you actually walk the corridors and
+    try it. Then you find some doors take keycards, some have combination dials, and some have
+    no lock at all.
+  </div>
+  <div class="col">
+    <p class="big">We walked the corridors. We had one equation and we tried it on protein
+      networks, software projects, banks, package repositories and quantum physics. It opened
+      some doors and jammed in others.</p>
+    <p><b>Every jam taught us something a success could not.</b> A key that opens everything
+      tells you nothing about the locks. A key that fails on door four tells you exactly what
+      kind of door four is.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The failures, and what each one removed</h2>
+  <div class="col">
+    <p>Here is the honest ledger. These are not embarrassments we are confessing — they are
+      the actual product of the work.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>What failed</th><th>What we thought</th><th>What the data said</th><th>What it removed</th></tr></thead>
+      <tbody>
+        <tr><td class="m">contract schedules<br>3/6</td>
+            <td class="s">the documents would show whether risk is really shared</td>
+            <td>the property value was <b>400,000 in every single row</b> — it never moved</td>
+            <td class="s">the belief that a clean document proves anything</td></tr>
+        <tr><td class="m">outcome panels<br>2/5</td>
+            <td class="s">real loss records would settle it</td>
+            <td>the bank wrote down <b>exactly &minus;85% every time</b> while the asset moved under 2%</td>
+            <td class="s">the belief that a loss on paper is a loss shared</td></tr>
+        <tr><td class="m">supervisory returns<br>1/6</td>
+            <td class="s">risk-sharing banks would provision differently</td>
+            <td>two countries booked <b>exactly zero</b> equity-based income for six years</td>
+            <td class="s">the assumption that the practice exists where the label does</td></tr>
+        <tr><td class="m">scaling test<br>3/5</td>
+            <td class="s">bigger systems follow a power law</td>
+            <td>a rule fitted on small projects was <b>4,406× wrong</b> on large ones — and pointed the wrong way</td>
+            <td class="s">the habit of scaling a rule up by multiplying</td></tr>
+        <tr><td class="m">quantum physics<br>5/9</td>
+            <td class="s">the two-hop equation would hold here too</td>
+            <td>using both hops was <b>195× worse</b> than using one</td>
+            <td class="s">the idea that our equation is universal</td></tr>
+        <tr><td class="m">scope selector<br>2/6</td>
+            <td class="s">a simple data statistic could tell us which equation to use</td>
+            <td>it got <b>1 of 4</b> right, and our own audit said the test was too small to judge</td>
+            <td class="s">the hope of a cheap shortcut for choosing tools</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Three habits the failures forced on us</h2>
+  <div class="qgrid">
+    <div class="q">
+      <div class="num">Habit one</div>
+      <div class="plain">Surface appearance is not the mechanism</div>
+      <div class="sharp">Checking a car's paint tells you nothing about the engine. Counting
+        how often a number repeats in a spreadsheet told us nothing about whether information
+        can actually get through a network. <b>Every cheap shortcut we tried, failed.</b></div>
+    </div>
+    <div class="q">
+      <div class="num">Habit two</div>
+      <div class="plain">Different shapes need different tools</div>
+      <div class="sharp">In a <b>bucket brigade</b>, everyone must catch <em>and</em> pass —
+        both are bottlenecks. In a <b>radio broadcast</b>, passing it on is free because
+        thousands already received it. Same information, completely different mathematics.</div>
+    </div>
+    <div class="q">
+      <div class="num">Habit three</div>
+      <div class="plain">Write down the answer before you look</div>
+      <div class="sharp">Every test was locked with a cryptographic seal <em>before</em> the
+        data was touched. When a test failed we recorded the failure. <b>We never went back
+        and added an excuse.</b></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The Five Questions, sharpened</h2>
+  <div class="col">
+    <p>Here is where each question stands now — and, just as importantly, <b>how much of it we
+      have actually tested.</b></p>
+  </div>
+
+  <div class="qgrid">
+    <div class="q">
+      <div class="num">Question 1 · Purpose</div>
+      <div class="plain">A full tank won't move a car with a broken gearbox.</div>
+      <div class="sharp">Talent, money and resources on their own are inert. Value appears
+        only when capacity is coupled to careful work. <b>Tested and holding</b> on 4,825
+        proteins and 992 software projects.</div>
+    </div>
+    <div class="q">
+      <div class="num">Question 2 · Realms</div>
+      <div class="plain">Distance may be a kind of waiting.</div>
+      <div class="sharp">The idea that physical distance is really information delay is
+        written down as a testable proposal with the exact laboratory experiments named.
+        <b>It has not been tested in a lab. No result here supports it yet.</b></div>
+    </div>
+    <div class="q">
+      <div class="num">Question 3 · Stewardship</div>
+      <div class="plain">In a relay, you must catch the baton <em>and</em> pass it.</div>
+      <div class="sharp">Receiving well and giving on are both required, and hoarding your
+        output collapses the whole result to nothing. <b>But only on the right shape of
+        network</b> — that is the narrowing, and it cost us a 195× error to learn.</div>
+    </div>
+    <div class="q">
+      <div class="num">Question 4 · Reference-lock</div>
+      <div class="plain">You cannot navigate with two different Norths.</div>
+      <div class="sharp">Measuring against several competing standards at once makes the
+        measurement meaningless. <b>We have practised this, not proved it</b> — our own
+        discipline working is not evidence that the idea is true of the world.</div>
+    </div>
+    <div class="q">
+      <div class="num">Question 5 · Predictability</div>
+      <div class="plain">You can't hear an engine failing from a photograph.</div>
+      <div class="sharp">Systems bleed slowly rather than snapping. So health has to be
+        watched over time — how fast a group closes its own open problems. <b>The strongest
+        single result we have</b>, and it survived a check for hidden size effects.</div>
+    </div>
+    <div class="q" style="background:var(--ac-dim);border-color:var(--ac)">
+      <div class="num">The honest total</div>
+      <div class="plain">One of five has been put at real risk and it lost.</div>
+      <div class="sharp">Question 3 was tested in quantum physics and the two-hop form was
+        beaten badly. Questions 2 and 4 have <b>no supporting test at all</b> yet. Saying so
+        is the point. <b>A framework that reports its own empty shelves is the only kind worth
+        trusting.</b></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Three things in the earlier summary that the record does not support</h2>
+  <div class="col">
+    <p>Correcting these matters more than the wins, because an overstatement that goes
+      unchallenged becomes the thing people quote.</p>
+  </div>
+
+  <div class="note fix">
+    <h4>“Distance is information lag” is not established</h4>
+    <p>It is a written proposal with named experiments — butterfly-front scaling, a transfer
+      test, a tunable-range boundary, and a mandatory hardware control. <b>None has been run
+      in a laboratory.</b> It should be described as awaiting test, never as a finding.</p>
+  </div>
+  <div class="note fix">
+    <h4>“Two-hop stewardship is mandatory on interbank networks” overstates what we found</h4>
+    <p>On the real 2016 interbank network the two forms came out effectively <b>tied</b> —
+      0.6090 against 0.6109, and the simpler rival was marginally ahead. A later run did
+      favour the two-hop form there, but <b>our own audit declared that run too small to
+      judge</b>, so it cannot be cited either way.</p>
+  </div>
+  <div class="note fix">
+    <h4>Question 4 was not “vindicated”</h4>
+    <p>Our pre-registration discipline did hold. But <b>our method working is not evidence for
+      a claim about the world.</b> Confusing the two would be exactly the error the discipline
+      exists to prevent. Question 4 remains untested.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The vocabulary: what OQM supplies, and what it cannot</h2>
+  <div class="col">
+    <p>This is the most useful thing the whole exercise produced, and it protects OQM rather
+      than limiting it.</p>
+  </div>
+
+  <div class="layer">
+    <div><div class="tag">Layer 3</div><div class="h">The starting picture</div>
+      <div class="d">Reality as something rendered; the world as a place of testing. <b>No
+        dataset settles this</b>, and none is offered.</div></div>
+    <div><div class="tag">Layer 2</div><div class="h">The working definitions</div>
+      <div class="d">Reading a term as a <em>function</em> rather than a label. Defensible,
+        auditable — <b>and not a finding.</b></div></div>
+    <div><div class="tag">Layer 1</div><div class="h">The measurements</div>
+      <div class="d">Numbers that can come out wrong. <b>The only layer that counts as
+        evidence.</b></div></div>
+  </div>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Term</th><th>Read as a label</th><th>Read as a function <span style="text-transform:none;letter-spacing:0">— Layer 2</span></th></tr></thead>
+      <tbody>
+        <tr><td><b>Free will</b></td><td class="s">unlimited choice, or no choice at all</td>
+            <td class="s"><b>Bounded capacity.</b> Not infinite options — real, consequential choices inside a assigned budget. The accounting is symmetrical: what you earn is credited, what you deliberately incur is debited, and never beyond the budget issued.</td></tr>
+        <tr><td><b>Takleef</b></td><td class="s">an arbitrary religious burden</td>
+            <td class="s"><b>The issued load.</b> The moment a capacity budget is assigned and accountability switches on. Load, not punishment — the same word family as effort and friction.</td></tr>
+        <tr><td><b>Adam</b></td><td class="s">one man at one moment in history</td>
+            <td class="s"><b>A stand-in variable.</b> Like <em>x</em> in a textbook: any node selected to carry the standard into its own setting. This is a reading of the text, <b>not a historical claim and not a measurement.</b></td></tr>
+        <tr><td><b>Khilafah</b></td><td class="s">a centralised empire</td>
+            <td class="s"><b>A network with no centre.</b> Every node connected directly to the standard, none in the middle to hoard the routing. Our Agency Net mark is the only one in the whole identity system with an empty centre — deliberately.</td></tr>
+        <tr><td><b>Salat</b></td><td class="s">a physical posture</td>
+            <td class="s"><b>The receiving hop.</b> The hard, slow work of sifting what is true from what merely looks true.</td></tr>
+        <tr><td><b>Zakat</b></td><td class="s">a fixed percentage tax</td>
+            <td class="s"><b>The giving hop.</b> Passing on the <em>method</em>, not just the result — which is what stops any one place hoarding the ability to judge.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <h4>The boundary, stated plainly</h4>
+    <p>Reading a word as a function <b>generates a hypothesis and a vocabulary. It never
+      generates evidence.</b> Root analysis appears in none of our calculations — a test
+      literally scans the code to make sure of it.</p>
+    <p>And here is the case that proves the boundary is real: <b>the method named a structure
+      correctly and got the performance claim badly wrong.</b> It produced the two-register
+      design for our settlement work — and the measurement then found the routing rule on top
+      of it was beaten by 18 of 20 random assignments. Right vocabulary. Wrong claim. Exactly
+      the division of labour it should expect.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Why this is good for OQM</h2>
+  <blockquote>The most common charge against any interpretive method is that it can never be
+    wrong.
+    <span>A framework that explains every outcome explains nothing. If a result confirms it,
+      that's proof; if a result contradicts it, the scope is adjusted. Nothing can ever
+      dislodge it — and so nobody outside has any reason to take it seriously.</span></blockquote>
+
+  <div class="col">
+    <p class="big">This body of work is the answer to that charge, and the answer is made
+      almost entirely of failures.</p>
+    <p>We published a 195× error against our own central equation. We recorded that our
+      selector rule scored 1 of 4. We wrote down a prediction, got the direction right and the
+      location wrong, and said so. <b>We withdrew a sentence from one of our own
+      pre-registrations</b> when it turned out to over-claim. Each of those is a place where
+      the framework could have been protected and wasn't.</p>
+    <p>That is what OQM gains. Not a bigger claim — <b>a smaller one that can be checked.</b>
+      The method keeps what it is genuinely good at: producing an operational vocabulary and
+      auditable readings. It stops borrowing credibility from numbers it did not earn. And
+      because the empty shelves are labelled, anyone can walk up and try to fill one.</p>
+  </div>
+
+  <blockquote>Nothing here settles any question of belief.
+    <span>These are measurements of networks, ledgers and equations. Two instruments can agree
+      perfectly and still differ in what they mean — and what a thing means is not something a
+      dataset was ever going to decide.</span></blockquote>
+</section>
+
+<footer>
+  <span>Novora Research Initiative · Open Science Division</span>
+  <span>84 reproducible test suites · every spec sealed before its data was touched · failures included</span>
+</footer>
+
+</div>

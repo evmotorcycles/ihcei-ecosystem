@@ -1,0 +1,429 @@
+<title>Novora — the identity system</title>
+<style>
+  :root {
+    --paper:#FAF9F6; --card:#FFFFFF; --ink:#101418; --soft:#4E555C; --faint:#8A9096;
+    --rule:#DCDAD3; --rule2:#EDEBE5;
+    --enc:#1F5A6E; --enc-dim:#E4EEF1;
+    --dec:#A8552F; --dec-dim:#F6E9E1;
+    --shadow:0 1px 2px rgba(16,20,24,.04), 0 10px 26px -18px rgba(16,20,24,.3);
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --disp: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --measure:34rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#0C0F12; --card:#161A1E; --ink:#EDEFF0; --soft:#A6ADB3; --faint:#767D84;
+      --rule:#2A3036; --rule2:#1E2429; --enc:#6FB6CC; --enc-dim:#132A32;
+      --dec:#DE9269; --dec-dim:#331C10;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -20px rgba(0,0,0,.95); }
+  }
+  :root[data-theme="dark"] { --paper:#0C0F12; --card:#161A1E; --ink:#EDEFF0; --soft:#A6ADB3;
+    --faint:#767D84; --rule:#2A3036; --rule2:#1E2429; --enc:#6FB6CC; --enc-dim:#132A32;
+    --dec:#DE9269; --dec-dim:#331C10;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -20px rgba(0,0,0,.95); }
+  :root[data-theme="light"] { --paper:#FAF9F6; --card:#FFFFFF; --ink:#101418; --soft:#4E555C;
+    --faint:#8A9096; --rule:#DCDAD3; --rule2:#EDEBE5; --enc:#1F5A6E; --enc-dim:#E4EEF1;
+    --dec:#A8552F; --dec-dim:#F6E9E1;
+    --shadow:0 1px 2px rgba(16,20,24,.04), 0 10px 26px -18px rgba(16,20,24,.3); }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--disp);
+         font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:64rem; margin:0 auto; padding:0 1.5rem 6rem; }
+  .col { max-width:var(--measure); display:flex; flex-direction:column; gap:1.05rem; }
+
+  .mast { padding:4.5rem 0 2.4rem; border-bottom:1px solid var(--rule);
+          display:flex; flex-direction:column; gap:1.6rem; }
+  .kick { font-family:var(--mono); font-size:.7rem; letter-spacing:.16em;
+          text-transform:uppercase; color:var(--faint); }
+  h1 { font-size:clamp(2rem,5vw,2.9rem); line-height:1.1; letter-spacing:-.03em;
+       font-weight:650; margin:0; text-wrap:balance; max-width:20ch; }
+  .thesis { font-size:clamp(1.06rem,2.4vw,1.26rem); max-width:34rem; margin:0;
+            color:var(--soft); text-wrap:balance; }
+
+  section { padding-top:3.6rem; display:flex; flex-direction:column; gap:1.2rem; }
+  h2 { font-size:clamp(1.28rem,2.8vw,1.62rem); font-weight:650; margin:0;
+       letter-spacing:-.018em; text-wrap:balance; }
+  h3 { font-family:var(--mono); font-size:.74rem; font-weight:600; margin:0;
+       letter-spacing:.12em; text-transform:uppercase; color:var(--faint); }
+  p { margin:0; }
+
+  /* ---------- the master lockup ---------- */
+  .hero { background:var(--card); border:1px solid var(--rule); border-radius:4px;
+          padding:3rem 2rem; display:flex; flex-direction:column; align-items:center;
+          gap:1.6rem; box-shadow:var(--shadow); }
+  .lockup { display:flex; align-items:center; gap:1.4rem; flex-wrap:wrap;
+            justify-content:center; }
+  .lockup svg { width:82px; height:82px; flex:none; }
+  .wordmark { font-size:clamp(2.2rem,7vw,3.4rem); font-weight:600; letter-spacing:.16em;
+              margin:0; line-height:1; }
+  .tagline { font-family:var(--mono); font-size:.74rem; letter-spacing:.2em;
+             text-transform:uppercase; color:var(--faint); text-align:center; }
+
+  /* ---------- mark grid ---------- */
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));
+          gap:.85rem; }
+  .mk { background:var(--card); border:1px solid var(--rule); border-radius:4px;
+        padding:1.25rem 1.3rem; display:flex; flex-direction:column; gap:.9rem;
+        box-shadow:var(--shadow); }
+  .mk .top { display:flex; align-items:center; gap:.9rem; }
+  .mk svg { width:44px; height:44px; flex:none; }
+  .mk .nm { font-weight:650; font-size:1.02rem; letter-spacing:-.01em; }
+  .mk .rl { font-family:var(--mono); font-size:.63rem; letter-spacing:.11em;
+            text-transform:uppercase; color:var(--faint); margin-top:.15rem; }
+  .mk .body { font-size:.9rem; line-height:1.45; color:var(--soft); }
+  .mk .body b { color:var(--ink); font-weight:600; }
+  .mk .geo { font-family:var(--mono); font-size:.68rem; line-height:1.5;
+             color:var(--faint); border-top:1px dashed var(--rule); padding-top:.7rem; }
+
+  /* ---------- construction ---------- */
+  .constr { background:var(--card); border:1px solid var(--rule); border-radius:4px;
+            padding:1.6rem; display:flex; flex-wrap:wrap; gap:1.6rem; align-items:center;
+            justify-content:center; box-shadow:var(--shadow); }
+  .constr figure { margin:0; display:flex; flex-direction:column; align-items:center;
+                   gap:.6rem; }
+  .constr svg { width:110px; height:110px; }
+  .constr figcaption { font-family:var(--mono); font-size:.66rem; letter-spacing:.08em;
+                       text-transform:uppercase; color:var(--faint); text-align:center;
+                       max-width:12rem; }
+
+  /* ---------- palette / type ---------- */
+  .sw { display:grid; grid-template-columns:repeat(auto-fill,minmax(9rem,1fr)); gap:.7rem; }
+  .chip { border:1px solid var(--rule); border-radius:4px; overflow:hidden;
+          background:var(--card); }
+  .chip .fill { height:64px; }
+  .chip .lbl { padding:.6rem .75rem; font-family:var(--mono); font-size:.68rem;
+               line-height:1.5; color:var(--soft); }
+  .chip .lbl b { display:block; color:var(--ink); font-size:.72rem; letter-spacing:.04em; }
+
+  .scroll { overflow-x:auto; border:1px solid var(--rule); border-radius:4px;
+            background:var(--card); }
+  table { border-collapse:collapse; width:100%; font-size:.82rem; }
+  th,td { text-align:left; padding:.62rem .85rem; border-bottom:1px solid var(--rule2);
+          vertical-align:top; }
+  thead th { font-family:var(--mono); font-size:.64rem; letter-spacing:.09em;
+             text-transform:uppercase; color:var(--faint);
+             border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:none; }
+  td.m { font-family:var(--mono); font-size:.75rem; white-space:nowrap; }
+  td.p { color:var(--soft); line-height:1.45; }
+  td.p b { color:var(--ink); font-weight:600; }
+
+  .note { border-left:3px solid var(--enc); background:var(--card);
+          padding:1.15rem 1.3rem; border-radius:0 4px 4px 0; box-shadow:var(--shadow);
+          display:flex; flex-direction:column; gap:.65rem; }
+  .note h4 { margin:0; font-size:1.01rem; font-weight:650; }
+  .note p { font-size:.94rem; }
+
+  blockquote { margin:0; padding:1.4rem 0; border-top:1px solid var(--rule);
+               border-bottom:1px solid var(--rule); font-weight:600;
+               font-size:clamp(1.08rem,2.6vw,1.3rem); line-height:1.42; text-wrap:balance; }
+  blockquote span { display:block; margin-top:.55rem; font-size:.74em; font-weight:400;
+                    color:var(--soft); }
+
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--rule);
+           font-family:var(--mono); font-size:.7rem; color:var(--faint);
+           display:flex; flex-direction:column; gap:.45rem; }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Novora Research Initiative · identity system v1</div>
+  <div class="hero">
+    <div class="lockup">
+      <svg viewBox="0 0 48 48" role="img" aria-label="Novora mark: two arcs facing each other across a gap, forming an open lens.">
+        <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+          <path d="M20 8 A 18 18 0 0 0 20 40"/>
+          <path d="M28 8 A 18 18 0 0 1 28 40"/>
+        </g>
+        <circle cx="24" cy="24" r="3.1" fill="currentColor"/>
+      </svg>
+      <h1 class="wordmark">NOVORA</h1>
+    </div>
+    <div class="tagline">Two hops · one gate · nothing hidden</div>
+  </div>
+  <p class="thesis">The mark is the product. Every result in this programme has the same
+    shape — a signal must be <em>encoded</em> and then <em>decoded</em>, and the gap between
+    them is where things fail. So the identity is built from that geometry, not decorated
+    with it.</p>
+</header>
+
+<section>
+  <h2>The primitive every mark is built from</h2>
+  <div class="col">
+    <p>One 48-unit grid. One stroke weight. Two arcs and a node. Each product's mark is a
+      <b>transformation of the same primitive</b> — because each product is a different
+      operation on the same channel.</p>
+  </div>
+
+  <div class="constr">
+    <figure>
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <g stroke="var(--rule)" stroke-width="1" fill="none">
+          <circle cx="24" cy="24" r="18"/><line x1="24" y1="2" x2="24" y2="46"/>
+          <line x1="2" y1="24" x2="46" y2="24"/>
+        </g>
+        <path d="M20 8 A 18 18 0 0 0 20 40" fill="none" stroke="var(--enc)" stroke-width="3.2" stroke-linecap="round"/>
+      </svg>
+      <figcaption>Hop 1 — encode<br>the left arc</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <g stroke="var(--rule)" stroke-width="1" fill="none">
+          <circle cx="24" cy="24" r="18"/><line x1="24" y1="2" x2="24" y2="46"/>
+          <line x1="2" y1="24" x2="46" y2="24"/>
+        </g>
+        <path d="M28 8 A 18 18 0 0 1 28 40" fill="none" stroke="var(--dec)" stroke-width="3.2" stroke-linecap="round"/>
+      </svg>
+      <figcaption>Hop 2 — decode<br>the right arc</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M20 8 A 18 18 0 0 0 20 40" fill="none" stroke="var(--enc)" stroke-width="3.2" stroke-linecap="round"/>
+        <path d="M28 8 A 18 18 0 0 1 28 40" fill="none" stroke="var(--dec)" stroke-width="3.2" stroke-linecap="round"/>
+        <circle cx="24" cy="24" r="3.1" fill="currentColor"/>
+      </svg>
+      <figcaption>The product<br>E = U · D_enc · D_dec</figcaption>
+    </figure>
+  </div>
+
+  <div class="col">
+    <p>The two arcs never touch. <b>That is deliberate and it is the whole thesis:</b> the
+      hops multiply, so either one at zero collapses the result. The node at the centre is
+      what survives the channel — and it is the only solid element in the entire system.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The stack</h2>
+  <div class="grid">
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="LISM mark: a straight chord cutting across an arc.">
+          <path d="M8 38 A 26 26 0 0 1 40 10" fill="none" stroke="currentColor" stroke-width="2" opacity=".3"/>
+          <line x1="8" y1="38" x2="40" y2="10" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          <circle cx="8" cy="38" r="2.6" fill="currentColor"/><circle cx="40" cy="10" r="2.6" fill="currentColor"/>
+        </svg>
+        <div><div class="nm">LISM</div><div class="rl">Layer 1 · the physics</div></div>
+      </div>
+      <div class="body">The straight line where a curve was expected. <b>Linear, not
+        quadratic</b> — the finding the whole stack rests on.</div>
+      <div class="geo">chord drawn over a ghosted arc · the arc is the rejected rival</div>
+    </div>
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="IHCEI mark: a stack of three plates resting on a base rule.">
+          <g stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none">
+            <line x1="7" y1="40" x2="41" y2="40"/>
+            <line x1="12" y1="30" x2="36" y2="30"/>
+            <line x1="17" y1="20" x2="31" y2="20"/>
+          </g>
+          <circle cx="24" cy="10" r="3.1" fill="currentColor"/>
+        </svg>
+        <div><div class="nm">IHCEI</div><div class="rl">infrastructure</div></div>
+      </div>
+      <div class="body">The substrate everything else stands on. Narrowing plates, load
+        bearing downward — <b>a delivery vehicle needs a physics to run on.</b></div>
+      <div class="geo">three rules of decreasing span · the node rides on top, not inside</div>
+    </div>
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="NERE mark: two nested rotating brackets around a centre.">
+          <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+            <path d="M16 6 A 19 19 0 0 0 6 24"/>
+            <path d="M32 42 A 19 19 0 0 0 42 24"/>
+            <path d="M17 24 A 7 7 0 1 1 31 24 A 7 7 0 1 1 17 24"/>
+          </g>
+        </svg>
+        <div><div class="nm">NERE</div><div class="rl">reasoning kernel</div></div>
+      </div>
+      <div class="body">The audit engine shared across the suite. Two outer sweeps turning
+        around a fixed core — <b>the same kernel, reused everywhere.</b></div>
+      <div class="geo">180°-rotational symmetry · the core never moves</div>
+    </div>
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="HELM mark: a gate with three notch positions.">
+          <g stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none">
+            <line x1="9" y1="12" x2="9" y2="36"/><line x1="39" y1="12" x2="39" y2="36"/>
+            <line x1="9" y1="24" x2="21" y2="24"/>
+          </g>
+          <circle cx="30" cy="24" r="3.4" fill="currentColor"/>
+        </svg>
+        <div><div class="nm">HELM</div><div class="rl">the gate</div></div>
+      </div>
+      <div class="body">Three verdicts, one channel: <b>PASS · REVIEW · FLAG</b>. The bar
+        crosses part-way — a gate that stops short is still a gate.</div>
+      <div class="geo">two posts, one partial crossbar, one free node · deliberately unclosed</div>
+    </div>
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="EI mark: an open bracket with a signal passing through unblocked.">
+          <path d="M18 8 A 18 18 0 0 0 18 40" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+          <g stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+            <line x1="22" y1="24" x2="41" y2="24"/>
+          </g>
+          <circle cx="41" cy="24" r="3.1" fill="currentColor"/>
+        </svg>
+        <div><div class="nm">EI</div><div class="rl">receiver-side layer</div></div>
+      </div>
+      <div class="body">Reads without closing. <b>Never censors, never mutates the token
+        stream</b> — the signal passes straight through and the human keeps the release.</div>
+      <div class="geo">open bracket, uninterrupted line · nothing crosses the path</div>
+    </div>
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="Echo mark: three chain links extending in one direction only.">
+          <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+            <rect x="6" y="18" width="13" height="13" rx="3.5"/>
+            <rect x="18" y="18" width="13" height="13" rx="3.5"/>
+            <rect x="30" y="18" width="13" height="13" rx="3.5"/>
+            <path d="M43 14 L43 10" opacity=".45"/>
+          </g>
+        </svg>
+        <div><div class="nm">ECHO</div><div class="rl">the agency database</div></div>
+      </div>
+      <div class="body">Append-only, tamper-evident. Links that <b>only ever extend to the
+        right</b> — the past cannot be rewritten, and nothing is silently dropped.</div>
+      <div class="geo">identical cells, overlapping seams, one open end</div>
+    </div>
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="Agency Net mark: six equal nodes on a ring, connected, with no centre.">
+          <g stroke="currentColor" stroke-width="2.2" fill="none" opacity=".55">
+            <path d="M24 8 L38 16 L38 32 L24 40 L10 32 L10 16 Z"/>
+            <path d="M24 8 L38 32 M38 16 L10 32 M10 16 L24 40"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="24" cy="8" r="3"/><circle cx="38" cy="16" r="3"/><circle cx="38" cy="32" r="3"/>
+            <circle cx="24" cy="40" r="3"/><circle cx="10" cy="32" r="3"/><circle cx="10" cy="16" r="3"/>
+          </g>
+        </svg>
+        <div><div class="nm">AGENCY NET</div><div class="rl">the mesh</div></div>
+      </div>
+      <div class="body">Six equal nodes, every one connected, <b>and no centre</b>. Nothing
+        sits in the middle to hoard the routing.</div>
+      <div class="geo">the only mark in the system with an empty centre</div>
+    </div>
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="DCM mark: three bars, one of them empty, showing the product collapsing.">
+          <g stroke="currentColor" stroke-width="3.2" stroke-linecap="round">
+            <line x1="11" y1="34" x2="11" y2="12"/>
+            <line x1="24" y1="34" x2="24" y2="18"/>
+          </g>
+          <line x1="37" y1="34" x2="37" y2="30" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" opacity=".25"/>
+          <line x1="6" y1="40" x2="42" y2="40" stroke="currentColor" stroke-width="2" opacity=".45"/>
+        </svg>
+        <div><div class="nm">DCM</div><div class="rl">Layer 1 · model two</div></div>
+      </div>
+      <div class="body">Three factors — <b>V · I · C</b>. The third is nearly gone, and that
+        is the point: one at zero and the dataset adjudicates nothing.</div>
+      <div class="geo">descending bars, the last faded to a stub</div>
+    </div>
+
+    <div class="mk">
+      <div class="top">
+        <svg viewBox="0 0 48 48" role="img" aria-label="Novora Suite mark: a three by three grid of nodes, one filled.">
+          <g fill="none" stroke="currentColor" stroke-width="2.6">
+            <circle cx="13" cy="13" r="3.2"/><circle cx="24" cy="13" r="3.2"/><circle cx="35" cy="13" r="3.2"/>
+            <circle cx="13" cy="24" r="3.2"/><circle cx="35" cy="24" r="3.2"/>
+            <circle cx="13" cy="35" r="3.2"/><circle cx="24" cy="35" r="3.2"/><circle cx="35" cy="35" r="3.2"/>
+          </g>
+          <circle cx="24" cy="24" r="4.4" fill="currentColor"/>
+        </svg>
+        <div><div class="nm">NOVORA SUITE</div><div class="rl">the consumer product</div></div>
+      </div>
+      <div class="body">Nine products on one kernel — <b>PAGES · PULSE · WEIGH · LENS ·
+        VOICE · MARK · STAND · BRIDGE · RISE</b>. The filled centre is the shared engine.</div>
+      <div class="geo">3×3 grid, eight outlines, one solid · exactly nine cells</div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>Why the mark is the flagship</h2>
+  <blockquote>A logo is a promise you can be held to. This one encodes a claim that can be
+    checked.
+    <span>The two arcs don't touch because the hops multiply. The gate stops short because it
+      has three verdicts, not two. The mesh has no centre because agency hoarding is the
+      failure mode it exists to prevent. Every geometric decision restates a finding that has
+      a spec hash behind it.</span></blockquote>
+  <div class="note">
+    <h4>And one honest constraint</h4>
+    <p>Marks that encode claims have to change when the claims do. The <b>LISM chord</b> now
+      carries a stated domain limit — the product form is wrong where records are redundantly
+      copied, by a factor of 195 in quantum decoherence. The mark still reads
+      <em>linear&nbsp;not&nbsp;quadratic</em>, which is what was measured, and the boundary
+      lives in the documentation rather than being smuggled into the geometry.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Palette</h2>
+  <div class="col">
+    <p>Two hues, and they are not decorative — <b>they are the two hops.</b> Every mark is
+      drawn in ink and works in one colour; the hop colours appear only where the geometry is
+      being explained.</p>
+  </div>
+  <div class="sw">
+    <div class="chip"><div class="fill" style="background:#101418"></div>
+      <div class="lbl"><b>INK · #101418</b>every mark, always</div></div>
+    <div class="chip"><div class="fill" style="background:#1F5A6E"></div>
+      <div class="lbl"><b>ENCODE · #1F5A6E</b>hop 1 · D_enc</div></div>
+    <div class="chip"><div class="fill" style="background:#A8552F"></div>
+      <div class="lbl"><b>DECODE · #A8552F</b>hop 2 · D_dec</div></div>
+    <div class="chip"><div class="fill" style="background:#FAF9F6;border-bottom:1px solid #DCDAD3"></div>
+      <div class="lbl"><b>PAPER · #FAF9F6</b>warm neutral ground</div></div>
+    <div class="chip"><div class="fill" style="background:#8A9096"></div>
+      <div class="lbl"><b>GRAPHITE · #8A9096</b>annotation, ghosted rivals</div></div>
+  </div>
+</section>
+
+<section>
+  <h2>Construction rules</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Rule</th><th>Value</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td class="m">grid</td><td class="m">48 × 48</td><td class="p">every mark, no exceptions — the marks must sit together in a row without optical drift</td></tr>
+        <tr><td class="m">stroke</td><td class="m">3.2 units</td><td class="p">one weight across the system; 2.0–2.6 only for ghosted or secondary geometry</td></tr>
+        <tr><td class="m">caps &amp; joins</td><td class="m">round</td><td class="p">the marks read as channels, not as blades</td></tr>
+        <tr><td class="m">clear space</td><td class="m">≥ 8 units</td><td class="p">one sixth of the grid on all sides</td></tr>
+        <tr><td class="m">minimum size</td><td class="m">20 px</td><td class="p">below this the Agency Net ring closes up — use the Novora master instead</td></tr>
+        <tr><td class="m">solid fill</td><td class="m">the node only</td><td class="p"><b>what survives the channel is the only solid thing in the system</b></td></tr>
+        <tr><td class="m">colour</td><td class="m">single-colour first</td><td class="p">if a mark needs two hues to be legible, the mark is wrong</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Wordmark</h2>
+  <div class="hero" style="gap:2.2rem">
+    <h1 class="wordmark" style="font-size:clamp(1.8rem,6vw,3rem)">NOVORA</h1>
+    <div style="display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:center;font-family:var(--mono);font-size:.8rem;letter-spacing:.18em;color:var(--soft)">
+      <span>IHCEI</span><span>NERE</span><span>HELM</span><span>EI</span><span>ECHO</span>
+    </div>
+  </div>
+  <div class="col">
+    <p>All caps, <b>0.16em tracking</b> on the master and 0.18em on the sub-brands. The wide
+      tracking is doing work: it puts visible space between the letters, the same way the
+      marks put visible space between the hops.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Novora Research Initiative · Open Science Division</span>
+  <span>identity v1 · LISM model one · DCM model two · 84 reproducible suites</span>
+</footer>
+
+</div>
