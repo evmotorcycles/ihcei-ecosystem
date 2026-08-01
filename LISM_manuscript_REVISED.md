@@ -264,6 +264,42 @@ What it does establish is that the linear-vs-quadratic contrast, which separated
 the biological and GitHub cohorts, **does not separate at all** on a real financial network
 under a realised outcome. That belongs in the record next to the cohorts where it did.
 
+### 3.3c A stated domain limit: the product form assumes the decode hop is scarce
+
+A second adverse result is reported here because it bounds the paper's central form rather
+than merely failing to confirm it. Carrying `E = U·D_enc·D_dec` into quantum decoherence
+(spec `6cb42dcd0147fce58eb63f16761ae0b7e98c63099b45af1f9d4d2965dd63e4b8`, locked before any
+fit) supplies an *exactly computable* target rather than a fitted one. For the standard
+pure-dephasing spin-star, the observer-accessible classical information `I(S:F)` has a
+closed form; taking `D_enc = 1 − |Γ|` from the coupling and `D_dec = m/N` from the
+observer's fragment access, across 95 grid points at N = 20:
+
+| form | median absolute error |
+|---|---|
+| single-hop `U·D_enc` | **0.0028 bits** |
+| two-hop `U·D_enc·D_dec` | 0.5495 bits |
+| quadratic `U·(D_enc·D_dec)²` | 0.7709 bits |
+
+**The two-hop product is roughly 195× worse than dropping the second hop entirely.** The
+locked specification predicted this in writing and gave the mechanism: the
+partial-information plateau means a fragment of one subsystem in twenty already carries
+nearly all the classical information, so any form linear in fragment fraction must
+undershoot severely. (The pre-registration also predicted the failure would concentrate at
+*large* fragment fractions; it concentrates at *small* ones. Direction right, location
+wrong, and recorded as such.)
+
+The generalisation this licenses is narrow but real. **The product form presumes the decode
+hop is scarce** — that accessing more of the channel buys proportionally more yield. Where
+the record is *redundantly replicated*, as it is by construction in quantum Darwinism, the
+decode hop is not scarce and the product form is the wrong functional form. `E = U·D_enc·D_dec`
+should therefore carry the stated restriction: **it is not applicable to channels whose
+records are redundantly copied across the decoding substrate.**
+
+This does not reverse §3.1 or §3.2. The yeast and GitHub channels are not redundant in this
+sense, and the VIF gate of §2.2 verifies channel independence but says nothing about
+redundancy. What it marks is a boundary of applicability, found by carrying the form into a
+field where the answer is calculable in closed form and having it fail there.
+
 ### 3.4 Enforcement latency is a robust collapse predictor
 
 Failed repositories had a mean issue-close latency of 50.6 days versus 19.8 for survivors

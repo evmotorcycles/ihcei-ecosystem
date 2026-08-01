@@ -98,3 +98,31 @@ Applied to physics, the crossover has so far produced **one `[L1]` result** (an 
 metric from a pure coupling matrix, with a checkable scaling exponent) and **several
 `[L3]` framings** that are interpretations at best — plus at least one **category error**
 (the entanglement/zero-latency inference above). Report it that way.
+
+### The quantum decoherence crossover, and the domain limit it bought
+
+Spec `6cb42dcd`, **5/9**. The most instructive crossover run so far, because the target was
+*exactly computable* rather than fitted. Two things came out of it, and both are worth
+carrying forward:
+
+- **Verdict: INTERPRETATION, declared before the run.** Identifying the channel — encode hop
+  into the environment, decode hop into an observer's fragment — **is quantum Darwinism**.
+  Zurek's redundancy already separates total system–environment correlation from
+  fragment-limited access. The reframe changed no prediction of physics. Declaring the
+  verdict in advance is what stopped a good numerical fit being read afterwards as a
+  discovery. A reframe landing on an existing well-tested theory is a **validity check on
+  the method** — the vocabulary mapped onto real structure instead of inventing it.
+
+- **`E = U · D_enc · D_dec` now carries a stated domain limit.** Against the closed-form
+  `I(S:F)`, the single-hop form `U·D_enc` errs by 0.0028 bits; the two-hop product errs by
+  0.5495 — **roughly 195× worse.** The product form presumes the **decode hop is scarce**.
+  Where the record is *redundantly replicated*, it is not, and the product form is simply the
+  wrong shape. **Do not apply the product form to channels whose records are redundantly
+  copied across the decoding substrate.** This does not touch yeast or GitHub, which are not
+  redundant in that sense — it is a boundary, not a reversal.
+
+**Method note worth keeping.** The pre-registration predicted the failure *and its
+mechanism* correctly, and predicted its *location* wrongly (it lands at small fragment
+fractions, not in the saturation region). Getting the direction right and the location wrong
+is a partial miss and should be reported as one rather than rounded up to a successful
+prediction.

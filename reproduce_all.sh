@@ -100,6 +100,7 @@ run "interbank-2016: real Q1→Q2 network — 3/5; the QUADRATIC rival beat LISM
 run "ifsb-equity: 117 country-quarters — 1/6; loss-absorbing funding share is at the noise mean" py ifsb-equity/test_ifsb.py
 run "allometry: Tusko scaling on 866 real repos — 3/5; the CONSTANT beat the power law" py allometry/test_allometry.py
 run "DCM: Discriminating Capacity Model on 400 real sub-datasets — 5/6; K5 multiplicativity FAILED" py dcm/test_dcm.py
+run "crossover: RT→Governance on quantum + cognition — 5/9; the SECOND HOP was refuted in physics" py crossover/test_crossover.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py

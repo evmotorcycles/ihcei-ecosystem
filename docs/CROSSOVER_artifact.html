@@ -1,0 +1,423 @@
+<title>RT → Governance: the crossover run on quantum physics and cognition</title>
+<style>
+  :root {
+    --paper:    #F6F4F8;
+    --card:     #FFFFFF;
+    --ink:      #1A1726;
+    --soft:     #56506B;
+    --faint:    #8A83A0;
+    --rule:     #D6D1E0;
+    --rule2:    #EAE6F0;
+    --q:        #4E3FA8;
+    --q-dim:    #E8E4F5;
+    --c:        #9A6417;
+    --c-dim:    #F6EDDC;
+    --fail:     #A33B4A;
+    --fail-dim: #F7E4E6;
+    --pass:     #46705C;
+    --pass-dim: #E3EEE8;
+    --shadow:   0 1px 2px rgba(26,23,38,.05), 0 8px 22px -16px rgba(26,23,38,.28);
+
+    --disp: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --measure: 35rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:#100E18; --card:#1A1726; --ink:#E9E5F2; --soft:#ADA5C2; --faint:#7A7391;
+      --rule:#302B42; --rule2:#241F33;
+      --q:#9C8CE8; --q-dim:#241E44; --c:#D9A254; --c-dim:#33260F;
+      --fail:#E08592; --fail-dim:#3A1B21; --pass:#83B69C; --pass-dim:#1A2E25;
+      --shadow: 0 1px 2px rgba(0,0,0,.45), 0 8px 24px -18px rgba(0,0,0,.9);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:#100E18; --card:#1A1726; --ink:#E9E5F2; --soft:#ADA5C2; --faint:#7A7391;
+    --rule:#302B42; --rule2:#241F33; --q:#9C8CE8; --q-dim:#241E44;
+    --c:#D9A254; --c-dim:#33260F; --fail:#E08592; --fail-dim:#3A1B21;
+    --pass:#83B69C; --pass-dim:#1A2E25;
+    --shadow: 0 1px 2px rgba(0,0,0,.45), 0 8px 24px -18px rgba(0,0,0,.9);
+  }
+  :root[data-theme="light"] {
+    --paper:#F6F4F8; --card:#FFFFFF; --ink:#1A1726; --soft:#56506B; --faint:#8A83A0;
+    --rule:#D6D1E0; --rule2:#EAE6F0; --q:#4E3FA8; --q-dim:#E8E4F5;
+    --c:#9A6417; --c-dim:#F6EDDC; --fail:#A33B4A; --fail-dim:#F7E4E6;
+    --pass:#46705C; --pass-dim:#E3EEE8;
+    --shadow: 0 1px 2px rgba(26,23,38,.05), 0 8px 22px -16px rgba(26,23,38,.28);
+  }
+
+  body { background: var(--paper); color: var(--ink); font-family: var(--disp);
+         font-size: 17.5px; line-height: 1.64; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 1.5rem 6rem; }
+  .col { max-width: var(--measure); display: flex; flex-direction: column; gap: 1.1rem; }
+
+  .mast { padding: 4rem 0 2.25rem; border-bottom: 2px solid var(--ink);
+          display: flex; flex-direction: column; gap: 1.2rem; }
+  .kicker { font-family: var(--mono); font-size: .7rem; letter-spacing: .15em;
+            text-transform: uppercase; color: var(--faint); }
+  h1 { font-size: clamp(2rem, 5.4vw, 3.15rem); line-height: 1.08; letter-spacing: -.022em;
+       font-weight: 600; margin: 0; text-wrap: balance; max-width: 22ch; }
+  .sub { font-size: clamp(1.08rem, 2.4vw, 1.3rem); color: var(--soft); max-width: 34rem;
+         text-wrap: balance; margin: 0; }
+  .meta { font-family: var(--mono); font-size: .72rem; color: var(--faint);
+          display: flex; flex-wrap: wrap; gap: .4rem 1.6rem; }
+  .meta b { color: var(--soft); font-weight: 600; }
+  .meta .h { word-break: break-all; }
+
+  section { padding-top: 3.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
+  h2 { font-size: clamp(1.35rem, 3vw, 1.75rem); font-weight: 600; margin: 0;
+       letter-spacing: -.015em; text-wrap: balance; }
+  h3 { font-family: var(--mono); font-size: .82rem; font-weight: 600; margin: 0;
+       letter-spacing: .04em; text-transform: uppercase; color: var(--faint); }
+  p { margin: 0; }
+
+  .armhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem 1rem;
+             padding-bottom: .55rem; border-bottom: 2px solid var(--q); }
+  .armhead.cog { border-bottom-color: var(--c); }
+  .armtag { font-family: var(--mono); font-size: .72rem; font-weight: 600;
+            letter-spacing: .1em; text-transform: uppercase; color: var(--q);
+            background: var(--q-dim); padding: .22em .6em; border-radius: 2px; }
+  .armtag.cog { color: var(--c); background: var(--c-dim); }
+
+  .verdict { display: inline-flex; align-items: baseline; gap: .5rem;
+             font-family: var(--mono); font-size: .74rem; font-weight: 600;
+             letter-spacing: .06em; padding: .35em .75em; border-radius: 2px;
+             background: var(--rule2); color: var(--soft); }
+  .verdict b { color: var(--ink); }
+
+  .scroll { overflow-x: auto; border: 1px solid var(--rule); border-radius: 3px;
+            background: var(--card); }
+  table { border-collapse: collapse; width: 100%; font-family: var(--mono);
+          font-size: .77rem; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: .6rem .85rem; border-bottom: 1px solid var(--rule2);
+           vertical-align: top; }
+  thead th { font-size: .65rem; letter-spacing: .09em; text-transform: uppercase;
+             color: var(--faint); border-bottom: 1px solid var(--rule); white-space: nowrap; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.n { text-align: right; white-space: nowrap; }
+  td.prose { font-family: var(--disp); font-size: .93rem; line-height: 1.45; color: var(--soft); }
+  td.prose b { color: var(--ink); font-weight: 600; }
+  .yes { color: var(--fail); font-weight: 600; }
+  .no  { color: var(--faint); }
+
+  figure { margin: 0; background: var(--card); border: 1px solid var(--rule);
+           border-radius: 3px; padding: 1.3rem 1.4rem 1.1rem; box-shadow: var(--shadow);
+           display: flex; flex-direction: column; gap: .9rem; }
+  figcaption { font-size: .92rem; color: var(--soft); line-height: 1.5; }
+  figcaption b { color: var(--ink); }
+  .chartbox { overflow-x: auto; }
+  svg { display: block; width: 100%; height: auto; min-width: 22rem; }
+  .lg { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; font-family: var(--mono);
+        font-size: .72rem; color: var(--soft); }
+  .lg i { display: inline-block; width: 1.6rem; height: 0; border-top-width: 3px;
+          border-top-style: solid; vertical-align: middle; margin-right: .45rem; }
+
+  .errbars { background: var(--card); border: 1px solid var(--rule); border-radius: 3px;
+             padding: 1.2rem 1.3rem; display: flex; flex-direction: column; gap: .7rem; }
+  .eb { display: grid; grid-template-columns: 11rem 1fr 4.6rem; gap: .8rem;
+        align-items: center; font-family: var(--mono); font-size: .74rem; }
+  @media (max-width: 620px) { .eb { grid-template-columns: 7.5rem 1fr 4rem; font-size: .67rem; } }
+  .eb .t { height: 12px; background: var(--rule2); border-radius: 1px; overflow: hidden; }
+  .eb .f { height: 100%; background: var(--fail); }
+  .eb .f.win { background: var(--pass); }
+  .eb .v { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .eb .l { color: var(--soft); }
+
+  .note { border-left: 3px solid var(--q); background: var(--card); padding: 1.15rem 1.3rem;
+          border-radius: 0 3px 3px 0; box-shadow: var(--shadow);
+          display: flex; flex-direction: column; gap: .7rem; }
+  .note.bad { border-left-color: var(--fail); }
+  .note.cog { border-left-color: var(--c); }
+  .note h4 { margin: 0; font-size: 1.02rem; font-weight: 600; letter-spacing: -.01em; }
+  .note.bad h4 { color: var(--fail); }
+  .note p { font-size: .96rem; }
+
+  blockquote { margin: 0; padding: 1.4rem 0; border-top: 1px solid var(--rule);
+               border-bottom: 1px solid var(--rule); font-size: clamp(1.1rem, 2.7vw, 1.35rem);
+               line-height: 1.4; text-wrap: balance; font-weight: 600; }
+  blockquote span { display: block; margin-top: .6rem; font-size: .74em; font-weight: 400;
+                    color: var(--soft); }
+
+  code { font-family: var(--mono); font-size: .87em; background: var(--rule2);
+         padding: .08em .34em; border-radius: 2px; }
+  pre { font-family: var(--mono); font-size: .76rem; background: var(--card);
+        border: 1px solid var(--rule); border-radius: 3px; padding: 1rem 1.15rem;
+        overflow-x: auto; line-height: 1.6; margin: 0; }
+  footer { margin-top: 4.5rem; padding-top: 1.4rem; border-top: 1px solid var(--rule);
+           font-family: var(--mono); font-size: .71rem; color: var(--faint);
+           display: flex; flex-direction: column; gap: .45rem; }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kicker">Novora open-source initiative · crossover report</div>
+  <h1>Two reframes, four failures, and one boundary worth having</h1>
+  <p class="sub">Rational Thinking → Governance, executed on quantum physics and on cognitive
+    psychology. Both arms were pre-registered. The physics arm refuted the programme's own
+    central equation in a new domain.</p>
+  <div class="meta">
+    <span><b>spec</b> <span class="h">6cb42dcd0147fce58eb63f16761ae0b7e98c63099b45af1f9d4d2965dd63e4b8</span></span>
+    <span><b>locked</b> before any fit</span>
+    <span><b>score</b> 5/9</span>
+  </div>
+</header>
+
+<section>
+  <h2>What “governance, not theology” can honestly mean</h2>
+  <div class="col">
+    <p>The five questions <em>are</em> governance questions. But the defensible version of that
+      claim is narrower than it looks — and stating the narrow version is what makes it
+      testable:</p>
+  </div>
+  <blockquote>Each of the five admits an operational reading that names a measurable quantity.
+    <span>That is what makes a question governance-tractable. It is a Layer 2 claim about
+      tractability — not about what the questions ultimately mean, and not evidence that any
+      particular reading is correct.</span></blockquote>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Question</th><th>Operational reading</th><th>Named quantity</th><th>At risk here?</th></tr></thead>
+      <tbody>
+        <tr><td>Q1 Purpose</td><td class="prose">what capacity is converted into, at what yield</td><td>E = U·D</td><td class="no">measured elsewhere</td></tr>
+        <tr><td>Q2 Realms</td><td class="prose">is there a terminal register scoring trajectories</td><td>D ≥ D<sub>min</sub></td><td class="no">no</td></tr>
+        <tr><td>Q3 Stewardship</td><td class="prose">one act, or a two-hop channel</td><td>D<sub>enc</sub>·D<sub>dec</sub></td><td class="yes">yes — and it lost</td></tr>
+        <tr><td>Q4 Reference-lock</td><td class="prose">does fidelity need one locked frame</td><td>degradation under many frames</td><td class="no">no</td></tr>
+        <tr><td>Q5 Failure</td><td class="prose">shortcut by formula, or monitored continuously</td><td>τ<sub>v</sub></td><td class="no">no</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col">
+    <p><b>Four of the five were not put at risk by this run.</b> Writing down an operational
+      reading is not answering a question.</p>
+    <p>The crossover protocol has four steps, and <b>step 4 is not optional</b> — a crossover
+      that skips it is renaming, not reframing. Every reframe earns exactly one verdict:
+      <b>rival theory</b>, <b>interpretation</b>, or <b>category error</b>.</p>
+  </div>
+</section>
+
+<section>
+  <div class="armhead">
+    <span class="armtag">Arm 1 · T2O</span>
+    <h2 style="flex:1 1 14rem">Quantum physics — Two-Hop Objectivity</h2>
+  </div>
+
+  <div class="col">
+    <h3>Step 1 — the RT reading at full strength</h3>
+    <p>Decoherence theory: a system coupled to an environment loses coherence in the pointer
+      basis, and <b>measurement statistics are recovered with no conscious observer</b>. Settled,
+      not in dispute.</p>
+    <p><b>Quantum Darwinism</b> adds the part that matters. The environment is not a monolithic
+      sink — it stores <b>redundant copies</b>, and observers access only <b>fragments</b>.
+      It already separates total system–environment correlation from what a fragment-limited
+      observer can obtain. Any reframe that “discovers” this has rediscovered an existing
+      theory, and has to say so.</p>
+    <h3>Step 2 — the channel</h3>
+    <p><code>U</code> = pointer entropy · <code>D_enc</code> = 1 − |Γ|, set by the
+      <b>coupling</b> · <code>D_dec</code> = m/N, set by the <b>observer</b>. Two different
+      knobs — which is what makes a two-hop claim testable rather than a relabelling.</p>
+  </div>
+
+  <figure>
+    <div class="chartbox">
+      <svg viewBox="0 0 620 250" role="img" aria-label="Partial information plot: exact mutual information jumps to 0.99 bits at 5% fragment access and stays flat, while the two-hop linear form rises as a straight diagonal.">
+        <g stroke="var(--rule2)" stroke-width="1">
+          <line x1="56" y1="30" x2="600" y2="30"/><line x1="56" y1="80" x2="600" y2="80"/>
+          <line x1="56" y1="130" x2="600" y2="130"/><line x1="56" y1="180" x2="600" y2="180"/>
+        </g>
+        <line x1="56" y1="210" x2="600" y2="210" stroke="var(--rule)" stroke-width="1.5"/>
+        <line x1="56" y1="20" x2="56" y2="210" stroke="var(--rule)" stroke-width="1.5"/>
+        <g font-family="ui-monospace, monospace" font-size="11" fill="var(--faint)">
+          <text x="48" y="34" text-anchor="end">1.0</text>
+          <text x="48" y="124" text-anchor="end">0.5</text>
+          <text x="48" y="214" text-anchor="end">0.0</text>
+          <text x="56" y="232">0</text>
+          <text x="328" y="232" text-anchor="middle">0.5</text>
+          <text x="600" y="232" text-anchor="end">1.0</text>
+          <text x="328" y="248" text-anchor="middle" fill="var(--soft)">fragment fraction accessed</text>
+        </g>
+        <polyline fill="none" stroke="var(--faint)" stroke-width="2" stroke-dasharray="5 4"
+          points="56,210 600,30"/>
+        <polyline fill="none" stroke="var(--q)" stroke-width="3" stroke-linejoin="round"
+          points="56,210 83,32 110,30 138,30 165,30 192,30 219,30 246,30 274,30 301,30 328,30 355,30 383,30 410,30 437,30 464,30 492,30 519,30 546,30 573,29 600,30"/>
+        <circle cx="83" cy="32" r="4.5" fill="var(--q)"/>
+        <line x1="83" y1="32" x2="83" y2="201" stroke="var(--fail)" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <circle cx="83" cy="201" r="3.5" fill="var(--faint)"/>
+        <text x="96" y="52" font-family="ui-monospace, monospace" font-size="11.5" fill="var(--fail)" font-weight="600">gap of 0.94 bits at f = 0.05</text>
+      </svg>
+    </div>
+    <div class="lg">
+      <span><i style="border-color:var(--q)"></i>exact I(S:F) — standard quantum mechanics</span>
+      <span><i style="border-color:var(--faint);border-top-style:dashed"></i>two-hop form U·D<sub>enc</sub>·D<sub>dec</sub></span>
+    </div>
+    <figcaption><b>Step 3 — re-derive, don't re-label.</b> The partial-information plateau is
+      recovered exactly: I(S:F) reaches a full bit by 5% fragment access and stays there. This
+      is a closed-form consequence of the Schrödinger equation, not a mechanism chosen here.
+      <b>The gap between the two curves is the whole result.</b> (The slight rise above 1.0 near
+      f = 0.95 is the known quantum region of the plot, not an error.)</figcaption>
+  </figure>
+
+  <div class="col"><h3>The result — Q3 failed decisively, and the spec predicted it</h3></div>
+
+  <div class="errbars">
+    <div class="eb"><span class="l">single-hop U·D_enc</span>
+      <span class="t"><span class="f win" style="width:0.4%"></span></span>
+      <span class="v">0.0028</span></div>
+    <div class="eb"><span class="l">two-hop U·D_enc·D_dec</span>
+      <span class="t"><span class="f" style="width:71.3%"></span></span>
+      <span class="v">0.5495</span></div>
+    <div class="eb"><span class="l">quadratic U·(D_enc·D_dec)²</span>
+      <span class="t"><span class="f" style="width:100%"></span></span>
+      <span class="v">0.7709</span></div>
+    <div class="eb"><span class="l" style="color:var(--faint)">median |error|, bits</span>
+      <span></span><span></span></div>
+  </div>
+
+  <div class="note bad">
+    <h4>The second hop is not dead weight — it makes the prediction 195× worse</h4>
+    <p>The locked spec recorded Q3 as at genuine risk and gave the reason in writing:
+      <em>“the partial-information plateau means a form linear in fragment fraction must
+      undershoot… I expect the two-hop linear form to LOSE this gate.”</em> It did.</p>
+    <p><b>Q2 passed, and that pass is hollow.</b> The linear form beat the quadratic by 0.22
+      bits, so the gate is met. Both are useless next to the single-hop form. A gate can be met
+      by beating a worse rival, and that is what happened.</p>
+  </div>
+
+  <div class="note bad">
+    <h4>My prediction about <em>where</em> it would fail was wrong</h4>
+    <p>I said the linear form would fail in the saturation region, at large fragments. It fails
+      worst at <b>small</b> fragments — mean error <b>0.6787</b> at the smallest fraction against
+      <b>0.3434</b> at the largest. Redundancy means one qubit in twenty already carries nearly
+      all the classical information, so the exact curve is at the plateau while the linear form
+      still predicts a twentieth of it. <b>Direction right, location wrong.</b> Recorded, not
+      repaired.</p>
+  </div>
+
+  <blockquote>The two-hop product form assumes the decode hop is <em>scarce</em>. Where records
+    are redundantly copied, it is not.
+    <span>E = U · D_enc · D_dec now carries a stated domain limit: do not apply it to channels
+      whose records are redundantly replicated. This does not reverse yeast, GitHub or the
+      financial cohort — it marks a boundary, discovered by carrying the form into a new field
+      and having it fail.</span></blockquote>
+
+  <div class="col">
+    <p><span class="verdict"><b>Verdict</b> INTERPRETATION — not rival theory</span></p>
+    <p>Declared <b>before</b> the run. The channel identification <em>is</em> quantum Darwinism;
+      it changes no prediction of physics. Declaring it in advance is what stopped a good
+      numerical fit being presented afterwards as a physical discovery. There is something
+      modest to take: a reframe that lands on an existing, well-tested theory is a validity
+      check on the method — the vocabulary mapped onto real structure instead of inventing new
+      structure.</p>
+    <p><b>Hard constraint respected:</b> decoherence is not observation. Nothing here makes any
+      outcome depend on a mind, and no signalling claim appears anywhere.</p>
+
+    <h3>The experiment a physics lab would run</h3>
+    <p>Prepare a system qubit dephased by an engineered <em>N</em>-subsystem environment —
+      trapped ions, photonic multi-mode, or an NV centre with a controlled nuclear-spin bath.
+      <b>Hold the total decoherence factor |Γ| fixed while redistributing the per-subsystem
+      overlaps:</b> concentrate the record in a few strong couplings, versus spreading it thinly
+      across many. Reconstruct I(S:F) against fragment size; extract redundancy R<sub>δ</sub>.</p>
+    <p>It settles whether accessible information at fixed total decoherence depends on how the
+      record is distributed. It settles <b>nothing</b> about governance, institutions or the five
+      questions. And it is close to experiments already performed on quantum Darwinism in
+      photonic and NV systems — offered as the experiment this arm implies, not an unprecedented
+      one.</p>
+  </div>
+</section>
+
+<section>
+  <div class="armhead cog">
+    <span class="armtag cog">Arm 2 · T2R</span>
+    <h2 style="flex:1 1 14rem">Cognitive psychology — Two-Hop Retention</h2>
+  </div>
+
+  <div class="col">
+    <h3>Step 1 — the RT reading at full strength</h3>
+    <p>Encoding, storage, retrieval. The testing and spacing effects are robust and replicated.
+      <b>Bjork's New Theory of Disuse already posits two factors</b> — storage strength and
+      retrieval strength. A two-factor reading of memory is not new and is not claimed as new.</p>
+    <p>What is actually at issue is narrower: do the two combine <b>multiplicatively</b>, so one
+      at zero cannot be compensated, or <b>additively</b>, so they trade off?</p>
+    <h3>Step 4 — the discriminating prediction</h3>
+    <p>The multiplicative form <b>forbids what the additive form permits</b>: with one factor at
+      or near zero, retention must go to zero regardless of the other. An additive account
+      predicts a non-zero floor. That corner of the design space is a real experiment.</p>
+  </div>
+
+  <div class="note bad">
+    <h4>The arm could not fail — and that is my error</h4>
+    <p>Recovery was <b>1.0000 in all 36 configurations across all 200 replicates</b>. The locked
+      design applies noise per participant and then <b>averages over the cell</b>, so effective
+      noise on a cell mean is sd ÷ √n — about <b>0.0045</b> at the lowest setting. The two
+      accounts differ by far more than that everywhere.</p>
+    <p>C2 failed for want of a populated failing region. C3 “passed” at 1.0000 and C4 “failed” at
+      a gap of exactly zero. <b>Neither is informative.</b> A test that cannot fail is not
+      evidence. The noise levels were specified without accounting for averaging — mine. The
+      spec is not edited and the gates are not re-scored.</p>
+  </div>
+
+  <div class="note bad">
+    <h4>One sentence of my own pre-registration is withdrawn</h4>
+    <p>The spec said a C5 miss would be <em>“a real result against DCM.”</em> <b>It is not, and
+      that sentence is withdrawn.</b> With recovery identically 1.0 there is no variation for Δ to
+      predict, so the AUC is <b>undefined</b>, not low. C5 scores as not met because the locked
+      rule says so — but its status is <b>UNTESTABLE-HERE, not REFUTED</b>. Nothing in this run
+      is evidence for or against DCM.</p>
+    <p><b>What the next spec must do:</b> put the noise on the cell mean directly, or raise it
+      until averaged noise is comparable to the gap between the accounts — and re-register before
+      running.</p>
+  </div>
+
+  <div class="col">
+    <p><span class="verdict"><b>Verdict</b> INTERPRETATION</span></p>
+    <p>Assigned by the gate rule declared in advance: the accounts separated everywhere in the
+      tested design space, so the reframe added no design guidance. And it rests on a
+      mis-specified noise model, so even the interpretation verdict is weakly supported here.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What this run may and may not be quoted for</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>May</th><th>May not</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="prose">That a specific functional form does or does not track an exactly
+            computable quantum quantity.</td>
+          <td class="prose">That physics confirms a governance reading.</td></tr>
+        <tr>
+          <td class="prose">That a specific design can or cannot separate two accounts of
+            retention under stated noise.</td>
+          <td class="prose">That anything was learned about human memory, the testing effect or
+            the spacing effect.</td></tr>
+        <tr>
+          <td class="prose">That the product form has a newly stated domain limit.</td>
+          <td class="prose">That the five questions have been answered, or that a reframe
+            recovering an existing theory has discovered anything.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col">
+    <p><b>Root analysis supports no number here.</b> It produced the vocabulary and the
+      hypothesis. It adjudicates no gate, appears in no computation, and a test scans the source
+      to enforce that.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce</h2>
+  <pre>python3 crossover/crossover.py
+python3 -m pytest -q crossover/test_crossover.py
+bash reproduce_all.sh</pre>
+  <div class="col">
+    <p>Exit 0 means <b>“reproduces including its failures”</b> — and this run has four of them,
+      one being a refutation of the programme's own central functional form in a new domain.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Novora Research Initiative · Open Science Division</span>
+  <span>crossover spec 6cb42dcd · LISM is model one · DCM is model two · 83/83 suites reproduce</span>
+</footer>
+
+</div>
