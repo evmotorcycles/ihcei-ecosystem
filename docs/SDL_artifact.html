@@ -1,0 +1,349 @@
+<title>SDL — the Scope Declaration Law</title>
+<style>
+  :root {
+    --paper:#F4F2EE; --card:#FFFFFF; --ink:#1C1A16; --soft:#5B5549; --faint:#8E8779;
+    --rule:#D5D0C4; --rule2:#E8E4DA;
+    --ac:#7A5230; --ac-dim:#F0E7DC;
+    --ok:#4C6B4F; --ok-dim:#E4EDE3;
+    --no:#9B3B2E; --no-dim:#F6E3DE;
+    --warn:#8A6A16; --warn-dim:#F6EEDA;
+    --shadow:0 1px 2px rgba(28,26,22,.05), 0 8px 22px -16px rgba(28,26,22,.3);
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --disp: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --measure:35rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#141310; --card:#1E1C18; --ink:#EAE6DD; --soft:#ADA595; --faint:#7E7768;
+      --rule:#332F28; --rule2:#26231D; --ac:#C99C6E; --ac-dim:#2E2317;
+      --ok:#8FB392; --ok-dim:#1C2A1D; --no:#DE8877; --no-dim:#331A15;
+      --warn:#D5AE55; --warn-dim:#2E2612;
+      --shadow:0 1px 2px rgba(0,0,0,.45), 0 8px 24px -18px rgba(0,0,0,.9); }
+  }
+  :root[data-theme="dark"] { --paper:#141310; --card:#1E1C18; --ink:#EAE6DD; --soft:#ADA595;
+    --faint:#7E7768; --rule:#332F28; --rule2:#26231D; --ac:#C99C6E; --ac-dim:#2E2317;
+    --ok:#8FB392; --ok-dim:#1C2A1D; --no:#DE8877; --no-dim:#331A15;
+    --warn:#D5AE55; --warn-dim:#2E2612;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 8px 24px -18px rgba(0,0,0,.9); }
+  :root[data-theme="light"] { --paper:#F4F2EE; --card:#FFFFFF; --ink:#1C1A16; --soft:#5B5549;
+    --faint:#8E8779; --rule:#D5D0C4; --rule2:#E8E4DA; --ac:#7A5230; --ac-dim:#F0E7DC;
+    --ok:#4C6B4F; --ok-dim:#E4EDE3; --no:#9B3B2E; --no-dim:#F6E3DE;
+    --warn:#8A6A16; --warn-dim:#F6EEDA;
+    --shadow:0 1px 2px rgba(28,26,22,.05), 0 8px 22px -16px rgba(28,26,22,.3); }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--disp);
+         font-size:17.5px; line-height:1.63; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:60rem; margin:0 auto; padding:0 1.5rem 6rem; }
+  .col { max-width:var(--measure); display:flex; flex-direction:column; gap:1.1rem; }
+
+  .mast { padding:4rem 0 2.2rem; border-bottom:1px solid var(--rule);
+          display:flex; flex-direction:column; gap:1.15rem; }
+  .kick { font-family:var(--mono); font-size:.7rem; letter-spacing:.15em;
+          text-transform:uppercase; color:var(--ac); font-weight:600; }
+  h1 { font-size:clamp(2rem,5.2vw,3rem); line-height:1.09; letter-spacing:-.022em;
+       font-weight:600; margin:0; max-width:20ch; text-wrap:balance; }
+  h1 small { display:block; font-size:.4em; font-weight:400; color:var(--soft);
+             letter-spacing:0; margin-top:.65rem; max-width:34ch; }
+  .thesis { font-size:clamp(1.1rem,2.5vw,1.32rem); max-width:33rem; margin:0;
+            text-wrap:balance; }
+  .meta { font-family:var(--mono); font-size:.72rem; color:var(--faint);
+          display:flex; flex-wrap:wrap; gap:.4rem 1.6rem; }
+  .meta b { color:var(--soft); font-weight:600; }
+  .meta .h { word-break:break-all; }
+
+  section { padding-top:3.4rem; display:flex; flex-direction:column; gap:1.15rem; }
+  h2 { font-size:clamp(1.3rem,2.9vw,1.7rem); font-weight:600; margin:0;
+       letter-spacing:-.015em; text-wrap:balance; }
+  h3 { font-family:var(--mono); font-size:.78rem; font-weight:600; margin:0;
+       letter-spacing:.06em; text-transform:uppercase; color:var(--faint); }
+  p { margin:0; }
+
+  .stamp { display:inline-block; font-family:var(--mono); font-size:1.05rem;
+           font-weight:600; letter-spacing:.02em; padding:.9rem 1.2rem;
+           border:2px solid var(--no); color:var(--no); background:var(--no-dim);
+           border-radius:3px; text-align:center; }
+
+  .rulebox { background:var(--card); border:1px solid var(--rule); border-radius:3px;
+             padding:1.3rem 1.4rem; font-family:var(--mono); font-size:.85rem;
+             line-height:1.85; box-shadow:var(--shadow); overflow-x:auto; }
+  .rulebox b { color:var(--ac); }
+
+  .scroll { overflow-x:auto; border:1px solid var(--rule); border-radius:3px;
+            background:var(--card); }
+  table { border-collapse:collapse; width:100%; font-family:var(--mono);
+          font-size:.78rem; font-variant-numeric:tabular-nums; }
+  th,td { text-align:left; padding:.62rem .85rem; border-bottom:1px solid var(--rule2);
+          vertical-align:top; }
+  thead th { font-size:.65rem; letter-spacing:.09em; text-transform:uppercase;
+             color:var(--faint); border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:none; }
+  td.n { text-align:right; white-space:nowrap; }
+  td.prose { font-family:var(--disp); font-size:.93rem; line-height:1.45; color:var(--soft); }
+  td.prose b { color:var(--ink); font-weight:600; }
+  tr.flagged td { background:var(--warn-dim); }
+
+  .tag { font-family:var(--mono); font-size:.65rem; font-weight:600; letter-spacing:.07em;
+         padding:.16em .5em; border-radius:2px; white-space:nowrap; }
+  .t-ok { background:var(--ok-dim); color:var(--ok); }
+  .t-no { background:var(--no-dim); color:var(--no); }
+  .t-fl { background:var(--warn-dim); color:var(--warn); }
+  .t-ex { background:var(--rule2); color:var(--faint); }
+
+  .note { border-left:3px solid var(--ac); background:var(--card);
+          padding:1.15rem 1.3rem; border-radius:0 3px 3px 0; box-shadow:var(--shadow);
+          display:flex; flex-direction:column; gap:.7rem; }
+  .note.bad { border-left-color:var(--no); }
+  .note.good { border-left-color:var(--ok); }
+  .note h4 { margin:0; font-size:1.03rem; font-weight:600; letter-spacing:-.01em; }
+  .note.bad h4 { color:var(--no); }
+  .note.good h4 { color:var(--ok); }
+  .note p { font-size:.96rem; }
+
+  blockquote { margin:0; padding:1.4rem 0; border-top:1px solid var(--rule);
+               border-bottom:1px solid var(--rule); font-weight:600;
+               font-size:clamp(1.1rem,2.7vw,1.34rem); line-height:1.4; text-wrap:balance; }
+  blockquote span { display:block; margin-top:.6rem; font-size:.74em; font-weight:400;
+                    color:var(--soft); }
+
+  .sweep { background:var(--card); border:1px solid var(--rule); border-radius:3px;
+           padding:1.2rem 1.3rem; display:flex; flex-direction:column; gap:.85rem; }
+  .sweepbar { display:flex; gap:2px; height:34px; }
+  .sweepbar i { flex:1; border-radius:1px; }
+  .sweepbar i.lo { background:var(--no); opacity:.55; }
+  .sweepbar i.hi { background:var(--ok); opacity:.55; }
+  .sweepbar i.mark { background:var(--ink); opacity:1; }
+  .sweeplab { display:flex; justify-content:space-between; font-family:var(--mono);
+              font-size:.7rem; color:var(--faint); }
+
+  code { font-family:var(--mono); font-size:.87em; background:var(--rule2);
+         padding:.08em .34em; border-radius:2px; }
+  pre { font-family:var(--mono); font-size:.76rem; background:var(--card);
+        border:1px solid var(--rule); border-radius:3px; padding:1rem 1.15rem;
+        overflow-x:auto; line-height:1.6; margin:0; }
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--rule);
+           font-family:var(--mono); font-size:.71rem; color:var(--faint);
+           display:flex; flex-direction:column; gap:.45rem; }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Novora open-source initiative · experiment report</div>
+  <h1>SDL — the Scope Declaration Law<small>Testing the hole in domain-scoping, not the
+    design. The scope condition is the theory.</small></h1>
+  <p class="thesis">A family of equations plus a free choice of which one applies cannot be
+    refuted. So the scope selector was declared in advance — and then it lost to not scoping
+    at all.</p>
+  <div class="meta">
+    <span><b>spec</b> <span class="h">c025eb5170456d197c23259180b105e458720f0740ebc1d2f00eb38e134e646a</span></span>
+    <span><b>locked</b> before any winner was computed</span>
+    <span><b>score</b> 2/6</span>
+    <span><b>substrates</b> 5 — 4 independent</span>
+  </div>
+</header>
+
+<section>
+  <h2>The design is right. The hole is elsewhere.</h2>
+  <div class="col">
+    <p>Don't invent a new universal equation when you hit an empirical boundary. Keep the
+      Layer&nbsp;3 framework, deploy domain-specific Layer&nbsp;1 equations, scope them to the
+      substrates where they hold. <b>Every result in this programme supports that.</b> The
+      product form is 195× worse than the single hop where records are redundant; a rule
+      calibrated at one scale extrapolates 4,406-fold wrong.</p>
+    <p>But that architecture has a hole, and this run exists to test the hole rather than the
+      design:</p>
+  </div>
+  <blockquote>A family of equations plus a free choice of which one applies cannot be refuted.
+    <span>Assign the scope condition <em>after</em> seeing which equation won, and every future
+      failure is absorbed by adding a scope clause. The framework then predicts nothing —
+      however well each individual equation performs.</span></blockquote>
+  <div class="col">
+    <p>So the question isn't whether domain-scoping is a good idea. It is. The question is
+      whether a scope selector can be <b>declared in advance</b> and computed from substrate
+      structure <b>alone</b>.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The selector, locked before any winner was known</h2>
+  <div class="rulebox">
+<b>R</b> = modal share of the decode variable
+    &nbsp;&nbsp;— the fraction of units sharing the single most common value of D_dec
+
+<b>R &gt; 0.5</b>&nbsp;&nbsp;→&nbsp; predict the <b>single-hop</b> form &nbsp; U · D_enc
+<b>R ≤ 0.5</b>&nbsp;&nbsp;→&nbsp; predict the <b>two-hop</b> form &nbsp;&nbsp;&nbsp; U · D_enc · D_dec
+  </div>
+  <div class="col">
+    <p><b>R reads the decode column and nothing else.</b> Not the outcome, not U, not D_enc,
+      not which form won. A test scans the function's source to enforce that. The threshold
+      is 0.5 — the midpoint, the only value requiring no justification from the data.</p>
+    <p><b>It is a proxy, and it is labelled one.</b> Redundancy in the quantum sense means many
+      carriers <em>each sufficient</em> to reconstruct the signal. Modal share means many
+      carriers holding the <em>same value</em>. No single first-principles redundancy measure
+      exists across interactomes, repositories, package graphs and environment qubits — and
+      that absence is part of what this run exposes.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Five substrates, four of them able to test the rule</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Substrate</th><th class="n">n</th><th class="n">R</th><th>Predicted</th><th>Actual winner</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>yeast interactome</td><td class="n">4,825</td><td class="n">0.179</td><td>two-hop</td><td>two-hop</td><td><span class="tag t-ok">OK</span></td></tr>
+        <tr><td>GitHub repos</td><td class="n">992</td><td class="n">0.179</td><td>two-hop</td><td>single-hop</td><td><span class="tag t-no">WRONG</span></td></tr>
+        <tr><td>PyPI packages</td><td class="n">540</td><td class="n">0.493</td><td>two-hop</td><td>single-hop</td><td><span class="tag t-no">WRONG</span></td></tr>
+        <tr><td>interbank 2016</td><td class="n">1,349</td><td class="n">0.675</td><td>single-hop</td><td>two-hop</td><td><span class="tag t-no">WRONG</span></td></tr>
+        <tr class="flagged"><td>quantum spin-star</td><td class="n">95</td><td class="n">0.900</td><td>single-hop</td><td>single-hop</td><td><span class="tag t-fl">OK — not independent</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col">
+    <p>The quantum winner was known before the spec was written — the single-hop form by 195×.
+      It is <b>scored</b>, because dropping the case that motivated the scope condition would
+      flatter the rule, and <b>flagged</b>, because counting it as confirmation would be
+      circular. <b>Among the four substrates that could actually test the rule, it scored 1 of
+      4.</b></p>
+  </div>
+
+  <div class="note bad">
+    <h4>The sharpest counter-case</h4>
+    <p>The interbank network has the <b>second-highest decode redundancy</b> of the five, so
+      the rule predicted the single hop. <b>The two-hop form won.</b> Whatever makes a decode
+      hop scarce or not, modal share is not measuring it.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Every gate that mattered failed</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Gate</th><th>Locked bar</th><th class="n">Measured</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>S1 integrity</td><td>hashes, shapes, ranges</td><td class="n">—</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td>S2 substrates disagree</td><td>not unanimous</td><td class="n">2 forms, no tie</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td>S3 rule assigns the winner</td><td>≥ 4 of 5</td><td class="n">2 of 5</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td>S4 scoping beats one global form</td><td>&gt; best baseline</td><td class="n">2 vs 3</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td>S5 the threshold is doing work</td><td>beat ≥ 80% of thresholds</td><td class="n">0%</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td>S6 DCM self-audit</td><td>Δ ≥ 0.20</td><td class="n">0.1536</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td>S7 is scoping right in general</td><td>—</td><td class="n">—</td><td><span class="tag t-ex">UNTESTABLE-HERE</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note bad">
+    <h4>S4 — the rule is worse than not scoping at all</h4>
+    <p>Scoping got <b>2</b> right. Always using the single-hop form gets <b>3</b>. On these
+      five substrates, the scope condition is not decoration — it is actively costly.</p>
+  </div>
+</section>
+
+<section>
+  <h2>S5 is the real methodological finding</h2>
+  <div class="col">
+    <p>Sweep every threshold from 0.00 to 1.00 on R and count how many substrates each assigns
+      correctly. <b>Only two distinct scores are reachable at all.</b></p>
+  </div>
+
+  <div class="sweep">
+    <div class="sweepbar" role="img" aria-label="Threshold sweep across R from 0 to 1: most thresholds assign 3 of 5 substrates correctly; the band containing the locked 0.5, and the band above 0.90, assign only 2.">
+      <i class="hi" title="R=0.00 scores 3"></i>
+      <i class="hi" title="R=0.05 scores 3"></i>
+      <i class="hi" title="R=0.10 scores 3"></i>
+      <i class="hi" title="R=0.15 scores 3"></i>
+      <i class="hi" title="R=0.20 scores 3"></i>
+      <i class="hi" title="R=0.25 scores 3"></i>
+      <i class="hi" title="R=0.30 scores 3"></i>
+      <i class="hi" title="R=0.35 scores 3"></i>
+      <i class="hi" title="R=0.40 scores 3"></i>
+      <i class="hi" title="R=0.45 scores 3"></i>
+      <i class="mark" title="R=0.50 scores 2"></i>
+      <i class="lo" title="R=0.55 scores 2"></i>
+      <i class="lo" title="R=0.60 scores 2"></i>
+      <i class="lo" title="R=0.65 scores 2"></i>
+      <i class="hi" title="R=0.70 scores 3"></i>
+      <i class="hi" title="R=0.75 scores 3"></i>
+      <i class="hi" title="R=0.80 scores 3"></i>
+      <i class="hi" title="R=0.85 scores 3"></i>
+      <i class="lo" title="R=0.90 scores 2"></i>
+      <i class="lo" title="R=0.95 scores 2"></i>
+    </div>
+    <div class="sweeplab"><span>R = 0.00</span><span>↑ locked 0.5 — scores 2</span><span>R = 1.00</span></div>
+    <div style="font-family:var(--mono);font-size:.74rem;color:var(--soft)">
+      scores reachable by <em>any</em> threshold: <b>{2, 3}</b> &nbsp;·&nbsp;
+      locked threshold scores <b>2</b> &nbsp;·&nbsp; always-single-hop baseline: <b>3</b>
+    </div>
+  </div>
+
+  <div class="note bad">
+    <h4>The locked 0.5 landed on the worse of the two available scores — and is not being moved</h4>
+    <p>A single threshold on a single number cannot express more than a handful of partitions
+      of five substrates. So the sweep isn't measuring how good the threshold is. <b>It is
+      measuring how little room there was to be wrong.</b></p>
+    <p>And the punchline: <b>the best reachable score is 3, which merely ties the
+      always-single-hop baseline.</b> Even with hindsight and a free choice of threshold,
+      scoping would not have beaten using one form everywhere.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The self-audit fired — and it binds everything above</h2>
+  <div class="col">
+    <p>The specification turned this programme's own second model, <b>DCM</b>, on this very
+      experiment. DCM says a dataset can only adjudicate a claim it can discriminate. This
+      experiment has <b>five data points</b>.</p>
+  </div>
+
+  <div class="rulebox">Δ = V 0.4000 × I 0.9600 × C 0.4000 = <b>0.1536</b>&nbsp;&nbsp;&nbsp;against a locked floor of 0.20</div>
+
+  <p class="stamp">S6 WAS NOT MET, SO S3, S4 AND S5 ARE UNINFORMATIVE.<br>
+    THE RULE'S STATUS IS <u>UNTESTED</u>, NOT REFUTED.</p>
+
+  <div class="note">
+    <h4>This constraint was written into the spec before any winner was computed</h4>
+    <p>Deliberately — so a bad result could not be spun as a refutation any more than a good
+      one could have been spun as a confirmation. The rule scored 1 of 4 on independent
+      substrates and lost to always-single-hop. <b>I am not permitted to call that a
+      refutation</b>, and the results file says so in both directions.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What this run does and does not establish</h2>
+  <div class="note good">
+    <h4>It does establish one thing, and it is not nothing</h4>
+    <p><b>The scope condition can be written down in advance and computed from structure
+      alone.</b> That is the difference between an architecture that could be tested and one
+      that could not. Before this run, domain-scoping had no declared selector at all.</p>
+  </div>
+  <div class="note bad">
+    <h4>The hole is still open</h4>
+    <p>It does not establish that <em>this</em> scope condition is correct — five substrates
+      cannot calibrate a threshold. And a scoped family of equations remains unfalsifiable
+      until its selector is tested on substrates collected by <b>people who were not testing
+      it</b>. Five substrates, four from this programme's own shelf, do not clear that bar.</p>
+    <p>Worse, if the selector must itself be redefined per domain — and no first-principles
+      redundancy measure spans interactomes, repositories and qubits — then domain-scoping has
+      <b>moved the unfalsifiability rather than removed it.</b> That is the sharpest open
+      question this run leaves behind.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce</h2>
+  <pre>python3 scoping/scoping.py
+python3 -m pytest -q scoping/test_scoping.py
+bash reproduce_all.sh</pre>
+  <div class="col">
+    <p>All four data files are hash-pinned and the runner aborts if the spec or any file
+      changed. Exit 0 means <b>“reproduces including its failures”</b> — of which this run has
+      four, plus a self-audit that forbids me from making anything of them.</p>
+  </div>
+</section>
+
+<footer>
+  <span>Novora Research Initiative · Open Science Division</span>
+  <span>SDL spec c025eb51 · LISM model one · DCM model two · 84/84 suites reproduce</span>
+</footer>
+
+</div>

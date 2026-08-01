@@ -1,0 +1,192 @@
+{
+  "always_one_form_baselines": {
+    "single_hop": 3,
+    "two_hop": 2
+  },
+  "dcm_self_audit": {
+    "C": 0.4,
+    "DELTA": 0.1536,
+    "I": 0.96,
+    "V": 0.4,
+    "floor": 0.2,
+    "n_substrates": 5
+  },
+  "gates": [
+    {
+      "detail": "rows {'yeast': 4825, 'github': 992, 'pypi': 540, 'interbank': 1349, 'quantum': 95}, all R in [0,1]=True, 5 substrates",
+      "id": "S1_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "winners: {'yeast': 'two_hop', 'github': 'single_hop', 'pypi': 'single_hop', 'interbank': 'two_hop', 'quantum': 'single_hop'}",
+      "id": "S2_the_substrates_do_not_all_agree",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "correct in 2 of 5 (needs >= 4); 1 of 4 among the INDEPENDENT substrates. {'yeast': 'R=0.179 pred=two_hop actual=two_hop OK', 'github': 'R=0.179 pred=two_hop actual=single_hop WRONG', 'pypi': 'R=0.493 pred=two_hop actual=single_hop WRONG', 'interbank': 'R=0.675 pred=single_hop actual=two_hop WRONG', 'quantum': 'R=0.900 pred=single_hop actual=single_hop OK'}",
+      "id": "S3_THE_PRE_DECLARED_RULE_ASSIGNS_THE_WINNER",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "scoping 2 correct vs always-single-hop 3, always-two-hop 2 (needs strictly greater than 3)",
+      "id": "S4_SCOPING_BEATS_THE_BEST_SINGLE_GLOBAL_FORM",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "the locked threshold 0.5 scores 2; it beats 0.0% of the 101 alternative thresholds (needs >= 80%). Distinct scores reachable by ANY threshold: [2, 3]",
+      "id": "S5_THE_LOCKED_THRESHOLD_IS_DOING_WORK",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "DELTA = V 0.4000 * I 0.9600 * C 0.4000 = 0.1536 (needs >= 0.20) on n=5 substrates",
+      "id": "S6_DCM_SELF_AUDIT_OF_THIS_VERY_EXPERIMENT",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. Five substrates, four from this programme's own collection, cannot settle whether a scoped family of equations is the right architecture for science.",
+      "id": "S7_whether_domain_scoping_is_correct_in_general",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "S3_THE_PRE_DECLARED_RULE_ASSIGNS_THE_WINNER",
+    "S4_SCOPING_BEATS_THE_BEST_SINGLE_GLOBAL_FORM",
+    "S5_THE_LOCKED_THRESHOLD_IS_DOING_WORK",
+    "S6_DCM_SELF_AUDIT_OF_THIS_VERY_EXPERIMENT"
+  ],
+  "model": "SDL - the Scope Declaration Law",
+  "n_correct": 2,
+  "n_correct_independent": 1,
+  "post_run_disclosures": {
+    "D1_THE_BINDING_CONSEQUENCE": {
+      "delta": 0.1536,
+      "floor": 0.2,
+      "statement": "S6 WAS NOT MET, SO S3, S4 AND S5 ARE UNINFORMATIVE. The spec bound this in advance: DELTA = 0.1536 against a locked floor of 0.20 on five substrates. Whatever verdicts S3, S4 and S5 carry, NO CLAIM MAY BE MADE FOR OR AGAINST the scoping architecture on the strength of them."
+    },
+    "D2_what_this_run_actually_establishes": {
+      "does": "That the scope condition CAN be written down in advance and computed from substrate structure alone. That is not nothing -- it is the difference between an architecture that could be tested and one that could not.",
+      "does_not": "That the scope condition is CORRECT. Five substrates cannot calibrate a threshold, and the falsifiability sweep shows how few distinct answers a single threshold can even produce here.",
+      "the_hole_is_still_open": "A family of equations plus a per-domain choice of which applies remains unfalsifiable UNTIL the scope selector is tested on substrates collected by people who were not testing it. This run does not clear that bar and does not claim to."
+    },
+    "D3_the_quantum_substrate_is_not_independent": {
+      "correct_among_independent_substrates_only": 1,
+      "independent_substrates": 4,
+      "note": "Its winner was known before the spec was written -- the single-hop form by 195x, from spec 6cb42dcd. It is SCORED because dropping the case that motivated the scope condition would flatter the rule, and FLAGGED because counting it as confirmation would be circular."
+    },
+    "D4_R_is_a_proxy_and_the_absence_it_exposes": {
+      "note": "Redundancy in the quantum sense means many carriers EACH SUFFICIENT. Modal share means many carriers holding the SAME VALUE. No single first-principles redundancy measure exists across interactomes, repositories, package graphs and environment qubits.",
+      "why_that_matters_for_the_architecture": "If the scope selector must itself be redefined per domain, the domain-scoping design has MOVED the unfalsifiability rather than removed it. That is the sharpest open question this run leaves behind."
+    },
+    "D5_R_never_reads_the_outcome": {
+      "note": "R is computed from the decode column alone. It does not read the outcome, U, D_enc, or which form won. A test enforces this by scanning the source of R_decode_redundancy."
+    },
+    "D6_THE_INTERBANK_CASE_CONTRADICTS_THE_REDUNDANCY_STORY_DIRECTLY": {
+      "R": 0.6753,
+      "actual": "two_hop",
+      "note": "The interbank network has the second-highest decode redundancy of the five, so the rule predicted the single-hop form. The two-hop form won. This is the sharpest single counter-case: high modal share in the decode variable did NOT make the second hop redundant. Whatever makes the decode hop scarce or not, modal share is not measuring it.",
+      "predicted": "single_hop"
+    },
+    "D7_THE_RULE_SCORED_1_OF_4_ON_INDEPENDENT_SUBSTRATES": {
+      "always_single_hop_baseline": 3,
+      "both_readings_stated": "Taken at face value the rule is worse than chance on the substrates that could test it, and worse than always using the single-hop form on all five. BUT THE BINDING RULE FORBIDS TAKING IT AT FACE VALUE: S6 was pre-declared as the gate that decides whether S3 to S5 mean anything, and it was not met. The honest status of this rule is UNTESTED, not REFUTED.",
+      "correct_all_five": 2,
+      "correct_independent_only": 1,
+      "of_independent": 4
+    },
+    "D8_THE_FALSIFIABILITY_SWEEP_IS_THE_REAL_FINDING": {
+      "and_even_the_best_threshold_buys_nothing": "The best reachable score is 3, which merely TIES the always-single-hop baseline of 3. Even with hindsight and a free choice of threshold, scoping would not have beaten using one form everywhere on these five substrates.",
+      "best_reachable_score": 3,
+      "distinct_scores_reachable_by_any_threshold": [
+        2,
+        3
+      ],
+      "locked_threshold_score": 2,
+      "note": "Across 101 candidate thresholds on R, only TWO distinct scores are reachable at all: [2, 3]. A single threshold on a single number cannot express more than a handful of partitions of five substrates, so the sweep is not measuring how good the threshold is -- it is measuring how little room there was to be wrong. THE LOCKED 0.5 LANDED ON THE WORSE OF THE TWO AVAILABLE SCORES AND IS NOT BEING MOVED."
+    }
+  },
+  "primary_verdict": "S6 WAS NOT MET, SO S3, S4 AND S5 ARE UNINFORMATIVE. The spec bound this in advance: DELTA = 0.1536 against a locked floor of 0.20 on five substrates. Whatever verdicts S3, S4 and S5 carry, NO CLAIM MAY BE MADE FOR OR AGAINST the scoping architecture on the strength of them.",
+  "rule": "R > 0.5 -> single_hop ; R <= 0.5 -> two_hop",
+  "score": "2/6",
+  "spec_sha256": "c025eb5170456d197c23259180b105e458720f0740ebc1d2f00eb38e134e646a",
+  "substrates": [
+    {
+      "R": 0.17927461139896372,
+      "correct": true,
+      "detail": {
+        "auc_single_hop": 0.7199,
+        "auc_two_hop": 0.7261
+      },
+      "independent": true,
+      "n": 4825,
+      "name": "yeast",
+      "predicted": "two_hop",
+      "winner": "two_hop"
+    },
+    {
+      "R": 0.17943548387096775,
+      "correct": false,
+      "detail": {
+        "auc_single_hop": 0.8252,
+        "auc_two_hop": 0.5978
+      },
+      "independent": true,
+      "n": 992,
+      "name": "github",
+      "predicted": "two_hop",
+      "winner": "single_hop"
+    },
+    {
+      "R": 0.4925925925925926,
+      "correct": false,
+      "detail": {
+        "auc_single_hop": 0.6059,
+        "auc_two_hop": 0.5675
+      },
+      "independent": true,
+      "n": 540,
+      "name": "pypi",
+      "predicted": "two_hop",
+      "winner": "single_hop"
+    },
+    {
+      "R": 0.6753150481838399,
+      "correct": false,
+      "detail": {
+        "auc_single_hop": 0.6008,
+        "auc_two_hop": 0.609
+      },
+      "independent": true,
+      "n": 1349,
+      "name": "interbank",
+      "predicted": "single_hop",
+      "winner": "two_hop"
+    },
+    {
+      "R": 0.9,
+      "R_note": "each of the 20 environment qubits plays an identical decoding role with per-qubit overlap 0.1, so the decode channel repeats itself almost completely",
+      "correct": true,
+      "detail": {
+        "median_abs_error_single_hop": 0.0028,
+        "median_abs_error_two_hop": 0.5495,
+        "source_spec": "6cb42dcd"
+      },
+      "independent": false,
+      "n": 95,
+      "name": "quantum",
+      "predicted": "single_hop",
+      "winner": "single_hop"
+    }
+  ],
+  "threshold_sweep_distinct_scores": [
+    2,
+    3
+  ],
+  "threshold_sweep_fraction_beaten": 0.0
+}
