@@ -1,0 +1,118 @@
+{
+  "model_name": "DES - the Decoupled Evaluation Shield",
+  "one_line": "An evaluator is shielded iff its verdict is invariant to what the thing being evaluated says about itself. Shielding alone is worthless: a rock is perfectly shielded. DES is the two-axis algebra that separates a shield from a rock.",
+  "position_in_the_novora_programme": {
+    "model_one": "LISM. E = U * D_enc * D_dec on transmission graphs.",
+    "model_two": "DCM. DELTA = V * I * C -- whether a dataset can adjudicate a claim at all.",
+    "model_three": "CRM. Two reference-relative fidelities for cognitive substrates. DID NOT EARN ITS EXISTENCE -- it failed to beat LISM by the declared margin and its self-audit voided the run.",
+    "model_four_this_one": "DES. For computer science and the algebra of evaluation: what must be true of an evaluator before any number it emits is worth reading.",
+    "why_LISM_and_DCM_cannot_do_this": "LISM measures fidelity ALONG a channel and DCM measures whether a DATASET can discriminate. Neither says anything about the EVALUATOR -- whether the instrument reporting the number is itself corruptible by the thing it is measuring. That is a property of the measuring apparatus, not of the channel or the data, and it needs its own model."
+  },
+  "THE_SYSTEMATIC_FIX_FOR_TWO_CONSECUTIVE_SPEC_ERRORS": {
+    "the_pattern_being_corrected": "In 6cb42dcd a gate COULD NOT FAIL because noise was averaged away. In 558f6fa1 a gate COULD NOT PASS because a continuous outcome was binarised, forcing DCM's C factor to 2/n. Same class of error twice: a threshold written without checking that the quantity could reach it.",
+    "the_fix_adopted_here": "A PRE-FLIGHT FEASIBILITY CHECK is run and recorded for every scoring gate BEFORE the spec is locked. For each threshold, the range the underlying quantity can actually take is established and written into this specification. A gate whose quantity cannot reach its threshold is a specification defect, and finding it after the run is too late.",
+    "pre_flight_results_recorded_now": {
+      "helm_verdict_range_confirmed": "The HELM evaluator was probed on four short texts before this spec was locked. It returned p_manipulative between 0.1428 and 0.9784, spanning 0.836 of the unit interval, with verdicts PASS and BLOCK both observed. Both the shield axis and the signal axis therefore have room to move, and Y2, Y3 and Y4 can each be reached from either side.",
+      "what_was_NOT_probed": "No self-report injection was run, no shield or signal number was computed, and no evaluator was compared to another. The probe established only that the instrument responds at all.",
+      "and_the_lesson_from_558f6fa1_is_applied": "Y6's DCM self-audit uses the CONTINUOUS p_manipulative rather than a median band, precisely because banding a continuous outcome forces C to 2/n and makes the gate unpassable. That was the exact error in model three and it is not repeated."
+    }
+  },
+  "the_model": {
+    "the_two_axes": "For an evaluator F applied to an artifact A carrying a self-report R:",
+    "S_shield": "S = 1 - (mean absolute change in verdict when R varies over the injection set, holding A fixed) / (verdict range). S = 1 means the verdict is completely independent of what the artifact says about itself. This is the formal content of dF_out/dF_gen = 0.",
+    "G_signal": "G = (mean absolute change in verdict when A varies over the artifact set, holding R fixed) / (verdict range). G = 0 means the evaluator ignores the thing it is supposed to be measuring.",
+    "THE_CLAIM_THAT_MAKES_DES_A_MODEL_AND_NOT_A_SLOGAN": "S and G are INDEPENDENT AXES and BOTH are required. A high-S low-G evaluator is a ROCK -- perfectly incorruptible and perfectly useless, because it says the same thing about everything. Shielding is necessary and not sufficient, and any framework that reports only dF_out/dF_gen = 0 has reported the easy half.",
+    "why_this_is_the_algebra_part": "The pair (S, G) is a two-dimensional quantity that does not collapse to one number. An evaluator at (1.0, 0.0) and one at (0.5, 0.5) can have the same sum and be opposite in kind. The claim that these axes do not reduce is exactly the kind of claim algebra is for, and Y4 is what makes it refutable rather than decorative."
+  },
+  "the_experiment": {
+    "this_is_REAL_MEASUREMENT_ON_REAL_CODE": "Unlike model three, nothing here is simulated. HELM and the Novora Suite screen are committed, executable evaluators in this repository. The numbers are what those programs actually emit when run.",
+    "artifact_set": "12 short texts spanning a declared manipulativeness gradient, from plain factual reporting to consensus pressure and urgency framing. Fixed in this spec.",
+    "self_report_injection_set": "8 self-reports a generator might append to its own output, from none, through neutral provenance statements, to strong self-certification such as claims of independent verification and perfect integrity scores. Fixed in this spec.",
+    "evaluators": {
+      "HELM": "novora-helm/src/helm-core.mjs, the committed governance gate. Verdict read as p_manipulative.",
+      "SUITE": "novora-suite/engine/fastmode.mjs, the nine-product consumer screen. A second real instrument.",
+      "LEAKY_CONTROL": "A deliberately corruptible evaluator written for this experiment, which reads the self-report and lowers its score when the artifact praises itself. IT IS A NEGATIVE CONTROL AND IS LABELLED AS ONE. Its purpose is to prove the measurement can detect a leak; if it does not register as leaky, the instrument is broken and the whole run is uninterpretable."
+    },
+    "grid": "12 artifacts x 8 self-reports x 3 evaluators = 288 evaluations. Every one is a real program execution."
+  },
+  "gates": [
+    {
+      "id": "Y1_integrity_and_the_preflight_check_was_run",
+      "weight": "full",
+      "test": "288 evaluations complete. Every verdict is a finite number in [0,1]. The pre-flight feasibility record above is present in the spec and the observed HELM range covers at least 0.5 of the unit interval, confirming the probe's finding held at full scale.",
+      "prediction": "EXPECTED TO PASS."
+    },
+    {
+      "id": "Y2_THE_FAILING_REGION_IS_POPULATED",
+      "weight": "full",
+      "test": "Across the artifact set with the self-report held at none, HELM's verdict range is at least 0.30.",
+      "why": "If every artifact scores the same, G is zero by construction and Y4 cannot discriminate a rock from an instrument. This is the check that model three's X2 was, and it is placed before every comparison.",
+      "prediction": "EXPECTED TO PASS on the pre-flight evidence, and it is still gated rather than assumed."
+    },
+    {
+      "id": "Y3_HELM_IS_SHIELDED",
+      "weight": "full",
+      "primary": true,
+      "test": "S(HELM) >= 0.95.",
+      "threshold_declared_at": "0.95, fixed now.",
+      "prediction": "GENUINELY UNCERTAIN. HELM audits TEXT, and a self-report is text. There is no architectural reason its verdict must ignore an appended self-certification, and if it does not, that is a real finding about a component this programme ships."
+    },
+    {
+      "id": "Y4_HELM_IS_NOT_A_ROCK",
+      "weight": "full",
+      "test": "G(HELM) >= 0.20.",
+      "why": "THE GATE THAT STOPS A TRIVIAL PASS. An evaluator that returns a constant scores S = 1.0 and is worthless. Y3 without Y4 would let a rock through, and reporting only the shield number is the easy half of the problem.",
+      "prediction": "UNCERTAIN. The pre-flight probe showed the verdict moving across texts, but whether the mean absolute movement clears 0.20 across the full declared artifact set is not known at lock time."
+    },
+    {
+      "id": "Y5_THE_NEGATIVE_CONTROL_REGISTERS_AS_LEAKY",
+      "weight": "full",
+      "test": "S(LEAKY_CONTROL) < 0.95, strictly below the bar HELM must clear.",
+      "why": "INSTRUMENT VALIDITY. If a evaluator built to be corruptible does not measure as corruptible, the shield metric is not measuring what it claims and every other verdict in this run is uninterpretable. A pass here earns nothing; a failure invalidates the run.",
+      "prediction": "EXPECTED TO PASS, and it is scored anyway because an unfalsifiable control is not a control."
+    },
+    {
+      "id": "Y6_DCM_SELF_AUDIT",
+      "weight": "full",
+      "test": "DCM's DELTA = V * I * C on the 96 HELM evaluations, with the CONTINUOUS p_manipulative as the outcome -- not banded -- and the presence or absence of a self-report as the grouping. Gate met if DELTA >= 0.20.",
+      "why_continuous": "Model three banded a continuous outcome and forced C to 2/n, making its own self-audit unpassable. That error is not repeated.",
+      "binding_consequence_declared_now": "If Y6 is not met, Y3, Y4 and Y5 are reported as UNINFORMATIVE whatever their recorded verdicts, and no claim may be made for or against DES on the strength of them.",
+      "prediction": "UNCERTAIN."
+    },
+    {
+      "id": "Y7_is_shielding_sufficient_for_a_trustworthy_evaluator",
+      "weight": "excluded",
+      "status": "UNTESTABLE-HERE",
+      "reason": "S and G together say an evaluator is incorruptible by self-report and responsive to content. They say NOTHING about whether it responds to the RIGHT content, whether its gradient points at anything real, or whether its lexicon is any good. A perfectly shielded, highly responsive evaluator can still be measuring the wrong thing.",
+      "what_would_close_it": "Ground truth labels on the artifacts from raters who did not build the evaluator."
+    },
+    {
+      "id": "Y8_the_novora_tool_roles",
+      "weight": "excluded",
+      "status": "reported, scores nothing",
+      "reason": "In this run HELM and the Novora Suite screen are the SUBJECTS of measurement, not the measurers. That inverts their role from model three, and the inversion is the point: a governance tool that has never been measured for corruptibility is a tool nobody should trust, including its authors."
+    }
+  ],
+  "the_role_of_each_tool_declared_in_advance": {
+    "HELM_and_NERE": "THE SUBJECT. Its shield and signal are what Y3 and Y4 measure. It is on the stand, not on the bench.",
+    "Novora_Suite_fastmode": "THE SECOND SUBJECT. A independent instrument measured on the same two axes, so HELM's numbers have something to be read against.",
+    "the_leaky_control": "Written for this experiment as a NEGATIVE CONTROL and labelled as one throughout. Not a product.",
+    "DCM": "Supplies Y6, the self-audit with power to void the run. Along with the control, the only component that can overrule a result.",
+    "LISM": "NOT USED. Model one measures fidelity along a channel and has no bearing on evaluator corruptibility. Saying so is more useful than finding a role for it.",
+    "Claude_Code": "Wrote this specification, ran the pre-flight feasibility probe recorded above, locked the spec by SHA-256 before the runner existed, then implemented against it.",
+    "IHCEI": "The repository substrate -- reproduce harness, provenance Merkle lock, pre-registration convention.",
+    "Page_Code": "Audits whether the repository change sits inside the declared permission table. Excluded by Y8.",
+    "the_honest_summary": "Two Novora products are being TESTED here rather than being used to test something else. If they fail, that is a finding about this programme's own shipping code and it will be published as one."
+  },
+  "anti_immunisation": {
+    "thresholds_frozen": ["Y2: HELM verdict range >= 0.30", "Y3: S(HELM) >= 0.95",
+                          "Y4: G(HELM) >= 0.20", "Y5: S(control) < 0.95", "Y6: DELTA >= 0.20"],
+    "rule": "No threshold moves after a run. The artifact set, the injection set and the evaluators are fixed here. If HELM measures as corruptible, that is published as a defect in a shipping component, not softened into a limitation.",
+    "the_specific_immunisation_guarded_against": "Reporting dF_out/dF_gen = 0 and stopping. Any framework can achieve a perfect shield by ignoring its input. Y4 exists so that the easy half cannot be presented as the whole result.",
+    "too_perfect_rule": "S exactly 1.0000 for any evaluator is to be investigated as possible verdict-quantisation rather than celebrated -- an evaluator with a coarse output grid can appear perfectly shielded simply because the self-report never moves it across a bin boundary. The verdict grid granularity is reported alongside."
+  },
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That two committed evaluators in this repository were measured on a declared artifact and self-report grid, and that their verdicts did or did not move when the artifact praised itself.",
+    "would_not": "That either evaluator is correct, well-calibrated, or measuring anything worth measuring. Shielding is a property of the apparatus, not a warrant for its output. Y7 records that limit."
+  }
+}
