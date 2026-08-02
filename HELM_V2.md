@@ -1,5 +1,26 @@
 # HELM v2 — and the defect that wasn't there
 
+> ### ⚠ Correction, added after the balanced-grid run
+>
+> **The Q4 claim below is withdrawn.** This file called shield-and-signal "the first
+> operational answer" to Q4 and "the real gain" of the work. A later pre-registered run
+> ([`BALANCED_GRID.md`](BALANCED_GRID.md), spec `5576e524`) measured both engines on 20
+> artifacts where **length and manipulativeness were decorrelated by design**, and found
+> Spearman ≈ **+0.04** against manipulativeness and ≈ **−0.48** against **word count** —
+> for v1 and v2 alike.
+>
+> Every `G` number on this page, including the 0.2980 that drives the "defect did not
+> reproduce" finding, was measured on sets where the manipulative texts were also the
+> **short** texts. **`G` may have been measuring length throughout.** The finding that v1's
+> low `G` did not reproduce still stands as stated; what is withdrawn is the claim that `G`
+> is a working measure of *responsiveness to manipulation*.
+>
+> The **`S` half of the pair is unaffected** — it is a within-artifact deviation and does
+> not depend on the gradient. The rock finding stands.
+>
+> Q4's status reverts to **not licensed**. Closing it needs manipulativeness labels from
+> raters who did not build the engine.
+
 **Spec** `03815a61ce8a555f2c741eb2b840502e32d9c845be46cb9be01d94e56755f119` · locked after a
 granularity-only pre-flight, before the held-out set was ever evaluated · **5/6** ·
 [Artifact](https://claude.ai/code/artifact/fb458309-14ee-4cff-9621-05fdc0a9e56a)

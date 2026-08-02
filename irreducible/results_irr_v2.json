@@ -1,0 +1,177 @@
+{
+  "gates": [
+    {
+      "detail": "8 rules x 800 initial conditions, width 101, horizon 60, partial 30. AUCs finite in [0,1]=True. Pre-flight record present=True. Shared engine ca.py sha256 0bd3aff0c51860fe",
+      "id": "P1_integrity_and_the_preflight_is_recorded",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "8 of 8 rules have a centre-cell base rate inside [0.20, 0.80] (need >= 6). Rates: {1: 0.75, 3: 0.632, 5: 0.635, 6: 0.268, 30: 0.531, 90: 0.515, 110: 0.573, 150: 0.502}",
+      "id": "P2_THE_OUTCOME_IS_NOT_DEGENERATE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "mean static AUC on the 4 COMPLEX rules = 0.4940 (needs <= 0.60). Per rule: {30: 0.5371, 90: 0.4564, 110: 0.4945, 150: 0.4881}",
+      "id": "P3_PRIMARY_STATIC_PREDICTION_FAILS_ON_THE_COMPLEX_RULES",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "mean static AUC on the 4 SIMPLE rules = 0.7656 (needs >= 0.75), same predictor, same features, same pipeline. Per rule: {1: 0.9878, 3: 0.5684, 5: 1.0, 6: 0.5062}",
+      "id": "P4_THE_ABLATION_THE_SAME_PREDICTOR_SUCCEEDS_ON_THE_SIMPLE_RULES",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "mean partial-run AUC 0.4991 minus mean static AUC 0.4940 = +0.0051 on the COMPLEX rules (needs >= 0.10). Per rule gain: {30: -0.0284, 90: 0.0015, 110: 0.0338, 150: 0.0136}",
+      "id": "P5_MONITORING_BEATS_PREDICTING_ON_THE_COMPLEX_RULES",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "every rule and both predictors must land in [0.40, 0.60] with labels permuted. Outside that range or undefined: none",
+      "id": "P6_THE_SHUFFLED_LABEL_CONTROL_IS_AT_CHANCE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "EXCLUDED. DELTA = V*I*C is an admissibility check for CONCENTRATED or CATEGORICAL outcomes. The outcome here is cross-validated AUC -- continuous, unbanded, spread across cells -- so V and C sit near 1 by construction and DELTA cannot fail. A gate that cannot fail is not evidence, so it scores nothing rather than inflating the total.",
+      "id": "P7_DCM_self_audit",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. A cellular automaton is not an institution. Establishing transfer needs a demonstration that some real governance outcome is computationally irreducible, and nothing in this repository provides one.",
+      "id": "P8_does_any_of_this_transfer_to_institutions",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "P5_MONITORING_BEATS_PREDICTING_ON_THE_COMPLEX_RULES"
+  ],
+  "model": "Computational Irreducibility Testbed for Q5 - v2, clean rule set",
+  "n_cellular_automaton_runs": 12800,
+  "per_rule": {
+    "1": {
+      "base_rate": 0.75,
+      "partial_auc": 1.0,
+      "shuffled_static_auc": 0.4604,
+      "static_auc": 0.9878
+    },
+    "110": {
+      "base_rate": 0.5725,
+      "partial_auc": 0.5282,
+      "shuffled_static_auc": 0.505,
+      "static_auc": 0.4945
+    },
+    "150": {
+      "base_rate": 0.5025,
+      "partial_auc": 0.5017,
+      "shuffled_static_auc": 0.4489,
+      "static_auc": 0.4881
+    },
+    "3": {
+      "base_rate": 0.6325,
+      "partial_auc": 0.5549,
+      "shuffled_static_auc": 0.5275,
+      "static_auc": 0.5684
+    },
+    "30": {
+      "base_rate": 0.5312,
+      "partial_auc": 0.5088,
+      "shuffled_static_auc": 0.4604,
+      "static_auc": 0.5371
+    },
+    "5": {
+      "base_rate": 0.635,
+      "partial_auc": 1.0,
+      "shuffled_static_auc": 0.4945,
+      "static_auc": 1.0
+    },
+    "6": {
+      "base_rate": 0.2675,
+      "partial_auc": 0.5303,
+      "shuffled_static_auc": 0.5101,
+      "static_auc": 0.5062
+    },
+    "90": {
+      "base_rate": 0.515,
+      "partial_auc": 0.4579,
+      "shuffled_static_auc": 0.5085,
+      "static_auc": 0.4564
+    }
+  },
+  "post_run_disclosures": {
+    "D1_THE_BINDING_CONSEQUENCE": {
+      "P4_met": true,
+      "statement": "P4 WAS MET, so P3 is interpretable: the same predictor that succeeds on the reducible rules fails on the irreducible ones."
+    },
+    "D2_the_separation": {
+      "per_rule_static": {
+        "1": 0.9878,
+        "110": 0.4945,
+        "150": 0.4881,
+        "3": 0.5684,
+        "30": 0.5371,
+        "5": 1.0,
+        "6": 0.5062,
+        "90": 0.4564
+      },
+      "static_AUC_complex": 0.494,
+      "static_AUC_simple": 0.7656,
+      "static_AUC_simple_POST_HOC_computable_rules_only": 0.7656
+    },
+    "D3_monitoring_versus_predicting": {
+      "complex_gain": 0.0051,
+      "complex_partial": 0.4991,
+      "complex_static": 0.494,
+      "note": "The simple arm has little to gain because static prediction has already saturated there. The complex arm is where the governance recommendation lives: if partial observation does not rescue what static structure cannot reach, then 'monitor rather than predict' has no testbed support.",
+      "simple_partial_POST_HOC_computable_rules_only": 0.7713,
+      "simple_static": 0.7656
+    },
+    "D4_WHY_DCM_SCORES_NOTHING_HERE": {
+      "note": "DCM has voided five runs in this programme, every one of them on an outcome that lands on a small lattice. It is silent on continuous outcomes such as AUC, where V and C are near 1 by construction. That is a scope limit on our own instrument, recorded here rather than discovered later, and it is why P7 is EXCLUDED instead of counted as a pass."
+    },
+    "D5_WHAT_THIS_DOES_NOT_LICENSE": {
+      "note": "A cellular automaton is not an institution. No result here is evidence that any organisation is computationally irreducible, that tau_v is the right thing to monitor, or that 'monitor rather than predict' is good advice for anyone. P8 records this and no write-up may weaken it."
+    },
+    "D6_the_class_labels_came_from_the_literature": {
+      "note": "Simple and complex were assigned from published Wolfram classifications before any rule here was evolved. They are not read off our own results, which would have made P3 and P4 circular."
+    }
+  },
+  "primary_verdict": "Static prediction came in at mean AUC 0.4940 on the COMPLEX rules against a 0.60 ceiling. P4 WAS MET, so P3 is interpretable: the same predictor that succeeds on the reducible rules fails on the irreducible ones.",
+  "rules": {
+    "COMPLEX": [
+      30,
+      90,
+      110,
+      150
+    ],
+    "SIMPLE": [
+      1,
+      3,
+      5,
+      6
+    ]
+  },
+  "rules_with_undefined_auc": [],
+  "score": "5/6",
+  "simulated_values": 0,
+  "spec_sha256": "0cd701a45bb725c499f5313786d0e463e2986df4eb617c682aeb4388e66a1a84",
+  "spec_version": "v2",
+  "summary": {
+    "monitoring_gain_complex": 0.0051,
+    "partial_complex": 0.4991,
+    "partial_simple": 0.7713,
+    "static_complex": 0.494,
+    "static_simple": 0.7656
+  },
+  "too_perfect_flag": [
+    "rule_1_partial_auc_at_1.0",
+    "rule_5_static_auc_at_1.0",
+    "rule_5_partial_auc_at_1.0"
+  ]
+}

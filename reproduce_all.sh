@@ -106,6 +106,7 @@ run "CRM: Cognitive Reference Model on 2000 agents — 4/6; it did NOT beat LISM
 run "DES: shield vs signal on 288 REAL evaluator runs — 4/6; the Suite scored a perfect shield by being a rock" py decoupled-shield/test_des.py
 run "HELM v2: density-weighted engine on HELD-OUT texts — 5/6; the defect it fixed did not reproduce" py helm-v2/test_helmv2.py
 run "Balanced grid: the fix HELM v2 promised — 4/7; it did not work, and why" py balanced-grid/test_bg.py
+run "Q5 irreducibility testbed: v1 2/5, v2 5/6 — monitoring did NOT beat predicting (~5 min)" py irreducible/test_irr.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py

@@ -1,0 +1,184 @@
+{
+  "gates": [
+    {
+      "detail": "8 rules x 800 initial conditions, width 101, horizon 60, partial 30. AUCs finite in [0,1]=False. Pre-flight record present=True. Shared engine ca.py sha256 0bd3aff0c51860fe",
+      "id": "P1_integrity_and_the_preflight_is_recorded",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "6 of 8 rules have a centre-cell base rate inside [0.20, 0.80] (need >= 6). Rates: {4: 0.138, 30: 0.531, 90: 0.515, 108: 0.33, 110: 0.573, 132: 0.2, 150: 0.502, 160: 0.0}",
+      "id": "P2_THE_OUTCOME_IS_NOT_DEGENERATE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "mean static AUC on the 4 COMPLEX rules = 0.4940 (needs <= 0.60). Per rule: {30: 0.5371, 90: 0.4564, 110: 0.4945, 150: 0.4881}",
+      "id": "P3_PRIMARY_STATIC_PREDICTION_FAILS_ON_THE_COMPLEX_RULES",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. The pre-registered quantity is the mean static AUC across ALL FOUR simple rules, and rule(s) [160] have a CONSTANT outcome so their AUC is undefined rather than low. The mean over four does not exist and is not replaced by a mean over the survivors. Post-hoc, over the computable simple rules only, it is 0.9559 -- a figure that scores nothing.",
+      "id": "P4_THE_ABLATION_THE_SAME_PREDICTOR_SUCCEEDS_ON_THE_SIMPLE_RULES",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "mean partial-run AUC 0.4991 minus mean static AUC 0.4940 = +0.0051 on the COMPLEX rules (needs >= 0.10). Per rule gain: {30: -0.0284, 90: 0.0015, 110: 0.0338, 150: 0.0136}",
+      "id": "P5_MONITORING_BEATS_PREDICTING_ON_THE_COMPLEX_RULES",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "every rule and both predictors must land in [0.40, 0.60] with labels permuted. Outside that range or undefined: {160: (None, None)}",
+      "id": "P6_THE_SHUFFLED_LABEL_CONTROL_IS_AT_CHANCE",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "EXCLUDED. DELTA = V*I*C is an admissibility check for CONCENTRATED or CATEGORICAL outcomes. The outcome here is cross-validated AUC -- continuous, unbanded, spread across cells -- so V and C sit near 1 by construction and DELTA cannot fail. A gate that cannot fail is not evidence, so it scores nothing rather than inflating the total.",
+      "id": "P7_DCM_self_audit",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. A cellular automaton is not an institution. Establishing transfer needs a demonstration that some real governance outcome is computationally irreducible, and nothing in this repository provides one.",
+      "id": "P8_does_any_of_this_transfer_to_institutions",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "P1_integrity_and_the_preflight_is_recorded",
+    "P5_MONITORING_BEATS_PREDICTING_ON_THE_COMPLEX_RULES",
+    "P6_THE_SHUFFLED_LABEL_CONTROL_IS_AT_CHANCE"
+  ],
+  "model": "Computational Irreducibility Testbed for Q5",
+  "n_cellular_automaton_runs": 12800,
+  "per_rule": {
+    "108": {
+      "base_rate": 0.33,
+      "partial_auc": 1.0,
+      "shuffled_static_auc": 0.4427,
+      "static_auc": 0.9536
+    },
+    "110": {
+      "base_rate": 0.5725,
+      "partial_auc": 0.5282,
+      "shuffled_static_auc": 0.505,
+      "static_auc": 0.4945
+    },
+    "132": {
+      "base_rate": 0.2,
+      "partial_auc": 1.0,
+      "shuffled_static_auc": 0.5584,
+      "static_auc": 0.9141
+    },
+    "150": {
+      "base_rate": 0.5025,
+      "partial_auc": 0.5017,
+      "shuffled_static_auc": 0.4489,
+      "static_auc": 0.4881
+    },
+    "160": {
+      "base_rate": 0.0,
+      "partial_auc": null,
+      "shuffled_static_auc": null,
+      "static_auc": null
+    },
+    "30": {
+      "base_rate": 0.5312,
+      "partial_auc": 0.5088,
+      "shuffled_static_auc": 0.4604,
+      "static_auc": 0.5371
+    },
+    "4": {
+      "base_rate": 0.1375,
+      "partial_auc": 1.0,
+      "shuffled_static_auc": 0.5715,
+      "static_auc": 1.0
+    },
+    "90": {
+      "base_rate": 0.515,
+      "partial_auc": 0.4579,
+      "shuffled_static_auc": 0.5085,
+      "static_auc": 0.4564
+    }
+  },
+  "post_run_disclosures": {
+    "D1_THE_BINDING_CONSEQUENCE": {
+      "P4_met": false,
+      "statement": "P4 COULD NOT BE COMPUTED, SO P3 IS UNINFORMATIVE. Rule(s) [160] have a CONSTANT outcome, so the ablation's pre-registered quantity does not exist. An ablation that could not be run is not an ablation that passed."
+    },
+    "D2_the_separation": {
+      "per_rule_static": {
+        "108": 0.9536,
+        "110": 0.4945,
+        "132": 0.9141,
+        "150": 0.4881,
+        "160": null,
+        "30": 0.5371,
+        "4": 1.0,
+        "90": 0.4564
+      },
+      "static_AUC_complex": 0.494,
+      "static_AUC_simple": null,
+      "static_AUC_simple_POST_HOC_computable_rules_only": 0.9559
+    },
+    "D3_monitoring_versus_predicting": {
+      "complex_gain": 0.0051,
+      "complex_partial": 0.4991,
+      "complex_static": 0.494,
+      "note": "The simple arm has little to gain because static prediction has already saturated there. The complex arm is where the governance recommendation lives: if partial observation does not rescue what static structure cannot reach, then 'monitor rather than predict' has no testbed support.",
+      "simple_partial_POST_HOC_computable_rules_only": 1.0,
+      "simple_static": null
+    },
+    "D4_WHY_DCM_SCORES_NOTHING_HERE": {
+      "note": "DCM has voided five runs in this programme, every one of them on an outcome that lands on a small lattice. It is silent on continuous outcomes such as AUC, where V and C are near 1 by construction. That is a scope limit on our own instrument, recorded here rather than discovered later, and it is why P7 is EXCLUDED instead of counted as a pass."
+    },
+    "D5_WHAT_THIS_DOES_NOT_LICENSE": {
+      "note": "A cellular automaton is not an institution. No result here is evidence that any organisation is computationally irreducible, that tau_v is the right thing to monitor, or that 'monitor rather than predict' is good advice for anyone. P8 records this and no write-up may weaken it."
+    },
+    "D6_the_class_labels_came_from_the_literature": {
+      "note": "Simple and complex were assigned from published Wolfram classifications before any rule here was evolved. They are not read off our own results, which would have made P3 and P4 circular."
+    }
+  },
+  "primary_verdict": "Static prediction came in at mean AUC 0.4940 on the COMPLEX rules against a 0.60 ceiling. P4 COULD NOT BE COMPUTED, SO P3 IS UNINFORMATIVE. Rule(s) [160] have a CONSTANT outcome, so the ablation's pre-registered quantity does not exist. An ablation that could not be run is not an ablation that passed.",
+  "rules": {
+    "COMPLEX": [
+      30,
+      90,
+      110,
+      150
+    ],
+    "SIMPLE": [
+      4,
+      108,
+      132,
+      160
+    ]
+  },
+  "rules_with_undefined_auc": [
+    160
+  ],
+  "score": "2/5",
+  "simulated_values": 0,
+  "spec_sha256": "0de17fc489bbdad37ee2a8d7b5496fea85acd206f65753c4b9b8edbd781984f2",
+  "spec_version": "v1",
+  "summary": {
+    "monitoring_gain_complex": 0.0051,
+    "partial_complex": 0.4991,
+    "partial_simple": null,
+    "static_complex": 0.494,
+    "static_simple": null
+  },
+  "too_perfect_flag": [
+    "rule_4_static_auc_at_1.0",
+    "rule_4_partial_auc_at_1.0",
+    "rule_108_partial_auc_at_1.0",
+    "rule_132_partial_auc_at_1.0",
+    "rules_with_UNDEFINED_AUC_constant_outcome_[160]",
+    "shuffled_label_control_off_chance"
+  ]
+}

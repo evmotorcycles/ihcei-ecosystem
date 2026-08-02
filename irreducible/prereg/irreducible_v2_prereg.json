@@ -1,0 +1,69 @@
+{
+  "model": "Computational Irreducibility Testbed for Q5 - v2, clean rule set",
+  "version": "2.0",
+  "supersedes": "0de17fc489bbdad37ee2a8d7b5496fea85acd206f65753c4b9b8edbd781984f2",
+  "one_line": "Identical method, identical thresholds, identical code. The ONLY change is the four SIMPLE rules, which v1 chose by hand and v2 chooses by a mechanical screen.",
+
+  "WHAT_WENT_WRONG_IN_V1_AND_IT_WAS_MY_RULE_CHOICE_NOT_THE_METHOD": {
+    "v1_score": "2/5",
+    "the_defect": "v1 hand-picked SIMPLE = [4, 108, 132, 160]. Rule 160 drives the centre cell to a CONSTANT 0 by step 60, so its AUC is UNDEFINED -- not low. The ablation P4's pre-registered quantity is the mean across ALL FOUR simple rules, and that mean does not exist.",
+    "what_v1_did_about_it": "P4 was recorded as UNTESTABLE-HERE and EXCLUDED from scoring, and its binding consequence was still applied, so v1's P3 is reported as UNINFORMATIVE even though P3 itself was met. The mean over the surviving three (0.9559) was reported as a post-hoc figure that scores nothing. Treating an ablation that could not be run as an ablation that passed would have been the immunising move.",
+    "the_knock_on_failures": "v1's P1 failed because not every AUC was finite, and v1's P6 failed because rule 160's shuffled-label control was undefined too. Both failures trace entirely to rule 160. Every other rule's shuffled control landed inside [0.40, 0.60].",
+    "and_rule_4_was_also_inadmissible": "Rule 4's base rate is 0.1375, outside the [0.20, 0.80] band v1's own P2 declared. v1's P2 passed only because it required 6 of 8 rules rather than all 8.",
+    "WHAT_IS_NOT_CHANGED_HERE": "Not one threshold. P2's band, P3's 0.60 ceiling, P4's 0.75 bar, P5's 0.10 gain and P6's [0.40, 0.60] control band are all carried over unchanged. The code in ca.py and irr.py is byte-identical for both runs; v2 differs only in which rules it names."
+  },
+
+  "THE_MECHANICAL_SCREEN_THAT_CHOSE_THE_NEW_SIMPLE_RULES": {
+    "why_this_is_not_selecting_on_the_outcome": "The screen computed CENTRE-CELL BASE RATE and nothing else. Base rate is the admissibility criterion v1's P2 declared BEFORE any data existed, so screening on it applies a pre-registered rule. AUC -- the actual outcome -- was never computed for any candidate during the screen, and no model was fitted.",
+    "candidate_pool": "74 rules, from published Wolfram class 1 and class 2 assignments, fixed before the screen ran.",
+    "admission": "base rate at step 60 inside [0.20, 0.80]. 52 of 74 admitted.",
+    "choice_rule": "the FOUR LOWEST rule numbers among the admitted. No discretion at any step.",
+    "CHOSEN": [1, 3, 5, 6],
+    "their_base_rates": {"1": 0.75, "3": 0.6325, "5": 0.635, "6": 0.2675},
+    "v1_rules_the_screen_rejects": {"160": 0.0, "4": 0.1375},
+    "v1_rules_the_screen_keeps_but_that_are_not_the_four_lowest": [108, 132],
+    "note_on_the_risk_this_carries": "Nothing guarantees the four lowest admitted rules are EASY to predict. If they are not, P4 fails and P3 becomes uninformative again. The screen was not permitted to look for predictable rules, so this is a real risk carried deliberately.",
+    "screen_source": "irreducible/screen.py, committed and re-runnable."
+  },
+
+  "PRE_FLIGHT_FEASIBILITY_PROBE": {
+    "carried_over_from_v1": "The probe on throwaway rules 232 and 62 is unchanged and still applies, because the pipeline, thresholds and predictor are identical.",
+    "rule_232": {"base_rate": 0.4963, "static_auc": 0.9999, "partial_auc": 1.0},
+    "rule_62": {"base_rate": 0.6175, "static_auc": 0.5657, "partial_auc": 0.8394},
+    "the_bars_remain_bracketed": "0.9999 shows P4's 0.75 bar is attainable; 0.5657 shows P3's 0.60 ceiling is neither automatic nor impossible; rule 62's +0.2737 shows P5's 0.10 gain is attainable.",
+    "AND_V1_IS_ITSELF_NOW_EVIDENCE_ABOUT_P5": "v1 measured a monitoring gain of +0.0051 on the complex rules against a 0.10 bar. P5 is therefore expected to fail again. It is NOT weakened, removed or reworded, because a threshold that moves after a failure is worthless. If it fails twice that is the finding."
+  },
+
+  "the_rules": {
+    "SIMPLE_expected_reducible": [1, 3, 5, 6],
+    "COMPLEX_expected_irreducible": [30, 90, 110, 150],
+    "the_complex_arm_is_unchanged_from_v1": "All four were fully computable in v1 with base rates between 0.50 and 0.58. Nothing about them needed fixing.",
+    "the_labels_are_from_the_literature_not_from_our_data": "Class assignments were fixed from published Wolfram classifications. They are not read off our own results."
+  },
+
+  "the_measurement": {
+    "identical_to_v1": "Elementary CA, width 101, periodic boundary, 800 random initial conditions per rule seeded 20260802 + rule, outcome = centre cell at step T = 60, static features from the initial condition only, partial-run arm adds the observed centre column for steps 1..30, mean out-of-fold AUC over 5 stratified folds, plus a shuffled-label control.",
+    "shared_engine": "irreducible/ca.py, imported by the probe, the screen and both runs."
+  },
+
+  "gates": [
+    {"id": "P1_integrity_and_the_preflight_is_recorded", "bar": "8 rules run, 800 initial conditions each, every AUC finite in [0,1], pre-flight record present", "weight": "full"},
+    {"id": "P2_THE_OUTCOME_IS_NOT_DEGENERATE", "bar": "at least 6 of the 8 rules have a centre-cell base rate in [0.20, 0.80]", "weight": "full"},
+    {"id": "P3_PRIMARY_STATIC_PREDICTION_FAILS_ON_THE_COMPLEX_RULES", "bar": "mean static AUC across the 4 COMPLEX rules <= 0.60", "weight": "full"},
+    {"id": "P4_THE_ABLATION_THE_SAME_PREDICTOR_SUCCEEDS_ON_THE_SIMPLE_RULES", "bar": "mean static AUC across the 4 SIMPLE rules >= 0.75. IF THIS FAILS, P3 IS UNINFORMATIVE regardless of its own outcome.", "weight": "full"},
+    {"id": "P5_MONITORING_BEATS_PREDICTING_ON_THE_COMPLEX_RULES", "bar": "mean partial-run AUC minus mean static AUC across the 4 COMPLEX rules >= 0.10. v1 measured +0.0051. The bar is UNCHANGED.", "weight": "full"},
+    {"id": "P6_THE_SHUFFLED_LABEL_CONTROL_IS_AT_CHANCE", "bar": "every rule, both predictors, shuffled-label AUC within [0.40, 0.60]", "weight": "full"},
+    {"id": "P7_DCM_self_audit", "bar": "EXCLUDED. Cannot fail on a continuous unbanded outcome such as AUC, where V and C sit near 1 by construction. A gate that cannot fail is not evidence.", "weight": "excluded"},
+    {"id": "P8_does_any_of_this_transfer_to_institutions", "bar": "UNTESTABLE-HERE. A cellular automaton is not an institution.", "weight": "excluded"}
+  ],
+
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That there exists a class of systems where a static read of the present provably cannot substitute for running the system, and that our predictor tells that class apart from the reducible one.",
+    "would_NOT": "That any institution is computationally irreducible. That tau_v is the right monitoring quantity. That 'monitor rather than predict' is good advice for any organisation. P8 records this and no write-up may weaken it.",
+    "and_if_P5_fails_again": "Then on irreducible systems partial observation does NOT rescue what static structure cannot reach, and the governance recommendation to watch a leading indicator instead of forecasting has NO support from this testbed. That is a null against our own advice and it is to be reported as one."
+  },
+
+  "anti_immunisation": "No threshold may be changed after any measurement. v1's failures are published in full alongside v2 and are not withdrawn. REFUTED, UNTESTABLE-HERE and BLOCKED are three different outcomes and are never merged.",
+  "simulator_rule": "The cellular automata are evolved directly; their behaviour is a mathematical fact, not output of any model of ours. The only fitted object is the predictor, which is the thing under test.",
+  "too_perfect_rule": "Any AUC at exactly 1.0000, or a shuffled-label AUC outside [0.40, 0.60], is flagged for inspection rather than celebrated."
+}

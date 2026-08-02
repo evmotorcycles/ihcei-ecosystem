@@ -1,0 +1,69 @@
+{
+  "model": "Computational Irreducibility Testbed for Q5",
+  "version": "1.0",
+  "one_line": "Q5 asks whether a system's future can be read off its present or whether it has to be run. This tests that where the answer is not in doubt -- elementary cellular automata, including the proven Turing-complete rule 110.",
+
+  "WHY_THIS_TESTBED_AND_NOT_AN_INSTITUTION": {
+    "the_problem_with_institutions": "On real organisations a null result is uninterpretable. 'No shortcut was found' and 'no shortcut exists' are different claims, and field data cannot separate them -- we may simply have looked badly.",
+    "what_a_CA_buys": "Rule 110 is proven Turing-complete, so no general shortcut to its state at step T can exist. Rules 4, 108, 132 and 160 are Wolfram class 1 or 2, where shortcuts demonstrably do exist. A predictor that fails on the first group and succeeds on the second is discriminating; a predictor that fails on both is just a bad predictor.",
+    "THE_ABLATION_THAT_MAKES_THE_PRIMARY_MEAN_ANYTHING": "P3 alone -- 'static prediction fails on complex rules' -- is worthless without P4. P4 requires the SAME predictor, the SAME features and the SAME pipeline to SUCCEED on the simple rules. If P4 fails, P3 is reported as UNINFORMATIVE, because we would have shown only that our regression is weak.",
+    "WHAT_THIS_IS_NOT": "A cellular automaton is a mathematical object, not an institution. NOTHING measured here transfers to a real organisation without a separate argument, and no such argument is made in this repository. Any reader who takes a result here as evidence about governance in the world has over-read it, and this sentence is in the locked spec so that cannot be blamed on the write-up."
+  },
+
+  "PRE_FLIGHT_FEASIBILITY_PROBE_RECORDED_BEFORE_THIS_LOCK": {
+    "why": "Three prior specs in this programme are on record with gates that could not be met by construction or could not fail. A probe recorded before locking is the correction adopted in 25c7dffc, 03815a61 and 5576e524. This is the fourth application.",
+    "method": "The complete pipeline was run on TWO THROWAWAY RULES that are NOT scored: 232 and 62.",
+    "rule_232": {"base_rate": 0.4963, "static_auc": 0.9999, "partial_auc": 1.0, "partial_minus_static": 0.0001},
+    "rule_62": {"base_rate": 0.6175, "static_auc": 0.5657, "partial_auc": 0.8394, "partial_minus_static": 0.2737},
+    "the_0_75_bar_is_reachable": "A throwaway rule reached static AUC 0.9999, so P4's 0.75 bar is physically attainable by this predictor.",
+    "the_0_60_ceiling_is_refusable": "A throwaway rule sat at static AUC 0.5657, so P3's 0.60 ceiling is neither automatic nor impossible.",
+    "the_0_10_monitoring_gain_is_attainable": "Rule 62 gained +0.2737 from partial observation, so P5's 0.10 bar is attainable. Rule 232 gained +0.0001 because static prediction had already saturated, which is the expected shape for a reducible rule.",
+    "WHAT_WAS_DELIBERATELY_NOT_PROBED": "None of the eight scored rules was evolved, featurised or fitted. The probe cannot tell us which way the primary will go.",
+    "probe_source": "irreducible/probe.py, committed alongside this spec and re-runnable."
+  },
+
+  "WHY_DCM_IS_EXCLUDED_HERE_AND_NOT_QUIETLY_DROPPED": {
+    "statement": "DELTA = V*I*C is an admissibility check for CONCENTRATED or CATEGORICAL outcomes. The outcome here is cross-validated AUC: continuous, unbanded, and spread across cells. V and C therefore both sit near 1 by construction and DELTA cannot fail.",
+    "the_rule_being_followed": "A gate that cannot fail is not evidence. DCM is recorded as EXCLUDED with its reason rather than reported as a pass that would inflate the score.",
+    "what_replaces_it": "P2 (degenerate base rates) and P6 (shuffled-label control) are the admissibility gates here, and both CAN fail.",
+    "and_this_is_diagnostic_about_DCM_ITSELF": "DCM has voided five runs in this programme, all of them on outcomes that land on a small lattice -- HELM verdicts, banded scores, modal shares. It is silent on continuous outcomes. That is a real scope limit on our own instrument and it is recorded here rather than discovered later."
+  },
+
+  "the_rules_declared_before_any_of_them_was_run": {
+    "SIMPLE_expected_reducible": [4, 108, 132, 160],
+    "COMPLEX_expected_irreducible": [30, 90, 110, 150],
+    "why_these": "The simple set is Wolfram class 1/2 -- fixed point or periodic. The complex set is class 3/4: 30 is the chaotic rule whose centre column has been used as a pseudo-random generator, 110 is proven Turing-complete, 90 and 150 are additive and chaotic.",
+    "the_split_is_4_and_4_by_construction": "Balanced deliberately, so that no arm is advantaged by cell count.",
+    "the_labels_are_from_the_literature_not_from_our_data": "Class assignments were fixed from published Wolfram classifications before any rule here was evolved. They are not read off our own results."
+  },
+
+  "the_measurement": {
+    "system": "Elementary cellular automaton, width 101, periodic boundary.",
+    "initial_conditions": "800 uniform random binary rows per rule, seeded 20260802 + rule.",
+    "outcome": "The value of the CENTRE cell at step T = 60. Binary.",
+    "STATIC_predictor": "Logistic regression on features of the INITIAL CONDITION ONLY: density, transition count, longest run, mean run length, autocorrelation at lags 1-3, and the raw 21-cell window centred on the centre cell. No step of the automaton is run to build these.",
+    "PARTIAL_RUN_predictor": "The same features PLUS the observed centre column for steps 1..30. This is the 'monitor rather than predict' arm -- the analogue of watching enforcement latency instead of forecasting from structure.",
+    "scoring": "Mean out-of-fold AUC, 5-fold stratified cross-validation, fixed seed. AUC is chosen because it is invariant to base rate.",
+    "negative_control": "The entire pipeline re-run with the outcome labels permuted. Any AUC far from 0.5 there would indicate leakage in the pipeline itself."
+  },
+
+  "gates": [
+    {"id": "P1_integrity_and_the_preflight_is_recorded", "bar": "8 rules run, 800 initial conditions each, every AUC finite in [0,1], pre-flight record present in this spec", "weight": "full"},
+    {"id": "P2_THE_OUTCOME_IS_NOT_DEGENERATE", "bar": "at least 6 of the 8 rules have a centre-cell base rate in [0.20, 0.80]. Below that AUC is unstable and the run is inadmissible.", "weight": "full"},
+    {"id": "P3_PRIMARY_STATIC_PREDICTION_FAILS_ON_THE_COMPLEX_RULES", "bar": "mean static AUC across the 4 COMPLEX rules <= 0.60", "weight": "full"},
+    {"id": "P4_THE_ABLATION_THE_SAME_PREDICTOR_SUCCEEDS_ON_THE_SIMPLE_RULES", "bar": "mean static AUC across the 4 SIMPLE rules >= 0.75. IF THIS FAILS, P3 IS UNINFORMATIVE regardless of its own outcome, because we would have shown only that the regression is weak.", "weight": "full"},
+    {"id": "P5_MONITORING_BEATS_PREDICTING_ON_THE_COMPLEX_RULES", "bar": "mean partial-run AUC minus mean static AUC across the 4 COMPLEX rules >= 0.10. This is the gate that carries the governance recommendation. If it fails, then on irreducible systems monitoring does NOT rescue prediction either, and the recommendation to 'watch enforcement latency' loses its testbed support.", "weight": "full"},
+    {"id": "P6_THE_SHUFFLED_LABEL_CONTROL_IS_AT_CHANCE", "bar": "every rule, both predictors, shuffled-label AUC within [0.40, 0.60]", "weight": "full"},
+    {"id": "P7_DCM_self_audit", "bar": "EXCLUDED. Cannot fail on a continuous unbanded outcome; see WHY_DCM_IS_EXCLUDED_HERE_AND_NOT_QUIETLY_DROPPED.", "weight": "excluded"},
+    {"id": "P8_does_any_of_this_transfer_to_institutions", "bar": "UNTESTABLE-HERE. A CA is not an institution. Establishing transfer needs a demonstration that some real governance outcome is computationally irreducible, which nothing in this repository provides.", "weight": "excluded"}
+  ],
+
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That there exists a class of systems where a static read of the present provably cannot substitute for running the system, that our predictor can tell that class apart from the reducible one, and that partial observation recovers what static structure cannot.",
+    "would_NOT": "That any institution is computationally irreducible. That LISM's tau_v is the right monitoring quantity. That 'monitor rather than predict' is good advice for any organisation. None of those is tested here and P8 records it."
+  },
+
+  "anti_immunisation": "No threshold may be changed after any measurement. A failed gate is reported as failed. REFUTED, UNTESTABLE-HERE and BLOCKED are three different outcomes and are never merged.",
+  "simulator_rule": "The cellular automata are evolved directly; their behaviour is a mathematical fact and is not generated by any model of ours. No value is drawn from a fitted distribution. The one thing that IS fitted is the predictor, and that is the object under test rather than a source of data.",
+  "too_perfect_rule": "Any AUC at exactly 1.0000, or a shuffled-label AUC outside [0.40, 0.60], is flagged for inspection rather than celebrated."
+}
