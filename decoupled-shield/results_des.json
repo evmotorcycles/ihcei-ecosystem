@@ -1,0 +1,171 @@
+{
+  "axes": {
+    "HELM": {
+      "G_signal": 0.1612,
+      "S_shield": 0.9875
+    },
+    "LEAKY_CONTROL": {
+      "G_signal": 0.1547,
+      "S_shield": 0.877
+    },
+    "SUITE": {
+      "G_signal": 0.1667,
+      "S_shield": 1.0
+    }
+  },
+  "dcm_self_audit": {
+    "C": 0.0833,
+    "DELTA": 0.0125,
+    "I": 0.4375,
+    "V": 0.3438,
+    "floor": 0.2
+  },
+  "distinct_verdicts": {
+    "HELM": 8,
+    "LEAKY_CONTROL": 7,
+    "SUITE": 2
+  },
+  "gates": [
+    {
+      "detail": "288 evaluations, all verdicts finite in [0,1]=True, HELM span 0.9394 (needs >= 0.50), pre-flight record present=True",
+      "id": "Y1_integrity_and_the_preflight_check_was_run",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "HELM verdict range across the artifact set with no self-report: 0.8879 (needs >= 0.30)",
+      "id": "Y2_THE_FAILING_REGION_IS_POPULATED",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "S(HELM) = 0.9875 (needs >= 0.95)",
+      "id": "Y3_HELM_IS_SHIELDED",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "G(HELM) = 0.1612 (needs >= 0.20)",
+      "id": "Y4_HELM_IS_NOT_A_ROCK",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "S(LEAKY_CONTROL) = 0.8770 (needs < 0.95). If this does not register as leaky the shield metric is broken and every other verdict here is uninterpretable.",
+      "id": "Y5_THE_NEGATIVE_CONTROL_REGISTERS_AS_LEAKY",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "DELTA = V 0.3438 * I 0.4375 * C 0.0833 = 0.0125 (needs >= 0.20) on the 96 HELM evaluations, using the CONTINUOUS verdict rather than a median band",
+      "id": "Y6_DCM_SELF_AUDIT",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. S and G say an evaluator is incorruptible by self-report and responsive to content. They say NOTHING about whether it responds to the RIGHT content. No ground-truth labels from independent raters exist for these artifacts.",
+      "id": "Y7_is_shielding_sufficient_for_a_trustworthy_evaluator",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "HELM and the Novora Suite screen are the SUBJECTS of this measurement, not the measurers -- on the stand, not on the bench. LISM is NOT USED and the spec says so rather than inventing a role for it.",
+      "id": "Y8_the_novora_tool_roles",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "Y4_HELM_IS_NOT_A_ROCK",
+    "Y6_DCM_SELF_AUDIT"
+  ],
+  "model": "DES - the Decoupled Evaluation Shield",
+  "n_evaluations": 288,
+  "post_run_disclosures": {
+    "D1_THE_BINDING_CONSEQUENCE": {
+      "delta": 0.0125,
+      "floor": 0.2,
+      "statement": "Y6 WAS NOT MET, SO Y3, Y4 AND Y5 ARE UNINFORMATIVE. DELTA = 0.0125 against a locked floor of 0.20."
+    },
+    "D2_the_two_axes_side_by_side": {
+      "HELM": {
+        "G_signal": 0.1612,
+        "S_shield": 0.9875,
+        "verdict_span": 0.9394
+      },
+      "LEAKY_CONTROL": {
+        "G_signal": 0.1547,
+        "S_shield": 0.877,
+        "verdict_span": 0.9784
+      },
+      "SUITE": {
+        "G_signal": 0.1667,
+        "S_shield": 1.0,
+        "verdict_span": 0.14
+      }
+    },
+    "D3_the_rock_test_is_the_point": {
+      "CONTROL_at": [
+        0.877,
+        0.1547
+      ],
+      "HELM_at": [
+        0.9875,
+        0.1612
+      ],
+      "SUITE_at": [
+        1.0,
+        0.1667
+      ],
+      "note": "Reporting a shield alone is the easy half: an evaluator that returns a constant scores S = 1.0000 and is worthless. Y4 is what separates a shield from a rock, and the two axes are reported together everywhere so neither can be quoted without the other."
+    },
+    "D4_verdict_quantisation_checked": {
+      "distinct_verdicts_per_evaluator": {
+        "HELM": 8,
+        "LEAKY_CONTROL": 7,
+        "SUITE": 2
+      },
+      "note": "The too-perfect rule flags S exactly 1.0 as possible quantisation -- a coarse output grid can look perfectly shielded because the self-report never moves the verdict across a bin. The distinct-verdict counts above are how that is checked rather than assumed."
+    },
+    "D5_what_this_does_NOT_license": {
+      "note": "Shielding is a property of the apparatus, not a warrant for its output. A perfectly shielded, highly responsive evaluator can still be measuring the wrong thing, and Y7 records that as UNTESTABLE-HERE because no independent ground truth exists for these artifacts."
+    },
+    "D6_the_preflight_check_is_the_systematic_fix": {
+      "did_it_work": "Y6's C factor came out at 0.0833 rather than the 2/n = 0.001 that banding forced in model three.",
+      "two_prior_errors": "6cb42dcd -- a gate that could not fail. 558f6fa1 -- a gate that could not pass because a continuous outcome was banded.",
+      "what_changed": "Every threshold's quantity was probed for reachable range BEFORE the lock and the probe is recorded in the spec. Y6 uses the continuous verdict, which is the direct correction of the model-three error."
+    },
+    "D7_HELM_MEASURED_AS_A_NEAR_ROCK_AND_IT_IS_PUBLISHED": {
+      "AND_IT_IS_ALSO_UNINFORMATIVE_BY_MY_OWN_BINDING": "Y6 was not met, so this verdict carries no weight either. The number is recorded; the conclusion is not licensed. Both halves are stated because quoting only the first would be the immunisation move in reverse.",
+      "G_bar": 0.2,
+      "G_signal": 0.1612,
+      "S_shield": 0.9875,
+      "finding": "HELM is well shielded -- its verdict barely moves when the text praises itself -- but its RESPONSIVENESS to the artifact came in at 0.1612 against a bar of 0.20. On this artifact set it sits closer to a rock than the specification allows.",
+      "the_spec_promised_this_would_be_published": "'If HELM measures as corruptible, that is published as a defect in a shipping component, not softened into a limitation.' The defect found is the opposite one -- not corruptibility but under-responsiveness -- and it is published on the same terms."
+    },
+    "D8_THE_SUITE_RESULT_IS_THE_MODELS_BEST_MOMENT": {
+      "G_signal": 0.1667,
+      "S_shield": 1.0,
+      "distinct_verdicts": 2,
+      "finding": "The Novora Suite screen scored a PERFECT shield, S = 1.0000 exactly -- and it emits only 2 distinct verdicts across 96 evaluations.",
+      "this_is_the_case_for_the_second_axis": "If DES is worth anything, it is worth it here: a framework reporting only dF_out/dF_gen = 0 would have published S = 1.0000 as a success.",
+      "why_that_is_not_a_compliment": "A perfect shield achieved by barely responding is exactly the ROCK the two-axis model was built to detect. S alone would have rated this the best evaluator in the run. Reading S and G together rates it the most degenerate."
+    },
+    "D9_DCM_HAS_NOW_VOIDED_THREE_CONSECUTIVE_RUNS": {
+      "THE_FLOOR_IS_NOT_BEING_MOVED": "Noticing that a threshold keeps failing is not grounds for lowering it, and doing so after three misses would be the clearest immunisation move available. The question is recorded for a FUTURE pre-registration, where a floor appropriate to evaluator-level outcomes can be declared BEFORE data.",
+      "runs": [
+        "c025eb51 SDL, DELTA 0.1536",
+        "558f6fa1 CRM, DELTA 0.0005",
+        "25c7dffc DES, DELTA 0.0125"
+      ],
+      "the_open_question": "Three runs in a row have been voided by the same floor. That raises a real question about whether DELTA >= 0.20 is calibrated for experiments whose outcome is an EVALUATOR VERDICT rather than a dataset -- a coarse verdict grid caps C no matter how informative the design is."
+    }
+  },
+  "primary_verdict": "HELM DID NOT CLEAR BOTH AXES: S = 0.9875 (bar 0.95), G = 0.1612 (bar 0.20). Y6 WAS NOT MET, SO Y3, Y4 AND Y5 ARE UNINFORMATIVE. DELTA = 0.0125 against a locked floor of 0.20.",
+  "score": "4/6",
+  "simulated_values": 0,
+  "spec_sha256": "25c7dffc6b96b88d144a593ae58a8a24f233a1b369e3dbbdd583c25604c8af3b",
+  "too_perfect_flag": [
+    "S_exactly_1.0:SUITE"
+  ]
+}

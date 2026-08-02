@@ -1,0 +1,367 @@
+<title>DES — the Decoupled Evaluation Shield</title>
+<style>
+  :root {
+    --paper:#F4F6F5; --card:#FFFFFF; --ink:#0F1614; --soft:#47534F; --faint:#7E8A85;
+    --rule:#D2DAD6; --rule2:#E6ECE9;
+    --ac:#186A5C; --ac-dim:#DFEEEA;
+    --s:#1F5F8B; --s-dim:#E0EBF2;
+    --g:#A3541C; --g-dim:#F6E9DC;
+    --no:#983246; --no-dim:#F6E1E6;
+    --ok:#356B4E; --ok-dim:#E1EDE6;
+    --shadow:0 1px 2px rgba(15,22,20,.04), 0 10px 26px -18px rgba(15,22,20,.3);
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --disp: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --measure:35rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#0A0F0D; --card:#141B19; --ink:#E8EEEB; --soft:#A2AEA9; --faint:#727E79;
+      --rule:#28322E; --rule2:#1D2523; --ac:#5FBFA8; --ac-dim:#0F2E28;
+      --s:#6FB2D8; --s-dim:#0F2635; --g:#DB9A55; --g-dim:#331F0E;
+      --no:#DE8296; --no-dim:#331319; --ok:#7EB694; --ok-dim:#16291F;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -20px rgba(0,0,0,.95); }
+  }
+  :root[data-theme="dark"] { --paper:#0A0F0D; --card:#141B19; --ink:#E8EEEB; --soft:#A2AEA9;
+    --faint:#727E79; --rule:#28322E; --rule2:#1D2523; --ac:#5FBFA8; --ac-dim:#0F2E28;
+    --s:#6FB2D8; --s-dim:#0F2635; --g:#DB9A55; --g-dim:#331F0E;
+    --no:#DE8296; --no-dim:#331319; --ok:#7EB694; --ok-dim:#16291F;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -20px rgba(0,0,0,.95); }
+  :root[data-theme="light"] { --paper:#F4F6F5; --card:#FFFFFF; --ink:#0F1614; --soft:#47534F;
+    --faint:#7E8A85; --rule:#D2DAD6; --rule2:#E6ECE9; --ac:#186A5C; --ac-dim:#DFEEEA;
+    --s:#1F5F8B; --s-dim:#E0EBF2; --g:#A3541C; --g-dim:#F6E9DC;
+    --no:#983246; --no-dim:#F6E1E6; --ok:#356B4E; --ok-dim:#E1EDE6;
+    --shadow:0 1px 2px rgba(15,22,20,.04), 0 10px 26px -18px rgba(15,22,20,.3); }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--disp);
+         font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:62rem; margin:0 auto; padding:0 1.5rem 6rem; }
+  .col { max-width:var(--measure); display:flex; flex-direction:column; gap:1.1rem; }
+
+  .mast { padding:4.2rem 0 2.3rem; border-bottom:2px solid var(--ink);
+          display:flex; flex-direction:column; gap:1.2rem; }
+  .kick { font-family:var(--mono); font-size:.7rem; letter-spacing:.15em;
+          text-transform:uppercase; color:var(--ac); font-weight:650; }
+  h1 { font-size:clamp(2rem,5.2vw,3rem); line-height:1.09; letter-spacing:-.028em;
+       font-weight:650; margin:0; max-width:19ch; text-wrap:balance; }
+  h1 small { display:block; font-size:.4em; font-weight:400; color:var(--soft);
+             letter-spacing:-.01em; margin-top:.6rem; max-width:38ch; }
+  .thesis { font-size:clamp(1.08rem,2.4vw,1.3rem); max-width:34rem; margin:0; text-wrap:balance; }
+  .meta { font-family:var(--mono); font-size:.72rem; color:var(--faint);
+          display:flex; flex-wrap:wrap; gap:.4rem 1.6rem; }
+  .meta b { color:var(--soft); font-weight:650; }
+  .meta .h { word-break:break-all; }
+
+  section { padding-top:3.5rem; display:flex; flex-direction:column; gap:1.15rem; }
+  h2 { font-size:clamp(1.3rem,2.9vw,1.72rem); font-weight:650; margin:0;
+       letter-spacing:-.018em; text-wrap:balance; }
+  p { margin:0; }
+
+  .axes { display:flex; flex-wrap:wrap; gap:.8rem; }
+  .ax { flex:1 1 16rem; border:1px solid var(--rule); border-radius:4px; padding:1.2rem 1.3rem;
+        background:var(--card); box-shadow:var(--shadow); display:flex; flex-direction:column; gap:.55rem; }
+  .ax.s { border-top:3px solid var(--s); } .ax.g { border-top:3px solid var(--g); }
+  .ax .sym { font-family:var(--mono); font-size:1.5rem; font-weight:650; }
+  .ax.s .sym { color:var(--s); } .ax.g .sym { color:var(--g); }
+  .ax .def { font-family:var(--mono); font-size:.76rem; color:var(--soft); line-height:1.5; }
+  .ax .txt { font-size:.93rem; color:var(--soft); line-height:1.45; }
+  .ax .txt b { color:var(--ink); font-weight:650; }
+
+  .plane { background:var(--card); border:1px solid var(--rule); border-radius:4px;
+           padding:1.4rem; box-shadow:var(--shadow); overflow-x:auto; }
+  .plane svg { display:block; width:100%; height:auto; min-width:23rem; }
+
+  .scroll { overflow-x:auto; border:1px solid var(--rule); border-radius:4px; background:var(--card); }
+  table { border-collapse:collapse; width:100%; font-size:.83rem; }
+  th,td { text-align:left; padding:.62rem .85rem; border-bottom:1px solid var(--rule2);
+          vertical-align:top; line-height:1.45; }
+  thead th { font-family:var(--mono); font-size:.63rem; letter-spacing:.09em;
+             text-transform:uppercase; color:var(--faint);
+             border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:none; }
+  td.m { font-family:var(--mono); font-size:.75rem; white-space:nowrap;
+         font-variant-numeric:tabular-nums; }
+  td.n { text-align:right; font-family:var(--mono); font-size:.75rem;
+         font-variant-numeric:tabular-nums; white-space:nowrap; }
+  td.s2 { color:var(--soft); } td.s2 b { color:var(--ink); font-weight:650; }
+  .tag { font-family:var(--mono); font-size:.63rem; font-weight:650; letter-spacing:.07em;
+         padding:.16em .5em; border-radius:2px; white-space:nowrap; }
+  .t-ok{background:var(--ok-dim);color:var(--ok)} .t-no{background:var(--no-dim);color:var(--no)}
+  .t-ex{background:var(--rule2);color:var(--faint)}
+  tr.rock td { background:var(--g-dim); }
+
+  .note { border-left:3px solid var(--ac); background:var(--card); padding:1.15rem 1.3rem;
+          border-radius:0 4px 4px 0; box-shadow:var(--shadow);
+          display:flex; flex-direction:column; gap:.7rem; }
+  .note.bad { border-left-color:var(--no); }
+  .note.star { border-left-color:var(--g); }
+  .note h4 { margin:0; font-size:1.02rem; font-weight:650; }
+  .note.bad h4 { color:var(--no); } .note.star h4 { color:var(--g); }
+  .note p { font-size:.95rem; }
+
+  .stamp { font-family:var(--mono); font-size:clamp(.9rem,2.1vw,1.06rem); font-weight:650;
+           line-height:1.55; padding:1.1rem 1.3rem; border:2px solid var(--no);
+           color:var(--no); background:var(--no-dim); border-radius:4px; }
+
+  blockquote { margin:0; padding:1.4rem 0; border-top:1px solid var(--rule);
+               border-bottom:1px solid var(--rule); font-weight:650;
+               font-size:clamp(1.08rem,2.6vw,1.32rem); line-height:1.4; text-wrap:balance; }
+  blockquote span { display:block; margin-top:.55rem; font-size:.74em; font-weight:400;
+                    color:var(--soft); }
+
+  code { font-family:var(--mono); font-size:.86em; background:var(--rule2);
+         padding:.08em .34em; border-radius:2px; }
+  pre { font-family:var(--mono); font-size:.76rem; background:var(--card);
+        border:1px solid var(--rule); border-radius:4px; padding:1rem 1.15rem;
+        overflow-x:auto; line-height:1.6; margin:0; }
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--rule);
+           font-family:var(--mono); font-size:.7rem; color:var(--faint);
+           display:flex; flex-direction:column; gap:.45rem; }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Novora open-source initiative · model four</div>
+  <h1>DES — the Decoupled Evaluation Shield<small>Before you read a number, ask whether the
+    instrument that produced it could be bribed by the thing it was measuring. Then ask
+    whether it was listening at all.</small></h1>
+  <p class="thesis">288 real executions against this repository's own shipping evaluators.
+    <b>Two of them are on the stand, not on the bench</b> — and one scored a perfect shield by
+    being a rock.</p>
+  <div class="meta">
+    <span><b>spec</b> <span class="h">25c7dffc6b96b88d144a593ae58a8a24f233a1b369e3dbbdd583c25604c8af3b</span></span>
+    <span><b>locked</b> after a recorded pre-flight probe, before the runner</span>
+    <span><b>score</b> 4/6</span>
+    <span><b>simulated values</b> 0</span>
+  </div>
+</header>
+
+<section>
+  <h2>Why LISM and DCM cannot do this</h2>
+  <div class="col">
+    <p>LISM measures fidelity <em>along a channel</em>. DCM measures whether a <em>dataset</em>
+      can adjudicate a claim. Neither says anything about the <b>evaluator</b> — whether the
+      instrument reporting the number is itself corruptible by the thing it is measuring.</p>
+    <p>That is a property of the measuring apparatus, not of the channel or the data, and it
+      needs its own model.</p>
+  </div>
+
+  <div class="axes">
+    <div class="ax s">
+      <div class="sym">S</div>
+      <div class="def">1 − sensitivity to the<br>artifact's SELF-REPORT</div>
+      <div class="txt"><b>The shield.</b> S = 1 means the verdict is completely independent of
+        what the artifact says about itself. This is the formal content of
+        <code>∂F_out/∂F_gen = 0</code>.</div>
+    </div>
+    <div class="ax g">
+      <div class="sym">G</div>
+      <div class="def">sensitivity to the<br>ARTIFACT itself</div>
+      <div class="txt"><b>The signal.</b> G = 0 means the evaluator ignores the thing it is
+        supposed to be measuring.</div>
+    </div>
+  </div>
+
+  <blockquote>S and G are independent axes, and both are required.
+    <span>A high-S low-G evaluator is a <b>rock</b> — perfectly incorruptible and perfectly
+      useless, because it says the same thing about everything. Shielding is necessary and not
+      sufficient. Any framework that reports only ∂F_out/∂F_gen = 0 has reported the easy
+      half.</span></blockquote>
+</section>
+
+<section>
+  <h2>Where the three evaluators landed</h2>
+
+  <div class="plane">
+    <svg viewBox="0 0 640 330" role="img" aria-label="Scatter of shield against signal. HELM at 0.9875 shield and 0.1612 signal, SUITE at 1.0 shield and 0.1667 signal, the leaky control at 0.877 shield and 0.1547 signal. All three fall short of the 0.20 signal bar.">
+      <rect x="70" y="20" width="540" height="240" fill="var(--rule2)" opacity=".45"/>
+      <rect x="486" y="20" width="124" height="240" fill="var(--ok-dim)"/>
+      <rect x="486" y="164" width="124" height="96" fill="var(--g-dim)"/>
+      <g stroke="var(--rule)" stroke-width="1.2">
+        <line x1="70" y1="260" x2="610" y2="260"/><line x1="70" y1="20" x2="70" y2="260"/>
+      </g>
+      <line x1="486" y1="20" x2="486" y2="260" stroke="var(--s)" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <line x1="70" y1="164" x2="610" y2="164" stroke="var(--g)" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <g font-family="ui-monospace, monospace" font-size="11" fill="var(--faint)">
+        <text x="62" y="264" text-anchor="end">0.00</text>
+        <text x="62" y="168" text-anchor="end">0.20</text>
+        <text x="62" y="24" text-anchor="end">0.50</text>
+        <text x="70" y="282">S = 0.80</text><text x="486" y="282" text-anchor="middle">0.95 bar</text>
+        <text x="610" y="282" text-anchor="end">1.00</text>
+        <text x="340" y="302" text-anchor="middle" fill="var(--soft)">S — shield against self-report →</text>
+        <text x="20" y="140" fill="var(--soft)" transform="rotate(-90 20 140)" text-anchor="middle">G — signal ↑</text>
+      </g>
+      <g font-family="ui-monospace, monospace" font-size="10.5" font-weight="600">
+        <text x="500" y="42" fill="var(--ok)">shielded AND responsive</text>
+        <text x="500" y="250" fill="var(--g)">ROCK — shielded, deaf</text>
+      </g>
+      <!-- control S=0.877 -> x = 70+ (0.877-0.8)/0.2*540 = 70+207.9 = 278 ; G=0.1547 -> y=260-(0.1547/0.5)*240=260-74.3=186 -->
+      <circle cx="278" cy="186" r="7" fill="var(--no)"/>
+      <text x="278" y="206" font-family="ui-monospace, monospace" font-size="10.5" fill="var(--no)" text-anchor="middle" font-weight="600">LEAKY CONTROL</text>
+      <!-- HELM S=0.9875 -> 70+(0.1875/0.2)*540=70+506=576 ; G=0.1612 -> 260-77.4=183 -->
+      <circle cx="576" cy="183" r="7.5" fill="var(--s)"/>
+      <text x="570" y="172" font-family="ui-monospace, monospace" font-size="10.5" fill="var(--s)" text-anchor="end" font-weight="600">HELM</text>
+      <!-- SUITE S=1.0 -> 610 ; G=0.1667 -> 260-80=180 -->
+      <circle cx="608" cy="180" r="7.5" fill="var(--g)"/>
+      <text x="600" y="205" font-family="ui-monospace, monospace" font-size="10.5" fill="var(--g)" text-anchor="end" font-weight="600">SUITE</text>
+    </svg>
+  </div>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Evaluator</th><th class="n">S shield</th><th class="n">G signal</th><th class="n">distinct verdicts</th><th>Reading</th></tr></thead>
+      <tbody>
+        <tr><td class="m"><b>HELM</b> — the governance gate</td><td class="n">0.9875</td><td class="n">0.1612</td><td class="n">8 of 96</td>
+            <td class="s2">Shielded. <b>Under-responsive</b> — misses the signal bar</td></tr>
+        <tr class="rock"><td class="m"><b>SUITE</b> — the consumer screen</td><td class="n">1.0000</td><td class="n">0.1667</td><td class="n">2 of 96</td>
+            <td class="s2"><b>A rock.</b> Perfect shield achieved by barely responding</td></tr>
+        <tr><td class="m">LEAKY_CONTROL — negative control</td><td class="n">0.8770</td><td class="n">0.1547</td><td class="n">7 of 96</td>
+            <td class="s2">Registers as leaky, as it must</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>The result the second axis was built for</h2>
+  <div class="note star">
+    <h4>The Novora Suite screen scored a perfect shield — and that is not a compliment</h4>
+    <p><b>S = 1.0000 exactly</b>, while emitting only <b>two distinct verdicts across 96
+      evaluations.</b></p>
+    <p>S alone would have rated it the best evaluator in the run. Read together with G it is
+      the most degenerate. <b>That is precisely the rock the two-axis model exists to
+      catch</b> — and a framework reporting only <code>∂F_out/∂F_gen = 0</code> would have
+      published S = 1.0000 as a success.</p>
+    <p>The locked too-perfect rule flagged it automatically, for exactly this reason: a coarse
+      output grid can look perfectly shielded because the self-report never moves the verdict
+      across a bin boundary.</p>
+  </div>
+
+  <div class="note bad">
+    <h4>And HELM measured as a near-rock too</h4>
+    <p>G(HELM) = <b>0.1612</b> against a bar of 0.20. The specification promised that a defect
+      found in a shipping component would be <em>published rather than softened into a
+      limitation</em>. This is that publication. The defect is not corruptibility — HELM's
+      shield is solid at 0.9875 — it is <b>under-responsiveness</b> on this artifact set.</p>
+  </div>
+
+  <div class="note">
+    <h4>The control had to work, and did</h4>
+    <p>A deliberately corruptible evaluator was written for this run and labelled throughout as
+      a negative control. It measured at S = 0.8770, below the bar HELM cleared. <b>If a thing
+      built to be corruptible had not registered as corruptible, the shield metric would not
+      be measuring what it claims</b> and every number here would be uninterpretable.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The self-audit voided all of it</h2>
+  <p class="stamp">Δ = V 0.3438 × I 0.4375 × C 0.0833 = 0.0125 &nbsp;·&nbsp; floor 0.20<br><br>
+    Y6 WAS NOT MET, SO Y3, Y4 AND Y5 ARE UNINFORMATIVE.</p>
+  <div class="col">
+    <p>C came out at 0.0833 because <b>HELM emits only 8 distinct values across 96
+      evaluations.</b> So every finding above — including the one about HELM — is recorded as a
+      <em>number</em> and not licensed as a <em>conclusion</em>.</p>
+    <p>Both halves are stated. Quoting only the first would be the immunisation move in
+      reverse.</p>
+  </div>
+
+  <div class="note bad">
+    <h4>DCM has now voided three consecutive runs — and the floor is not moving</h4>
+    <p>SDL at Δ 0.1536. CRM at Δ 0.0005. DES at Δ 0.0125. Three in a row, same floor.</p>
+    <p>That raises a real question about whether <b>Δ ≥ 0.20 is calibrated for experiments
+      whose outcome is an evaluator verdict rather than a dataset</b> — a coarse verdict grid
+      caps C no matter how informative the design is.</p>
+    <p><b>Noticing that a threshold keeps failing is not grounds for lowering it</b>, and doing
+      so after three misses would be the clearest immunisation move available. The question is
+      recorded for a future pre-registration, where a floor appropriate to evaluator-level
+      outcomes can be declared <em>before</em> data.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The spec error I have now made twice, and the fix</h2>
+  <div class="col">
+    <p>Two prior specifications contained gates that could not reach their thresholds:
+      <code>6cb42dcd</code> had one that <b>could not fail</b> because noise was averaged away;
+      <code>558f6fa1</code> had one that <b>could not pass</b> because a continuous outcome was
+      binarised. Same class of error twice.</p>
+    <p><b>The fix adopted here:</b> a pre-flight feasibility probe is run and <em>recorded in
+      the specification</em> for every threshold before locking. HELM was probed and returns
+      verdicts across 0.1428–0.9784; no shield or signal number was computed. And Y6 uses the
+      continuous verdict rather than a median band — the direct correction of the model-three
+      error.</p>
+    <p><b>It partly worked.</b> C came out at 0.0833 instead of the 0.001 that banding forced
+      last time. It still was not enough.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The gates</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Gate</th><th>Locked bar</th><th class="n">Measured</th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="m">Y1 integrity + pre-flight recorded</td><td class="s2">HELM span ≥ 0.50</td><td class="n">0.836</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Y2 failing region populated</td><td class="s2">verdict range ≥ 0.30</td><td class="n">0.836</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Y3 HELM is shielded</td><td class="s2">S ≥ 0.95</td><td class="n">0.9875</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Y4 HELM is not a rock</td><td class="s2">G ≥ 0.20</td><td class="n">0.1612</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td class="m">Y5 control registers as leaky</td><td class="s2">S &lt; 0.95</td><td class="n">0.8770</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Y6 DCM self-audit</td><td class="s2">Δ ≥ 0.20</td><td class="n">0.0125</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td class="m">Y7 is shielding sufficient?</td><td class="s2">—</td><td class="n">—</td><td><span class="tag t-ex">UNTESTABLE-HERE</span></td></tr>
+        <tr><td class="m">Y8 tool roles</td><td class="s2">—</td><td class="n">—</td><td><span class="tag t-ex">EXCLUDED</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>What each tool did — and the roles inverted</h2>
+  <div class="col">
+    <p>In model three the Novora tools audited the write-up. <b>Here two of them are the
+      subjects.</b> That inversion is the point: a governance tool that has never been measured
+      for corruptibility is one nobody should trust, including its authors.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Tool</th><th>Role in this test</th><th>Could it change a verdict?</th></tr></thead>
+      <tbody>
+        <tr><td class="m"><b>HELM / NERE</b></td><td class="s2"><b>THE SUBJECT.</b> Its shield and signal are what Y3 and Y4 measure. On the stand, not on the bench.</td><td><span class="tag t-no">it <em>is</em> the verdict</span></td></tr>
+        <tr><td class="m"><b>Novora Suite</b></td><td class="s2"><b>THE SECOND SUBJECT.</b> An independent instrument on the same two axes, so HELM's numbers have something to be read against. It produced the run's sharpest finding — about itself.</td><td><span class="tag t-no">it <em>is</em> the verdict</span></td></tr>
+        <tr><td class="m"><b>Leaky control</b></td><td class="s2">Written for this experiment as a labelled <b>negative control</b>. Not a product. Y5 scores it, because an unfalsifiable control is not a control.</td><td><span class="tag t-ok">YES — a fail would void the run</span></td></tr>
+        <tr><td class="m"><b>DCM</b></td><td class="s2">Supplies Y6, the self-audit with power to void the run. <b>It did.</b></td><td><span class="tag t-ok">YES — and it did</span></td></tr>
+        <tr><td class="m"><b>LISM</b></td><td class="s2"><b>NOT USED.</b> Model one measures fidelity along a channel and has no bearing on evaluator corruptibility. Saying so is more useful than finding it a role.</td><td><span class="tag t-ex">n/a</span></td></tr>
+        <tr><td class="m"><b>Claude Code</b></td><td class="s2">Ran the pre-flight probe, wrote the spec, locked it by SHA-256 before the runner existed, then implemented against it.</td><td><span class="tag t-ex">no</span></td></tr>
+        <tr><td class="m"><b>IHCEI</b></td><td class="s2">The repository substrate — reproduce harness, provenance Merkle lock, pre-registration convention.</td><td><span class="tag t-ex">no</span></td></tr>
+        <tr><td class="m"><b>Page Code</b></td><td class="s2">Audits whether the repository change sits inside the declared permission table.</td><td><span class="tag t-ex">no</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>What this does not license</h2>
+  <div class="note bad">
+    <h4>Shielding is a property of the apparatus, not a warrant for its output</h4>
+    <p>S and G together say an evaluator is incorruptible by self-report and responsive to
+      content. They say <b>nothing about whether it responds to the right content</b>, whether
+      its gradient points at anything real, or whether its lexicon is any good.</p>
+    <p>A perfectly shielded, highly responsive evaluator can still be measuring the wrong
+      thing. Gate Y7 records that as <b>UNTESTABLE-HERE</b>, because no ground-truth labels
+      from independent raters exist for these artifacts. Closing it needs people who did not
+      build the evaluator.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce</h2>
+  <pre>python3 decoupled-shield/des.py
+python3 -m pytest -q decoupled-shield/test_des.py
+bash reproduce_all.sh</pre>
+</section>
+
+<footer>
+  <span>Novora Research Initiative · Open Science Division</span>
+  <span>DES spec 25c7dffc · LISM one · DCM two · CRM three (did not earn its place) · DES four</span>
+</footer>
+
+</div>

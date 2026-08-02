@@ -103,6 +103,7 @@ run "DCM: Discriminating Capacity Model on 400 real sub-datasets — 5/6; K5 mul
 run "crossover: RT→Governance on quantum + cognition — 5/9; the SECOND HOP was refuted in physics" py crossover/test_crossover.py
 run "SDL: scope selector declared in advance on 5 substrates — 2/6; self-audit voided the result" py scoping/test_scoping.py
 run "CRM: Cognitive Reference Model on 2000 agents — 4/6; it did NOT beat LISM and the self-audit voided it" py cognitive-reference/test_crm.py
+run "DES: shield vs signal on 288 REAL evaluator runs — 4/6; the Suite scored a perfect shield by being a rock" py decoupled-shield/test_des.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py
