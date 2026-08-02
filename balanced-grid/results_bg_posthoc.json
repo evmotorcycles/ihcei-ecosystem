@@ -1,0 +1,39 @@
+{
+  "IT_IS_NOT_V2_S_DENSITY_WEIGHTING": "v1 shows -0.4831 against word count and v2 shows -0.4774. They are the same number. The length effect is therefore NOT introduced by v2's division by word count -- it is already present in the shared gate and regex structure that both engines inherit. v2 is not the culprit and replacing it would not help.",
+  "STATUS": "POST-HOC. Not pre-registered. Not scored. No gate depends on it.",
+  "THE_FINDING": "Neither engine orders this artifact set by manipulativeness. Spearman against the declared gradient is +0.0445 for v1 and +0.0388 for v2 -- indistinguishable from zero. Against WORD COUNT it is -0.4831 and -0.4774: both engines score LONGER text as LESS manipulative, and they do so to nearly the same degree.",
+  "THE_LIMIT_AND_IT_IS_SERIOUS": "The band labels are the author's own, written into the spec by the same person who maintains the engines. They are NOT independent rater labels, so this does NOT close W8, which stays UNTESTABLE-HERE. The direction matters though: author labels are biased toward agreement with the author's engine, and the correlation still came out at zero. A positive result from these labels would have been worth little; a null from them is harder to dismiss.",
+  "V1": {
+    "artifacts_sharing_the_modal_verdict": "15 of 20",
+    "distinct_baseline_verdicts": 5,
+    "least_manipulative_text_scored": 0.1428,
+    "mean_verdict_by_declared_band": {
+      "factual": 0.1298,
+      "hedged": 0.1272,
+      "mildly pressuring": 0.1428,
+      "strongly manipulative": 0.1277
+    },
+    "modal_baseline_verdict": 0.1428,
+    "most_manipulative_text_scored": 0.0784,
+    "spearman_vs_declared_manipulativeness": 0.0445,
+    "spearman_vs_word_count": -0.4831
+  },
+  "V2": {
+    "artifacts_sharing_the_modal_verdict": "15 of 20",
+    "distinct_baseline_verdicts": 6,
+    "least_manipulative_text_scored": 0.1428,
+    "mean_verdict_by_declared_band": {
+      "factual": 0.1276,
+      "hedged": 0.124,
+      "mildly pressuring": 0.1428,
+      "strongly manipulative": 0.1347
+    },
+    "modal_baseline_verdict": 0.142815,
+    "most_manipulative_text_scored": 0.0675,
+    "spearman_vs_declared_manipulativeness": 0.0388,
+    "spearman_vs_word_count": -0.4774
+  },
+  "WHAT_IS_NOT_CLAIMED": "HELM is not refuted. This is one 20-text set, scored against author-supplied labels, in a run its own self-audit declared UNINFORMATIVE. The claim is narrower and it is about our measurements rather than about the engine: the shield-and-signal numbers reported for HELM in DES and in HELM v2 were measured on sets where length and manipulativeness were confounded, and no run so far has separated them.",
+  "WHAT_THIS_SUGGESTS_ABOUT_THE_EARLIER_G_NUMBERS": "On the DES set and the HELM v2 held-out set, the manipulative texts were also the SHORT texts, so length and manipulativeness were confounded. This spec deliberately broke that confound -- the 2-word 'Act now.' is in the most manipulative band while three 30-word texts are in the factual band -- and the manipulativeness signal disappeared. That is consistent with the earlier G = 0.2980 having measured LENGTH rather than MANIPULATION. It is consistent with, not proof of: see the limit below.",
+  "WHY_THE_DCM_VOID_IS_THE_SAME_FACT": "W7 failed at DELTA = 0.1060 because V = 0.40 and C = 0.265 -- the verdicts are concentrated. They are concentrated because 15 of 20 artifacts land on the identical value 0.1428. The self-audit did not obscure the finding; it detected it. DCM voided the run for precisely the right reason."
+}

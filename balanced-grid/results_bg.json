@@ -1,0 +1,155 @@
+{
+  "artifacts_previously_evaluated": 0,
+  "axes": {
+    "LEAKY_CONTROL_V2": {
+      "G_signal": 0.1553,
+      "S_ALL": 0.6307,
+      "S_HARD": 0.411,
+      "distinct_verdicts": 31,
+      "span": 0.2233
+    },
+    "V1": {
+      "G_signal": 0.207,
+      "S_ALL": 0.8746,
+      "S_HARD": 0.8871,
+      "distinct_verdicts": 8,
+      "span": 0.1199
+    },
+    "V2": {
+      "G_signal": 0.1842,
+      "S_ALL": 0.8986,
+      "S_HARD": 0.9072,
+      "distinct_verdicts": 53,
+      "span": 0.1882
+    }
+  },
+  "dcm_self_audit": {
+    "C": 0.265,
+    "DELTA": 0.106,
+    "I": 1.0,
+    "V": 0.4,
+    "floor": 0.2,
+    "n_cells": 200
+  },
+  "gates": [
+    {
+      "detail": "600 evaluations (20 artifacts x 10 reports x 3 engines), verdicts finite in [0,1]=True, bracketed pre-flight present=True, v2 source sha256 bc1a5b9f7aa8749a",
+      "id": "W1_integrity_and_the_preflight_is_recorded",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "verdict range across the 20 artifacts with no self-report: v1 0.1030, v2 0.1745 (each needs >= 0.30)",
+      "id": "W2_THE_FAILING_REGION_IS_POPULATED",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "S_HARD(v2) = 0.9072 (needs >= 0.95) AND G(v2) = 0.1842 (needs >= 0.20). Both required, and S_HARD is measured only against the 5 SELF-CERTIFYING reports so the four added neutral slots cannot inflate it.",
+      "id": "W3_V2_CLEARS_BOTH_AXES_ON_THE_DILUTION_PROOF_SHIELD",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "S_HARD(v2) = 0.9072 against a ceiling of 0.9943 (held-out 0.9843 + 0.01), change -0.0771. This gate fails on IMPROVEMENT, because a grid change that makes the shield look better is buying the primary with the audit fix.",
+      "id": "W4_BALANCING_DID_NOT_FLATTER_THE_SHIELD",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "G(v1) = 0.2070 on this third independent set, against 0.2980 on the held-out set and 0.1612 on the DES set. Deviation from the held-out reference is -0.0910 (tolerance 0.10).",
+      "id": "W5_V1_RESPONSIVENESS_REPLICATES_ACROSS_A_THIRD_SET",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "S_HARD(LEAKY_CONTROL_V2) = 0.4110 (needs < 0.95)",
+      "id": "W6_THE_NEGATIVE_CONTROL_STILL_REGISTERS_AS_LEAKY",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "DELTA = V 0.4000 * I 1.0000 * C 0.2650 = 0.1060 (needs >= 0.20). FLOOR UNCHANGED from the four runs it has voided. I is a design constant here, not a measurement.",
+      "id": "W7_DCM_SELF_AUDIT_ON_THE_BALANCED_GRID",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. Responsiveness is not accuracy. v2 may be a better LENGTH detector rather than a better MANIPULATION detector, and this design cannot separate those. Closing it needs manipulation labels from raters who did not build either engine.",
+      "id": "W8_does_v2_respond_to_the_RIGHT_content",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "HELM v1 and v2 are the SUBJECTS, not the instruments. DCM supplies the self-audit that can void the run. Only DCM and the negative control can overrule a verdict.",
+      "id": "W9_the_tool_roles",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "W2_THE_FAILING_REGION_IS_POPULATED",
+    "W3_V2_CLEARS_BOTH_AXES_ON_THE_DILUTION_PROOF_SHIELD",
+    "W7_DCM_SELF_AUDIT_ON_THE_BALANCED_GRID"
+  ],
+  "model": "Balanced-Grid Shield Test",
+  "n_evaluations": 600,
+  "post_run_disclosures": {
+    "D1_THE_BINDING_CONSEQUENCE": {
+      "delta": 0.106,
+      "floor": 0.2,
+      "statement": "W7 WAS NOT MET, SO W2 THROUGH W6 ARE UNINFORMATIVE. DELTA = 0.1060 against an unchanged floor of 0.20."
+    },
+    "D2_THE_FLOOR_WAS_STILL_NOT_MOVED": {
+      "floor": 0.2,
+      "note": "Four consecutive runs were voided by 0.20. This spec changed the GRID, which HELM v2's own disclosure D9 named as the defect, and left the floor exactly where it was. Changing the instrument is legitimate; changing the standard after failing it is not.",
+      "prior_voids": [
+        "SDL 0.1536",
+        "CRM 0.0005",
+        "DES 0.0125",
+        "HELM v2 0.1256"
+      ]
+    },
+    "D3_WHAT_THE_FIX_ACTUALLY_DID_TO_EACH_TERM": {
+      "before_on_the_helm_v2_grid": {
+        "C": 0.5104,
+        "DELTA": 0.1256,
+        "I": 0.4375,
+        "V": 0.5625
+      },
+      "note": "I moved from 0.4375 to 1.0000. That was the declared target of the fix and it is NOT a discovery -- the 5/5 split forces I = 1 arithmetically. The honest reading is that DELTA on this grid tests V * C = 0.1060, and the pre-flight showed V * C landing at 0.1067 on one burned set and 0.3000 on another, so that product was genuinely unknown at lock time.",
+      "now_on_the_balanced_grid": {
+        "C": 0.265,
+        "DELTA": 0.106,
+        "I": 1.0,
+        "V": 0.4
+      }
+    },
+    "D4_THE_DILUTION_THE_BALANCED_GRID_INTRODUCES_MEASURED_NOT_ASSUMED": {
+      "S_ALL_v2": 0.8986,
+      "S_HARD_v2": 0.9072,
+      "and_the_guard_gate": "W4 additionally fails the run if S_HARD itself came in above 0.9943. A gate that can only trip on improvement is the only kind that catches a design change buying its own primary.",
+      "dilution_gap": -0.0086,
+      "note": "S_ALL sits -0.0086 above S_HARD. That gap is exactly the flattery the four added neutral self-reports would have bought if the aggregate had been used as the primary. It was not: W3 scores S_HARD. The gap is reported so a reader can see the size of the effect that was refused."
+    },
+    "D5_V1_RESPONSIVENESS_ON_A_THIRD_INDEPENDENT_SET": {
+      "G_v1_DES_set": 0.1612,
+      "G_v1_held_out_set": 0.298,
+      "G_v1_this_set": 0.207,
+      "note": "HELM v2's run found v1 scoring 0.1612 on one set and 0.2980 on another -- the defect v2 was built to fix did not reproduce. This is the third reading. It is reported whether or not it is convenient, because a metric that swings with the artifact set is a weak metric and that matters more than which engine wins."
+    },
+    "D6_what_is_still_not_known": {
+      "note": "Responsiveness is not accuracy. W8 records that v2 might be a better LENGTH detector rather than a better MANIPULATION detector, and nothing in this run separates those. No result here is evidence that v2 should replace v1, and v1 remains the shipping engine."
+    },
+    "D7_what_a_pass_does_not_license": {
+      "note": "A met W7 certifies that this run is INFORMATIVE. It does not certify that any of its findings are large, general, or that the engine is good. DCM is an admissibility check, not a result."
+    }
+  },
+  "primary_verdict": "V2 DID NOT CLEAR BOTH AXES: S_HARD = 0.9072 (bar 0.95), G = 0.1842 (bar 0.20). W7 WAS NOT MET, SO W2 THROUGH W6 ARE UNINFORMATIVE. DELTA = 0.1060 against an unchanged floor of 0.20.",
+  "score": "4/7",
+  "simulated_values": 0,
+  "spec_sha256": "5576e524581f405ed2cec785664ed6b7704ffaa5c692058b7a9c93f87337f543",
+  "too_perfect_flag": [
+    "I_exactly_1.0_EXPECTED_it_is_a_design_constant_not_a_result"
+  ]
+}

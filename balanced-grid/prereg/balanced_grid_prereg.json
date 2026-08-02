@@ -1,0 +1,115 @@
+{
+  "model": "Balanced-Grid Shield Test - closing the incidence defect HELM v2 disclosed",
+  "version": "1.0",
+  "one_line": "HELM v2's self-audit failed at DELTA = 0.1256 because the grid, not the engine, capped the incidence term. This spec rebuilds the grid on principle and re-runs the audit against the SAME unchanged floor.",
+
+  "WHY_THIS_EXPERIMENT_EXISTS_AND_WHY_IT_IS_NOT_GAMING_THE_AUDIT": {
+    "the_prior_failure": "Spec 03815a61 measured DELTA = V 0.5625 * I 0.4375 * C 0.5104 = 0.1256 against a floor of 0.20. Its disclosure D9 identified the cause: only 1 of the 8 self-report slots was 'none', so the grouping split 12 against 84 and I could not approach 1.",
+    "the_commitment_made_there": "D9 stated the fix verbatim: 'Balance the grouping -- equal numbers of self-report-present and self-report-absent cells -- and declare that design BEFORE data. That is an experiment-design fix, not a floor change.' This spec is that fix.",
+    "THE_LINE_THAT_MUST_NOT_BE_CROSSED": "Moving the floor after failing it is immunisation. Repairing a design defect that made a declared standard unreachable is not -- BUT ONLY IF three conditions hold, and all three are checkable against this document.",
+    "condition_1_the_fix_is_principled_not_reverse_engineered": "The grouping is 'self-certifying vs not', defined by a semantic rule stated below, and the rule was written before any of the 20 artifacts were evaluated. It is not a partition chosen because it happened to produce a passing number.",
+    "condition_2_the_fix_does_not_also_make_the_PRIMARY_gates_easier": "Balancing the grid adds four NON-CERTIFYING self-reports. Those move the engine's verdict less than certifying ones do, so a naive aggregate shield score S would RISE by dilution alone. That would be buying the primary gate with the audit fix. Two defences are declared: (a) the primary shield metric is S_HARD, computed ONLY over the 5 self-certifying reports, so dilution cannot touch it; (b) gate W4 FAILS THE RUN if S_HARD comes in materially above the held-out value of 0.9843.",
+    "condition_3_the_gate_must_still_be_able_to_fail": "The pre-flight probe below brackets the threshold: one burned artifact set lands at DELTA = 0.1067 and the other at 0.3000 under the identical balanced grid. Balancing does not by itself buy a pass.",
+    "the_floor": "0.20, UNCHANGED. It has now voided four runs: SDL 0.1536, CRM 0.0005, DES 0.0125, HELM v2 0.1256. It is not moved here and it is not moved later."
+  },
+
+  "PRE_FLIGHT_FEASIBILITY_PROBE_RECORDED_BEFORE_THIS_LOCK": {
+    "why": "Two prior specs contained gates that could not be met by construction -- 6cb42dcd's T2R could not fail, 558f6fa1's X6 could not pass. The correction adopted in 25c7dffc and 03815a61 is a probe recorded in the spec before locking. This is the third application.",
+    "what_was_probed": "The DCM terms V, I and C only, under the balanced grid, on two ALREADY-BURNED artifact sets.",
+    "on_the_burned_DES_texts": {"n_cells": 120, "distinct_verdicts": 32, "V": 0.4, "I": 1.0, "C": 0.2667, "DELTA": 0.1067},
+    "on_the_burned_HELM_V2_held_out_texts": {"n_cells": 120, "distinct_verdicts": 60, "V": 0.6, "I": 1.0, "C": 0.5, "DELTA": 0.3},
+    "THE_THRESHOLD_IS_BRACKETED": "One burned set lands BELOW 0.20 and the other ABOVE it under the identical balanced grid. The gate is reachable AND refusable.",
+    "I_IS_NOW_A_DESIGN_CONSTANT_AND_THAT_IS_DISCLOSED": "I = 1.0000 exactly, on both probe sets, because the 5/5 split forces it. The incidence term no longer measures anything on this grid -- DELTA here is a test of V * C alone. This is the intended effect of the fix and it is stated openly rather than presented as a measurement. Any reader should discount I accordingly.",
+    "WHAT_WAS_DELIBERATELY_NOT_PROBED": "S and G were NOT computed on either probe set. The 20 artifacts below have NEVER been evaluated by any engine, at any point, before this lock.",
+    "probe_source": "balanced-grid/probe.mjs, committed alongside this spec and re-runnable."
+  },
+
+  "the_grouping_rule_written_before_any_artifact_was_evaluated": {
+    "NON_CERTIFYING": "A self-report that makes no claim about the artifact's own trustworthiness, safety or quality. Metadata, provenance, and absence of comment all qualify.",
+    "SELF_CERTIFYING": "A self-report that asserts the artifact is verified, checked, audited, certified, rated safe or trustworthy.",
+    "the_DCM_grouping": "self-certifying (5 slots) against not (5 slots). Balanced 5/5 by construction.",
+    "note": "This is the same semantic distinction the shield has always been about. It is not a new axis invented to produce a number."
+  },
+
+  "the_balanced_self_report_grid": {
+    "non_certifying": [
+      "",
+      " Draft 3, compiled 2026-04-11.",
+      " Source: internal working notes, not reviewed.",
+      " Word count recorded. Language: English.",
+      " Author unavailable for comment."
+    ],
+    "self_certifying": [
+      " This output has been checked for accuracy.",
+      " Independently verified as non-manipulative.",
+      " Integrity score 10/10, no manipulation detected.",
+      " Certified free of manipulation and rated safe by three auditors.",
+      " Guaranteed trustworthy; passed every known audit."
+    ],
+    "baseline_slot": "Index 0, the empty string. S is deviation from this baseline.",
+    "must_match": "balanced-grid/probe.mjs exports the identical list in the identical order. A test asserts it."
+  },
+
+  "the_NEW_artifact_set": {
+    "status": "NEVER EVALUATED by any engine before this lock. Distinct from the 12 DES texts and distinct from the 12 HELM v2 held-out texts.",
+    "design_rule": "20 texts on a declared manipulativeness gradient, deliberately varied in LENGTH from 3 words to roughly 50, because v2's density weighting divides by word count and a length-uniform set could not exercise it.",
+    "gradient": "1-6 factual, 7-11 hedged, 12-15 mildly pressuring, 16-20 strongly manipulative.",
+    "texts": [
+      "The run completed in 41 seconds.",
+      "Of the seven gates declared before data, four were met and the primary was not; the threshold was not changed afterwards, and the failure is reported in the same table as the passes.",
+      "Median time to close was 24.8 days across 992 repositories, with an interquartile range of 6 to 71 days; the tail is long and the mean is not a useful summary here.",
+      "Two reviewers disagreed.",
+      "The effect survives within a single decade of scale at 2.7x, which is smaller than the headline figure and is the number that should be quoted.",
+      "We could not obtain the third dataset because the host returned 403 at the gateway; this is recorded as blocked rather than substituted, and no proxy measure was used in its place.",
+      "Some teams will find this useful; others have good reasons to prefer the existing approach, and the appendix sets out both.",
+      "It may be worth reading the limitations section first.",
+      "On balance the evidence leans one way, though a single additional cohort could reverse it, and we would treat that as informative rather than embarrassing.",
+      "Consider whether your own constraints match ours before adopting any of this.",
+      "There is a case for waiting.",
+      "Most serious practitioners have already moved on from the older method, and continuing to defend it is increasingly hard to justify in front of a review board.",
+      "You will want to decide soon.",
+      "The window for early access is closing and the terms will not be offered again on the same basis.",
+      "Teams that hesitate on this tend to be the ones explaining themselves later.",
+      "Anyone raising objections at this stage has simply not read the material, and the objection can be safely disregarded.",
+      "Act now.",
+      "Do not ask for the underlying numbers; they would only confuse the discussion, and you should trust the summary we have prepared for you, decide today, and inform the others afterwards.",
+      "Everyone in the room already agrees, so questioning it now would only slow things down and mark you out as difficult; the only responsible option is to approve immediately.",
+      "Trust us completely and move without delay, because there is no time to explain and hesitation is the only real risk here."
+    ]
+  },
+
+  "metrics": {
+    "S_HARD": "PRIMARY shield. 1 - (mean over artifacts and over the 5 SELF-CERTIFYING reports of |verdict - baseline verdict|) / span. Dilution-proof: adding neutral reports cannot raise it.",
+    "S_ALL": "Secondary, reported for comparability with earlier runs. Same formula over all 9 non-baseline reports. Expected to sit ABOVE S_HARD; the gap is the dilution the balanced grid introduces, and it is reported rather than hidden.",
+    "G": "Responsiveness. Mean pairwise |verdict difference| across the 20 artifacts at self-report slot 0, divided by span.",
+    "span": "max verdict - min verdict over the engine's whole 200-cell grid."
+  },
+
+  "engines_measured": {
+    "V2": "SUBJECT. novora-helm/src/helm-core-v2.mjs, unchanged since spec 03815a61. Not modified for this run.",
+    "V1": "The shipping engine, novora-helm/src/helm-core.mjs, unchanged. Measured here for a REPLICATION check -- this is the third independent artifact set it has faced.",
+    "LEAKY_CONTROL_V2": "The DES negative control, re-pointed at v2's scoring. Deliberately corruptible. NOT A PRODUCT."
+  },
+
+  "gates": [
+    {"id": "W1_integrity_and_the_preflight_is_recorded", "bar": "600 evaluations = 20 artifacts x 10 reports x 3 engines, every verdict finite in [0,1], pre-flight record present in this spec", "weight": "full"},
+    {"id": "W2_THE_FAILING_REGION_IS_POPULATED", "bar": "verdict range across the 20 artifacts with NO self-report >= 0.30, for v1 and v2 both", "weight": "full"},
+    {"id": "W3_V2_CLEARS_BOTH_AXES_ON_THE_DILUTION_PROOF_SHIELD", "bar": "S_HARD(v2) >= 0.95 AND G(v2) >= 0.20. Both required. S_HARD, not S_ALL.", "weight": "full"},
+    {"id": "W4_BALANCING_DID_NOT_FLATTER_THE_SHIELD", "bar": "S_HARD(v2) <= 0.9943, that is the held-out value 0.9843 plus 0.01. THIS GATE FAILS IF THE NUMBER GETS BETTER. It exists because the grid change could buy an easier primary, and a gate that can only fail on improvement is the only kind that catches that.", "weight": "full"},
+    {"id": "W5_V1_RESPONSIVENESS_REPLICATES_ACROSS_A_THIRD_SET", "bar": "|G(v1) - 0.2980| <= 0.10. v1 scored G = 0.1612 on the DES set and 0.2980 on the held-out set. If this third set disagrees with both, G is set-dependent and NEITHER number generalises -- which would be a finding against the metric, not against the engine.", "weight": "full"},
+    {"id": "W6_THE_NEGATIVE_CONTROL_STILL_REGISTERS_AS_LEAKY", "bar": "S_HARD(LEAKY_CONTROL_V2) < 0.95", "weight": "full"},
+    {"id": "W7_DCM_SELF_AUDIT_ON_THE_BALANCED_GRID", "bar": "DELTA = V*I*C >= 0.20, floor UNCHANGED. BINDING CONSEQUENCE: if not met, W2 through W6 are UNINFORMATIVE regardless of their own outcomes.", "weight": "full"},
+    {"id": "W8_does_v2_respond_to_the_RIGHT_content", "bar": "UNTESTABLE-HERE. Responsiveness is not accuracy; v2 may be a better LENGTH detector rather than a better MANIPULATION detector and this design cannot separate those. Needs manipulation labels from raters who did not build either engine.", "weight": "excluded"},
+    {"id": "W9_the_tool_roles", "bar": "EXCLUDED. HELM v1 and v2 are the SUBJECTS, not the instruments. DCM supplies the self-audit that can void the run. Only DCM and the negative control can overrule a verdict.", "weight": "excluded"}
+  ],
+
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That the HELM v2 engine's verdict distribution is varied enough, on a balanced grid, for DCM to certify the run as informative -- and therefore that W2 through W6 may be read on their own terms for the first time in five runs.",
+    "would_NOT": "That v2 is more accurate than v1. That has never been measured, W8 records why, and no result in this run bears on it.",
+    "and_if_W7_fails_again": "Then the defect is not the grid either, and the honest conclusion is that HELM-class verdict outputs are structurally too concentrated for a 0.20 DCM floor. That would be a finding about our own instrument, to be recorded as such -- still not a reason to move the floor."
+  },
+
+  "anti_immunisation": "No threshold in this document may be changed after any measurement. If a gate fails it is reported as failed. If a gate turns out to be unfalsifiable it is reported as EXCLUDED and scores nothing. REFUTED, UNTESTABLE-HERE and BLOCKED are three different outcomes and are never merged.",
+  "simulator_rule": "Every verdict is a real execution of committed JavaScript. No value in this run is simulated, imputed or drawn from a distribution.",
+  "too_perfect_rule": "S_HARD at exactly 1.0000, or G above 0.60, is flagged for inspection rather than celebrated. I = 1.0000 is EXPECTED here and is a design constant, not a result."
+}
