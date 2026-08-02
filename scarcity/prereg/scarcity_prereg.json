@@ -1,0 +1,71 @@
+{
+  "model": "Graph-Topological Decode Scarcity - testing LISM's own declared domain limit",
+  "version": "1.0",
+  "one_line": "The revised manuscript's section 3.3c says the product form E = U*D_enc*D_dec assumes the decode hop is SCARCE. That has never been measured. This defines scarcity from graph topology alone, with no fitted parameter, and tests whether the product form's advantage is actually larger where the decode hop is scarce.",
+
+  "THE_GAP_AS_POSED_CANNOT_BE_CLOSED_AND_HERE_IS_THE_ACCOUNTING": {
+    "what_was_asked": "A first-principles graph-topological scarcity metric for the Scope Declaration Layer, which ranges over five substrates.",
+    "why_it_cannot_be_done_across_five": "A graph-topological measure needs a graph. Three of the five substrates do not supply one.",
+    "S_yeast": "BLOCKED. data/yeast/ contains scer_essential_genes_DEG.csv, scer_essential_orfs.txt and yeast_interactome_DEG.csv. The last is NODE-LEVEL only -- one row per ORF with U, D_enc, D_dec. The interactome EDGES were never committed, so no topology can be computed. This is a data gap, not a design flaw.",
+    "S_github": "BLOCKED. data/github/ contains a per-repository table (cohort_real_n44.csv, govphys_quadratic_results.csv). There is no repository graph in the repository.",
+    "S_quantum": "NOT APPLICABLE. It is a closed-form derivation from spec 6cb42dcd, not a dataset. There is nothing to compute a topology on.",
+    "S_pypi": "UNTESTABLE-HERE, and for a reason worth stating precisely. The dependency graph IS committed, so scarcity is computable. But S_pypi's outcome, declared in spec c025eb51, is 'E_indegree above its median' -- a quantity derived from THE SAME GRAPH the scarcity metric is computed on. Correlating a topological predictor with a topological outcome on one graph tests nothing about LISM. This is CIRCULARITY, not missing data, and no amount of extra effort fixes it.",
+    "S_interbank": "THE ONE CLEAN TEST. Scarcity is computed from the 2016Q1 graph. The outcome is realised funding withdrawal in 2016Q2 -- a DIFFERENT observation period, measured from different data. There is no circularity.",
+    "THE_HONEST_CONSEQUENCE": "This experiment tests ONE substrate. A single substrate cannot establish a cross-substrate scope rule, which is what SDL's DELTA was for. Whatever this run finds, the SDL scope rule remains untested across substrates and must be reported that way. Reporting a one-substrate result as though it closed a five-substrate gap would be the error this section exists to prevent."
+  },
+
+  "the_scarcity_metric_and_it_has_no_fitted_parameter": {
+    "name": "local bridge fraction, B(v)",
+    "definition": "For a node v with neighbour set N(v), B(v) is the fraction of u in N(v) for which N(v) and N(u) share NO common member. An edge whose endpoints share no neighbour has no alternative path of length two; the hop across it is SCARCE in the strict sense that removing it leaves no two-step substitute.",
+    "why_this_is_first_principles": "It is defined entirely by the adjacency structure. There is no threshold to choose, no weight to fit, no distribution to assume, and no free parameter of any kind. B(v) = 1 means EVERY one of v's connections is a local bridge.",
+    "graph_used": "The 2016Q1 interbank graph, treated as undirected for neighbourhood purposes. Self-loops excluded.",
+    "the_split": "HIGH scarcity is B(v) == 1.0 exactly. LOW scarcity is B(v) < 1.0. The split point is not chosen from the outcome -- it is the natural boundary of the metric, the point at which a node has no two-step substitute anywhere."
+  },
+
+  "the_two_rival_forms_taken_verbatim_from_the_earlier_run": {
+    "LISM_product": "u * de * dd",
+    "quadratic_rival": "u * (de + dd) ** 2",
+    "source": "interbank-2016/network.py lines 183-184, spec db8c3a4f. Copied unchanged so this run cannot advantage either form by re-specifying it.",
+    "u": "Interbank_liabilities / Equity, from nodes_2016Q1.csv",
+    "de": "2016Q1 in-degree", "dd": "2016Q1 out-degree",
+    "eligibility": "Nodes with positive Q1 inflow and positive Equity, exactly as in spec db8c3a4f.",
+    "outcome": "Realised withdrawal: Q2 inflow <= 0.5 * Q1 inflow. Unchanged.",
+    "what_the_earlier_run_found": "On the FULL eligible set the two forms came out effectively TIED -- quadratic 0.6109 against the product's 0.6090, with the rival marginally ahead. That tie is the reason this stratified test is worth running: a domain limit predicts the tie should break in one direction among scarce-decode nodes."
+  },
+
+  "PRE_FLIGHT_FEASIBILITY_PROBE_RECORDED_BEFORE_THIS_LOCK": {
+    "why": "Four prior specs in this programme are on record with gates that could not be met or could not fail. A probe recorded before the lock is the standing correction.",
+    "strata_sizes_measured_before_the_lock": {
+      "eligible": 1349, "events": 291, "event_share": 0.2157,
+      "HIGH_B_equals_1": {"n": 131, "events": 20, "event_share": 0.1527},
+      "LOW_B_below_1": {"n": 1218, "events": 271, "event_share": 0.2225},
+      "nodes_with_no_neighbours": 0
+    },
+    "the_power_probe_was_run_on_PERMUTED_LABELS": "To measure PRECISION without seeing DIRECTION, the bootstrap was run with the outcome labels randomly permuted. That yields the width of the interval without revealing which way the real answer falls.",
+    "permuted_label_bootstrap": {"n_boot": 400, "CI90": [-0.0697, 0.0102], "WIDTH": 0.0798},
+    "what_it_establishes": "The difference-in-advantage is far more precise than its four component AUCs, because the two forms are scored on IDENTICAL labels and are highly correlated, so the paired difference cancels most of the sampling noise. A width bar of 0.20 is therefore comfortably attainable and is not a formality.",
+    "the_honest_caveat_it_does_not_remove": "The HIGH stratum has only 131 nodes and 20 events. Precision on the PAIRED difference is adequate; precision on any single AUC in that stratum is not, and no single-AUC claim about the HIGH stratum may be made from this run.",
+    "WHAT_WAS_DELIBERATELY_NOT_PROBED": "The real labels were never used in the probe. The direction of the effect was not looked at before this lock."
+  },
+
+  "gates": [
+    {"id": "K1_integrity", "bar": "graph and node table load, eligibility reproduces the 1349 nodes and 291 events of spec db8c3a4f, B(v) computed for every eligible node", "weight": "full"},
+    {"id": "K2_BOTH_STRATA_ARE_POPULATED", "bar": "each stratum has >= 100 nodes and >= 15 outcome events. Below that the paired AUC difference is not estimable and the run is inadmissible.", "weight": "full"},
+    {"id": "K3_THE_METRIC_IS_NOT_DEGENERATE", "bar": "B(v) takes at least 10 distinct values across the eligible set, and neither stratum holds more than 95 percent of the nodes. A metric that puts almost everything on one side is not measuring anything.", "weight": "full"},
+    {"id": "K4_PRIMARY_THE_PRODUCT_FORM_S_ADVANTAGE_IS_LARGER_WHERE_DECODE_IS_SCARCE", "bar": "[AUC(product) - AUC(quadratic)] in the HIGH stratum minus the same quantity in the LOW stratum >= +0.05", "weight": "full"},
+    {"id": "K5_THE_ESTIMATE_IS_PRECISE_ENOUGH_TO_MEAN_ANYTHING", "bar": "the 90 percent bootstrap CI on the K4 quantity has width <= 0.20, from 2000 resamples of the eligible set. BINDING CONSEQUENCE: if this fails, K4 is UNINFORMATIVE whichever way it came out, because an imprecise point estimate is not a finding.", "weight": "full"},
+    {"id": "K6_THE_PERMUTATION_CONTROL_IS_NULL", "bar": "with outcome labels permuted, the K4 quantity's 90 percent CI must contain 0. If a scarcity effect appears on shuffled labels, the effect is an artefact of the strata rather than of the outcome.", "weight": "full"},
+    {"id": "K7_does_the_scope_rule_hold_ACROSS_substrates", "bar": "UNTESTABLE-HERE. Three of the five SDL substrates supply no graph and a fourth is circular. One substrate cannot establish a cross-substrate rule.", "weight": "excluded"},
+    {"id": "K8_DCM_self_audit", "bar": "EXCLUDED. The outcome analysed here is a continuous AUC difference, and DELTA = V*I*C cannot fail on a continuous unbanded outcome. Recorded as a scope limit on our own instrument rather than counted as a pass.", "weight": "excluded"}
+  ],
+
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That on ONE real financial network, the product form's advantage over the quadratic rival is larger among nodes whose decode hop has no two-step substitute -- which is what section 3.3c's domain limit asserts and has never been measured.",
+    "would_NOT": "That the domain limit holds generally. That it holds on yeast, GitHub, PyPI or the quantum derivation. That the SDL scope rule is established. One substrate, one quarter, one country's network.",
+    "and_if_K4_fails": "Then LISM's own declared domain limit does not hold where it is testable, and section 3.3c is an unsupported assertion rather than a demonstrated boundary. That is to be reported as a null against our own manuscript, and section 3.3c amended to say so."
+  },
+
+  "anti_immunisation": "No threshold may be changed after any measurement. The rival form is copied verbatim from the earlier spec so it cannot be weakened. REFUTED, UNTESTABLE-HERE and BLOCKED are three different outcomes; this spec uses all three above and never merges them.",
+  "simulator_rule": "Every number comes from the committed 2016Q1 and 2016Q2 edge files and the committed node table. Nothing is simulated, imputed or drawn from a distribution. The bootstrap resamples observed rows and creates no new data.",
+  "too_perfect_rule": "A difference-in-advantage above 0.30, or a permutation control whose CI excludes 0, is flagged for inspection rather than celebrated."
+}

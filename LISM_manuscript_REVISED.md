@@ -300,6 +300,51 @@ sense, and the VIF gate of §2.2 verifies channel independence but says nothing 
 redundancy. What it marks is a boundary of applicability, found by carrying the form into a
 field where the answer is calculable in closed form and having it fail there.
 
+#### 3.3c(i) Amendment: the scarcity restriction was tested directly, and it failed
+
+The paragraph above was an *assertion*. It has since been measured, under a specification
+locked before the data were touched
+(`135355477e57ae681805b289f1234e003954a00d36146cd2f19ab31df137e095`), and **it does not
+hold where it is testable.**
+
+Scarcity was operationalised from graph topology alone, with no fitted parameter: the
+**local bridge fraction** `B(v)`, the fraction of a node's neighbours with which it shares
+no common neighbour. An edge whose endpoints share no neighbour has no alternative path of
+length two — the hop across it is scarce in the strict sense. Nodes with `B(v) = 1` have no
+two-step substitute anywhere. On the 2016Q1 interbank network (1,349 eligible nodes, 291
+realised Q2 withdrawals), with both functional forms copied verbatim from the earlier
+specification so neither could be re-specified in its own favour:
+
+| stratum | `U·D_enc·D_dec` | `U·(D_enc+D_dec)²` | advantage |
+|---|---:|---:|---:|
+| **high scarcity** `B = 1` (n = 131) | 0.4455 | 0.4383 | +0.0072 |
+| **low scarcity** `B < 1` (n = 1,218) | 0.6159 | 0.6180 | −0.0021 |
+
+Difference-in-advantage **+0.0093**, against a pre-registered **+0.05**; 90% bootstrap CI
+**[−0.0283, +0.0424]**, width 0.0707 against a declared precision bar of 0.20. Because the
+precision gate was met, this is **a refutation at the declared effect size, not a failure to
+detect**: the interval excludes the predicted effect. A permutation control is null, so the
+strata are not manufacturing the result.
+
+The direction is worse than a null. **In the scarce-decode stratum both forms are
+anti-predictive** (0.4455 and 0.4383, below chance), while in the low-scarcity stratum both
+work. Where the decode hop has no two-step substitute is where this model performs *worst* —
+the opposite of what §3.3c asserts.
+
+The restriction stated above should therefore be read as **unsupported where it has been
+tested**. The quantum result still stands on its own terms: the two-hop product is 195×
+worse there. What is withdrawn is the *explanation* — that decode-hop scarcity is what
+separates the domains where the product form applies from those where it does not. On the
+one substrate where scarcity is measurable independently of the outcome, it separates
+nothing.
+
+Three of the five substrates in the scope layer cannot test this at all: the yeast
+interactome edges were never committed, the GitHub cohort is a per-repository table with no
+graph, and the quantum arm is a derivation with no dataset. A fourth, PyPI, is **circular** —
+its declared outcome (`E_indegree`) is derived from the same graph the metric would be
+computed on. **This amendment therefore rests on one substrate**, and the scope rule remains
+untested across substrates.
+
 ### 3.4 Enforcement latency is a robust collapse predictor
 
 Failed repositories had a mean issue-close latency of 50.6 days versus 19.8 for survivors
