@@ -1,0 +1,386 @@
+<title>CRM — the Cognitive Reference Model</title>
+<style>
+  :root {
+    --paper:#F7F5F9; --card:#FFFFFF; --ink:#171420; --soft:#544F63; --faint:#8B8599;
+    --rule:#DBD6E2; --rule2:#EBE7F0;
+    --ac:#4A3A82; --ac-dim:#E7E2F4;
+    --w:#2F6E8C; --w-dim:#E1EEF3;
+    --f:#9E5220; --f-dim:#F6E9DE;
+    --no:#9C3450; --no-dim:#F7E2E8;
+    --ok:#3F6B52; --ok-dim:#E3EDE7;
+    --shadow:0 1px 2px rgba(23,20,32,.04), 0 10px 26px -18px rgba(23,20,32,.32);
+    --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --disp: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --measure:35rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper:#0E0C14; --card:#181521; --ink:#EBE7F2; --soft:#ABA3BC; --faint:#7A7390;
+      --rule:#2E2940; --rule2:#221E31; --ac:#A796E8; --ac-dim:#221B45;
+      --w:#77BBD6; --w-dim:#122C36; --f:#DC9560; --f-dim:#331E10;
+      --no:#DE7F97; --no-dim:#331521; --ok:#7FB394; --ok-dim:#18291F;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -20px rgba(0,0,0,.95); }
+  }
+  :root[data-theme="dark"] { --paper:#0E0C14; --card:#181521; --ink:#EBE7F2; --soft:#ABA3BC;
+    --faint:#7A7390; --rule:#2E2940; --rule2:#221E31; --ac:#A796E8; --ac-dim:#221B45;
+    --w:#77BBD6; --w-dim:#122C36; --f:#DC9560; --f-dim:#331E10;
+    --no:#DE7F97; --no-dim:#331521; --ok:#7FB394; --ok-dim:#18291F;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 10px 28px -20px rgba(0,0,0,.95); }
+  :root[data-theme="light"] { --paper:#F7F5F9; --card:#FFFFFF; --ink:#171420; --soft:#544F63;
+    --faint:#8B8599; --rule:#DBD6E2; --rule2:#EBE7F0; --ac:#4A3A82; --ac-dim:#E7E2F4;
+    --w:#2F6E8C; --w-dim:#E1EEF3; --f:#9E5220; --f-dim:#F6E9DE;
+    --no:#9C3450; --no-dim:#F7E2E8; --ok:#3F6B52; --ok-dim:#E3EDE7;
+    --shadow:0 1px 2px rgba(23,20,32,.04), 0 10px 26px -18px rgba(23,20,32,.32); }
+
+  body { background:var(--paper); color:var(--ink); font-family:var(--disp);
+         font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:61rem; margin:0 auto; padding:0 1.5rem 6rem; }
+  .col { max-width:var(--measure); display:flex; flex-direction:column; gap:1.1rem; }
+
+  .mast { padding:4.2rem 0 2.3rem; border-bottom:2px solid var(--ink);
+          display:flex; flex-direction:column; gap:1.2rem; }
+  .kick { font-family:var(--mono); font-size:.7rem; letter-spacing:.15em;
+          text-transform:uppercase; color:var(--ac); font-weight:600; }
+  h1 { font-size:clamp(2rem,5.3vw,3rem); line-height:1.09; letter-spacing:-.028em;
+       font-weight:650; margin:0; max-width:20ch; text-wrap:balance; }
+  h1 small { display:block; font-size:.4em; font-weight:400; color:var(--soft);
+             letter-spacing:-.01em; margin-top:.6rem; max-width:36ch; }
+  .thesis { font-size:clamp(1.08rem,2.4vw,1.3rem); max-width:34rem; margin:0;
+            text-wrap:balance; }
+  .meta { font-family:var(--mono); font-size:.72rem; color:var(--faint);
+          display:flex; flex-wrap:wrap; gap:.4rem 1.6rem; }
+  .meta b { color:var(--soft); font-weight:600; }
+  .meta .h { word-break:break-all; }
+
+  section { padding-top:3.5rem; display:flex; flex-direction:column; gap:1.15rem; }
+  h2 { font-size:clamp(1.3rem,2.9vw,1.7rem); font-weight:650; margin:0;
+       letter-spacing:-.018em; text-wrap:balance; }
+  h3 { font-family:var(--mono); font-size:.74rem; font-weight:600; margin:0;
+       letter-spacing:.1em; text-transform:uppercase; color:var(--faint); }
+  p { margin:0; }
+
+  .stamp { font-family:var(--mono); font-size:clamp(.92rem,2.2vw,1.1rem); font-weight:650;
+           line-height:1.5; padding:1.1rem 1.3rem; border:2px solid var(--no);
+           color:var(--no); background:var(--no-dim); border-radius:4px; }
+
+  .refs { display:flex; flex-wrap:wrap; gap:.8rem; }
+  .ref { flex:1 1 16rem; border:1px solid var(--rule); border-radius:4px; padding:1.2rem 1.3rem;
+         background:var(--card); box-shadow:var(--shadow);
+         display:flex; flex-direction:column; gap:.6rem; }
+  .ref.w { border-top:3px solid var(--w); } .ref.f { border-top:3px solid var(--f); }
+  .ref .sym { font-family:var(--mono); font-size:1.5rem; font-weight:650; }
+  .ref.w .sym { color:var(--w); } .ref.f .sym { color:var(--f); }
+  .ref .def { font-family:var(--mono); font-size:.78rem; color:var(--soft); }
+  .ref .txt { font-size:.94rem; color:var(--soft); line-height:1.45; }
+  .ref .txt b { color:var(--ink); font-weight:650; }
+
+  .bars { background:var(--card); border:1px solid var(--rule); border-radius:4px;
+          padding:1.2rem 1.3rem; display:flex; flex-direction:column; gap:.6rem; }
+  .bar { display:grid; grid-template-columns:11rem 1fr 4.6rem; gap:.8rem; align-items:center;
+         font-family:var(--mono); font-size:.75rem; }
+  @media (max-width:620px){ .bar{grid-template-columns:7.5rem 1fr 4rem;font-size:.68rem;} }
+  .bar .l { color:var(--soft); }
+  .bar .t { height:12px; background:var(--rule2); border-radius:1px; overflow:hidden; }
+  .bar .fl { height:100%; background:var(--ac); }
+  .bar .fl.rival { background:var(--faint); }
+  .bar .fl.close { background:var(--no); }
+  .bar .v { text-align:right; font-weight:650; font-variant-numeric:tabular-nums; }
+
+  .scroll { overflow-x:auto; border:1px solid var(--rule); border-radius:4px; background:var(--card); }
+  table { border-collapse:collapse; width:100%; font-size:.83rem; }
+  th,td { text-align:left; padding:.62rem .85rem; border-bottom:1px solid var(--rule2);
+          vertical-align:top; line-height:1.45; }
+  thead th { font-family:var(--mono); font-size:.63rem; letter-spacing:.09em;
+             text-transform:uppercase; color:var(--faint);
+             border-bottom:1px solid var(--rule); white-space:nowrap; }
+  tbody tr:last-child td { border-bottom:none; }
+  td.m { font-family:var(--mono); font-size:.74rem; white-space:nowrap; }
+  td.s { color:var(--soft); }
+  td.s b { color:var(--ink); font-weight:650; }
+  .tag { font-family:var(--mono); font-size:.63rem; font-weight:650; letter-spacing:.07em;
+         padding:.16em .5em; border-radius:2px; white-space:nowrap; }
+  .t-ok{background:var(--ok-dim);color:var(--ok)} .t-no{background:var(--no-dim);color:var(--no)}
+  .t-ex{background:var(--rule2);color:var(--faint)}
+
+  .note { border-left:3px solid var(--ac); background:var(--card); padding:1.15rem 1.3rem;
+          border-radius:0 4px 4px 0; box-shadow:var(--shadow);
+          display:flex; flex-direction:column; gap:.7rem; }
+  .note.bad { border-left-color:var(--no); }
+  .note h4 { margin:0; font-size:1.02rem; font-weight:650; }
+  .note.bad h4 { color:var(--no); }
+  .note p { font-size:.95rem; }
+
+  blockquote { margin:0; padding:1.4rem 0; border-top:1px solid var(--rule);
+               border-bottom:1px solid var(--rule); font-weight:650;
+               font-size:clamp(1.08rem,2.6vw,1.32rem); line-height:1.4; text-wrap:balance; }
+  blockquote span { display:block; margin-top:.55rem; font-size:.74em; font-weight:400;
+                    color:var(--soft); }
+
+  .flip { background:var(--card); border:1px solid var(--rule); border-radius:4px;
+          padding:1.3rem; display:flex; flex-direction:column; gap:.9rem; }
+  .flip .row { display:grid; grid-template-columns:4.4rem 1fr 4.4rem; gap:.8rem;
+               align-items:center; font-family:var(--mono); font-size:.74rem; }
+  .flip .track { height:18px; background:var(--rule2); border-radius:2px; position:relative; }
+  .flip .mid { position:absolute; left:50%; top:-3px; bottom:-3px; width:1px; background:var(--faint); }
+  .flip .pip { position:absolute; top:1px; height:16px; border-radius:2px; }
+  .flip .pip.neg { background:var(--w); } .flip .pip.pos { background:var(--f); }
+  .flip .v { text-align:right; font-weight:650; font-variant-numeric:tabular-nums; }
+
+  code { font-family:var(--mono); font-size:.86em; background:var(--rule2);
+         padding:.08em .34em; border-radius:2px; }
+  pre { font-family:var(--mono); font-size:.76rem; background:var(--card);
+        border:1px solid var(--rule); border-radius:4px; padding:1rem 1.15rem;
+        overflow-x:auto; line-height:1.6; margin:0; }
+  footer { margin-top:4.5rem; padding-top:1.4rem; border-top:1px solid var(--rule);
+           font-family:var(--mono); font-size:.7rem; color:var(--faint);
+           display:flex; flex-direction:column; gap:.45rem; }
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Novora open-source initiative · model three</div>
+  <h1>CRM — the Cognitive Reference Model<small>Fidelity is undefined until you name what it
+    is fidelity <em>to</em>. And on this run, that idea did not earn its keep.</small></h1>
+  <p class="thesis">LISM asks how much signal survives a channel. CRM asks <b>faithful to
+    what?</b> — and staked its own existence on two references beating one. It missed by
+    0.002.</p>
+  <div class="meta">
+    <span><b>spec</b> <span class="h">558f6fa11302867b7fd1dfc0254e45ad8a54544b74d1c2893d63c20ff1248787</span></span>
+    <span><b>locked</b> before the runner existed</span>
+    <span><b>score</b> 4/6</span>
+    <span><b>agents</b> 2,000 simulated</span>
+  </div>
+</header>
+
+<section>
+  <h2>Why LISM could not do this alone</h2>
+  <div class="col">
+    <p>LISM carries a <b>single fidelity term</b>. That is not an oversight — it is
+      reference-neutral by construction, measuring how much signal survives a channel rather
+      than what the signal is supposed to be faithful to.</p>
+    <p>In a perceptual system that is exactly the missing degree of freedom. An agent can be
+      highly faithful to <em>payoff</em> while being unfaithful to the <em>world</em>, and
+      LISM has nowhere to write that down. So CRM splits the term in two.</p>
+  </div>
+
+  <div class="refs">
+    <div class="ref w">
+      <div class="sym">D<sub>W</sub></div>
+      <div class="def">|rank corr( g(x), x )|</div>
+      <div class="txt"><b>Fidelity to the world.</b> Does the percept preserve the ordering of
+        the actual state?</div>
+    </div>
+    <div class="ref f">
+      <div class="sym">D<sub>F</sub></div>
+      <div class="def">|rank corr( g(x), f(x) )|</div>
+      <div class="txt"><b>Fidelity to the payoff.</b> Does the percept preserve the ordering
+        of what the state is <em>worth</em>?</div>
+    </div>
+  </div>
+
+  <div class="col">
+    <p>Both are computed from the perceptual map and the world <b>only</b>. Neither reads the
+      agent's realised payoff — a test scans the source of both functions to enforce it.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The result CRM was built to risk</h2>
+  <div class="bars">
+    <div class="bar"><span class="l">CRM two-reference</span>
+      <span class="t"><span class="fl" style="width:85.6%"></span></span><span class="v">0.06611</span></div>
+    <div class="bar"><span class="l">D<sub>F</sub> alone</span>
+      <span class="t"><span class="fl close" style="width:86.0%"></span></span><span class="v">0.06641</span></div>
+    <div class="bar"><span class="l">LISM U·D_enc·D_dec</span>
+      <span class="t"><span class="fl rival" style="width:89.5%"></span></span><span class="v">0.06915</span></div>
+    <div class="bar"><span class="l">single fidelity</span>
+      <span class="t"><span class="fl rival" style="width:100%"></span></span><span class="v">0.07725</span></div>
+    <div class="bar"><span class="l">D<sub>W</sub> alone</span>
+      <span class="t"><span class="fl rival" style="width:123%"></span></span><span class="v">0.09513</span></div>
+    <div class="bar"><span class="l" style="color:var(--faint)">mean held-out |error|, lower is better</span><span></span><span></span></div>
+  </div>
+
+  <div class="note bad">
+    <h4>X5 failed — and the spec had already written down what that means</h4>
+    <p>CRM beat LISM's own two-hop form by <b>0.00304</b> against a locked bar of 0.005. The
+      pre-registration says, in its own words:</p>
+    <p style="font-style:italic;border-left:2px solid var(--rule);padding-left:1rem">“If
+      LISM's existing form predicts this cognitive outcome as well as a purpose-built
+      two-reference model, then CRM adds vocabulary and no power, and the honest conclusion is
+      to keep LISM and drop CRM.”</p>
+    <p><b>And there is a harsher number that was not pre-registered, reported because leaving
+      it out would flatter the model.</b> D<sub>F</sub> alone scores 0.06641 against the
+      two-reference model's 0.06611 — a gain of <b>0.0003</b>. The locked comparison used the
+      <em>mean</em> of the two fidelities, which is a weaker rival than the better single one.
+      Against the best single reference, two references buy almost nothing.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The one thing that did look like a discovery</h2>
+  <div class="col">
+    <p>The discriminating prediction was a <b>sign flip</b>: as the payoff becomes monotone in
+      the world state, the correlation between the two fidelities should swing from negative to
+      positive. The monotonicity knob was <em>swept</em>, not fitted.</p>
+  </div>
+
+  <div class="flip">
+    <div class="row"><span>m = 0.00</span>
+      <span class="track"><span class="mid"></span><span class="pip neg" style="right:50%;width:32.3%"></span></span>
+      <span class="v">−0.646</span></div>
+    <div class="row"><span>m = 0.25</span>
+      <span class="track"><span class="mid"></span><span class="pip neg" style="right:50%;width:8.9%"></span></span>
+      <span class="v">−0.177</span></div>
+    <div class="row"><span>m = 0.50</span>
+      <span class="track"><span class="mid"></span><span class="pip pos" style="left:50%;width:11.8%"></span></span>
+      <span class="v">+0.236</span></div>
+    <div class="row"><span>m = 0.75</span>
+      <span class="track"><span class="mid"></span><span class="pip pos" style="left:50%;width:47.8%"></span></span>
+      <span class="v">+0.957</span></div>
+    <div class="row"><span>m = 1.00</span>
+      <span class="track"><span class="mid"></span><span class="pip pos" style="left:50%;width:50%"></span></span>
+      <span class="v">+1.000</span></div>
+    <div style="font-family:var(--mono);font-size:.7rem;color:var(--faint)">
+      correlation between D<sub>W</sub> and D<sub>F</sub> · m is the payoff-monotonicity knob
+    </div>
+  </div>
+
+  <div class="note bad">
+    <h4>It passed, and it trips the too-perfect rule</h4>
+    <p>Two values exceed the locked 0.95 flag: <b>0.957</b> and exactly <b>1.000</b>. The
+      reading is not leakage but <b>degeneracy</b> — when payoff is strictly increasing in the
+      world state, the two references <em>are</em> the same ordering, so the correlation is
+      forced to 1.</p>
+    <p>That is why half (b) of this gate was disclosed as <b>near-definitional before the
+      run</b>. Only the negative correlation at m = 0.00 carries information.</p>
+  </div>
+</section>
+
+<section>
+  <h2>I mis-specified the self-audit — and the binding fires anyway</h2>
+  <div class="col">
+    <p>The spec routed CRM through DCM's self-audit, with power to void the whole run. It said
+      to band realised payoff at its median. But DCM's <code>C</code> factor is <em>distinct
+      outcome values ÷ n</em> — so binarising a continuous outcome forces
+      <b>C = 2/2000 = 0.001 by construction.</b> The gate could not pass whatever the data
+      did.</p>
+  </div>
+
+  <p class="stamp">Δ = V 0.5000 × I 0.9600 × C 0.0010 = 0.0005 &nbsp;·&nbsp; floor 0.20<br><br>
+    X6 WAS NOT MET, SO X3, X4 AND X5 ARE UNINFORMATIVE.</p>
+
+  <div class="note">
+    <h4>Why the gate is not being re-scored</h4>
+    <p>On the unbanded payoff C would be <b>1.0000</b> — 2,000 distinct values across 2,000
+      agents. That number is a <b>diagnosis of my error, not a substitute verdict.</b></p>
+    <p>The binding is honoured in full. <b>Honouring a binding rule only when it is convenient
+      is precisely the immunisation move the rule exists to stop.</b> So every result above,
+      including the one that looks like a discovery, is reported as uninformative.</p>
+  </div>
+
+  <div class="note bad">
+    <h4>Second consecutive self-inflicted un-passable gate</h4>
+    <p>In the previous run the cognitive arm <b>could not fail</b> because noise was averaged
+      away. Here the self-audit <b>could not pass</b> because the outcome was binarised.
+      Different errors, same class: <b>a threshold written without checking the quantity could
+      reach it.</b> That is a pattern about this programme's spec-writing, and it is recorded
+      as one rather than as two unlucky accidents.</p>
+    <p>The fix did work where it was aimed: X2 — the populated-failing-region gate added
+      specifically to catch the earlier error — <b>passed</b>, with payoff spread 0.1815
+      against a floor of 0.02.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The gates</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Gate</th><th>Locked bar</th><th>Measured</th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="m">X1 integrity + flaw fixed</td><td class="s">noise on the outcome, not averaged</td><td class="m">2,000 agents</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">X2 failing region populated</td><td class="s">payoff IQR ≥ 0.02</td><td class="m">0.1815</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">X3 two references beat one</td><td class="s">gain ≥ 0.005</td><td class="m">+0.01114</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">X4 dissociation is directional</td><td class="s">neg at m=0, non-neg at m=1</td><td class="m">−0.646 → +1.000</td><td><span class="tag t-ok">PASS*</span></td></tr>
+        <tr><td class="m">X5 CRM beats LISM</td><td class="s">gain ≥ 0.005</td><td class="m">+0.00304</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td class="m">X6 DCM self-audit</td><td class="s">Δ ≥ 0.20</td><td class="m">0.0005</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td class="m">X7 anything about people</td><td class="s">—</td><td class="m">—</td><td><span class="tag t-ex">UNTESTABLE-HERE</span></td></tr>
+        <tr><td class="m">X8 governance layer</td><td class="s">—</td><td class="m">HELM: PASS</td><td><span class="tag t-ex">EXCLUDED</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col"><p style="font-size:.9rem;color:var(--soft)">* X4 passed and trips the
+    too-perfect flag; see above.</p></div>
+</section>
+
+<section>
+  <h2>What each tool actually did</h2>
+  <div class="col">
+    <p>Declared in the spec before the run, so the toolchain could not be presented afterwards
+      as doing more than it did.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Tool</th><th>Role in this test</th><th>Could it change a verdict?</th></tr></thead>
+      <tbody>
+        <tr><td class="m"><b>LISM</b></td><td class="s">Supplied the <b>rival</b> in X5. Model one is not a helper here — it is the incumbent CRM had to beat, and it held.</td><td><span class="tag t-ok">YES — and it did</span></td></tr>
+        <tr><td class="m"><b>DCM</b></td><td class="s">Supplied X6, the <b>self-audit with power to void the run</b>. The only component that can overrule the result.</td><td><span class="tag t-ok">YES — and it did</span></td></tr>
+        <tr><td class="m"><b>Claude Code</b></td><td class="s">Wrote the specification and locked it by SHA-256 <b>before the runner existed</b>, then implemented against it. The hash is what makes the order verifiable rather than asserted.</td><td><span class="tag t-ex">no</span></td></tr>
+        <tr><td class="m"><b>IHCEI</b></td><td class="s">The repository substrate — the reproduce harness, the provenance Merkle lock, the pre-registration convention. Carries the run; measures nothing in it.</td><td><span class="tag t-ex">no</span></td></tr>
+        <tr><td class="m"><b>HELM / NERE</b></td><td class="s">Audited the <b>prose</b> of the results file for manipulative or unsupported framing. Returned PASS, p(manipulative) 0.143.</td><td><span class="tag t-ex">no</span></td></tr>
+        <tr><td class="m"><b>Novora Suite</b></td><td class="s">Nine-product consumer kernel; screens the layman-facing write-up.</td><td><span class="tag t-ex">no</span></td></tr>
+        <tr><td class="m"><b>Page Code</b></td><td class="s">Audits whether the repository change sits inside the declared permission table.</td><td><span class="tag t-ex">no</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <blockquote>Only two of seven tools could change a verdict, and both of them ruled against
+    the new model.
+    <span>A governance verdict on prose is not evidence about agents. Saying so in the
+      specification, in advance, is what stops a large toolchain looking like it was doing
+      scientific work it was not doing.</span></blockquote>
+</section>
+
+<section>
+  <h2>What this says about people</h2>
+  <div class="note bad">
+    <h4>Nothing. And that is not a figure of speech.</h4>
+    <p>Four Hugging Face searches for human behavioural trial data — memory recall, judgment,
+      calibration, decision trials — returned only text and multiple-choice QA corpora.
+      <b>No human trial dataset was reachable.</b> Every agent here is simulated.</p>
+    <p>The substrate is a published evolutionary-game setting, which makes the world and the
+      payoffs principled — but it is still <b>a simulation, not a derivation.</b> A simulation
+      can show a decomposition is <em>useful inside a model</em> and say nothing at all about
+      whether it is <em>true of minds.</em></p>
+  </div>
+</section>
+
+<section>
+  <h2>Where that leaves model three</h2>
+  <div class="col">
+    <p><b>CRM did not earn its existence on this run.</b> It is better than LISM on this task —
+      but by 0.003 against a bar of 0.005, and by 0.0003 against the best single reference. The
+      spec said what to do in that case and the answer was: keep LISM.</p>
+    <p>And by the binding rule, I am not even entitled to that conclusion. The self-audit
+      voided the run. <b>The honest status of CRM is untested, not refuted</b> — which means
+      the next step is not to defend it but to re-register it, with a self-audit that can
+      actually pass and a rival comparison against the <em>best</em> single reference rather
+      than the mean.</p>
+  </div>
+  <blockquote>A model that stakes its existence on a threshold, misses it, and says so is
+    worth more than one that never risked anything.
+    <span>Model three does not get to join the stack on this evidence. That is the mechanism
+      working, not the mechanism failing.</span></blockquote>
+</section>
+
+<section>
+  <h2>Reproduce</h2>
+  <pre>python3 cognitive-reference/crm.py
+python3 -m pytest -q cognitive-reference/test_crm.py
+bash reproduce_all.sh</pre>
+</section>
+
+<footer>
+  <span>Novora Research Initiative · Open Science Division</span>
+  <span>CRM spec 558f6fa1 · LISM model one · DCM model two · every spec sealed before its runner</span>
+</footer>
+
+</div>

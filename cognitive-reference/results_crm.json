@@ -1,0 +1,168 @@
+{
+  "corr_DW_DF_by_monotonicity": {
+    "0.0": -0.6462,
+    "0.25": -0.1774,
+    "0.5": 0.2356,
+    "0.75": 0.9569,
+    "1.0": 1.0
+  },
+  "cv_mean_abs_error": {
+    "CRM_two_reference": 0.06611,
+    "D_F_alone": 0.06641,
+    "D_W_alone": 0.09513,
+    "LISM_two_hop": 0.06915,
+    "single_fidelity": 0.07725
+  },
+  "dcm_self_audit": {
+    "C": 0.001,
+    "DELTA": 0.0005,
+    "I": 0.96,
+    "V": 0.5,
+    "floor": 0.2
+  },
+  "gates": [
+    {
+      "detail": "2000 agents across 5 monotonicity levels, all D_W/D_F in [0,1]=True; noise sd 0.010 applied to the agent-level outcome only",
+      "id": "X1_integrity_and_the_earlier_flaw_is_fixed",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "IQR payoff 0.1815 (needs >= 0.02), D_W 0.4249, D_F 0.5204 (each needs >= 0.10)",
+      "id": "X2_THE_FAILING_REGION_IS_POPULATED",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "mean held-out |error|: two-reference 0.06611, single-fidelity 0.07725, gain +0.01114 (needs >= 0.005)",
+      "id": "X3_TWO_REFERENCES_BEAT_ONE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "mean held-out |error|: CRM two-reference 0.06611, LISM U*D_enc*D_dec 0.06915, gain +0.00304 (needs >= 0.005)",
+      "id": "X5_CRM_BEATS_LISMS_OWN_TWO_HOP_FORM",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "corr(D_W,D_F) by monotonicity: {0.0: -0.6462, 0.25: -0.1774, 0.5: 0.2356, 0.75: 0.9569, 1.0: 1.0}. (a) m=0.0 negative = True; (b) m=1.0 non-negative = True",
+      "id": "X4_THE_DISSOCIATION_IS_DIRECTIONAL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "DELTA = V 0.5000 * I 0.9600 * C 0.0010 = 0.0005 (needs >= 0.20) on n=2000 agents",
+      "id": "X6_DCM_SELF_AUDIT",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. Four Hugging Face searches for human behavioural trial data returned only text and multiple-choice QA corpora. Every number here comes from simulated agents.",
+      "id": "X7_anything_about_human_cognition",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "HELM audited the results prose: {\"helm_verdict\": \"PASS\", \"p_manipulative\": 0.1428, \"engine\": \"helm-fast-v0.1\"}. A governance verdict on PROSE is not evidence about agents, so this scores nothing.",
+      "id": "X8_the_novora_governance_layer",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "X5_CRM_BEATS_LISMS_OWN_TWO_HOP_FORM",
+    "X6_DCM_SELF_AUDIT"
+  ],
+  "human_data_reachable": false,
+  "iqr": {
+    "D_F": 0.5204,
+    "D_W": 0.4249,
+    "payoff": 0.1815
+  },
+  "model": "CRM - the Cognitive Reference Model",
+  "monotonicity_levels": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "n_agents": 2000,
+  "novora_governance_audit": {
+    "engine": "helm-fast-v0.1",
+    "helm_verdict": "PASS",
+    "p_manipulative": 0.1428
+  },
+  "post_run_disclosures": {
+    "D1_THE_BINDING_CONSEQUENCE": {
+      "delta": 0.0005,
+      "floor": 0.2,
+      "statement": "X6 WAS NOT MET, SO X3, X4 AND X5 ARE UNINFORMATIVE. DELTA = 0.0005 against a locked floor of 0.20. No claim may be made for or against CRM on the strength of them."
+    },
+    "D2_the_earlier_flaw_and_how_this_run_differs": {
+      "measured_payoff_IQR": 0.1815,
+      "what_this_run_does": "noise sd 0.010 applied DIRECTLY to the agent-level outcome, nothing averaged after it, and X2 checks the failing region is populated before any comparison is scored",
+      "what_went_wrong_in_6cb42dcd": "noise applied per participant then AVERAGED, giving effective noise ~0.0045 and a test that could not fail"
+    },
+    "D3_X4_half_b_is_near_definitional": {
+      "corr_at_m0": -0.6462,
+      "corr_at_m1": 1.0,
+      "note": "When payoff is monotone in the world state the two references very nearly coincide, so a non-negative correlation at m=1.0 is close to definitional. That was disclosed BEFORE the run. Only half (a) -- a negative correlation in the non-monotone world -- carries information."
+    },
+    "D4_what_this_says_about_people": {
+      "statement": "NOTHING. Every agent is simulated. The substrate is a published evolutionary-game setting, and a simulation can show a decomposition is USEFUL inside a model while saying nothing about whether it is TRUE of minds."
+    },
+    "D5_only_two_tools_could_change_a_verdict": {
+      "could": [
+        "LISM (the rival in X5)",
+        "DCM (the self-audit in X6)"
+      ],
+      "could_not": [
+        "HELM / NERE",
+        "Novora Suite fastmode",
+        "Page Code",
+        "Claude Code",
+        "IHCEI"
+      ],
+      "note": "Claude Code wrote and locked the spec; IHCEI carries the run; the rest audit the WRITE-UP. Recording this prevents the appearance that a large toolchain was doing scientific work it was not doing."
+    },
+    "D6_X6_FAILED_BECAUSE_I_MIS_SPECIFIED_IT_AND_THE_BINDING_STILL_FIRES": {
+      "THE_BINDING_IS_HONOURED_ANYWAY": "X6 is recorded as failed and X3, X4 and X5 are reported UNINFORMATIVE. Honouring a binding rule only when it is convenient is precisely the immunisation move the rule exists to stop. The gate is not re-scored and the spec is not edited.",
+      "diagnostic_only_NOT_a_re_score": "On the UNBANDED payoff the same C would be 1.0000, since realised payoff takes 2000 distinct values across 2000 agents. That number is a diagnosis of the error, not a substitute verdict.",
+      "measured": {
+        "C": 0.001,
+        "DELTA": 0.0005,
+        "I": 0.96,
+        "V": 0.5
+      },
+      "what_went_wrong": "The locked spec said to band realised payoff at its median as the outcome. DCM's C factor is distinct outcome values divided by n -- so banding a continuous outcome to BINARY forces C = 2/2000 = 0.001 BY CONSTRUCTION. The gate could not pass whatever the data did.",
+      "whose_error": "Mine. Second consecutive specification in which I wrote a gate that could not reach its own threshold -- the first was the averaged noise in 6cb42dcd. That is a pattern about my spec-writing and is recorded as one."
+    },
+    "D7_X5_MISSED_AND_THE_SPEC_SAID_WHAT_THAT_MEANS": {
+      "CRM_two_reference": 0.06611,
+      "LISM_two_hop": 0.06915,
+      "and_a_harsher_reading_the_spec_did_not_lock": "D_F ALONE scores 0.06641 against the two-reference model's 0.06611 -- a gain of only 0.00030. The locked X3 compared CRM against the MEAN of the two fidelities, which is a weaker rival than the better single one. Against the best single reference the two-reference model buys almost nothing. This comparison was not pre-registered and scores nothing, and it is reported because leaving it out would flatter the model.",
+      "bar": 0.005,
+      "gain": 0.00304,
+      "the_specs_own_words": "'If LISM's existing form predicts this cognitive outcome as well as a purpose-built two-reference model, then CRM adds vocabulary and no power, and the honest conclusion is to keep LISM and drop CRM.' The gain was 0.00304 against a bar of 0.005. CRM DID NOT EARN ITS EXISTENCE on this run."
+    },
+    "D8_X4_PASSED_BUT_TRIPS_THE_TOO_PERFECT_RULE": {
+      "correlations": {
+        "0.0": -0.6462,
+        "0.25": -0.1774,
+        "0.5": 0.2356,
+        "0.75": 0.9569,
+        "1.0": 1.0
+      },
+      "note": "The locked too-perfect rule flags any |correlation| above 0.95. Two values exceed it: 0.9569 at m=0.75 and exactly 1.0000 at m=1.0. The flag fired. The reading is not leakage but DEGENERACY -- when payoff is strictly increasing in the world state the two references are the same ordering, so their correlation is forced to 1. That is why half (b) of X4 was disclosed as near-definitional BEFORE the run. Only the negative correlation at m=0.0 carries information."
+    }
+  },
+  "primary_verdict": "CRM DID NOT EARN ITS EXISTENCE ON THIS RUN. X5 missed: it beat LISM's two-hop form by only 0.00304 against a locked bar of 0.005, and the spec says in its own words that the honest conclusion is then to keep LISM and drop CRM. | X6 WAS NOT MET, SO X3, X4 AND X5 ARE UNINFORMATIVE. DELTA = 0.0005 against a locked floor of 0.20. No claim may be made for or against CRM on the strength of them.",
+  "score": "4/6",
+  "seed": 20260801,
+  "spec_sha256": "558f6fa11302867b7fd1dfc0254e45ad8a54544b74d1c2893d63c20ff1248787",
+  "too_perfect_flag": [
+    "correlation_above_0.95"
+  ]
+}
