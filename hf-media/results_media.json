@@ -4,7 +4,7 @@
   "fixture_sha256": "3885e06905d1d067fc07b63fa3376464711835ac7c242d213dfaa252d46a5909",
   "locks_intact": true,
   "echo": {
-    "root": "1a9fdb0d9823102be5b732ff330495acd55e7302abcba39d900dc00aead02031",
+    "root": "4f36d5717994afa149ad25ba84472f8d0f8411806171a04613dd62f926b5582e",
     "integrity_ok": true,
     "tamper_caught": true,
     "tamper_located": true,

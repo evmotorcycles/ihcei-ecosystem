@@ -1,0 +1,167 @@
+{
+  "axes": {
+    "LEAKY_CONTROL_V2": {
+      "G_signal": 0.3015,
+      "S_shield": 0.8742,
+      "distinct_verdicts": 28
+    },
+    "V1": {
+      "G_signal": 0.298,
+      "S_shield": 0.9885,
+      "distinct_verdicts": 13
+    },
+    "V2": {
+      "G_signal": 0.3078,
+      "S_shield": 0.9843,
+      "distinct_verdicts": 49
+    }
+  },
+  "dcm_self_audit": {
+    "C": 0.5104,
+    "DELTA": 0.1256,
+    "I": 0.4375,
+    "V": 0.5625,
+    "floor": 0.2
+  },
+  "gates": [
+    {
+      "detail": "288 evaluations, verdicts finite in [0,1]=True, pre-flight record present=True, v1 source sha256 6559605e9b1ff8e3",
+      "id": "Z1_integrity_and_the_preflight_is_recorded",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "held-out verdict range with no self-report: v1 0.9496, v2 0.9624 (each needs >= 0.30)",
+      "id": "Z2_THE_FAILING_REGION_IS_POPULATED_ON_THE_HELD_OUT_SET",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "S(v2) = 0.9843 (needs >= 0.95) AND G(v2) = 0.3078 (needs >= 0.20). Both required.",
+      "id": "Z3_V2_CLEARS_BOTH_AXES_ON_HELD_OUT_DATA",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "S(v2) = 0.9843 against S(v1) = 0.9885, change -0.0043 (must not fall more than 0.02)",
+      "id": "Z4_V2_DID_NOT_BUY_SIGNAL_BY_LOSING_SHIELD",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "S(LEAKY_CONTROL_V2) = 0.8742 (needs < 0.95)",
+      "id": "Z5_THE_NEGATIVE_CONTROL_STILL_REGISTERS_AS_LEAKY",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "DELTA = V 0.5625 * I 0.4375 * C 0.5104 = 0.1256 (needs >= 0.20). FLOOR UNCHANGED from the three runs it voided.",
+      "id": "Z6_DCM_SELF_AUDIT_ON_V2",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. v2 could be more responsive to LENGTH while being no better at detecting manipulation, and this design cannot tell those apart. Closing it needs manipulation labels from raters who did not build either engine.",
+      "id": "Z7_does_v2_respond_to_the_RIGHT_content",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "HELM v1 and v2 are the SUBJECTS. DCM supplies the self-audit that can void the run. Only DCM and the negative control can overrule a verdict.",
+      "id": "Z8_the_tool_roles",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "Z6_DCM_SELF_AUDIT_ON_V2"
+  ],
+  "held_out": true,
+  "model": "HELM v2 - density-weighted evidence",
+  "n_evaluations": 288,
+  "post_run_disclosures": {
+    "D1_THE_BINDING_CONSEQUENCE": {
+      "delta": 0.1256,
+      "floor": 0.2,
+      "statement": "Z6 WAS NOT MET, SO Z2 THROUGH Z5 ARE UNINFORMATIVE. DELTA = 0.1256 against an unchanged floor of 0.20."
+    },
+    "D2_the_two_engines_side_by_side_on_HELD_OUT_data": {
+      "LEAKY_CONTROL_V2": {
+        "G": 0.3015,
+        "S": 0.8742,
+        "distinct": 28
+      },
+      "V1": {
+        "G": 0.298,
+        "S": 0.9885,
+        "distinct": 13
+      },
+      "V2": {
+        "G": 0.3078,
+        "S": 0.9843,
+        "distinct": 49
+      }
+    },
+    "D3_v2_is_justified_by_code_inspection_not_by_the_voided_run": {
+      "note": "The DES run that measured v1 was VOIDED by its own self-audit, so its numbers licensed no conclusion. v2 rests instead on two facts readable in v1's source: integer effective counts force a coarse output lattice, and every pressure and mechanism term ignores text length. Neither depends on any experiment."
+    },
+    "D4_the_DCM_floor_was_not_moved": {
+      "floor": 0.2,
+      "note": "Three consecutive voids raised a real question about whether 0.20 suits evaluator-verdict outcomes. Lowering it immediately after building an engine that would benefit would be the most transparent immunisation move available in this programme. The floor stayed; the instrument changed.",
+      "prior_voids": [
+        "SDL 0.1536",
+        "CRM 0.0005",
+        "DES 0.0125"
+      ]
+    },
+    "D5_the_primary_ran_on_data_neither_engine_had_seen": {
+      "note": "The 12 held-out texts were written for this spec and never evaluated before the lock. Measuring v2 on the DES grid -- the set whose properties motivated the change -- would have been scoring a design against the evidence that produced it."
+    },
+    "D6_what_is_still_not_known": {
+      "note": "Responsiveness is not accuracy. Z7 records that v2 might be a better LENGTH detector rather than a better MANIPULATION detector, and nothing in this run separates those."
+    },
+    "D7_THE_DEFECT_I_BUILT_V2_TO_FIX_DID_NOT_REPRODUCE": {
+      "G_v1_on_the_DES_grid": 0.1612,
+      "G_v1_on_the_held_out_set": 0.298,
+      "finding": "v1 measured G = 0.1612 on the DES artifact set and G = 0.2980 on the held-out set. IT CLEARS THE 0.20 BAR ON DATA IT HAD NOT BEEN CHARACTERISED ON. The under-responsiveness was a property of the DES ARTIFACT SET, not of the engine.",
+      "the_bar": 0.2,
+      "what_it_costs_v2": "v2's responsiveness advantage over v1 is +0.0099, which is nothing. On this evidence v2 does NOT fix a responsiveness defect, because there was no responsiveness defect to fix.",
+      "why_this_is_the_run_s_most_important_line": "Had the primary been measured on the DES grid -- the set whose properties motivated the rebuild -- this run would have reported a confirmed fix for a problem that does not generalise. The held-out design is the only reason that did not happen, and it is why the spec forbade using the DES grid."
+    },
+    "D8_what_v2_actually_improved_and_it_is_not_what_was_claimed": {
+      "and_the_shield_survived": "S moved -0.0043, well inside the 0.02 tolerance Z4 declared. v2 did not buy anything by loosening the shield -- there was simply less to buy than expected.",
+      "granularity": {
+        "v1_C_on_DES_grid": 0.0833,
+        "v1_distinct": 13,
+        "v2_C_here": 0.5104,
+        "v2_distinct": 49
+      },
+      "note": "The real and large improvement is OUTPUT GRANULARITY -- 49 distinct verdicts against 13, and C at 0.5104 against 0.0833 on the earlier grid. The responsiveness gain is +0.0099 and is not worth reporting as an improvement. Density weighting made the engine finer-grained, which is what the code-inspection argument predicted, and did NOT make it more sensitive to manipulation.",
+      "responsiveness": {
+        "gain": 0.0099,
+        "v1_G": 0.298,
+        "v2_G": 0.3078
+      }
+    },
+    "D9_the_binding_constraint_on_the_self_audit_MOVED": {
+      "before": {
+        "C": 0.0833,
+        "note": "output granularity capped DELTA"
+      },
+      "note": "C is no longer the constraint -- it rose from 0.0833 to 0.5104. DELTA is now held down by I = 0.4375, and that is a property of THIS EXPERIMENT'S GRID rather than of the engine: only 1 of the 8 self-report slots is 'none', so the grouping splits 12 against 84 and the incidence term cannot approach 1.",
+      "now": {
+        "C": 0.5104,
+        "DELTA": 0.1256,
+        "I": 0.4375,
+        "V": 0.5625
+      },
+      "the_floor_still_did_not_move": true,
+      "what_a_future_spec_should_do": "Balance the grouping -- equal numbers of self-report-present and self-report-absent cells -- and declare that design BEFORE data. That is an experiment-design fix, not a floor change, and it is the honest way to make the self-audit reachable."
+    }
+  },
+  "primary_verdict": "V2 CLEARED BOTH AXES ON HELD-OUT DATA: S = 0.9843, G = 0.3078, against v1's S = 0.9885, G = 0.2980. Z6 WAS NOT MET, SO Z2 THROUGH Z5 ARE UNINFORMATIVE. DELTA = 0.1256 against an unchanged floor of 0.20.",
+  "score": "5/6",
+  "simulated_values": 0,
+  "spec_sha256": "03815a61ce8a555f2c741eb2b840502e32d9c845be46cb9be01d94e56755f119",
+  "too_perfect_flag": []
+}

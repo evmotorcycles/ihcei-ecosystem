@@ -1,0 +1,306 @@
+<title>HELM v2 — and the defect that wasn't there</title>
+<style>
+  :root{--paper:#F5F5F7;--card:#FFF;--ink:#131318;--soft:#4C4C58;--faint:#85858F;
+    --rule:#D8D8DE;--rule2:#EAEAEF;--ac:#2F4B7C;--ac-dim:#E3E9F2;
+    --v1:#6B7280;--v1-dim:#ECEDEF;--v2:#1F7A5C;--v2-dim:#E0EFE9;
+    --no:#93304A;--no-dim:#F5E1E7;--ok:#2F6B4F;--ok-dim:#E1EDE7;
+    --warn:#8A5D12;--warn-dim:#F6EEDC;
+    --shadow:0 1px 2px rgba(19,19,24,.04),0 10px 26px -18px rgba(19,19,24,.3);
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --disp:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --measure:35rem}
+  @media (prefers-color-scheme:dark){:root{--paper:#0D0D11;--card:#17171E;--ink:#EAEAF0;
+    --soft:#A5A5B2;--faint:#75757F;--rule:#2A2A34;--rule2:#1F1F27;--ac:#8FAEE0;--ac-dim:#182338;
+    --v1:#9AA0AA;--v1-dim:#1F2126;--v2:#5FBF9A;--v2-dim:#102C23;
+    --no:#DB8098;--no-dim:#301420;--ok:#7DB596;--ok-dim:#16281F;
+    --warn:#D9AB58;--warn-dim:#2E2413;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -20px rgba(0,0,0,.95)}}
+  :root[data-theme="dark"]{--paper:#0D0D11;--card:#17171E;--ink:#EAEAF0;--soft:#A5A5B2;
+    --faint:#75757F;--rule:#2A2A34;--rule2:#1F1F27;--ac:#8FAEE0;--ac-dim:#182338;
+    --v1:#9AA0AA;--v1-dim:#1F2126;--v2:#5FBF9A;--v2-dim:#102C23;--no:#DB8098;--no-dim:#301420;
+    --ok:#7DB596;--ok-dim:#16281F;--warn:#D9AB58;--warn-dim:#2E2413;
+    --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px -20px rgba(0,0,0,.95)}
+  :root[data-theme="light"]{--paper:#F5F5F7;--card:#FFF;--ink:#131318;--soft:#4C4C58;
+    --faint:#85858F;--rule:#D8D8DE;--rule2:#EAEAEF;--ac:#2F4B7C;--ac-dim:#E3E9F2;
+    --v1:#6B7280;--v1-dim:#ECEDEF;--v2:#1F7A5C;--v2-dim:#E0EFE9;--no:#93304A;--no-dim:#F5E1E7;
+    --ok:#2F6B4F;--ok-dim:#E1EDE7;--warn:#8A5D12;--warn-dim:#F6EEDC;
+    --shadow:0 1px 2px rgba(19,19,24,.04),0 10px 26px -18px rgba(19,19,24,.3)}
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--disp);font-size:17px;
+    line-height:1.62;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:62rem;margin:0 auto;padding:0 1.5rem 6rem}
+  .col{max-width:var(--measure);display:flex;flex-direction:column;gap:1.1rem}
+  .mast{padding:4.2rem 0 2.3rem;border-bottom:2px solid var(--ink);
+    display:flex;flex-direction:column;gap:1.2rem}
+  .kick{font-family:var(--mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--ac);font-weight:650}
+  h1{font-size:clamp(2rem,5.2vw,3rem);line-height:1.09;letter-spacing:-.028em;font-weight:650;
+    margin:0;max-width:19ch;text-wrap:balance}
+  h1 small{display:block;font-size:.4em;font-weight:400;color:var(--soft);letter-spacing:-.01em;
+    margin-top:.6rem;max-width:38ch}
+  .thesis{font-size:clamp(1.08rem,2.4vw,1.3rem);max-width:34rem;margin:0;text-wrap:balance}
+  .meta{font-family:var(--mono);font-size:.72rem;color:var(--faint);display:flex;flex-wrap:wrap;
+    gap:.4rem 1.6rem}
+  .meta b{color:var(--soft);font-weight:650}.meta .h{word-break:break-all}
+  section{padding-top:3.5rem;display:flex;flex-direction:column;gap:1.15rem}
+  h2{font-size:clamp(1.3rem,2.9vw,1.72rem);font-weight:650;margin:0;letter-spacing:-.018em;
+    text-wrap:balance}
+  p{margin:0}
+  .eq{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:1.3rem 1.4rem;
+    font-family:var(--mono);font-size:.86rem;line-height:1.9;box-shadow:var(--shadow);overflow-x:auto}
+  .eq b{color:var(--v2)} .eq s{color:var(--faint);text-decoration-color:var(--no)}
+  .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:4px;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:.83rem}
+  th,td{text-align:left;padding:.62rem .85rem;border-bottom:1px solid var(--rule2);
+    vertical-align:top;line-height:1.45}
+  thead th{font-family:var(--mono);font-size:.63rem;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--faint);border-bottom:1px solid var(--rule);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  td.m{font-family:var(--mono);font-size:.75rem;white-space:nowrap}
+  td.n{text-align:right;font-family:var(--mono);font-size:.75rem;font-variant-numeric:tabular-nums;
+    white-space:nowrap}
+  td.s2{color:var(--soft)}td.s2 b{color:var(--ink);font-weight:650}
+  tr.hero td{background:var(--v2-dim)}
+  .tag{font-family:var(--mono);font-size:.63rem;font-weight:650;letter-spacing:.07em;
+    padding:.16em .5em;border-radius:2px;white-space:nowrap}
+  .t-ok{background:var(--ok-dim);color:var(--ok)}.t-no{background:var(--no-dim);color:var(--no)}
+  .t-ex{background:var(--rule2);color:var(--faint)}
+  .note{border-left:3px solid var(--ac);background:var(--card);padding:1.15rem 1.3rem;
+    border-radius:0 4px 4px 0;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.7rem}
+  .note.bad{border-left-color:var(--no)}.note.key{border-left-color:var(--warn)}
+  .note.good{border-left-color:var(--v2)}
+  .note h4{margin:0;font-size:1.02rem;font-weight:650}
+  .note.bad h4{color:var(--no)}.note.key h4{color:var(--warn)}.note.good h4{color:var(--v2)}
+  .note p{font-size:.95rem}
+  .stamp{font-family:var(--mono);font-size:clamp(.9rem,2.1vw,1.04rem);font-weight:650;
+    line-height:1.55;padding:1.1rem 1.3rem;border:2px solid var(--no);color:var(--no);
+    background:var(--no-dim);border-radius:4px}
+  blockquote{margin:0;padding:1.4rem 0;border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);font-weight:650;font-size:clamp(1.08rem,2.6vw,1.32rem);
+    line-height:1.4;text-wrap:balance}
+  blockquote span{display:block;margin-top:.55rem;font-size:.74em;font-weight:400;color:var(--soft)}
+  .grain{background:var(--card);border:1px solid var(--rule);border-radius:4px;padding:1.3rem;
+    display:flex;flex-direction:column;gap:1rem;box-shadow:var(--shadow)}
+  .grow{display:grid;grid-template-columns:5.5rem 1fr 4rem;gap:.8rem;align-items:center;
+    font-family:var(--mono);font-size:.75rem}
+  .dots{display:flex;flex-wrap:wrap;gap:3px}
+  .dots i{width:7px;height:7px;border-radius:2px;display:block}
+  .dots i.a{background:var(--v1)}.dots i.b{background:var(--v2)}
+  .grow .v{text-align:right;font-weight:650;font-variant-numeric:tabular-nums}
+  code{font-family:var(--mono);font-size:.86em;background:var(--rule2);padding:.08em .34em;
+    border-radius:2px}
+  pre{font-family:var(--mono);font-size:.76rem;background:var(--card);border:1px solid var(--rule);
+    border-radius:4px;padding:1rem 1.15rem;overflow-x:auto;line-height:1.6;margin:0}
+  footer{margin-top:4.5rem;padding-top:1.4rem;border-top:1px solid var(--rule);
+    font-family:var(--mono);font-size:.7rem;color:var(--faint);display:flex;flex-direction:column;
+    gap:.45rem}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="kick">Novora open-source initiative · engine upgrade + head-to-head</div>
+  <h1>HELM v2 — and the defect that wasn't there<small>The rebuild worked. The problem it was
+    built to solve turned out not to exist on data neither engine had seen.</small></h1>
+  <p class="thesis">Held-out testing is the only reason this page reports a null instead of a
+    triumph.</p>
+  <div class="meta">
+    <span><b>spec</b> <span class="h">03815a61ce8a555f2c741eb2b840502e32d9c845be46cb9be01d94e56755f119</span></span>
+    <span><b>score</b> 5/6</span>
+    <span><b>held-out</b> 12 texts, never evaluated before the lock</span>
+    <span><b>simulated</b> 0</span>
+  </div>
+</header>
+
+<section>
+  <h2>First, a trap I had to walk around</h2>
+  <div class="col">
+    <p>The DES run measured HELM v1 at <code>G = 0.1612</code> with 8 distinct verdicts — and
+      then <b>its own DCM self-audit voided that run.</b> Those numbers licensed no conclusion.</p>
+    <p>Building a v2 to "fix" a finding I had declared unusable would be acting on a result I
+      said couldn't be acted on. So v2 rests on something else entirely: <b>two facts you can
+      see by reading v1's source</b>, true whatever any experiment said.</p>
+  </div>
+  <div class="eq">
+<b>1.</b> count() returns an INTEGER, and eff = min(hits, cap) keeps it one.
+   The posterior lands on a small lattice <b>by construction</b>.
+
+<b>2.</b> v1 computes the word count — and uses it <b>only</b> for the methodology term.
+   Every pressure and mechanism term ignores text length, so one urgency
+   clause weighs the same in a 12-word message as in a 400-word document.
+  </div>
+  <div class="col">
+    <p><b>(2) is the defect. (1) is its consequence.</b> The fix is the standard correction any
+      evidence-accumulation system needs — weight evidence by density, saturating smoothly
+      rather than clipping at an integer cap:</p>
+  </div>
+  <div class="eq">
+   <s>eff = min(hits, cap)</s>
+<b>eff = cap × (1 − exp(−hits / (words × RATE)))</b>      RATE = 0.05
+
+RATE is one hit per 20 words = one time-constant. Declared before measurement,
+not fitted to any threshold.
+
+UNCHANGED: gate set · every regex · every LLR prior · corroboration gate ·
+band thresholds · epistemic floor · seed.   v1 is untouched and still ships.
+  </div>
+</section>
+
+<section>
+  <h2>Measured on 12 texts neither engine had ever seen</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Engine</th><th class="n">S shield</th><th class="n">G signal</th><th class="n">distinct verdicts</th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="m">HELM v1 — shipping</td><td class="n">0.9885</td><td class="n">0.2980</td><td class="n">13 of 96</td><td class="s2">clears both bars</td></tr>
+        <tr class="hero"><td class="m"><b>HELM v2</b> — density-weighted</td><td class="n">0.9843</td><td class="n">0.3078</td><td class="n"><b>49 of 96</b></td><td class="s2">clears both bars</td></tr>
+        <tr><td class="m">leaky control (v2 scoring)</td><td class="n">0.8742</td><td class="n">0.3015</td><td class="n">28 of 96</td><td class="s2">registers as leaky, as it must</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note good">
+    <h4>Z3 and Z4 both passed</h4>
+    <p>v2 clears <b>both</b> axes — S 0.9843 against a 0.95 bar, G 0.3078 against 0.20. And the
+      anti-immunisation gate held: <b>S fell only 0.0042</b>, well inside the 0.02 tolerance.
+      The cheapest way to raise signal is to make the engine react to more of the text
+      <em>including the self-report</em> — improvement on paper, corruption in fact. That did
+      not happen, and it was scored rather than assumed, because "by construction" is an
+      argument and not a measurement.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The most important line in the run is a negative one</h2>
+  <blockquote>v1 scored G = 0.1612 on the DES set. On the held-out set it scores 0.2980 — above
+    the bar.
+    <span>The under-responsiveness was a property of <b>the DES artifact set</b>, not of the
+      engine. The defect I built v2 to fix does not reproduce.</span></blockquote>
+
+  <div class="note key">
+    <h4>Had I measured on the DES grid, this page would have announced a success</h4>
+    <p>The DES grid is the set whose properties motivated the rebuild. Scoring v2 there would
+      have been scoring a design against the evidence that produced it — and it would have
+      reported <b>a confirmed fix for a problem that does not generalise.</b></p>
+    <p>The held-out design is the only reason that didn't happen, and it's why the specification
+      forbade using the DES grid for the primary. <b>v2's responsiveness advantage over v1 is
+      +0.0099.</b> That is nothing. There was no responsiveness defect to fix.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What v2 actually improved — which is not what was claimed for it</h2>
+  <div class="grain">
+    <div class="grow"><span>v1</span>
+      <span class="dots" aria-label="13 distinct verdicts">
+        <i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i><i class="a"></i>
+      </span><span class="v">13</span></div>
+    <div class="grow"><span>v2</span>
+      <span class="dots" aria-label="49 distinct verdicts">
+        <i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i><i class="b"></i>
+      </span><span class="v">49</span></div>
+    <div style="font-family:var(--mono);font-size:.72rem;color:var(--faint)">
+      distinct verdicts across 96 evaluations · C rose 0.0833 → 0.5104
+    </div>
+  </div>
+
+  <div class="col">
+    <p><b>Granularity improved enormously. Responsiveness did not.</b> Density weighting made
+      the engine finer-grained — exactly what the code-inspection argument predicted — and
+      <b>did not make it more sensitive to manipulation.</b> The honest summary is that v2
+      delivers precisely what its stated mechanism implies and nothing more.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The self-audit failed again — and the floor did not move</h2>
+  <p class="stamp">Δ = V 0.5625 × I 0.4375 × C 0.5104 = 0.1256 · floor 0.20 (UNCHANGED)<br><br>
+    Z6 NOT MET → Z2 THROUGH Z5 ARE UNINFORMATIVE.</p>
+
+  <div class="note bad">
+    <h4>Four runs voided by the same floor, and lowering it now would be the most transparent
+      immunisation move in the programme</h4>
+    <p>SDL 0.1536 · CRM 0.0005 · DES 0.0125 · HELM v2 0.1256. The floor stayed and the
+      <em>instrument</em> changed — that is the legitimate direction of travel.</p>
+  </div>
+
+  <div class="note key">
+    <h4>But the binding constraint moved, and that is diagnostic</h4>
+    <p><b>C is no longer what caps Δ</b> — it rose from 0.0833 to 0.5104, so the engine is not
+      the bottleneck any more. Δ is now held down by <b>I = 0.4375</b>, and that is a property
+      of <em>this experiment's grid</em>, not of the engine: only 1 of the 8 self-report slots
+      is "none", so the grouping splits 12 against 84.</p>
+    <p>The fix is a <b>balanced grouping declared before data in a future spec</b> — an
+      experiment-design change, not a floor change.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The gates</h2>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Gate</th><th>Locked bar</th><th class="n">Measured</th><th></th></tr></thead>
+      <tbody>
+        <tr><td class="m">Z1 integrity + pre-flight recorded</td><td class="s2">probe in spec</td><td class="n">288 evals</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Z2 failing region populated</td><td class="s2">both engines ≥ 0.30</td><td class="n">both</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Z3 v2 clears BOTH axes</td><td class="s2">S ≥ 0.95 and G ≥ 0.20</td><td class="n">0.9843 / 0.3078</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Z4 no signal bought with shield</td><td class="s2">S drop ≤ 0.02</td><td class="n">−0.0042</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Z5 control still leaky</td><td class="s2">S &lt; 0.95</td><td class="n">0.8742</td><td><span class="tag t-ok">PASS</span></td></tr>
+        <tr><td class="m">Z6 DCM self-audit</td><td class="s2">Δ ≥ 0.20</td><td class="n">0.1256</td><td><span class="tag t-no">FAIL</span></td></tr>
+        <tr><td class="m">Z7 right content?</td><td class="s2">—</td><td class="n">—</td><td><span class="tag t-ex">UNTESTABLE-HERE</span></td></tr>
+        <tr><td class="m">Z8 tool roles</td><td class="s2">—</td><td class="n">—</td><td><span class="tag t-ex">EXCLUDED</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Where CS, mathematics and algebra now stand against the Five Questions</h2>
+  <div class="col">
+    <p>Honest status, with what is measured separated from what is vocabulary.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Question</th><th>What computer science / algebra contributes</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="m">Q1 Purpose</td><td class="s2">Capacity is inert without fidelity — <code>E = U·D</code></td><td><span class="tag t-ok">measured</span> on 4,825 proteins, 992 repos</td></tr>
+        <tr><td class="m">Q2 Realms</td><td class="s2">Distance as information latency</td><td><span class="tag t-no">no lab test run</span></td></tr>
+        <tr><td class="m">Q3 Stewardship</td><td class="s2">Two hops — <em>with a stated domain limit</em></td><td><span class="tag t-no">lost in quantum</span>, 195×</td></tr>
+        <tr><td class="m" style="background:var(--ok-dim)">Q4 Reference-lock</td><td class="s2"><b>Shield and signal.</b> An evaluator must be incorruptible by self-report <em>and</em> responsive to content. Both measurable, both refutable, and a rock fails the second.</td><td><span class="tag t-ok">the real gain</span> — first operational answer</td></tr>
+        <tr><td class="m">Q5 Predictability</td><td class="s2">No static shortcut; monitor τ<sub>v</sub>. And Δ = V·I·C refuses claims off flat data</td><td><span class="tag t-ok">measured</span>, and it has voided four of our own runs</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <blockquote>Q4 is the one this line of work genuinely moved.
+    <span>Before DES, "verify without corruption" was a slogan. It is now two numbers you can
+      compute on any evaluator, and one of them caught our own consumer screen scoring a
+      perfect shield by being a rock. Q2 remains untested and Q3 lost where it was tested —
+      both are recorded that way.</span></blockquote>
+</section>
+
+<section>
+  <h2>What is still not known</h2>
+  <div class="note bad">
+    <h4>Responsiveness is not accuracy</h4>
+    <p>v2 might be a better <b>length detector</b> rather than a better <b>manipulation
+      detector</b>, and nothing in this design separates those. Gate Z7 records it as
+      <b>UNTESTABLE-HERE</b>. Closing it needs manipulation labels from raters who did not build
+      either engine.</p>
+    <p><b>v1 remains the shipping engine.</b> v2 delivers finer granularity with no measured
+      accuracy gain, and on this evidence that is not a reason to replace anything.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Reproduce</h2>
+  <pre>python3 helm-v2/helmv2.py
+python3 -m pytest -q helm-v2/test_helmv2.py
+bash reproduce_all.sh</pre>
+</section>
+
+<footer>
+  <span>Novora Research Initiative · Open Science Division</span>
+  <span>HELM v2 spec 03815a61 · LISM one · DCM two · CRM three · DES four</span>
+</footer>
+
+</div>
