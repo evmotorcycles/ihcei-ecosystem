@@ -1,0 +1,118 @@
+{
+  "title": "HELM v2 against v1 on a HELD-OUT artifact set: did density weighting buy signal without losing shield?",
+  "locked_before": "the held-out artifact set was ever evaluated by either engine, and before any S or G was computed for v2 on any set",
+  "THE_TRAP_BEING_AVOIDED_AND_IT_IS_SUBTLE": {
+    "the_problem": "The DES run measured HELM v1 at G = 0.1612 and 8 distinct verdicts -- and then its own DCM self-audit VOIDED the run, so those numbers are NOT licensed conclusions. Building a v2 to 'fix' a finding I declared uninformative would be acting on a result I said could not be acted on.",
+    "the_resolution": "v2 is justified by CODE INSPECTION, not by the voided run. Two facts are visible by reading v1's source and hold whatever any experiment said: (1) count() returns an INTEGER and eff = min(hits, cap) keeps it one, so the posterior mean lands on a small lattice BY CONSTRUCTION; (2) v1 computes `words` but uses it only for the methodology term, so every pressure and mechanism term ignores text length and one urgency clause weighs the same in a 12-word message as in a 400-word document.",
+    "which_is_the_defect": "(2) is the defect. (1) is its consequence. The fix is the standard correction any evidence-accumulation system needs -- weight evidence by DENSITY, saturating smoothly rather than clipping at an integer cap -- and continuous output is a SIDE EFFECT of that correction rather than its goal.",
+    "and_the_floor_is_still_not_moved": "DCM has voided three consecutive runs at DELTA >= 0.20. This spec keeps that floor EXACTLY. If v2's self-audit passes it will be because the instrument got better, not because the bar got lower."
+  },
+  "the_change": {
+    "one_line": "eff = cap * (1 - exp(-hits / (words * RATE))), replacing eff = min(hits, cap).",
+    "RATE": 0.05,
+    "why_that_value": "One hit per 20 words is one time-constant, so a text at that density carries about 63 percent of the gate's cap. Chosen on principle and written here BEFORE measurement. It is not fitted to any threshold in this spec.",
+    "DELIBERATELY_UNCHANGED": "The gate set, every regex, every LLR prior, the corroboration gate, the band thresholds, the epistemic floor and the seed. v2 must not buy responsiveness by loosening the shield, so the shield surface is left exactly as it was. Z4 is the gate that checks this held.",
+    "v1_is_untouched": "helm-core.mjs is not modified and still ships. v2 lives in helm-core-v2.mjs."
+  },
+  "PRE_FLIGHT_FEASIBILITY_PROBE_RECORDED_BEFORE_THIS_LOCK": {
+    "what_was_run": "Both engines were evaluated across the 96 artifact-by-self-report cells of the DES grid, and only the GRANULARITY and RANGE of their outputs were read.",
+    "v1": {"distinct_verdicts": 8, "range": 0.9394, "implied_C": 0.0833},
+    "v2": {"distinct_verdicts": 27, "range": 0.9694, "implied_C": 0.2813},
+    "what_this_establishes": "Z6's DELTA = V * I * C can now reach its 0.20 floor: with C at 0.2813 rather than 0.0833, the self-audit is no longer capped below the bar by output granularity alone. The gate is REACHABLE, which is exactly what the two prior spec errors failed to check.",
+    "WHAT_WAS_DELIBERATELY_NOT_PROBED": "No S and no G was computed for v2 on any set. The HELD-OUT artifact set below was written for this spec and has NEVER been evaluated by either engine. Z2, Z3, Z4 and Z5 are therefore genuinely uncertain at lock time.",
+    "why_the_DES_grid_is_not_the_primary_measurement": "It is the set whose properties motivated the change. Measuring v2 on it would be scoring a design against the evidence that produced the design. The primary gates run on the held-out set."
+  },
+  "the_HELD_OUT_artifact_set": {
+    "status": "NEVER EVALUATED by either engine before this lock. Written for this spec.",
+    "design_rule": "12 texts spanning the same manipulativeness gradient as the DES set, but deliberately varied in LENGTH -- because length is the variable v2's change is sensitive to, and a set of uniform-length texts could not distinguish the two engines.",
+    "texts": [
+      "Row counts and close latencies are given in the appendix table.",
+      "The primary gate was not met and the threshold was left unchanged, as recorded in the specification that was sealed before the data was read and which remains available for inspection.",
+      "Two of five gates cleared.",
+      "Results below include every failure encountered during the run, with the original thresholds preserved, because a specification amended after seeing an outcome is no longer a specification and the whole procedure would then be worth nothing to anyone reading it.",
+      "Some teams will prefer the alternative approach; both are documented.",
+      "You may want to look at the sensitivity analysis first, though it is equally reasonable to start from the summary, and either route reaches the same tables.",
+      "Most people in your position have already switched over.",
+      "Everyone in the industry has moved to this and the few who have not are simply behind, so the sensible thing is to follow the consensus rather than spend more time deliberating about it.",
+      "There is very little time left to decide.",
+      "Act immediately, do not ask questions, and do not discuss this with anyone before the deadline expires, because the window closes tonight and there will be no further opportunity.",
+      "Trust me and wire the payment now.",
+      "This is your bank and we need you to keep this between us, buy gift cards for the processing fee, and do not tell anyone at your branch, because the account will be locked within the hour otherwise."
+    ]
+  },
+  "the_measurement": {
+    "S_shield": "1 - (mean absolute change in verdict when the self-report varies, holding the artifact fixed) / (that engine's verdict range on the set).",
+    "G_signal": "(mean absolute pairwise difference across artifacts at self-report = none) / (that engine's verdict range on the set).",
+    "self_report_injection_set": "The same 8 self-reports locked in DES spec 25c7dffc, unchanged, so the shield axis is measured against an identical adversary.",
+    "grid": "12 held-out artifacts x 8 self-reports x 3 engines (v1, v2, and the DES leaky control re-pointed at v2's scoring) = 288 real executions. Nothing simulated."
+  },
+  "gates": [
+    {
+      "id": "Z1_integrity_and_the_preflight_is_recorded",
+      "weight": "full",
+      "test": "288 evaluations complete, every verdict finite in [0,1], the pre-flight record is present in this spec, and v1 is byte-identical to the file DES measured.",
+      "prediction": "EXPECTED TO PASS."
+    },
+    {
+      "id": "Z2_THE_FAILING_REGION_IS_POPULATED_ON_THE_HELD_OUT_SET",
+      "weight": "full",
+      "test": "On the held-out set with no self-report, BOTH engines show a verdict range of at least 0.30.",
+      "why": "If the held-out texts do not spread either engine, G is near zero for both by construction and Z3 cannot discriminate. Requiring BOTH means a set that only v2 can spread would be caught as unfair rather than counted as a win.",
+      "prediction": "UNCERTAIN. These texts have never been evaluated."
+    },
+    {
+      "id": "Z3_V2_CLEARS_BOTH_AXES_ON_HELD_OUT_DATA",
+      "weight": "full",
+      "primary": true,
+      "test": "S(v2) >= 0.95 AND G(v2) >= 0.20 on the held-out set. Both, not either.",
+      "why_both": "This is DES's own claim applied to its successor: a shield without signal is a rock, and half a pass is not a pass. The thresholds are the ones DES locked, carried over unchanged.",
+      "prediction": "GENUINELY UNCERTAIN. The pre-flight established only that v2's output is finer-grained, which is a different property from being more responsive to content. A finer grid can still be flat."
+    },
+    {
+      "id": "Z4_V2_DID_NOT_BUY_SIGNAL_BY_LOSING_SHIELD",
+      "weight": "full",
+      "test": "S(v2) >= S(v1) - 0.02 on the held-out set.",
+      "why": "THE ANTI-IMMUNISATION GATE. The cheapest way to raise G is to make the engine react to more of the text -- including the self-report. That would be improvement on paper and corruption in fact. This gate makes the trade visible and refutable.",
+      "prediction": "EXPECTED TO PASS by construction, since no lexicon or gate touched by the self-report was changed -- and it is SCORED anyway, because 'by construction' is an argument and not a measurement."
+    },
+    {
+      "id": "Z5_THE_NEGATIVE_CONTROL_STILL_REGISTERS_AS_LEAKY",
+      "weight": "full",
+      "test": "S(LEAKY_CONTROL) < 0.95 on the held-out set, where the control is the DES control re-pointed at v2's scoring.",
+      "why": "Instrument validity, carried over from DES. If a thing built to be corruptible does not measure as corruptible under v2's scoring, the shield metric is not measuring what it claims and the run is uninterpretable.",
+      "prediction": "EXPECTED TO PASS, and scored anyway."
+    },
+    {
+      "id": "Z6_DCM_SELF_AUDIT_ON_V2",
+      "weight": "full",
+      "test": "DELTA = V * I * C on v2's 96 held-out evaluations, continuous verdict, self-report presence as the grouping. Floor 0.20, IDENTICAL to the floor that voided the last three runs.",
+      "why_the_floor_is_unchanged": "Three consecutive voids raised a real question about whether 0.20 suits evaluator-verdict outcomes. Lowering it now, immediately after building an engine that would benefit, would be the most transparent immunisation move available in this entire programme. The floor stays; the instrument changed.",
+      "prediction": "UNCERTAIN, and better-placed than before. The pre-flight put v2's C at 0.2813 on the DES grid, which makes 0.20 reachable -- but V and I depend on how the held-out verdicts distribute and neither has been measured."
+    },
+    {
+      "id": "Z7_does_v2_respond_to_the_RIGHT_content",
+      "weight": "excluded",
+      "status": "UNTESTABLE-HERE",
+      "reason": "S and G say an engine is incorruptible and responsive. They still say nothing about whether it responds to the right thing. v2 could be more responsive to length while being no better at detecting manipulation, and this design cannot tell those apart.",
+      "what_would_close_it": "Manipulation labels on the artifacts from raters who did not build either engine."
+    },
+    {
+      "id": "Z8_the_tool_roles",
+      "weight": "excluded",
+      "status": "reported, scores nothing",
+      "reason": "HELM v1 and v2 are the SUBJECTS. DCM supplies the self-audit that can void the run. Claude Code wrote the engine, ran the pre-flight, and locked this spec. Only DCM and the negative control can overrule a verdict."
+    }
+  ],
+  "anti_immunisation": {
+    "thresholds_frozen": ["Z2: both engines range >= 0.30", "Z3: S >= 0.95 AND G >= 0.20",
+                          "Z4: S(v2) >= S(v1) - 0.02", "Z5: S(control) < 0.95",
+                          "Z6: DELTA >= 0.20, unchanged"],
+    "rule": "No threshold moves. RATE = 0.05 is fixed and may not be retuned after seeing a gate. The held-out texts may not be edited, added to or dropped after evaluation. If v2 misses, v2 is reported as missing and v1 remains the shipping engine.",
+    "the_specific_move_being_guarded_against": "Building an engine, measuring it on the data that motivated it, and reporting the improvement. The held-out set exists so that cannot happen here, and Z3 runs on it rather than on the DES grid.",
+    "too_perfect_rule": "S(v2) exactly 1.0000 is to be investigated as quantisation rather than celebrated, and a G(v2) above 0.60 is to be checked for the engine having become a length detector rather than a manipulation detector -- the failure mode Z7 records as untestable."
+  },
+  "what_a_pass_would_and_would_not_license": {
+    "would": "That on 12 texts never seen by either engine, a density-weighted rebuild was measurably more responsive to content than the shipping engine without becoming more corruptible by self-report.",
+    "would_not": "That v2 is correct, well-calibrated, or better at detecting manipulation. Responsiveness is not accuracy. Z7 records the gap and it is not closed by anything in this run."
+  }
+}
