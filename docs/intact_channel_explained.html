@@ -1,0 +1,368 @@
+<title>What makes a channel measurable</title>
+<style>
+  :root{
+    --ground:#F1F1ED; --panel:#FFFFFF; --band:#E6E7E1;
+    --ink:#191E1A; --ink-2:#4B5450; --ink-3:#7B837E;
+    --rule:#CDD0C8;
+    --yeast:#2E6E4E; --yeast-bg:#DCEBE2;
+    --gh:#1F5E7A; --gh-bg:#D9E7ED;
+    --book:#8A5A2B; --book-bg:#F0E4D5;
+    --stop:#9B3B2A; --stop-bg:#F5DED8;
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+    --serif:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --sans:ui-sans-serif,system-ui,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#131814; --panel:#1B211D; --band:#212823;
+      --ink:#E7EAE5; --ink-2:#AAB3AD; --ink-3:#79817B;
+      --rule:#2E3630;
+      --yeast:#6FBE92; --yeast-bg:#16281E;
+      --gh:#6FB2CE; --gh-bg:#132630;
+      --book:#D3A167; --book-bg:#2A2015;
+      --stop:#DE8873; --stop-bg:#2E1913;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#131814; --panel:#1B211D; --band:#212823;
+    --ink:#E7EAE5; --ink-2:#AAB3AD; --ink-3:#79817B;
+    --rule:#2E3630;
+    --yeast:#6FBE92; --yeast-bg:#16281E;
+    --gh:#6FB2CE; --gh-bg:#132630;
+    --book:#D3A167; --book-bg:#2A2015;
+    --stop:#DE8873; --stop-bg:#2E1913;
+  }
+  :root[data-theme="light"]{
+    --ground:#F1F1ED; --panel:#FFFFFF; --band:#E6E7E1;
+    --ink:#191E1A; --ink-2:#4B5450; --ink-3:#7B837E;
+    --rule:#CDD0C8;
+    --yeast:#2E6E4E; --yeast-bg:#DCEBE2;
+    --gh:#1F5E7A; --gh-bg:#D9E7ED;
+    --book:#8A5A2B; --book-bg:#F0E4D5;
+    --stop:#9B3B2A; --stop-bg:#F5DED8;
+  }
+
+  body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+       font-size:19px;line-height:1.68;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px 96px;}
+  h1,h2,h3,.kicker,.pill,.step{font-family:var(--sans);}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  p{max-width:60ch;}
+
+  .kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+          color:var(--ink-3);font-weight:700;}
+
+  header.top{padding:72px 0 8px;}
+  h1{font-size:clamp(36px,6.2vw,64px);line-height:1.0;letter-spacing:-.03em;
+     font-weight:800;margin:16px 0 0;max-width:14ch;text-wrap:balance;}
+  .dek{font-size:clamp(19px,2.3vw,23px);color:var(--ink-2);margin:26px 0 0;max-width:56ch;}
+  .dek b{color:var(--ink);font-weight:600;}
+
+  section{margin-top:74px;}
+  h2{font-size:clamp(25px,3.4vw,34px);font-weight:800;letter-spacing:-.022em;
+     line-height:1.14;margin:0 0 4px;text-wrap:balance;max-width:20ch;}
+  h3{font-size:19px;font-weight:750;margin:0 0 4px;letter-spacing:-.008em;}
+  .lede{color:var(--ink-3);font-size:17px;margin:0 0 26px;max-width:58ch;}
+
+  /* the two-hop diagram, built from boxes not art */
+  .hops{display:flex;align-items:stretch;gap:0;margin:30px 0;flex-wrap:wrap;
+        border:1px solid var(--rule);background:var(--panel);}
+  .hop{flex:1 1 190px;padding:20px 22px;border-right:1px solid var(--rule);}
+  .hop:last-child{border-right:none;}
+  .hop .step{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+             font-weight:750;color:var(--ink-3);}
+  .hop b{display:block;font-family:var(--sans);font-size:18px;font-weight:750;
+         margin-top:7px;letter-spacing:-.01em;}
+  .hop span{display:block;font-size:15px;color:var(--ink-2);margin-top:5px;line-height:1.45;}
+
+  /* three subject cards */
+  .subjects{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:14px;margin:30px 0 0;}
+  .subj{padding:20px;border:1px solid var(--rule);}
+  .subj.y{background:var(--yeast-bg);border-color:var(--yeast);}
+  .subj.g{background:var(--gh-bg);border-color:var(--gh);}
+  .subj.b{background:var(--book-bg);border-color:var(--book);}
+  .subj .kicker{color:inherit;opacity:.75;}
+  .subj.y{color:var(--yeast);} .subj.g{color:var(--gh);} .subj.b{color:var(--book);}
+  .subj h3{color:inherit;font-size:20px;margin-top:8px;}
+  .subj p{color:var(--ink-2);font-size:15px;margin:8px 0 0;max-width:none;line-height:1.5;}
+  .subj .m{font-size:15px;}
+
+  /* checks */
+  .check{border-top:2px solid var(--ink);padding-top:22px;margin-top:44px;}
+  .num{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.14em;
+       text-transform:uppercase;color:var(--ink-3);}
+  .verdicts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+            gap:12px;margin:24px 0 0;}
+  .v{padding:15px 17px;border-left:3px solid;background:var(--panel);}
+  .v.y{border-color:var(--yeast);} .v.g{border-color:var(--gh);}
+  .v.b{border-color:var(--book);}
+  .v .who{font-family:var(--sans);font-size:11px;letter-spacing:.12em;
+          text-transform:uppercase;font-weight:750;}
+  .v.y .who{color:var(--yeast);} .v.g .who{color:var(--gh);} .v.b .who{color:var(--book);}
+  .v p{margin:7px 0 0;font-size:15px;color:var(--ink-2);max-width:none;line-height:1.5;}
+  .v .big{font-family:var(--mono);font-size:26px;font-weight:600;letter-spacing:-.02em;
+          display:block;margin-top:6px;color:var(--ink);}
+
+  .trap{background:var(--stop-bg);border:1px solid var(--stop);padding:24px 26px;
+        margin:34px 0;}
+  .trap h3{color:var(--stop);font-size:21px;margin-bottom:8px;}
+  .trap p{margin:10px 0 0;font-size:17px;color:var(--ink-2);}
+  .trap p b{color:var(--ink);}
+  .trap .m{color:var(--ink);}
+
+  .quote{font-size:23px;line-height:1.42;font-weight:400;margin:34px 0;
+         padding-left:22px;border-left:4px solid var(--ink);max-width:52ch;
+         text-wrap:balance;}
+
+  .todo{background:var(--band);border:1px solid var(--rule);padding:26px;margin:30px 0;}
+  .todo ol{margin:14px 0 0;padding-left:22px;}
+  .todo li{margin-bottom:12px;font-size:17px;color:var(--ink-2);max-width:56ch;}
+  .todo li b{color:var(--ink);font-weight:650;}
+
+  footer{margin-top:80px;padding-top:24px;border-top:2px solid var(--ink);
+         font-family:var(--sans);font-size:14px;color:var(--ink-3);}
+  footer p{max-width:64ch;}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="kicker">In plain language · 3 August 2026</div>
+  <h1>What makes a channel measurable</h1>
+  <p class="dek">Yeast cells and software projects have both been tested as
+  <b>two-hop communication channels</b>, and both passed real checks. Here is what those
+  checks actually were — and exactly what it would take to run the same checks on scripture,
+  which <b>nobody has done yet.</b></p>
+</header>
+
+<section>
+  <h2>First, what a "channel" means here</h2>
+  <p class="lede">Strip the equation away. The idea underneath is very simple.</p>
+
+  <div class="hops">
+    <div class="hop">
+      <div class="step">What you're given</div>
+      <b>Capacity</b>
+      <span>Your size, reach, resources. Handed to you. You didn't earn it.</span>
+    </div>
+    <div class="hop">
+      <div class="step">Hop one — in</div>
+      <b>Taking it in well</b>
+      <span>How cleanly you receive and sort what reaches you. Signal from noise.</span>
+    </div>
+    <div class="hop">
+      <div class="step">Hop two — out</div>
+      <b>Passing it on well</b>
+      <span>How cleanly it leaves you and reaches others. Hoarding counts as failure.</span>
+    </div>
+    <div class="hop">
+      <div class="step">What comes out</div>
+      <b>Actual yield</b>
+      <span>What the whole thing produced. Not what it claimed.</span>
+    </div>
+  </div>
+
+  <p>The three multiply. So if either hop goes to zero, <b>the yield goes to zero</b> — no
+  matter how much capacity was there. A huge broadcaster who receives nothing useful produces
+  nothing useful. A brilliant receiver who tells nobody produces nothing either.</p>
+
+  <p>That's the claim. It sounds obvious. <b>The whole question is whether you can check
+  it</b>, and three specific checks are what separate a measured channel from a nice story.</p>
+
+  <div class="subjects">
+    <div class="subj y">
+      <div class="kicker">Substrate one</div>
+      <h3>Baker's yeast</h3>
+      <p><span class="m">4,825</span> proteins inside a living cell, and the physical
+      contacts between them. <span class="m">1,055</span> of those genes turn out to be
+      essential.</p>
+    </div>
+    <div class="subj g">
+      <div class="kicker">Substrate two</div>
+      <h3>Open-source software</h3>
+      <p><span class="m">992</span> public code projects, tracked over years, some still
+      alive and some abandoned.</p>
+    </div>
+    <div class="subj b">
+      <div class="kicker">Substrate three</div>
+      <h3>Scripture</h3>
+      <p>Read as a channel: sincere seeking is hop one, selfless sharing is hop two.
+      <b>Not yet tested.</b> This page explains what testing it would mean.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The three checks</h2>
+  <p class="lede">Any claim of the form "this is a two-hop channel" has to survive all three.
+  They are not statistics tricks. Each one is a question a sceptical friend would ask.</p>
+
+  <div class="check">
+    <div class="num">Check one</div>
+    <h2>Are the two hops actually two things?</h2>
+    <p>The sceptical question: <i>"You say there are two hops. Are you sure you haven't just
+    measured one thing twice and given it two names?"</i></p>
+    <p>If "takes it in well" and "passes it on well" always rise and fall together, they're
+    probably the same underlying quality wearing two labels — and the two-hop story is
+    decoration.</p>
+    <p>There's a standard way to check. You get a number where <span class="m">1.0</span>
+    means the two are completely independent, and bigger numbers mean they're increasingly
+    the same thing. Above <span class="m">5.0</span> and the claim is dead.</p>
+
+    <div class="verdicts">
+      <div class="v y"><div class="who">Yeast</div>
+        <span class="big">1.0026</span>
+        <p>How tightly a protein knits with its neighbours, versus how much traffic routes
+        through it globally. Almost perfectly separate. <b>Passes.</b></p></div>
+      <div class="v g"><div class="who">Software</div>
+        <span class="big">1.0203</span>
+        <p>How consistent a project's own work is, versus how well it absorbs outsiders'
+        contributions. Also separate. <b>Passes.</b></p></div>
+      <div class="v b"><div class="who">Scripture</div>
+        <span class="big">not run</span>
+        <p>Nobody has measured whether sincere seeking and selfless sharing come apart in any
+        real population. <b>Askable. Never asked.</b></p></div>
+    </div>
+  </div>
+
+  <div class="check">
+    <div class="num">Check two</div>
+    <h2>Is the scoreboard independent of the game?</h2>
+    <p>The sceptical question: <i>"Who decides whether it worked — and did they use the same
+    information you used to make the prediction?"</i></p>
+    <p>This is the one that catches almost everybody, and it is the reason the first two
+    substrates count for anything.</p>
+
+    <div class="verdicts">
+      <div class="v y"><div class="who">Yeast</div>
+        <p>Someone deletes that gene <b>in a physical dish</b> and watches whether the cell
+        dies. That happens in a laboratory. It has nothing whatsoever to do with the network
+        map used to make the prediction. <b>Fully independent.</b></p></div>
+      <div class="v g"><div class="who">Software</div>
+        <p>Did the project get shut down or go silent for two years? That's recorded in
+        lifecycle metadata, separately from any quality measure. <b>Independent.</b></p></div>
+      <div class="v b"><div class="who">Scripture</div>
+        <p>This is the hard one, and pretending otherwise helps nobody. If the reading is
+        judged by whether the reading feels right, the scoreboard <b>is</b> the game.</p></div>
+    </div>
+  </div>
+
+  <div class="trap">
+    <h3>We fell into exactly this trap three days ago</h3>
+    <p>A third dataset, software packages, was being quoted as evidence: a
+    <span class="m">+0.5695</span> correlation between a project's size and its "fidelity."
+    It looked like a real finding and it had been cited for months.</p>
+    <p>Then we opened the definition. <b>"Fidelity" had been defined as
+    <span class="m">1 ÷ (1 + months since last release)</span></b> — that is, pure recency.
+    And "size" was <b>the number of releases</b>.</p>
+    <p>So the finding was: <i>packages that have released more times have released more
+    recently.</i> Which is not a discovery. It is the same fact stated twice, and the two
+    numbers turn out to be <b>algebraically the same</b>, not merely similar.</p>
+    <p>That result carried <b>zero information about fidelity</b>, and it had been sitting in
+    our own evidence pile. Nobody spotted it until someone asked the boring question: <i>what
+    exactly is being measured, and could it have come out differently?</i></p>
+  </div>
+
+  <div class="check">
+    <div class="num">Check three</div>
+    <h2>Does the two-hop shape beat a simpler shape?</h2>
+    <p>The sceptical question: <i>"Fine, it fits. Would something dumber have fit just as
+    well?"</i></p>
+    <p>A theory that fits isn't worth much if a simpler one fits equally. So you run the
+    rivals side by side on the same data and see which loses.</p>
+
+    <div class="verdicts">
+      <div class="v y"><div class="who">Yeast</div>
+        <p>Two-hop beat the squared alternative at predicting which genes are essential.
+        <b>Passes.</b></p></div>
+      <div class="v g"><div class="who">Software</div>
+        <p>The squared alternative was ruled out. Projects don't fall off a cliff — they
+        <b>bleed out slowly</b>. Passes, in the weaker sense that a rival was eliminated.</p></div>
+      <div class="v b"><div class="who">Scripture</div>
+        <p>Has the two-hop reading ever been run against a one-hop reading on anything?
+        <b>No.</b></p></div>
+    </div>
+
+    <p style="margin-top:24px"><b>And it does not pass everywhere.</b> On a real national
+    banking network, the two-hop form scored <span class="m">0.6090</span> and the simpler
+    rival <span class="m">0.6109</span> — the rival marginally ahead. A <b>tie</b>. That
+    honest result is why this page says "two substrates," not "everywhere."</p>
+  </div>
+</section>
+
+<section>
+  <h2>So where does scripture actually stand?</h2>
+
+  <p class="quote">Reading scripture as an intact channel is a <b>reading</b>, not a
+  measurement. That is not an insult — yeast and software weren't measurements either, until
+  someone specified the three checks and ran them.</p>
+
+  <p>The difference is only this: for those two, the checks were <b>written down before the
+  data was looked at</b>, and then run, and then published whether they passed or not.</p>
+
+  <p>Saying "scripture is an intact channel because the equation holds on yeast" doesn't
+  follow. The equation holding on yeast is a fact about proteins. It transfers to nothing
+  else without its own test — which is exactly why a third dataset was quietly wrong for
+  months.</p>
+
+  <p>Nor does the opposite follow. <b>Untested is not refuted.</b> The reading may well be
+  right. It simply hasn't been put anywhere it could have come out wrong.</p>
+</section>
+
+<section>
+  <h2>What it would take, concretely</h2>
+  <p class="lede">Not a metaphor. Five steps, the same five that yeast and software went
+  through.</p>
+
+  <div class="todo">
+    <ol>
+      <li><b>Choose who is being measured.</b> Individual readers? Study circles? Whole
+      communities? Pick one and say how many.</li>
+      <li><b>Define the two hops so they cannot be the same number.</b> Then run check one.
+      If seeking and sharing turn out to move together, the two-hop reading is one hop with
+      two names, and that's worth knowing.</li>
+      <li><b>Pick an outcome nobody in the study grades.</b> The hardest step by far.
+      Something that happens whether or not anyone approves of it — the equivalent of the
+      cell living or dying in the dish. If you can't name one, say so plainly rather than
+      substituting a judgement call.</li>
+      <li><b>Write the thresholds down and lock them</b> before looking at any data. What
+      counts as a pass, what counts as a fail, decided in advance.</li>
+      <li><b>Publish it if it fails.</b> This is the step that makes the other four mean
+      anything.</li>
+    </ol>
+  </div>
+
+  <p>Step three is where this will stand or fall, and it deserves to be said clearly: it may
+  turn out that <b>no independent outcome exists</b> for the claim as posed. That would be a
+  real finding too — it would mean the reading is a way of organising thought rather than a
+  hypothesis about the world, and there is nothing shameful in that, provided it is
+  <i>said</i>.</p>
+</section>
+
+<section>
+  <h2>Why the checks are worth trusting</h2>
+  <p>Because they keep catching us, not other people.</p>
+  <p>In the past week these same three questions have refuted <b>our own</b> published
+  domain limit, disqualified <b>our own</b> most-cited correlation, and shown that a
+  monitoring signal we recommended <b>loses to simply counting a project's stars</b>.</p>
+  <p>Six consecutive experiments were voided by a data-quality floor we set ourselves, and
+  the floor was not lowered to let them through.</p>
+  <p>These aren't hurdles being placed in front of scripture. They're the ones that just
+  knocked down three of our own claims — which is the only reason they're worth applying to
+  anything.</p>
+</section>
+
+<footer>
+  <p>Every number on this page comes from committed data anyone can re-run offline:
+  <code>bash reproduce_all.sh</code>. Yeast <span class="m">N = 4,825</span> ·
+  software <span class="m">N = 992</span> · banking network
+  <span class="m">N = 1,349</span>.</p>
+  <p style="margin-top:10px">One honest wrinkle kept in view: the software project's
+  headline latency gap (<span class="m">19.8</span> vs <span class="m">50.6</span> days)
+  depends on counting "silent for two years" as failure. Counting only formally shut-down
+  projects, the same gap is <span class="m">45.1</span> vs <span class="m">42.2</span> —
+  almost nothing. Which definition you pick changes the answer, so both are shown.</p>
+</footer>
+
+</div>
