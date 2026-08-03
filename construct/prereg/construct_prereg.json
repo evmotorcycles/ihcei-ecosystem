@@ -1,0 +1,89 @@
+{
+ "PRE_FLIGHT_FEASIBILITY_PROBE_RECORDED_BEFORE_THIS_LOCK": {
+  "WHAT_WAS_DELIBERATELY_NOT_PROBED": "rho(U_versions, months_since_release) -- the quantity the primary turns on -- was NOT computed before this lock. The primary's direction is unknown at lock time.",
+  "an_identity_is_declared_in_advance_not_discovered": "D_enc_pypi is a strictly decreasing function of months_since_release, so their Spearman correlation is exactly -1.0000 by algebra. Gate N3 verifies this and is EXCLUDED from scoring, because a quantity that cannot come out otherwise is not evidence.",
+  "what_was_checked": "That every column each gate needs exists and is non-degenerate. PyPI n=540 with columns package, depth, U_versions, months_since_release, D_enc_release_hygiene, D_dec_pin_clarity, n_requires, E_indegree. GitHub n=866 non-imputed."
+ },
+ "THE_HYPOTHESIS_ACTUALLY_UNDER_TEST": {
+  "statement": "D is not one construct with an unstable value. It is a FAMILY OF SUBSTRATE-SPECIFIC FORMULAS sharing a name, and on PyPI the formula is a function of the same release activity that defines U -- so the positive correlation there is INDUCED BY CONSTRUCTION rather than measured.",
+  "the_two_definitions_verbatim_from_committed_code": {
+   "github_D_enc": "mean TF-IDF cosine of recent commit messages to a fixed methodology reference   [LISM_manuscript_REVISED.md]",
+   "github_U": "log(1 + contributors) * log(1 + commits)",
+   "pypi_D_enc": "1.0 / (1.0 + months_since_release / 12.0)   [real-cohorts/fetch_pypi_graph.py:159]",
+   "pypi_U": "U_versions, the count of released versions"
+  },
+  "why_this_matters_more_than_a_normalisation": "If the flip is definitional, no normalisation of D_dec fixes it, because the two D's were never comparable quantities. The remedy is a rule about what may be compared, not a transformation."
+ },
+ "WHY_THE_PROPOSED_FIX_IS_NOT_WHAT_IS_TESTED_HERE": {
+  "OBSERVED_BEFORE_THE_LOCK_AND_THEREFORE_NOT_SCORED": {
+   "github_non_imputed": {
+    "rho_U_D": -0.4455,
+    "rho_U_D_dec": -0.5154,
+    "rho_U_D_enc": -0.2415
+   },
+   "note": "These were computed BEFORE this specification was written. They are recorded as pre-flight observations and NO gate below scores them. Pre-registering something already seen would be theatre.",
+   "pypi": {
+    "rho_U_D": 0.5695,
+    "rho_U_D_dec": 0.3496,
+    "rho_U_D_enc": 0.5869
+   }
+  },
+  "and_a_prediction_of_that_mechanism_ALREADY_FAILS": "Queue congestion is a DECODE-side story, so the flip should concentrate in D_dec. It does not. Measured before this lock and recorded below, BOTH hops flip.",
+  "note_on_the_github_figure": "The alarm quotes -0.4702. On the 866 non-imputed rows it is -0.4455. The difference is the 126 imputed rows, which carry tau_v = 30.00 exactly and should not contribute to a fidelity correlation. Both figures are negative and nothing here turns on which is used.",
+  "the_proposal": "Normalise D_dec by inbound demand (closed / total inbound), on the theory that GitHub popularity floods the issue queue and depresses decode fidelity, while PyPI scale reflects release maturity.",
+  "why_it_is_BLOCKED_as_stated": "The committed GitHub cohort (govphys_quadratic_results.csv) carries no inbound issue or PR counts -- its columns are repo, stratum, E, U, D_enc, D_dec, D, tau_v, tau_v_imputed, stars, archived. Demand normalisation is not computable from committed data and will NOT be substituted with a proxy."
+ },
+ "anti_immunisation": "No threshold may be changed after any measurement. The pre-lock observations are marked as such and score nothing. REFUTED, UNTESTABLE-HERE and BLOCKED stay distinct.",
+ "gates": [
+  {
+   "bar": "both files load with 540 and 866 rows, every column present, no NaN in any quantity used",
+   "id": "N1_integrity",
+   "weight": "full"
+  },
+  {
+   "bar": "|rho(U_versions, months_since_release)| >= 0.50. If release count and release recency are strongly coupled, then rho(U, D_enc) on PyPI follows from the DEFINITION of D_enc rather than from any fidelity being measured. If this comes in below 0.50 the definitional explanation FAILS and the sign flip stands as a substantive substrate difference.",
+   "id": "N2_PRIMARY_THE_PYPI_CORRELATION_IS_CONSTRUCTION_INDUCED",
+   "weight": "full"
+  },
+  {
+   "bar": "EXCLUDED. rho(D_enc_pypi, months_since_release) = -1.0000 exactly, by algebra. Verified, not scored: a quantity that cannot come out otherwise is not evidence.",
+   "id": "N3_the_pypi_D_enc_identity",
+   "weight": "excluded"
+  },
+  {
+   "bar": "Substituting a D_enc that does NOT reference release timing -- D_dec_pin_clarity, the only other committed fidelity column -- must drop |rho(U, D_enc)| on PyPI by at least 0.20 from its 0.5869 baseline. This is what separates 'the formula induced it' from 'PyPI genuinely differs'. It CAN fail.",
+   "id": "N4_DISCRIMINATING_A_TIMING_FREE_D_enc_BREAKS_THE_PYPI_CORRELATION",
+   "weight": "full"
+  },
+  {
+   "bar": "On PyPI, U is a raw COUNT of versions. Converting it to an INTENSITY -- versions per month of package age -- must be reported alongside, and |rho(U_intensity, D_enc)| is reported whether or not it helps. No threshold: this gate asserts the number is DISCLOSED, and it is met by reporting it.",
+   "id": "N5_THE_COUNT_VS_INTENSITY_RULE_APPLIED_TO_U",
+   "weight": "excluded"
+  },
+  {
+   "bar": "with D shuffled within each substrate, |rho| must fall inside [0, 0.10] on both, over 2000 permutations at the 95th percentile",
+   "id": "N6_THE_PERMUTATION_CONTROL",
+   "weight": "full"
+  },
+  {
+   "bar": "BLOCKED. The committed GitHub cohort has no inbound issue or PR counts. Not computable, and no proxy will be substituted.",
+   "id": "N7_the_proposed_demand_normalisation",
+   "weight": "excluded"
+  },
+  {
+   "bar": "UNTESTABLE-HERE. Diagnosing why two numbers disagree does not produce a construct that travels. Building one needs a single formula computed the same way on both substrates, and the committed files share no fidelity column.",
+   "id": "N8_does_this_repair_D_for_cross_substrate_use",
+   "weight": "excluded"
+  }
+ ],
+ "model": "Is D one construct? Diagnosing the standing sign alarm",
+ "one_line": "The alarm says rho(U,D) has opposite SIGNS on two committed substrates (+0.5695 PyPI, -0.4702 GitHub) and therefore D is unstable. This tests a different explanation: that D was never ONE quantity, and that at least one of the two correlations is induced by how D was defined rather than measured.",
+ "simulator_rule": "Both substrates are committed real files. Nothing is simulated and no proxy is substituted for a blocked quantity.",
+ "too_perfect_rule": "An |rho| of exactly 1.0000 is an identity to be located, not a triumph. N3 declares one in advance.",
+ "version": "1.0",
+ "what_a_pass_would_and_would_not_license": {
+  "and_if_N2_or_N4_fails": "Then the definitional explanation is wrong and the sign flip is a real substrate difference. The alarm stands exactly as written and Q1 remains domain-scoped on the same terms.",
+  "would": "That the PyPI half of the sign alarm is an artefact of how D_enc was defined there, and therefore that the alarm should be restated: D is a family of substrate-specific formulas, not one unstable quantity.",
+  "would_NOT": "That D is repaired. That E = U*D_enc*D_dec is restored to universal standing. That the GitHub negative correlation is explained -- it is not touched by any gate here."
+ }
+}

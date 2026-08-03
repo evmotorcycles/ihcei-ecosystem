@@ -1,0 +1,89 @@
+{
+  "gates": [
+    {
+      "detail": "PyPI n=540, GitHub non-imputed n=866, no NaN in any quantity used",
+      "id": "N1_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "rho(U_versions, months_since_release) = -0.5869, |rho| = 0.5869 (needs >= 0.50). D_enc is defined as 1/(1 + months/12), so a strong coupling here means the PyPI rho(U, D_enc) of +0.5869 follows from the DEFINITION rather than from a measured fidelity.",
+      "id": "N2_PRIMARY_THE_PYPI_CORRELATION_IS_CONSTRUCTION_INDUCED",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "rho(D_enc_pypi, months_since_release) = -1.0000. Declared in advance as an algebraic identity because D_enc = 1/(1+m/12) is strictly decreasing in m. Verified, NOT scored: a quantity that cannot come out otherwise is not evidence.",
+      "id": "N3_the_pypi_D_enc_identity",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "substituting the only other committed fidelity column, D_dec_pin_clarity, which does not reference release timing: rho(U_versions, pin_clarity) = +0.3496. Drop from the 0.5869 baseline = 0.2373 (needs >= 0.20).",
+      "id": "N4_DISCRIMINATING_A_TIMING_FREE_D_enc_BREAKS_THE_PYPI_CORRELATION",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "U is a raw COUNT of versions. As an INTENSITY -- versions per month of age -- rho(U_intensity, D_enc) = +0.9418 against the raw count's +0.5869. Reported whether or not it helps; no threshold, this gate asserts disclosure.",
+      "id": "N5_THE_COUNT_VS_INTENSITY_RULE_APPLIED_TO_U",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "with D shuffled within substrate, the 95th percentile of |rho| over 2000 permutations is 0.0843 (PyPI) and 0.0648 (GitHub); both must be <= 0.10",
+      "id": "N6_THE_PERMUTATION_CONTROL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "BLOCKED. The committed GitHub cohort carries no inbound issue or PR counts, so closed/total-inbound is not computable. No proxy substituted. BLOCKED is not REFUTED: the mechanism may well be right and simply cannot be tested from this file.",
+      "id": "N7_the_proposed_demand_normalisation",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. Diagnosing why two numbers disagree does not produce a construct that travels. Building one needs a single formula computed the same way on both substrates, and the committed files share no fidelity column.",
+      "id": "N8_does_this_repair_D_for_cross_substrate_use",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [],
+  "measured": {
+    "permutation_95th_abs_rho": {
+      "github": 0.0648,
+      "pypi": 0.0843
+    },
+    "pypi_baseline_rho_U_D_enc_from_spec": 0.5869,
+    "rho_D_enc_vs_months_IDENTITY": -1.0,
+    "rho_U_intensity_vs_D_enc": 0.9418,
+    "rho_U_versions_vs_months_since_release": -0.5869,
+    "rho_U_versions_vs_pin_clarity_TIMING_FREE": 0.3496
+  },
+  "model": "Is D one construct?",
+  "post_run_disclosures": {
+    "D1_what_this_does_and_does_not_settle": {
+      "does_NOT_settle": "The GitHub negative correlation, which no gate here touches. D is not repaired and E = U*D_enc*D_dec is not restored to universal standing.",
+      "settles": "Whether the PyPI half of the sign alarm follows from how D_enc was defined there."
+    },
+    "D2_the_two_definitions_share_a_name_and_nothing_else": {
+      "github_D_enc": "mean TF-IDF cosine of commit messages to a fixed methodology reference -- a text-similarity score",
+      "note": "Comparing their correlations with U across substrates was comparing two different quantities carrying one label. The remedy is a rule about what may be compared, not a transformation applied to either.",
+      "pypi_D_enc": "1.0 / (1.0 + months_since_release / 12.0) -- a recency decay"
+    },
+    "D3_the_proposed_demand_normalisation_is_BLOCKED_not_refuted": {
+      "note": "No inbound issue or PR counts are committed for the GitHub cohort. The mechanism may well be correct; this file cannot test it, and no proxy was substituted."
+    },
+    "D4_a_prediction_of_that_mechanism_already_failed_before_the_lock": {
+      "note": "Queue congestion is a decode-side story, so the flip should sit in D_dec. Both hops flip: PyPI D_enc +0.5869 / D_dec +0.3496 against GitHub -0.2415 / -0.5154. Recorded as a pre-lock observation and scored by nothing."
+    }
+  },
+  "primary_verdict": "THE PYPI HALF OF THE ALARM IS CONSTRUCTION-INDUCED. rho(U_versions, months_since_release) = -0.5869 and a timing-free fidelity column gives rho = +0.3496 against the timing-based +0.5869.",
+  "score": "4/4",
+  "simulated_values": 0,
+  "spec_sha256": "b6a262ead56e56b532a3578185c6d505df45fbc9c58a5ba5864108bb194c53d8",
+  "too_perfect_flag": [
+    "N3_identity_at_exactly_1.0_EXPECTED_and_declared_in_advance"
+  ]
+}
