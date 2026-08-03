@@ -1,0 +1,522 @@
+<title>Five gaps — the closure ledger</title>
+<style>
+  :root{
+    --paper:#E7EBEE; --paper-2:#DDE2E7; --card:#F3F6F8;
+    --ink:#111820; --ink-2:#3D4B58; --ink-3:#697A88;
+    --rule:#C2CBD3; --rule-2:#D6DDE3;
+    --accent:#1A4E70; --accent-soft:#D8E5EE;
+    --fail:#8C3A20; --fail-soft:#F0DDD5;
+    --pass:#2C6550; --pass-soft:#D7E7E0;
+    --excl:#6B6478; --excl-soft:#E2DFE8;
+    --shadow:0 1px 0 rgba(17,24,32,.05), 0 6px 22px -14px rgba(17,24,32,.5);
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+    --serif:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --sans:ui-sans-serif,system-ui,"Segoe UI Variable Text","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#0E1319; --paper-2:#141B23; --card:#161E27;
+      --ink:#DFE6EC; --ink-2:#A6B4C0; --ink-3:#75838F;
+      --rule:#2A343F; --rule-2:#212A34;
+      --accent:#79B0D2; --accent-soft:#182B39;
+      --fail:#D4805F; --fail-soft:#2E1E17;
+      --pass:#7CBFA3; --pass-soft:#152620;
+      --excl:#A79CB8; --excl-soft:#221E2B;
+      --shadow:0 1px 0 rgba(0,0,0,.4), 0 8px 26px -16px #000;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1319; --paper-2:#141B23; --card:#161E27;
+    --ink:#DFE6EC; --ink-2:#A6B4C0; --ink-3:#75838F;
+    --rule:#2A343F; --rule-2:#212A34;
+    --accent:#79B0D2; --accent-soft:#182B39;
+    --fail:#D4805F; --fail-soft:#2E1E17;
+    --pass:#7CBFA3; --pass-soft:#152620;
+    --excl:#A79CB8; --excl-soft:#221E2B;
+    --shadow:0 1px 0 rgba(0,0,0,.4), 0 8px 26px -16px #000;
+  }
+  :root[data-theme="light"]{
+    --paper:#E7EBEE; --paper-2:#DDE2E7; --card:#F3F6F8;
+    --ink:#111820; --ink-2:#3D4B58; --ink-3:#697A88;
+    --rule:#C2CBD3; --rule-2:#D6DDE3;
+    --accent:#1A4E70; --accent-soft:#D8E5EE;
+    --fail:#8C3A20; --fail-soft:#F0DDD5;
+    --pass:#2C6550; --pass-soft:#D7E7E0;
+    --excl:#6B6478; --excl-soft:#E2DFE8;
+    --shadow:0 1px 0 rgba(17,24,32,.05), 0 6px 22px -14px rgba(17,24,32,.5);
+  }
+
+  body{background:var(--paper);color:var(--ink);font-family:var(--serif);
+       font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px;}
+  h1,h2,h3,.lbl,.chip,.score,.gate{font-family:var(--sans);}
+  code,.mono,.num,.hash{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  a{color:var(--accent);}
+
+  .lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+       color:var(--ink-3);font-weight:650;}
+
+  /* ---------- masthead ---------- */
+  header.top{padding:64px 0 28px;border-bottom:2px solid var(--ink);}
+  h1{font-size:clamp(34px,5.4vw,60px);line-height:1.02;letter-spacing:-.028em;
+     font-weight:800;margin:14px 0 0;text-wrap:balance;max-width:16ch;}
+  .dek{font-size:clamp(18px,2.1vw,21px);color:var(--ink-2);max-width:62ch;
+       margin:22px 0 0;line-height:1.5;}
+  .dek strong{color:var(--ink);font-weight:600;}
+
+  /* ---------- status strip ---------- */
+  .strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+         gap:1px;background:var(--rule);border:1px solid var(--rule);
+         margin:34px 0 0;}
+  .strip div{background:var(--paper-2);padding:14px 16px;}
+  .strip .v{font-family:var(--mono);font-size:22px;font-weight:600;
+            letter-spacing:-.02em;margin-top:6px;display:block;}
+  .strip .n{font-size:12.5px;color:var(--ink-3);font-family:var(--sans);
+            line-height:1.35;display:block;margin-top:3px;}
+
+  /* ---------- ledger ---------- */
+  section{margin-top:72px;}
+  h2{font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+     color:var(--ink);margin:0 0 6px;}
+  .sub{color:var(--ink-3);font-size:15px;margin:0 0 26px;max-width:64ch;}
+
+  .row{display:grid;grid-template-columns:64px 1fr;gap:26px;
+       padding:26px 0;border-top:1px solid var(--rule);}
+  .row:last-child{border-bottom:1px solid var(--rule);}
+  .idx{font-family:var(--mono);font-size:13px;color:var(--ink-3);
+       padding-top:5px;letter-spacing:.04em;}
+  .row h3{font-size:20px;font-weight:700;letter-spacing:-.012em;margin:0;
+          line-height:1.28;text-wrap:balance;}
+  .row p{margin:11px 0 0;color:var(--ink-2);max-width:66ch;font-size:16px;}
+  .row p em{color:var(--ink);font-style:normal;font-weight:600;}
+
+  .chip{display:inline-block;font-size:10.5px;letter-spacing:.11em;
+        text-transform:uppercase;font-weight:700;padding:4px 9px;
+        border-radius:2px;margin-bottom:10px;}
+  .c-fail{background:var(--fail-soft);color:var(--fail);}
+  .c-pass{background:var(--pass-soft);color:var(--pass);}
+  .c-excl{background:var(--excl-soft);color:var(--excl);}
+  .c-acc {background:var(--accent-soft);color:var(--accent);}
+
+  /* ---------- experiment cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:18px;}
+  .card{background:var(--card);border:1px solid var(--rule);padding:20px;
+        box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;}
+  .card h3{font-size:17px;margin:0;font-weight:700;letter-spacing:-.01em;line-height:1.3;}
+  .hash{font-size:10.5px;color:var(--ink-3);word-break:break-all;line-height:1.5;}
+  .score{font-family:var(--mono);font-size:30px;font-weight:600;letter-spacing:-.03em;}
+  .card p{margin:0;font-size:14.5px;color:var(--ink-2);line-height:1.52;}
+
+  .gates{display:flex;gap:3px;flex-wrap:wrap;}
+  .gate{width:26px;height:22px;display:grid;place-items:center;font-size:9.5px;
+        font-weight:700;border-radius:2px;letter-spacing:.02em;}
+  .g-pass{background:var(--pass-soft);color:var(--pass);}
+  .g-fail{background:var(--fail);color:var(--paper);}
+  .g-excl{background:var(--excl-soft);color:var(--excl);}
+
+  /* ---------- data table ---------- */
+  .scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--card);}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px;}
+  th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--rule-2);}
+  th{font-family:var(--sans);font-size:10.5px;letter-spacing:.13em;
+     text-transform:uppercase;color:var(--ink-3);font-weight:700;
+     background:var(--paper-2);}
+  td.n{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:none;}
+  td strong{font-weight:650;}
+
+  /* ---------- pull quote ---------- */
+  .pull{border-left:3px solid var(--accent);padding:4px 0 4px 22px;margin:30px 0;
+        font-size:20px;line-height:1.44;color:var(--ink);max-width:60ch;
+        text-wrap:balance;}
+  .pull span{color:var(--ink-3);font-size:14px;font-family:var(--sans);
+             display:block;margin-top:10px;letter-spacing:.02em;}
+
+  .note{background:var(--paper-2);border:1px solid var(--rule);padding:20px 22px;
+        margin-top:22px;}
+  .note p{margin:0;font-size:15.5px;color:var(--ink-2);max-width:68ch;}
+  .note p + p{margin-top:11px;}
+  .note strong{color:var(--ink);font-weight:650;}
+
+  footer{margin-top:80px;padding-top:24px;border-top:2px solid var(--ink);
+         color:var(--ink-3);font-size:14px;font-family:var(--sans);}
+  footer code{font-size:12.5px;}
+
+  @media (max-width:640px){
+    .row{grid-template-columns:1fr;gap:10px;}
+    .idx{padding-top:0;}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .card{transition:border-color .18s ease;}
+    .card:hover{border-color:var(--accent);}
+  }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="lbl">Novora · pre-registration ledger · 2 August 2026</div>
+  <h1>Five gaps, four experiments, one prediction I got wrong</h1>
+  <p class="dek">I said Gap 1 was <strong>“fully closable”</strong> and would convert Q4 from
+  unlicensed to licensed. It didn’t. The fix worked exactly as designed on the term it
+  targeted, the gate failed anyway — and the run turned up something more useful than the
+  thing it was built to prove.</p>
+
+  <div class="strip">
+    <div><span class="lbl">Gap 1 · balanced grid</span>
+      <span class="v" style="color:var(--fail)">4/7</span>
+      <span class="n">Fix applied. Gate failed. Fifth void.</span></div>
+    <div><span class="lbl">Gap 2 · quantum hardware</span>
+      <span class="v" style="color:var(--excl)">—</span>
+      <span class="n">No hardware. Needs your authorisation.</span></div>
+    <div><span class="lbl">Gap 3 · policy endpoints</span>
+      <span class="v" style="color:var(--excl)">—</span>
+      <span class="n">Not attempted. Stated below.</span></div>
+    <div><span class="lbl">Gap 4 · irreducibility</span>
+      <span class="v" style="color:var(--pass)">5/6</span>
+      <span class="n">Built and measured. One real null.</span></div>
+    <div><span class="lbl">Gap 5 · scarcity metric</span>
+      <span class="v" style="color:var(--pass)">5/6</span>
+      <span class="n">One substrate of five. §3.3c refuted.</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>The ledger</h2>
+  <p class="sub">Each gap, what was actually done, and what it licenses. Three different
+  kinds of “no” appear here — <strong>refuted</strong>, <strong>untestable</strong> and
+  <strong>blocked</strong> — and they are never merged.</p>
+
+  <div class="row">
+    <div class="idx">01</div>
+    <div>
+      <span class="chip c-fail">Fix applied · gate still failed</span>
+      <h3>A balanced prompt grid for the DCM floor</h3>
+      <p>HELM v2’s disclosure <em>D9</em> committed in writing to this fix: balance the
+      grouping, declare it before data, don’t touch the floor. Built as a fresh experiment —
+      20 artifacts no engine had seen, 10 self-reports split 5/5 by a semantic rule written
+      first.</p>
+      <p>The targeted term moved exactly as designed: <span class="mono">I: 0.4375 →
+      1.0000</span>. But <span class="mono">V</span> fell to 0.4000 and <span class="mono">C</span>
+      to 0.2650, so <span class="mono">Δ = 0.1060</span> — a <em>fifth</em> consecutive void
+      against an unchanged 0.20. The D9 diagnosis was incomplete: fixing <span class="mono">I</span>
+      was necessary and nowhere near sufficient.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="idx">02</div>
+    <div>
+      <span class="chip c-excl">Blocked · needs your authorisation</span>
+      <h3>Physical quantum hardware for LMD</h3>
+      <p>There is no quantum backend in this environment: no <code>qiskit</code>, no IBM
+      Quantum or IonQ credentials. AWS credentials <em>are</em> present, and Braket would be
+      a genuine route — but running jobs there bills your account, so I won’t do it without
+      you saying so.</p>
+      <p>Status is <em>blocked</em>, not <em>refuted</em>. The four LMD lab experiments named
+      earlier remain unrun, and <span class="mono">d² = κ·τ_rt</span> stays unestablished.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="idx">03</div>
+    <div>
+      <span class="chip c-excl">Not attempted this round</span>
+      <h3>Fixed policy endpoints for Q3</h3>
+      <p>Left out, and I’d rather say so than dress it up. It is a deployment change rather
+      than a measurement, and with limited runway I put the effort into the three gaps that
+      could produce falsifiable numbers. Nothing was learned about Q3 here, and its status is
+      unchanged: <em>lost where tested</em>, 195× in the quantum arm.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="idx">04</div>
+    <div>
+      <span class="chip c-pass">Built · measured · one null against our own advice</span>
+      <h3>A computationally irreducible testbed for Q5</h3>
+      <p>On real institutions a null is uninterpretable — <em>“no shortcut was found”</em> is
+      not <em>“no shortcut exists.”</em> Rule 110 is proven Turing-complete, so on elementary
+      cellular automata the answer isn’t in doubt.</p>
+      <p>The same predictor that reaches <span class="mono">0.7656</span> on reducible rules
+      sits at <span class="mono">0.4940</span> — chance — on the irreducible ones. Rule 110
+      itself: <span class="mono">0.4945</span>.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="idx">05</div>
+    <div>
+      <span class="chip c-fail">One substrate of five · our own manuscript refuted</span>
+      <h3>A first-principles graph-topological scarcity metric</h3>
+      <p>The gap as posed <em>cannot</em> be closed. A topological measure needs a graph:
+      yeast and GitHub commit none, the quantum arm is a derivation with no dataset, and
+      PyPI is <em>circular</em> — its declared outcome is derived from the same graph the
+      metric would run on. That leaves interbank.</p>
+      <p>The metric has no free parameter, and LISM’s own §3.3c domain limit failed against
+      it — in the opposite direction to its claim.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What was run</h2>
+  <p class="sub">Four pre-registered specifications, each locked by SHA-256 before its
+  runner or its data existed. Every gate below is scored; the runner aborts on hash
+  mismatch.</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="lbl">Gap 1</div>
+      <h3>Balanced-Grid Shield Test</h3>
+      <div class="hash">5576e524581f405ed2cec785664ed6b7704ffaa5c692058b7a9c93f87337f543</div>
+      <div class="score" style="color:var(--fail)">4/7</div>
+      <div class="gates">
+        <span class="gate g-pass">W1</span><span class="gate g-fail">W2</span>
+        <span class="gate g-fail">W3</span><span class="gate g-pass">W4</span>
+        <span class="gate g-pass">W5</span><span class="gate g-pass">W6</span>
+        <span class="gate g-fail">W7</span><span class="gate g-excl">W8</span>
+        <span class="gate g-excl">W9</span>
+      </div>
+      <p>600 evaluations. W7 not met → W2–W6 uninformative, <em>including the three that
+      passed</em>.</p>
+    </div>
+
+    <div class="card">
+      <div class="lbl">Gap 4 · first attempt</div>
+      <h3>Irreducibility testbed v1</h3>
+      <div class="hash">0de17fc489bbdad37ee2a8d7b5496fea85acd206f65753c4b9b8edbd781984f2</div>
+      <div class="score" style="color:var(--fail)">2/5</div>
+      <div class="gates">
+        <span class="gate g-fail">P1</span><span class="gate g-pass">P2</span>
+        <span class="gate g-pass">P3</span><span class="gate g-excl">P4</span>
+        <span class="gate g-fail">P5</span><span class="gate g-fail">P6</span>
+        <span class="gate g-excl">P7</span><span class="gate g-excl">P8</span>
+      </div>
+      <p>My rule choice was defective — rule 160’s outcome is constant, so the ablation’s
+      quantity <em>does not exist</em>. Recorded untestable, not passed.</p>
+    </div>
+
+    <div class="card">
+      <div class="lbl">Gap 4 · clean rule set</div>
+      <h3>Irreducibility testbed v2</h3>
+      <div class="hash">0cd701a45bb725c499f5313786d0e463e2986df4eb617c682aeb4388e66a1a84</div>
+      <div class="score" style="color:var(--pass)">5/6</div>
+      <div class="gates">
+        <span class="gate g-pass">P1</span><span class="gate g-pass">P2</span>
+        <span class="gate g-pass">P3</span><span class="gate g-pass">P4</span>
+        <span class="gate g-fail">P5</span><span class="gate g-pass">P6</span>
+        <span class="gate g-excl">P7</span><span class="gate g-excl">P8</span>
+      </div>
+      <p>Rules chosen by mechanical screen on base rate only. Not one threshold moved; same
+      code both runs.</p>
+    </div>
+
+    <div class="card">
+      <div class="lbl">Gap 5</div>
+      <h3>Graph-Topological Decode Scarcity</h3>
+      <div class="hash">135355477e57ae681805b289f1234e003954a00d36146cd2f19ab31df137e095</div>
+      <div class="score" style="color:var(--pass)">5/6</div>
+      <div class="gates">
+        <span class="gate g-pass">K1</span><span class="gate g-pass">K2</span>
+        <span class="gate g-pass">K3</span><span class="gate g-fail">K4</span>
+        <span class="gate g-pass">K5</span><span class="gate g-pass">K6</span>
+        <span class="gate g-excl">K7</span><span class="gate g-excl">K8</span>
+      </div>
+      <p>K5 met → K4 interpretable, and the interval <em>excludes</em> the declared effect
+      size. A refutation, not a shrug.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The finding nobody was looking for</h2>
+  <p class="sub">Gap 1’s post-hoc diagnostic — explicitly not pre-registered, scored
+  nothing, and by some distance the most important thing in this batch.</p>
+
+  <p><strong>15 of the 20 artifacts return the identical verdict <span class="mono">0.1428</span>
+  — under both engines.</strong> That concentration is why Δ failed. So the question became:
+  what <em>are</em> the engines responding to?</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr>
+        <th>Engine</th>
+        <th style="text-align:right">Spearman vs declared manipulativeness</th>
+        <th style="text-align:right">Spearman vs word count</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>HELM v1 — shipping</td><td class="n">+0.0445</td>
+            <td class="n"><strong style="color:var(--fail)">−0.4831</strong></td></tr>
+        <tr><td>HELM v2 — density-weighted</td><td class="n">+0.0388</td>
+            <td class="n"><strong style="color:var(--fail)">−0.4774</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pull">Both engines score <em>longer</em> text as <em>less</em> manipulative,
+  to nearly the same degree — and neither orders the manipulativeness gradient at all.
+  <span>Mean verdict by band is flat and mis-ordered: the “strongly manipulative” band scores
+  <em>below</em> “mildly pressuring”.</span></div>
+
+  <div class="note">
+    <p><strong>It is not v2’s density weighting.</strong> v1 shows −0.4831 and v2 −0.4774 —
+    the same number. The length effect lives in the gate and regex structure both engines
+    inherit. Replacing v2 would change nothing.</p>
+    <p><strong>What it costs us.</strong> On the DES set and the HELM v2 held-out set, the
+    manipulative texts were also the <em>short</em> texts. This spec broke that confound
+    deliberately — a 2-word “Act now.” in the manipulative band, three 30-word texts in the
+    factual band — and the signal vanished. That is consistent with <span class="mono">G =
+    0.2980</span> having measured <em>length</em> all along.</p>
+    <p><strong>The limit, stated first.</strong> The band labels are mine, not independent
+    raters’. So HELM is <em>not</em> refuted and W8 stays untestable. What carries weight is
+    the direction: author labels are biased <em>toward</em> agreeing with the author’s engine,
+    and the correlation still came out at zero.</p>
+  </div>
+
+  <p style="margin-top:22px;color:var(--ink-2);max-width:66ch;">Q4’s status therefore reverts
+  to <strong>not licensed</strong>, and is in a worse position than before this run. The
+  <span class="mono">S</span> half of shield-and-signal is unaffected — it’s a within-artifact
+  deviation and doesn’t depend on the gradient — so the “rock” finding stands. The correction
+  is recorded on <code>HELM_V2.md</code> rather than quietly edited out.</p>
+</section>
+
+<section>
+  <h2>Q5 — where monitoring stopped working</h2>
+  <p class="sub">The one gate carrying our own governance recommendation, measured twice, at
+  the same number both times.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Rule</th><th>Wolfram class</th>
+        <th style="text-align:right">Static AUC</th>
+        <th style="text-align:right">+ 30 steps observed</th></tr></thead>
+      <tbody>
+        <tr><td>5</td><td>2 — periodic</td><td class="n">1.0000</td><td class="n">1.0000</td></tr>
+        <tr><td>1</td><td>2 — periodic</td><td class="n">0.9878</td><td class="n">1.0000</td></tr>
+        <tr><td>3</td><td>2 — periodic</td><td class="n">0.5684</td><td class="n">0.5549</td></tr>
+        <tr><td>6</td><td>2 — periodic</td><td class="n">0.5062</td><td class="n">0.5303</td></tr>
+        <tr><td>30</td><td>3 — chaotic</td><td class="n">0.5371</td><td class="n">0.5088</td></tr>
+        <tr><td>90</td><td>3 — chaotic</td><td class="n">0.4564</td><td class="n">0.4579</td></tr>
+        <tr><td><strong>110</strong></td><td><strong>4 — Turing-complete</strong></td>
+            <td class="n"><strong>0.4945</strong></td><td class="n"><strong>0.5282</strong></td></tr>
+        <tr><td>150</td><td>3 — chaotic</td><td class="n">0.4881</td><td class="n">0.5017</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pull">Giving the predictor the first 30 steps of the actual trajectory gained
+  <span class="mono">+0.0051</span> on the irreducible rules, against a 0.10 bar.
+  <span>“Monitor τ_v rather than predict” has no support from this testbed. The bar was not
+  lowered after v1 measured the same number.</span></div>
+
+  <div class="note">
+    <p><strong>The caveat that matters most.</strong> The reducible arm clears 0.75 only
+    because rules 1 and 5 are near-perfect. Rules 3 and 6 sit at 0.5684 and 0.5062 — near
+    chance — <em>despite both being class 2</em>. Wolfram class does not determine static
+    predictability. The mean passes; the arm is not homogeneous.</p>
+    <p><strong>And none of it transfers.</strong> A cellular automaton is not an institution.
+    Nothing here is evidence that any organisation is computationally irreducible, or that
+    τ_v is the right thing to watch.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Gap 5 — the manuscript amended, not defended</h2>
+  <p class="sub">Scarcity as <em>local bridge fraction</em>: the share of a node’s neighbours
+  with which it shares no common neighbour. An edge whose endpoints share no neighbour has no
+  alternative path of length two. No threshold chosen, no weight fitted, no free parameter.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Stratum</th>
+        <th style="text-align:right">U·D_enc·D_dec</th>
+        <th style="text-align:right">U·(D_enc+D_dec)²</th>
+        <th style="text-align:right">Advantage</th></tr></thead>
+      <tbody>
+        <tr><td><strong>High scarcity</strong> · B = 1 · n = 131</td>
+            <td class="n" style="color:var(--fail)">0.4455</td>
+            <td class="n" style="color:var(--fail)">0.4383</td>
+            <td class="n">+0.0072</td></tr>
+        <tr><td><strong>Low scarcity</strong> · B &lt; 1 · n = 1,218</td>
+            <td class="n">0.6159</td><td class="n">0.6180</td>
+            <td class="n">−0.0021</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pull">In the scarce-decode stratum <em>both</em> forms are anti-predictive.
+  Where the decode hop has no two-step substitute is where the model performs <em>worst</em> —
+  the opposite of what §3.3c asserts.
+  <span>Difference-in-advantage +0.0093 against a pre-registered +0.05; 90% CI [−0.0283,
+  +0.0424], width 0.0707 against a 0.20 precision bar. The interval excludes the predicted
+  effect.</span></div>
+
+  <div class="note">
+    <p><strong>What was withdrawn, and what wasn’t.</strong> The quantum result stands — the
+    two-hop product really is 195× worse there. What is withdrawn is the <em>explanation</em>:
+    that decode-hop scarcity separates the domains where the product form applies from those
+    where it doesn’t. On the one substrate where scarcity is measurable independently of the
+    outcome, it separates nothing.</p>
+    <p><span class="mono">LISM_manuscript_REVISED.md</span> now carries §3.3c(i) with the
+    amendment, citing the spec hash. The spec committed to that <em>before</em> the run, and a
+    test asserts the manuscript actually changed — so it can’t stay a promise.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What the floor did</h2>
+  <p class="sub">Δ = V·I·C has now voided five consecutive runs. It was not moved, and this
+  batch found out why it keeps biting.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Run</th><th style="text-align:right">Δ</th><th>Outcome type</th></tr></thead>
+      <tbody>
+        <tr><td>SDL scope declaration</td><td class="n">0.1536</td><td>modal share</td></tr>
+        <tr><td>CRM cognitive reference</td><td class="n">0.0005</td><td>banded continuous</td></tr>
+        <tr><td>DES decoupled shield</td><td class="n">0.0125</td><td>verdict lattice</td></tr>
+        <tr><td>HELM v2</td><td class="n">0.1256</td><td>verdict lattice</td></tr>
+        <tr><td>Balanced grid</td><td class="n">0.1060</td><td>verdict lattice</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="note">
+    <p><strong>Every one of them landed on a small lattice.</strong> On the two continuous
+    outcomes in this batch — AUC and an AUC difference — Δ <em>cannot fail</em>: V and C sit
+    near 1 by construction. So it was recorded <span class="chip c-excl"
+    style="margin:0">excluded</span> in both, rather than counted as a pass that would
+    inflate the score.</p>
+    <p>That is a <strong>scope limit on our own instrument</strong>, found rather than
+    assumed: DCM is an admissibility check for concentrated or categorical outcomes, and it is
+    silent everywhere else.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Still not known</h2>
+  <div class="note">
+    <p><strong>Whether HELM detects manipulation at all.</strong> Closing it needs
+    manipulativeness labels from raters who did not build the engine, on texts where length
+    and manipulativeness are decorrelated by design. Until then <span class="mono">G</span> is
+    a number whose referent is unknown.</p>
+    <p><strong>Whether any institution is computationally irreducible.</strong> Nothing in the
+    repository demonstrates it, so the Q5 testbed licenses claims about cellular automata and
+    nothing else.</p>
+    <p><strong>Whether the scope rule holds across substrates.</strong> Three of five commit
+    no graph and a fourth is circular. One substrate cannot establish a cross-substrate rule,
+    and reporting it as though it could would be the error the spec was written to prevent.</p>
+    <p><strong>Whether <span class="mono">d² = κ·τ_rt</span> holds.</strong> Blocked on
+    hardware. Four named lab experiments, none run.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Four locked specifications · 1,349 interbank nodes · 12,800 cellular-automaton runs ·
+  600 engine evaluations · <strong>0 simulated values</strong>.</p>
+  <p style="margin-top:8px">Reproduce: <code>bash reproduce_all.sh</code> ·
+  branch <code>claude/lism-manuscript-tools-y9y46z</code> · v1 remains the shipping engine.</p>
+</footer>
+
+</div>
