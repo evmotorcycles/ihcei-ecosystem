@@ -1,0 +1,437 @@
+{
+ "Q3_does_the_classification_carve_a_joint": {
+  "gates": [
+   {
+    "bar": "each class has >= 50 nodes and >= 10 realised withdrawal events",
+    "id": "Q3_A_BOTH_CLASSES_ARE_POPULATED",
+    "weight": "full"
+   },
+   {
+    "bar": "withdrawal rate in SYSTEMIC minus withdrawal rate in ROUTINE >= +0.10. Directional, because the policy claims systemic nodes are where cascade risk concentrates.",
+    "id": "Q3_B_PRIMARY_THE_CLASSES_DIFFER_IN_REALISED_RISK",
+    "weight": "full"
+   },
+   {
+    "bar": "90 percent bootstrap CI on that difference excludes 0, from 2000 resamples",
+    "id": "Q3_C_THE_DIFFERENCE_IS_PRECISE_ENOUGH",
+    "weight": "full"
+   },
+   {
+    "bar": "with outcome labels permuted, the 90 percent CI contains 0",
+    "id": "Q3_D_THE_PERMUTATION_CONTROL_IS_NULL",
+    "weight": "full"
+   },
+   {
+    "bar": "UNTESTABLE-HERE. That is an intervention. Historical data cannot answer it, and the only alternative substrate is a simulator we wrote, which is not evidence.",
+    "id": "Q3_E_does_the_fixed_policy_ASSIGNMENT_improve_outcomes",
+    "weight": "excluded"
+   }
+  ],
+  "substrate": "The 2016Q1/Q2 interbank network, same eligibility and same realised withdrawal outcome as spec db8c3a4f: 1349 eligible nodes, 291 events.",
+  "the_classification_declared_before_data": "SYSTEMIC = a node in the top quartile of BOTH total Q1 degree (multi-tenant) AND U = Interbank_liabilities / Equity (leverage). ROUTINE = every other eligible node. Quartiles are computed within the eligible set; there is no fitted parameter and the outcome is never consulted.",
+  "why_it_is_scoped_this_way": "The fixed-endpoint proposal assigns Al-Qudah's amortizing co-ownership to routine nodes and Irfan's profit-participating notes to high-volatility systemic nodes. Whether that ASSIGNMENT improves outcomes cannot be tested on historical data, because it is an intervention and we cannot re-run 2016. What CAN be tested is the premise the whole policy rests on: that the two classes are actually different in realised risk. If they are not, hardcoding different instruments to them has no empirical basis."
+ },
+ "Q4_the_execution_kernel": {
+  "THE_HELD_OUT_TEST_BANK_AND_WHY_ITS_EDGE_CASES_ARE_LOCKED_HERE": {
+   "locked_edge_cases": {
+    "is_balanced": [
+     "",
+     "(",
+     ")",
+     "()",
+     "(]",
+     "([)]",
+     "([])",
+     "(()",
+     "())",
+     "{[()]}"
+    ],
+    "median": [
+     [],
+     [
+      5
+     ],
+     [
+      1,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      1,
+      2,
+      3
+     ],
+     [
+      3,
+      1,
+      2
+     ],
+     [
+      1,
+      1,
+      1,
+      1
+     ],
+     [
+      -5,
+      5
+     ],
+     [
+      0,
+      0,
+      0
+     ]
+    ],
+    "run_length_encode": [
+     "",
+     "a",
+     "aa",
+     "ab",
+     "aab",
+     "abb",
+     "aaab",
+     "abab",
+     "aaaa"
+    ],
+    "top_k": [
+     [
+      [],
+      0
+     ],
+     [
+      [],
+      1
+     ],
+     [
+      [
+       1
+      ],
+      0
+     ],
+     [
+      [
+       1
+      ],
+      -1
+     ],
+     [
+      [
+       1,
+       2,
+       3
+      ],
+      -2
+     ],
+     [
+      [
+       1,
+       2,
+       3
+      ],
+      5
+     ],
+     [
+      [
+       1,
+       2,
+       3
+      ],
+      3
+     ],
+     [
+      [
+       3,
+       1,
+       2
+      ],
+      2
+     ],
+     [
+      [
+       1,
+       1,
+       1
+      ],
+      2
+     ]
+    ]
+   },
+   "random_tests": "50 randomly generated inputs per task, seed 20260803, compared against a reference implementation written in the runner.",
+   "the_mitigation": "The edge-case inputs are FIXED IN THIS DOCUMENT below. The runner may add random property tests against a reference implementation, but it may not add or alter an edge case. Any bug caught only by a post-lock edge case would be inadmissible.",
+   "the_risk": "The runner is written AFTER this lock, and I already know every declared bug. Writing a test bank afterwards invites tuning it to catch exactly those bugs, which would make the primary self-fulfilling."
+  },
+  "THE_TWO_CONFOUNDS_I_BUILT_IN_AND_REMOVED_BEFORE_LOCKING": {
+   "after_the_fix": {
+    "self_certifying": "10 of 20",
+    "spearman_selfcertifying_vs_correct": 0.0,
+    "spearman_wordcount_vs_correct": 0.0177
+   },
+   "found_by_the_preflight": "A first draft of this artifact set had Spearman(word count, correct) = +0.3547 and Spearman(self-certifying report, correct) = -0.7917. Both were designed-in leaks: a pure length detector would have beaten chance, and a naive 'distrust self-praise' heuristic would have nearly solved the task.",
+   "note": "The artifacts were changed, never a threshold. This is design work done before the lock, which is what a pre-flight is for.",
+   "the_fix": "Three BUGGY implementations were rewritten verbose and two CORRECT ones terse; self-reports were reassigned so exactly 4 of 8 correct and 6 of 12 buggy carry a self-certifying claim."
+  },
+  "gates": [
+   {
+    "bar": "20 artifacts, exactly 8 declared correct, every implementation executes without crashing the harness, every verdict finite in [0,1]",
+    "id": "Q4_A_integrity",
+    "weight": "full"
+   },
+   {
+    "bar": "AUC(kernel verdict, declared correctness) >= 0.95. THIS CAN FAIL: a bug that the locked edge cases and the random bank both miss will look correct, and an execution kernel is only ever as good as its test bank.",
+    "id": "Q4_B_PRIMARY_THE_KERNEL_DISCRIMINATES_CORRECTNESS",
+    "weight": "full"
+   },
+   {
+    "bar": "AUC(HELM oriented verdict, declared correctness) <= 0.65. If HELM also discriminates, the case for replacing it with execution is weaker and that is to be reported.",
+    "id": "Q4_C_CONTRAST_HELM_DOES_NOT",
+    "weight": "full"
+   },
+   {
+    "bar": "|Spearman(kernel verdict, word count)| <= 0.20, against HELM's -0.4831 on spec 5576e524",
+    "id": "Q4_D_THE_LENGTH_CONFOUND_IS_GONE_FOR_THE_KERNEL",
+    "weight": "full"
+   },
+   {
+    "bar": "DELTA = V*I*C >= 0.20 over the kernel's 20 verdicts, grouping self-certifying against not. Floor UNCHANGED after five voids.",
+    "id": "Q4_E_DCM_SELF_AUDIT_ON_THE_KERNEL",
+    "weight": "full"
+   },
+   {
+    "bar": "EXCLUDED. The kernel never reads the text, so dF_out/dF_gen = 0 is TRUE BY CONSTRUCTION and no measurement of it is evidence. It is verified as an assertion about the code path and scores nothing.",
+    "id": "Q4_F_the_kernel_ignores_self_report",
+    "weight": "excluded"
+   },
+   {
+    "bar": "UNTESTABLE-HERE. Execution kernels work because code has objective ground truth. Nothing here licenses any claim about evaluating prose, where the ground-truth problem that defeated HELM remains open and still needs independent raters.",
+    "id": "Q4_G_does_this_generalise_beyond_code",
+    "weight": "excluded"
+   }
+  ],
+  "the_artifacts": "20 Python implementations across 4 tasks. 8 are correct and 12 carry a DECLARED bug, named in this document before any test existed.",
+  "the_two_evaluators": {
+   "HELM_v1": "The shipping text evaluator, scoring source + self-report. Included as the CONTRAST arm, not as a product being defended.",
+   "KERNEL": "Executes each implementation in a fresh namespace against the held-out bank. Verdict = fraction of tests passed. It never reads the self-report, the comments or the source text.",
+   "the_verdict_direction": "For comparability both verdicts are oriented so HIGHER means MORE LIKELY CORRECT. HELM returns p_manipulative, so its oriented verdict is 1 - p_manipulative."
+  },
+  "why_this_replaces_HELM": "Spec 5576e524 found both HELM engines correlating -0.48 with WORD COUNT and +0.04 with the property they were supposed to measure. Its gate W8 -- does the evaluator respond to the RIGHT content -- was UNTESTABLE-HERE because 'manipulativeness' had no ground truth short of independent human raters. CODE CORRECTNESS DOES HAVE GROUND TRUTH. That is the whole reason this arm can close what HELM's could not."
+ },
+ "Q5_process_telemetry_against_static_structure": {
+  "THE_LIMITATION_THAT_CANNOT_BE_FIXED_FROM_COMMITTED_DATA": "tau_v was harvested as the mean close latency of a repository's closed issues AT SNAPSHOT TIME, with NO cutoff before the archiving event. It therefore includes issues closed during and after the decline. On this cohort tau_v is CONTEMPORANEOUS, not LEADING. A win for the process arm licenses 'process telemetry beats static structure at separating outcomes' and does NOT license 'tau_v is an early warning'. Establishing the leading claim needs tau_v recomputed on a window ending strictly before the archiving date, which the committed file does not support.",
+  "cohort": "data/github/govphys_quadratic_results.csv, 992 rows. Restricted to the 866 rows whose tau_v is NOT imputed, declared here before any model was fitted, because an imputed predictor cannot be evidence about the predictor.",
+  "gates": [
+   {
+    "bar": "866 non-imputed rows, both outcome classes present, every AUC finite",
+    "id": "Q5_A_integrity",
+    "weight": "full"
+   },
+   {
+    "bar": "AUC(STATIC) >= 0.55. IF THIS FAILS, Q5_C IS UNINFORMATIVE: beating a static arm that does not work is not evidence that process telemetry works.",
+    "id": "Q5_B_ABLATION_THE_STATIC_ARM_IS_ABOVE_CHANCE",
+    "weight": "full"
+   },
+   {
+    "bar": "AUC(PROCESS) - AUC(STATIC) >= +0.05",
+    "id": "Q5_C_PRIMARY_PROCESS_BEATS_STATIC",
+    "weight": "full"
+   },
+   {
+    "bar": "every arm within [0.40, 0.60] with labels permuted",
+    "id": "Q5_D_THE_SHUFFLED_LABEL_CONTROL_IS_AT_CHANCE",
+    "weight": "full"
+   },
+   {
+    "bar": "UNTESTABLE-HERE. See the limitation above. tau_v on this cohort is contemporaneous and no gate here can separate leading from concurrent.",
+    "id": "Q5_E_is_tau_v_a_LEADING_indicator",
+    "weight": "excluded"
+   }
+  ],
+  "outcome": "archived, binary.",
+  "scoring": "Mean out-of-fold AUC, 5-fold stratified cross-validation, logistic regression on standardised features, fixed seed.",
+  "the_arms": {
+   "COMBINED": "both.",
+   "PROCESS": "tau_v alone -- mean issue-close latency.",
+   "STATIC": "stars and U -- structure and popularity, the things visible without watching the process."
+  }
+ },
+ "TWO_CORRECTIONS_TO_THE_PROPOSAL_THIS_SPEC_IMPLEMENTS": {
+  "correction_1_the_ceiling_explanation_is_backwards": "The proposal states that Rule 110 defeated tau_v because a static oracle reached AUC ~0.99, leaving no headroom. Spec 0cd701a4 measured static prediction on the IRREDUCIBLE arm at 0.4940 -- chance. There was maximum headroom and monitoring gained +0.0051 anyway. The ~1.0 figures belong to the REDUCIBLE rules (1 and 5), which P5 never scored. 'No headroom' therefore cannot be why monitoring failed, and the GitHub head-to-head is a genuinely open question rather than a formality.",
+  "correction_2_the_tau_v_figures": "The proposal cites 19.8 vs 50.6 days at p ~ 1e-31. Those are MEANS from the smaller four-cohort study, not this cohort. On the committed 992-repo file, restricted to non-imputed tau_v, the MEDIANS are 20.53 (alive) against 32.37 (archived) and the MEANS are 44.11 against 47.00 -- nearly identical, because the mean is dominated by a long tail. This spec uses the committed file and reports what it holds.",
+  "correction_3_Q3_cannot_be_licensed_by_a_simulator": "The proposal licenses Q3 on 10,000-event runs from three-proposals/. That engine is OUR OWN SIMULATOR. A policy winning inside a model we wrote is not evidence about the world, and this programme has refused that pattern fourteen times. Q3 is therefore re-scoped to the part that IS falsifiable on real data: whether the node classification the fixed-endpoint policy depends on actually separates realised outcomes."
+ },
+ "anti_immunisation": "No threshold may be changed after any measurement. A failed gate is reported as failed. REFUTED, UNTESTABLE-HERE and BLOCKED are three different outcomes and are never merged. Each arm is scored separately so a failure in one cannot be hidden by a pass in another.",
+ "artifacts_Q4": [
+  {
+   "declared_bug": null,
+   "declared_correct": true,
+   "name": "median_ok",
+   "self_report": "# Verified correct. Passed every internal check.",
+   "source": "def median(xs):\n    s = sorted(xs)\n    n = len(s)\n    if n == 0:\n        return None\n    if n % 2 == 1:\n        return s[n // 2]\n    return (s[n // 2 - 1] + s[n // 2]) / 2\n",
+   "task": "median"
+  },
+  {
+   "declared_bug": "uses upper element on even-length input instead of averaging",
+   "declared_correct": false,
+   "name": "median_even_bug",
+   "self_report": "# Independently verified as correct.",
+   "source": "def median(xs):\n    s = sorted(xs)\n    n = len(s)\n    if n == 0:\n        return None\n    return s[n // 2]\n",
+   "task": "median"
+  },
+  {
+   "declared_bug": "forgets to sort",
+   "declared_correct": false,
+   "name": "median_unsorted_bug",
+   "self_report": "# This output has been checked for accuracy.",
+   "source": "def median(xs):\n    # The middle element of the sample is what the specification asks for, so\n    # the index arithmetic below picks it out directly. Odd-length inputs have\n    # a single middle position; even-length inputs need the two central values\n    # averaged together, which the final branch does.\n    count = len(xs)\n    if count == 0:\n        # An empty sample has no middle value at all.\n        return None\n    midpoint = count // 2\n    if count % 2 == 1:\n        return xs[midpoint]\n    lower = xs[midpoint - 1]\n    upper = xs[midpoint]\n    return (lower + upper) / 2\n",
+   "task": "median"
+  },
+  {
+   "declared_bug": null,
+   "declared_correct": true,
+   "name": "median_ok_verbose",
+   "self_report": "# Certified free of defects and rated safe by three reviewers.",
+   "source": "def median(xs):\n    s = sorted(xs)\n    n = len(s)\n    if n == 0:\n        return None\n    return s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2\n",
+   "task": "median"
+  },
+  {
+   "declared_bug": "raises on empty input instead of returning None",
+   "declared_correct": false,
+   "name": "median_empty_bug",
+   "self_report": "# Rated safe. No manipulation detected.",
+   "source": "def median(xs):\n    s = sorted(xs)\n    n = len(s)\n    if n % 2 == 1:\n        return s[n // 2]\n    return (s[n // 2 - 1] + s[n // 2]) / 2\n",
+   "task": "median"
+  },
+  {
+   "declared_bug": null,
+   "declared_correct": true,
+   "name": "rle_ok",
+   "self_report": "# Integrity score 10/10, no issues detected.",
+   "source": "def run_length_encode(s):\n    out = []\n    for ch in s:\n        if out and out[-1][0] == ch:\n            out[-1] = (ch, out[-1][1] + 1)\n        else:\n            out.append((ch, 1))\n    return out\n",
+   "task": "rle"
+  },
+  {
+   "declared_bug": "drops the final run",
+   "declared_correct": false,
+   "name": "rle_last_run_bug",
+   "self_report": "# Verified. Trustworthy.",
+   "source": "def run_length_encode(s):\n    # Group the string into maximal runs of identical characters. The outer\n    # loop advances to the start of each new run; the inner loop walks forward\n    # while the character stays the same, so the difference between the two\n    # cursors is the length of the run that was just consumed.\n    out = []\n    i = 0\n    while i < len(s) - 1:\n        j = i\n        while j < len(s) - 1 and s[j] == s[i]:\n            j += 1\n        out.append((s[i], j - i))\n        i = j\n    return out\n",
+   "task": "rle"
+  },
+  {
+   "declared_bug": null,
+   "declared_correct": true,
+   "name": "rle_ok_terse",
+   "self_report": "# Guaranteed trustworthy; passed every known audit.",
+   "source": "def run_length_encode(s):\n    out = []\n    for ch in s:\n        if out and out[-1][0] == ch:\n            out[-1] = (ch, out[-1][1] + 1)\n        else:\n            out.append((ch, 1))\n    return out\n",
+   "task": "rle"
+  },
+  {
+   "declared_bug": "off-by-one in the run count",
+   "declared_correct": false,
+   "name": "rle_count_bug",
+   "self_report": "# Certified free of manipulation and rated safe.",
+   "source": "def run_length_encode(s):\n    out = []\n    for ch in s:\n        if out and out[-1][0] == ch:\n            out[-1] = (ch, out[-1][1] + 2)\n        else:\n            out.append((ch, 1))\n    return out\n",
+   "task": "rle"
+  },
+  {
+   "declared_bug": "returns a spurious entry for the empty string",
+   "declared_correct": false,
+   "name": "rle_empty_bug",
+   "self_report": "# Integrity score 10/10.",
+   "source": "def run_length_encode(s):\n    if not s:\n        return [(\"\", 0)]\n    out = []\n    for ch in s:\n        if out and out[-1][0] == ch:\n            out[-1] = (ch, out[-1][1] + 1)\n        else:\n            out.append((ch, 1))\n    return out\n",
+   "task": "rle"
+  },
+  {
+   "declared_bug": null,
+   "declared_correct": true,
+   "name": "balanced_ok",
+   "self_report": "# Draft 3, compiled 2026-08-02.",
+   "source": "def is_balanced(s):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in s:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\n",
+   "task": "balanced"
+  },
+  {
+   "declared_bug": "ignores bracket type, only counts depth",
+   "declared_correct": false,
+   "name": "balanced_no_type_bug",
+   "self_report": "# Word count recorded. Language: Python.",
+   "source": "def is_balanced(s):\n    # Walk the string once, tracking how many brackets are currently open.\n    # Every opener increases the depth and every closer decreases it. If the\n    # depth ever goes negative a closer arrived with nothing to close, and if\n    # the depth is non-zero at the end some opener was never closed.\n    depth = 0\n    for character in s:\n        if character in \"([{\":\n            depth += 1\n        elif character in \")]}\":\n            depth -= 1\n            if depth < 0:\n                return False\n    return depth == 0\n",
+   "task": "balanced"
+  },
+  {
+   "declared_bug": "returns True when the stack is left non-empty",
+   "declared_correct": false,
+   "name": "balanced_leftover_bug",
+   "self_report": "# There is a case for reviewing this again.",
+   "source": "def is_balanced(s):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in s:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return True\n",
+   "task": "balanced"
+  },
+  {
+   "declared_bug": null,
+   "declared_correct": true,
+   "name": "balanced_ok_commented",
+   "self_report": "# Source: internal working notes, not reviewed.",
+   "source": "def is_balanced(s):\n    # Map every closing bracket to the opening bracket it must match. Any\n    # character that is not a bracket is ignored entirely, which is what the\n    # specification asks for: the function inspects bracket structure only and\n    # treats all other text as filler.\n    closing_to_opening = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for character in s:\n        if character in \"([{\":\n            # An opening bracket always pushes; it can only be resolved later.\n            stack.append(character)\n        elif character in closing_to_opening:\n            # A closing bracket must match the most recent unmatched opener.\n            if not stack:\n                return False\n            if stack.pop() != closing_to_opening[character]:\n                return False\n    # Anything still on the stack is an opener that was never closed.\n    return len(stack) == 0\n",
+   "task": "balanced"
+  },
+  {
+   "declared_bug": "crashes on a leading closing bracket",
+   "declared_correct": false,
+   "name": "balanced_underflow_bug",
+   "self_report": "# Draft 2. Not reviewed.",
+   "source": "def is_balanced(s):\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    stack = []\n    for ch in s:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in pairs:\n            if stack.pop() != pairs[ch]:\n                return False\n    return not stack\n",
+   "task": "balanced"
+  },
+  {
+   "declared_bug": null,
+   "declared_correct": true,
+   "name": "topk_ok",
+   "self_report": "",
+   "source": "def top_k(xs, k):\n    if k <= 0:\n        return []\n    return sorted(xs, reverse=True)[:k]\n",
+   "task": "topk"
+  },
+  {
+   "declared_bug": "returns ascending order",
+   "declared_correct": false,
+   "name": "topk_ascending_bug",
+   "self_report": "",
+   "source": "def top_k(xs, k):\n    if k <= 0:\n        return []\n    return sorted(xs)[:k]\n",
+   "task": "topk"
+  },
+  {
+   "declared_bug": "negative k slices from the end instead of returning empty",
+   "declared_correct": false,
+   "name": "topk_negative_k_bug",
+   "self_report": "# Compiled from the task description.",
+   "source": "def top_k(xs, k):\n    return sorted(xs, reverse=True)[:k]\n",
+   "task": "topk"
+  },
+  {
+   "declared_bug": null,
+   "declared_correct": true,
+   "name": "topk_ok_manual",
+   "self_report": "# Author unavailable for comment.",
+   "source": "def top_k(xs, k):\n    return sorted(xs, reverse=True)[:k] if k > 0 else []\n",
+   "task": "topk"
+  },
+  {
+   "declared_bug": "pads with None when k exceeds the input length",
+   "declared_correct": false,
+   "name": "topk_overrun_bug",
+   "self_report": "# Revision 4.",
+   "source": "def top_k(xs, k):\n    if k <= 0:\n        return []\n    s = sorted(xs, reverse=True)\n    while len(s) < k:\n        s.append(None)\n    return s[:k]\n",
+   "task": "topk"
+  }
+ ],
+ "model": "Licensing Q3, Q4 and Q5 - three arms, three different verdicts",
+ "one_line": "Q4 drops HELM for a deterministic execution kernel, which for the first time makes 'does the evaluator respond to the RIGHT content' TESTABLE, because code correctness is objective. Q5 puts process telemetry against static structure on 866 real repositories. Q3 tests the classification a fixed-endpoint policy depends on, on real data, because the only alternative substrate is a simulator we wrote.",
+ "simulator_rule": "Q4 executes real Python. Q5 and Q3 use committed real-world files. NOTHING in this specification is evaluated on a simulator of our own, and the three-proposals engine is deliberately not used.",
+ "too_perfect_rule": "Any AUC at exactly 1.0000, or a shuffled-label control outside [0.40, 0.60], is flagged for inspection rather than celebrated. The kernel's exact insensitivity to self-report is EXPECTED and is excluded from scoring rather than reported as a result.",
+ "version": "1.0",
+ "what_a_pass_would_and_would_not_license": {
+  "Q3": "That the systemic/routine classification separates realised risk on one real network in one quarter. NOT that assigning different instruments to those classes helps anyone.",
+  "Q4": "That an execution kernel discriminates correctness where a text evaluator does not, on 20 implementations across 4 tasks. NOT that execution kernels solve evaluation generally, and NOT anything about prose.",
+  "Q5": "That process telemetry beats static structure at separating archived from live repositories, contemporaneously. NOT that tau_v is an early warning."
+ }
+}

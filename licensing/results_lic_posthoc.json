@@ -1,0 +1,54 @@
+{
+  "Q3_the_permutation_control_was_implemented_wrong": {
+    "AND_THE_GATE_STILL_COUNTS_AS_FAILED": "The corrected control passes decisively, but the pre-registered gate is NOT retroactively passed on the strength of a post-hoc reimplementation. Correcting a defective control belongs in a new specification, which is what licensing_v2 does.",
+    "WHAT_THE_RUNNER_DID_WRONG": "It bootstrapped ONE fixed permutation, which estimates the sampling spread around whatever that permutation landed on. A permutation null requires REPEATED permutations.",
+    "band_contains_zero": true,
+    "n_permutations": 2000,
+    "null_90_band": [
+      -0.0548,
+      0.0613
+    ],
+    "null_mean": 0.0012,
+    "observed_difference": 0.1707,
+    "one_sided_p": 0.0
+  },
+  "Q5_the_cohort_is_confounded_by_its_own_construction": {
+    "S4_EXCLUDED_rerun": {
+      "archived": 45,
+      "auc_process": 0.585,
+      "auc_static": 0.6801,
+      "n": 649,
+      "process_minus_static": -0.0951
+    },
+    "THE_CONFOUND": "S4_failed is 100 percent archived, so the strata were built using the outcome. Median stars span 42,966 (S1) to 100 (S3), which means the static arm's advantage rides partly on stratum membership.",
+    "THE_FAILURE_SURVIVES_THE_CONFOUND": "With the outcome-defined stratum removed, static still beats process by -0.0951. Q5_C's failure is not an artefact of cohort construction: tau_v genuinely does not beat stars and leverage on this data.",
+    "strata": {
+      "S1_thriving": {
+        "archived_share": 0.0333,
+        "median_stars": 42966.0,
+        "median_tau_v": 7.22,
+        "n": 240
+      },
+      "S2_aging": {
+        "archived_share": 0.0996,
+        "median_stars": 931.0,
+        "median_tau_v": 36.16,
+        "n": 241
+      },
+      "S3_at_risk": {
+        "archived_share": 0.0774,
+        "median_stars": 100.0,
+        "median_tau_v": 28.93,
+        "n": 168
+      },
+      "S4_failed": {
+        "archived_share": 1.0,
+        "median_stars": 4237.0,
+        "median_tau_v": 32.55,
+        "n": 217
+      }
+    },
+    "within_stratum_stars_barely_separate": "S1 archived 34,726 vs live 43,317; S2 928 vs 931; S3 100 vs 100."
+  },
+  "STATUS": "POST-HOC. Not pre-registered. Not scored. No gate depends on it."
+}

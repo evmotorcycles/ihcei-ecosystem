@@ -1,0 +1,78 @@
+{
+  "bootstrap_CI90": [
+    0.1041,
+    0.2359
+  ],
+  "gates": [
+    {
+      "detail": "SYSTEMIC n=167 events=61; ROUTINE n=1182 events=230. Thresholds: degree >= 4 and U >= 0.3856.",
+      "id": "Q3v2_A_BOTH_CLASSES_ARE_POPULATED",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "withdrawal rate SYSTEMIC 0.3653 minus ROUTINE 0.1946 = +0.1707 (needs >= +0.10)",
+      "id": "Q3v2_B_PRIMARY_THE_CLASSES_DIFFER_IN_REALISED_RISK",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "90% bootstrap CI = [+0.1041, +0.2359] and must EXCLUDE 0",
+      "id": "Q3v2_C_THE_DIFFERENCE_IS_PRECISE_ENOUGH",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "over 2000 INDEPENDENT permutations the null band is [-0.0548, +0.0613] (mean +0.00093). Contains 0: True. Observed +0.1707 falls outside it: True. One-sided p = 0.0000.",
+      "id": "Q3v2_D_THE_CORRECTED_PERMUTATION_NULL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. An intervention. Historical data cannot answer it, and the only alternative substrate is the three-proposals simulator we wrote ourselves, which is not evidence.",
+      "id": "Q3v2_E_does_the_fixed_policy_ASSIGNMENT_improve_outcomes",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [],
+  "model": "Licensing Q3 - v2, corrected permutation control",
+  "permutation_null": {
+    "band90": [
+      -0.0548,
+      0.0613
+    ],
+    "contains_zero": true,
+    "mean": 0.00093,
+    "n": 2000,
+    "observed_outside_band": true,
+    "one_sided_p": 0.0
+  },
+  "post_run_disclosures": {
+    "D1_v1_is_not_re_scored": {
+      "note": "v1's Q3 arm stands at 3/4 with Q3_D FAILED and is published unchanged. A defective control is corrected in a new specification, never re-scored in place after the fact."
+    },
+    "D2_only_the_control_definition_changed": {
+      "note": "The classification rule, eligibility, outcome definition, the +0.10 margin and the bootstrap-CI requirement are all carried over unchanged. Not one threshold moved."
+    },
+    "D3_what_this_does_not_license": {
+      "note": "That the systemic and routine classes differ in realised risk is NOT evidence that assigning different instruments to them helps anyone. That is an intervention on one real network in one quarter, and Q3v2_E records that it stays untestable here."
+    }
+  },
+  "primary_verdict": "THE CLASSIFICATION SEPARATES REALISED RISK: 0.3653 against 0.1946, a difference of +0.1707, with a permutation null centred on +0.00093 and one-sided p = 0.0000. It does NOT follow that the fixed-endpoint policy built on that classification improves anything.",
+  "rate_difference": 0.1707,
+  "routine": {
+    "events": 230,
+    "n": 1182,
+    "rate": 0.1946
+  },
+  "score": "4/4",
+  "simulated_values": 0,
+  "spec_sha256": "d7184ef95c804eb896488099412fe11406c03d7890abc652968e27310c263efd",
+  "supersedes_the_Q3_arm_of": "cd429dfa5208403d142f49d5ca8f6e4e09d8ce01dc6065c3e8892608dd8c4a9f",
+  "systemic": {
+    "events": 61,
+    "n": 167,
+    "rate": 0.3653
+  }
+}

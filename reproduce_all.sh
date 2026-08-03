@@ -108,6 +108,7 @@ run "HELM v2: density-weighted engine on HELD-OUT texts — 5/6; the defect it f
 run "Balanced grid: the fix HELM v2 promised — 4/7; it did not work, and why" py balanced-grid/test_bg.py
 run "Q5 irreducibility testbed: v1 2/5, v2 5/6 — monitoring did NOT beat predicting (~5 min)" py irreducible/test_irr.py
 run "Scarcity: LISM's own domain limit tested — 5/6; §3.3c REFUTED where testable" py scarcity/test_scar.py
+run "Licensing Q3/Q4/Q5 — Q4 5/5 licensed, Q3 4/4, Q5 primary REFUTED" py licensing/test_lic.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py

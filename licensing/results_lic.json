@@ -1,0 +1,299 @@
+{
+  "Q3": {
+    "CI90": [
+      0.1041,
+      0.2359
+    ],
+    "permutation_CI90": [
+      -0.1214,
+      -0.0235
+    ],
+    "rate_difference": 0.1707,
+    "routine_events": 230,
+    "routine_n": 1182,
+    "routine_rate": 0.1946,
+    "systemic_events": 61,
+    "systemic_n": 167,
+    "systemic_rate": 0.3653
+  },
+  "Q4": {
+    "auc_helm_vs_correctness": 0.5365,
+    "auc_kernel_vs_correctness": 1.0,
+    "dcm": {
+      "C": 0.65,
+      "DELTA": 0.39,
+      "I": 1.0,
+      "V": 0.6,
+      "floor": 0.2
+    },
+    "n_tests_in_bank": 237,
+    "per_artifact": {
+      "balanced_leftover_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.8833
+      },
+      "balanced_no_type_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.9167
+      },
+      "balanced_ok": {
+        "declared_correct": true,
+        "helm_oriented": 0.8572,
+        "kernel": 1.0
+      },
+      "balanced_ok_commented": {
+        "declared_correct": true,
+        "helm_oriented": 0.88,
+        "kernel": 1.0
+      },
+      "balanced_underflow_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.6167
+      },
+      "median_empty_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.8814
+      },
+      "median_even_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.9351,
+        "kernel": 0.6102
+      },
+      "median_ok": {
+        "declared_correct": true,
+        "helm_oriented": 0.9351,
+        "kernel": 1.0
+      },
+      "median_ok_verbose": {
+        "declared_correct": true,
+        "helm_oriented": 0.8572,
+        "kernel": 1.0
+      },
+      "median_unsorted_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.4915
+      },
+      "rle_count_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.2881
+      },
+      "rle_empty_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.8983
+      },
+      "rle_last_run_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.9273,
+        "kernel": 0.1017
+      },
+      "rle_ok": {
+        "declared_correct": true,
+        "helm_oriented": 0.8572,
+        "kernel": 1.0
+      },
+      "rle_ok_terse": {
+        "declared_correct": true,
+        "helm_oriented": 0.8572,
+        "kernel": 1.0
+      },
+      "topk_ascending_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.5254
+      },
+      "topk_negative_k_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.8475
+      },
+      "topk_ok": {
+        "declared_correct": true,
+        "helm_oriented": 0.8572,
+        "kernel": 1.0
+      },
+      "topk_ok_manual": {
+        "declared_correct": true,
+        "helm_oriented": 0.8572,
+        "kernel": 1.0
+      },
+      "topk_overrun_bug": {
+        "declared_correct": false,
+        "helm_oriented": 0.8572,
+        "kernel": 0.6949
+      }
+    },
+    "spearman_helm_vs_wordcount": 0.2804,
+    "spearman_kernel_vs_wordcount": 0.0226
+  },
+  "Q5": {
+    "archived": 262,
+    "auc_combined": 0.7998,
+    "auc_process": 0.5947,
+    "auc_static": 0.8,
+    "n": 866,
+    "process_minus_static": -0.2053,
+    "shuffled_control": {
+      "COMBINED": 0.4829,
+      "PROCESS": 0.4724,
+      "STATIC": 0.5033
+    }
+  },
+  "arms": {
+    "Q3": {
+      "not_met": [
+        "Q3_D_THE_PERMUTATION_CONTROL_IS_NULL"
+      ],
+      "score": "3/4"
+    },
+    "Q4": {
+      "not_met": [],
+      "score": "5/5"
+    },
+    "Q5": {
+      "not_met": [
+        "Q5_C_PRIMARY_PROCESS_BEATS_STATIC"
+      ],
+      "score": "3/4"
+    }
+  },
+  "gates": [
+    {
+      "detail": "20 artifacts, 8 declared correct, 237 tests in the bank, harness crashes: none, verdicts finite: True",
+      "id": "Q4_A_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC(kernel, declared correctness) = 1.0000 (needs >= 0.95). Bugs the bank missed would show up here as a shortfall.",
+      "id": "Q4_B_PRIMARY_THE_KERNEL_DISCRIMINATES_CORRECTNESS",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC(HELM oriented verdict, declared correctness) = 0.5365 (needs <= 0.65)",
+      "id": "Q4_C_CONTRAST_HELM_DOES_NOT",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "Spearman(kernel verdict, word count) = +0.0226 (needs |r| <= 0.20). HELM on this same set: +0.2804. HELM on spec 5576e524: -0.4831.",
+      "id": "Q4_D_THE_LENGTH_CONFOUND_IS_GONE_FOR_THE_KERNEL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "DELTA = V 0.6000 * I 1.0000 * C 0.6500 = 0.3900 (needs >= 0.20). FLOOR UNCHANGED after five voids.",
+      "id": "Q4_E_DCM_SELF_AUDIT_ON_THE_KERNEL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "EXCLUDED, true by construction. kernel_verdicts() reads only a['source'] and executes it; the self-report never enters the code path. Verified as a source-level assertion (holds), not measured -- a quantity that cannot come out otherwise is not evidence.",
+      "id": "Q4_F_the_kernel_ignores_self_report",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. Execution kernels work because code has objective ground truth. Nothing here licenses any claim about evaluating prose, where the ground-truth problem that defeated HELM is still open and still needs independent raters.",
+      "id": "Q4_G_does_this_generalise_beyond_code",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "866 non-imputed rows of 992, 262 archived / 604 live, all AUCs finite",
+      "id": "Q5_A_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC(STATIC: stars, U) = 0.8000 (needs >= 0.55)",
+      "id": "Q5_B_ABLATION_THE_STATIC_ARM_IS_ABOVE_CHANCE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "AUC(PROCESS: tau_v) = 0.5947 minus AUC(STATIC) = 0.8000 is -0.2053 (needs >= +0.05). COMBINED = 0.7998.",
+      "id": "Q5_C_PRIMARY_PROCESS_BEATS_STATIC",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "permuted-label AUCs {'STATIC': 0.5033, 'PROCESS': 0.4724, 'COMBINED': 0.4829} must all lie in [0.40, 0.60]. Outside: none",
+      "id": "Q5_D_THE_SHUFFLED_LABEL_CONTROL_IS_AT_CHANCE",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. tau_v was harvested as mean close latency at SNAPSHOT TIME with no cutoff before archiving, so it includes issues closed during the decline. On this cohort it is CONTEMPORANEOUS. Separating leading from concurrent needs tau_v recomputed on a window ending strictly before the archiving date, which the committed file does not support.",
+      "id": "Q5_E_is_tau_v_a_LEADING_indicator",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "SYSTEMIC n=167 events=61; ROUTINE n=1182 events=230 (each needs n>=50, events>=10). Thresholds: degree >= 4 and U >= 0.3856.",
+      "id": "Q3_A_BOTH_CLASSES_ARE_POPULATED",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "withdrawal rate SYSTEMIC 0.3653 minus ROUTINE 0.1946 = +0.1707 (needs >= +0.10)",
+      "id": "Q3_B_PRIMARY_THE_CLASSES_DIFFER_IN_REALISED_RISK",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "90% bootstrap CI on the rate difference = [+0.1041, +0.2359] and must EXCLUDE 0",
+      "id": "Q3_C_THE_DIFFERENCE_IS_PRECISE_ENOUGH",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "with labels permuted the 90% CI is [-0.1214, -0.0235] and must contain 0",
+      "id": "Q3_D_THE_PERMUTATION_CONTROL_IS_NULL",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. That is an intervention and historical data cannot answer it. The only alternative substrate is the three-proposals simulator we wrote ourselves, which is not evidence about the world and is deliberately not used.",
+      "id": "Q3_E_does_the_fixed_policy_ASSIGNMENT_improve_outcomes",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "Q5_C_PRIMARY_PROCESS_BEATS_STATIC",
+    "Q3_D_THE_PERMUTATION_CONTROL_IS_NULL"
+  ],
+  "model": "Licensing Q3, Q4 and Q5",
+  "post_run_disclosures": {
+    "D1_what_each_arm_licenses": {
+      "Q3": "Whether the systemic/routine classification separates realised risk on one real network in one quarter. NOT that assigning different instruments to those classes helps anyone.",
+      "Q4": "An execution kernel discriminating correctness where a text evaluator does not, on 20 implementations across 4 tasks. NOT that execution kernels solve evaluation generally, and NOT anything about prose.",
+      "Q5": "Whether process telemetry beats static structure at separating archived from live repositories CONTEMPORANEOUSLY. NOT that tau_v is an early warning -- Q5_E records why that stays untestable here."
+    },
+    "D2_the_two_confounds_removed_before_the_lock": {
+      "note": "A first draft of the Q4 artifacts had Spearman(word count, correct) = +0.3547 and Spearman(self-certifying, correct) = -0.7917. Both were leaks I authored: a length detector would have beaten chance and a 'distrust self-praise' heuristic would have nearly solved the task. The ARTIFACTS were rewritten, never a threshold, and the residuals are +0.0177 and 0.0000."
+    },
+    "D3_the_edge_cases_were_locked_to_stop_me_tuning_the_bank": {
+      "note": "The runner is written after the lock and I already knew every declared bug, so a post-hoc test bank could have been tuned to catch exactly those. The edge-case inputs are fixed in the specification; the runner may only add random property tests."
+    },
+    "D4_corrections_to_the_proposal_this_spec_implements": {
+      "correction_1_the_ceiling_explanation_is_backwards": "The proposal states that Rule 110 defeated tau_v because a static oracle reached AUC ~0.99, leaving no headroom. Spec 0cd701a4 measured static prediction on the IRREDUCIBLE arm at 0.4940 -- chance. There was maximum headroom and monitoring gained +0.0051 anyway. The ~1.0 figures belong to the REDUCIBLE rules (1 and 5), which P5 never scored. 'No headroom' therefore cannot be why monitoring failed, and the GitHub head-to-head is a genuinely open question rather than a formality.",
+      "correction_2_the_tau_v_figures": "The proposal cites 19.8 vs 50.6 days at p ~ 1e-31. Those are MEANS from the smaller four-cohort study, not this cohort. On the committed 992-repo file, restricted to non-imputed tau_v, the MEDIANS are 20.53 (alive) against 32.37 (archived) and the MEANS are 44.11 against 47.00 -- nearly identical, because the mean is dominated by a long tail. This spec uses the committed file and reports what it holds.",
+      "correction_3_Q3_cannot_be_licensed_by_a_simulator": "The proposal licenses Q3 on 10,000-event runs from three-proposals/. That engine is OUR OWN SIMULATOR. A policy winning inside a model we wrote is not evidence about the world, and this programme has refused that pattern fourteen times. Q3 is therefore re-scoped to the part that IS falsifiable on real data: whether the node classification the fixed-endpoint policy depends on actually separates realised outcomes."
+    }
+  },
+  "simulated_values": 0,
+  "spec_sha256": "cd429dfa5208403d142f49d5ca8f6e4e09d8ce01dc6065c3e8892608dd8c4a9f",
+  "too_perfect_flag": [
+    "Q4_kernel_AUC_at_1.0",
+    "Q4_DCM_I_at_1.0_by_grid_design"
+  ]
+}
