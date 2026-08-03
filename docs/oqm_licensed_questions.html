@@ -1,0 +1,355 @@
+<title>What the licensed questions give OQM</title>
+<style>
+  :root{
+    --ground:#EFEDE8; --ground-2:#E4E1DA; --panel:#F7F6F3;
+    --ink:#1A1A22; --ink-2:#4A4A57; --ink-3:#7C7C89;
+    --rule:#CFCBC2; --rule-2:#DEDBD4;
+    --l1:#1F6B5E; --l1-bg:#DCE9E5;   /* measured   */
+    --l2:#8A6114; --l2-bg:#F0E6D2;   /* definition */
+    --l3:#5B4B8A; --l3-bg:#E4E0EF;   /* prior      */
+    --neg:#96341F; --neg-bg:#F2DFD9;
+    --accent:#2A3B6B;
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Mono","Roboto Mono",Menlo,Consolas,monospace;
+    --serif:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --sans:ui-sans-serif,system-ui,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#14141A; --ground-2:#1B1B23; --panel:#1E1E27;
+      --ink:#E6E4DE; --ink-2:#AFACA4; --ink-3:#7E7B74;
+      --rule:#33333F; --rule-2:#282833;
+      --l1:#63C4AF; --l1-bg:#122622;
+      --l2:#D6A94E; --l2-bg:#2A2213;
+      --l3:#A896D9; --l3-bg:#221D30;
+      --neg:#D97F63; --neg-bg:#2C1913;
+      --accent:#8FA5DE;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#14141A; --ground-2:#1B1B23; --panel:#1E1E27;
+    --ink:#E6E4DE; --ink-2:#AFACA4; --ink-3:#7E7B74;
+    --rule:#33333F; --rule-2:#282833;
+    --l1:#63C4AF; --l1-bg:#122622;
+    --l2:#D6A94E; --l2-bg:#2A2213;
+    --l3:#A896D9; --l3-bg:#221D30;
+    --neg:#D97F63; --neg-bg:#2C1913;
+    --accent:#8FA5DE;
+  }
+  :root[data-theme="light"]{
+    --ground:#EFEDE8; --ground-2:#E4E1DA; --panel:#F7F6F3;
+    --ink:#1A1A22; --ink-2:#4A4A57; --ink-3:#7C7C89;
+    --rule:#CFCBC2; --rule-2:#DEDBD4;
+    --l1:#1F6B5E; --l1-bg:#DCE9E5;
+    --l2:#8A6114; --l2-bg:#F0E6D2;
+    --l3:#5B4B8A; --l3-bg:#E4E0EF;
+    --neg:#96341F; --neg-bg:#F2DFD9;
+    --accent:#2A3B6B;
+  }
+
+  body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+       font-size:17.5px;line-height:1.66;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:940px;margin:0 auto;padding:0 24px 90px;}
+  h1,h2,h3,.eyebrow,.tag,.legend{font-family:var(--sans);}
+
+  /* TYPOGRAPHY ENCODES THE LAYER: monospace = measured, serif = read. */
+  .m,code,.figs{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+           color:var(--ink-3);font-weight:650;}
+
+  header.top{padding:70px 0 30px;}
+  h1{font-family:var(--sans);font-size:clamp(32px,5vw,54px);line-height:1.05;
+     letter-spacing:-.028em;font-weight:800;margin:16px 0 0;max-width:17ch;
+     text-wrap:balance;}
+  .dek{font-size:clamp(18px,2.1vw,21px);color:var(--ink-2);max-width:60ch;margin:22px 0 0;}
+  .dek b{color:var(--ink);font-weight:600;}
+
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin:32px 0 0;
+          padding:16px 0 0;border-top:1px solid var(--rule);}
+  .legend > div{font-size:12.5px;color:var(--ink-2);display:flex;gap:7px;
+                align-items:baseline;}
+  .sw{display:inline-block;width:9px;height:9px;border-radius:50%;flex:none;
+      transform:translateY(-1px);}
+
+  .tag{display:inline-block;font-family:var(--sans);font-size:10px;font-weight:750;
+       letter-spacing:.1em;padding:2px 6px;border-radius:2px;vertical-align:2px;}
+  .t1{background:var(--l1-bg);color:var(--l1);}
+  .t2{background:var(--l2-bg);color:var(--l2);}
+  .t3{background:var(--l3-bg);color:var(--l3);}
+  .tn{background:var(--neg-bg);color:var(--neg);}
+
+  section{margin-top:66px;}
+  h2{font-size:12px;letter-spacing:.19em;text-transform:uppercase;font-weight:700;
+     margin:0 0 8px;color:var(--ink);}
+  .sub{color:var(--ink-3);font-size:15px;margin:0 0 28px;max-width:62ch;}
+  h3{font-family:var(--sans);font-size:21px;font-weight:700;letter-spacing:-.014em;
+     margin:0 0 8px;line-height:1.28;text-wrap:balance;}
+  p{max-width:64ch;}
+
+  /* the press: peel -> juice */
+  .press{border:1px solid var(--rule);background:var(--panel);margin:26px 0;}
+  .press > div{padding:18px 22px;}
+  .peel{border-bottom:1px dashed var(--rule);}
+  .peel .eyebrow{color:var(--neg);}
+  .juice .eyebrow{color:var(--l1);}
+  .press p{margin:8px 0 0;font-size:16px;color:var(--ink-2);}
+  .press p b{color:var(--ink);font-weight:600;}
+
+  .figs{background:var(--ground-2);border:1px solid var(--rule);padding:16px 20px;
+        margin:22px 0;font-size:14px;line-height:1.85;overflow-x:auto;
+        white-space:pre;color:var(--ink);}
+
+  .card{border-left:3px solid var(--accent);padding:2px 0 2px 20px;margin:26px 0;}
+  .card.neg{border-left-color:var(--neg);}
+  .card.pos{border-left-color:var(--l1);}
+  .card p{margin:8px 0 0;color:var(--ink-2);}
+  .card p:first-of-type{margin-top:6px;}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--panel);
+          margin:24px 0;}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:14.5px;}
+  th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--rule-2);
+        vertical-align:top;}
+  th{font-family:var(--sans);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--ink-3);font-weight:750;background:var(--ground-2);}
+  td.n{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:none;}
+
+  .warn{background:var(--neg-bg);border:1px solid var(--neg);padding:20px 22px;margin:26px 0;}
+  .warn h3{color:var(--neg);font-size:17px;margin-bottom:6px;}
+  .warn p{margin:8px 0 0;font-size:15.5px;color:var(--ink-2);}
+  .warn p b{color:var(--ink);}
+
+  footer{margin-top:76px;padding-top:22px;border-top:1px solid var(--rule);
+         color:var(--ink-3);font-size:13.5px;font-family:var(--sans);}
+  @media (max-width:620px){ .figs{font-size:12px;} }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Organic Qur'anic Methodology · licensing round · 3 August 2026</div>
+  <h1>What two licensed questions actually give OQM</h1>
+  <p class="dek">Q4 and Q3 cleared their gates. Q5 was <b>refuted</b>. The refusal is worth
+  more to the methodology than either pass, because it converts a slogan into a
+  <b>scope condition</b> — and scope conditions are what make a framework comprehensive.</p>
+
+  <div class="legend">
+    <div><span class="sw" style="background:var(--l1)"></span>
+      <span><b>L1</b> — measured, falsifiable. <i>Set in monospace throughout.</i></span></div>
+    <div><span class="sw" style="background:var(--l2)"></span>
+      <span><b>L2</b> — operational definition. Calibrating, not a finding.</span></div>
+    <div><span class="sw" style="background:var(--l3)"></span>
+      <span><b>L3</b> — interpretive prior. No dataset adjudicates it.</span></div>
+  </div>
+</header>
+
+<section>
+  <h2>Before anything else</h2>
+  <p class="sub">Three claims in the brief that prompted this work do not survive contact
+  with the committed data. Correcting them is not a detail — two of the three were load-bearing.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Claim</th><th>What the data holds</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Rule 110 defeated τ<sub>v</sub> because a static oracle hit AUC ≈ 0.99, leaving no headroom</td>
+          <td>Backwards. The gate was scored on the <b>irreducible</b> arm, where static prediction sat at <span class="m">0.4940</span> — chance. Maximum headroom; monitoring gained <span class="m">+0.0051</span> anyway. <span class="tag t1">L1</span></td>
+        </tr>
+        <tr>
+          <td>τ<sub>v</sub> separates survival at 19.8 vs 50.6 days, <span class="m">p ≈ 10⁻³¹</span></td>
+          <td>Those are <b>means from the smaller four-cohort study</b>. On the committed 992-repo file the medians are <span class="m">20.53</span> vs <span class="m">32.37</span> and the means <span class="m">44.11</span> vs <span class="m">47.00</span> — nearly identical. <span class="tag t1">L1</span></td>
+        </tr>
+        <tr>
+          <td>Q3 is licensed by the 10,000-event financial runs</td>
+          <td>That engine is <b>our own simulator</b>. A policy winning inside a model we wrote is not evidence about the world. Q3 was re-scoped to what is falsifiable on real data. <span class="tag t1">L1</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Q4 — the reference-lock, now measured</h2>
+  <p class="sub">Of everything in this round, this is the one that genuinely extends the
+  methodology, because it turns a definition into an instrument.</p>
+
+  <div class="press">
+    <div class="peel">
+      <div class="eyebrow">The peel</div>
+      <p>A trustworthy evaluator is one that <b>says</b> it is impartial, is <b>certified</b>
+      impartial, or carries the authority of those who vouch for it.</p>
+    </div>
+    <div class="juice">
+      <div class="eyebrow">The juice</div>
+      <p>A trustworthy evaluator is one that is <b>structurally incapable</b> of consulting
+      the claim it is judging. Not unwilling — incapable. The property is a fact about the
+      code path, not about intent. <span class="tag t2">L2</span></p>
+    </div>
+  </div>
+
+  <p>In the function dictionary, <i>Shirk</i> is <b>reference-multiplication</b>: computing
+  coordinates against two references at once. <span class="tag t2">L2</span> An evaluator
+  that reads both the artifact <i>and</i> the artifact's self-report is doing exactly that —
+  it has two references and no rule for which wins.</p>
+
+  <p>The execution kernel has one. It runs held-out tests and never sees the comment block.
+  Measured against ground truth:</p>
+
+  <div class="figs">  AUC(execution kernel, declared correctness)   1.0000     bar 0.95
+  AUC(text evaluator, declared correctness)     0.5365     bar 0.65   ← chance
+  Spearman(kernel verdict, word count)         +0.0226     bar 0.20
+  Spearman(text verdict, word count)           +0.2804     (−0.4831 earlier)
+  DCM  Δ = V 0.6000 × I 1.0000 × C 0.6500  =    0.3900     floor 0.20</div>
+
+  <div class="card pos">
+    <p><b>The single-reference evaluator solved the task. The two-reference evaluator was at
+    chance.</b> <span class="tag t1">L1</span></p>
+    <p>And the admissibility floor that had voided <b>five consecutive runs</b> was cleared —
+    at <span class="m">0.3900</span> against an unchanged <span class="m">0.20</span>. Not
+    lowered to get there.</p>
+  </div>
+
+  <p><b>What OQM gains is not the confirmation — it is the boundary.</b> The kernel works
+  because code has objective ground truth. Where ground truth is absent, we could not build
+  one: the same reference-lock idea, applied to prose, produced an evaluator correlating
+  <span class="m">−0.4831</span> with <b>word count</b> and <span class="m">+0.04</span> with
+  the property it was supposed to measure.</p>
+
+  <div class="card">
+    <p><b>The scope condition, stated for the first time:</b> a reference-lock is
+    constructible exactly where the reference can be <i>evaluated independently of the claim</i>.
+    Not where it is merely <i>declared</i> independent. <span class="tag t2">L2</span></p>
+    <p>That sentence is new. OQM previously held that verification requires a single
+    reference; it did not say when one can be built. Now it does — and the condition is
+    checkable rather than asserted.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Q5 — the refusal that does the most work</h2>
+  <p class="sub">The claim under test was that watching a process beats reading a structure.
+  It lost, decisively, and it had already lost four times before in a different guise.</p>
+
+  <div class="figs">  AUC(static:  stars, leverage)     0.8000
+  AUC(process: τ_v)                 0.5947
+  process − static                 −0.2053     bar +0.05
+  combined                          0.7998     ← τ_v adds nothing</div>
+
+  <p>The cohort <i>is</i> confounded — the <span class="m">S4_failed</span> stratum is 100%
+  archived, so the strata were built using the outcome. The primary is reported as measured
+  regardless, and the check shows the failure <b>survives</b>: with that stratum removed,
+  structure still wins <span class="m">0.6801</span> to <span class="m">0.5850</span>.
+  <span class="tag t1">L1</span></p>
+
+  <div class="warn">
+    <h3>This is the fifth independent failure of the same shape</h3>
+    <p>τ<sub>v</sub> has now failed as an <b>admission screen</b> five times across separate
+    pre-registered runs. It passed exactly once — as a <b>covenant trigger</b>, where exiting
+    contracts that breached 60 days earned <span class="m">+42,840</span> over holding
+    everything. <span class="tag t1">L1</span></p>
+    <p><b>Monitoring is a trigger, not a screen.</b> A signal can lose one problem and win
+    the other, and the register had been using one word for both.</p>
+  </div>
+
+  <p>In OQM terms: <i>enforcement latency</i> tells you <b>when a covenant has been
+  breached</b>. It does not tell you <b>whom to admit</b>. Those are different governance
+  functions with different inputs, and collapsing them is a
+  <b>Folder Icon Error</b> — identical surface (a latency number), opposite directive.
+  <span class="tag t2">L2</span></p>
+
+  <div class="card neg">
+    <p><b>One more limit, recorded rather than argued away.</b> τ<sub>v</sub> on this cohort
+    was harvested with <i>no cutoff before the archiving event</i>, so it includes issues
+    closed during the decline. It is <b>contemporaneous, not leading</b> — which means no
+    run in this repository has yet established the early-warning claim at all.
+    <span class="tag t1">L1</span></p>
+  </div>
+</section>
+
+<section>
+  <h2>Q3 — licensed, and precisely bounded</h2>
+
+  <div class="figs">  SYSTEMIC withdrawal rate    0.3653
+  ROUTINE  withdrawal rate    0.1946
+  difference                 +0.1707     bar +0.10
+  permutation null (n=2000)   mean +0.00093, band [−0.0548, +0.0613], p < 0.0005</div>
+
+  <p>A classification declared before the data — top quartile of <i>both</i> counterparty
+  count and leverage — separates realised risk on a real network. <span class="tag t1">L1</span></p>
+
+  <p>What it does <b>not</b> license is the policy built on it. Whether assigning one
+  instrument to the systemic class and another to the routine class helps anyone is an
+  <b>intervention</b>, and no historical dataset answers it.</p>
+
+  <div class="card">
+    <p>This is the <b>selection / structure</b> distinction the register already carries,
+    arriving from a new direction. Stewardship structures say <i>how delegated capacity is
+    held to account</i>. They are not admission filters — and every time they have been read
+    as one, the run failed. <span class="tag t2">L2</span></p>
+  </div>
+</section>
+
+<section>
+  <h2>What is added to the methodology</h2>
+  <p class="sub">Three sentences that were not in OQM before this round, each with a
+  falsifiable consequence attached.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Addition</th><th>Source</th><th>Layer</th></tr></thead>
+      <tbody>
+        <tr><td>A reference-lock is constructible exactly where the reference can be evaluated <b>independently of the claim</b> — not merely declared independent.</td><td>Q4, licensed</td><td><span class="tag t2">L2</span></td></tr>
+        <tr><td><b>Monitoring is a trigger, not a screen.</b> Latency tells you when a covenant broke; it does not tell you whom to admit.</td><td>Q5, refuted ×5</td><td><span class="tag t2">L2</span></td></tr>
+        <tr><td>A classification may carve a real joint while the <b>policy assigned to it remains entirely untested</b>. Carving ≠ prescribing.</td><td>Q3, licensed narrowly</td><td><span class="tag t2">L2</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>None of these is a theological claim and none is offered as one. They are
+  <b>operational definitions with consequences that can come out wrong</b> — which is the
+  only kind of addition that makes a framework more comprehensive rather than merely longer.</p>
+</section>
+
+<section>
+  <h2>What is not claimed</h2>
+
+  <div class="warn">
+    <h3>The core equation is not "fully validated"</h3>
+    <p><span class="m">E = U·D_enc·D_dec</span> is supported on the yeast interactome
+    (<span class="m">N = 4,825</span>, channel VIF <span class="m">1.0026</span>, linear
+    beating quadratic). It is <b>not</b> uniformly supported elsewhere.
+    <span class="tag t1">L1</span></p>
+    <p><b>There is a standing measurement alarm on <span class="m">D</span> itself.</b>
+    ρ(capacity, D) is <span class="m">+0.5695</span> on a real PyPI graph and
+    <span class="m">−0.4702</span> on the real GitHub cohort. Two committed substrates
+    disagree on the <b>sign</b>. Until that is resolved, every claim resting on "fidelity"
+    rests on an unstable construct — including the readings on this page.
+    <span class="tag t1">L1</span></p>
+    <p>Separately, this round <b>refuted the manuscript's own domain limit</b>: where the
+    decode hop has no two-step substitute, <i>both</i> functional forms went
+    anti-predictive (<span class="m">0.4455</span> and <span class="m">0.4383</span>).
+    <span class="tag t1">L1</span></p>
+  </div>
+
+  <p>The reading of reality as a rendered interface for development, and of the processing
+  unit as a bounded agent inside it, remains an <b>interpretive prior</b>.
+  <span class="tag t3">L3</span> Nothing measured here confirms it, nothing measured here
+  refutes it, and no dataset in this repository adjudicates it. It is held as an axiom, and
+  saying so plainly is what keeps the measured layer worth citing.</p>
+
+  <p>A null cannot be used the other way either: that a keyword-matching sensor came out
+  null, or that a process metric lost to a structural one, is <b>not evidence for a
+  scriptural reading</b>. Those results constrain what may be <i>claimed</i>. They do not
+  confirm what is <i>read</i>. <span class="tag t2">L2</span></p>
+</section>
+
+<footer>
+  <p>Locked specifications: <code>cd429dfa…</code> (Q3/Q4/Q5) · <code>d7184ef9…</code>
+  (Q3 corrected control). Q4 <b>5/5</b> · Q3 <b>4/4</b> · Q5 <b>3/4, primary refuted</b>.
+  Nothing on this page is drawn from a simulator we wrote.</p>
+  <p style="margin-top:8px">Reproduce: <code>python3 -m pytest -q licensing/test_lic.py</code></p>
+</footer>
+
+</div>
