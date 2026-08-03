@@ -16,6 +16,7 @@ Each is an operational definition with a consequence that can come out wrong.
 | A reference-lock is constructible exactly where the reference can be evaluated **independently of the claim** — not merely declared independent | Q4, licensed 5/5 | `[L2]` |
 | **Monitoring is a trigger, not a screen.** Latency says when a covenant broke; it does not say whom to admit | Q5, refuted — fifth failure of this shape | `[L2]` |
 | A classification may carve a real joint while the **policy assigned to it stays untested**. Carving ≠ prescribing | Q3, licensed 4/4 narrowly | `[L2]` |
+| Before comparing a fidelity across substrates, check it is **not a monotone function of the same quantity that defines capacity** — or the correlation is an identity wearing a measurement's clothes | the D alarm, diagnosed 4/4 | `[L2]` |
 
 ## Why the refutation is worth more than the passes
 
@@ -42,9 +43,15 @@ previously say so.
 
 - **`E = U·D_enc·D_dec` is not "fully validated."** Supported on yeast (N=4,825, VIF 1.0026).
   Not uniformly supported elsewhere. `[L1]`
-- **Measurement alarm on `D`.** ρ(capacity, D) = **+0.5695** on real PyPI, **−0.4702** on the
-  real GitHub cohort — two committed substrates disagree on the *sign*. Every fidelity claim
-  rests on an unstable construct until that resolves. `[L1]`
+- **The alarm on `D` is diagnosed — it was a definition.** See
+  [`D_CONSTRUCT_ALARM.md`](D_CONSTRUCT_ALARM.md), spec `b6a262ea`, 4/4. PyPI's
+  `D_enc = 1/(1+months/12)` is a recency decay; GitHub's is a TF-IDF cosine. They share a
+  name and nothing else. And ρ(U_versions, months) = **−0.5869** against
+  ρ(U_versions, D_enc) = **+0.5869** — the same number sign-flipped, *by algebra*. The PyPI
+  correlation carries zero independent information about fidelity. `[L1]`
+- **But `D` is not repaired.** The GitHub negative correlation is untouched. One of the
+  alarm's two data points is disqualified, so there is no longer a *contradiction* —
+  `E = U·D_enc·D_dec` is still not restored to universal standing. `[L1]`
 - **The manuscript's own §3.3c domain limit was refuted** this round: where the decode hop
   has no two-step substitute, *both* forms went anti-predictive (0.4455, 0.4383). `[L1]`
 - The rendered-interface reading remains an **interpretive prior**. Nothing measured here

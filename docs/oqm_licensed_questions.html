@@ -293,7 +293,7 @@
 
 <section>
   <h2>What is added to the methodology</h2>
-  <p class="sub">Three sentences that were not in OQM before this round, each with a
+  <p class="sub">Four sentences that were not in OQM before this round, each with a
   falsifiable consequence attached.</p>
 
   <div class="scroll">
@@ -303,6 +303,7 @@
         <tr><td>A reference-lock is constructible exactly where the reference can be evaluated <b>independently of the claim</b> — not merely declared independent.</td><td>Q4, licensed</td><td><span class="tag t2">L2</span></td></tr>
         <tr><td><b>Monitoring is a trigger, not a screen.</b> Latency tells you when a covenant broke; it does not tell you whom to admit.</td><td>Q5, refuted ×5</td><td><span class="tag t2">L2</span></td></tr>
         <tr><td>A classification may carve a real joint while the <b>policy assigned to it remains entirely untested</b>. Carving ≠ prescribing.</td><td>Q3, licensed narrowly</td><td><span class="tag t2">L2</span></td></tr>
+        <tr><td>Before comparing a fidelity across substrates, check it is <b>not a monotone function of the same quantity that defines capacity</b> — or the correlation is an identity wearing a measurement's clothes.</td><td>the D alarm, diagnosed</td><td><span class="tag t2">L2</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -321,11 +322,25 @@
     (<span class="m">N = 4,825</span>, channel VIF <span class="m">1.0026</span>, linear
     beating quadratic). It is <b>not</b> uniformly supported elsewhere.
     <span class="tag t1">L1</span></p>
-    <p><b>There is a standing measurement alarm on <span class="m">D</span> itself.</b>
-    ρ(capacity, D) is <span class="m">+0.5695</span> on a real PyPI graph and
-    <span class="m">−0.4702</span> on the real GitHub cohort. Two committed substrates
-    disagree on the <b>sign</b>. Until that is resolved, every claim resting on "fidelity"
-    rests on an unstable construct — including the readings on this page.
+    <p><b>The alarm on <span class="m">D</span> has been diagnosed, and it was a
+    definition.</b> ρ(capacity, D) was <span class="m">+0.5695</span> on PyPI and
+    <span class="m">−0.4702</span> on GitHub — read as one construct with an unstable
+    value. It is not one construct. PyPI's
+    <span class="m">D_enc = 1/(1 + months_since_release/12)</span> is a <b>recency decay</b>;
+    GitHub's is a <b>TF-IDF cosine</b> of commit messages. They share a name and nothing
+    else. <span class="tag t1">L1</span></p>
+    <p>And the PyPI number is <b>construction-induced</b>:
+    <span class="m">ρ(U_versions, months) = −0.5869</span> against
+    <span class="m">ρ(U_versions, D_enc) = +0.5869</span> — the same number sign-flipped,
+    necessarily, because <span class="m">D_enc</span> is strictly decreasing in months and
+    Spearman is rank-based. That correlation says <i>packages with more releases have
+    released more recently</i>, and carries <b>zero independent information about
+    fidelity</b>. <span class="tag t1">L1</span></p>
+    <p><b>What that does not do is repair anything.</b> The GitHub negative correlation is
+    untouched. One of the alarm's two data points is disqualified, so there is no longer a
+    <i>contradiction</i> — but <span class="m">E = U·D_enc·D_dec</span> is not restored to
+    universal standing, and the alarm is <b>restated rather than retired</b>: D is a family
+    of substrate-specific formulas, and at least one member was measuring release timing.
     <span class="tag t1">L1</span></p>
     <p>Separately, this round <b>refuted the manuscript's own domain limit</b>: where the
     decode hop has no two-step substitute, <i>both</i> functional forms went
@@ -347,7 +362,8 @@
 
 <footer>
   <p>Locked specifications: <code>cd429dfa…</code> (Q3/Q4/Q5) · <code>d7184ef9…</code>
-  (Q3 corrected control). Q4 <b>5/5</b> · Q3 <b>4/4</b> · Q5 <b>3/4, primary refuted</b>.
+  (Q3 corrected control) · <code>b6a262ea…</code> (the D alarm). Q4 <b>5/5</b> · Q3 <b>4/4</b> ·
+  Q5 <b>3/4, primary refuted</b> · D alarm <b>4/4, diagnosed</b>.
   Nothing on this page is drawn from a simulator we wrote.</p>
   <p style="margin-top:8px">Reproduce: <code>python3 -m pytest -q licensing/test_lic.py</code></p>
 </footer>
