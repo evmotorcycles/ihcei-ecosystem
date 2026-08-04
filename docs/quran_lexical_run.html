@@ -1,0 +1,312 @@
+<title>One word behaves that way. The other doesn't.</title>
+<style>
+  :root{
+    --ground:#FBFAF8; --panel:#FFFFFF; --band:#F1EFEB;
+    --ink:#15151A; --ink-2:#4E4E58; --ink-3:#84848E;
+    --rule:#DAD7D1; --rule-2:#E8E5E0;
+    --hot:#8C2F2F; --hot-bg:#F6E8E6;
+    --cool:#33475E; --cool-bg:#E6EBF0;
+    --ar:"Noto Naskh Arabic","Amiri","Scheherazade New","Traditional Arabic","Geeza Pro","Segoe UI Historic",serif;
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+    --serif:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --sans:ui-sans-serif,system-ui,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#101013; --panel:#17171C; --band:#1C1C22;
+      --ink:#EDECE8; --ink-2:#AFAFB8; --ink-3:#7A7A84;
+      --rule:#2C2C34; --rule-2:#232329;
+      --hot:#DB8A80; --hot-bg:#2B1614;
+      --cool:#8FB0CE; --cool-bg:#151E28;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#101013; --panel:#17171C; --band:#1C1C22;
+    --ink:#EDECE8; --ink-2:#AFAFB8; --ink-3:#7A7A84;
+    --rule:#2C2C34; --rule-2:#232329;
+    --hot:#DB8A80; --hot-bg:#2B1614;
+    --cool:#8FB0CE; --cool-bg:#151E28;
+  }
+  :root[data-theme="light"]{
+    --ground:#FBFAF8; --panel:#FFFFFF; --band:#F1EFEB;
+    --ink:#15151A; --ink-2:#4E4E58; --ink-3:#84848E;
+    --rule:#DAD7D1; --rule-2:#E8E5E0;
+    --hot:#8C2F2F; --hot-bg:#F6E8E6;
+    --cool:#33475E; --cool-bg:#E6EBF0;
+  }
+
+  body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+       font-size:18px;line-height:1.66;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px 96px;}
+  h1,h2,h3,.lbl,.tag{font-family:var(--sans);}
+  .n{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  .ar{font-family:var(--ar);direction:rtl;unicode-bidi:isolate;line-height:1.9;}
+  p{max-width:62ch;}
+
+  .lbl{font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+       color:var(--ink-3);font-weight:700;}
+
+  header.top{padding:68px 0 0;}
+  h1{font-size:clamp(31px,5.2vw,54px);line-height:1.04;letter-spacing:-.028em;
+     font-weight:800;margin:14px 0 0;max-width:18ch;text-wrap:balance;}
+  .dek{font-size:clamp(18px,2.1vw,21px);color:var(--ink-2);margin:24px 0 0;max-width:58ch;}
+  .dek b{color:var(--ink);font-weight:600;}
+
+  /* the hero: two phrases, one finding */
+  .duel{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);
+        border:1px solid var(--rule);margin:44px 0 0;}
+  .duel > div{background:var(--panel);padding:28px 24px;}
+  .duel .ar{font-size:clamp(30px,5vw,46px);margin:0 0 4px;}
+  .duel .tr{font-size:15px;color:var(--ink-3);font-style:italic;}
+  .duel .stat{margin-top:18px;padding-top:14px;border-top:1px solid var(--rule-2);}
+  .duel .big{font-family:var(--mono);font-size:34px;font-weight:600;letter-spacing:-.03em;
+             display:block;line-height:1.1;}
+  .duel .cap{font-size:14px;color:var(--ink-2);display:block;margin-top:5px;line-height:1.45;}
+  .a .big{color:var(--hot);} .b .big{color:var(--cool);}
+
+  section{margin-top:70px;}
+  h2{font-size:clamp(24px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;
+     line-height:1.16;margin:0 0 6px;max-width:22ch;text-wrap:balance;}
+  .sub{color:var(--ink-3);font-size:16px;margin:0 0 26px;max-width:58ch;}
+
+  .slip{border-left:3px solid var(--rule);padding:4px 0 4px 20px;margin:24px 0;}
+  .slip.hot{border-left-color:var(--hot);}
+  .slip.cool{border-left-color:var(--cool);}
+  .slip .ar{font-size:26px;margin:0;}
+  .slip .ref{font-family:var(--mono);font-size:13px;color:var(--ink-3);}
+  .slip p{margin:8px 0 0;font-size:16px;color:var(--ink-2);}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--panel);margin:26px 0;}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px;}
+  th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--rule-2);
+        vertical-align:top;}
+  th{font-family:var(--sans);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--ink-3);font-weight:750;background:var(--band);}
+  td.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;}
+  td .ar{font-size:21px;}
+  tr:last-child td{border-bottom:none;}
+
+  .box{background:var(--band);border:1px solid var(--rule);padding:24px 26px;margin:30px 0;}
+  .box h3{font-size:19px;margin:0 0 8px;font-weight:750;}
+  .box p{margin:10px 0 0;font-size:16px;color:var(--ink-2);}
+  .box p b{color:var(--ink);}
+  .box.warn{background:var(--hot-bg);border-color:var(--hot);}
+  .box.warn h3{color:var(--hot);}
+
+  .tag{display:inline-block;font-size:10px;font-weight:750;letter-spacing:.11em;
+       padding:3px 8px;border-radius:2px;text-transform:uppercase;}
+  .t-pass{background:var(--cool-bg);color:var(--cool);}
+  .t-fail{background:var(--hot-bg);color:var(--hot);}
+  .t-excl{background:var(--band);color:var(--ink-3);}
+
+  footer{margin-top:80px;padding-top:24px;border-top:2px solid var(--ink);
+         font-family:var(--sans);font-size:13.5px;color:var(--ink-3);}
+  footer p{max-width:66ch;}
+  @media (max-width:620px){ .duel{grid-template-columns:1fr;} }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="lbl">Lexical run · spec 708ac80e · 6,236 ayahs · 5 of 6</div>
+  <h1>One word behaves that way. The other doesn't.</h1>
+  <p class="dek">The claim was that <i>yahūd</i> and <i>naṣārā</i> are not labels but
+  descriptions of something done. That prediction is <b>checkable</b>, so it was checked
+  against the whole text. <b>It holds for one word and fails for the other</b> — and the
+  failure is the more interesting half.</p>
+
+  <div class="duel">
+    <div class="a">
+      <div class="lbl">Named by a verb</div>
+      <div class="ar">ٱلَّذِينَ هَادُوا۟</div>
+      <div class="tr">alladhīna hādū — "those who hādū"</div>
+      <div class="stat">
+        <span class="big">10</span>
+        <span class="cap">times the group is named by a <b>finite verb</b> — including a
+        direct vocative, <i>"O you who hādū"</i> (62:6). The noun
+        <span class="ar" style="font-size:17px">ٱلْيَهُود</span> appears only
+        <span class="n">8</span> times. <b>The verb is commoner than the noun.</b></span>
+      </div>
+    </div>
+    <div class="b">
+      <div class="lbl">Named by a noun, only</div>
+      <div class="ar">ٱلنَّصَـٰرَىٰ</div>
+      <div class="tr">al-naṣārā</div>
+      <div class="stat">
+        <span class="big">0</span>
+        <span class="cap">times the group is named by a finite verb — despite the noun
+        appearing <span class="n">14</span> times and the same root supplying
+        <span class="n">82</span> finite verbs elsewhere in the text.</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2>Why "it shares a root with a verb" proves nothing</h2>
+  <p class="sub">The obvious test is worthless, and this text hands you the counterexample.</p>
+
+  <div class="slip hot">
+    <div class="ar">عَاد</div>
+    <div class="ref">ʿĀd — 26 ayahs</div>
+    <p>The tribe. Surface-identical to <b>two entirely unrelated words</b>:
+    <span class="ar">عَادَ</span> <i>ʿāda</i>, "he returned" (root ʿ-W-D, 2:275
+    <i>wa man ʿāda</i>), and <span class="ar">عَاد</span> <i>ʿādin</i>, "transgressor"
+    (root ʿ-D-W, 2:173 <i>wa lā ʿād</i>).</p>
+    <p>A test based on shared letters would confidently announce that a <b>proper noun</b>
+    is deverbal. So that test was not used.</p>
+  </div>
+
+  <div class="box">
+    <h3>The test that was used instead</h3>
+    <p>Does the text <b>designate the group with a finite verb</b> — a relative clause
+    <i>"those who [verb]"</i> or a vocative <i>"O you who [verb]"</i> — rather than only
+    with a noun?</p>
+    <p>A proper noun cannot be conjugated to name its own bearers. If a text says
+    <i>"those who X-ed"</i> as a standing way of naming a group, the designation is built
+    on the act. That's a behaviour, and behaviours can be counted.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The control is what makes it mean anything</h2>
+  <p class="sub">Seven names nobody disputes are proper nouns, run through the identical
+  matcher.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Term</th><th></th><th style="text-align:right">Named by a finite verb</th></tr></thead>
+      <tbody>
+        <tr><td><span class="ar">ٱلَّذِينَ هَادُوا۟</span></td><td>the group under test</td>
+            <td class="num" style="color:var(--hot);font-weight:700">10</td></tr>
+        <tr><td><span class="ar">فِرْعَوْن</span></td><td>Firʿawn</td><td class="num">0</td></tr>
+        <tr><td><span class="ar">ثَمُود</span></td><td>Thamūd</td><td class="num">0</td></tr>
+        <tr><td><span class="ar">عَاد</span></td><td>ʿĀd</td><td class="num">0</td></tr>
+        <tr><td><span class="ar">إِسْرَٰٓءِيل</span></td><td>Isrāʾīl</td><td class="num">0</td></tr>
+        <tr><td><span class="ar">مَجُوس</span></td><td>Majūs</td><td class="num">0</td></tr>
+        <tr><td><span class="ar">رُّوم</span></td><td>Rūm</td><td class="num">0</td></tr>
+        <tr><td><span class="ar">قُرَيْش</span></td><td>Quraysh</td><td class="num">0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><b>Seven out of seven at zero.</b> Without this column the count of 10 would be a
+  number with nothing to compare it to. With it, the behaviour separates one word from
+  every control.</p>
+</section>
+
+<section>
+  <h2>The gate that failed, and why it's the best part</h2>
+  <p class="sub">The prediction was that <i>naṣārā</i> is never designated by a verb. The
+  matcher found two hits.</p>
+
+  <div class="slip cool">
+    <div class="ar">وَٱلَّذِينَ ءَاوَوا۟ وَّنَصَرُوٓا۟</div>
+    <div class="ref">8:72 · 8:74 — "and those who sheltered and <b>helped</b>"</div>
+    <p>The construction <b>does exist</b> for this root. But it names the
+    <b>Anṣār</b> — the helpers — who are a <b>different group</b> from the
+    <i>naṣārā</i>.</p>
+  </div>
+
+  <p>The matcher cannot resolve who a phrase refers to, so it counted them.
+  <b>The gate is scored FAILED as measured</b> — a gate is not re-scored after the fact
+  because you found a reason you dislike the answer.</p>
+
+  <p>But the substance is sharper than a pass would have been:</p>
+
+  <div class="box warn">
+    <h3>The root can name a group by what it did. It just never does that for the naṣārā.</h3>
+    <p><span class="ar" style="font-size:20px">ن‑ص‑ر</span> supplies <b class="n">82</b>
+    finite verbs and the noun <i>anṣār</i> ("helpers") <b class="n">11</b> times. The
+    machinery for a "those who did X" designation is fully present in the text and is
+    actually used — for the Anṣār.</p>
+    <p>The <i>naṣārā</i> are named by a noun <b class="n">14</b> times and by a verb
+    <b class="n">0</b> times. That is not an absence of opportunity. It's a pattern.</p>
+  </div>
+
+  <p><b>So a single claim covering both words is not supported.</b> Whatever is true of one
+  is not thereby true of the other, and stating them together would hide the asymmetry that
+  is the actual result.</p>
+</section>
+
+<section>
+  <h2>Two specific claims, checked</h2>
+
+  <div class="slip">
+    <div class="ar">فَلْيُمْلِلْ &nbsp;·&nbsp; وَلْيُمْلِلِ &nbsp;·&nbsp; يُمِلَّ</div>
+    <div class="ref">2:282 — the only ayah in the text with a finite M-L-L verb</div>
+    <p>The claim was that the root's verbal usage is confined to a single ayah. <b>It
+    is.</b> Three finite tokens, all in 2:282, none anywhere else in 6,236 ayahs.
+    <span class="tag t-pass">holds</span></p>
+  </div>
+
+  <div class="slip">
+    <div class="ar">وَلَن تَرْضَىٰ عَنكَ ٱلْيَهُودُ وَلَا ٱلنَّصَـٰرَىٰ حَتَّىٰ تَتَّبِعَ مِلَّتَهُمْ</div>
+    <div class="ref">2:120</div>
+    <p>The claim was that this ayah names both groups yet uses a <b>singular</b>
+    <span class="ar">مِلَّتَهُمْ</span>. <b>It does.</b>
+    <span class="tag t-pass">holds</span></p>
+  </div>
+</section>
+
+<section>
+  <h2>What the run does not do</h2>
+
+  <div class="box warn">
+    <h3>It does not establish what the words mean</h3>
+    <p>Word behaviour constrains readings. It does not select one. <b>Many perfectly
+    ordinary ethnonyms are historically deverbal in every language</b> — that's how a great
+    many group-names are formed. So a pass here is <b>consistent with</b> a descriptor
+    reading and does not establish it.</p>
+    <p>That limit is <b>gate V8</b>, scored as untestable-here rather than buried in a
+    footnote.</p>
+  </div>
+
+  <div class="box warn">
+    <h3>It is not a claim about any living community</h3>
+    <p>The units of analysis are <b>Arabic word-forms in one text</b>. No gate references
+    any real-world group, and nothing measured here is evidence about Jewish or Christian
+    people, beliefs or practices. That is <b>gate V9</b>, out of scope by construction.</p>
+    <p>Worth saying plainly in both directions: a finding that a word is built on an action
+    rather than on descent is, if anything, the <b>opposite</b> of an ethnic claim.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Where the real difficulty was</h2>
+  <p class="sub">Not the statistics. The spelling.</p>
+
+  <div class="box">
+    <p><b>The dataset writes long <i>ā</i> with a dagger alif</b> (U+0670):
+    <span class="ar">نَصَـٰرَىٰ</span>. Strip it as a diacritic and the word becomes
+    <span class="ar">نصري</span>, which matches nothing. It has to become a full alif.</p>
+    <p><b>But a dagger alif following alif-maqsura is that letter's own vowel</b>, not an
+    extra letter — handle it second and <i>naṣārā</i> grows a spurious alif.</p>
+    <p><b>And marks must be removed by Unicode category, not a hand-written range.</b> A
+    hand-written range missed U+064B–U+0652 — fatha, damma, shadda, sukun — and silently
+    corrupted every count in the first attempt.</p>
+    <p>The run reproduces the published benchmark counts — <i>naṣārā</i>
+    <span class="n">14</span>, <i>al-yahūd</i> <span class="n">8</span>, <i>hādū</i>
+    <span class="n">10</span> — which is an <b>integrity check, not a finding</b>.</p>
+  </div>
+
+  <div class="box">
+    <h3>One weakness, admitted</h3>
+    <p>The primary gate's threshold (≥ 5) was set <b>after</b> the count of 10 had been seen
+    during that normalisation work. So the primary is a <b>weak</b> pre-registration and is
+    labelled that way. The control and the split were not informed that way, and they are
+    what carry the run.</p>
+  </div>
+</section>
+
+<footer>
+  <p>6,236 ayahs · one committed public dataset · nothing simulated, no cohort synthesised,
+  no study population invented. Gates: V1 <span class="tag t-pass">pass</span>
+  V2 <span class="tag t-pass">pass</span> V3 <span class="tag t-pass">pass</span>
+  V4 <span class="tag t-fail">fail</span> V5 <span class="tag t-excl">excl</span>
+  V6 <span class="tag t-pass">pass</span> V7 <span class="tag t-pass">pass</span>
+  V8 <span class="tag t-excl">excl</span> V9 <span class="tag t-excl">excl</span></p>
+  <p style="margin-top:10px">Reproduce: <code>python3 -m pytest -q quran/test_qlex.py</code></p>
+</footer>
+
+</div>

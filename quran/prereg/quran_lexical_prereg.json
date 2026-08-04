@@ -1,0 +1,88 @@
+{
+ "THE_DISCRIMINATOR_AND_WHY_ROOT_SHARING_IS_NOT_IT": {
+  "THE_TEST_ACTUALLY_USED": "Does the text DESIGNATE THE GROUP with a finite verb -- a relative clause 'those who [verb]' or a vocative 'O you who [verb]' -- rather than only with a noun? That is a behaviour a proper noun does not have.",
+  "the_counterexample": "The tribe name 'Aad appears 37 times and is surface-identical to two unrelated things: the verb 'aada (he returned, root '-W-D) and 'aadin (transgressor, root '-D-W). Any test based on shared letters would wrongly conclude 'Aad is deverbal.",
+  "the_naive_test_that_fails": "'The word shares a root with a verb, therefore it is deverbal.' This is worthless, and the text supplies its own counterexample.",
+  "why_this_one_discriminates": "A proper noun cannot be conjugated to name its own bearers. If a text says 'those who X-ed' as a standing designation for a group, the designation is built on the act."
+ },
+ "WHAT_THIS_IS_AND_IS_NOT": {
+  "OUT_OF_SCOPE_BY_CONSTRUCTION": "Nothing in this specification is a claim about Jewish or Christian people, communities, beliefs or practices. The units of analysis are Arabic word-forms in one text. No gate references any living community and no result may be reported as though it did.",
+  "WHAT_IT_CANNOT_DO": "Word behaviour does not settle word meaning. Many ordinary ethnonyms are historically deverbal in every language. A pass here is CONSISTENT WITH the descriptor reading and does not establish it. That limit is a gate (V8), not a footnote.",
+  "layer": "Every count below is L1 -- measured and falsifiable. Any reading of what the counts MEAN is L2 and is not scored here.",
+  "the_claim_being_tested": "That 'yahud' and 'nasara' are not ethnic or communal labels but descriptors of something done -- so the words should behave in the text like DEVERBAL DESCRIPTORS rather than like PROPER NOUNS.",
+  "what_makes_it_testable": "Those two readings predict different textual behaviour, and the text is fixed, public, and was not written by us. Counting is mechanical."
+ },
+ "anti_immunisation": "No threshold may be changed after any measurement. A failed gate is reported as failed. REFUTED, UNTESTABLE-HERE and OUT-OF-SCOPE stay distinct.",
+ "gates": [
+  {
+   "bar": "6,236 ayahs load; the normaliser reproduces the published benchmark counts nasara=14, al-yahud=8, hadu=10",
+   "id": "V1_integrity",
+   "weight": "full"
+  },
+  {
+   "bar": "the construction 'alladhina hadu' / 'ya ayyuha alladhina hadu' occurs >= 5 times as a designation of the group",
+   "id": "V2_PRIMARY_yahud_IS_designated_by_a_finite_verb",
+   "weight": "full"
+  },
+  {
+   "bar": "across the control set (Firawn, Thamud, Aad, Israil, Majus, Rum, Quraysh) the count of finite-verb group-designation is 0. IF THIS FAILS, V2 IS UNINFORMATIVE, because the behaviour would not distinguish anything.",
+   "id": "V3_ABLATION_control_proper_nouns_are_NOT",
+   "weight": "full"
+  },
+  {
+   "bar": "no relative or vocative clause built on a finite N-S-R verb designates the nasara. PRE-REGISTERED PREDICTION: the two terms behave DIFFERENTLY, so a single symmetric claim covering both is not supported. If nasara DOES show the construction, this gate fails and the symmetric claim gains support.",
+   "id": "V4_THE_SPLIT_nasara_is_NOT_designated_by_a_finite_verb",
+   "weight": "full"
+  },
+  {
+   "bar": "EXCLUDED. Reporting that 'Aad is surface-identical to two unrelated forms is a demonstration of why the naive test fails, not a test of anything. It scores nothing.",
+   "id": "V5_the_homograph_demonstration",
+   "weight": "excluded"
+  },
+  {
+   "bar": "every finite verbal occurrence of the root M-L-L in the whole text falls in ayah 2:282",
+   "id": "V6_M_L_L_verbal_usage_is_confined_to_2_282",
+   "weight": "full"
+  },
+  {
+   "bar": "ayah 2:120 contains the singular 'millatahum' and names both al-yahud and al-nasara",
+   "id": "V7_2_120_uses_a_SINGULAR_millah_for_two_named_groups",
+   "weight": "full"
+  },
+  {
+   "bar": "UNTESTABLE-HERE. Distributional behaviour constrains readings; it does not select one. Establishing meaning needs evidence this design cannot supply, and no count here is offered as though it could.",
+   "id": "V8_does_any_of_this_establish_what_the_words_MEAN",
+   "weight": "excluded"
+  },
+  {
+   "bar": "OUT OF SCOPE BY CONSTRUCTION. The units are word-forms in one text. No gate references any living community and no result may be reported as though it did.",
+   "id": "V9_claims_about_actual_communities",
+   "weight": "excluded"
+  }
+ ],
+ "model": "Do 'yahud' and 'nasara' behave like ethnonyms or like deverbal descriptors in the Quranic text?",
+ "one_line": "A purely LEXICAL and DISTRIBUTIONAL test on a committed 6,236-ayah dataset. It measures how two words behave in one text. It does not, and cannot, establish what they mean, and it makes no claim whatsoever about Jewish or Christian people.",
+ "simulator_rule": "One committed public dataset of 6,236 ayahs. Nothing is simulated, no cohort is synthesised, and no study population is invented.",
+ "the_control_set": [
+  "فرعون",
+  "ثمود",
+  "عاد",
+  "اسراءيل",
+  "مجوس",
+  "روم",
+  "قريش"
+ ],
+ "the_normalisation_and_why_it_is_load_bearing": {
+  "1_dagger_alif": "The dataset writes long /a:/ with a DAGGER ALIF U+0670. A naive diacritic strip turns nasara into a form matching nothing. It must become a full alif.",
+  "2_dagger_after_alif_maqsura": "A dagger alif following alif-maqsura marks that letter's own long vowel and is NOT an extra alif. Handled first, or the token gains a spurious letter.",
+  "3_combining_marks_by_category": "Marks are removed by Unicode category Mn, not a hand-written range. A hand-written range missed U+064B-U+0652 and silently corrupted every count in a first attempt.",
+  "benchmark": "With these fixed the run reproduces published counts: nasara 14, al-yahud 8, hadu 10. That is the integrity check, not a finding.",
+  "note": "Three normalisation decisions each changed the answer during construction, before this lock, and are recorded so a reader can check them."
+ },
+ "too_perfect_rule": "Counts matching published benchmarks exactly are an INTEGRITY CHECK, not a result, and are excluded from the evidential reading.",
+ "version": "1.0",
+ "what_a_pass_would_and_would_not_license": {
+  "would": "That in this text 'yahud' is designated by a finite verb in a way that seven control proper nouns are not, and that 'nasara' is not so designated -- i.e. the two words behave differently.",
+  "would_NOT": "That either word MEANS a function. That any traditional or non-traditional reading is correct. Anything at all about Jewish or Christian people."
+ }
+}

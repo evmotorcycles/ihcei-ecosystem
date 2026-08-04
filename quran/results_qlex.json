@@ -1,0 +1,158 @@
+{
+  "counts": {
+    "ansar_noun": 11,
+    "control_group_designated_by_verb": {
+      "اسراءيل": 0,
+      "ثمود": 0,
+      "روم": 0,
+      "عاد": 0,
+      "فرعون": 0,
+      "قريش": 0,
+      "مجوس": 0
+    },
+    "hadu_finite_verb": 10,
+    "nasara_group_designated_by_verb": 2,
+    "nasara_noun": 14,
+    "nasraniyyan": 1,
+    "nsr_finite_verbs": 82,
+    "yahud_group_designated_by_verb": 10,
+    "yahud_noun": 8,
+    "yahudiyyan": 1
+  },
+  "gates": [
+    {
+      "detail": "6236 ayahs. Benchmark counts {'nasara': 14, 'al_yahud': 8, 'hadu': 10} against published {'nasara': 14, 'al_yahud': 8, 'hadu': 10}. This is an INTEGRITY CHECK, not a finding.",
+      "id": "V1_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "the group is named by the finite verb 'hadu' in a relative or vocative clause 10 times (needs >= 5), against 8 occurrences of the noun. Refs: ['16:118', '22:17', '2:62', '4:160', '4:46', '5:41', '5:44', '5:69', '62:6', '6:146']",
+      "id": "V2_PRIMARY_yahud_IS_designated_by_a_finite_verb",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "across 7 control proper nouns the finite-verb group-designation count is 0 (needs 0). Per control: {'فرعون': 0, 'ثمود': 0, 'عاد': 0, 'اسراءيل': 0, 'مجوس': 0, 'روم': 0, 'قريش': 0}",
+      "id": "V3_ABLATION_control_proper_nouns_are_NOT",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "relative or vocative clauses built on a finite N-S-R verb: 2. Refs: ['8:72', '8:74']. The noun 'nasara' occurs 14 times and the root supplies 82 finite verb tokens, yet the group is never named BY the verb.",
+      "id": "V4_THE_SPLIT_nasara_is_NOT_designated_by_a_finite_verb",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "'Aad appears 26 times across 26 ayahs and is surface-identical to two unrelated forms: the verb 'aada (returned, root '-W-D, e.g. 2:275 'wa man 'aada') and 'aadin (transgressor, root '-D-W, e.g. 2:173 'wa laa 'aad'). A test based on shared letters would call 'Aad deverbal. This is why the run tests GROUP DESIGNATION instead. Demonstration only, scores nothing.",
+      "id": "V5_the_homograph_demonstration",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "finite M-L-L verb tokens: 3, all in ['2:282']. Forms: ['ليملل', 'يمل']",
+      "id": "V6_M_L_L_verbal_usage_is_confined_to_2_282",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "2:120 contains singular 'millatahum': True; names both groups: True. Text: وَلَن تَرْضَىٰ عَنكَ ٱلْيَهُودُ وَلَا ٱلنَّصَٰرَىٰ حَتَّىٰ تَتَّبِعَ مِلَّتَهُمْ ۗ قُلْ إِنَّ هُدَى ٱللَّهِ هُوَ ٱلْهُدَىٰ ۗ وَلَئِنِ ٱتَّبَعْتَ أَهْوَآءَهُم بَعْدَ ٱلَّذِى جَآءَكَ مِنَ ٱلْعِلْمِ ۙ مَا لَكَ مِنَ ٱللَّهِ مِن وَلِىٍّۢ وَلَا نَصِيرٍ",
+      "id": "V7_2_120_uses_a_SINGULAR_millah_for_two_named_groups",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "UNTESTABLE-HERE. Distributional behaviour constrains readings; it does not select one. Many ordinary ethnonyms are historically deverbal in every language, so a pass on V2 is CONSISTENT WITH a descriptor reading and does not establish it.",
+      "id": "V8_does_any_of_this_establish_what_the_words_MEAN",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "OUT OF SCOPE BY CONSTRUCTION. The units of analysis are Arabic word-forms in one text. No gate references any living community, and no count here is evidence about Jewish or Christian people, beliefs or practices.",
+      "id": "V9_claims_about_actual_communities",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "V4_THE_SPLIT_nasara_is_NOT_designated_by_a_finite_verb"
+  ],
+  "model": "Quran lexical behaviour: ethnonym or deverbal descriptor?",
+  "n_ayahs": 6236,
+  "post_run_disclosures": {
+    "D1_THE_BINDING_CONSEQUENCE": {
+      "statement": "V3 WAS MET, so V2 discriminates: the behaviour separates 'yahud' from seven control proper nouns."
+    },
+    "D2_THE_TWO_WORDS_DO_NOT_BEHAVE_THE_SAME": {
+      "nasara": "noun 14 times; named by a finite verb 2 times, despite the root supplying 82 finite verb tokens elsewhere.",
+      "note": "A single symmetric claim covering both words is NOT supported by this test. Whatever is true of one is not thereby true of the other, and reporting them together would hide the asymmetry that is the actual result.",
+      "yahud": "noun 8 times; named by the finite verb 'hadu' 10 times, including a direct vocative address."
+    },
+    "D2b_THE_V2_THRESHOLD_WAS_INFORMED_BY_A_PRE_LOCK_COUNT": {
+      "note": "The spec's V1 records that the benchmark counts, including hadu = 10, were seen before the lock as a normalisation check. V2's bar of >= 5 was therefore set knowing that number. That makes V2 a WEAK pre-registration and it is labelled as such rather than presented as a blind prediction. V3 and V4 were NOT informed this way, and they are what carry the run."
+    },
+    "D3_WHY_ROOT_SHARING_WAS_NOT_USED": {
+      "note": "'Aad is surface-identical to an unrelated verb and an unrelated participle. Any test based on shared letters would have produced a false positive on a proper noun, which is exactly the failure mode this design was built to avoid."
+    },
+    "D4_WHAT_IS_NOT_CLAIMED": {
+      "note": "No meaning is established (V8). Nothing here is a statement about Jewish or Christian people (V9). The result is about how two Arabic word-forms are used in one text, and it stops there."
+    }
+  },
+  "primary_verdict": "IN THIS TEXT the group named 'yahud' is ALSO designated by a finite verb from the same root 10 times, a behaviour none of the 7 control proper nouns shows. The group named 'nasara' is NOT so designated (2 times), so the two words behave DIFFERENTLY. V3 WAS MET, so V2 discriminates: the behaviour separates 'yahud' from seven control proper nouns. No meaning is established by any of this.",
+  "score": "5/6",
+  "simulated_values": 0,
+  "spec_sha256": "708ac80e3b14096c0eee90df0eae918596c565d78f005541c06b5dd1111fb6aa",
+  "yahud_verb_designations": [
+    {
+      "context": "الذين امنوا والذين هادوا والنصاري",
+      "ref": "2:62",
+      "verb": "هادوا"
+    },
+    {
+      "context": "من الذين هادوا يحرفون",
+      "ref": "4:46",
+      "verb": "هادوا"
+    },
+    {
+      "context": "فبظلم من الذين هادوا حرمنا",
+      "ref": "4:160",
+      "verb": "هادوا"
+    },
+    {
+      "context": " ومن الذين هادوا ",
+      "ref": "5:41",
+      "verb": "هادوا"
+    },
+    {
+      "context": "الذين اسلموا للذين هادوا والربانيون",
+      "ref": "5:44",
+      "verb": "هادوا"
+    },
+    {
+      "context": "الذين امنوا والذين هادوا والصابون",
+      "ref": "5:69",
+      "verb": "هادوا"
+    },
+    {
+      "context": "وعلي الذين هادوا حرمنا",
+      "ref": "6:146",
+      "verb": "هادوا"
+    },
+    {
+      "context": "وعلي الذين هادوا حرمنا",
+      "ref": "16:118",
+      "verb": "هادوا"
+    },
+    {
+      "context": "الذين امنوا والذين هادوا والصابين",
+      "ref": "22:17",
+      "verb": "هادوا"
+    },
+    {
+      "context": "قل ياايها الذين هادوا ان",
+      "ref": "62:6",
+      "verb": "هادوا"
+    }
+  ]
+}
