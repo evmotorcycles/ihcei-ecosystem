@@ -1,0 +1,297 @@
+<title>An instrument that can say no</title>
+<style>
+  :root{
+    --ground:#F6F5F2; --panel:#FFFFFF; --band:#EBE9E4;
+    --ink:#16181A; --ink-2:#4C5257; --ink-3:#828A90;
+    --rule:#D6D3CD; --rule-2:#E6E3DE;
+    --act:#1E6B54; --act-bg:#DCEBE5;
+    --amb:#8A6A16; --amb-bg:#F2E9D3;
+    --lab:#8E3A2A; --lab-bg:#F6E3DE;
+    --na:#5B5566; --na-bg:#E7E4EC;
+    --ar:"Noto Naskh Arabic","Amiri","Scheherazade New","Traditional Arabic","Geeza Pro",serif;
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+    --serif:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --sans:ui-sans-serif,system-ui,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#131416; --panel:#1A1C1F; --band:#202327;
+      --ink:#E9EAEC; --ink-2:#A9B0B6; --ink-3:#7A8288;
+      --rule:#2E3237; --rule-2:#25282C;
+      --act:#69BE9E; --act-bg:#14261F;
+      --amb:#D2AA5A; --amb-bg:#2A2314;
+      --lab:#DC8A76; --lab-bg:#2C1815;
+      --na:#A79EBA; --na-bg:#221F2A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#131416; --panel:#1A1C1F; --band:#202327;
+    --ink:#E9EAEC; --ink-2:#A9B0B6; --ink-3:#7A8288;
+    --rule:#2E3237; --rule-2:#25282C;
+    --act:#69BE9E; --act-bg:#14261F;
+    --amb:#D2AA5A; --amb-bg:#2A2314;
+    --lab:#DC8A76; --lab-bg:#2C1815;
+    --na:#A79EBA; --na-bg:#221F2A;
+  }
+  :root[data-theme="light"]{
+    --ground:#F6F5F2; --panel:#FFFFFF; --band:#EBE9E4;
+    --ink:#16181A; --ink-2:#4C5257; --ink-3:#828A90;
+    --rule:#D6D3CD; --rule-2:#E6E3DE;
+    --act:#1E6B54; --act-bg:#DCEBE5;
+    --amb:#8A6A16; --amb-bg:#F2E9D3;
+    --lab:#8E3A2A; --lab-bg:#F6E3DE;
+    --na:#5B5566; --na-bg:#E7E4EC;
+  }
+
+  body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+       font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px 96px;}
+  h1,h2,h3,.lbl,.chip{font-family:var(--sans);}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  .ar{font-family:var(--ar);direction:rtl;unicode-bidi:isolate;}
+  p{max-width:62ch;}
+
+  .lbl{font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+       color:var(--ink-3);font-weight:700;}
+
+  header.top{padding:70px 0 0;}
+  h1{font-size:clamp(34px,5.6vw,58px);line-height:1.02;letter-spacing:-.03em;
+     font-weight:800;margin:14px 0 0;max-width:15ch;text-wrap:balance;}
+  .dek{font-size:clamp(18px,2.1vw,21px);color:var(--ink-2);margin:24px 0 0;max-width:58ch;}
+  .dek b{color:var(--ink);font-weight:600;}
+
+  /* the calibration bar */
+  .cal{margin:44px 0 0;border:1px solid var(--rule);background:var(--panel);padding:26px;}
+  .cal h3{margin:0 0 4px;font-size:17px;font-weight:750;}
+  .cal .note{font-size:14.5px;color:var(--ink-3);margin:0 0 22px;max-width:none;}
+  .scale{position:relative;height:64px;margin:0 0 8px;}
+  .scale .line{position:absolute;left:0;right:0;top:34px;height:2px;background:var(--rule);}
+  .scale .zone{position:absolute;top:26px;height:18px;border-radius:2px;opacity:.5;}
+  .pin{position:absolute;top:0;transform:translateX(-50%);text-align:center;}
+  .pin .dot{width:11px;height:11px;border-radius:50%;margin:28px auto 0;}
+  .pin .v{font-family:var(--mono);font-size:13px;font-weight:600;display:block;}
+  .pin .n{font-size:11px;color:var(--ink-3);display:block;font-family:var(--sans);}
+  .axis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;
+        color:var(--ink-3);border-top:1px solid var(--rule-2);padding-top:8px;}
+
+  section{margin-top:66px;}
+  h2{font-size:clamp(24px,3.2vw,33px);font-weight:800;letter-spacing:-.02em;
+     line-height:1.15;margin:0 0 6px;max-width:22ch;text-wrap:balance;}
+  .sub{color:var(--ink-3);font-size:16px;margin:0 0 26px;max-width:58ch;}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--panel);margin:26px 0;}
+  table{border-collapse:collapse;width:100%;min-width:540px;font-size:15px;}
+  th,td{padding:11px 15px;text-align:left;border-bottom:1px solid var(--rule-2);}
+  th{font-family:var(--sans);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--ink-3);font-weight:750;background:var(--band);}
+  td.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;
+         font-weight:600;}
+  tr:last-child td{border-bottom:none;}
+
+  .chip{display:inline-block;font-size:10px;font-weight:750;letter-spacing:.1em;
+        padding:3px 8px;border-radius:2px;text-transform:uppercase;}
+  .c-act{background:var(--act-bg);color:var(--act);}
+  .c-amb{background:var(--amb-bg);color:var(--amb);}
+  .c-lab{background:var(--lab-bg);color:var(--lab);}
+  .c-na {background:var(--na-bg);color:var(--na);}
+
+  .box{background:var(--band);border:1px solid var(--rule);padding:23px 25px;margin:28px 0;}
+  .box h3{font-size:19px;margin:0 0 6px;font-weight:750;}
+  .box p{margin:9px 0 0;font-size:16px;color:var(--ink-2);}
+  .box p b{color:var(--ink);}
+  .box.lab{background:var(--lab-bg);border-color:var(--lab);}
+  .box.lab h3{color:var(--lab);}
+  .box.act{background:var(--act-bg);border-color:var(--act);}
+  .box.act h3{color:var(--act);}
+
+  ol.bugs{margin:14px 0 0;padding-left:22px;}
+  ol.bugs li{margin-bottom:11px;font-size:15.5px;color:var(--ink-2);max-width:58ch;}
+  ol.bugs li b{color:var(--ink);}
+
+  footer{margin-top:78px;padding-top:22px;border-top:2px solid var(--ink);
+         font-family:var(--sans);font-size:13.5px;color:var(--ink-3);}
+  footer p{max-width:66ch;}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="lbl">OQM Lexical Screen · spec 8257dfcc · 6,236 ayahs · 4 of 5</div>
+  <h1>An instrument that can say no</h1>
+  <p class="dek">A methodology gets more comprehensive by acquiring ways to <b>settle</b>
+  questions, not by accumulating answers to them. So this isn't another reading — it's one
+  screen, applied to a whole vocabulary at once, <b>calibrated at both ends</b>, and required
+  by its own gate to be capable of disagreeing with the framework that built it.</p>
+
+  <div class="cal">
+    <h3>Calibration</h3>
+    <p class="note">Seven names nobody disputes are proper nouns. Three terms nobody disputes
+    are built on an act. The screen must separate them, or it isn't an instrument.</p>
+    <div class="scale">
+      <div class="line"></div>
+      <div class="zone" style="left:0;width:12%;background:var(--lab)"></div>
+      <div class="zone" style="left:12%;width:20%;background:var(--amb)"></div>
+      <div class="zone" style="left:32%;right:0;background:var(--act)"></div>
+      <div class="pin" style="left:2%">
+        <span class="v">0</span><span class="n">all 7 nouns</span>
+        <span class="dot" style="background:var(--lab)"></span>
+      </div>
+      <div class="pin" style="left:38%">
+        <span class="v">33</span><span class="n">ẓalamū</span>
+        <span class="dot" style="background:var(--act)"></span>
+      </div>
+      <div class="pin" style="left:52%">
+        <span class="v">58</span><span class="n">ʿamilū</span>
+        <span class="dot" style="background:var(--act)"></span>
+      </div>
+      <div class="pin" style="left:88%">
+        <span class="v">171</span><span class="n">kafarū</span>
+        <span class="dot" style="background:var(--act)"></span>
+      </div>
+    </div>
+    <div class="axis"><span>0 — LABEL</span><span>5–19 ambiguous</span><span>20+ — ACTION</span></div>
+    <p style="margin-top:16px;font-size:15.5px;color:var(--ink-2);max-width:none">
+    <b>Separation: 33.</b> The calibrators clear the entire ambiguous band, so the screen
+    returns a verdict rather than a shrug.</p>
+  </div>
+</header>
+
+<section>
+  <h2>Built from the test that worked</h2>
+  <p class="sub">Two candidate instruments were tried this week. Only one is in the screen.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Candidate</th><th>What happened when it was calibrated</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><b>Designation</b><br><span style="font-size:13.5px;color:var(--ink-3)">does the text name a group with a finite verb?</span></td>
+            <td>7 of 7 control proper nouns scored <b>zero</b></td>
+            <td><span class="chip c-act">kept</span></td></tr>
+        <tr><td><b>VIF on word counts</b><br><span style="font-size:13.5px;color:var(--ink-3)">are two tracks statistically independent?</span></td>
+            <td><b>99.8%</b> of random unrelated word pairs cleared its bar. It separated nothing.</td>
+            <td><span class="chip c-lab">discarded</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>That's the whole design principle. An instrument earns its place by being shown to
+  distinguish things — and the honest consequence is that a tool the framework liked had to
+  be thrown out.</p>
+</section>
+
+<section>
+  <h2>The vocabulary, run through it</h2>
+  <p class="sub">Boundary fixed before a single term was scored: under 5 is LABEL, 20 or more
+  is ACTION.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Term</th><th></th><th style="text-align:right">Designations</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><span class="ar">ٱلَّذِينَ ءَامَنُوا۟</span></td><td>āmanū / muʾmin</td>
+            <td class="num" style="color:var(--act)">268</td><td><span class="chip c-act">action</span></td></tr>
+        <tr><td><span class="ar">ٱلَّذِينَ ٱتَّقَوا۟</span></td><td>ittaqaw / muttaqīn</td>
+            <td class="num" style="color:var(--act)">27</td><td><span class="chip c-act">action</span></td></tr>
+        <tr><td><span class="ar">ٱلَّذِينَ هَادُوا۟</span></td><td>hādū / yahūd</td>
+            <td class="num" style="color:var(--amb)">10</td><td><span class="chip c-amb">ambiguous</span></td></tr>
+        <tr><td><span class="ar">أَشْرَكُوا۟</span></td><td>ashrakū / mushrikūn</td>
+            <td class="num" style="color:var(--amb)">9</td><td><span class="chip c-amb">ambiguous</span></td></tr>
+        <tr><td><span class="ar">صَبَرُوا۟</span></td><td>ṣabarū / ṣābirūn</td>
+            <td class="num" style="color:var(--amb)">6</td><td><span class="chip c-amb">ambiguous</span></td></tr>
+        <tr><td><span class="ar">ٱلنَّصَـٰرَىٰ</span></td><td>naṣārā</td>
+            <td class="num" style="color:var(--lab)">2</td><td><span class="chip c-lab">label</span></td></tr>
+        <tr><td><span class="ar">ٱلْمُنَـٰفِقُون</span></td><td>nāfaqū / munāfiqūn</td>
+            <td class="num" style="color:var(--lab)">2</td><td><span class="chip c-lab">label</span></td></tr>
+        <tr><td><span class="ar">ٱلْمُسْلِمُون</span></td><td>aslamū / muslim</td>
+            <td class="num" style="color:var(--lab)">1</td><td><span class="chip c-lab">label</span></td></tr>
+        <tr><td><span class="ar">ٱلْحَوَارِيُّون</span></td><td>ḥawāriyyūn</td>
+            <td class="num" style="color:var(--lab)">0</td><td><span class="chip c-lab">label</span></td></tr>
+        <tr><td><span class="ar">ٱلصَّـٰبِـِٔين</span></td><td>ṣābiʾīn</td>
+            <td class="num" style="color:var(--na)">—</td><td><span class="chip c-na">untestable</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>It disagrees with the framework, on purpose</h2>
+
+  <div class="box lab">
+    <h3>Five of ten terms come back as LABEL</h3>
+    <p>Including <b>muslim</b> and <b>munāfiqūn</b> — terms the framework reads as functions.
+    The verb <i>aslama</i> plainly exists and is used, but this text names a <b>group</b> by
+    that act <b>once</b>. <i>Munāfiqūn</i>: twice.</p>
+    <p>A gate was written specifically to catch a screen that certifies everything its author
+    hoped for. <b>X6 required at least two LABELs</b> and got five. Had it got zero, the
+    correct verdict would have been "this screen is broken", not "the framework is
+    confirmed".</p>
+  </div>
+
+  <div class="box act">
+    <h3>And two come back strongly ACTION</h3>
+    <p><b>268</b> designations for <i>āmanū</i>. If the reading is that membership is
+    something you <b>do</b> rather than something you <b>are</b>, this text puts that weight
+    on <b>believing</b> — not on submitting, not on the group-nouns.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The gate that failed gave the screen a scope condition</h2>
+
+  <div class="box">
+    <p><b>ṣābiʾīn cannot be screened at all.</b> Its root supplies no attested finite verb
+    anywhere in the text — so the instrument has nothing to look for.</p>
+    <p>That is <b>untestable-here, not label</b>, and the difference matters. <i>Naṣārā</i>
+    and <i>ḥawāriyyūn</i> score zero <b>despite</b> their roots having plenty of verbs — for
+    <i>naṣārā</i>, 82 finite tokens. Filing "the text never uses the available verb for this
+    group" together with "there is no verb to use" would merge two different findings.</p>
+    <p>So the screen now carries a stated precondition: <b>the root must supply an attested
+    finite verb.</b> X1 failed, and that failure is what produced the condition.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Three defects, all caught by the calibrators</h2>
+  <p class="sub">Not one of them by inspection. This is what the controls are for.</p>
+
+  <div class="box">
+    <ol class="bugs">
+      <li><b>The clitic stripper ate a first radical.</b> <span class="ar">كفروا</span>
+      begins with <i>kāf</i>, which is also the "like/as" proclitic — so the stripper turned
+      <i>kafarū</i> into <i>farū</i>. The commonest verbal designation in the text scored
+      <b>3</b> instead of <b>171</b>. The positive control caught it.</li>
+      <li><b>The ḥawāriyyūn forms were wrong</b> — they missed the attested
+      <span class="ar">يُحَاوِرُهُۥ</span>. The integrity gate caught it.</li>
+      <li><b>"And they did" is one token.</b> <span class="ar">وَعَمِلُوا۟</span> carries the
+      conjunction inside the word, so <i>ʿamilū</i> scored <b>8</b> instead of <b>58</b>.
+      Fixed with a <b>uniform proclitic rule applied to every term and every control</b> —
+      not a patch to one word list.</li>
+    </ol>
+    <p style="margin-top:16px">Each fix changed <b>the instrument</b>. None changed a
+    threshold. The boundary set before scoring stands where it was.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What an ACTION classification does not buy</h2>
+  <div class="box lab">
+    <p><b>It does not vindicate a reading.</b> It establishes that the text uses a verbal
+    group-designation — a far smaller fact than an interpretation, and the two should never
+    be traded for one another.</p>
+    <p><b>It says nothing about meaning.</b> Many perfectly ordinary group-names are
+    historically built on verbs, in every language.</p>
+    <p><b>And nothing about any living community</b> — Jewish, Christian, Muslim,
+    Zoroastrian or otherwise. The units of analysis are Arabic word-forms in one text, and
+    that is where the result stops.</p>
+  </div>
+</section>
+
+<footer>
+  <p>What this contributes: not a claim, a <b>screen</b> — reusable, calibrated at both ends,
+  with a boundary fixed in advance, a stated precondition, and a gate that makes disagreement
+  possible. Anyone can point it at a new term tomorrow and get an answer that isn't
+  guaranteed to flatter them.</p>
+  <p style="margin-top:10px">Reproduce: <code>python3 -m pytest -q quran/test_oqm_screen.py</code></p>
+</footer>
+
+</div>

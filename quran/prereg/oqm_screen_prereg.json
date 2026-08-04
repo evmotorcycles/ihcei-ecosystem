@@ -1,0 +1,86 @@
+{
+ "THE_SCREEN": {
+  "the_decision_boundary_fixed_before_any_term_was_scored": {
+   "ACTION": "20 or more",
+   "AMBIGUOUS": "5 to 19",
+   "LABEL": "fewer than 5 finite-verb group designations"
+  },
+  "the_measurement": "For a term, count how many times the text DESIGNATES A GROUP with a finite verb from its root -- a relative clause 'those who [verb]' or a vocative 'O you who [verb]' -- as against naming it with a noun. A proper noun cannot be conjugated to name its own bearers.",
+  "why_not_root_sharing": "Because it produces false positives on proper nouns. 'Aad is surface-identical to the verb 'aada (returned, root '-W-D) and to 'aadin (transgressor, root '-D-W). Shared letters prove nothing."
+ },
+ "WHY_AN_INSTRUMENT_RATHER_THAN_MORE_READINGS": {
+  "the_lesson_it_is_built_on": "Across this programme two candidate instruments were tested. The DESIGNATION test discriminated -- 7 of 7 control proper nouns scored zero (spec 708ac80e). The VIF gate did NOT -- 99.8 percent of random unrelated word pairs cleared its bar, so it separated nothing (spec af27d2c9). This screen is built from the one that worked and deliberately excludes the one that did not.",
+  "the_stated_goal": "Extend the methodology so it is more comprehensive.",
+  "what_this_supplies": "One screen, applied uniformly to a whole vocabulary at once, with a decision boundary fixed before any term is scored, and with the capacity to classify a term the framework favours as a LABEL.",
+  "what_would_NOT_do_that": "More term-by-term assertions. A framework grows by acquiring ways to SETTLE questions, not by accumulating answers to them."
+ },
+ "anti_immunisation": "The decision boundary is fixed in this document before any term was scored. No threshold may move afterwards. X6 exists specifically so that a screen which agrees with everything is recorded as broken rather than as confirmation.",
+ "gates": [
+  {
+   "bar": "6,236 ayahs load; every control and every term under test resolves to at least one attested word-form in the corpus",
+   "id": "X1_integrity",
+   "weight": "full"
+  },
+  {
+   "bar": "all 7 proper nouns score 0 finite-verb group designations",
+   "id": "X2_NEGATIVE_CONTROL",
+   "weight": "full"
+  },
+  {
+   "bar": "all 3 unambiguous action terms score >= 20",
+   "id": "X3_POSITIVE_CONTROL",
+   "weight": "full"
+  },
+  {
+   "bar": "min(positive controls) minus max(negative controls) >= 20. A usable instrument must separate its own calibrators by more than the width of the AMBIGUOUS band, otherwise it returns a shrug rather than a verdict.",
+   "id": "X4_PRIMARY_THE_SCREEN_HAS_A_CLEAN_DECISION_BOUNDARY",
+   "weight": "full"
+  },
+  {
+   "bar": "report every term's count and class. Disclosure gate: met by reporting, no threshold.",
+   "id": "X5_THE_CLASSIFICATION_OF_THE_TERMS_UNDER_TEST",
+   "weight": "excluded"
+  },
+  {
+   "bar": "at least 2 of the 10 terms under test must classify as LABEL. If a screen certifies every term the framework favours, it is not screening -- it is agreeing. THIS GATE EXISTS TO CATCH THE INSTRUMENT FLATTERING ITS AUTHOR.",
+   "id": "X6_ANTI_RUBBER_STAMP_THE_SCREEN_MUST_BE_ABLE_TO_SAY_NO",
+   "weight": "full"
+  },
+  {
+   "bar": "EXCLUDED, UNTESTABLE-HERE. An ACTION classification says the text names a group by a finite verb. It does not say what the verb means, what the group is, or that any particular reading of either is correct. Many ordinary ethnonyms are historically deverbal in every language.",
+   "id": "X7_does_a_classification_establish_MEANING",
+   "weight": "excluded"
+  },
+  {
+   "bar": "EXCLUDED, OUT OF SCOPE BY CONSTRUCTION. The units are Arabic word-forms in one text. No gate references any real-world community and no classification may be reported as a statement about Jewish, Christian, Muslim, Zoroastrian or any other people.",
+   "id": "X8_claims_about_living_communities",
+   "weight": "excluded"
+  }
+ ],
+ "model": "The OQM Lexical Screen: a calibrated instrument for 'is this word a label or an action?'",
+ "one_line": "Not another reading. An INSTRUMENT that can settle readings of this shape, calibrated against a negative control and a positive control, and required to be capable of returning NO.",
+ "simulator_rule": "One committed public dataset of 6,236 ayahs. Nothing simulated.",
+ "the_calibration": {
+  "NEGATIVE_CONTROLS": "Seven names nobody disputes are proper nouns: Firawn, Thamud, 'Aad, Israil, Majus, Rum, Quraysh. The screen must score every one at zero.",
+  "POSITIVE_CONTROLS": "Three terms nobody disputes are built on an act: kafaru, zalamu, 'amilu. The screen must score every one at 20 or more.",
+  "why_both_are_needed": "A screen with only a negative control can be blind -- it might score everything at zero. A screen with only a positive control can be indiscriminate -- it might score everything high. Only both together show it returns different answers to different inputs."
+ },
+ "the_terms_under_test": [
+  "hadu_yahud",
+  "nasara",
+  "hawariyyun",
+  "sabiin",
+  "ashraku_mushrikun",
+  "nafaqu_munafiqun",
+  "ittaqaw_muttaqin",
+  "aslamu_muslim",
+  "amanu_mumin",
+  "sabaru_sabirun"
+ ],
+ "too_perfect_rule": "If every term under test lands in one class, that is a signal the screen is not discriminating, not a triumph. X6 enforces it.",
+ "version": "1.0",
+ "what_a_pass_would_and_would_not_license": {
+  "would": "That a single uniform instrument, calibrated at both ends, sorts a vocabulary of group-terms into those the text names by an act and those it names only by a label -- and that the sorting is not an artefact, because the calibrators separate cleanly.",
+  "would_NOT": "Any claim about what a term means. Any claim about any community. And crucially: an ACTION classification does NOT vindicate an OQM reading of that term -- it establishes only that the text uses a verbal designation, which is a much smaller fact than a reading."
+ }
+}

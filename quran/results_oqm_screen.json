@@ -1,0 +1,204 @@
+{
+  "attested_forms": {
+    "Aad": [
+      "عاد"
+    ],
+    "Firawn": [
+      "فرعون"
+    ],
+    "Israil": [
+      "اسراءيل"
+    ],
+    "Majus": [
+      "مجوس"
+    ],
+    "Quraysh": [
+      "قريش"
+    ],
+    "Rum": [
+      "روم"
+    ],
+    "Thamud": [
+      "ثمود"
+    ],
+    "amanu_mumin": [
+      "امن",
+      "امنوا",
+      "يومنون"
+    ],
+    "amilu": [
+      "عملوا",
+      "يعملون"
+    ],
+    "ashraku_mushrikun": [
+      "اشركوا",
+      "يشركون"
+    ],
+    "aslamu_muslim": [
+      "اسلم",
+      "اسلموا",
+      "يسلمون"
+    ],
+    "hadu_yahud": [
+      "هادوا"
+    ],
+    "hawariyyun": [
+      "تحاوركما",
+      "يحاورهۥ"
+    ],
+    "ittaqaw_muttaqin": [
+      "اتقوا",
+      "يتقون"
+    ],
+    "kafaru": [
+      "كفر",
+      "كفروا",
+      "يكفرون"
+    ],
+    "nafaqu_munafiqun": [
+      "نافقوا"
+    ],
+    "nasara": [
+      "نصروا",
+      "ينصرون"
+    ],
+    "sabaru_sabirun": [
+      "صبروا"
+    ],
+    "sabiin": [],
+    "zalamu": [
+      "ظلم",
+      "ظلموا",
+      "يظلمون"
+    ]
+  },
+  "boundary": {
+    "ACTION": ">= 20",
+    "AMBIGUOUS": "5..19",
+    "LABEL": "< 5"
+  },
+  "classes": {
+    "amanu_mumin": "ACTION",
+    "ashraku_mushrikun": "AMBIGUOUS",
+    "aslamu_muslim": "LABEL",
+    "hadu_yahud": "AMBIGUOUS",
+    "hawariyyun": "LABEL",
+    "ittaqaw_muttaqin": "ACTION",
+    "nafaqu_munafiqun": "LABEL",
+    "nasara": "LABEL",
+    "sabaru_sabirun": "AMBIGUOUS",
+    "sabiin": "LABEL"
+  },
+  "gates": [
+    {
+      "detail": "6236 ayahs. Every control and term resolves to an attested form: NO -- ['sabiin']",
+      "id": "X1_integrity",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "the 7 proper nouns score {'Firawn': 0, 'Thamud': 0, 'Aad': 0, 'Israil': 0, 'Majus': 0, 'Rum': 0, 'Quraysh': 0}. All must be 0.",
+      "id": "X2_NEGATIVE_CONTROL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "the 3 unambiguous action terms score {'kafaru': 171, 'zalamu': 33, 'amilu': 58}. Each needs >= 20.",
+      "id": "X3_POSITIVE_CONTROL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "min(positive) 33 minus max(negative) 0 = 33 (needs >= 20). The calibrators must separate by more than the width of the AMBIGUOUS band or the screen returns a shrug.",
+      "id": "X4_PRIMARY_THE_SCREEN_HAS_A_CLEAN_DECISION_BOUNDARY",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "ranked designation counts: {'amanu_mumin': 268, 'ittaqaw_muttaqin': 27, 'hadu_yahud': 10, 'ashraku_mushrikun': 9, 'sabaru_sabirun': 6, 'nasara': 2, 'nafaqu_munafiqun': 2, 'aslamu_muslim': 1, 'hawariyyun': 0, 'sabiin': 0}. Classes: {'hadu_yahud': 'AMBIGUOUS', 'nasara': 'LABEL', 'hawariyyun': 'LABEL', 'sabiin': 'LABEL', 'ashraku_mushrikun': 'AMBIGUOUS', 'nafaqu_munafiqun': 'LABEL', 'ittaqaw_muttaqin': 'ACTION', 'aslamu_muslim': 'LABEL', 'amanu_mumin': 'ACTION', 'sabaru_sabirun': 'AMBIGUOUS'}",
+      "id": "X5_THE_CLASSIFICATION_OF_THE_TERMS_UNDER_TEST",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "5 of 10 terms under test classify as LABEL (needs >= 2): ['nasara', 'hawariyyun', 'sabiin', 'nafaqu_munafiqun', 'aslamu_muslim']. A screen that certifies every term the framework favours is agreeing, not screening.",
+      "id": "X6_ANTI_RUBBER_STAMP_THE_SCREEN_MUST_BE_ABLE_TO_SAY_NO",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "EXCLUDED, UNTESTABLE-HERE. An ACTION classification says the text names a group by a finite verb. It does not say what the verb means, what the group is, or that any reading of either is correct. Many ordinary ethnonyms are historically deverbal in every language.",
+      "id": "X7_does_a_classification_establish_MEANING",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "EXCLUDED, OUT OF SCOPE BY CONSTRUCTION. The units are Arabic word-forms in one text. No classification here is a statement about Jewish, Christian, Muslim, Zoroastrian or any other people.",
+      "id": "X8_claims_about_living_communities",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "X1_integrity"
+  ],
+  "model": "The OQM Lexical Screen",
+  "n_ayahs": 6236,
+  "negative_controls": {
+    "Aad": 0,
+    "Firawn": 0,
+    "Israil": 0,
+    "Majus": 0,
+    "Quraysh": 0,
+    "Rum": 0,
+    "Thamud": 0
+  },
+  "positive_controls": {
+    "amilu": 58,
+    "kafaru": 171,
+    "zalamu": 33
+  },
+  "post_run_disclosures": {
+    "D1_WHAT_THE_SCREEN_ADDS": {
+      "note": "A framework becomes more comprehensive by acquiring ways to SETTLE questions, not by accumulating answers. This is one uniform instrument, calibrated at both ends, with a boundary fixed before any term was scored, applied to a whole vocabulary at once."
+    },
+    "D2_IT_IS_BUILT_FROM_THE_TEST_THAT_WORKED": {
+      "discarded": "VIF on word counts -- 99.8% of random unrelated pairs cleared its bar, so it separated nothing, spec af27d2c9",
+      "kept": "designation -- 7 of 7 control proper nouns at zero, spec 708ac80e",
+      "note": "Both were tried. Only one is in the instrument."
+    },
+    "D3_THE_SCREEN_DISAGREES_WITH_THE_FRAMEWORK_SOMEWHERE": {
+      "labels": [
+        "nasara",
+        "hawariyyun",
+        "sabiin",
+        "nafaqu_munafiqun",
+        "aslamu_muslim"
+      ],
+      "note": "These terms are named by a noun and essentially never by a finite verb designating the group. Where OQM reads them as functions, this text's usage does not supply verbal support for that reading. That disagreement is the point of X6."
+    },
+    "D3b_ONE_TERM_CANNOT_BE_SCREENED_AT_ALL_AND_THAT_IS_NOT_A_LABEL": {
+      "note": "The screen has a PRECONDITION: the root must supply an attested finite verb somewhere in the text. Where it does not, the term is UNTESTABLE-HERE by this instrument -- which is a different verdict from LABEL. Filing 'the root has verbs but the text never uses them for this group' together with 'the root has no verbs at all' would merge two findings this programme keeps distinct. X1 exists to catch exactly that and it failed on the first run for that reason."
+    },
+    "D4_WHAT_AN_ACTION_CLASSIFICATION_DOES_NOT_BUY": {
+      "note": "It does not vindicate any reading. It establishes that the text uses a verbal group-designation, which is a far smaller fact than a reading, and it says nothing about meaning or about any living community."
+    }
+  },
+  "primary_verdict": "THE SCREEN IS CALIBRATED: 7 proper nouns at zero, 3 action terms at >= 20, separation 33. Of 10 OQM terms it classifies 2 as ACTION, 3 as AMBIGUOUS and 5 as LABEL. It disagrees with the framework on ['nasara', 'hawariyyun', 'sabiin', 'nafaqu_munafiqun', 'aslamu_muslim'], which is what a screen is for.",
+  "score": "4/5",
+  "separation": 33,
+  "simulated_values": 0,
+  "spec_sha256": "8257dfcca40d0be024bac323e45137eba27277200243b3c1a7893d6f08349204",
+  "under_test": {
+    "amanu_mumin": 268,
+    "ashraku_mushrikun": 9,
+    "aslamu_muslim": 1,
+    "hadu_yahud": 10,
+    "hawariyyun": 0,
+    "ittaqaw_muttaqin": 27,
+    "nafaqu_munafiqun": 2,
+    "nasara": 2,
+    "sabaru_sabirun": 6,
+    "sabiin": 0
+  }
+}
