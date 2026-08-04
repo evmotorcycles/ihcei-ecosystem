@@ -1,0 +1,131 @@
+{
+  "designation": {
+    "A_M_N": 268,
+    "S_L_M": 1,
+    "S_L_M_refs": [
+      "5:44"
+    ]
+  },
+  "gates": [
+    {
+      "detail": "6236 ayahs; track token totals {'SALAT': 23, 'ZAKAT': 53, 'BARAKAH': 19, 'MILLAH': 15, 'NASARA': 14, 'MUSLIM': 45, 'MUMIN': 230, 'IMAN': 76}; null pairs 1200",
+      "id": "W1_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "99.8% of 1200 frequency-matched RANDOM unrelated word pairs clear the orthogonality bar of VIF < 1.05 (the gate needs FEWER than 50% to clear, otherwise it separates nothing). Null median VIF 1.000032.",
+      "id": "W2_PRIMARY_DOES_THE_VIF_GATE_DISCRIMINATE_ON_THIS_SUBSTRATE",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "VIF(SALAT, ZAKAT) = 1.000028 (r = -0.005302) across 6236 ayahs. It sits at the 46.2th percentile of the frequency-matched null, i.e. 53.8% of RANDOM unrelated word pairs are at least as 'orthogonal'. Null median 1.000032.",
+      "id": "W3_the_measured_Salat_Zakat_VIF_and_its_percentile",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "28 of 28 pairs among the 8 declared tracks clear VIF < 1.05 (100.0%). Every pair, related or not, looks 'orthogonal'.",
+      "id": "W4_the_full_matrix_over_the_declared_tracks",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "groups named by a finite verb using the SAME matcher that scored 7 of 7 control proper nouns at zero: S-L-M (aslama forms) 1 times; A-M-N (amanu forms) 268 times. Each needs >= 5.",
+      "id": "W5_THE_DESIGNATION_TEST_EXTENDED_TO_muslim_AND_mumin",
+      "met": false,
+      "weight": "full"
+    },
+    {
+      "detail": "EXCLUDED. It is not. The yeast (1.0026) and GitHub (1.0203) VIFs were computed on CONTINUOUS PER-NODE FEATURES where every unit has a real value on both axes and collinearity is a live possibility. Per-ayah word counts are overwhelmingly zero. Sharing a name does not make the quantities comparable and no number here may be reported beside them as if it did.",
+      "id": "W6_is_a_text_count_VIF_the_same_quantity_as_a_node_feature_VIF",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "EXCLUDED and OUT OF SCOPE. The units are word-forms in one text. Nothing establishes what any word means, and nothing is a claim about Jewish, Christian or Muslim people, communities or beliefs.",
+      "id": "W7_meaning_and_communities",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [
+    "W2_PRIMARY_DOES_THE_VIF_GATE_DISCRIMINATE_ON_THIS_SUBSTRATE",
+    "W5_THE_DESIGNATION_TEST_EXTENDED_TO_muslim_AND_mumin"
+  ],
+  "model": "Does a VIF gate carry information on Quranic word counts?",
+  "n_ayahs": 6236,
+  "null": {
+    "fraction_clearing_1.05": 0.9983,
+    "median_VIF": 1.000032,
+    "n_pairs": 1200,
+    "p95_VIF": 1.002366
+  },
+  "pairwise_matrix": {
+    "BARAKAH|IMAN": 1.000029,
+    "BARAKAH|MILLAH": 1.000007,
+    "BARAKAH|MUMIN": 1.000083,
+    "BARAKAH|MUSLIM": 1.00002,
+    "BARAKAH|NASARA": 1.000006,
+    "BARAKAH|SALAT": 1.001836,
+    "BARAKAH|ZAKAT": 1.000025,
+    "IMAN|MILLAH": 1.000023,
+    "IMAN|MUMIN": 1.004136,
+    "IMAN|MUSLIM": 1.000061,
+    "IMAN|NASARA": 1.000019,
+    "IMAN|SALAT": 1.000032,
+    "IMAN|ZAKAT": 1.000024,
+    "MILLAH|MUMIN": 1.000065,
+    "MILLAH|MUSLIM": 1.00105,
+    "MILLAH|NASARA": 1.016447,
+    "MILLAH|SALAT": 1.000008,
+    "MILLAH|ZAKAT": 1.000933,
+    "MUMIN|MUSLIM": 1.019291,
+    "MUMIN|NASARA": 1.000053,
+    "MUMIN|SALAT": 1.000003,
+    "MUMIN|ZAKAT": 1.000958,
+    "MUSLIM|NASARA": 1.000013,
+    "MUSLIM|SALAT": 1.000022,
+    "MUSLIM|ZAKAT": 1.000138,
+    "NASARA|SALAT": 1.000007,
+    "NASARA|ZAKAT": 1.000016,
+    "SALAT|ZAKAT": 1.000028
+  },
+  "post_run_disclosures": {
+    "D1_THE_QUOTED_FIGURE_IS_NOT_EVIDENCE": {
+      "fraction_of_random_pairs_clearing_the_bar": 0.9983,
+      "note": "A near-1.0 VIF on this substrate is what arbitrary unrelated word pairs produce, because two rare tracks are both nearly all zeros across 6,236 ayahs and r is near 0 whatever the words mean. The figure supports no claim about how the text handles anything.",
+      "null_median": 1.000032,
+      "quoted": 1.000073
+    },
+    "D2_WHAT_SURVIVES_AND_IT_IS_NOT_THE_VIF": {
+      "note": "The DESIGNATION test does discriminate -- it scored 7 of 7 control proper nouns at zero in spec 708ac80e. Applied here it finds the S-L-M and A-M-N groups named by finite verbs. That is a real distributional fact; the VIF is not."
+    },
+    "D3_the_category_difference": {
+      "note": "Yeast 1.0026 and GitHub 1.0203 were computed on continuous per-node features. Quoting a word-count VIF alongside them implies a comparability that does not exist."
+    },
+    "D4_what_none_of_this_licenses": {
+      "note": "Distributional independence of two word-tracks would not be evidence of authorial architecture even if it had been found. No claim here concerns what any word means or any living community."
+    }
+  },
+  "primary_verdict": "THE VIF GATE DOES NOT DISCRIMINATE ON THIS SUBSTRATE: 99.8% of random unrelated word pairs clear VIF < 1.05. The measured Salat/Zakat VIF of 1.000028 sits at the 46.2th percentile of that null. A near-1.0 VIF here is forced by sparsity and supports nothing.",
+  "salat_zakat": {
+    "VIF": 1.000028,
+    "percentile_in_null": 46.2,
+    "r": -0.005302
+  },
+  "score": "1/3",
+  "simulated_values": 0,
+  "spec_sha256": "af27d2c9c9398ca4f99a4772e6769a23cf4ab8198542067f453971c83e6c09b3",
+  "track_token_totals": {
+    "BARAKAH": 19,
+    "IMAN": 76,
+    "MILLAH": 15,
+    "MUMIN": 230,
+    "MUSLIM": 45,
+    "NASARA": 14,
+    "SALAT": 23,
+    "ZAKAT": 53
+  }
+}

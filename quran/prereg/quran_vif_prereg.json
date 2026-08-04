@@ -1,0 +1,89 @@
+{
+ "PRE_FLIGHT_PROBE_RECORDED_BEFORE_THIS_LOCK": {
+  "note_worth_recording": "The freq-50 null median is 1.000061, which is the same order as the 1.000073 figure being cited. That resemblance is what the primary gate exists to adjudicate.",
+  "result": {
+   "freq_10": {
+    "frac_below_1.05": 0.997,
+    "median_VIF": 1.000003
+   },
+   "freq_20": {
+    "frac_below_1.05": 0.997,
+    "median_VIF": 1.000009
+   },
+   "freq_5": {
+    "frac_below_1.05": 0.997,
+    "median_VIF": 1.000001
+   },
+   "freq_50": {
+    "frac_below_1.05": 1.0,
+    "median_VIF": 1.000061
+   }
+  },
+  "what_it_establishes": "That the null machinery runs and that a null distribution exists to compare against. It does NOT contain the primary quantity.",
+  "what_was_probed": "The NULL ONLY. Frequency-matched random word pairs, 300 pairs at each of several frequencies. The Salat and Zakat tracks were NOT touched and their VIF was NOT computed before this lock."
+ },
+ "WHY_THIS_IS_THE_RIGHT_TEST": {
+  "THE_RULE_BEING_APPLIED": "A test that cannot fail is not evidence. Before a near-1.0 VIF may be cited, it has to be shown that a near-1.0 VIF was not guaranteed.",
+  "the_category_difference_that_matters": "The yeast and GitHub VIFs were computed on CONTINUOUS NODE-LEVEL FEATURES -- clustering coefficient against betweenness, commit-message similarity against outsider-merge rate -- where every unit has a real value on both axes and collinearity is a live possibility. Per-ayah word counts are overwhelmingly zero. The two numbers are not the same quantity and must not be compared as though a shared name made them comparable.",
+  "the_claim": "That VIF ~ 1.0 between a Salat-root track and a Zakat-root track shows the two hops are handled by the text as distinct, non-redundant operations -- the same orthogonality gate used on yeast (1.0026) and GitHub (1.0203).",
+  "the_worry": "VIF = 1/(1-r^2). Across 6,236 ayahs almost every word is absent from almost every ayah, so two rare tracks are both nearly all zeros and r is nearly 0 whatever they mean. If so, VIF ~ 1.0 is arithmetic about sparsity, not a property of the text's design."
+ },
+ "anti_immunisation": "No threshold may be changed after any measurement. The primary is expected to fail on the probe evidence and will be reported as failed if it does.",
+ "gates": [
+  {
+   "bar": "6,236 ayahs load; every declared track is non-empty; the null runs at >= 1000 frequency-matched random pairs",
+   "id": "W1_integrity",
+   "weight": "full"
+  },
+  {
+   "bar": "FEWER THAN 50 percent of frequency-matched RANDOM word pairs may clear the orthogonality bar of VIF < 1.05. If more than half of arbitrary unrelated pairs clear it, the gate separates nothing here and any near-1.0 VIF quoted from this text is uninformative. THIS GATE CAN PASS OR FAIL and its failure is a finding about our own instrument.",
+   "id": "W2_PRIMARY_DOES_THE_VIF_GATE_DISCRIMINATE_ON_THIS_SUBSTRATE",
+   "weight": "full"
+  },
+  {
+   "bar": "report the actual VIF and where it falls in the frequency-matched null distribution. No threshold: this gate asserts DISCLOSURE and is met by reporting.",
+   "id": "W3_the_measured_Salat_Zakat_VIF_and_its_percentile",
+   "weight": "excluded"
+  },
+  {
+   "bar": "report the VIF for every pair of the 8 declared tracks and the fraction clearing 1.05. Disclosure gate.",
+   "id": "W4_the_full_matrix_over_the_declared_tracks",
+   "weight": "excluded"
+  },
+  {
+   "bar": "using the SAME matcher that scored 7 of 7 control proper nouns at zero in spec 708ac80e, the groups named by the roots S-L-M and A-M-N must be designated by a finite verb at least 5 times each. This arm uses a test already shown to discriminate.",
+   "id": "W5_THE_DESIGNATION_TEST_EXTENDED_TO_muslim_AND_mumin",
+   "weight": "full"
+  },
+  {
+   "bar": "EXCLUDED. It is not. Yeast and GitHub VIFs were computed on continuous per-node features where every unit has a real value on both axes. Per-ayah counts are overwhelmingly zero. Sharing a name does not make them comparable and no result here may be reported beside them as if it did.",
+   "id": "W6_is_a_text_count_VIF_the_same_quantity_as_a_node_feature_VIF",
+   "weight": "excluded"
+  },
+  {
+   "bar": "EXCLUDED and OUT OF SCOPE. The units are word-forms in one text. Nothing here establishes what any word means, and nothing here is a claim about Jewish, Christian or Muslim people, communities or beliefs.",
+   "id": "W7_meaning_and_communities",
+   "weight": "excluded"
+  }
+ ],
+ "model": "Does a VIF gate carry any information on Quranic word counts?",
+ "one_line": "A VIF of 1.000073 has been quoted as proving that the text treats 'seeking' and 'sharing' as independent channel legs. This tests whether a near-1.0 VIF on this substrate distinguishes anything at all, or is forced by sparsity.",
+ "simulator_rule": "One committed public dataset of 6,236 ayahs. Nothing simulated, no cohort invented.",
+ "the_tracks_declared_before_measurement": {
+  "BARAKAH": "root B-R-K",
+  "IMAN": "root A-M-N: iman / amanu",
+  "MILLAH": "root M-L-L noun forms",
+  "MUMIN": "root A-M-N: mumin / muminun / muminin",
+  "MUSLIM": "root S-L-M: muslim / muslimun / muslimin / aslama forms",
+  "NASARA": "the group noun",
+  "SALAT": "Arabic root S-L-W: forms of salat / yusalli / salawat",
+  "ZAKAT": "Arabic root Z-K-W: forms of zakat / yuzakki / azka / tazkiya"
+ },
+ "too_perfect_rule": "A VIF quoted to six decimal places from sparse count data is a signal to look for an identity, not a triumph.",
+ "version": "1.0",
+ "what_a_result_would_and_would_not_license": {
+  "either_way": "Nothing licenses a claim that the text was DESIGNED with independent channel legs. Distributional independence of two word-tracks is not evidence of authorial architecture.",
+  "if_W2_FAILS": "Then a near-1.0 VIF on this text is uninformative, the quoted 1.000073 supports nothing, and the orthogonality gate must be marked NOT APPLICABLE on word-count substrates. That is a finding about our instrument, not about the text.",
+  "if_W2_PASSES": "Then the gate does discriminate here and the measured Salat/Zakat VIF can be read against the null."
+ }
+}

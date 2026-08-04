@@ -1,0 +1,258 @@
+<title>The VIF number does not survive its own null</title>
+<style>
+  :root{
+    --ground:#F4F3F0; --panel:#FFFFFF; --band:#E9E7E2;
+    --ink:#181A19; --ink-2:#4C524E; --ink-3:#818A85;
+    --rule:#D2D0C9; --rule-2:#E3E1DB;
+    --kill:#9A3324; --kill-bg:#F7E4DF;
+    --live:#1F6B4F; --live-bg:#DDEBE4;
+    --neutral:#40566B; --neutral-bg:#E1E8EE;
+    --ar:"Noto Naskh Arabic","Amiri","Scheherazade New","Traditional Arabic","Geeza Pro",serif;
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+    --serif:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --sans:ui-sans-serif,system-ui,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#121513; --panel:#191D1B; --band:#1F2421;
+      --ink:#E9ECE9; --ink-2:#AAB2AD; --ink-3:#79827C;
+      --rule:#2E3532; --rule-2:#242A27;
+      --kill:#DB8570; --kill-bg:#2C1815;
+      --live:#6FBE99; --live-bg:#14261D;
+      --neutral:#8FAAC4; --neutral-bg:#161F27;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#121513; --panel:#191D1B; --band:#1F2421;
+    --ink:#E9ECE9; --ink-2:#AAB2AD; --ink-3:#79827C;
+    --rule:#2E3532; --rule-2:#242A27;
+    --kill:#DB8570; --kill-bg:#2C1815;
+    --live:#6FBE99; --live-bg:#14261D;
+    --neutral:#8FAAC4; --neutral-bg:#161F27;
+  }
+  :root[data-theme="light"]{
+    --ground:#F4F3F0; --panel:#FFFFFF; --band:#E9E7E2;
+    --ink:#181A19; --ink-2:#4C524E; --ink-3:#818A85;
+    --rule:#D2D0C9; --rule-2:#E3E1DB;
+    --kill:#9A3324; --kill-bg:#F7E4DF;
+    --live:#1F6B4F; --live-bg:#DDEBE4;
+    --neutral:#40566B; --neutral-bg:#E1E8EE;
+  }
+
+  body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+       font-size:18px;line-height:1.66;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 96px;}
+  h1,h2,h3,.lbl{font-family:var(--sans);}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  .ar{font-family:var(--ar);direction:rtl;unicode-bidi:isolate;}
+  p{max-width:62ch;}
+
+  .lbl{font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+       color:var(--ink-3);font-weight:700;}
+
+  header.top{padding:70px 0 0;}
+  h1{font-size:clamp(32px,5.4vw,56px);line-height:1.03;letter-spacing:-.03em;
+     font-weight:800;margin:14px 0 0;max-width:16ch;text-wrap:balance;}
+  .dek{font-size:clamp(18px,2.1vw,21px);color:var(--ink-2);margin:24px 0 0;max-width:58ch;}
+  .dek b{color:var(--ink);font-weight:600;}
+
+  /* the null histogram, drawn from divs */
+  .hist{margin:40px 0 0;border:1px solid var(--rule);background:var(--panel);padding:24px;}
+  .hist .cap{font-size:14px;color:var(--ink-3);margin:0 0 16px;max-width:none;}
+  .bars{display:flex;align-items:flex-end;gap:3px;height:130px;}
+  .bars div{flex:1;background:var(--neutral);opacity:.55;border-radius:1px 1px 0 0;}
+  .bars div.mark{background:var(--kill);opacity:1;}
+  .axis{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--mono);
+        font-size:11.5px;color:var(--ink-3);}
+  .keyline{margin-top:16px;padding-top:14px;border-top:1px solid var(--rule-2);
+           font-size:15.5px;color:var(--ink-2);max-width:none;}
+  .keyline b{color:var(--kill);}
+
+  section{margin-top:66px;}
+  h2{font-size:clamp(24px,3.2vw,33px);font-weight:800;letter-spacing:-.02em;
+     line-height:1.15;margin:0 0 6px;max-width:22ch;text-wrap:balance;}
+  .sub{color:var(--ink-3);font-size:16px;margin:0 0 26px;max-width:58ch;}
+
+  .fig{background:var(--band);border:1px solid var(--rule);padding:18px 22px;margin:24px 0;
+       font-family:var(--mono);font-size:14.5px;line-height:1.9;white-space:pre;
+       overflow-x:auto;color:var(--ink);}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--panel);margin:24px 0;}
+  table{border-collapse:collapse;width:100%;min-width:480px;font-size:15px;}
+  th,td{padding:10px 15px;text-align:left;border-bottom:1px solid var(--rule-2);}
+  th{font-family:var(--sans);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--ink-3);font-weight:750;background:var(--band);}
+  td.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;}
+  tr:last-child td{border-bottom:none;}
+  tr.flag td{background:var(--kill-bg);}
+
+  .box{background:var(--band);border:1px solid var(--rule);padding:22px 24px;margin:28px 0;}
+  .box h3{font-size:19px;margin:0 0 6px;font-weight:750;}
+  .box p{margin:9px 0 0;font-size:16px;color:var(--ink-2);}
+  .box p b{color:var(--ink);}
+  .box.kill{background:var(--kill-bg);border-color:var(--kill);}
+  .box.kill h3{color:var(--kill);}
+  .box.live{background:var(--live-bg);border-color:var(--live);}
+  .box.live h3{color:var(--live);}
+
+  footer{margin-top:76px;padding-top:22px;border-top:2px solid var(--ink);
+         font-family:var(--sans);font-size:13.5px;color:var(--ink-3);}
+  footer p{max-width:66ch;}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="lbl">VIF run · spec af27d2c9 · 6,236 ayahs · 1 of 3</div>
+  <h1>The VIF number does not survive its own null</h1>
+  <p class="dek">A VIF of <span class="m">1.000073</span> was offered as proof that the text
+  handles seeking and sharing as independent channel legs. <b>I ran it — and then I ran
+  1,200 pairs of unrelated random words through the identical test.</b></p>
+
+  <div class="hist">
+    <p class="cap">VIF for 1,200 frequency-matched pairs of <b>random, unrelated</b> words
+    across 6,236 ayahs. Nearly the entire distribution sits against the wall at 1.0.</p>
+    <div class="bars">
+      <div style="height:100%"></div><div style="height:14%"></div><div style="height:6%"></div>
+      <div style="height:3.5%"></div><div style="height:2.5%"></div><div style="height:2%"></div>
+      <div style="height:1.6%"></div><div style="height:1.3%"></div><div style="height:1.1%"></div>
+      <div style="height:1%"></div><div style="height:0.9%"></div><div style="height:0.8%"></div>
+      <div style="height:0.7%"></div><div style="height:0.6%"></div><div style="height:0.6%"></div>
+      <div style="height:0.5%"></div><div style="height:0.5%"></div><div style="height:0.4%"></div>
+      <div style="height:0.4%"></div><div style="height:0.3%"></div>
+    </div>
+    <div class="axis"><span>VIF 1.000</span><span>1.05 — the "orthogonal" bar</span><span>1.10+</span></div>
+    <p class="keyline"><b>99.8%</b> of random unrelated pairs clear the orthogonality bar.
+    The null median is <span class="m">1.000032</span> — the same order as the number being
+    cited as a finding.</p>
+  </div>
+</header>
+
+<section>
+  <h2>Where the measured value actually lands</h2>
+  <p class="sub">Not at the edge of the distribution. In the middle of it.</p>
+
+  <div class="fig">  VIF(SALAT, ZAKAT)        1.000028      r = −0.005302
+  null median              1.000032
+  its percentile               46th
+
+  → 54% of arbitrary unrelated word pairs are MORE "orthogonal"
+    than salat and zakat.</div>
+
+  <p>The arithmetic is not mysterious. <span class="m">VIF = 1/(1−r²)</span>, and across
+  6,236 ayahs almost every word is absent from almost every ayah. Two rare tracks are both
+  <b>nearly all zeros</b>, so <span class="m">r</span> lands near zero <i>whatever the words
+  mean</i>. Near-1.0 is the floor the substrate forces, not a property anyone designed.</p>
+
+  <div class="box kill">
+    <h3>A test that cannot fail is not evidence</h3>
+    <p>Before a near-1.0 VIF can be cited, someone has to show a near-1.0 VIF
+    <b>wasn't guaranteed</b>. On this substrate it was. The quoted
+    <span class="m">1.000073</span> supports no claim about how the text handles anything.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Every pair looks orthogonal — including same-root words</h2>
+  <p class="sub">All eight declared tracks, all 28 pairs.</p>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Pair</th><th></th><th style="text-align:right">VIF</th></tr></thead>
+      <tbody>
+        <tr class="flag"><td><b>ĪMĀN | MUʾMIN</b></td>
+            <td><span class="ar">إيمان</span> / <span class="ar">مؤمن</span> — <b>the same root</b></td>
+            <td class="num">1.004136</td></tr>
+        <tr class="flag"><td><b>MILLAH | NAṢĀRĀ</b></td>
+            <td>co-occur in 2:120, the ayah the whole reading rests on</td>
+            <td class="num">1.016447</td></tr>
+        <tr><td>MUʾMIN | MUSLIM</td><td>the largest value in the matrix</td>
+            <td class="num">1.019291</td></tr>
+        <tr><td>SALAT | ZAKAT</td><td>the pair under test</td><td class="num">1.000028</td></tr>
+        <tr><td colspan="2" style="color:var(--ink-3)">…24 more pairs</td>
+            <td class="num" style="color:var(--ink-3)">→ 1.000003</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><b>28 of 28 clear the bar.</b> A metric that reports <i>īmān</i> and <i>muʾmin</i> —
+  built on the same three letters — as independent is not measuring independence on this
+  data. It is measuring how often two rare words miss each other.</p>
+</section>
+
+<section>
+  <h2>And it is not the same quantity as the yeast number</h2>
+
+  <div class="box">
+    <p>The <span class="m">1.0026</span> on yeast and <span class="m">1.0203</span> on GitHub
+    were computed on <b>continuous per-node features</b> — clustering coefficient against
+    betweenness centrality; commit-message consistency against outsider-merge rate. Every
+    unit has a <b>real value on both axes</b>, so collinearity is a live possibility and a
+    low VIF is informative.</p>
+    <p>Per-ayah word counts are <b>overwhelmingly zero</b>. Sharing the name "VIF" does not
+    make the two numbers comparable, and printing them in the same table implies a
+    comparability that isn't there.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The other gate failed too, and that one is a real finding</h2>
+  <p class="sub">Using the same designation matcher that scored 7 of 7 control proper nouns
+  at zero.</p>
+
+  <div class="fig">  "those who believed"   <span style="color:var(--live)">ٱلَّذِينَ ءَامَنُوا۟</span>   root A-M-N    268 times
+  "those who submitted"  <span style="color:var(--kill)">ٱلَّذِينَ أَسْلَمُوا۟</span>   root S-L-M      1 time   (5:44)</div>
+
+  <p>The gate required at least 5 for each root. It got <b>268 and 1</b>, so it is reported
+  <b>failed</b>.</p>
+
+  <div class="box live">
+    <h3>What that actually shows</h3>
+    <p>The verb <i>aslama</i> plainly exists and is used — roughly 22 finite tokens. But
+    this text names a <b>group</b> by that act <b>exactly once</b>.</p>
+    <p>The group-by-action designation attaches overwhelmingly to <b><i>īmān</i></b>, not to
+    <b><i>islām</i></b>. If the reading is that membership is something you <i>do</i> rather
+    than something you <i>are</i>, the text puts that weight on <b>believing</b>, not on
+    submitting — 268 to 1.</p>
+    <p>That is a genuine distributional fact, produced by a test already shown to
+    discriminate. <b>The VIF is not.</b></p>
+  </div>
+</section>
+
+<section>
+  <h2>The integrity gate earned its place</h2>
+
+  <div class="box">
+    <p>The first run failed W1. Three track patterns matched <b>nothing</b>, because
+    hamza-on-waw (<span class="m">U+0624</span>) decomposes under Unicode NFD into a plain
+    waw plus a combining mark — so <i>muʾmin</i> is written
+    <span class="ar">مومن</span> after normalisation, not
+    <span class="ar">مءمن</span>. And <i>zakāt</i> carries a waw:
+    <span class="ar">زكوٰة</span>.</p>
+    <p>The regexes were corrected and the run repeated. <b>W2's result is unchanged</b> by
+    that fix, because the null never depended on the track definitions — which is why the
+    headline finding survives a bug that broke three of eight tracks.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What none of this licenses</h2>
+  <div class="box kill">
+    <p><b>Nothing about what any word means.</b> Counting is not interpreting.</p>
+    <p><b>Nothing about any living community</b> — Jewish, Christian or Muslim. The units of
+    analysis are Arabic word-forms in one text.</p>
+    <p><b>And nothing about design.</b> Even if two word-tracks <i>had</i> come out
+    independent, distributional independence is not evidence of authorial architecture. That
+    inference does not follow, and it would not have followed if the number had gone the
+    other way.</p>
+  </div>
+</section>
+
+<footer>
+  <p>1,200 frequency-matched null pairs · 28 pairwise VIFs · 6,236 ayahs · one committed
+  public dataset · nothing simulated. Gates: W1 pass · <b>W2 FAIL</b> · W3 disclosure ·
+  W4 disclosure · <b>W5 FAIL</b> · W6 excluded · W7 out of scope.</p>
+  <p style="margin-top:10px">Reproduce: <code>python3 -m pytest -q quran/test_qvif.py</code></p>
+</footer>
+
+</div>

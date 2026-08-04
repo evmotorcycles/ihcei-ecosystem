@@ -111,6 +111,7 @@ run "Scarcity: LISM's own domain limit tested — 5/6; §3.3c REFUTED where test
 run "Licensing Q3/Q4/Q5 — Q4 5/5 licensed, Q3 4/4, Q5 primary REFUTED" py licensing/test_lic.py
 run "D construct alarm diagnosed — 4/4; the PyPI half is construction-induced" py construct/test_con.py
 run "Quran lexical: yahud verbally designated 10x, nasara 0x, 7 controls 0x — 5/6" py quran/test_qlex.py
+run "Quran VIF: 1/3 — 99.8% of random word pairs clear the same bar; metric vacuous here" py quran/test_qvif.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py
