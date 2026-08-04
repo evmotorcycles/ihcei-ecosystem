@@ -1,0 +1,126 @@
+{
+  "spec_sha256": "b5eaa3051ebe499b7751ac72c477204061a5414ff4f0613e21414c02e940c669",
+  "supersedes": "d8243d3a42e45fe359582df1cad347547f6fab450c785193beeb1b25257fd0f3",
+  "n_ayahs": 6236,
+  "simulated_values": 0,
+  "score": "8/8",
+  "gates": [
+    {
+      "id": "Z1_INSTRUMENT_CAN_SEE_VERB_FORM",
+      "met": true,
+      "weight": "counted",
+      "detail": "vocalised path: ينزّل vs ينزل -> distinct=True | v1/v2 normalise(): ينزل vs ينزل -> identical=True, which is the defect, demonstrated not asserted"
+    },
+    {
+      "id": "Z2_SOURCE_SUPPLIED_POSITIVE_CONTROL_JLS",
+      "met": true,
+      "weight": "counted",
+      "detail": "root j-l-s -> ['58:11'] (forms ['المجالس']); proclitic rule inert here, 0 rejected"
+    },
+    {
+      "id": "Z3_SOURCE_SUPPLIED_NEGATIVE_CONTROL_FSH",
+      "met": true,
+      "weight": "counted",
+      "detail": "root f-s-h -> ['58:11'] (forms ['تفسحوا', 'فافسحوا', 'يفسح']); the five corpus-supplied near-misses ['52:15', '67:11', '9:2', '20:61', '4:172'] were all rejected by the uniform rule = True"
+    },
+    {
+      "id": "Z5_COVERAGE_RULE_FIRES",
+      "met": true,
+      "weight": "counted",
+      "detail": "both roots returned UNTESTABLE_BY_OQM; their score is not evidence"
+    },
+    {
+      "id": "Z6_RISKY_N159_NO_FORM_IV_IMPERFECT_OF_NZL",
+      "met": true,
+      "weight": "counted",
+      "detail": "Form IV imperfect yunzil: 0 found. Form II=27, Form I=2 ['34:2', '57:4'], other=0. One counterexample would have refuted N159; none exists. Form I yanzilu is NOT a counterexample and is not counted as one."
+    },
+    {
+      "id": "Z7_RISKY_N159_NAZZALA_VS_ANZALA_MINIMAL_PAIR",
+      "met": true,
+      "weight": "counted",
+      "detail": "3:3 carries both forms in one ayah ['نَزَّلَ', 'وَأَنزَلَ'] -> True | 47:9 ['أَنزَلَ'] vs 47:26 ['نَزَّلَ'] in an identical frame -> True | Janah: 2 independent surahs -> CLEARS (the minimum; 47:9 and 47:26 are one surah and count once)"
+    },
+    {
+      "id": "Z8_DISCLOSURE_Z7_DOES_NOT_GENERALISE",
+      "met": true,
+      "weight": "counted",
+      "detail": "Corpus-wide, the claim does NOT hold as a categorical rule: {'Quran/Dhikr/Kitab|I/IV': 26, 'Quran/Dhikr/Kitab|II': 14, 'Torah/Injil|I/IV': 6, 'Torah/Injil|II': 1}. Form II is relatively commoner with the Quran than with the Torah, but there are many non-Form-II uses with al-Kitab. The broad test is the WEAKER instrument, because al-Kitab is itself ambiguous between the Quran and earlier scripture -- which is the very thing in dispute -- so a context window cannot adjudicate it. The minimal pairs can; the broad distribution is reported anyway because it cuts against a categorical reading."
+    },
+    {
+      "id": "Z4_THE_JANAH_RULE_IS_BINDING_NOT_DECORATIVE",
+      "met": true,
+      "weight": "counted",
+      "detail": "the rule withheld a verdict for ['aslamu_muslim_islam']. v2 reported islam as FIXED on the single attestation 9:74; under the documented rule no verdict may be issued there at all. A rule that never fires would not be a constraint."
+    },
+    {
+      "id": "Z9_does_any_of_this_establish_MEANING",
+      "met": false,
+      "weight": "excluded",
+      "detail": "It does not. Verb form, root coverage and witness counts are morphological and distributional facts; none selects between competing readings of any term."
+    },
+    {
+      "id": "Z10_claims_about_living_communities",
+      "met": false,
+      "weight": "excluded",
+      "detail": "None are made or tested."
+    }
+  ],
+  "gates_not_met": [],
+  "coverage_rule": {
+    "j-l-s": {
+      "n_ayahs": 1,
+      "verdict": "UNTESTABLE_BY_OQM",
+      "note": "attested in one ayah only, so nested interpretation cannot run; this is NOT a finding about what 58:11 means"
+    },
+    "f-s-h": {
+      "n_ayahs": 1,
+      "verdict": "UNTESTABLE_BY_OQM",
+      "note": "attested in one ayah only, so nested interpretation cannot run; this is NOT a finding about what 58:11 means"
+    }
+  },
+  "nzl_forms": {
+    "II": 27,
+    "IV": 0,
+    "I": 2,
+    "other": 0
+  },
+  "nzl_form_I_refs": [
+    "34:2",
+    "57:4"
+  ],
+  "janah_readjudication_of_v2": {
+    "amanu_mumin_iman": {
+      "verdict": "CLEARS",
+      "n_surahs": 5
+    },
+    "aslamu_muslim_islam": {
+      "verdict": "ONE_WING",
+      "n_surahs": 1
+    },
+    "nasara_nasr": {
+      "verdict": "NO_WITNESS",
+      "n_surahs": 0
+    }
+  },
+  "broad_distribution": {
+    "Quran/Dhikr/Kitab|I/IV": 26,
+    "Quran/Dhikr/Kitab|II": 14,
+    "Torah/Injil|I/IV": 6,
+    "Torah/Injil|II": 1
+  },
+  "post_run_disclosures": {
+    "D1_THE_GOVERNANCE_LABEL_FIREWALL": "N186 ASSERTS these definitions. It does not derive them from a measurement, and this screen does not test them. They are Layer 3. A morphological screen CANNOT adjudicate whether these are governance-functional labels or theological-identity labels, because neither reading is a morphological claim. Reporting the N186 definitions here is reporting what a source says, not reporting a result.",
+    "D2_WHAT_THE_DOCUMENTS_SETTLE_AND_WHAT_THEY_DO_NOT": "Only that the reading the user attributes to OQM is in fact what the OQM documents say -- N186 defines these terms by FUNCTION WITHIN A GOVERNANCE SYSTEM, and N167 (on 53:21-23) supplies the warrant for refusing inherited labels: 'They are but labels that you and your forefathers have named, and in which Allahh has not instilled any authoritativeness.' That is a question about the documents, and it is answered by quotation. It is not a question about the text's morphology and this screen does not pretend to answer it.",
+    "D3_A_DOCUMENT_CLAIM_REPORTED_PRECISELY_RATHER_THAN_ENDORSED": {
+      "note": "N159 says the form نُفَرِّق 'occurs 4 times (2:136, 2:285, 3:84, and 4:152)'. The exact form occurs at three of those; 4:152 carries يُفَرِّقُوا۟ -- same root, same Form II, different person. The wording is loose about form versus root. This is recorded, endorsed in neither direction, and deliberately NOT used as a gate, because a claim that is ambiguous as stated cannot be a pass/fail test of anything."
+    },
+    "D4_ONE_DOCUMENT_COULD_NOT_BE_READ": {
+      "note": "Duaa_Publication_1.pdf is scanned page images. pypdf recovered only running headers. It contributed nothing to this spec and is recorded as unread rather than summarised from its title."
+    },
+    "D5_WHY_V1_AND_V2_ARE_NOT_RE_SCORED": {
+      "note": "qtext.normalise() is unchanged, so v1 and v2 reproduce byte-identically. v3 corrects one v2 VERDICT (islam) under a rule v2 did not have, and supersedes rather than overwrites."
+    }
+  },
+  "primary_verdict": "8/8. The two method rules the OQM documents state are implementable and both BIND: the coverage rule refuses two roots outright, and the Janah rule withholds the islam verdict that v2 issued. N159's riskiest textual claim -- that the Form IV imperfect يُنْزِل is absent from the text -- survives a test one counterexample would have ended (0 found). Its nazzala/anzala claim holds on two independent minimal-pair witnesses and does NOT hold as a categorical rule corpus-wide; both are reported."
+}

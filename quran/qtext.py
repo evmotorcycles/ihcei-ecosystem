@@ -40,6 +40,60 @@ def base(w):
     return w
 
 
+# ---------------------------------------------------------------------------
+# ADDED FOR v3. A DEFECT IN THE v1/v2 INSTRUMENT, STATED PLAINLY.
+#
+# normalise() above deletes every combining mark by Unicode category Mn. SHADDA
+# (U+0651) is category Mn. So normalise() cannot tell نَزَّلَ (Form II) from
+# أَنزَلَ (Form IV) from يَنزِلُ (Form I) -- it returns the same skeleton for all
+# three. N159 and N161 make the فَعَلَ / فَعَّلَ distinction load-bearing, and
+# N159's central claim is about a verb FORM. The v1/v2 screens were therefore
+# blind to the one distinction the source documents insist on. Nothing below
+# changes normalise(), so v1 and v2 reproduce byte-identically.
+# ---------------------------------------------------------------------------
+SHADDA = "ّ"
+
+
+def voc(s):
+    """Letter shapes unified, EVERY diacritic kept. The vocalised path."""
+    s = unicodedata.normalize("NFC", s)
+    return s.replace("ـ", "").replace("ٱ", "ا")
+
+
+def skeleton(s):
+    """Consonant skeleton with SHADDA PRESERVED -- enough to read verb form."""
+    s = unicodedata.normalize("NFD", s)
+    s = s.replace("ىٰ", "ى").replace("ٰ", "ا")
+    s = "".join(c for c in s if unicodedata.category(c) != "Mn" or c == SHADDA)
+    s = s.replace("ـ", "").replace("ٱ", "ا")
+    s = re.sub("[آأإ]", "ا", s)
+    return s.replace("ءا", "ا").replace("ى", "ي").replace("ة", "ه")
+
+
+def defective(w):
+    """Drop long vowels, so a root can be sought as a contiguous run.
+
+    NOT sufficient on its own: fa- + a root in s-h-* (سحر، سحق، سيح، سحت، حشر)
+    leaves فسح contiguous and yields a FALSE POSITIVE. v3 pins that down with an
+    enumerated form list and keeps those five ayahs as a negative control.
+    """
+    return "".join(c for c in w if c not in "اوي")
+
+
+def load_voc(path):
+    """Same rows as load(), plus the vocalised and shadda-bearing token lists."""
+    rows = load(path)
+    for r in rows:
+        raw = re.findall(r"[؀-ۿ]+", r["ayah_ar"])
+        # r["raw"] keeps WASLA (U+0671) intact. voc() folds it to plain alif, which
+        # is fine for reading vowels but destroys the one signal that says where a
+        # stem begins -- so anything doing morphology must read r["raw"].
+        r["raw"] = raw
+        r["voc"] = [voc(t) for t in raw]
+        r["skel"] = [skeleton(t) for t in raw]
+    return rows
+
+
 def load(path):
     rows = list(csv.DictReader(open(path, encoding="utf-8")))
     for r in rows:

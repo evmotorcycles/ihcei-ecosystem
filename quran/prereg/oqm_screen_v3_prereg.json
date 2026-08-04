@@ -1,0 +1,119 @@
+{
+  "id": "oqm_screen_v3",
+  "title": "A method-conformance screen built from the OQM source documents rather than from my reconstruction of OQM",
+  "supersedes": "d8243d3a42e45fe359582df1cad347547f6fab450c785193beeb1b25257fd0f3",
+  "WHY_V3_EXISTS": {
+    "what_v1_and_v2_actually_were": "v1 and v2 screened Quranic terms along axes I INVENTED -- grammatical class (verbal/mixed/nominal) and mutability (entered-and-left). Those axes are defensible and they were measured honestly, but no source document asks for them. They were my reconstruction of what an OQM screen ought to test.",
+    "what_changed": "16 primary OQM documents were supplied and read. They state their own method rules explicitly, and those rules are machine-checkable. v3 therefore stops inventing axes and instead (a) implements the two method rules the documents state, as gates on every verdict, and (b) validates the instrument against flat textual claims the documents themselves make, so the controls are SOURCE-SUPPLIED rather than chosen by me for convenience.",
+    "the_defect_this_exposed_in_v1_and_v2": "qtext.normalise() removes every combining mark by Unicode category Mn. SHADDA (U+0651) is Mn. So v1 and v2 could not distinguish فَعَلَ from فَعَّلَ -- Form I from Form II -- and N159/N161 make exactly that distinction load-bearing. The v1/v2 instrument was blind to the single distinction the sources insist on. v3 adds a vocalisation-preserving path. normalise() is UNCHANGED, so v1 and v2 reproduce byte-identically and are NOT re-scored."
+  },
+  "documents_read": {
+    "extraction": "pdftoppm/poppler is not installed in this container, so Read(pages=...) on the PDFs FAILED. Text was extracted with pypdf 6.14.2 instead. Duaa_Publication_1.pdf is scanned page images and yielded no machine-readable text beyond running headers -- it contributed NOTHING to this spec and is recorded as unread.",
+    "method_bearing": ["N159", "N161", "N167", "N186", "N130", "N162", "N157", "N182", "YT89", "YT90", "YT91", "YT92"],
+    "not_readable": ["Duaa_Publication_1"]
+  },
+  "method_rules_taken_FROM_the_documents": {
+    "JANAH_RULE": {
+      "source": "YT89, expounding 6:38 -- مَّا فَرَّطْنَا فِى ٱلْكِتَٰبِ مِن شَىْءٍ",
+      "quote": "anytime you come up with an idea, it is not enough to have one piece of evidence. You have to have a minimum of two",
+      "operationalisation": "A verdict may be issued only on >=2 witnesses that are INDEPENDENT, where independence is defined as occurring in DISTINCT SURAHS. Exactly one witness yields the class ONE_WING, which is NOT a negative verdict -- it is the withholding of any verdict.",
+      "why_this_matters_here": "v2 reported islam as FIXED on a single attestation (9:74) because my pre-registered bar happened to be 2. Under the documented rule the correct output is not FIXED but NO VERDICT. v3 re-adjudicates that."
+    },
+    "COVERAGE_RULE_58_11": {
+      "source": "N159",
+      "quote": "The root فَسَحَ and جَلَسَ are only used in this single Aya. We cannot do Root Analysis (or Nested Interpretation) to understand this term, and therefore, we cannot produce a relevant interpretation for this Aya. Referring to a Dictionary will only yield a plausible opinion!",
+      "operationalisation": "A root attested in exactly one ayah is UNTESTABLE_BY_OQM. Its score is not evidence and must never be reported as a finding. This is the sources' own version of the UNTESTABLE-HERE verdict, and it is the reason v2's five unattested state-nouns had to be disclosed rather than scored.",
+      "note": "N159 raises this against itself, as a challenge to OQM: 'How Can We Claim that the OQM is useful (let alone essential) if we can only produce an unsupported opinion?' A method that names its own coverage limit is behaving correctly."
+    },
+    "FORM_DISCIPLINE": {
+      "source": "N159, N161",
+      "quote": "Verbs in the form of فَعَلَ: To do or act. Vs Verbs in the form of فَعَّلَ: To do or act while having (and/or providing) a reason or justification or criteria",
+      "operationalisation": "Verb form is read from SHADDA on the middle radical, which requires the vocalised path added in v3."
+    }
+  },
+  "gates": {
+    "Z1_INSTRUMENT_CAN_SEE_VERB_FORM": {
+      "claim": "The vocalised path distinguishes Form II يُنَزِّل from Form I يَنزِلُ. The v1/v2 path does not.",
+      "passes_if": "skeleton() separates the two and normalise() collapses them, demonstrating the defect rather than asserting it.",
+      "weight": "counted"
+    },
+    "Z2_SOURCE_SUPPLIED_POSITIVE_CONTROL_JLS": {
+      "claim": "N159: root ج-ل-س occurs only in 58:11.",
+      "passes_if": "the matcher returns exactly ['58:11'].",
+      "weight": "counted"
+    },
+    "Z3_SOURCE_SUPPLIED_NEGATIVE_CONTROL_FSH": {
+      "claim": "N159: root ف-س-ح occurs only in 58:11. The corpus supplies five near-misses that a loose matcher accepts: 52:15 أَفَسِحْرٌ (root س-ح-ر), 67:11 فَسُحْقًا (س-ح-ق), 9:2 فَسِيحُوا (س-ي-ح), 20:61 فَيُسْحِتَكُم (س-ح-ت), 4:172 فَسَيَحْشُرُهُمْ (ح-ش-ر). Each is fa- plus a root beginning س-ح-, which leaves فسح contiguous after long-vowel stripping.",
+      "passes_if": "the matcher returns exactly ['58:11'] AND rejects all five. I did not choose these; they are whatever the corpus throws at a ف-س-ح matcher, which makes them a stronger control than any I would have picked.",
+      "weight": "counted"
+    },
+    "Z4_THE_JANAH_RULE_IS_BINDING_NOT_DECORATIVE": {
+      "claim": "The rule must be able to WITHHOLD a verdict, and must actually do so somewhere in this run.",
+      "passes_if": "at least one tested claim returns ONE_WING. A rule that never fires is not a constraint.",
+      "weight": "counted"
+    },
+    "Z5_COVERAGE_RULE_FIRES": {
+      "claim": "ج-ل-س and ف-س-ح are both returned UNTESTABLE_BY_OQM and neither is reported as a finding about 58:11's meaning.",
+      "passes_if": "both classed untestable and the output says their score is not evidence.",
+      "weight": "counted"
+    },
+    "Z6_RISKY_N159_NO_FORM_IV_IMPERFECT_OF_NZL": {
+      "claim": "N159: 'The term يُنْزِل, present tense of أَنْزَلَ, is not in the QurꜤān.' A SINGLE counterexample refutes this.",
+      "passes_if": "zero Form IV imperfect tokens of n-z-l are found. Form I يَنزِلُ (34:2, 57:4) is NOT a counterexample and must not be miscounted as one.",
+      "refuted_if": "any يُنْزِلُ is found.",
+      "weight": "counted"
+    },
+    "Z7_RISKY_N159_NAZZALA_VS_ANZALA_MINIMAL_PAIR": {
+      "claim": "N159: أَنزَلَ is used for the Torah but نَزَّلَ for the QurꜤān. Tested ONLY on minimal pairs where the governed object is unambiguous, and required to clear the Janah rule on its own terms.",
+      "witnesses": {
+        "3:3": "both forms inside ONE ayah -- نَزَّلَ عَلَيْكَ ٱلْكِتَٰبَ ... وَأَنزَلَ ٱلتَّوْرَىٰةَ وَٱلْإِنجِيلَ. Context cannot be disputed.",
+        "47:9_vs_47:26": "identical frame كَرِهُوا۟ مَا __ ٱللَّهُ, differing only in verb form."
+      },
+      "independence": "47:9 and 47:26 are the SAME surah and therefore count as ONE witness under the Janah rule. With 3:3 that is exactly 2 independent witnesses -- the minimum. The rule is binding here, not comfortable.",
+      "passes_if": "both witnesses show the predicted form-to-object pairing.",
+      "weight": "counted"
+    },
+    "Z8_DISCLOSURE_Z7_DOES_NOT_GENERALISE": {
+      "claim": "The corpus-wide distribution must be reported even though it weakens the categorical reading of the claim.",
+      "passes_if": "the run reports the broad counts and states that they do NOT support the claim as a categorical rule, and states why the broad test is the weaker instrument (ٱلْكِتَٰب is itself ambiguous between the QurꜤān and earlier scripture, which is the very thing in dispute, so a context-window proxy cannot adjudicate it).",
+      "weight": "counted"
+    },
+    "Z9_does_any_of_this_establish_MEANING": {
+      "claim": "It does not. Verb form, root coverage and witness counts are morphological and distributional facts. They do not select between competing readings of any term.",
+      "weight": "excluded",
+      "reason": "a test that cannot fail is not evidence"
+    },
+    "Z10_claims_about_living_communities": {
+      "claim": "None are made or tested.",
+      "weight": "excluded",
+      "reason": "out of scope"
+    }
+  },
+  "THE_GOVERNANCE_LABEL_FIREWALL": {
+    "what_N186_states": "Muslim = someone who submits to the Deen in accordance with its Governance; MuꜤmin = someone who understands the justification and bases for the Governance; Muḥsin = someone who explains at least some of the motivation and need for the details of the Governance; Malak = someone who can navigate and execute across multiple areas of the Governance. Mulk is glossed as Governance with ten enumerated components, and Deen as the established order.",
+    "the_firewall": "N186 ASSERTS these definitions. It does not derive them from a measurement, and this screen does not test them. They are Layer 3. A morphological screen CANNOT adjudicate whether these are governance-functional labels or theological-identity labels, because neither reading is a morphological claim. Reporting the N186 definitions here is reporting what a source says, not reporting a result.",
+    "what_this_does_settle": "Only that the reading the user attributes to OQM is in fact what the OQM documents say -- N186 defines these terms by FUNCTION WITHIN A GOVERNANCE SYSTEM, and N167 (on 53:21-23) supplies the warrant for refusing inherited labels: 'They are but labels that you and your forefathers have named, and in which Allahh has not instilled any authoritativeness.' That is a question about the documents, and it is answered by quotation. It is not a question about the text's morphology and this screen does not pretend to answer it."
+  },
+  "RE_ADJUDICATION_OF_V2": {
+    "rule": "Apply the Janah rule to v2's own axis-2 results.",
+    "iman": "8 witnesses -> clears. Verdict stands.",
+    "islam": "1 witness (9:74) -> ONE_WING. v2 called this FIXED. Under the documented rule that is wrong: no verdict may be issued at all. v3 corrects it.",
+    "nasr": "0 witnesses -> no verdict, unchanged.",
+    "the_five_unattested_state_nouns": "already disclosed by v2 as measurement-could-not-fire; the coverage rule now makes that a PRE-registered consequence instead of a post-hoc disclosure."
+  },
+  "preflight_probe_recorded_before_locking": {
+    "shadda_present_in_source": "yes -- 1061 occurrences of U+0651 in the first 200 ayahs, so the vocalised path is feasible",
+    "nzl_imperfect_inventory": "Form II يُنَزِّل and variants = 24 tokens; Form V تَنَزَّل = 3; Form I يَنزِلُ = 2 (34:2, 57:4); Form IV يُنْزِلُ = 0",
+    "jls": "1 ayah, 58:11, surface form ٱلْمَجَٰلِسِ",
+    "fsh_naive_matcher": "returned 6 ayahs including 5 false positives -- the enumerated-form matcher is required",
+    "nufarriq_count": "N159 says the form occurs 4 times at 2:136, 2:285, 3:84, 4:152. The exact form نُفَرِّقُ occurs at 3 of those; 4:152 carries يُفَرِّقُوا۟ -- same root, same Form II, different person. The document's 'occurs 4 times' is loose about form versus root. Reported precisely, endorsed in neither direction, and NOT used as a gate because the claim is ambiguous as stated.",
+    "nazzala_anzala_broad": "context-window proxy gives Quran/Dhikr/Kitab 14 Form II vs 26 non-Form-II; Torah/Injil 1 vs 6. Directionally consistent, categorically false. This is why Z7 uses minimal pairs and Z8 discloses the rest."
+  },
+  "data": {
+    "path": "data/quran/The_Quran_Dataset.csv",
+    "sha256": "7312b6b220e192ba9ebd02c0c4221ba76c35c69fcea18ae9d306ee20413fcb41",
+    "n_ayahs": 6236
+  },
+  "simulation": "none. No value in this run is generated, fitted or assumed.",
+  "scoring": "8 counted gates. Z9 and Z10 are excluded and cannot contribute."
+}
