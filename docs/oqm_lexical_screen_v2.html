@@ -1,0 +1,265 @@
+<title>Two axes, and a firewall around one word</title>
+<style>
+  :root{
+    --ground:#F5F4F1; --panel:#FFFFFF; --band:#EAE8E3;
+    --ink:#17191B; --ink-2:#4D5359; --ink-3:#838B91;
+    --rule:#D5D2CC; --rule-2:#E5E2DD;
+    --a1:#26536E; --a1-bg:#DFE9EF;
+    --a2:#6B4E8A; --a2-bg:#E8E2F0;
+    --warn:#8E3A2A; --warn-bg:#F6E3DE;
+    --ok:#1E6B54; --ok-bg:#DCEBE5;
+    --ar:"Noto Naskh Arabic","Amiri","Scheherazade New","Traditional Arabic","Geeza Pro",serif;
+    --mono:ui-monospace,"SFMono-Regular","SF Mono","Cascadia Mono",Menlo,Consolas,monospace;
+    --serif:Charter,"Bitstream Charter","Iowan Old Style","Source Serif Pro",Georgia,serif;
+    --sans:ui-sans-serif,system-ui,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --ground:#131517; --panel:#1A1D1F; --band:#212427;
+      --ink:#E9EBEC; --ink-2:#A9B0B5; --ink-3:#7A8187;
+      --rule:#2E3236; --rule-2:#25282B;
+      --a1:#79AECD; --a1-bg:#132430;
+      --a2:#AE96CE; --a2-bg:#231C30;
+      --warn:#DC8A76; --warn-bg:#2C1815;
+      --ok:#69BE9E; --ok-bg:#14261F;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#131517; --panel:#1A1D1F; --band:#212427;
+    --ink:#E9EBEC; --ink-2:#A9B0B5; --ink-3:#7A8187;
+    --rule:#2E3236; --rule-2:#25282B;
+    --a1:#79AECD; --a1-bg:#132430;
+    --a2:#AE96CE; --a2-bg:#231C30;
+    --warn:#DC8A76; --warn-bg:#2C1815;
+    --ok:#69BE9E; --ok-bg:#14261F;
+  }
+  :root[data-theme="light"]{
+    --ground:#F5F4F1; --panel:#FFFFFF; --band:#EAE8E3;
+    --ink:#17191B; --ink-2:#4D5359; --ink-3:#838B91;
+    --rule:#D5D2CC; --rule-2:#E5E2DD;
+    --a1:#26536E; --a1-bg:#DFE9EF;
+    --a2:#6B4E8A; --a2-bg:#E8E2F0;
+    --warn:#8E3A2A; --warn-bg:#F6E3DE;
+    --ok:#1E6B54; --ok-bg:#DCEBE5;
+  }
+
+  body{background:var(--ground);color:var(--ink);font-family:var(--serif);
+       font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px 96px;}
+  h1,h2,h3,.lbl,.chip{font-family:var(--sans);}
+  .m{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  .ar{font-family:var(--ar);direction:rtl;unicode-bidi:isolate;}
+  p{max-width:62ch;}
+
+  .lbl{font-size:10.5px;letter-spacing:.19em;text-transform:uppercase;
+       color:var(--ink-3);font-weight:700;}
+
+  header.top{padding:70px 0 0;}
+  h1{font-size:clamp(32px,5.4vw,54px);line-height:1.03;letter-spacing:-.03em;
+     font-weight:800;margin:14px 0 0;max-width:17ch;text-wrap:balance;}
+  .dek{font-size:clamp(18px,2.1vw,21px);color:var(--ink-2);margin:24px 0 0;max-width:58ch;}
+  .dek b{color:var(--ink);font-weight:600;}
+
+  .fire{border:2px solid var(--warn);background:var(--warn-bg);padding:24px 26px;
+        margin:40px 0 0;}
+  .fire .lbl{color:var(--warn);}
+  .fire p{margin:10px 0 0;font-size:17px;color:var(--ink);max-width:60ch;}
+  .fire p b{font-weight:700;}
+
+  section{margin-top:64px;}
+  h2{font-size:clamp(24px,3.2vw,32px);font-weight:800;letter-spacing:-.02em;
+     line-height:1.15;margin:0 0 6px;max-width:22ch;text-wrap:balance;}
+  .sub{color:var(--ink-3);font-size:16px;margin:0 0 24px;max-width:58ch;}
+
+  .axes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:26px 0;}
+  .ax{border:1px solid var(--rule);background:var(--panel);padding:20px;}
+  .ax.one{border-top:3px solid var(--a1);}
+  .ax.two{border-top:3px solid var(--a2);}
+  .ax .lbl{margin-bottom:6px;}
+  .ax.one .lbl{color:var(--a1);} .ax.two .lbl{color:var(--a2);}
+  .ax h3{font-size:18px;margin:0 0 8px;font-weight:750;}
+  .ax p{font-size:15px;color:var(--ink-2);margin:0;max-width:none;line-height:1.5;}
+  .ax .rows{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-2);
+            font-family:var(--mono);font-size:13.5px;line-height:1.95;}
+  .ax .rows b{font-weight:600;}
+
+  .scroll{overflow-x:auto;border:1px solid var(--rule);background:var(--panel);margin:24px 0;}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px;}
+  th,td{padding:10px 15px;text-align:left;border-bottom:1px solid var(--rule-2);}
+  th{font-family:var(--sans);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+     color:var(--ink-3);font-weight:750;background:var(--band);}
+  td.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums;font-weight:600;}
+  tr:last-child td{border-bottom:none;}
+  tr.hi td{background:var(--a2-bg);}
+
+  .chip{display:inline-block;font-size:9.5px;font-weight:750;letter-spacing:.1em;
+        padding:3px 7px;border-radius:2px;text-transform:uppercase;}
+  .c-v{background:var(--ok-bg);color:var(--ok);}
+  .c-m{background:var(--band);color:var(--ink-3);}
+  .c-n{background:var(--a1-bg);color:var(--a1);}
+  .c-mut{background:var(--a2-bg);color:var(--a2);}
+  .c-na{background:var(--warn-bg);color:var(--warn);}
+
+  .box{background:var(--band);border:1px solid var(--rule);padding:22px 24px;margin:26px 0;}
+  .box h3{font-size:19px;margin:0 0 6px;font-weight:750;}
+  .box p{margin:9px 0 0;font-size:16px;color:var(--ink-2);}
+  .box p b{color:var(--ink);}
+  .box.warn{background:var(--warn-bg);border-color:var(--warn);}
+  .box.warn h3{color:var(--warn);}
+
+  footer{margin-top:76px;padding-top:22px;border-top:2px solid var(--ink);
+         font-family:var(--sans);font-size:13.5px;color:var(--ink-3);}
+  footer p{max-width:66ch;}
+  @media (max-width:620px){ .axes{grid-template-columns:1fr;} }
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="lbl">Screen v2 · spec d8243d3a · supersedes 8257dfcc · 6 of 6</div>
+  <h1>Two axes, and a firewall around one word</h1>
+  <p class="dek">The objection was right, and it was an objection to <b>my instrument</b>:
+  v1 printed the class name <b>"LABEL"</b>, which names a grammatical fact but also names a
+  semantic register. One word for both invites exactly the conflation the reading is trying
+  to avoid.</p>
+
+  <div class="fire">
+    <div class="lbl">The register firewall — gate Y6 requires this verbatim in the output</div>
+    <p>A <b>NOMINAL</b> verdict is <b>equally compatible</b> with a governance-state reading
+    and with a birthright-identity reading, and <b>adjudicates neither</b>. Axis 1 measures
+    how the text names a group. Neither reading is a morphological claim, so no
+    morphological result can support or undermine either one.</p>
+  </div>
+</header>
+
+<section>
+  <h2>One correction to how v1 was described</h2>
+  <div class="box">
+    <p>X6 has been described as having <b>forced</b> the instrument to reject a symmetry
+    assumption. <b>It did not.</b></p>
+    <p>X6 is a <b>capability check</b>: can the screen return a non-verbal verdict at all?
+    The five non-verbal results came from the data. Had the data returned none, X6 would
+    have <b>failed</b>, and the correct report would have been <i>"this screen is
+    broken"</i> — not <i>"the framework is refuted"</i>.</p>
+    <p>A gate that manufactured its own answer would be worthless. That distinction is the
+    difference between a control and a quota.</p>
+  </div>
+</section>
+
+<section>
+  <h2>The actual extension: a second axis</h2>
+  <p class="sub">Morphology cannot reach the question the governance reading turns on.</p>
+
+  <div class="axes">
+    <div class="ax one">
+      <div class="lbl">Axis 1</div>
+      <h3>How is the group named?</h3>
+      <p>By a finite verb — <i>"those who [verb]"</i> — or only by a noun? A proper noun
+      cannot be conjugated to name its own bearers.</p>
+      <div class="rows">
+        controls &nbsp;<b>0 / 7</b><br>
+        kafarū &nbsp;<b>171</b> · ʿamilū <b>58</b> · ẓalamū <b>33</b>
+      </div>
+    </div>
+    <div class="ax two">
+      <div class="lbl">Axis 2 — new</div>
+      <h3>Can the state be entered and left?</h3>
+      <p>A birthright identity cannot be entered or exited. A state-variable can. Measured
+      by <span class="ar">بَعْدَ</span> + a possessed state-noun, and by explicit reversion
+      verbs.</p>
+      <div class="rows">
+        controls &nbsp;<b>0 / 7</b><br>
+        <span style="color:var(--ink-3)">one does not become Thamūd</span>
+      </div>
+    </div>
+  </div>
+
+  <p>The axes are <b>independent questions</b> and are allowed to disagree — and gate Y5
+  requires that they do at least once, because if they always agreed the second would add
+  nothing and the honest move would be to drop it.</p>
+</section>
+
+<section>
+  <h2>The result</h2>
+
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Term</th><th style="text-align:right">Axis 1</th><th>Grammar</th>
+        <th style="text-align:right">Axis 2</th><th>Mutability</th></tr></thead>
+      <tbody>
+        <tr><td>āmanū / muʾmin</td><td class="num">268</td><td><span class="chip c-v">verbal</span></td>
+            <td class="num">8</td><td><span class="chip c-mut">mutable</span></td></tr>
+        <tr class="hi"><td>ittaqaw / muttaqīn</td><td class="num">27</td><td><span class="chip c-v">verbal</span></td>
+            <td class="num">—</td><td><span class="chip c-na">can't fire</span></td></tr>
+        <tr><td>hādū / yahūd</td><td class="num">10</td><td><span class="chip c-m">mixed</span></td>
+            <td class="num">—</td><td><span class="chip c-na">can't fire</span></td></tr>
+        <tr><td>ashrakū / mushrikūn</td><td class="num">9</td><td><span class="chip c-m">mixed</span></td>
+            <td class="num">—</td><td><span class="chip c-na">can't fire</span></td></tr>
+        <tr><td>ṣabarū / ṣābirūn</td><td class="num">6</td><td><span class="chip c-m">mixed</span></td>
+            <td class="num">—</td><td><span class="chip c-na">can't fire</span></td></tr>
+        <tr><td>naṣārā</td><td class="num">2</td><td><span class="chip c-n">nominal</span></td>
+            <td class="num">0</td><td><span class="chip c-m">fixed</span></td></tr>
+        <tr><td>nāfaqū / munāfiqūn</td><td class="num">2</td><td><span class="chip c-n">nominal</span></td>
+            <td class="num">—</td><td><span class="chip c-na">can't fire</span></td></tr>
+        <tr><td><b>aslamū / muslim</b></td><td class="num">1</td><td><span class="chip c-n">nominal</span></td>
+            <td class="num">1</td><td><span class="chip c-m">fixed</span></td></tr>
+        <tr><td>ḥawāriyyūn</td><td class="num">0</td><td><span class="chip c-n">nominal</span></td>
+            <td class="num">—</td><td><span class="chip c-na">can't fire</span></td></tr>
+        <tr><td>ṣābiʾīn</td><td class="num">—</td><td><span class="chip c-na">untestable</span></td>
+            <td class="num">—</td><td><span class="chip c-na">can't fire</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><b>Y5 passed on <i>ittaqaw</i></b> — VERBAL on grammar, FIXED on mutability. The two
+  axes really are different measurements.</p>
+</section>
+
+<section>
+  <h2>A limit found after the run</h2>
+  <div class="box warn">
+    <h3>Seven of ten "can't fire" — and that is not the same as "fixed"</h3>
+    <p>The primary axis-2 construction needs a <b>possessed state-noun</b>. For five terms —
+    <i>taqwā-hum, hūd-hum, shirk-hum, nifāq-hum, ṣabr-hum</i> — that form <b>does not occur
+    in the text at all</b>. Their score of 0 means the measurement could not fire, not that
+    no mutability exists.</p>
+    <p>Axis 2 is interpretable only for the three whose state-noun <i>is</i> attested:
+    <b>islām</b>, <b>īmān</b>, <b>naṣr</b>. <b>Reporting <i>munāfiqūn</i> as FIXED would
+    overclaim</b>, so it isn't reported that way.</p>
+    <p>Found after the run, and written into the runner's own disclosures rather than
+    smoothed over.</p>
+  </div>
+</section>
+
+<section>
+  <h2>So the answer is a measurement, not an agreement</h2>
+
+  <div class="box">
+    <p>Where axis 2 <b>can</b> fire:</p>
+    <p><b>īmān — 8.</b> The text repeatedly describes entering and leaving it:
+    <span class="ar">كَفَرُوا۟ بَعْدَ إِيمَـٰنِهِمْ</span> (3:86, 3:90), and
+    <span class="ar">ءَامَنُوا۟ ثُمَّ كَفَرُوا۟ ثُمَّ ءَامَنُوا۟ ثُمَّ كَفَرُوا۟</span> (4:137).
+    That is the entry-and-exit pattern a state-variable reading predicts.</p>
+    <p><b>islām — 1.</b> The single attestation is <b>9:74</b>:
+    <span class="ar">وَكَفَرُوا۟ بَعْدَ إِسْلَـٰمِهِمْ</span> — <i>"and they disbelieved
+    after their islām."</i> <b>Real, and incompatible with a pure birthright reading</b> —
+    but one ayah against īmān's eight, and below the bar of 2 fixed before scoring.</p>
+    <p><b>munāfiqūn — the measurement could not fire.</b> Nothing is claimed either way.</p>
+  </div>
+
+  <div class="box warn">
+    <h3>And a MUTABLE verdict still does not establish a governance state-variable</h3>
+    <p>It establishes only that <b>the text describes movement in or out of whatever the
+    term denotes</b>. That is a smaller fact, and it is the whole of what was measured.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Both axes carry their own negative control, both boundaries were fixed before any term
+  was scored, and v1 is published unchanged — renaming its classes altered no count it
+  produced. Neither axis establishes meaning; neither is a statement about any living
+  community.</p>
+  <p style="margin-top:10px">Reproduce: <code>python3 -m pytest -q quran/test_oqm_screen_v2.py</code></p>
+</footer>
+
+</div>

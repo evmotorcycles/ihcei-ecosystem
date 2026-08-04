@@ -1,0 +1,74 @@
+{
+ "THE_SECOND_AXIS_WHICH_IS_THE_ACTUAL_EXTENSION": {
+  "the_boundary_declared_before_scoring": {
+   "FIXED": "0 or 1 entry/exit constructions",
+   "MUTABLE": "2 or more"
+  },
+  "the_measurement": "Count constructions in which the text describes movement into or out of the state: the possessed state-noun immediately preceded by 'after' (badʿa X-hum / X-kum), and explicit reversion verbs from the root R-D-D (irtaddu, yartadid) within three tokens of a form of the term.",
+  "the_question_the_first_axis_cannot_reach": "Whether a term names a state that can be ENTERED and LEFT, or a fixed attribute. A birthright identity cannot be entered or exited. A state-variable can. That distinction is what the governance reading actually turns on, and morphology is silent on it.",
+  "why_it_is_a_real_test": "It has a negative control that can fail. Proper nouns should show no entry or exit, because one does not become or cease to be Thamud."
+ },
+ "WHY_V2_EXISTS_AND_IT_IS_A_DEFECT_IN_THE_INSTRUMENT_NOT_THE_READING": {
+  "A_CORRECTION_TO_HOW_V1_WAS_DESCRIBED": "X6 has been described as having 'forced' the instrument to reject a symmetry assumption. It did not. X6 is a CAPABILITY CHECK on the instrument: it asks whether the screen is able to return a non-verbal verdict at all. The five non-verbal results came from the data. Had the data returned none, X6 would have FAILED and the correct report would have been 'this screen is broken', not 'the framework is refuted'. A gate that manufactured its own answer would be worthless.",
+  "WHAT_IS_NOT_CONCEDED": "That a NOMINAL verdict supports the governance-state reading. It does not support it and does not undermine it. A NOMINAL result is EQUALLY COMPATIBLE with a governance-state-variable reading and with a birthright-identity reading, because the axis measures morphology and neither reading is a morphological claim. Saying the screen rescues either one would be the category error this version was written to prevent.",
+  "the_complaint_and_it_is_correct": "v1 printed the class name 'LABEL'. That is a GRAMMATICAL fact -- the text names this group with a noun rather than a finite verb -- but the word 'label' also names a SEMANTIC register: a birthright or sectarian identity. Printing one word for both invites the exact conflation the reading is trying to avoid, and the ambiguity is in MY output vocabulary.",
+  "the_fix": "Rename the classes to VERBAL / MIXED / NOMINAL. Those describe how the text names a group and carry no implication about what the naming means."
+ },
+ "anti_immunisation": "Both boundaries are fixed in this document before any term was scored. v1 is published unchanged and is not re-scored; renaming its classes does not alter a single count it produced.",
+ "gates": [
+  {
+   "bar": "6,236 ayahs; every control and term resolves to an attested form on axis 1, or is explicitly recorded as UNTESTABLE-HERE on that axis",
+   "id": "Y1_integrity",
+   "weight": "full"
+  },
+  {
+   "bar": "the 7 proper nouns score 0 finite-verb designations",
+   "id": "Y2_AXIS1_NEGATIVE_CONTROL",
+   "weight": "full"
+  },
+  {
+   "bar": "kafaru, zalamu and amilu each score >= 20",
+   "id": "Y3_AXIS1_POSITIVE_CONTROL",
+   "weight": "full"
+  },
+  {
+   "bar": "the 7 proper nouns each score <= 1 entry/exit construction. If a proper noun looks MUTABLE the second axis is matching noise and cannot be read.",
+   "id": "Y4_AXIS2_NEGATIVE_CONTROL",
+   "weight": "full"
+  },
+  {
+   "bar": "at least one term under test must receive DIFFERENT verdicts on the two axes -- e.g. NOMINAL on grammar but MUTABLE on entry/exit. If the axes always agree, the second one adds nothing and should be dropped rather than reported.",
+   "id": "Y5_PRIMARY_THE_TWO_AXES_ARE_NOT_THE_SAME_MEASUREMENT",
+   "weight": "full"
+  },
+  {
+   "bar": "the results file must carry, in its own disclosures, the statement that a NOMINAL verdict is equally compatible with a governance-state reading and with a birthright-identity reading and adjudicates neither. Met by the statement being present and exact.",
+   "id": "Y6_THE_REGISTER_FIREWALL_IS_STATED_IN_THE_OUTPUT",
+   "weight": "full"
+  },
+  {
+   "bar": "EXCLUDED, UNTESTABLE-HERE. Axis 1 measures how a group is named. Axis 2 measures whether the text describes movement in and out of a state. Neither says what any term MEANS, and neither selects between competing readings of it.",
+   "id": "Y7_does_either_axis_establish_MEANING",
+   "weight": "excluded"
+  },
+  {
+   "bar": "EXCLUDED, OUT OF SCOPE BY CONSTRUCTION. The units are Arabic word-forms in one text.",
+   "id": "Y8_claims_about_living_communities",
+   "weight": "excluded"
+  }
+ ],
+ "model": "OQM Lexical Screen v2: two axes, and a firewall around the word 'label'",
+ "simulator_rule": "One committed public dataset of 6,236 ayahs. Nothing simulated.",
+ "supersedes": "8257dfcca40d0be024bac323e45137eba27277200243b3c1a7893d6f08349204",
+ "the_two_axes_together": {
+  "axis_1_GRAMMATICAL": "VERBAL (named by a finite verb >= 20 times) | MIXED (5-19) | NOMINAL (< 5)",
+  "axis_2_MUTABILITY": "MUTABLE (entry/exit attested >= 2) | FIXED (0-1)",
+  "note": "The axes are independent questions and may disagree. A term can be NOMINAL and MUTABLE -- named by a noun, yet described as something one enters and leaves. Reporting only the first axis would hide that."
+ },
+ "too_perfect_rule": "If the two axes agree on every term, Y5 fails and the second axis is reported as adding nothing.",
+ "version": "2.0",
+ "what_a_pass_licenses": {
+  "would": "That two independent grammatical measurements, each with its own negative control, sort a vocabulary differently -- and that reporting only one of them would have misdescribed at least one term.",
+  "would_NOT": "Any claim about meaning, about which reading of a term is correct, or about any community. In particular a MUTABLE verdict does not establish that a term denotes a governance state-variable; it establishes only that the text describes entry into or exit from whatever the term denotes."
+ }
+}

@@ -113,6 +113,7 @@ run "D construct alarm diagnosed — 4/4; the PyPI half is construction-induced"
 run "Quran lexical: yahud verbally designated 10x, nasara 0x, 7 controls 0x — 5/6" py quran/test_qlex.py
 run "Quran VIF: 1/3 — 99.8% of random word pairs clear the same bar; metric vacuous here" py quran/test_qvif.py
 run "OQM Lexical Screen: 4/5 — calibrated both ends; says LABEL to 5 of 10 OQM terms" py quran/test_oqm_screen.py
+run "OQM Screen v2: 6/6 — classes renamed, second mutability axis, register firewall" py quran/test_oqm_screen_v2.py
 run "colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR" py colab-audit/test_audit.py
 run "governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY" py governance-physics/test_gphys.py
 run "novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k" py novora-mesh/test_mesh.py

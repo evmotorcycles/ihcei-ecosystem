@@ -1,0 +1,172 @@
+{
+  "axes_disagree_on": [
+    "ittaqaw_muttaqin"
+  ],
+  "axis1_grammatical": {
+    "classes": {
+      "amanu_mumin": "VERBAL",
+      "ashraku_mushrikun": "MIXED",
+      "aslamu_muslim": "NOMINAL",
+      "hadu_yahud": "MIXED",
+      "hawariyyun": "NOMINAL",
+      "ittaqaw_muttaqin": "VERBAL",
+      "nafaqu_munafiqun": "NOMINAL",
+      "nasara": "NOMINAL",
+      "sabaru_sabirun": "MIXED",
+      "sabiin": "NOMINAL"
+    },
+    "negative_controls": {
+      "Aad": 0,
+      "Firawn": 0,
+      "Israil": 0,
+      "Majus": 0,
+      "Quraysh": 0,
+      "Rum": 0,
+      "Thamud": 0
+    },
+    "positive_controls": {
+      "amilu": 58,
+      "kafaru": 171,
+      "zalamu": 33
+    },
+    "terms": {
+      "amanu_mumin": 268,
+      "ashraku_mushrikun": 9,
+      "aslamu_muslim": 1,
+      "hadu_yahud": 10,
+      "hawariyyun": 0,
+      "ittaqaw_muttaqin": 27,
+      "nafaqu_munafiqun": 2,
+      "nasara": 2,
+      "sabaru_sabirun": 6,
+      "sabiin": 0
+    }
+  },
+  "axis2_interpretable_for": [
+    "aslamu_muslim",
+    "amanu_mumin",
+    "nasara"
+  ],
+  "axis2_mutability": {
+    "classes": {
+      "amanu_mumin": "MUTABLE",
+      "ashraku_mushrikun": "FIXED",
+      "aslamu_muslim": "FIXED",
+      "hadu_yahud": "FIXED",
+      "hawariyyun": "FIXED",
+      "ittaqaw_muttaqin": "FIXED",
+      "nafaqu_munafiqun": "FIXED",
+      "nasara": "FIXED",
+      "sabaru_sabirun": "FIXED",
+      "sabiin": "FIXED"
+    },
+    "negative_controls": {
+      "Aad": 0,
+      "Firawn": 0,
+      "Israil": 0,
+      "Majus": 0,
+      "Quraysh": 0,
+      "Rum": 0,
+      "Thamud": 0
+    },
+    "terms": {
+      "amanu_mumin": 8,
+      "ashraku_mushrikun": 0,
+      "aslamu_muslim": 1,
+      "hadu_yahud": 0,
+      "hawariyyun": 0,
+      "ittaqaw_muttaqin": 0,
+      "nafaqu_munafiqun": 0,
+      "nasara": 0,
+      "sabaru_sabirun": 0,
+      "sabiin": 0
+    }
+  },
+  "gates": [
+    {
+      "detail": "6236 ayahs. Terms with no attested finite verb on axis 1, recorded as UNTESTABLE-HERE rather than scored: ['sabiin']",
+      "id": "Y1_integrity",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "axis-1 proper nouns {'Firawn': 0, 'Thamud': 0, 'Aad': 0, 'Israil': 0, 'Majus': 0, 'Rum': 0, 'Quraysh': 0}, all must be 0",
+      "id": "Y2_AXIS1_NEGATIVE_CONTROL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "axis-1 action terms {'kafaru': 171, 'zalamu': 33, 'amilu': 58}, each needs >= 20",
+      "id": "Y3_AXIS1_POSITIVE_CONTROL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "axis-2 proper nouns {'Firawn': 0, 'Thamud': 0, 'Aad': 0, 'Israil': 0, 'Majus': 0, 'Rum': 0, 'Quraysh': 0}, each must be <= 1. One does not become or cease to be Thamud, so a proper noun looking MUTABLE would mean the axis is matching noise.",
+      "id": "Y4_AXIS2_NEGATIVE_CONTROL",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "terms receiving different verdicts on the two axes: ['ittaqaw_muttaqin']. If the axes always agreed the second would add nothing and should be dropped rather than reported.",
+      "id": "Y5_PRIMARY_THE_TWO_AXES_ARE_NOT_THE_SAME_MEASUREMENT",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "the firewall statement is carried verbatim in the disclosures",
+      "id": "Y6_THE_REGISTER_FIREWALL_IS_STATED_IN_THE_OUTPUT",
+      "met": true,
+      "weight": "full"
+    },
+    {
+      "detail": "EXCLUDED, UNTESTABLE-HERE. Axis 1 measures how a group is named. Axis 2 measures whether the text describes movement in and out of a state. Neither says what any term MEANS, and neither selects between competing readings of it.",
+      "id": "Y7_does_either_axis_establish_MEANING",
+      "met": null,
+      "weight": "excluded"
+    },
+    {
+      "detail": "EXCLUDED, OUT OF SCOPE BY CONSTRUCTION. The units are Arabic word-forms in one text.",
+      "id": "Y8_claims_about_living_communities",
+      "met": null,
+      "weight": "excluded"
+    }
+  ],
+  "gates_not_met": [],
+  "model": "OQM Lexical Screen v2 - two axes",
+  "n_ayahs": 6236,
+  "post_run_disclosures": {
+    "D1_THE_REGISTER_FIREWALL": {
+      "statement": "A NOMINAL verdict is EQUALLY COMPATIBLE with a governance-state reading and with a birthright-identity reading, and adjudicates NEITHER. Axis 1 measures how the text names a group. Neither reading is a morphological claim, so no morphological result can support or undermine either one."
+    },
+    "D2_WHY_THE_CLASSES_WERE_RENAMED": {
+      "note": "v1 printed 'LABEL'. That names a grammatical fact, but it also names a semantic register -- a birthright or sectarian identity. One word for both invited a conflation the reading is trying to avoid. The defect was in the OUTPUT VOCABULARY, not the data: renaming altered no count v1 produced, and v1 is not re-scored."
+    },
+    "D3_A_CORRECTION_TO_HOW_V1_WAS_DESCRIBED": {
+      "note": "X6 has been described as having FORCED the instrument to reject a symmetry assumption. It did not. X6 is a CAPABILITY CHECK -- it asks whether the screen can return a non-verbal verdict at all. The five non-verbal results came from the data. Had the data returned none, X6 would have FAILED and the correct report would have been 'this screen is broken', not 'the framework is refuted'. A gate that manufactured its own answer would be worthless."
+    },
+    "D3b_A_LIMIT_ON_AXIS_2_FOUND_AFTER_THE_RUN": {
+      "attested_state_nouns": [
+        "islam-hum/-kum",
+        "iman-hum/-kum",
+        "nasr-hum/-kum"
+      ],
+      "not_attested": [
+        "taqwa-hum",
+        "hud-hum",
+        "shirk-hum",
+        "nifaq-hum",
+        "sabr-hum"
+      ],
+      "note": "The primary axis-2 construction needs a POSSESSED STATE-NOUN to follow 'after'. For five of the ten terms that noun form does not occur in the text at all, so their score of 0 means THE MEASUREMENT COULD NOT FIRE, not that no mutability exists. A FIXED verdict is only interpretable for the three terms whose state-noun IS attested: islam (1), iman (8), nasr (0). For the rest axis 2 is UNTESTABLE-HERE by its main route, and reporting them as FIXED would overclaim. Discovered after the run and recorded rather than smoothed over."
+    },
+    "D4_WHAT_THE_SECOND_AXIS_DOES_AND_DOES_NOT_SHOW": {
+      "note": "It measures whether the text describes entry into or exit from a state. A MUTABLE verdict does NOT establish that a term denotes a governance state-variable -- it establishes only that the text describes movement in or out of whatever the term denotes. That is a smaller fact, and it is the whole of what was measured."
+    }
+  },
+  "primary_verdict": "TWO AXES, EACH WITH ITS OWN NEGATIVE CONTROL, and they disagree on ['ittaqaw_muttaqin']. Axis 2 is interpretable ONLY for the three terms whose possessed state-noun is attested: iman 8 (MUTABLE), islam 1 (FIXED, the single attestation being 9:74 'they disbelieved after their islam'), nasr 0. For the other seven the measurement could not fire and no mutability verdict is offered. Neither axis establishes meaning.",
+  "score": "6/6",
+  "simulated_values": 0,
+  "spec_sha256": "d8243d3a42e45fe359582df1cad347547f6fab450c785193beeb1b25257fd0f3",
+  "supersedes": "8257dfcca40d0be024bac323e45137eba27277200243b3c1a7893d6f08349204"
+}
