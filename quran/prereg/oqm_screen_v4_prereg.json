@@ -1,0 +1,109 @@
+{
+  "id": "oqm_screen_v4",
+  "title": "Applying the source-derived OQM rules to four narratives: N157 Barakah, N182 al-Ɛasr, N167 Sulalah, and Iqra",
+  "supersedes": "b5eaa3051ebe499b7751ac72c477204061a5414ff4f0613e21414c02e940c669",
+  "WHAT_THIS_RUN_DOES_AND_WHAT_IT_REFUSES_TO_DO": {
+    "does": "Takes the two rules v3 extracted from the OQM documents -- the Janah two-witness rule (YT89 on 6:38) and the 58:11 coverage rule (N159) -- and asks of each narrative's CENTRAL ROOT one question only: is a nested interpretation of this root METHODOLOGICALLY LICENSED under OQM's own rules? That is, is the root attested widely enough that the Quran can be used to interpret it, instead of a dictionary?",
+    "refuses": "It does not test, support or evaluate any of the READINGS. It does not evaluate E = U*D, the cascade product E = U*prod(D_i), revocation latency, a Bayesian updating engine, Al-Mizan, or the claim that Iqra derives from a pregnant she-camel. None of those is a morphological claim and none is measured anywhere in this repository. A licensed root means the inquiry may proceed, NOT that the conclusion is correct.",
+    "why_that_is_still_worth_doing": "N159 shows OQM failing this test on purpose, at 58:11, and calling the result an unsupported opinion. A rule that can fail is worth applying to cases where it might pass."
+  },
+  "THE_INSTRUMENT_DEFECT_THAT_FORCED_V4": {
+    "what_happened": "v3's uniform proclitic rule strips a leading و/ف/ب/ك/ل/أ/ا run, halting at wasla. Applied to root b-r-k, whose FIRST RADICAL is ب, it ate the radical: بورك -> ورك, باركنا -> اركنا, بركات -> ركات. It therefore REJECTED 27:8 بُورِكَ -- the single ayah N157's entire Barakah segment is built on -- while ACCEPTING أخباركم (kh-b-r), أدباركم (d-b-r), صبرك (s-b-r) and لكبيركم (k-b-r), where a -kum suffix leaves ب-ر-ك spuriously contiguous.",
+    "severity": "Total. On b-r-k the v3 matcher was worse than useless: it inverted the answer, rejecting true positives and accepting false ones.",
+    "why_v3_still_stands": "v3's gates concerned f-s-h and j-l-s, where wasla rescues the stem and the first radical is not a proclitic letter. Those results are unaffected and v3 is not re-scored. But the rule does NOT generalise to roots beginning with a proclitic letter, and saying so is the point of this entry.",
+    "the_fix": "v4 abandons the automatic rule for these four roots and uses EXHAUSTIVELY GENERATED, INDIVIDUALLY ADJUDICATED surface-form inventories. Candidate generation is mechanical, so no occurrence can be missed. Each distinct surface form is then adjudicated once against a single stated criterion and PRINTED IN THE OUTPUT with its verdict, so every judgement is auditable by a reader who knows no Python."
+  },
+  "adjudication_criterion": "A candidate surface form is ACCEPTED iff its three radicals are the root's own radicals, and REJECTED iff the apparent match is produced by a proclitic, a pronominal suffix, or a different root that happens to leave the letters contiguous. Applied to every candidate of every root identically.",
+  "narratives": {
+    "N157_barakah": {
+      "root": "b-r-k",
+      "document_claim": "N157 'How to have Barakah and Why did Moses Seek Barakah' is built on 27:8 نُودِىَ أَن بُورِكَ مَن فِى ٱلنَّارِ.",
+      "accepted_forms": ["تبارك", "باركنا", "مباركا", "مبارك", "مباركه", "فتبارك", "بركات", "وبركات", "وبركاتهۥ", "بورك", "المباركه", "وباركنا", "وبارك", "وتبارك"],
+      "rejected_forms": {"اخباركم": "kh-b-r + -kum", "لكبيركم": "k-b-r + -kum", "ادباركم": "d-b-r + -kum", "صبرك": "s-b-r + -ka", "باريكم": "b-r-' (بارئكم, your Maker) -- hamza, not kaf", "بركنهۥ": "r-k-n (بِرُكْنِهِۦ, with his pillar) -- the ب is the preposition bi-"}
+    },
+    "N182_al_asr": {
+      "root": "3-s-r",
+      "document_claim": "N182 'The Riddle of the Pomegranate: What is al-Ɛassr in Surah 103' reads al-Ɛasr as a pressing rather than as a time period.",
+      "accepted_forms": ["والعصر", "يعصرون", "المعصرات", "اعصار", "اعصر"],
+      "rejected_forms": {}
+    },
+    "N167_sulalah": {
+      "root": "s-l-l",
+      "document_claim": "N167 states a 'Linguistic Basis for the root سلل' and builds it from 24:63 يَتَسَلَّلُونَ plus the sulalah of 23:12 and 32:8.",
+      "accepted_forms": ["سلاله", "يتسللون"],
+      "rejected_forms": {}
+    },
+    "IQRA_quran": {
+      "root": "q-r-'",
+      "document_claim": "The prompt asserts Iqra derives from a pregnant she-camel ready to deliver and so means 'to assemble, carry, embrace' rather than 'read'. That is a LEXICOGRAPHIC etymology from outside the text, which is exactly what N159 says 'will only yield a plausible opinion'. It is therefore NOT tested here. What is tested is whether the root is attested widely enough for the Quran to define it internally, and what its own distribution looks like.",
+      "accepted_forms": ["القران", "قرانا", "والقران", "قران", "وقران", "اقرا", "يقرءون", "قرات", "بالقران", "قروء", "بقران", "نقروهۥ", "وقرانا", "لتقراهۥ", "اقرءوا", "فاقرءوا", "وقرانهۥ", "قراناه", "قرانهۥ", "لقران", "سنقريك", "قري", "فقراهۥ"],
+      "rejected_forms": {"اقرب": "q-r-b", "والاقربين": "q-r-b", "الاقربين": "q-r-b", "والاقربون": "q-r-b", "اقريب": "q-r-b", "لاقرب": "q-r-b", "واقرب": "q-r-b", "اقربهم": "q-r-b", "الفقراء": "f-q-r", "للفقراء": "f-q-r", "فقراء": "f-q-r", "اقررتم": "q-r-r", "اقررنا": "q-r-r", "واقرضوا": "q-r-d", "واقرضتم": "q-r-d", "قرناء": "q-r-n"}
+    }
+  },
+  "gates": {
+    "W1_THE_V3_RULE_IS_SHOWN_TO_FAIL_ON_B_R_K": {
+      "claim": "v3's proclitic rule rejects بورك and باركنا and accepts اخباركم and صبرك.",
+      "passes_if": "the failure is reproduced in this run rather than merely asserted. An instrument defect that is only described is not demonstrated.",
+      "weight": "counted"
+    },
+    "W2_EVERY_CANDIDATE_IS_ADJUDICATED_AND_PRINTED": {
+      "claim": "For each root, accepted + rejected exactly exhausts the mechanically generated candidate set, with no form silently dropped.",
+      "passes_if": "the reconciliation is exact for all four roots and every adjudication appears in the output.",
+      "weight": "counted"
+    },
+    "W3_THE_REJECTIONS_ARE_REAL_OTHER_ROOTS": {
+      "claim": "The rejected sets are not padding: q-r-' must reject q-r-b, f-q-r, q-r-r, q-r-d and q-r-n, and b-r-k must reject the four -kum/-ka suffix artefacts plus b-r-' and r-k-n.",
+      "passes_if": "both hold.",
+      "weight": "counted"
+    },
+    "W4_N182_IS_LICENSED": {
+      "claim": "Root 3-s-r clears the coverage rule (>1 ayah) and the Janah rule (>=2 distinct surahs).",
+      "passes_if": "both clear. This licenses the INQUIRY, not the reading.",
+      "weight": "counted"
+    },
+    "W5_N167_IS_LICENSED_AND_USED_ITS_OWN_WITNESSES": {
+      "claim": "Root s-l-l clears both rules, and the ayahs found are exactly the ones N167 itself cites: 23:12, 32:8, 24:63.",
+      "passes_if": "both clear AND the ayah set matches. The second half is the risky part -- if N167 had cited an ayah the root does not occur in, or missed one it does, this fails.",
+      "weight": "counted"
+    },
+    "W6_N157_IS_LICENSED_ONCE_THE_INSTRUMENT_IS_FIXED": {
+      "claim": "Root b-r-k clears both rules, and 27:8 -- the ayah v3 wrongly rejected and the one N157 is built on -- is present.",
+      "passes_if": "both clear and 27:8 is in the accepted set.",
+      "weight": "counted"
+    },
+    "W7_IQRA_IS_LICENSED_AND_ITS_DISTRIBUTION_IS_REPORTED": {
+      "claim": "Root q-r-' clears both rules. The nominal/verbal split is reported, and 2:228 قُرُوٓءٍ is flagged: it is the same root in a sense that has nothing to do with reciting.",
+      "passes_if": "clears, split reported, 2:228 present. 2:228 is reported because it is the one datum here that bears on whether the root is semantically confined to 'read' -- and it is reported whichever way it cuts.",
+      "weight": "counted"
+    },
+    "W8_does_a_LICENSED_root_make_the_reading_correct": {
+      "claim": "It does not. Licensing is a statement about the availability of evidence, not about the conclusion drawn from it. All four readings could still be wrong.",
+      "weight": "excluded",
+      "reason": "a test that cannot fail is not evidence"
+    },
+    "W9_does_this_run_support_the_quantitative_models": {
+      "claim": "It does not. E = U*D, the cascade product, revocation latency, the Bayesian engine and Al-Mizan are not measured here or anywhere in this repository against Quranic text. Nothing in this run bears on them in either direction.",
+      "weight": "excluded",
+      "reason": "out of scope"
+    }
+  },
+  "CORRECTIONS_TO_CLAIMS_PUT_TO_ME": {
+    "the_268_to_1_ratio": "There is no such ratio. 268 was the count of VERBAL designations of آمنوا in v2; 1 was the count of NOMINAL designations of مسلم. Two different measurements on two different axes are not a ratio, and dividing them means nothing.",
+    "islam_collapsed_from_MUTABLE": "It did not. v2 classified islam as FIXED. v3 collapsed FIXED to no-verdict under the Janah rule. It was never MUTABLE.",
+    "the_screen_is_the_first_implementation_of_Al_Mizan": "That is a Layer 3 naming, not a result. The screen is a token matcher with pre-registered gates. Calling it a scale of structural equity does not make it one.",
+    "iqra_from_a_pregnant_she_camel": "This is a claim from traditional lexicography -- precisely the source N159 rules out as yielding 'only a plausible opinion'. It is not tested here and this run gives it no support."
+  },
+  "preflight_probe_recorded_before_locking": {
+    "b_r_k": "20 candidate forms; 14 accepted, 6 rejected; v3's automatic rule inverted the answer on this root",
+    "3_s_r": "5 candidate forms across 5 ayahs and 4 surahs; 0 rejected",
+    "s_l_l": "2 candidate forms across 3 ayahs and 3 surahs; 0 rejected",
+    "q_r_'": "39 candidate forms; naive matching is contaminated by five unrelated roots (q-r-b, f-q-r, q-r-r, q-r-d, q-r-n)"
+  },
+  "data": {
+    "path": "data/quran/The_Quran_Dataset.csv",
+    "sha256": "7312b6b220e192ba9ebd02c0c4221ba76c35c69fcea18ae9d306ee20413fcb41",
+    "n_ayahs": 6236
+  },
+  "simulation": "none.",
+  "scoring": "7 counted gates. W8 and W9 are excluded and cannot contribute."
+}
