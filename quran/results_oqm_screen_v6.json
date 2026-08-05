@@ -1,0 +1,315 @@
+{
+  "spec_sha256": "faa2f56ee9b346908070af055bdda0e084339f9cb0c264870a968c797d4ab4fc",
+  "supersedes": "5f43d480f2af1616f365b925a2ea887936cbffdccf337efd2d8452fec229719d",
+  "n_ayahs": 6236,
+  "simulated_values": 0,
+  "score": "8/8",
+  "gates": [
+    {
+      "id": "U1_ROOT_N_Q_Y_IS_ABSENT_FROM_THE_TEXT",
+      "met": true,
+      "weight": "counted",
+      "detail": "root ن-ق-ي attestations: 0. All 7 نَاقَة tokens reduce to skeleton ['نقه'] -- ن-ا-ق-ة, where the alif is a LONG VOWEL, not a radical yaa. The root is ن-و-ق (hollow). ن-ق-ي would give نَقِيَّة, a different word on a different template, and that root does not occur anywhere in the text. Under the coverage rule a root with ZERO attestations is below even 58:11, which had one. Substring near-misses, all other roots, listed so the rejections can be checked: [('نقيبا', 'نقب'), ('نقيرا', 'نقر'), ('نقيض', 'نقض'), ('نقيم', 'نقم')]."
+    },
+    {
+      "id": "U2_THE_SCREEN_IS_NOT_CREDITED_WITH_A_RESULT_IT_DID_NOT_PRODUCE",
+      "met": true,
+      "weight": "counted",
+      "detail": "The v5 negative control established exactly one thing: أعناقهم (root ع-ن-ق) is not نَاقَة. That is a statement about two letter-strings. It evaluated no root ن-ق-ي and no semantic reading, so it cannot have shown the seven ayahs to be 'the purifier verses'. I am recording this because accepting credit for a measurement I did not make would corrupt the record more than any single wrong number."
+    },
+    {
+      "id": "U3_ABAS_HAS_THREE_ATTESTATIONS_NOT_TWO",
+      "met": true,
+      "weight": "counted",
+      "detail": "root ع-ب-س -> ['74:22', '76:10', '80:1']. Three, not the two put to me; 76:10 عَبُوسًا was missing from the stated set. Three witnesses across three surahs clear both rules MORE comfortably than two -- but a nested interpretation built on two of three attestations has left a third of its own evidence unexamined."
+    },
+    {
+      "id": "U4_BAYT_CLUSTERING_PRODUCES_REAL_MOTIFS",
+      "met": true,
+      "weight": "counted",
+      "detail": "b-r-k -> 32 ayahs in 22 zones, 5 of them multi-member. 27:8 shares its Bayt with ['28:30'] -- the risky half of this gate was predicting that the vocabulary measure would join the two Musa-at-the-fire passages, and it did. Other zones: [['6:92', '6:155', '21:50', '38:29', '44:3'], ['17:1', '21:71', '21:81'], ['25:1', '55:78', '67:1'], ['25:10', '25:61']]"
+    },
+    {
+      "id": "U5_TAFSEEL_DISTINGUISHES_ROOTS",
+      "met": true,
+      "weight": "counted",
+      "detail": "s-l-l divaricates into 2 zones [['23:12', '32:8'], ['24:63']] -- the creation-account sulalah against the withdrawal verb -- while b-r-k's largest zone holds 5. A measure that returned the same shape for every root would be vacuous. DISCLOSED: the locked spec's CLAIM text says b-r-k's largest zone holds 4, from a probe run with a shorter stop-word list than the runner uses; the real figure is 5. The spec's stated passes_if concerns s-l-l only and is unchanged, but the claim text and the run disagree and that is my pre-registration error, recorded rather than quietly reconciled."
+    },
+    {
+      "id": "U6_NESTED_INTERPRETATION_IS_RUNNABLE_FOR_ALL_THREE",
+      "met": true,
+      "weight": "counted",
+      "detail": "story anchor present AND attested outside it: {'N157_barakah': 'RUNNABLE', 'N182_al_asr': 'RUNNABLE', 'N167_sulalah': 'RUNNABLE'}. This licenses the LOOP. It says nothing about whether any definition the loop produces is correct."
+    },
+    {
+      "id": "U7_THE_CLEANEST_DEMONSTRATION_IS_AL_ASR",
+      "met": true,
+      "weight": "counted",
+      "detail": "3-s-r is attested inside the Yussuf narrative at 12:36 and 12:49, where the sense is physically pressing, and at 103:1 outside any narrative. So a definition can be extracted from a story and nested into 103:1 WITHOUT a dictionary -- precisely the operation N159 says is the only legitimate one. Full attestation set ['2:266', '12:36', '12:49', '78:14', '103:1']."
+    },
+    {
+      "id": "U8_THE_BAYT_MEASURE_DECLARES_ITS_OWN_COVERAGE_LIMIT",
+      "met": true,
+      "weight": "counted",
+      "detail": "ayahs with fewer than 4 content words cannot cluster on vocabulary, so their singleton status is MECHANICAL and is not a finding about motifs. Flagged: {'N182_al_asr': ['103:1']}. 103:1 وَٱلْعَصْرِ is two words. This is the Bayt measure's own 58:11."
+    },
+    {
+      "id": "U9_does_clustering_establish_MEANING",
+      "met": false,
+      "weight": "excluded",
+      "detail": "It does not. A Bayt here is a set of ayahs sharing vocabulary. That two ayahs share words is a fact; that they share a metaphor, an image or a governance function is a reading, and no threshold decides it."
+    },
+    {
+      "id": "U10_the_entanglement_framing_is_not_evaluated",
+      "met": false,
+      "weight": "excluded",
+      "detail": "The document grounds cross-surah links in Bell-inequality violation and quantum entanglement. No physics is measured here. Shared vocabulary between two ayahs is co-occurrence -- ordinary, and requiring no non-locality. Borrowing the authority of a physics result for a text-statistics observation is the layer breach this repository exists to prevent."
+    }
+  ],
+  "gates_not_met": [],
+  "narratives": {
+    "N157_barakah": {
+      "root": "b-r-k",
+      "anchor_story": "Musa at the fire",
+      "n_ayahs": 32,
+      "ayahs": [
+        "3:96",
+        "6:92",
+        "6:155",
+        "7:54",
+        "7:96",
+        "7:137",
+        "11:48",
+        "11:73",
+        "17:1",
+        "19:31",
+        "21:50",
+        "21:71",
+        "21:81",
+        "23:14",
+        "23:29",
+        "24:35",
+        "24:61",
+        "25:1",
+        "25:10",
+        "25:61",
+        "27:8",
+        "28:30",
+        "34:18",
+        "37:113",
+        "38:29",
+        "40:64",
+        "41:10",
+        "43:85",
+        "44:3",
+        "50:9",
+        "55:78",
+        "67:1"
+      ],
+      "buyut": [
+        [
+          "6:92",
+          "6:155",
+          "21:50",
+          "38:29",
+          "44:3"
+        ],
+        [
+          "17:1",
+          "21:71",
+          "21:81"
+        ],
+        [
+          "25:1",
+          "55:78",
+          "67:1"
+        ],
+        [
+          "25:10",
+          "25:61"
+        ],
+        [
+          "27:8",
+          "28:30"
+        ],
+        [
+          "3:96"
+        ],
+        [
+          "7:54"
+        ],
+        [
+          "7:96"
+        ],
+        [
+          "7:137"
+        ],
+        [
+          "11:48"
+        ],
+        [
+          "11:73"
+        ],
+        [
+          "19:31"
+        ],
+        [
+          "23:14"
+        ],
+        [
+          "23:29"
+        ],
+        [
+          "24:35"
+        ],
+        [
+          "24:61"
+        ],
+        [
+          "34:18"
+        ],
+        [
+          "37:113"
+        ],
+        [
+          "40:64"
+        ],
+        [
+          "41:10"
+        ],
+        [
+          "43:85"
+        ],
+        [
+          "50:9"
+        ]
+      ],
+      "n_buyut": 22,
+      "multi_member_buyut": [
+        [
+          "6:92",
+          "6:155",
+          "21:50",
+          "38:29",
+          "44:3"
+        ],
+        [
+          "17:1",
+          "21:71",
+          "21:81"
+        ],
+        [
+          "25:1",
+          "55:78",
+          "67:1"
+        ],
+        [
+          "25:10",
+          "25:61"
+        ],
+        [
+          "27:8",
+          "28:30"
+        ]
+      ],
+      "tafseel": "DIVARICATES into 22 zones",
+      "anchor_present": true,
+      "attested_outside_anchor": true,
+      "nested_interpretation": "RUNNABLE",
+      "short_ayah_singletons": []
+    },
+    "N182_al_asr": {
+      "root": "3-s-r",
+      "anchor_story": "Yussuf, the prison and the years of pressing",
+      "n_ayahs": 5,
+      "ayahs": [
+        "2:266",
+        "12:36",
+        "12:49",
+        "78:14",
+        "103:1"
+      ],
+      "buyut": [
+        [
+          "2:266"
+        ],
+        [
+          "12:36"
+        ],
+        [
+          "12:49"
+        ],
+        [
+          "78:14"
+        ],
+        [
+          "103:1"
+        ]
+      ],
+      "n_buyut": 5,
+      "multi_member_buyut": [],
+      "tafseel": "DIVARICATES into 5 zones",
+      "anchor_present": true,
+      "attested_outside_anchor": true,
+      "nested_interpretation": "RUNNABLE",
+      "short_ayah_singletons": [
+        "103:1"
+      ]
+    },
+    "N167_sulalah": {
+      "root": "s-l-l",
+      "anchor_story": "the creation account",
+      "n_ayahs": 3,
+      "ayahs": [
+        "23:12",
+        "24:63",
+        "32:8"
+      ],
+      "buyut": [
+        [
+          "23:12",
+          "32:8"
+        ],
+        [
+          "24:63"
+        ]
+      ],
+      "n_buyut": 2,
+      "multi_member_buyut": [
+        [
+          "23:12",
+          "32:8"
+        ]
+      ],
+      "tafseel": "DIVARICATES into 2 zones",
+      "anchor_present": true,
+      "attested_outside_anchor": true,
+      "nested_interpretation": "RUNNABLE",
+      "short_ayah_singletons": []
+    }
+  },
+  "corrections": {
+    "claim_1_naqah_is_root_N_Q_Y": {
+      "as_stated": "It was put to me twice that An-Naqah (الناقة) derives from root ن-ق-ي, 'purity, clarity, highly-refined selection', and that this licenses reading it as a cohort of selective purifiers rather than a she-camel.",
+      "why_it_fails": "نَاقَة has the consonantal skeleton ن-ا-ق-ة. The alif is a LONG VOWEL, not a radical. Its root is ن-و-ق, a hollow root. Root ن-ق-ي would yield نَقِيَّة, not نَاقَة -- a different word with a different template.",
+      "and_the_root_is_absent": "Root ن-ق-ي is attested ZERO times in the Quran. Under OQM's own coverage rule (N159), a root with zero attestations cannot ground any nested interpretation whatsoever -- it is below even the 58:11 case, which at least had one.",
+      "what_this_does_and_does_not_settle": "It refutes the stated DERIVATION, which is a Layer 1 morphological claim and is false. It does not refute the READING. A term can be read as a governance function without that derivation; the reading would simply need some other warrant, and the ن-ق-ي etymology is not available as one."
+    },
+    "claim_2_the_screen_proved_the_purifier_reading": {
+      "as_stated": "It was put to me that my parser's rejection of أعناقهم 'proves' the purifier reading and that the seven ayahs are 'the seven ناقة (selective purifiers) verses'.",
+      "why_it_fails": "The v5 screen matched نَاقَة by an EXPLICIT SURFACE FORM LIST. It never evaluated root ن-ق-ي and never evaluated any semantic reading. What it established is exactly one thing: أعناقهم (root ع-ن-ق) is not نَاقَة. That is a statement about two letter-strings. Calling the seven ayahs 'the purifier verses' imports a conclusion the screen did not reach and cannot reach.",
+      "why_I_am_flagging_it": "The claim credits my own instrument with a result it did not produce. Accepting credit for a measurement I did not make would corrupt the record more than any single wrong number."
+    },
+    "claim_3_abas_occurs_in_exactly_two_places": {
+      "as_stated": "It was put to me that root ع-ب-س is 'restricted to exactly two semantic clusters: Surah Abasa (80:1) and Surah Al-Muddaththir (74:22)'.",
+      "why_it_fails": "There are THREE attestations: 74:22 عَبَسَ, 76:10 عَبُوسًا, and 80:1 عَبَسَ. 76:10 is missing from the stated set.",
+      "consequence": "This does not hurt the inquiry -- three witnesses across three surahs clear both rules more comfortably than two. But a nested interpretation built on two of three attestations has left a third of its own evidence unexamined, and the count as stated is wrong."
+    }
+  },
+  "abas_attestations": [
+    "74:22",
+    "76:10",
+    "80:1"
+  ],
+  "primary_verdict": "8/8. Bayt, Tafseel and Nested Interpretation are now measurements. The Bayt measure joins 27:8 with 28:30 -- the two Musa-at-the-fire passages -- from vocabulary alone; s-l-l divaricates into two zones while b-r-k's largest holds 5; and all three narratives can run the nested loop, al-Ɛasr most cleanly, since 12:36/12:49 supply a story sense for 103:1 without a dictionary. Two morphological claims put to me do NOT survive: نَاقَة is root ن-و-ق, not ن-ق-ي, and ن-ق-ي is attested ZERO times -- so the purifier derivation has no root to stand on, though the reading itself is untouched by this. And root ع-ب-س occurs three times, not two."
+}
