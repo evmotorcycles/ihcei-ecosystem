@@ -1,0 +1,87 @@
+{
+  "id": "oqm_screen_v5",
+  "title": "Witness independence: the Janah is not straightforward, and a claim put to me that has no textual Janah at all",
+  "supersedes": "de629189f2e6712688e6602b1d1ae7da7ed071353a4972c546129a492058645e",
+  "THE_DEFECT_THIS_FIXES": {
+    "what_v3_and_v4_did": "They operationalised Janah independence as DISTINCT SURAH. Two witnesses in two different surahs counted as two wings.",
+    "why_that_is_wrong_in_both_directions": "It is too LOOSE, because four repetitions of one fixed formula spread across four surahs are one piece of evidence wearing four hats -- the surah counter cannot see that. And it is too TIGHT, because two unrelated passages seventeen ayahs apart inside one surah are genuinely two contexts, and the surah counter merges them.",
+    "the_correction": "A wing is an independent CONTEXT, not an independent surah. Surah number was a crude proxy for context and is retired.",
+    "reported_against_interest": "The corrected rule turns out to RELAX more sets than it tightens. A stricter rule would have sounded more rigorous; accuracy is worth more than severity, and the direction of every change is reported."
+  },
+  "independence_rule": {
+    "J1_FORMULAIC_COLLAPSE": "Two witnesses whose ayah token-sets have Jaccard similarity >= 0.50 are ONE wing, EVEN IN DIFFERENT SURAHS. Fixed formulae are the commonest way a single piece of evidence is mistaken for several.",
+    "J2_PASSAGE_ADJACENCY": "Two witnesses in the same surah within 3 ayahs are ONE wing. They are one passage.",
+    "J3_OTHERWISE_INDEPENDENT": "Witnesses not merged by J1 or J2 are independent, including two distant ayahs inside a single surah.",
+    "J4_A_JANAH_MUST_BE_TEXTUAL": "A claimed evidential link BETWEEN TERMS requires the terms to actually meet somewhere in the text. If two terms never co-occur in any ayah, the link between them is not a textual Janah. It may still be a reasonable inference, but N159 is explicit that an inference which cannot produce a Janah from the Quran is a plausible opinion, not supporting evidence.",
+    "threshold_provenance": "0.50 and 3 ayahs were fixed before re-adjudicating anything. The pre-flight probe measured J(2:136, 3:84) = 0.6774 and J below 0.25 for every pair in the N167 and N182 sets, so the threshold separates the observed formulaic pair from the observed independent ones without sitting on top of any of them."
+  },
+  "gates": {
+    "V1_THE_RULE_MOVES_IN_BOTH_DIRECTIONS_AND_BOTH_ARE_REPORTED": {
+      "claim": "Re-adjudication must produce at least one TIGHTENED set and at least one RELAXED set, and the run must report both.",
+      "passes_if": "both directions occur and appear in the output. A correction that only ever moved one way would be a thumb on the scale.",
+      "weight": "counted"
+    },
+    "V2_FORMULAIC_COLLAPSE_CAN_WITHHOLD_A_VERDICT_THE_OLD_RULE_GRANTED": {
+      "claim": "A claim resting only on 2:136 and 3:84 CLEARS under the surah rule (two surahs) and is WITHHELD as ONE_WING under J1, because the two ayahs are 0.6774 similar.",
+      "passes_if": "old verdict CLEARS and new verdict ONE_WING. This is the whole point of the upgrade: the new rule must be able to take a verdict away.",
+      "weight": "counted"
+    },
+    "V3_PASSAGE_ADJACENCY_FIRES": {
+      "claim": "The imperative اقرا occurs at 17:14, 96:1 and 96:3. 96:1 and 96:3 are one passage and must merge, leaving 2 wings rather than 3.",
+      "passes_if": "exactly 2 wings.",
+      "weight": "counted"
+    },
+    "V4_EVERY_PRIOR_RESULT_IS_RE_ADJUDICATED": {
+      "claim": "The v2 iman set, the v3 Z7 minimal pairs, N159's nufarriq set, N167 s-l-l and N182 3-s-r are all re-scored under the new rule, with the direction of change stated for each.",
+      "passes_if": "all five are present with old and new counts. N167 must still clear on three genuinely independent contexts -- if the corrected rule had demolished the one document result that held its riskiest gate, that would need saying loudly.",
+      "weight": "counted"
+    },
+    "V5_PRIMARY_THE_NAQAH_SAAH_IQRA_LINK_HAS_NO_TEXTUAL_JANAH": {
+      "claim": "It was put to me that An-Naqah (YT127) and As-Saah (YT133) together supply the second wing establishing Iqra as a two-hop channel initialisation. Under J4 this requires the terms to meet in the text. Measured: the pairwise ayah-level intersections of n-a-q-h, s-a-3-h and q-r-' are ALL EMPTY.",
+      "passes_if": "all three intersections are empty and the run classifies the link NO_TEXTUAL_LINK. If any intersection were non-empty this gate would fail and the link would have textual support I would have to report.",
+      "weight": "counted"
+    },
+    "V6_THE_NAQAH_MATCHER_REJECTS_THE_NECKS": {
+      "claim": "أعناقهم (13:5, 26:4, 36:8, 40:71) is root 3-n-q, 'their necks'. A loose matcher takes it for n-a-q-h.",
+      "passes_if": "naqah resolves to exactly the seven she-camel ayahs 7:73, 7:77, 11:64, 17:59, 26:155, 54:27, 91:13 and none of the neck ayahs.",
+      "weight": "counted"
+    },
+    "V7_THE_FINDING_IS_NOT_THAT_THE_TERMS_ARE_RARE": {
+      "claim": "As-Saah is attested in 43 ayahs across 26 surahs and q-r-' in 79 across 42. Both are abundant. The finding is specifically that they NEVER MEET, which is a much stronger statement than scarcity and cannot be explained by either term being obscure.",
+      "passes_if": "both counts are reported alongside the empty intersections.",
+      "weight": "counted"
+    },
+    "V8_does_NO_TEXTUAL_LINK_refute_the_reading": {
+      "claim": "It does not. It places the reading outside the class of claims OQM's own evidence rule can support, which is exactly what N159 says about a dictionary-derived opinion. The reading may be true; it is not established by a Janah, because there is no Janah to establish it.",
+      "weight": "excluded",
+      "reason": "absence of a Janah is a statement about evidence, not about truth"
+    },
+    "V9_the_source_videos_are_not_in_evidence": {
+      "claim": "YT127 and YT133 were NOT among the sixteen documents supplied and I have not read them. Every characterisation of their content in this run comes from the prompt, not from a source. I cannot confirm that An-Naqah is read as a purifier cohort or As-Saah as irrigators, and this run does not test those readings -- only whether the terms meet in the text.",
+      "weight": "excluded",
+      "reason": "unread sources cannot be scored"
+    }
+  },
+  "WHAT_IS_STILL_NOT_TESTED": {
+    "the_caption_argument": "That YouTube auto-captions render An-Naqah as 'na ka' is a claim about a transcription tool, not about the Quran. There is no textual Janah in it in either direction and it is not evaluated.",
+    "the_she_camel_etymology": "Unchanged from v4: it is traditional lexicography, the source N159 rules out, and it is not tested.",
+    "the_quantitative_models": "E = U*D_enc*D_dec, two-hop channels, mesh routing, agency hoarding, contagion suppression, uid=0 reference locks. None is measured here or anywhere in this repository against Quranic text. A network simulation of these would be a simulation of an assumption, and the simulator rule forbids treating its output as evidence about the text."
+  },
+  "PLACEMENT": "The OQM screen is part of the Novora open-source initiative alongside LISM, DCM and the governance-question licensing. It shares their discipline: specs hashed and locked before runners exist, thresholds fixed before data are touched, three distinct verdicts (REFUTED / UNTESTABLE-HERE / BLOCKED), and weight:excluded for any test that cannot fail.",
+  "preflight_probe_recorded_before_locking": {
+    "J_2136_384": 0.6774,
+    "N167_pairs": "all below 0.25 -- the three s-l-l witnesses are genuinely independent contexts",
+    "N182_pairs": "all below 0.25",
+    "naqah_raw_substring": "a naive n-w-q substring match returns 11 ayahs including أعناقهم; explicit surface forms return 7",
+    "saah": "43 ayahs / 26 surahs",
+    "qr": "79 ayahs / 42 surahs",
+    "intersections": "naqah&qr EMPTY, saah&qr EMPTY, naqah&saah EMPTY"
+  },
+  "data": {
+    "path": "data/quran/The_Quran_Dataset.csv",
+    "sha256": "7312b6b220e192ba9ebd02c0c4221ba76c35c69fcea18ae9d306ee20413fcb41",
+    "n_ayahs": 6236
+  },
+  "simulation": "none.",
+  "scoring": "7 counted gates. V8 and V9 are excluded and cannot contribute."
+}

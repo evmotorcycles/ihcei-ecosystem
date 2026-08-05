@@ -1,0 +1,256 @@
+{
+  "spec_sha256": "5f43d480f2af1616f365b925a2ea887936cbffdccf337efd2d8452fec229719d",
+  "supersedes": "de629189f2e6712688e6602b1d1ae7da7ed071353a4972c546129a492058645e",
+  "n_ayahs": 6236,
+  "simulated_values": 0,
+  "score": "7/7",
+  "gates": [
+    {
+      "id": "V1_THE_RULE_MOVES_IN_BOTH_DIRECTIONS_AND_BOTH_ARE_REPORTED",
+      "met": true,
+      "weight": "counted",
+      "detail": "directions across the five re-adjudicated sets: {'v2_iman': 'RELAXED', 'v3_Z7_nazzala_minimal_pairs': 'RELAXED', 'N159_nufarriq': 'UNCHANGED', 'N167_sulala': 'UNCHANGED', 'N182_al_asr': 'RELAXED'}. The corrected rule RELAXES more than it tightens, because surah-identity was over-merging distant ayahs. A stricter rule would have sounded more rigorous; this one is more accurate, and the direction of every change is stated."
+    },
+    {
+      "id": "V2_FORMULAIC_COLLAPSE_CAN_WITHHOLD_A_VERDICT_THE_OLD_RULE_GRANTED",
+      "met": true,
+      "weight": "counted",
+      "detail": "a claim resting only on 2:136 + 3:84: surah rule -> 2 surahs -> CLEARS; context rule -> 1 wing -> ONE_WING (jaccard 0.6774, different surahs, one formula). The upgrade is only worth having because it can take a verdict away."
+    },
+    {
+      "id": "V3_PASSAGE_ADJACENCY_FIRES",
+      "met": true,
+      "weight": "counted",
+      "detail": "imperative اقرا at ['17:14', '96:1', '96:3'] -> 2 wings [['17:14'], ['96:1', '96:3']]; 96:1 and 96:3 are one passage and merge under J2"
+    },
+    {
+      "id": "V4_EVERY_PRIOR_RESULT_IS_RE_ADJUDICATED",
+      "met": true,
+      "weight": "counted",
+      "detail": "five prior sets re-scored. N167 s-l-l still CLEARS on 3 genuinely independent contexts, so the corrected rule did not demolish the one document result that held its riskiest gate."
+    },
+    {
+      "id": "V5_PRIMARY_THE_NAQAH_SAAH_IQRA_LINK_HAS_NO_TEXTUAL_JANAH",
+      "met": true,
+      "weight": "counted",
+      "detail": "ayah-level intersections {'naqah_and_qr': [], 'saah_and_qr': [], 'naqah_and_saah': []}. Not one ayah in the corpus contains any two of these three terms, so under J4 the link between them is NO_TEXTUAL_LINK. Had any intersection been non-empty this gate would have failed and the link would have textual support I would have to report."
+    },
+    {
+      "id": "V6_THE_NAQAH_MATCHER_REJECTS_THE_NECKS",
+      "met": true,
+      "weight": "counted",
+      "detail": "naqah -> ['7:73', '7:77', '11:64', '17:59', '26:155', '54:27', '91:13']; أعناقهم (root 3-n-q, 'their necks') at ['13:5', '26:4', '36:8', '40:71'] excluded"
+    },
+    {
+      "id": "V7_THE_FINDING_IS_NOT_THAT_THE_TERMS_ARE_RARE",
+      "met": true,
+      "weight": "counted",
+      "detail": "As-Saah 43 ayahs / 26 surahs; q-r-' 81 ayahs / 42 surahs; An-Naqah 7 ayahs. Both of the abundant terms are abundant, so the empty intersections cannot be explained by scarcity. They never meet, which is far stronger than rare."
+    },
+    {
+      "id": "V8_does_NO_TEXTUAL_LINK_refute_the_reading",
+      "met": false,
+      "weight": "excluded",
+      "detail": "It does not. It places the reading outside the class of claims OQM's own evidence rule can support -- exactly what N159 says about a dictionary opinion. The reading may be true; it is not ESTABLISHED by a Janah, because there is no Janah to establish it."
+    },
+    {
+      "id": "V9_the_source_videos_are_not_in_evidence",
+      "met": false,
+      "weight": "excluded",
+      "detail": "YT127 and YT133 were NOT among the sixteen documents supplied and I have not read them. Every characterisation of their content here comes from the prompt, not from a source. This run does not test whether An-Naqah means a purifier cohort or As-Saah means irrigators -- only whether the terms meet."
+    }
+  ],
+  "gates_not_met": [],
+  "independence_rule": {
+    "J1_FORMULAIC_COLLAPSE": "Two witnesses whose ayah token-sets have Jaccard similarity >= 0.50 are ONE wing, EVEN IN DIFFERENT SURAHS. Fixed formulae are the commonest way a single piece of evidence is mistaken for several.",
+    "J2_PASSAGE_ADJACENCY": "Two witnesses in the same surah within 3 ayahs are ONE wing. They are one passage.",
+    "J3_OTHERWISE_INDEPENDENT": "Witnesses not merged by J1 or J2 are independent, including two distant ayahs inside a single surah.",
+    "J4_A_JANAH_MUST_BE_TEXTUAL": "A claimed evidential link BETWEEN TERMS requires the terms to actually meet somewhere in the text. If two terms never co-occur in any ayah, the link between them is not a textual Janah. It may still be a reasonable inference, but N159 is explicit that an inference which cannot produce a Janah from the Quran is a plausible opinion, not supporting evidence.",
+    "threshold_provenance": "0.50 and 3 ayahs were fixed before re-adjudicating anything. The pre-flight probe measured J(2:136, 3:84) = 0.6774 and J below 0.25 for every pair in the N167 and N182 sets, so the threshold separates the observed formulaic pair from the observed independent ones without sitting on top of any of them."
+  },
+  "re_adjudication": {
+    "v2_iman": {
+      "refs": [
+        "2:108",
+        "3:86",
+        "3:100",
+        "3:106",
+        "4:137",
+        "9:66",
+        "9:74",
+        "16:106"
+      ],
+      "old_rule_surahs": 5,
+      "old_verdict": "CLEARS",
+      "new_rule_wings": 8,
+      "new_verdict": "CLEARS",
+      "direction": "RELAXED",
+      "merges": [],
+      "wing_groups": [
+        [
+          "16:106"
+        ],
+        [
+          "2:108"
+        ],
+        [
+          "3:100"
+        ],
+        [
+          "3:106"
+        ],
+        [
+          "3:86"
+        ],
+        [
+          "4:137"
+        ],
+        [
+          "9:66"
+        ],
+        [
+          "9:74"
+        ]
+      ]
+    },
+    "v3_Z7_nazzala_minimal_pairs": {
+      "refs": [
+        "3:3",
+        "47:9",
+        "47:26"
+      ],
+      "old_rule_surahs": 2,
+      "old_verdict": "CLEARS",
+      "new_rule_wings": 3,
+      "new_verdict": "CLEARS",
+      "direction": "RELAXED",
+      "merges": [],
+      "wing_groups": [
+        [
+          "3:3"
+        ],
+        [
+          "47:26"
+        ],
+        [
+          "47:9"
+        ]
+      ]
+    },
+    "N159_nufarriq": {
+      "refs": [
+        "2:136",
+        "2:285",
+        "3:84",
+        "4:152"
+      ],
+      "old_rule_surahs": 3,
+      "old_verdict": "CLEARS",
+      "new_rule_wings": 3,
+      "new_verdict": "CLEARS",
+      "direction": "UNCHANGED",
+      "merges": [
+        {
+          "a": "2:136",
+          "b": "3:84",
+          "jaccard": 0.6774,
+          "reason": "J1_formulaic"
+        }
+      ],
+      "wing_groups": [
+        [
+          "2:136",
+          "3:84"
+        ],
+        [
+          "2:285"
+        ],
+        [
+          "4:152"
+        ]
+      ]
+    },
+    "N167_sulala": {
+      "refs": [
+        "23:12",
+        "24:63",
+        "32:8"
+      ],
+      "old_rule_surahs": 3,
+      "old_verdict": "CLEARS",
+      "new_rule_wings": 3,
+      "new_verdict": "CLEARS",
+      "direction": "UNCHANGED",
+      "merges": [],
+      "wing_groups": [
+        [
+          "23:12"
+        ],
+        [
+          "24:63"
+        ],
+        [
+          "32:8"
+        ]
+      ]
+    },
+    "N182_al_asr": {
+      "refs": [
+        "2:266",
+        "12:36",
+        "12:49",
+        "78:14",
+        "103:1"
+      ],
+      "old_rule_surahs": 4,
+      "old_verdict": "CLEARS",
+      "new_rule_wings": 5,
+      "new_verdict": "CLEARS",
+      "direction": "RELAXED",
+      "merges": [],
+      "wing_groups": [
+        [
+          "103:1"
+        ],
+        [
+          "12:36"
+        ],
+        [
+          "12:49"
+        ],
+        [
+          "2:266"
+        ],
+        [
+          "78:14"
+        ]
+      ]
+    }
+  },
+  "the_claim_put_to_me": {
+    "naqah_ayahs": [
+      "7:73",
+      "7:77",
+      "11:64",
+      "17:59",
+      "26:155",
+      "54:27",
+      "91:13"
+    ],
+    "saah_ayah_count": 43,
+    "qr_ayah_count": 81,
+    "intersections": {
+      "naqah_and_qr": [],
+      "saah_and_qr": [],
+      "naqah_and_saah": []
+    },
+    "verdict": "NO_TEXTUAL_LINK"
+  },
+  "not_tested": {
+    "the_caption_argument": "That YouTube auto-captions render An-Naqah as 'na ka' is a claim about a transcription tool, not about the Quran. There is no textual Janah in it in either direction and it is not evaluated.",
+    "the_she_camel_etymology": "Unchanged from v4: it is traditional lexicography, the source N159 rules out, and it is not tested.",
+    "the_quantitative_models": "E = U*D_enc*D_dec, two-hop channels, mesh routing, agency hoarding, contagion suppression, uid=0 reference locks. None is measured here or anywhere in this repository against Quranic text. A network simulation of these would be a simulation of an assumption, and the simulator rule forbids treating its output as evidence about the text."
+  },
+  "placement": "The OQM screen is part of the Novora open-source initiative alongside LISM, DCM and the governance-question licensing. It shares their discipline: specs hashed and locked before runners exist, thresholds fixed before data are touched, three distinct verdicts (REFUTED / UNTESTABLE-HERE / BLOCKED), and weight:excluded for any test that cannot fail.",
+  "primary_verdict": "7/7. The Janah is not straightforward and the surah proxy was wrong in both directions; a wing is now an independent CONTEXT. The corrected rule can withhold a verdict the old one granted (2:136 + 3:84, jaccard 0.6774, one formula in two surahs), and on the five prior sets it RELAXES more than it tightens -- reported because it is true, not because it flatters the correction. On the claim put to me: An-Naqah, As-Saah and q-r-' NEVER CO-OCCUR in any of the 6,236 ayahs, though two of the three are abundant. Under OQM's own rule that is NO_TEXTUAL_LINK -- not a refutation of the reading, but a finding that no Janah exists to establish it."
+}
