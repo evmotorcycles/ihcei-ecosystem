@@ -1,0 +1,176 @@
+{
+  "spec_sha256": "8fb9f1169dbb32f82a195b15f1f1fd3076722a7facbe51207353b955dae39599",
+  "supersedes": "faa2f56ee9b346908070af055bdda0e084339f9cb0c264870a968c797d4ab4fc",
+  "n_ayahs": 6236,
+  "simulated_values": 0,
+  "score": "8/8",
+  "gates": [
+    {
+      "id": "E1_JAX_IS_ABSENT_AND_THE_SPEED_PREMISE_IS_FALSE",
+      "met": true,
+      "weight": "counted",
+      "detail": "import jax -> No module named 'jax'. Reported as BLOCKED, not silently swapped. Separately the speed premise does not hold: the largest root here has 32 ayahs, so there is no performance problem for acceleration to solve."
+    },
+    {
+      "id": "E2_A_SECOND_INDEPENDENT_IMPLEMENTATION_AGREES",
+      "met": true,
+      "weight": "counted",
+      "detail": "matrix Jaccard vs v6's pairwise loop, identical clustering: {'N157_barakah': True, 'N182_al_asr': True, 'N167_sulalah': True}. Done for AGREEMENT, not speed -- if they disagreed, one is wrong and the v6 Bayt result would be in question."
+    },
+    {
+      "id": "E3_PRIMARY_NO_PLURAL_OF_NAQAH_IS_ATTESTED",
+      "met": true,
+      "weight": "counted",
+      "detail": "plural forms ['الانواق', 'النوق', 'النياق', 'انواق', 'نوق', 'نوقا', 'نياق'] -> 0 attestations. نَاقَة is grammatically SINGULAR feminine and occurs at ['7:73', '7:77', '11:64', '17:59', '26:155', '54:27', '91:13']; no plural of it occurs anywhere. A single attestation would have given the plural-cohort reading a Quranic morphological witness and failed this gate. The template نُوَّاق that the proposed v8 hardcodes is not in the text -- it comes from the dictionary and from nowhere else."
+    },
+    {
+      "id": "E4_THE_PROPOSED_V8_COMMITS_THE_BREACH_ITS_OWN_AUTHOR_IDENTIFIED",
+      "met": true,
+      "weight": "counted",
+      "detail": "The proposed PluralMorphologyAuditor hardcodes a dictionary gloss as its semantic_warrant and returns layer_1_hygiene 'PASS'. Its Quranic plural witness is absent (E3), so the warrant is dictionary-sourced with no textual backing -- CONSTRUCTIVE use of the dictionary, which the same message's own closing section correctly says violates N159. Verdict on the hygiene claim: REFUTED. This is not a gotcha: the closing analysis is the sharpest methodological point in the message, and the code contradicts it."
+    },
+    {
+      "id": "E5_ATTESTATION_EXHAUSTION_GENERALISES",
+      "met": true,
+      "weight": "counted",
+      "detail": "3-b-s -> PROVISIONAL (missing ['76:10']); s-l-l -> LICENSED. A checker that only ever says 'incomplete' would be as useless as one that only ever says 'fine'."
+    },
+    {
+      "id": "E6_THE_CIRCULARITY_AUDIT_CANNOT_FAIL_AS_PROPOSED",
+      "met": true,
+      "weight": "counted",
+      "detail": "rebuilt the proposed graph: acyclic=True. But every edge is added in one direction, so acyclicity is forced BY CONSTRUCTION -- adding a single reverse edge, which the proposed builder never adds, immediately creates a cycle (True). The audit therefore reports a property of the author's edge list, not of the methodology, and is recorded weight:excluded rather than as 'topologically sound'."
+    },
+    {
+      "id": "E7_KEYWORD_FILTERING_IS_NOT_A_LAYER_AUDIT",
+      "met": true,
+      "weight": "counted",
+      "detail": "probe sentence borrows physical-law authority for a text statistic and trips 0 of the 6 banned keywords -- it passes the proposed firewall untouched. The filter is a keyword matcher, not a layer audit, and reporting a weak check as a strong one is worse than not having it. Probe: 'The shared vocabulary between two distant ayahs is a conserved quantity, obeying the same invariance principles that govern matter at the smallest scales, which is why the correlation cannot be explained by chance.'"
+    },
+    {
+      "id": "E8_THE_KERNEL_AUDITS_MY_OWN_SIDE_TOO",
+      "met": true,
+      "weight": "counted",
+      "detail": "2 of 10 ledger entries are adverse findings against claims I made myself: [\"b-r-k's largest Bayt holds 4 ayahs\", \"v3's proclitic rule generalises to any root\"]. An auditor that only audits the other party is not an auditor."
+    },
+    {
+      "id": "E9_does_the_kernel_establish_MEANING",
+      "met": false,
+      "weight": "excluded",
+      "detail": "It does not. Every verdict above is about evidence availability, arithmetic or internal consistency. None is about what a term means."
+    },
+    {
+      "id": "E10_does_a_REFUTED_derivation_refute_a_reading",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No, and this is the third time it needs saying. Refuting the morphological derivation of نَاقَة leaves the governance reading untouched -- it would need a different warrant. What E3 adds is that the plural-cohort warrant specifically is not available from the text. dh-w-q is attested in 30 ayahs across 22 surahs, so an intra-Quranic route exists to ATTEMPT, but dh-w-q and n-w-q are DIFFERENT ROOTS and linking them is a claim about semantic fields, not a morphological fact."
+    }
+  ],
+  "gates_not_met": [],
+  "claim_ledger": [
+    {
+      "claim": "naqah derives from root n-q-y (purity)",
+      "source": "put to me",
+      "verdict": "REFUTED",
+      "why": "skeleton is n-w-q; n-q-y has 0 attestations"
+    },
+    {
+      "claim": "naqah denotes a PLURAL cohort",
+      "source": "put to me",
+      "verdict": "REFUTED",
+      "why": "no plural of naqah is attested anywhere; the noun is singular feminine"
+    },
+    {
+      "claim": "the v6 screen proved the purifier reading",
+      "source": "put to me",
+      "verdict": "REFUTED",
+      "why": "it established only that a3naqahum is not naqah"
+    },
+    {
+      "claim": "root 3-b-s occurs in exactly two places",
+      "source": "put to me",
+      "verdict": "PROVISIONAL",
+      "why": "three; 76:10 missing"
+    },
+    {
+      "claim": "the v8 PluralMorphologyAuditor passes Layer 1 hygiene",
+      "source": "proposed v8",
+      "verdict": "REFUTED",
+      "why": "its semantic warrant is a dictionary gloss with no Quranic plural witness"
+    },
+    {
+      "claim": "the OQM network is topologically sound (acyclic)",
+      "source": "proposed v8",
+      "verdict": "EXCLUDED",
+      "why": "acyclic by construction; the test cannot fail"
+    },
+    {
+      "claim": "the EI firewall excludes layer breaches",
+      "source": "proposed v8",
+      "verdict": "PROVISIONAL",
+      "why": "keyword matching only; a breach phrased without the keywords passes"
+    },
+    {
+      "claim": "the v8 JAX engine produced the quoted execution log",
+      "source": "proposed v8",
+      "verdict": "BLOCKED",
+      "why": "JAX is not installed; no such program ran"
+    },
+    {
+      "claim": "b-r-k's largest Bayt holds 4 ayahs",
+      "source": "MY OWN v6 pre-registration",
+      "verdict": "REFUTED",
+      "why": "it holds 5; my claim text was written from a probe with a shorter stop-word list than the runner uses"
+    },
+    {
+      "claim": "v3's proclitic rule generalises to any root",
+      "source": "MY OWN v3",
+      "verdict": "REFUTED",
+      "why": "it inverted the answer on b-r-k, rejecting 27:8 and accepting suffix artefacts"
+    }
+  ],
+  "attestation_audits": {
+    "3-b-s": {
+      "root": "3-b-s",
+      "verdict": "PROVISIONAL",
+      "missing_witnesses": [
+        "76:10"
+      ],
+      "spurious_citations": [],
+      "detail": "claimed 2, actual 3"
+    },
+    "s-l-l": {
+      "root": "s-l-l",
+      "verdict": "LICENSED",
+      "detail": "cited set matches the corpus exactly (3)"
+    }
+  },
+  "naqah": {
+    "singular_ayahs": [
+      "7:73",
+      "7:77",
+      "11:64",
+      "17:59",
+      "26:155",
+      "54:27",
+      "91:13"
+    ],
+    "plural_attestations": []
+  },
+  "environment": {
+    "jax": "No module named 'jax'",
+    "numpy": "2.4.6",
+    "networkx": "3.6.1"
+  },
+  "adopted_from_the_proposal": {
+    "the_AI_EI_distinction": "Sound, and now explicit in the kernel.",
+    "the_historical_witness_reading_of_YT89": "The closing analysis is right that YT89 uses a hadith as corroboration while explicitly denying it primary-reference status -- 'We didn't extract this knowledge from the Hadeeth. We extracted that knowledge from the QurꜤān.' That is a real distinction between destructive/corroborating and constructive use, and it is the correct standard.",
+    "the_self_criticism": "The closing section identifies that citing Lissan al-Arab to build the naqah reading breaches N159, and prescribes the fix: prove the semantics by intra-Quranic mapping instead. That is exactly right, and E3 reports the relevant measurement -- dh-w-q is attested in 30 ayahs across 22 surahs, so an intra-Quranic route exists to attempt, though dh-w-q and n-w-q are DIFFERENT ROOTS and linking them is a claim about semantic fields, not a morphological fact."
+  },
+  "did_not_happen": {
+    "the_execution_log": "The 'Live Execution Log: Resolving the v6 Address' and the 'EI NETWORK TOPOLOGY DIAGNOSTIC AUDIT' are presented as program output. No such program ran. Parts of the first log restate my real v6 results correctly; the second is entirely invented. Neither is treated as evidence here, and the distinction between a real run and a written-out run is exactly what the pre-registration discipline exists to keep visible.",
+    "jax": "JAX is NOT installed in this container. The v8 script cannot execute as written. Reported as BLOCKED rather than silently swapped for something else. Separately, the speed premise does not hold: the largest root examined has 32 ayahs, so there is no performance problem for JAX to solve. What a second implementation IS good for is agreement -- two independent computations of the same quantity either match or one is wrong.",
+    "networkx": "networkx IS installed, so the graph audit could run -- but see gate E6."
+  },
+  "primary_verdict": "8/8. The AI/EI distinction is adopted and made an explicit kernel: claims in, verdicts out, refusal possible. Run over this conversation it returns 8 adverse verdicts, 2 of them against claims I made myself. The new measurement: نَاقَة has NO attested plural anywhere in the corpus, so the plural-cohort warrant is not available from the text -- which lands exactly on the contradiction the proposal's own closing section identified, since the proposed v8 hardcodes a dictionary gloss and then reports its own Layer 1 hygiene as PASS. JAX is not installed, so the quoted execution log did not run; a numpy reimplementation was written instead and AGREES with v6 exactly, which is worth more than speed on a 32-ayah problem."
+}
