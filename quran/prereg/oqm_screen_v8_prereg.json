@@ -1,0 +1,86 @@
+{
+  "id": "oqm_screen_v8",
+  "title": "The ontology as a hypothesis register rather than an answer key -- and the collective-noun test, which the text supplies its own worked example for",
+  "supersedes": "8fb9f1169dbb32f82a195b15f1f1fd3076722a7facbe51207353b955dae39599",
+  "THE_POINT_THAT_IS_ACCEPTED": "Morphology, root parsing and grammar are the Arḍ, not the methodology. A screen that stops at letter-counting is exactly the flat parser the OQM objects to, and v1-v7 were open to that charge. The Abrahamic Locution, Tafseel, Nested Interpretation and the Bayt are the substance. v8 encodes more of that substance -- but in a form that can still LOSE.",
+  "THE_ARCHITECTURAL_FORK_THAT_MATTERS": {
+    "what_the_proposed_v9_v10_does": "It declares ONTOLOGY = {'ناقة': {'deep': 'Collective Cohort of Purifiers', 'rule': 'Collective Plural'}, ...} and then audit_collective_plural returns LICENSED when rule == 'Collective Plural'. The verdict is read back out of the dictionary it was typed into. No ayah is consulted at any point in that path.",
+      "why_that_is_fatal": "It cannot fail, cannot test, and cannot catch an error. Change one string in the dict and the 'verdict' changes with no reference to the text whatsoever. It is an ANSWER KEY wearing the costume of a screen -- the same defect as the circularity graph in v7's E6, one level up. If this were presented as a validation of the methodology it would be worse than presenting nothing, because it would look like corroboration while containing none.",
+    "the_fix_which_keeps_everything_valuable_about_it": "The ontology is retained IN FULL as a HYPOTHESIS REGISTER. Every declared mapping must carry a prediction about the TEXT'S OWN DISTRIBUTION that could come out false. The screen then tests the predictions. A mapping whose prediction cannot fail is marked UNFALSIFIABLE_AS_STATED and scores nothing -- it is not deleted, and it is not counted."
+  },
+  "THE_COLLECTIVE_NOUN_TEST": {
+    "the_claim": "It was put to me that singular feminine syntax applied to a non-human entity is 'the mandatory grammatical signature of a collective cohort', and that a flat parser seeing singular pronouns on ناقة would wrongly declare the collective reading false.",
+    "what_is_RIGHT_about_it_and_the_text_proves_it": "16:68-69 is a worked example inside the corpus. ٱلنَّحْل is a collective and takes FEMININE SINGULAR agreement throughout -- ٱتَّخِذِى, كُلِى, فَٱسْلُكِى, بُطُونِهَا -- while denoting a plurality. So feminine singular agreement on a non-human noun is entirely compatible with a collective. That is a real rule of Arabic and the text demonstrates it.",
+    "A_CORRECTION_TO_MY_OWN_EARLIER_FRAMING": "Because collectives take feminine singular agreement AND ordinary singulars take feminine singular agreement, the agreement pattern is NON-DISCRIMINATING. Observing ها and هذه on ناقة is evidence in NEITHER direction. Any earlier suggestion of mine that the singular pronouns weigh against a collective reading was wrong, and v8 records that.",
+    "what_DOES_discriminate": "An اسم جنس جمعي is the BARE form; the ة-form is its singulative (نحل / نحلة, شجر / شجرة, طير / طائر). So the mechanical test is whether the bare collective base is attested in the corpus at all.",
+    "the_measurement": "نحل bare attested (16:68). طير bare attested, 12 ayahs. شجر bare attested, 5 ayahs, against 12 for شجرة -- a textbook collective/singulative pair. ناق bare: ZERO. Only the ة-form occurs, in 7 ayahs.",
+    "the_consequence_and_it_cuts_both_ways": "طير HAS the grammatical warrant for a collective reading, which SUPPORTS the YT89 Ṭayr treatment. ناقة does NOT: it is a unit noun with no attested collective base. This is not a verdict about what either term means."
+  },
+  "hypothesis_register": {
+    "طير": {"reading": "collective agent rather than an individual bird", "prediction": "the bare collective form طير/الطير is attested", "falsifiable": true},
+    "نحل": {"reading": "collective agent", "prediction": "bare form attested and takes feminine singular agreement", "falsifiable": true},
+    "شجر": {"reading": "collective", "prediction": "bare form attested alongside a distinct singulative شجرة", "falsifiable": true},
+    "ناقة": {"reading": "collective cohort of purifiers", "prediction": "a bare collective base ناق is attested", "falsifiable": true},
+    "جناح": {"reading": "means of elevation rather than a physical wing", "prediction": "NONE STATED -- no distributional consequence was given, so nothing can come out false", "falsifiable": false},
+    "ارض": {"reading": "scripture rather than earth", "prediction": "NONE STATED", "falsifiable": false},
+    "سماء": {"reading": "abstract layers of understanding", "prediction": "NONE STATED", "falsifiable": false},
+    "رمان": {"reading": "rectified stories", "prediction": "NONE STATED", "falsifiable": false}
+  },
+  "gates": {
+    "F1_THE_PROPOSED_ONTOLOGY_AUDIT_CANNOT_FAIL": {
+      "claim": "audit_collective_plural consults only the hardcoded dict, never the text. Mutating the dict flips the verdict with no ayah involved.",
+      "passes_if": "the run reimplements it faithfully, shows LICENSED for ناقة, then mutates one string and shows the verdict flip -- with the corpus untouched in both runs.",
+      "weight": "counted"
+    },
+    "F2_THE_TEXT_SUPPLIES_ITS_OWN_WORKED_EXAMPLE": {
+      "claim": "16:68-69: ٱلنَّحْل with feminine singular imperatives ٱتَّخِذِى / كُلِى / فَٱسْلُكِى and the possessive بُطُونِهَا.",
+      "passes_if": "all four forms are present in those two ayahs. This is the positive control for the collective-agreement rule, and it comes from the corpus rather than from me.",
+      "weight": "counted"
+    },
+    "F3_PRIMARY_THE_COLLECTIVE_BASE_TEST_DISCRIMINATES": {
+      "claim": "Bare collective bases: نحل attested, طير attested, شجر attested, ناق NOT attested.",
+      "passes_if": "the first three are non-zero and ناق is zero. Risky in the useful direction: a single attestation of ناق would give the collective reading of ناقة a direct grammatical warrant and fail this gate.",
+      "weight": "counted"
+    },
+    "F4_MY_OWN_EARLIER_FRAMING_IS_CORRECTED": {
+      "claim": "Feminine singular agreement is non-discriminating: collectives take it and singulars take it.",
+      "passes_if": "the run states this and shows both cases -- النحل (collective, fem sg agreement) and ناقة (unit noun, fem sg agreement) -- so that the pattern is visibly compatible with both.",
+      "weight": "counted"
+    },
+    "F5_THE_BAYT_HAS_A_TEXTUAL_BASIS": {
+      "claim": "Calling an ayah a Bayt is not a borrowed metaphor: بيوت is the word 16:68 itself uses, ٱتَّخِذِى مِنَ ٱلْجِبَالِ بُيُوتًا, and the root is widely attested.",
+      "passes_if": "16:68 contains بيوتا and the bayt/buyut family is attested in more than 20 ayahs across more than 10 surahs.",
+      "weight": "counted"
+    },
+    "F6_THE_REGISTER_SEPARATES_TESTABLE_FROM_UNTESTABLE_MAPPINGS": {
+      "claim": "Of the declared mappings, four carry a distributional prediction and four do not.",
+      "passes_if": "the falsifiable ones are scored against the text and the rest are returned UNFALSIFIABLE_AS_STATED, scoring nothing. Retaining them unscored is the point: they are not deleted, they are simply not evidence until someone states what would make them false.",
+      "weight": "counted"
+    },
+    "F7_A_LICENSED_PREDICTION_IS_NOT_A_LICENSED_READING": {
+      "claim": "طير passes the collective-base test. That licenses the GRAMMATICAL component of the reading -- that طير can denote a collective -- and nothing else. It does not establish that the collective is angels, teachers, or any other referent.",
+      "passes_if": "the run says so explicitly for طير, its best-performing case. The moment a screen's own successes stop being qualified is the moment it becomes an answer key.",
+      "weight": "counted"
+    },
+    "F8_does_any_of_this_establish_the_metaphorical_readings": {
+      "claim": "No. Attestation of a collective base, agreement patterns and co-occurrence say nothing about whether Ṭayr denotes teachers, Arḍ denotes scripture, or Rummān denotes rectified stories. Those are Layer 3 and this screen has no instrument for them.",
+      "weight": "excluded",
+      "reason": "a test that cannot fail is not evidence"
+    },
+    "F9_the_video_is_not_in_evidence": {
+      "claim": "A YouTube link was supplied. I cannot watch video, and no transcript of it was provided. Everything attributed to YT136 here is checked against the CORPUS at 16:68-69, not against the lecture. The lecture's actual argument is not known to me and is not evaluated.",
+      "weight": "excluded",
+      "reason": "unviewed sources cannot be scored"
+    }
+  },
+  "THINGS_IN_THE_PROPOSAL_THAT_DID_NOT_HAPPEN": "The 'Live Execution: Compiling the Embarrassment Cases' and 'OQM EI ENGINE v10.0 - DEEP TOPOLOGY & METAPHOR AUDIT' logs are presented as program output. No such program ran. This is the second time written-out logs have been presented as executions, and the distinction between a real run and a described run is precisely what the hashing and pre-registration exist to keep visible.",
+  "preflight_probe_recorded_before_locking": {
+    "16_68": "واوحي ربك الي النحل ان اتخذي من الجبال بيوتا -- collective + fem sg imperative + buyut, all present",
+    "bare_collectives": "نحل 1 ayah, طير 12, شجر 5, ناق 0",
+    "unit_forms": "نحله 1, طيره 0, شجره 12, ناقه 7",
+    "buyut_family": "38 ayahs across 23 surahs"
+  },
+  "data": {"path": "data/quran/The_Quran_Dataset.csv", "sha256": "7312b6b220e192ba9ebd02c0c4221ba76c35c69fcea18ae9d306ee20413fcb41", "n_ayahs": 6236},
+  "simulation": "none.",
+  "scoring": "7 counted gates. F8 and F9 are excluded and cannot contribute."
+}
