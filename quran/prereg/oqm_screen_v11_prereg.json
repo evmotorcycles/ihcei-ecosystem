@@ -1,0 +1,79 @@
+{
+  "id": "oqm_screen_v11",
+  "title": "Checking the YT169 corrected table against the corpus it cites",
+  "supersedes": "b150226a276694b9f44191556ae147add2631a9d3195a44fafcd7609cd3c8fee",
+  "WHAT_IS_BEING_CHECKED_AND_WHAT_IS_NOT": {
+    "checked": "The corrected Appendix A table supplied to me carries a 'Meaning & Quranic Evidence' column with three rows -- أَبَابِيل, كِذَّاب, سِكِّير. A citation column is checkable, and checking citations is the one thing this screen is actually for. Each row is tested for: is the cited form attested, how many times, in how many independent contexts, and does its root clear N159's coverage rule.",
+    "NOT_checked": "The morphological ARGUMENT of the correction -- that a triliteral undergoing a large semantic shift is treated as a quadriliteral فَعْلَل, that the alif in أَبَابِيل is intrinsic rather than an إِفْعَال augment. That is a claim about Arabic morphological theory, not about distribution, and this screen has no instrument for it. It is neither endorsed nor disputed here.",
+    "and_not_the_video": "YT169 itself is unviewed. The table as supplied is what is tested. Whether the lecture presents it this way is unknown to me."
+  },
+  "ROW_1_ABAABEEL": {
+    "cited": "أَبَابِيل as the فَعَالِيل plural of إِبَّال from a quadriliteral أَبَّلَ",
+    "measured": "أبابيل occurs EXACTLY ONCE, at 105:3. The bare root أ-ب-ل is attested ZERO times anywhere in the corpus.",
+    "the_consequence_and_it_is_the_methodology_s_own": "Under N159's coverage rule -- the same rule that made فسح and جلس untestable at 58:11 -- a form attested once, whose root has no other attestation, CANNOT be settled by nested interpretation. There is nothing to nest it into. So the corrected derivation is UNTESTABLE_BY_OQM.",
+    "what_that_does_and_does_not_mean": "It does NOT say the correction is wrong. The corrected morphology may well be right, and it is certainly tidier than what it replaced. It says the corpus cannot adjudicate it, which is precisely the verdict N159 reaches about 58:11 and calls a plausible opinion. A correction that lands on a hapax is an improvement in reasoning that the evidence rule cannot certify."
+  },
+  "ROW_2_KIDHDHAAB": {
+    "cited": "كِذَّاب as the فِعَّال maṣdar of Form II كَذَّبَ, evidence given as 78:28 only",
+    "measured": "The Form II maṣdar occurs TWICE: 78:28 كِذَّابًا and 78:35 كِذَّٰبًا. The table cites one of the two. Separately, the فَعَّال intensive adjective كَذَّاب 'a great liar' occurs at 38:4, 40:24, 40:28, 54:25 and 54:26 -- same consonants, different template and different function, and it must not be merged with the maṣdar.",
+    "the_independence_question": "78:28 and 78:35 sit in ONE surah. Under the crude surah-identity rule used in v3/v4 that is ONE_WING. Under v5's corrected context rule they are 7 ayahs apart, well outside the 3-ayah adjacency window, and are two independent contexts -- so the row CLEARS the Janah rule.",
+    "why_this_matters": "This is a case where v5's correction changes the verdict on someone else's claim rather than on my own. The surah proxy would have withheld a verdict the evidence actually supports."
+  },
+  "ROW_3_SIKKEER": {
+    "cited": "سِكِّير as the maṣdar / active-participle form of سَكَّرَ, glossed 'to close off', distinguished from سَكِرَ 'drunkenness'",
+    "measured": "سِكِّير is attested ZERO times in the corpus. What IS attested is the Form II passive verb سُكِّرَتْ at 15:15 -- once. The intoxication family is separately attested: سُكَٰرَىٰ 4:43 and 22:2, سَكْرَتِهِم 15:72, سَكَرًا 16:67, سَكْرَة 50:19.",
+    "the_two_findings": "First, the FORM named in the table does not occur, so that cell has no Quranic witness at all. Second, the DISTINCTION the row draws -- Form II 'closing off' against the س-ك-ر intoxication family -- is real and visible in the corpus, but it rests on a single attestation of سُكِّرَتْ, which is ONE_WING."
+  },
+  "gates": {
+    "J1_ABAABEEL_IS_A_HAPAX_WITH_AN_UNATTESTED_ROOT": {
+      "claim": "أبابيل occurs once (105:3) and bare أ-ب-ل occurs zero times.",
+      "passes_if": "both hold, and the run classifies the row UNTESTABLE_BY_OQM under the same coverage rule that governed 58:11.",
+      "weight": "counted"
+    },
+    "J2_THE_TABLE_UNDER_CITES_ROW_2": {
+      "claim": "The Form II maṣdar كِذَّاب occurs at 78:28 AND 78:35; the table names only 78:28.",
+      "passes_if": "both are found. Under-citation is reported the same way over-citation was for ع-ب-س: as a finding about the citation, not about the reading.",
+      "weight": "counted"
+    },
+    "J3_THE_MASDAR_IS_NOT_MERGED_WITH_THE_INTENSIVE_ADJECTIVE": {
+      "claim": "كَذَّاب at 38:4, 40:24, 40:28, 54:25, 54:26 is a different template with a different function and must be kept separate from the maṣdar at 78:28/78:35.",
+      "passes_if": "the two sets are returned separately and the run says why. Collapsing them would inflate the row's evidence from 2 to 7.",
+      "weight": "counted"
+    },
+    "J4_V5s_RULE_CHANGES_THE_VERDICT_ON_ROW_2": {
+      "claim": "78:28 and 78:35 are ONE_WING under surah-identity and TWO independent wings under the context rule.",
+      "passes_if": "both computations are shown and disagree. This is v5's correction changing a verdict on someone else's claim, in the direction of supporting it.",
+      "weight": "counted"
+    },
+    "J5_SIKKEER_IS_NOT_ATTESTED_AT_ALL": {
+      "claim": "The form سِكِّير named in row 3 has zero occurrences; only the verb سُكِّرَتْ at 15:15 exists.",
+      "passes_if": "zero for the named form, one for the verb. Risky: any attestation of سكير would fail this gate.",
+      "weight": "counted"
+    },
+    "J6_THE_SKR_DISTINCTION_IS_REAL_BUT_SINGLE_WITNESSED": {
+      "claim": "The intoxication family (4:43, 15:72, 16:67, 22:2, 50:19) is separately attested from سُكِّرَتْ (15:15), so the distinction is visible -- but it rests on one attestation.",
+      "passes_if": "both sets are found and the 'closing off' sense is classed ONE_WING.",
+      "weight": "counted"
+    },
+    "J7_does_this_evaluate_the_morphological_ARGUMENT": {
+      "claim": "No. Whether a triliteral under semantic shift is treated as a quadriliteral فَعْلَل, and whether the alif of أَبَابِيل is intrinsic or an إِفْعَال augment, are claims about morphological theory. This screen counts distributions. It has no instrument for the argument and takes no position on it.",
+      "weight": "excluded",
+      "reason": "out of scope"
+    },
+    "J8_is_a_hapax_verdict_a_criticism": {
+      "claim": "No. UNTESTABLE_BY_OQM on أَبَابِيل is not a mark against the correction. N159 reaches the same verdict about 58:11 and treats it as the methodology behaving correctly. A correction can be a genuine improvement in reasoning and still land somewhere the evidence rule cannot certify.",
+      "weight": "excluded",
+      "reason": "absence of adjudicating evidence is not a negative finding"
+    }
+  },
+  "preflight_probe_recorded_before_locking": {
+    "abaabeel": "1 ayah, 105:3; bare root A-B-L zero",
+    "kidhdhaab_masdar": "78:28 كذابا and 78:35 كذابا",
+    "kadhdhaab_adjective": "38:4, 40:24, 40:28, 54:25, 54:26",
+    "sikkeer": "zero; سكرت at 15:15 only",
+    "skr_intoxication": "4:43, 15:72, 16:67, 22:2, 50:19"
+  },
+  "data": {"path": "data/quran/The_Quran_Dataset.csv", "sha256": "7312b6b220e192ba9ebd02c0c4221ba76c35c69fcea18ae9d306ee20413fcb41", "n_ayahs": 6236},
+  "simulation": "none.",
+  "scoring": "6 counted gates. J7 and J8 are excluded and cannot contribute."
+}
