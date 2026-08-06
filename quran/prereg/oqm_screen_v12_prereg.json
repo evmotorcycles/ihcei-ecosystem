@@ -1,0 +1,73 @@
+{
+  "id": "oqm_screen_v12",
+  "title": "The adversarial blind-spot audit: what the OQM screen does NOT know, quantified and pre-registered",
+  "supersedes": "65748aa3c47ab15a5d8719e088d518fa0ef57889980db37d22b70bfceea2b411",
+  "WHY_THIS_RUN_EXISTS": {
+    "the_challenge": "The skepticism put to me is that the screen still lacks a lot of knowledge, because OQM research takes months. Every previous version was built to test a claim. This one is built to FIND MY OWN INSTRUMENT'S LIMITS and to state them in a form that cannot later be softened.",
+    "the_discipline": "A blind-spot audit is only worth anything if it is pre-registered BEFORE the numbers are known and if it is allowed to produce a humiliating result. The gates below are written so that PASSING means the blind spot is CONFIRMED PRESENT. There is no configuration of this file in which the screen comes out looking competent at morphology."
+  },
+  "THE_HEADLINE_FINDING_STATED_UP_FRONT": {
+    "claim": "There is NO morphological analyser anywhere in this codebase. Not in v1, not in v11. Every root match in every version was made either by an ENUMERATED SURFACE-FORM LIST that I curated by hand ayah by ayah, or by substring contiguity on a lossy consonant skeleton.",
+    "consequence": "The screen does not know Arabic. Where its answers have been right, they have been right because a human checked each surface form. The instrument contributed bookkeeping, not linguistics.",
+    "what_it_HAS_genuinely_contributed": "Arithmetic and citation discipline: catching that 3-b-s has three attestations and not two, that كِذَّاب has two maṣdar witnesses and not one, that قري collides two roots, that shadda was being deleted, that a proclitic rule ate 27:8. Every one of those is a bookkeeping catch on work done by someone who does know the language. That is a real and useful role, and it is very much smaller than 'Al-Mīzān'."
+  },
+  "gates": {
+    "K1_DEFECTIVE_COLLIDES_UNRELATED_ROOTS_AT_SCALE": {
+      "claim": "defective() -- the consonant-skeleton function used for candidate generation in v3, v4 and v6 -- collapses more than 25% of its keys onto multiple distinct surface forms, and the worst keys merge genuinely different roots.",
+      "passes_if": "the collision rate exceeds 25% AND the key قل is shown to merge ق-و-ل (قال, to say) with ق-ل-ل (أقل, fewer). PASSING THIS GATE MEANS THE DEFECT IS REAL.",
+      "weight": "counted"
+    },
+    "K2_WEAK_ROOTS_ARE_NOT_HANDLED": {
+      "claim": "Hollow roots lose their medial radical. قال، يقول، قل، قيل، قولوا all reduce to قل, which is indistinguishable from the unrelated root ق-ل-ل.",
+      "passes_if": "all five reduce to one key AND that key also captures أقل. The apparent 'success' of grouping one root is actually a collision.",
+      "weight": "counted"
+    },
+    "K3_GEMINATE_ROOTS_ARE_SPLIT": {
+      "claim": "Doubled roots fragment. ر-د-د yields several distinct keys across رد، ردوا، يرتد، مردود، ردت, so one root is split into several.",
+      "passes_if": "the five forms produce more than two distinct keys. A root matcher that splits one root into several is unusable for exactly the nested-interpretation work OQM requires.",
+      "weight": "counted"
+    },
+    "K4_BROKEN_PLURALS_ARE_UNRELIABLE": {
+      "claim": "Some broken plurals merge with their singular and some do not. كتاب/كتب merge; عالم/علماء and نبي/نبيون do not.",
+      "passes_if": "at least one pair merges and at least one does not. Unreliability is worse than uniform failure, because it looks like it works.",
+      "weight": "counted"
+    },
+    "K5_THE_HOMOGRAPH_CLASS_IS_LARGER_THAN_THE_ONE_I_FOUND": {
+      "claim": "قري was found by accident when two of my own runs disagreed. A systematic census shows dozens of normalised tokens collapsing raw forms that differ in hamza signature.",
+      "passes_if": "more than 20 such tokens exist. Most are benign orthographic variants of one word -- but قري was in this class and was NOT benign, and I have audited none of the others.",
+      "weight": "counted"
+    },
+    "K6_NO_MORPHOLOGICAL_ANALYSER_EXISTS": {
+      "claim": "No version of the screen contains a root extractor, a pattern matcher, a lexicon, or any morphological model. Matching is by curated surface-form sets or substring.",
+      "passes_if": "the audit confirms it by inspecting the actual matching mechanism used by each shipped version.",
+      "weight": "counted"
+    },
+    "K7_THE_ARCHITECTURE_THAT_SAVED_THE_RESULTS": {
+      "claim": "Where the screens over-generated candidates and then adjudicated EVERY candidate visibly (v4, v9, v10, v11), the weakness of defective() was contained, because a human checked each form and the rejections were printed. Where a rule was applied without that adjudication, it failed -- v3's proclitic rule ate 27:8 and v8's bare-base test was mis-scoped.",
+      "passes_if": "both halves are stated, since this is the one design lesson that generalises.",
+      "weight": "counted"
+    },
+    "K8_does_this_invalidate_the_prior_results": {
+      "claim": "No, and it must not be read that way. The specific findings stand because each rested on a hand-checked form list or a printed adjudication: 3-b-s is three, كِذَّاب is two, قري collides, shadda was deleted, 27:8 was wrongly rejected, abaabeel is a hapax. What is invalidated is any impression that the screen has general morphological competence. It has none.",
+      "weight": "excluded",
+      "reason": "a limitation on method is not a refutation of the measurements the method happened to get right"
+    },
+    "K9_could_this_be_fixed": {
+      "claim": "Yes, and honestly stating the fix is part of the audit. It needs a real morphological resource -- a root-annotated Quranic corpus such as the Quranic Arabic Corpus, or a morphological analyser. That is not present in this container and has not been used. Until it is, every root claim this screen makes must rest on an enumerated, hand-checked, printed form list, and should be read as such.",
+      "weight": "excluded",
+      "reason": "a proposed remedy is not a result"
+    }
+  },
+  "preflight_probe_recorded_before_locking": {
+    "collision_rate": "2555 of 8234 defective keys collapse more than one surface form, 31.0%",
+    "worst_keys": "قم n=30, بن n=29, قل n=28, من n=26 -- من merges آمن (ء-م-ن) with أماني (م-ن-ي) and أميون (ء-م-ي)",
+    "hollow": "قال/يقول/قل/قيل/قولوا all -> قل; أقل -> قل",
+    "geminate": "رد->رد, ردوا->رد, يرتد->رتد, مردود->مردد, ردت->ردت",
+    "broken_plurals": "كتاب/كتب merge, رسول/رسل merge, عالم/علماء do not, نبي/نبيون do not",
+    "hamza_census": "62 normalised tokens collapse hamza-bearing and hamza-free raw forms",
+    "distinct_tokens": 14818
+  },
+  "data": {"path": "data/quran/The_Quran_Dataset.csv", "sha256": "7312b6b220e192ba9ebd02c0c4221ba76c35c69fcea18ae9d306ee20413fcb41", "n_ayahs": 6236},
+  "simulation": "none.",
+  "scoring": "7 counted gates, and every one of them PASSES BY CONFIRMING A DEFECT. K8 and K9 are excluded."
+}

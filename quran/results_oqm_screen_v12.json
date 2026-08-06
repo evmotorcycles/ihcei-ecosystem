@@ -1,0 +1,201 @@
+{
+  "spec_sha256": "58e4b34718cb56d6f976731c850c7a95d3224e7366d6a7ba0ba5984806413bab",
+  "supersedes": "65748aa3c47ab15a5d8719e088d518fa0ef57889980db37d22b70bfceea2b411",
+  "n_ayahs": 6236,
+  "simulated_values": 0,
+  "score": "7/7",
+  "gates": [
+    {
+      "id": "K1_DEFECTIVE_COLLIDES_UNRELATED_ROOTS_AT_SCALE",
+      "met": true,
+      "weight": "counted",
+      "detail": "2555 of 8234 defective keys collapse more than one surface form = 31.0%. Worst keys [('قم', 30), ('بن', 29), ('قل', 28), ('من', 26), ('ل', 26), ('تن', 25), ('ت', 25), ('كن', 22)]. The key 'قل' merges ق-و-ل (قال, to say) with ق-ل-ل (أقل, fewer) -- two unrelated roots. PASSING THIS GATE MEANS THE DEFECT IS REAL."
+    },
+    {
+      "id": "K2_WEAK_ROOTS_ARE_NOT_HANDLED",
+      "met": true,
+      "weight": "counted",
+      "detail": "{'قال': 'قل', 'يقول': 'قل', 'قل': 'قل', 'قيل': 'قل', 'قولوا': 'قل'} -- all five hollow-root forms reduce to one key, which LOOKS like correct grouping but is a collision: أقل (root ق-ل-ل) reduces to the same key. The medial radical is destroyed, so ق-و-ل and ق-ل-ل are indistinguishable."
+    },
+    {
+      "id": "K3_GEMINATE_ROOTS_ARE_SPLIT",
+      "met": true,
+      "weight": "counted",
+      "detail": "{'رد': 'رد', 'ردوا': 'رد', 'يرتد': 'رتد', 'مردود': 'مردد', 'ردت': 'ردت'} -> 4 distinct keys for ONE root (ر-د-د). A matcher that splits a single root into several is unusable for the nested-interpretation work OQM requires, because the witnesses never meet."
+    },
+    {
+      "id": "K4_BROKEN_PLURALS_ARE_UNRELIABLE",
+      "met": true,
+      "weight": "counted",
+      "detail": "{'كتاب/كتب': True, 'رسول/رسل': True, 'عالم/علماء': False, 'نبي/نبيون': False} -- some merge, some do not. Unreliability is WORSE than uniform failure, because it looks like it works."
+    },
+    {
+      "id": "K5_THE_HOMOGRAPH_CLASS_IS_LARGER_THAN_THE_ONE_I_FOUND",
+      "met": true,
+      "weight": "counted",
+      "detail": "62 normalised tokens collapse hamza-bearing and hamza-free raw forms, out of 14818 distinct tokens. Most are benign orthographic variants of ONE word -- but قري was in this class and was NOT benign, and I have audited NONE of the others. Sample: ['ابتغي', 'ابعث', 'اتبع', 'اتبعك', 'اتخذ', 'اتخذتم', 'اتل', 'اجعل', 'احكم', 'احمل', 'اخرج', 'اخرجوا', 'ادخلوا', 'ادعوا']"
+    },
+    {
+      "id": "K6_NO_MORPHOLOGICAL_ANALYSER_EXISTS",
+      "met": true,
+      "weight": "counted",
+      "detail": "matching mechanism by version: {'v1/v2 designation': 'enumerated verb forms + uniform proclitic rule', 'v3 f-s-h / j-l-s': 'defective() contiguity + waṣla stem rule', 'v4 four narratives': 'defective() candidate generation + HAND adjudication', 'v6 Bayt/Tafseel': 'enumerated form sets per narrative', 'v8/v9 collective': 'enumerated bare-base and unit-form sets', 'v10 Iqra': \"v4's hand-adjudicated list + hamza disambiguator\", 'v11 YT169 table': 'enumerated form sets per row'}. Not one is a morphological analyser. There is no root extractor, no pattern matcher, no lexicon, no morphological model anywhere in this codebase. The screen does not know Arabic."
+    },
+    {
+      "id": "K7_THE_ARCHITECTURE_THAT_SAVED_THE_RESULTS",
+      "met": true,
+      "weight": "counted",
+      "detail": "Where the screens OVER-generated candidates and then adjudicated EVERY candidate visibly -- v4, v9, v10, v11 -- the weakness of defective() was contained, because a human checked each form and the rejections were printed for audit. Where a rule was applied WITHOUT that adjudication it failed: v3's proclitic rule ate 27:8 بُورِكَ, and v8's bare-base test was applied outside its domain. Over-generate then adjudicate visibly is the only pattern here that survived contact with the corpus."
+    },
+    {
+      "id": "K8_does_this_invalidate_the_prior_results",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No, and it must not be read that way. Each specific finding rested on a hand-checked form list or a printed adjudication: ع-ب-س is three not two, كِذَّاب has two maṣdar witnesses not one, قري collides two roots, shadda was being deleted, 27:8 was wrongly rejected, أَبَابِيل is a hapax. Those stand. What is invalidated is any impression of general morphological competence. There is none."
+    },
+    {
+      "id": "K9_could_this_be_fixed",
+      "met": false,
+      "weight": "excluded",
+      "detail": "Yes, and stating the fix is part of the audit. It needs a real morphological resource -- a root-annotated Quranic corpus such as the Quranic Arabic Corpus, or a morphological analyser. Neither is present in this container and neither has been used. Until one is, every root claim this screen makes must rest on an enumerated, hand-checked, printed form list, and should be read as exactly that and nothing more."
+    }
+  ],
+  "gates_not_met": [],
+  "collision_rate_pct": 31.0,
+  "defective_keys": 8234,
+  "colliding_keys": 2555,
+  "worst_collisions": [
+    {
+      "key": "قم",
+      "n_forms": 30,
+      "sample": [
+        "اقاموا",
+        "اقم",
+        "اقوم",
+        "اقيموا",
+        "قام",
+        "قاموا"
+      ]
+    },
+    {
+      "key": "بن",
+      "n_forms": 29,
+      "sample": [
+        "ابانا",
+        "اباونا",
+        "اباينا",
+        "ابن",
+        "ابناوا",
+        "ابنوا"
+      ]
+    },
+    {
+      "key": "قل",
+      "n_forms": 28,
+      "sample": [
+        "اقل",
+        "اقول",
+        "قال",
+        "قالا",
+        "قالوا",
+        "قايل"
+      ]
+    },
+    {
+      "key": "من",
+      "n_forms": 26,
+      "sample": [
+        "اماني",
+        "امن",
+        "امنا",
+        "امنوا",
+        "امين",
+        "اميون"
+      ]
+    },
+    {
+      "key": "ل",
+      "n_forms": 26,
+      "sample": [
+        "الا",
+        "الاي",
+        "الي",
+        "اول",
+        "اولا",
+        "اولو"
+      ]
+    },
+    {
+      "key": "تن",
+      "n_forms": 25,
+      "sample": [
+        "اتنا",
+        "اتوني",
+        "اتين",
+        "اتينا",
+        "اتيني",
+        "اياتنا"
+      ]
+    },
+    {
+      "key": "ت",
+      "n_forms": 25,
+      "sample": [
+        "اتوا",
+        "اتي",
+        "اتيا",
+        "اوت",
+        "اوتوا",
+        "اوتي"
+      ]
+    },
+    {
+      "key": "كن",
+      "n_forms": 22,
+      "sample": [
+        "اكان",
+        "اكن",
+        "اكون",
+        "كان",
+        "كانا",
+        "كانوا"
+      ]
+    }
+  ],
+  "hollow_root": {
+    "قال": "قل",
+    "يقول": "قل",
+    "قل": "قل",
+    "قيل": "قل",
+    "قولوا": "قل"
+  },
+  "geminate_root": {
+    "رد": "رد",
+    "ردوا": "رد",
+    "يرتد": "رتد",
+    "مردود": "مردد",
+    "ردت": "ردت"
+  },
+  "broken_plurals": {
+    "كتاب/كتب": true,
+    "رسول/رسل": true,
+    "عالم/علماء": false,
+    "نبي/نبيون": false
+  },
+  "hamza_homograph_tokens": 62,
+  "matching_mechanisms": {
+    "v1/v2 designation": "enumerated verb forms + uniform proclitic rule",
+    "v3 f-s-h / j-l-s": "defective() contiguity + waṣla stem rule",
+    "v4 four narratives": "defective() candidate generation + HAND adjudication",
+    "v6 Bayt/Tafseel": "enumerated form sets per narrative",
+    "v8/v9 collective": "enumerated bare-base and unit-form sets",
+    "v10 Iqra": "v4's hand-adjudicated list + hamza disambiguator",
+    "v11 YT169 table": "enumerated form sets per row"
+  },
+  "headline": {
+    "claim": "There is NO morphological analyser anywhere in this codebase. Not in v1, not in v11. Every root match in every version was made either by an ENUMERATED SURFACE-FORM LIST that I curated by hand ayah by ayah, or by substring contiguity on a lossy consonant skeleton.",
+    "consequence": "The screen does not know Arabic. Where its answers have been right, they have been right because a human checked each surface form. The instrument contributed bookkeeping, not linguistics.",
+    "what_it_HAS_genuinely_contributed": "Arithmetic and citation discipline: catching that 3-b-s has three attestations and not two, that كِذَّاب has two maṣdar witnesses and not one, that قري collides two roots, that shadda was being deleted, that a proclitic rule ate 27:8. Every one of those is a bookkeeping catch on work done by someone who does know the language. That is a real and useful role, and it is very much smaller than 'Al-Mīzān'."
+  },
+  "primary_verdict": "7/7 -- and every one of those gates PASSES BY CONFIRMING A DEFECT. The skepticism was justified. There is NO morphological analyser anywhere in this codebase: 31.0% of consonant-skeleton keys collapse multiple surface forms, the key قل merges ق-و-ل with ق-ل-ل, hollow roots lose their medial radical, geminate roots split into 4 keys, broken plurals merge unreliably, and 62 hamza-homograph tokens sit unaudited -- the class قري came from. The screen does not know Arabic. Where it has been right it has been right because I curated and printed every surface form by hand. Its real contribution has been bookkeeping -- arithmetic and citation discipline over work done by people who do know the language -- and that is a far smaller claim than Al-Mīzān."
+}
