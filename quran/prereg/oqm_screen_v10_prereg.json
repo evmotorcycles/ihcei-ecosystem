@@ -1,0 +1,78 @@
+{
+  "id": "oqm_screen_v10",
+  "title": "The Iqra run -- and a homograph that reverses one of my own published counts",
+  "supersedes": "7931ac7c939a5eb2488727cad6650640f0c26f0785d156a44f508d55aeeef341",
+  "THE_HOMOGRAPH": {
+    "what_it_is": "After normalisation the token قري is AMBIGUOUS between two roots: قُرِئَ 'it was recited' (q-r-' , 7:204 and 84:21) and قُرًى 'towns' (q-r-y, 34:18 and 59:14). normalise() maps both to قري, so a form list containing قري silently absorbs two ayahs about villages into a study of recitation.",
+    "the_disambiguator": "Presence of a hamza carrier in the RAW token. قُرِئَ carries ئ; قُرًى carries none. The signal is in the source text, like the wasla rule in v3.",
+    "WHAT_THIS_DOES_TO_MY_OWN_RECORD": {
+      "v4": "v4 published 79 ayahs for q-r-'. That number is CORRECT. But it was correct BY ACCIDENT: v4's candidate generator required a hamza carrier in the raw token, which excluded the two towns ayahs without ever knowing why. Its published accepted_forms list still contains the ambiguous form قري, so the list is wrong while the count is right.",
+      "v7": "v7 reused the form list WITHOUT the hamza filter and reported qr_ayah_count = 81. THAT IS THE ERROR. 34:18 and 59:14 are about fortified villages and have nothing to do with reciting. v7's figure is hereby corrected to 79.",
+      "why_this_matters": "A count that is right for the wrong reason is not safe. The moment the accidental filter was dropped, the error surfaced. This is exactly the failure mode of an instrument that lacks a piece of knowledge -- and it was caught only because two runs of my own disagreed and the disagreement was chased down rather than averaged away."
+    }
+  },
+  "THE_IQRA_MEASUREMENTS": {
+    "attestations": "79 ayahs across 42 surahs, on the disambiguated form set.",
+    "independent_wings": "66, after the v5 witness-independence rule. So 79 raw attestations are 66 independent contexts, not 79.",
+    "the_sharpest_collapse": "Surah 54's refrain وَلَقَدْ يَسَّرْنَا ٱلْقُرْءَانَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ occurs at 54:17, 54:22, 54:32 and 54:40 at Jaccard 1.0 -- IDENTICAL. Four attestations, ONE wing. A raw count would have called that four witnesses.",
+    "buyut": "28 coherence zones, 4 of them multi-member.",
+    "the_recognisable_motifs": {
+      "qur'anan_arabiyyan": "12:2, 20:113, 39:28, 41:3, 41:44, 42:7, 43:3 -- the 'an Arabic Qur'an' family, 7 members",
+      "the_oath_with_an_epithet": "15:87, 36:2, 38:1, 50:1 -- وَٱلْقُرْءَانِ ٱلْحَكِيمِ / ذِى ٱلذِّكْرِ / ٱلْمَجِيدِ, the Qur'an as oath-object with an epithet, 4 members",
+      "reading_one's_own_record": "17:71 and 69:19 -- يَقْرَءُونَ كِتَٰبَهُمْ and ٱقْرَءُوا۟ كِتَٰبِيَهْ, 2 members"
+    },
+    "distribution": "16 verbal ayahs against 63 nominal.",
+    "the_outlier_stands": "2:228 قُرُوٓءٍ remains in the set -- same root, no reciting sense. One ayah, so ONE_WING, and it settles nothing on its own."
+  },
+  "gates": {
+    "H1_THE_HOMOGRAPH_IS_DEMONSTRATED": {
+      "claim": "قري normalises identically from قُرِئَ (7:204, 84:21) and قُرًى (34:18, 59:14), and the hamza carrier separates them.",
+      "passes_if": "all four ayahs are shown, the normalised token is identical across them, and the hamza test partitions them correctly.",
+      "weight": "counted"
+    },
+    "H2_MY_OWN_V7_COUNT_IS_CORRECTED": {
+      "claim": "v7 reported 81 q-r-' ayahs. The correct figure is 79. v4's 79 was right but accidental.",
+      "passes_if": "the disambiguated count is 79, the v7 results file still reads 81 (so the error is visible rather than erased), and the run states which is right and why.",
+      "weight": "counted"
+    },
+    "H3_THE_INDEPENDENCE_RULE_BITES_HARDEST_ON_THE_LARGEST_ROOT": {
+      "claim": "79 attestations reduce to 66 independent wings, and surah 54's fourfold refrain collapses to one at Jaccard 1.0.",
+      "passes_if": "wings == 66 and the three 54:x merges are all recorded at Jaccard 1.0. If a raw attestation count were an acceptable proxy for evidence, this gate would be pointless -- it exists to show it is not.",
+      "weight": "counted"
+    },
+    "H4_THE_BAYT_MEASURE_FINDS_RECOGNISABLE_MOTIFS": {
+      "claim": "Clustering on shared vocabulary alone recovers the qur'anan-arabiyyan family (7), the oath-with-epithet group (4), and the reading-your-own-record pair (2).",
+      "passes_if": "all three appear as clusters. The oath group is the risky one: 15:87, 36:2, 38:1 and 50:1 sit in four different surahs and share only the oath frame, so the measure has to find them without any structural hint.",
+      "weight": "counted"
+    },
+    "H5_THE_DISTRIBUTION_IS_REPORTED": {
+      "claim": "16 verbal against 63 nominal, and 2:228 قُرُوٓءٍ present.",
+      "passes_if": "both hold. The lopsidedness is reported whichever way it cuts.",
+      "weight": "counted"
+    },
+    "H6_V7_IS_SUPERSEDED_NOT_REWRITTEN": {
+      "claim": "v7's spec still hashes to its locked value and its results file still reads 81.",
+      "passes_if": "both hold. The wrong number stays on the record with a correction attached, rather than being edited out.",
+      "weight": "counted"
+    },
+    "H7_does_any_of_this_say_what_IQRA_MEANS": {
+      "claim": "No. Wings, zones and distributions are counts of contexts and shared words. Whether iqra' means 'read', 'assemble', 'carry' or 'initialise a channel' is not decided by any of them, and the she-camel etymology remains untested lexicography.",
+      "weight": "excluded",
+      "reason": "a test that cannot fail is not evidence"
+    },
+    "H8_the_lectures_remain_unviewed": {
+      "claim": "Seven YouTube links have now been supplied across this exchange, including YT169, which is reported to contain the Tayran Abaabeel correction and the quotation about backing up and reassessing. I cannot watch video and no transcripts were provided. That account is the user's testimony and is not verified here.",
+      "weight": "excluded",
+      "reason": "unviewed sources cannot be scored"
+    }
+  },
+  "preflight_probe_recorded_before_locking": {
+    "disambiguated": "79 ayahs / 42 surahs; قري retained only at 7:204 and 84:21",
+    "wings": "66, with 13 merges, of which 54:17~54:22~54:32~54:40 are all Jaccard 1.0",
+    "buyut": "28 zones; multi-member sizes 42, 7, 4, 2",
+    "distribution": "16 verbal / 63 nominal"
+  },
+  "data": {"path": "data/quran/The_Quran_Dataset.csv", "sha256": "7312b6b220e192ba9ebd02c0c4221ba76c35c69fcea18ae9d306ee20413fcb41", "n_ayahs": 6236},
+  "simulation": "none.",
+  "scoring": "6 counted gates. H7 and H8 are excluded and cannot contribute."
+}

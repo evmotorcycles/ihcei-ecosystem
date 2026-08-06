@@ -1,0 +1,377 @@
+{
+  "spec_sha256": "b150226a276694b9f44191556ae147add2631a9d3195a44fafcd7609cd3c8fee",
+  "supersedes": "7931ac7c939a5eb2488727cad6650640f0c26f0785d156a44f508d55aeeef341",
+  "n_ayahs": 6236,
+  "simulated_values": 0,
+  "score": "6/6",
+  "gates": [
+    {
+      "id": "H1_THE_HOMOGRAPH_IS_DEMONSTRATED",
+      "met": true,
+      "weight": "counted",
+      "detail": "all four reduce to the single normalised token 'قري': {'34:18': ('قُرًۭى', 'q-r-y'), '59:14': ('قُرًۭى', 'q-r-y'), '7:204': ('قُرِئَ', \"q-r-'\"), '84:21': ('قُرِئَ', \"q-r-'\")}. The hamza carrier in the RAW token separates them -- the signal is in the source text, like the waṣla rule in v3."
+    },
+    {
+      "id": "H2_MY_OWN_V7_COUNT_IS_CORRECTED",
+      "met": true,
+      "weight": "counted",
+      "detail": "disambiguated q-r-' = 79 ayahs across 42 surahs. v7 published 81 by reusing the form list WITHOUT the hamza filter, absorbing 34:18 and 59:14 -- two ayahs about fortified villages -- into a study of recitation. v4's 79 was right but ACCIDENTALLY so: its generator happened to require a hamza carrier and excluded them without knowing why, while its published form list still contains the ambiguous form. A count right for the wrong reason is not safe, and this surfaced only because two of my own runs disagreed."
+    },
+    {
+      "id": "H3_THE_INDEPENDENCE_RULE_BITES_HARDEST_ON_THE_LARGEST_ROOT",
+      "met": true,
+      "weight": "counted",
+      "detail": "79 attestations -> 66 independent wings, via 13 merges. Surah 54's refrain وَلَقَدْ يَسَّرْنَا ٱلْقُرْءَانَ لِلذِّكْرِ at 54:17/22/32/40 merges at Jaccard {1.0} -- IDENTICAL. Four attestations, ONE wing. A raw count would have called that four witnesses."
+    },
+    {
+      "id": "H4_THE_BAYT_MEASURE_FINDS_RECOGNISABLE_MOTIFS",
+      "met": true,
+      "weight": "counted",
+      "detail": "28 zones, 4 multi-member. Recovered from shared vocabulary ALONE: the qur'anan-arabiyyan family ['12:2', '20:113', '39:28', '41:3', '41:44', '42:7', '43:3']; the oath-with-an-epithet group ['15:87', '36:2', '38:1', '50:1'] -- four different surahs sharing only the oath frame, which is the risky half of this gate; and the reading-your-own-record pair ['17:71', '69:19']."
+    },
+    {
+      "id": "H5_THE_DISTRIBUTION_IS_REPORTED",
+      "met": true,
+      "weight": "counted",
+      "detail": "16 verbal against 63 nominal. 2:228 قُرُوٓءٍ is present -- same root, no reciting sense -- and remains ONE_WING on its own, settling nothing. The lopsidedness is reported whichever way it cuts."
+    },
+    {
+      "id": "H6_V7_IS_SUPERSEDED_NOT_REWRITTEN",
+      "met": true,
+      "weight": "counted",
+      "detail": "v7 spec still hashes to 8fb9f1169dbb32f8... and still scores 8/8, with its 81 still on the record. The wrong number stays visible with a correction attached rather than being edited out."
+    },
+    {
+      "id": "H7_does_any_of_this_say_what_IQRA_MEANS",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No. Wings, zones and distributions count contexts and shared words. Whether iqra' means 'read', 'assemble', 'carry' or 'initialise a channel' is decided by none of them, and the she-camel etymology remains untested lexicography."
+    },
+    {
+      "id": "H8_the_lectures_remain_unviewed",
+      "met": false,
+      "weight": "excluded",
+      "detail": "Seven YouTube links have now been supplied, including YT169, reported to carry the Tayran Abaabeel correction and the quotation about backing up and reassessing. I cannot watch video and no transcripts were provided. That account is the user's testimony and is not verified here."
+    }
+  ],
+  "gates_not_met": [],
+  "homograph": {
+    "7:204": {
+      "raw": "قُرِئَ",
+      "normalised": "قري",
+      "has_hamza": true,
+      "root": "q-r-'"
+    },
+    "34:18": {
+      "raw": "قُرًۭى",
+      "normalised": "قري",
+      "has_hamza": false,
+      "root": "q-r-y"
+    },
+    "59:14": {
+      "raw": "قُرًۭى",
+      "normalised": "قري",
+      "has_hamza": false,
+      "root": "q-r-y"
+    },
+    "84:21": {
+      "raw": "قُرِئَ",
+      "normalised": "قري",
+      "has_hamza": true,
+      "root": "q-r-'"
+    }
+  },
+  "qr_ayahs": 79,
+  "qr_surahs": 42,
+  "independent_wings": 66,
+  "merges": [
+    {
+      "a": "12:2",
+      "b": "12:3",
+      "jaccard": 0.0,
+      "reason": "J2_same_passage"
+    },
+    {
+      "a": "12:2",
+      "b": "43:3",
+      "jaccard": 0.7143,
+      "reason": "J1_formulaic"
+    },
+    {
+      "a": "17:45",
+      "b": "17:46",
+      "jaccard": 0.069,
+      "reason": "J2_same_passage"
+    },
+    {
+      "a": "17:88",
+      "b": "17:89",
+      "jaccard": 0.0645,
+      "reason": "J2_same_passage"
+    },
+    {
+      "a": "17:89",
+      "b": "18:54",
+      "jaccard": 0.5263,
+      "reason": "J1_formulaic"
+    },
+    {
+      "a": "20:113",
+      "b": "20:114",
+      "jaccard": 0.0323,
+      "reason": "J2_same_passage"
+    },
+    {
+      "a": "25:30",
+      "b": "25:32",
+      "jaccard": 0.087,
+      "reason": "J2_same_passage"
+    },
+    {
+      "a": "39:27",
+      "b": "39:28",
+      "jaccard": 0.0588,
+      "reason": "J2_same_passage"
+    },
+    {
+      "a": "54:17",
+      "b": "54:22",
+      "jaccard": 1.0,
+      "reason": "J1_formulaic"
+    },
+    {
+      "a": "54:17",
+      "b": "54:32",
+      "jaccard": 1.0,
+      "reason": "J1_formulaic"
+    },
+    {
+      "a": "54:17",
+      "b": "54:40",
+      "jaccard": 1.0,
+      "reason": "J1_formulaic"
+    },
+    {
+      "a": "75:17",
+      "b": "75:18",
+      "jaccard": 0.0,
+      "reason": "J2_same_passage"
+    },
+    {
+      "a": "96:1",
+      "b": "96:3",
+      "jaccard": 0.1429,
+      "reason": "J2_same_passage"
+    }
+  ],
+  "buyut": [
+    [
+      "4:82",
+      "7:204",
+      "10:37",
+      "12:3",
+      "15:1",
+      "15:91",
+      "16:98",
+      "17:9",
+      "17:14",
+      "17:41",
+      "17:45",
+      "17:46",
+      "17:82",
+      "17:88",
+      "17:89",
+      "18:54",
+      "20:2",
+      "25:30",
+      "25:32",
+      "27:1",
+      "27:6",
+      "27:76",
+      "28:85",
+      "30:58",
+      "36:69",
+      "39:27",
+      "41:26",
+      "43:31",
+      "46:29",
+      "47:24",
+      "54:17",
+      "54:22",
+      "54:32",
+      "54:40",
+      "55:2",
+      "59:21",
+      "73:4",
+      "75:18",
+      "76:23",
+      "84:21",
+      "96:1",
+      "96:3"
+    ],
+    [
+      "12:2",
+      "20:113",
+      "39:28",
+      "41:3",
+      "41:44",
+      "42:7",
+      "43:3"
+    ],
+    [
+      "15:87",
+      "36:2",
+      "38:1",
+      "50:1"
+    ],
+    [
+      "17:71",
+      "69:19"
+    ],
+    [
+      "2:185"
+    ],
+    [
+      "2:228"
+    ],
+    [
+      "5:101"
+    ],
+    [
+      "6:19"
+    ],
+    [
+      "9:111"
+    ],
+    [
+      "10:15"
+    ],
+    [
+      "10:61"
+    ],
+    [
+      "10:94"
+    ],
+    [
+      "13:31"
+    ],
+    [
+      "17:60"
+    ],
+    [
+      "17:78"
+    ],
+    [
+      "17:93"
+    ],
+    [
+      "17:106"
+    ],
+    [
+      "20:114"
+    ],
+    [
+      "26:199"
+    ],
+    [
+      "27:92"
+    ],
+    [
+      "34:31"
+    ],
+    [
+      "50:45"
+    ],
+    [
+      "56:77"
+    ],
+    [
+      "72:1"
+    ],
+    [
+      "73:20"
+    ],
+    [
+      "75:17"
+    ],
+    [
+      "85:21"
+    ],
+    [
+      "87:6"
+    ]
+  ],
+  "multi_member_buyut": [
+    [
+      "4:82",
+      "7:204",
+      "10:37",
+      "12:3",
+      "15:1",
+      "15:91",
+      "16:98",
+      "17:9",
+      "17:14",
+      "17:41",
+      "17:45",
+      "17:46",
+      "17:82",
+      "17:88",
+      "17:89",
+      "18:54",
+      "20:2",
+      "25:30",
+      "25:32",
+      "27:1",
+      "27:6",
+      "27:76",
+      "28:85",
+      "30:58",
+      "36:69",
+      "39:27",
+      "41:26",
+      "43:31",
+      "46:29",
+      "47:24",
+      "54:17",
+      "54:22",
+      "54:32",
+      "54:40",
+      "55:2",
+      "59:21",
+      "73:4",
+      "75:18",
+      "76:23",
+      "84:21",
+      "96:1",
+      "96:3"
+    ],
+    [
+      "12:2",
+      "20:113",
+      "39:28",
+      "41:3",
+      "41:44",
+      "42:7",
+      "43:3"
+    ],
+    [
+      "15:87",
+      "36:2",
+      "38:1",
+      "50:1"
+    ],
+    [
+      "17:71",
+      "69:19"
+    ]
+  ],
+  "verbal_ayahs": 16,
+  "nominal_ayahs": 63,
+  "correction_to_v7": {
+    "v4": "v4 published 79 ayahs for q-r-'. That number is CORRECT. But it was correct BY ACCIDENT: v4's candidate generator required a hamza carrier in the raw token, which excluded the two towns ayahs without ever knowing why. Its published accepted_forms list still contains the ambiguous form قري, so the list is wrong while the count is right.",
+    "v7": "v7 reused the form list WITHOUT the hamza filter and reported qr_ayah_count = 81. THAT IS THE ERROR. 34:18 and 59:14 are about fortified villages and have nothing to do with reciting. v7's figure is hereby corrected to 79.",
+    "why_this_matters": "A count that is right for the wrong reason is not safe. The moment the accidental filter was dropped, the error surfaced. This is exactly the failure mode of an instrument that lacks a piece of knowledge -- and it was caught only because two runs of my own disagreed and the disagreement was chased down rather than averaged away."
+  },
+  "primary_verdict": "6/6. Running the full stack over q-r-' caught a homograph that reverses one of my own published numbers: قري reduces identically from قُرِئَ (recited) and قُرًى (towns), so v7's 81 silently included two ayahs about fortified villages. The correct count is 79 across 42 surahs -- which v4 had, but only by accident. Under the independence rule those 79 attestations are just 66 independent contexts, and surah 54's fourfold refrain collapses to ONE wing at Jaccard 1.0. Bayt clustering recovers three recognisable motifs from shared vocabulary alone, including four oath-with-epithet ayahs scattered across four surahs. None of it says what iqra' means."
+}
