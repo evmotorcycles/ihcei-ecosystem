@@ -30,7 +30,7 @@
       "id": "N5_THE_STACK_IS_REPRODUCIBLE_IN_ONE_COMMAND",
       "met": true,
       "weight": "counted",
-      "detail": "reproduce_all.sh: 47 suite lines, 47 passing, 0 failing. Suite NAMES containing 'FAIL' describe a prediction the suite FALSIFIED and are not harness failures -- 2 such lines were separated out rather than miscounted: ['real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 ', 'sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECT']"
+      "detail": "reproduce_all.sh: 96 suite lines, 96 passing, 0 failing. Suite NAMES containing 'FAIL' describe a prediction the suite FALSIFIED and are not harness failures -- 5 such lines were separated out rather than miscounted: ['real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 ', 'sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECT']"
     },
     {
       "id": "N6_does_this_audit_test_QWEN_or_DEEPSEEK_BEHAVIOUR",
@@ -90,12 +90,15 @@
   },
   "harness": {
     "log_present": true,
-    "suite_lines": 47,
-    "passing": 47,
+    "suite_lines": 96,
+    "passing": 96,
     "failing": [],
     "names_mentioning_FAIL_but_passing": [
       "real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 ",
-      "sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECT"
+      "sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECT",
+      "DCM: Discriminating Capacity Model on 400 real sub-datasets — 5/6; K5 multiplicativity FAI",
+      "stewardship-contract: STRUCTURE not selection on N=992 — 4/5, SC4 (my prediction) FAILED P",
+      "financial-lism: stratified relative floors — 2/5, T2 FAILS 18x, within-tier D INVERTED; ar"
     ]
   },
   "correction": {

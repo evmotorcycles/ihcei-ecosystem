@@ -67,4 +67,59 @@
   sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECTS PASS
   submesh-pools: local pooling swept k=1..200 — 3/5; friction curve FLAT, k=20 prediction wrong PASS
   settlement-mesh: decentralised mesh built from scratch — 2/5; pooling wins, quorum DEAD PASS
-  central-tail-risk: the 'wrong game' reframe tested — 2/5; credit-creation explanation REFUTED 
+  central-tail-risk: the 'wrong game' reframe tested — 2/5; credit-creation explanation REFUTED PASS
+  corrected-mesh: surgical correction on 10k events — 3/6; equity is a CONTAGION control, not a loss reducer PASS
+  two-register: routing tested against random — 0/5; targeted beaten by 18 of 20 coin flips PASS
+  three-proposals: Irfan vs Al-Qudah vs Two-Register on one engine — 4/5; doctrinal spread collapses to 4.1% PASS
+  tworegister-v2: 5-seed robustness + Al-Qudah primitive — 3/5; the mix adds nothing, CV 0.22 PASS
+  finance-10k: independent peer-review verification of the cohort (8/8) PASS
+  contract-audit: three schedules — 3/6; no dataset can distinguish risk-sharing from debt PASS
+  outcome-audit: three outcome panels — 2/5; write-downs are policy, not asset-driven PASS
+  interbank-2016: real Q1→Q2 network — 3/5; the QUADRATIC rival beat LISM PASS
+  ifsb-equity: 117 country-quarters — 1/6; loss-absorbing funding share is at the noise mean PASS
+  allometry: Tusko scaling on 866 real repos — 3/5; the CONSTANT beat the power law PASS
+  DCM: Discriminating Capacity Model on 400 real sub-datasets — 5/6; K5 multiplicativity FAILED PASS
+  crossover: RT→Governance on quantum + cognition — 5/9; the SECOND HOP was refuted in physics PASS
+  SDL: scope selector declared in advance on 5 substrates — 2/6; self-audit voided the result PASS
+  CRM: Cognitive Reference Model on 2000 agents — 4/6; it did NOT beat LISM and the self-audit voided it PASS
+  DES: shield vs signal on 288 REAL evaluator runs — 4/6; the Suite scored a perfect shield by being a rock PASS
+  HELM v2: density-weighted engine on HELD-OUT texts — 5/6; the defect it fixed did not reproduce PASS
+  Balanced grid: the fix HELM v2 promised — 4/7; it did not work, and why PASS
+  Q5 irreducibility testbed: v1 2/5, v2 5/6 — monitoring did NOT beat predicting (~5 min) PASS
+  Scarcity: LISM's own domain limit tested — 5/6; §3.3c REFUTED where testable PASS
+  Licensing Q3/Q4/Q5 — Q4 5/5 licensed, Q3 4/4, Q5 primary REFUTED PASS
+  D construct alarm diagnosed — 4/4; the PyPI half is construction-induced PASS
+  Quran lexical: yahud verbally designated 10x, nasara 0x, 7 controls 0x — 5/6 PASS
+  Quran VIF: 1/3 — 99.8% of random word pairs clear the same bar; metric vacuous here PASS
+  OQM Lexical Screen: 4/5 — calibrated both ends; says LABEL to 5 of 10 OQM terms PASS
+  OQM Screen v2: 6/6 — classes renamed, second mutability axis, register firewall PASS
+  colab-audit: peer review of the Colab Hybrid Sovereign Mesh — 7/14; 3 INVALID, 1 CIRCULAR PASS
+  governance-physics: LMD on REAL graphs — 4/4 evidential; entanglement claim REFUTED, -0.5 is an IDENTITY PASS
+  novora-mesh: integrated stack, ABLATION on N=992 — 1/4; removing the screen cost 211k PASS
+  stewardship-contract: STRUCTURE not selection on N=992 — 4/5, SC4 (my prediction) FAILED PASS
+  financial-lism: stratified relative floors — 2/5, T2 FAILS 18x, within-tier D INVERTED; arm F BLOCKED 403 PASS
+  biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered) PASS
+  pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered) PASS
+  github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered) PASS
+  openalex-lism: pre-registered NULL (locked gate not met, zero-inflated) reported honestly PASS
+  qg-cos: 5 questions + Iqra + Nafs/Iblees             PASS
+  repro: tau_v + yeast + CI attest                     PASS
+  lism-cohorts: 4-cohort E=U*D meta (pre-registered)   PASS
+  knowledge cohort: Barakah SE reproduces OFFLINE      PASS
+  LISM circuit breaker: drop-in agent-pipeline guard   PASS
+  hardware template: coupler-sweep prediction (no fabrication) PASS
+  provenance: cryptographic origin lock verifies       PASS
+------------------------------------------------------------------------
+  Physics-agency: Telemetric Metric (Python)
+------------------------------------------------------------------------
+  physics: metric + scaling + discriminator            PASS
+  physics: emergent spacetime                          PASS
+  physics: telemetry machines (F=ma/E=mc2)             PASS
+  physics: 3D coordinate emergence                     PASS
+  physics: pre-registered locked run                   PASS
+  physics: LMD spacetime-verdict-matrix (pre-registered) PASS
+  physics: LMD vs 4 emergent-spacetime theories (honest) PASS
+
+========================================================================
+ ALL GREEN — 96/96 suites passed. The whole stack reproduces.
+========================================================================
