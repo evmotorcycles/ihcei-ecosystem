@@ -1,0 +1,107 @@
+{
+  "lock_ok": true,
+  "cohort_n": 22,
+  "qwen_n": 10,
+  "deepseek_n": 12,
+  "D1_pages_abstains": {
+    "blank_verdict": "Insufficient Evidence",
+    "blank_abstains": true,
+    "control_verdict": "Solid",
+    "control_score": 0.91,
+    "control_abstains": false,
+    "descriptions_screened": 20,
+    "descriptions_abstained": 20,
+    "pass": true
+  },
+  "D2_page_code": {
+    "deterministic": true,
+    "granted_allowed": true,
+    "ungranted_denied": true,
+    "over_stake_denied": true,
+    "pass": true
+  },
+  "D3_echo": {
+    "merkle_root": "2e267404206c7ad527a9680b34ebefb43d81d4b4334c121c1cc57f83756ee6a6",
+    "all_leaves_verify": true,
+    "root_changed_on_tamper": true,
+    "stale_proof_rejected": true,
+    "pass": true
+  },
+  "D4_ei": {
+    "evaluated": 22,
+    "receipts": 22,
+    "ledger_verifies": true,
+    "pass": true
+  },
+  "D5_agency": {
+    "applicable": true,
+    "below_floor": 22,
+    "budget": 66,
+    "E_constitution": 16.924,
+    "E_capacity": 14.277,
+    "E_equal": 6.546,
+    "pass": true
+  },
+  "D6_replication": {
+    "rankings_differ": true,
+    "popular_but_below_floor": [
+      "deepseek-ai/DeepSeek-V3",
+      "deepseek-ai/DeepSeek-R1",
+      "deepseek-ai/awesome-deepseek-integration",
+      "QwenLM/Qwen3",
+      "QwenLM/qwen-code"
+    ],
+    "replicates": true,
+    "pass": true
+  },
+  "D7_license_gap": {
+    "unlicensed_count": 2,
+    "unlicensed": [
+      "QwenLM/Qwen3",
+      "QwenLM/Qwen3-Coder"
+    ],
+    "total": 22
+  },
+  "top_by_stars": [
+    {
+      "id": "deepseek-ai/DeepSeek-V3",
+      "stars": 104122,
+      "license": "MIT",
+      "minhop": 0.161
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1",
+      "stars": 91986,
+      "license": "MIT",
+      "minhop": 0.127
+    },
+    {
+      "id": "deepseek-ai/awesome-deepseek-integration",
+      "stars": 38528,
+      "license": "CC0-1.0",
+      "minhop": 0.109
+    },
+    {
+      "id": "QwenLM/Qwen3",
+      "stars": 27483,
+      "license": null,
+      "minhop": 0.074
+    },
+    {
+      "id": "QwenLM/qwen-code",
+      "stars": 26792,
+      "license": "Apache-2.0",
+      "minhop": 0.104
+    }
+  ],
+  "honest_data_note": "GitHub-only cohort: the Hugging Face connector dropped mid-session, so no new HF data was pulled and none is claimed.",
+  "honest_reporting": true,
+  "D8_dashboards": {
+    "file": "ei-dashboards/dashboards.html",
+    "bytes": 13236,
+    "no_external_resources": true,
+    "embeds_results": true,
+    "pass": true
+  },
+  "pass": true
+}

@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ASSAY — Novora stack dashboards</title><style>
+:root{--bg:#0b0e14;--pn:#141924;--p2:#0f1420;--ink:#eef1f7;--mut:#94a0b5;--fnt:#5b6577;--ln:#212836;--ac:#4fb286;--bl:#5a9be6;--am:#dda63e;--rd:#e0685a;--mono:"SFMono-Regular",ui-monospace,Menlo,monospace;--sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif}
+:root[data-theme=light]{--bg:#f5f7fa;--pn:#fff;--p2:#eef1f6;--ink:#121722;--mut:#4d5768;--fnt:#8791a0;--ln:#e2e7ee;--ac:#1b8560;--bl:#1a6fc0;--am:#9c7118;--rd:#c0453a}
+@media(prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f5f7fa;--pn:#fff;--p2:#eef1f6;--ink:#121722;--mut:#4d5768;--fnt:#8791a0;--ln:#e2e7ee;--ac:#1b8560;--bl:#1a6fc0;--am:#9c7118;--rd:#c0453a}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.w{max-width:1080px;margin:0 auto;padding:clamp(20px,4vw,44px)}
+header{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;border-bottom:1px solid var(--ln);padding-bottom:16px;margin-bottom:6px}
+h1{font-size:2rem;margin:0;letter-spacing:-.02em}h1 span{color:var(--ac)}
+.sub{color:var(--mut);font-size:.92rem}
+nav{display:flex;gap:6px;margin:20px 0;flex-wrap:wrap}
+nav button{font:inherit;font-size:.85rem;padding:8px 15px;border-radius:9px;border:1px solid var(--ln);background:var(--pn);color:var(--mut);cursor:pointer}
+nav button[aria-selected=true]{background:var(--ac);border-color:var(--ac);color:#06120d;font-weight:650}
+.panel{display:none}.panel.on{display:block}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:11px;margin:16px 0}
+.k{border:1px solid var(--ln);border-radius:12px;padding:13px 15px;background:var(--pn)}
+.k b{display:block;font-size:1.6rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.k span{font-size:.76rem;color:var(--mut)}
+.g{display:grid;grid-template-columns:1fr auto;gap:4px 14px;border:1px solid var(--ln);border-left:4px solid var(--ac);border-radius:0 11px 11px 0;padding:12px 15px;background:var(--pn);margin:9px 0}
+.g.no{border-left-color:var(--am)}
+.gt{font-weight:650;font-size:.95rem}.gd{color:var(--mut);font-size:.85rem;grid-column:1}
+.gs{font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--ac);align-self:center}
+.g.no .gs{color:var(--am)}
+table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:12px}
+.tw{overflow-x:auto;border:1px solid var(--ln);border-radius:12px}
+th,td{padding:9px 11px;text-align:right;border-bottom:1px solid var(--ln);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}th{background:var(--p2);font-family:var(--mono);font-size:.64rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+td{font-variant-numeric:tabular-nums}td.n{font-family:var(--mono);font-size:.78rem}
+tr.lo td{background:color-mix(in srgb,var(--am) 9%,transparent)}
+.pill{font-family:var(--mono);font-size:.62rem;padding:2px 7px;border-radius:5px}
+.pill.ok{color:var(--ac);border:1px solid color-mix(in srgb,var(--ac) 45%,transparent)}
+.pill.bad{color:var(--am);border:1px solid color-mix(in srgb,var(--am) 45%,transparent)}
+b.bad{color:var(--rd)}
+code{font-family:var(--mono);font-size:.8em;background:color-mix(in srgb,var(--mut) 16%,transparent);padding:.1em .4em;border-radius:4px;word-break:break-all}
+.note{border-left:3px solid var(--bl);background:color-mix(in srgb,var(--bl) 9%,transparent);padding:11px 15px;border-radius:0 9px 9px 0;margin:14px 0;font-size:.88rem}
+footer{margin-top:34px;padding-top:14px;border-top:1px solid var(--ln);color:var(--mut);font-size:.78rem}
+h2{font-size:1.15rem;margin:22px 0 4px}
+</style></head><body><div class="w">
+<header><h1><span>ASSAY</span> · Novora stack</h1>
+<div class="sub">22 real repositories · 10 Qwen + 12 DeepSeek · offline, no network</div></header>
+<nav role="tablist">
+<button role="tab" aria-selected="true" data-t="a">ASSAY (EI LLM)</button>
+<button role="tab" aria-selected="false" data-t="p">Page Code</button>
+<button role="tab" aria-selected="false" data-t="h">HELM</button></nav>
+
+<section class="panel on" id="a">
+<div class="kpis">
+<div class="k"><b>22</b><span>real repositories assayed</span></div>
+<div class="k"><b>22</b><span>accountable receipts</span></div>
+<div class="k"><b>2</b><span>publishing no license</span></div>
+<div class="k"><b>5/5</b><span>top-starred below floor</span></div>
+</div>
+<h2>What ASSAY checked</h2>
+<div class="g ok"><div class="gt">PAGES abstains instead of bluffing</div><div class="gd">Empty input → <b>Insufficient Evidence</b>. An evidence-bearing control text → <b>Solid</b> (score 0.91). And on real repository descriptions it abstained <b>20 of 20</b> times — marketing blurbs carry no evidence, so declining to score them is correct.</div><div class="gs">PASS</div></div>
+<div class="g ok"><div class="gt">EI ledger verifies</div><div class="gd">22 repositories evaluated, 22 receipts, ledger verifies = true. Every verdict is auditable afterwards.</div><div class="gs">PASS</div></div>
+<div class="g ok"><div class="gt">Reach is not quality (replication)</div><div class="gd">Ranking by stars differs from ranking by verified fidelity, and <b>5 of the top 5 most-starred</b> fall below the fidelity floor.</div><div class="gs">PASS</div></div>
+<div class="g ok"><div class="gt">Agency allocator vs naive</div><div class="gd">22 repos below floor, budget 66: constitution <b>16.924</b> vs capacity 14.277 vs equal 6.546.</div><div class="gs">PASS</div></div>
+<h2>The cohort</h2>
+<div class="tw"><table><thead><tr><th>repository</th><th>stars</th><th>forks</th><th>open issues</th><th>license</th><th>D_enc</th><th>D_dec</th><th>status</th></tr></thead><tbody><tr class="lo"><td class="n">deepseek-ai/DeepSeek-V3</td><td>104,122</td><td>16,725</td><td>215</td><td>MIT</td><td>0.44</td><td>0.16</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/DeepSeek-R1</td><td>91,986</td><td>11,706</td><td>38</td><td>MIT</td><td>0.82</td><td>0.13</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/awesome-deepseek-integration</td><td>38,528</td><td>4,203</td><td>120</td><td>CC0-1.0</td><td>0.59</td><td>0.11</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen3</td><td>27,483</td><td>2,030</td><td>60</td><td><b class="bad">none</b></td><td>0.74</td><td>0.07</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/qwen-code</td><td>26,792</td><td>2,797</td><td>881</td><td>Apache-2.0</td><td>0.16</td><td>0.10</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/DeepSeek-Coder</td><td>24,056</td><td>2,905</td><td>171</td><td>MIT</td><td>0.50</td><td>0.12</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/DeepSeek-OCR</td><td>23,752</td><td>2,192</td><td>285</td><td>MIT</td><td>0.37</td><td>0.09</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen</td><td>21,567</td><td>1,865</td><td>46</td><td>Apache-2.0</td><td>0.79</td><td>0.09</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen3-VL</td><td>19,736</td><td>1,832</td><td>422</td><td>Apache-2.0</td><td>0.29</td><td>0.09</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/Janus</td><td>17,754</td><td>2,232</td><td>181</td><td>MIT</td><td>0.49</td><td>0.13</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen-Agent</td><td>16,925</td><td>1,693</td><td>524</td><td>Apache-2.0</td><td>0.25</td><td>0.10</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen3-Coder</td><td>16,773</td><td>1,236</td><td>111</td><td><b class="bad">none</b></td><td>0.61</td><td>0.07</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen3-TTS</td><td>12,832</td><td>1,655</td><td>55</td><td>Apache-2.0</td><td>0.76</td><td>0.13</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/FlashMLA</td><td>12,823</td><td>1,114</td><td>118</td><td>MIT</td><td>0.59</td><td>0.09</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/3FS</td><td>10,104</td><td>1,073</td><td>155</td><td>MIT</td><td>0.52</td><td>0.11</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/DeepEP</td><td>9,960</td><td>1,363</td><td>302</td><td>MIT</td><td>0.36</td><td>0.14</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen-Image</td><td>8,210</td><td>527</td><td>232</td><td>Apache-2.0</td><td>0.42</td><td>0.06</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/open-infra-index</td><td>8,034</td><td>293</td><td>1</td><td>CC0-1.0</td><td>0.99</td><td>0.04</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/DeepGEMM</td><td>7,631</td><td>1,154</td><td>103</td><td>MIT</td><td>0.62</td><td>0.15</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">deepseek-ai/DeepSeek-LLM</td><td>7,208</td><td>1,279</td><td>58</td><td>MIT</td><td>0.75</td><td>0.18</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen-VL</td><td>6,721</td><td>495</td><td>324</td><td>NOASSERTION</td><td>0.35</td><td>0.07</td><td><span class="pill bad">below floor</span></td></tr><tr class="lo"><td class="n">QwenLM/Qwen2.5-Omni</td><td>4,058</td><td>326</td><td>219</td><td>Apache-2.0</td><td>0.44</td><td>0.08</td><td><span class="pill bad">below floor</span></td></tr></tbody></table></div>
+<div class="note"><b>Read this the right way.</b> “Below floor” is <i>not</i> a quality judgement about Qwen or DeepSeek models. It measures repository governance telemetry only — backlog health and fork-through relative to popularity. This dashboard makes no capability claim about either lab.</div>
+</section>
+
+<section class="panel" id="p">
+<div class="kpis">
+<div class="k"><b>yes</b><span>audit is deterministic</span></div>
+<div class="k"><b>denied</b><span>ungranted path</span></div>
+<div class="k"><b>allowed</b><span>granted path</span></div>
+</div>
+<h2>Permission table</h2>
+<div class="g ok"><div class="gt">Same input → same audit, every time</div><div class="gd">All 22 repository descriptions audited twice produced byte-identical output. A permission system that drifts is not a permission system.</div><div class="gs">PASS</div></div>
+<div class="g ok"><div class="gt">Ungranted paths are refused</div><div class="gd"><code>docs/**</code> was granted and allowed; <code>src/core.mjs</code> was never granted and was denied. Capability is explicit, never assumed.</div><div class="gs">PASS</div></div>
+<div class="note">Page Code answers one question before any agent writes anything: <b>is this agent allowed to change this exact path?</b> The answer is a table lookup, not a judgement call — so it cannot be talked into a different answer.</div>
+</section>
+
+<section class="panel" id="h">
+<div class="kpis">
+<div class="k"><b>all</b><span>leaves proved inclusion</span></div>
+<div class="k"><b>caught</b><span>single-byte tamper</span></div>
+<div class="k"><b>rejected</b><span>stale proof</span></div>
+</div>
+<h2>Echo — the tamper-evident record</h2>
+<div class="g ok"><div class="gt">Every record proves it belongs</div><div class="gd">A merkle root was computed over all 22 repositories and every single leaf proved its inclusion.</div><div class="gs">PASS</div></div>
+<div class="g ok"><div class="gt">Changing one number is detectable</div><div class="gd">One star count was altered by 1. The root changed and the old proof was rejected. You cannot quietly edit history.</div><div class="gs">PASS</div></div>
+<p style="font-size:.84rem;color:var(--mut)">merkle root <code>2e267404206c7ad527a9680b34ebefb43d81d4b4334c121c1cc57f83756ee6a6</code></p>
+<div class="note"><b>Why HELM and Echo matter together.</b> HELM governs what the stack is allowed to conclude; Echo makes every conclusion permanent and checkable. Together they mean a verdict can be re-examined later by someone who trusts none of the people involved.</div>
+</section>
+
+<footer>Built offline from a SHA-256-locked pre-registration; the numbers above are this run's measured results, embedded at build time. GitHub-only cohort — the Hugging Face connector dropped mid-session, so no new HF data is claimed. No capability claim is made about Qwen or DeepSeek models. Novora Research Initiative.</footer>
+</div><script>
+const bs=[...document.querySelectorAll('nav button')],ps=[...document.querySelectorAll('.panel')];
+bs.forEach(b=>b.addEventListener('click',()=>{bs.forEach(x=>x.setAttribute('aria-selected',String(x===b)));
+ps.forEach(p=>p.classList.toggle('on',p.id===b.dataset.t));}));
+</script></body></html>
