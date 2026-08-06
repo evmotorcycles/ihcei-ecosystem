@@ -1,0 +1,164 @@
+{
+  "spec_sha256": "7931ac7c939a5eb2488727cad6650640f0c26f0785d156a44f508d55aeeef341",
+  "supersedes": "c9d6f4b38a4277e32f4c16aee7c3641a9f3591a9329406b3aba8d77c6ce1b333",
+  "n_ayahs": 6236,
+  "simulated_values": 0,
+  "score": "7/7",
+  "gates": [
+    {
+      "id": "G1_THE_SET_NAME_CLASS_IS_CORPUS_WITNESSED",
+      "met": true,
+      "weight": "counted",
+      "detail": "بطانه at 3:118 -> plural markers ['يالونكم', 'ودوا', 'افواههم', 'صدورهم']; جماله at 77:33 -> ['صفر']. Singular-looking فِعَالَة nouns with unambiguous plural agreement. The class is real and the corpus witnesses it, so a فِعَالَة noun CAN denote a collective with no bare base -- which v8 had no rule for."
+    },
+    {
+      "id": "G6_NOTHING_IS_HARDCODED_THAT_COULD_BE_MEASURED",
+      "met": true,
+      "weight": "counted",
+      "detail": "every agreement fact is read off the ayah at runtime and the source text is printed so each hit can be checked: {'بطانه': 'يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ لَا تَتَّخِذُوا۟ بِطَانَةً', 'جماله': 'كَأَنَّهُۥ جِمَٰلَتٌۭ صُفْرٌۭ'}"
+    },
+    {
+      "id": "G2_V8s_TEST_IS_SCOPED_NOT_WITHDRAWN",
+      "met": true,
+      "weight": "counted",
+      "detail": "v8's bare-base counts reproduced UNCHANGED: {'نحل': 1, 'طير': 12, 'شجر': 5, 'ناق': 0}. The measurement stands. What is corrected is its SCOPE: the bare-base test is valid for اسم جنس جمعي (نحل/نحلة) and does NOT apply to the فِعَالَة set-name class, which has no bare base by construction. v8 reported a true number with a false implication, and the implication was the dangerous half."
+    },
+    {
+      "id": "G3_NAQAH_HAS_NO_PLURAL_AGREEMENT_ANYWHERE",
+      "met": true,
+      "weight": "counted",
+      "detail": "across all 8 naqah ayahs: 0 plural-agreement markers. Singular agreement found at {'7:73': ['هاذهۦ', 'فذروها', 'تاكل', 'ايه'], '11:64': ['هاذهۦ', 'فذروها', 'تاكل', 'ايه'], '26:155': ['هاذهۦ', 'لها'], '54:27': ['فتنه'], '91:14': ['فعقروها']}. A single plural verb or pronoun governing نَاقَة would have promoted the reading to a witnessed collective and failed this gate."
+    },
+    {
+      "id": "G4_THE_VERDICT_IS_THE_REGISTER_NOT_A_REFUTATION",
+      "met": true,
+      "weight": "counted",
+      "detail": "naqah -> TEMPLATE_COMPATIBLE_WITNESS_DEFICIENT. NOT Layer 1 and NOT refuted. What would move it: a single plural verb, plural pronoun or plural adjective governing نَاقَة anywhere in the corpus. There is none in the seven ayahs, but the verdict names the measurement that would change it rather than closing the question."
+    },
+    {
+      "id": "G5_THE_PROMOTION_PATH_IS_LIVE",
+      "met": true,
+      "weight": "counted",
+      "detail": "on the SAME code path that leaves naqah deficient: {'بطانه': 'L1_WITNESSED_COLLECTIVE', 'جماله': 'L1_WITNESSED_COLLECTIVE', 'نحل': 'L1_STANDARD_COLLECTIVE', 'ناقه': 'TEMPLATE_COMPATIBLE_WITNESS_DEFICIENT'}. A register with no reachable promotion state would be a refusal machine, not a scale."
+    },
+    {
+      "id": "G7_V8_REMAINS_PUBLISHED_UNCHANGED",
+      "met": true,
+      "weight": "counted",
+      "detail": "v8 spec still hashes to c9d6f4b38a4277e3... and still scores 7/7. Not deleted, not re-scored, not quietly amended -- superseded. The mistake stays visible so the growth stays visible with it."
+    },
+    {
+      "id": "G8_does_template_compatibility_establish_the_purifier_reading",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No. That نَاقَة sits on a template CAPABLE of denoting a collective says nothing about whether the collective is purifiers, fixers or anything else. Even a fully WITNESSED collective would not have established that."
+    },
+    {
+      "id": "G9_the_lectures_are_not_in_evidence",
+      "met": false,
+      "weight": "excluded",
+      "detail": "Six YouTube links were supplied, including YT217. I cannot watch video and no transcripts were given, so the set-name argument is evaluated ENTIRELY against the corpus -- 3:118, 77:33 and the seven naqah ayahs. Whether YT217 argues what it is reported to argue is unknown to me. Separately I searched the extracted N168 text for the correction episode described and could NOT find it; it may be carried in slide images. That account is the user's testimony and is not something I verified."
+    }
+  ],
+  "gates_not_met": [],
+  "set_name_class": {
+    "بطانه": {
+      "ayah": "3:118",
+      "plural_markers_found": [
+        "يالونكم",
+        "ودوا",
+        "افواههم",
+        "صدورهم"
+      ],
+      "witnessed": true,
+      "ayah_text": "يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟ لَا تَتَّخِذُوا۟ بِطَانَةًۭ مِّن دُونِكُمْ لَا يَأْلُونَكُمْ خَبَالًۭا وَدُّوا۟ مَا عَنِتُّمْ قَدْ بَدَتِ ٱلْبَغْضَا"
+    },
+    "جماله": {
+      "ayah": "77:33",
+      "plural_markers_found": [
+        "صفر"
+      ],
+      "witnessed": true,
+      "ayah_text": "كَأَنَّهُۥ جِمَٰلَتٌۭ صُفْرٌۭ"
+    }
+  },
+  "naqah_agreement": {
+    "7:73": {
+      "singular_agreement": [
+        "هاذهۦ",
+        "فذروها",
+        "تاكل",
+        "ايه"
+      ],
+      "plural_agreement": [],
+      "text": "وَإِلَىٰ ثَمُودَ أَخَاهُمْ صَٰلِحًۭا ۗ قَالَ يَٰقَوْمِ ٱعْبُدُوا۟ ٱللَّهَ مَا لَكُم مِّنْ إِلَٰهٍ غَيْرُهُۥ ۖ قَدْ جَآء"
+    },
+    "7:77": {
+      "singular_agreement": [],
+      "plural_agreement": [],
+      "text": "فَعَقَرُوا۟ ٱلنَّاقَةَ وَعَتَوْا۟ عَنْ أَمْرِ رَبِّهِمْ وَقَالُوا۟ يَٰصَٰلِحُ ٱئْتِنَا بِمَا تَعِدُنَآ إِن كُنتَ مِنَ ٱ"
+    },
+    "11:64": {
+      "singular_agreement": [
+        "هاذهۦ",
+        "فذروها",
+        "تاكل",
+        "ايه"
+      ],
+      "plural_agreement": [],
+      "text": "وَيَٰقَوْمِ هَٰذِهِۦ نَاقَةُ ٱللَّهِ لَكُمْ ءَايَةًۭ فَذَرُوهَا تَأْكُلْ فِىٓ أَرْضِ ٱللَّهِ وَلَا تَمَسُّوهَا بِسُوٓءٍۢ"
+    },
+    "17:59": {
+      "singular_agreement": [],
+      "plural_agreement": [],
+      "text": "وَمَا مَنَعَنَآ أَن نُّرْسِلَ بِٱلْءَايَٰتِ إِلَّآ أَن كَذَّبَ بِهَا ٱلْأَوَّلُونَ ۚ وَءَاتَيْنَا ثَمُودَ ٱلنَّاقَةَ م"
+    },
+    "26:155": {
+      "singular_agreement": [
+        "هاذهۦ",
+        "لها"
+      ],
+      "plural_agreement": [],
+      "text": "قَالَ هَٰذِهِۦ نَاقَةٌۭ لَّهَا شِرْبٌۭ وَلَكُمْ شِرْبُ يَوْمٍۢ مَّعْلُومٍۢ"
+    },
+    "54:27": {
+      "singular_agreement": [
+        "فتنه"
+      ],
+      "plural_agreement": [],
+      "text": "إِنَّا مُرْسِلُوا۟ ٱلنَّاقَةِ فِتْنَةًۭ لَّهُمْ فَٱرْتَقِبْهُمْ وَٱصْطَبِرْ"
+    },
+    "91:13": {
+      "singular_agreement": [],
+      "plural_agreement": [],
+      "text": "فَقَالَ لَهُمْ رَسُولُ ٱللَّهِ نَاقَةَ ٱللَّهِ وَسُقْيَٰهَا"
+    },
+    "91:14": {
+      "singular_agreement": [
+        "فعقروها"
+      ],
+      "plural_agreement": [],
+      "text": "فَكَذَّبُوهُ فَعَقَرُوهَا فَدَمْدَمَ عَلَيْهِمْ رَبُّهُم بِذَنۢبِهِمْ فَسَوَّىٰهَا"
+    }
+  },
+  "verdicts": {
+    "بطانه": "L1_WITNESSED_COLLECTIVE",
+    "جماله": "L1_WITNESSED_COLLECTIVE",
+    "نحل": "L1_STANDARD_COLLECTIVE",
+    "ناقه": "TEMPLATE_COMPATIBLE_WITNESS_DEFICIENT"
+  },
+  "v8_bare_base_reproduced": {
+    "نحل": 1,
+    "طير": 12,
+    "شجر": 5,
+    "ناق": 0
+  },
+  "correction_to_v8": {
+    "what_v8_measured": "That no bare collective base ناق is attested, while نحل، طير، شجر all have one. That measurement is CORRECT and is not withdrawn.",
+    "what_v8_got_wrong": "Its SCOPE. The bare-base test is the right test for an اسم جنس جمعي -- a collective whose ة-form is a singulative (نحل/نحلة, شجر/شجرة). It is NOT the right test for the فِعَالَة / فَعَالَة set-name class, whose members are singular-looking, have no bare collective base, and still take PLURAL agreement. Applying a one-class test and reporting the result as though it settled the matter overstated what had been shown.",
+    "why_this_matters_more_than_the_score": "v8 scored 7/7 and every one of its numbers is reproducible. The defect is not arithmetic, it is a claim about coverage. An instrument that runs a valid test outside its domain of validity produces a true number and a false implication, and the false implication is the dangerous half.",
+    "and_v8_IS_NOT_REWRITTEN": "v8's spec, runner, tests and score remain exactly as published. v9 supersedes it and records the limitation. That is the same discipline every prior version used, and it is the discipline the user reports N168 following -- the error stays visible so the growth is visible."
+  },
+  "why_this_is_the_non_embarrassing_answer": "The concern raised is that a screen which is wrong through lack of knowledge would be an embarrassment against work that took months. Two failure modes were available and both would have embarrassed. Killing the reading on a one-class test the term does not belong to would have been the literalist error. Promoting it to Layer 1 on template match alone, with no plural agreement anywhere in seven ayahs, would have been the flattery error -- and it would have collapsed the moment anyone checked the agreement. The register verdict is the only one that survives inspection from either side.",
+  "primary_verdict": "7/7. The set-name objection is CORRECT and v8 was mis-scoped: a فِعَالَة noun can denote a collective with no bare base, and the corpus proves it -- بِطَانَة takes plural verbs at 3:118, جِمَالَة a plural adjective at 77:33. v8's numbers stand; its inference did not, and v8 stays published unchanged. But template match is not witness: across all seven نَاقَة ayahs there is ZERO plural agreement, so naqah returns TEMPLATE_COMPATIBLE_WITNESS_DEFICIENT -- not Layer 1, not refuted, and the promotion path is demonstrably live because بِطَانَة and جِمَالَة clear it on the same code. Killing the reading on a one-class test would have been the literalist error; promoting it on template match alone would have collapsed the moment anyone checked the agreement."
+}
