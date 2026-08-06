@@ -12,7 +12,7 @@ repository-code: "https://github.com/evmotorcycles/ihcei-ecosystem"
 license: MIT
 identifiers:
   - type: other
-    value: "sha256-merkle:045942d74bde6aa76c4ff0395f358f6fd6b0926c421314060d88a119f537d0a2"
+    value: "sha256-merkle:98b1a5c1790fe85d119035724566c7e0eb799c4643d78835e1a9c781cc8f2d08"
     description: >-
       Cryptographic provenance (Merkle root) over the frozen scientific record —
       all pre-registration specs, corpora, fixtures, and manuscripts. A faithful
