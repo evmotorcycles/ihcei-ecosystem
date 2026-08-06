@@ -34,7 +34,28 @@ def git_commit():
         return None
 
 
+def prior_root():
+    """The root this lock supersedes, read from the lock being replaced.
+
+    A rebuilt lock must CITE the root it replaces, not silently become the origin.
+    verify_provenance.py's own guidance on divergence is 'rebuild your OWN lock and
+    cite the origin root as your basis', and supersedes_root is where that basis is
+    recorded, so the chain back to the first lock stays checkable.
+    """
+    try:
+        with open(OUT, encoding="utf-8") as f:
+            prev = json.load(f)
+    except (OSError, ValueError):
+        return None
+    chain = prev.get("supersedes_root")
+    return {"root": prev.get("merkle_root"),
+            "git_commit": prev.get("git_commit"),
+            "file_count": prev.get("file_count"),
+            "its_own_basis": chain}
+
+
 def main():
+    prior = prior_root()
     files, leaves, root = compute()
     lock = {
         "schema": "novora-provenance/1",
@@ -46,6 +67,7 @@ def main():
                     "attribution_required": True},
         "algorithm": "SHA-256 leaves (0x00-prefixed) -> binary Merkle (0x01-prefixed internal), files sorted by path",
         "merkle_root": root,
+        "supersedes_root": prior,
         "git_commit": git_commit(),
         "file_count": len(files),
         "covers": ("All pre-registration specs + manifests, authored corpora, the offline "
