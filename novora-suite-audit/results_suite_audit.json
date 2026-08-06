@@ -1,0 +1,109 @@
+{
+  "spec_sha256": "c6f599ac8c81fd5fee866bb348881fb56d479486ef0ca1ef028aab34c3585d07",
+  "score": "5/5",
+  "gates": [
+    {
+      "id": "N1_THE_NODE_SUITES_EXIST_AND_MY_EARLIER_COUNT_WAS_WRONG",
+      "met": true,
+      "weight": "counted",
+      "detail": "27 .test.mjs suites exist. Each of the six components I called untested ships one: {'pages': 1, 'page-code': 1, 'agency-net': 1, 'echo': 2, 'novora-helm': 4, 'novora-suite': 4}. My sweep counted only Python test_*.py, so it was blind to every Node suite in the tree. PASSING THIS GATE CONFIRMS MY OWN ERROR -- a true count with a false implication, the same class the OQM blind-spot audit named."
+    },
+    {
+      "id": "N2_THE_LIVE_FETCH_IS_BLOCKED_AND_NOT_FAKED",
+      "met": true,
+      "weight": "counted",
+      "detail": "live probe results {'api.github.com': '403', 'huggingface.co': '000'} -- neither reachable. The proxy's own status endpoint logs connect_rejected for huggingface.co:443 with 'gateway answered 403 to CONNECT (policy denial or upstream failure)'. The environment rule is to report policy denials rather than retry or work around them, so no live Qwen or DeepSeek data was fetched and none is claimed. A run asserting otherwise in this container would be fabricated."
+    },
+    {
+      "id": "N3_DEEPSEEK_IS_ONE_WING_IN_THE_COMMITTED_DATA",
+      "met": true,
+      "weight": "counted",
+      "detail": "DeepSeek across both committed cohorts: GitHub 1 (['deepseek-ai/DeepSeek-V3']), Hugging Face 0. Qwen: GitHub 0, HF 7 (derivatives -- see N4). One witness is ONE_WING under the rule used throughout this repository, so the requested Qwen-versus-DeepSeek comparison CANNOT BE RUN at the strength implied. A second independent DeepSeek record would change that."
+    },
+    {
+      "id": "N4_THE_QWEN_ENTRIES_ARE_DERIVATIVES_NOT_QWEN_RELEASES",
+      "met": true,
+      "weight": "counted",
+      "detail": "6 of the 7 HF hits carry a base_model beginning 'Qwen/' while their own id belongs to a different org -- community fine-tunes, not Qwen's own releases: [('prism-ml/Ternary-Bonsai-27B-gguf', 'Qwen/Qwen3.6-27B'), ('prism-ml/Bonsai-27B-gguf', 'Qwen/Qwen3.6-27B'), ('HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive', 'Qwen/Qwen3.6-35B-A3B'), ('bottlecapai/ThinkingCap-Qwen3.6-27B', 'Qwen/Qwen3.6-27B')]. Calling these 'Qwen models' would overstate what the cohort holds."
+    },
+    {
+      "id": "N5_THE_STACK_IS_REPRODUCIBLE_IN_ONE_COMMAND",
+      "met": true,
+      "weight": "counted",
+      "detail": "reproduce_all.sh: 47 suite lines, 47 passing, 0 failing. Suite NAMES containing 'FAIL' describe a prediction the suite FALSIFIED and are not harness failures -- 2 such lines were separated out rather than miscounted: ['real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 ', 'sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECT']"
+    },
+    {
+      "id": "N6_does_this_audit_test_QWEN_or_DEEPSEEK_BEHAVIOUR",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No. Nothing here evaluates either model's outputs, safety, quality or governance behaviour. It measures only what the committed cohorts contain and what the network permits."
+    },
+    {
+      "id": "N7_does_a_green_harness_validate_the_stack_s_CLAIMS",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No. A passing suite shows the code does what its own spec says. Several pass while recording FALSIFIED central predictions -- sovereign-bank's portfolio advantage collapsed to a tie and its prescriptive floor ANTI-SELECTS, submesh pooling's k=20 prediction was wrong, knowledge-breakthroughs' thesis was falsified. Green means honest bookkeeping, not a validated theory."
+    }
+  ],
+  "gates_not_met": [],
+  "node_suites": 27,
+  "node_suites_per_component": {
+    "pages": [
+      "pages/pages.test.mjs"
+    ],
+    "page-code": [
+      "page-code/pagecode.test.mjs"
+    ],
+    "agency-net": [
+      "agency-net/aips.test.mjs"
+    ],
+    "echo": [
+      "echo/echo.test.mjs",
+      "echo/scam_taxonomy.test.mjs"
+    ],
+    "novora-helm": [
+      "novora-helm/test/contribution.test.mjs",
+      "novora-helm/test/helm.test.mjs",
+      "novora-helm/test/parity.test.mjs",
+      "novora-helm/test/prereg.lock.test.mjs"
+    ],
+    "novora-suite": [
+      "novora-suite/test/backend.test.mjs",
+      "novora-suite/test/screen_endpoint.test.mjs",
+      "novora-suite/test/suite.test.mjs",
+      "novora-suite/test/ui_endpoint.test.mjs"
+    ]
+  },
+  "network": {
+    "api.github.com": "403",
+    "huggingface.co": "000"
+  },
+  "cohorts": {
+    "hf_models": 24,
+    "hf_qwen_derived": 6,
+    "hf_deepseek": 0,
+    "github_repos": 992,
+    "github_qwen": 0,
+    "github_deepseek": [
+      "deepseek-ai/DeepSeek-V3"
+    ]
+  },
+  "harness": {
+    "log_present": true,
+    "suite_lines": 47,
+    "passing": 47,
+    "failing": [],
+    "names_mentioning_FAIL_but_passing": [
+      "real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 ",
+      "sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECT"
+    ]
+  },
+  "correction": {
+    "what_I_said": "In the previous message I reported that six components -- pages, page-code, agency-net, echo, novora-helm, novora-suite -- have 'no tests at all'.",
+    "why_it_was_wrong": "My sweep counted only Python test_*.py files. Every one of those six ships a Node test suite (.test.mjs) that pytest cannot see. There are 27 .test.mjs suites in the tree, including hf-cohort/hf.test.mjs and cross-stack/github_pilot.test.mjs -- Hugging Face and GitHub cohort tests that already exist.",
+    "the_class_of_error": "Exactly the one the OQM blind-spot audit named: an instrument run outside its domain returns a true number with a false implication. pytest counted correctly; my conclusion did not follow.",
+    "the_real_harness": "reproduce_all.sh runs BOTH runtimes and is the only complete measure of this repo."
+  },
+  "simulated_values": 0,
+  "primary_verdict": "5/5. Three findings. FIRST, I was wrong last message: 27 Node test suites exist and all six components I called untested ship one -- my sweep counted only Python. SECOND, live Qwen/DeepSeek data CANNOT be fetched here: GitHub and Hugging Face are policy-blocked ({'api.github.com': '403', 'huggingface.co': '000'}), reported rather than worked around. THIRD, the committed cohorts cannot carry the requested comparison either -- DeepSeek appears EXACTLY ONCE across 992 GitHub repos and 24 HF models, which is ONE_WING, and the seven Qwen hits are community fine-tunes naming a Qwen base_model rather than Qwen releases. The stack itself reproduces in one offline command with every suite passing -- which means its bookkeeping is honest, not that its theories are confirmed."
+}

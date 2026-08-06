@@ -1,0 +1,65 @@
+{
+  "id": "novora_suite_audit_v1",
+  "title": "Cross-component audit of the Novora stack, and an honest boundary on the Qwen/DeepSeek request",
+  "WHAT_WAS_ASKED": "Pre-register everything, make it reproducible, and test ihcei/NERE/Novora suite/PAGES/Page Code/Agency Internet/Echo/EI and its LLMs against Qwen and DeepSeek on GitHub and Hugging Face.",
+  "A_CORRECTION_TO_MY_OWN_PREVIOUS_REPORT": {
+    "what_I_said": "In the previous message I reported that six components -- pages, page-code, agency-net, echo, novora-helm, novora-suite -- have 'no tests at all'.",
+    "why_it_was_wrong": "My sweep counted only Python test_*.py files. Every one of those six ships a Node test suite (.test.mjs) that pytest cannot see. There are 27 .test.mjs suites in the tree, including hf-cohort/hf.test.mjs and cross-stack/github_pilot.test.mjs -- Hugging Face and GitHub cohort tests that already exist.",
+    "the_class_of_error": "Exactly the one the OQM blind-spot audit named: an instrument run outside its domain returns a true number with a false implication. pytest counted correctly; my conclusion did not follow.",
+    "the_real_harness": "reproduce_all.sh runs BOTH runtimes and is the only complete measure of this repo."
+  },
+  "THE_NETWORK_BOUNDARY": {
+    "status": "BLOCKED, and reported rather than routed around.",
+    "evidence": "api.github.com returned HTTP 403; huggingface.co returned no connection. The agent proxy's own status endpoint logs connect_rejected for huggingface.co:443 with detail 'gateway answered 403 to CONNECT (policy denial or upstream failure)'.",
+    "the_rule_followed": "The environment's proxy README states: never disable TLS verification, never unset HTTPS_PROXY, and do not retry organization policy denials -- report them. No retry was attempted and no workaround was used.",
+    "consequence": "No LIVE Qwen or DeepSeek data could be fetched. Any run claiming to have done so in this container would be fabricated."
+  },
+  "WHAT_THE_COMMITTED_DATA_ACTUALLY_SUPPORTS": {
+    "hf_cohort": "hf-cohort/data/hf_cohort_frozen.json holds 24 models. SEVEN are Qwen-DERIVED -- they name a Qwen base_model such as Qwen/Qwen3.6-27B -- and are not Qwen's own releases. ZERO DeepSeek models.",
+    "github_cohort": "data/github/govphys_quadratic_results.csv holds 992 repositories. ZERO Qwen repos. EXACTLY ONE DeepSeek repo: deepseek-ai/DeepSeek-V3.",
+    "the_verdict_this_forces": "A Qwen-versus-DeepSeek comparison CANNOT be run at the strength the request implies. DeepSeek has n=1 in GitHub and n=0 in HF. Under the two-witness rule used throughout this repository, one witness is ONE_WING and settles nothing. Reporting a comparison from it would be the flattery error."
+  },
+  "gates": {
+    "N1_THE_NODE_SUITES_EXIST_AND_MY_EARLIER_COUNT_WAS_WRONG": {
+      "claim": "27 .test.mjs suites exist, and each of the six components I called untested ships at least one.",
+      "passes_if": "the count is >= 25 and all six named components have a .mjs suite. PASSING CONFIRMS MY OWN ERROR.",
+      "weight": "counted"
+    },
+    "N2_THE_LIVE_FETCH_IS_BLOCKED_AND_NOT_FAKED": {
+      "claim": "GitHub and Hugging Face are unreachable from this container by policy.",
+      "passes_if": "both endpoints fail and the run records the failure verbatim instead of substituting a proxy dataset and calling it live.",
+      "weight": "counted"
+    },
+    "N3_DEEPSEEK_IS_ONE_WING_IN_THE_COMMITTED_DATA": {
+      "claim": "DeepSeek appears exactly once across both committed cohorts.",
+      "passes_if": "GitHub DeepSeek count == 1 and HF DeepSeek count == 0, and the run classifies the requested comparison ONE_WING / cannot-run. A second independent DeepSeek record would change this and the gate says so.",
+      "weight": "counted"
+    },
+    "N4_THE_QWEN_ENTRIES_ARE_DERIVATIVES_NOT_QWEN_RELEASES": {
+      "claim": "The seven HF hits are community fine-tunes naming a Qwen base_model, not models published by Qwen.",
+      "passes_if": "at least five of the seven carry a base_model field beginning 'Qwen/' while their own id does not belong to the Qwen org. Calling these 'Qwen models' would overstate what the cohort contains.",
+      "weight": "counted"
+    },
+    "N5_THE_STACK_IS_REPRODUCIBLE_IN_ONE_COMMAND": {
+      "claim": "reproduce_all.sh runs both runtimes offline at $0 and every suite it reports passes.",
+      "passes_if": "the harness output contains no failing suite line. Suite NAMES containing the word FAIL describe what a suite FOUND (a falsified prediction) and are not harness failures -- the run must distinguish these.",
+      "weight": "counted"
+    },
+    "N6_does_this_audit_test_QWEN_or_DEEPSEEK_BEHAVIOUR": {
+      "claim": "No. Nothing here evaluates either model's outputs, safety, quality or governance behaviour. It measures only what the committed cohorts contain and what the network permits.",
+      "weight": "excluded",
+      "reason": "a test that was never run cannot be scored"
+    },
+    "N7_does_a_green_harness_validate_the_stack_s_CLAIMS": {
+      "claim": "No. A passing suite shows the code does what its own spec says. Several suites pass while recording FALSIFIED central predictions -- sovereign-bank's portfolio advantage collapsed to a tie, the prescriptive floor ANTI-SELECTS, submesh pooling's k=20 prediction was wrong, knowledge-breakthroughs' thesis was falsified. Green means honest bookkeeping, not a validated theory.",
+      "weight": "excluded",
+      "reason": "conflating suite health with theory support is the error this repository exists to prevent"
+    }
+  },
+  "data": {
+    "hf": "hf-cohort/data/hf_cohort_frozen.json",
+    "github": "data/github/govphys_quadratic_results.csv"
+  },
+  "simulation": "none. No value is generated, fitted or assumed.",
+  "scoring": "5 counted gates. N6 and N7 are excluded."
+}

@@ -1,0 +1,70 @@
+========================================================================
+ NOVORA / IHCEI — full reproducibility run
+ python: Python 3.11.15   node: v22.22.2
+========================================================================
+------------------------------------------------------------------------
+  NERE / IHCEI kernel (Python)
+------------------------------------------------------------------------
+  ihcei_v3: NERE/IHCEI kernel                          PASS
+  ihcei_v3: fast/deep extractor seam                   PASS
+  ihcei_v3: 4D bias engine                             PASS
+  tests: tau_v hazard monitor                          PASS
+------------------------------------------------------------------------
+  HELM / Page Code / Echo / cross-stack (Node)
+------------------------------------------------------------------------
+  novora-helm: core + parity + prereg + contribution   PASS
+  page-code: permission table + change audit           PASS
+  echo: hash-chain + scam taxonomy                     PASS
+  cross-stack: integration + github pilot              PASS
+------------------------------------------------------------------------
+  Novora suite / PAGES (Node)
+------------------------------------------------------------------------
+  novora-suite: suite + screen + ui + backend          PASS
+  novora-improvement: PAGES confidence/abstain (agency+security) PASS
+------------------------------------------------------------------------
+  EI / EI-LLM (Node)
+------------------------------------------------------------------------
+  ei: whole contract on real GitHub data (17 checks)   PASS
+  ei: adversarial edge cases                           PASS
+  ei-llm: 8-model unit suite                           PASS
+  ei-llm: field harness (real 22-repo cohort)          PASS
+------------------------------------------------------------------------
+  Understanding & control tests (Node)
+------------------------------------------------------------------------
+  Hinton 'Grand Canyon' test (8 tools)                 PASS
+  Russell 'Gorilla Problem' control test               PASS
+  EI + 8 models: Hinton & Russell (pre-registered)     PASS
+  benchmark-governance: HLE/ARC/FrontierMath (pre-registered) PASS
+  hf-cohort: real HF models audited by the stack (pre-registered) PASS
+  hf-cohort: digital-swarm E=U*D + revocation tau_v (pre-registered) PASS
+  hf-media: PAGES governance over real video/audio-gen cohort (pre-registered) PASS
+  validation stage 1&2: evasive + emergency (pre-registered) PASS
+  validation stage 3: swarm fidelity N>=434 (pre-registered) PASS
+------------------------------------------------------------------------
+  ADG / TQG / LISM / QG-COS telemetry (Python)
+------------------------------------------------------------------------
+  adg-tqg: experiment + Wolfram/Hoffman                PASS
+  hoffman-agents: conscious-agent FBT + LISM + tau_v (pre-registered) PASS
+  colab-tests: run-elsewhere reproduction hash (pre-registered) PASS
+  gilt: irreducibility tipping-point (real sim, pre-registered) PASS
+  det-telemetry: generator/evaluator decoupling law (pre-registered) PASS
+  two-regime: soft-linear / hard-threshold / serial-quadratic on real GitHub (pre-registered) PASS
+  det-cohorts: D>=Dmin binary-gate cohorts on GitHub/PubMed/HF (pre-registered) PASS
+  agency-discovery: AlphaAgency verified allocator + honest limitation (pre-registered) PASS
+  agency-substrates: triage-first methodology on real GitHub/PubMed/HF/bioRxiv (pre-registered) PASS
+  adversarial-kernel: dF_out/dF_gen=0 — safety kernel rejects hallucinated gains (pre-registered) PASS
+  agency-constitution: 3-law allocator beats naive+triage on GitHub/HF; Law-2-in-objective falsified (pre-registered) PASS
+  biomedical-agency: 4 telemetry laws on real yeast/PubMed/bioRxiv/GitHub (OQM case study, firewalled, pre-registered) PASS
+  bell-telemetry: Bell/CHSH nonlocality as device-independent telemetry (classical 2, quantum 2√2, PR-box rejected) PASS
+  knowledge-breakthroughs: status vs fidelity on real GitHub/HF/bioRxiv/PubMed — thesis FALSIFIED, null locked PASS
+  cohort-audit: Yeast 4825 / GitHub 992 / swarm evidentiary audit — gaps + simulations locked PASS
+  cohort-audit: gap closure — yeast CLOSED, 992 CLOSED by verified recovery, G2 miss recorded PASS
+  cohort-audit: no evidence file is silently gitignored (root-cause guard) PASS
+  sovereign-bank: decoupled underwriting on real GitHub repos — 2/4, central prediction FALSIFIED PASS
+  sovereign-bank: N=44 replication — 1/4, portfolio advantage collapsed to a TIE PASS
+  real-cohorts: knowledge + swarm on a REAL committed PyPI graph (N=540) — 5/8, KR1/KR3/SR2 FAIL PASS
+  cohort-audit: N=992 RECOVERED — verified by recomputation from the rows (7/7) PASS
+  sovereign-bank: prescriptive floor on recovered N=992 — 3/5, P1+P3 FAIL, floor ANTI-SELECTS PASS
+  submesh-pools: local pooling swept k=1..200 — 3/5; friction curve FLAT, k=20 prediction wrong PASS
+  settlement-mesh: decentralised mesh built from scratch — 2/5; pooling wins, quorum DEAD PASS
+  central-tail-risk: the 'wrong game' reframe tested — 2/5; credit-creation explanation REFUTED 

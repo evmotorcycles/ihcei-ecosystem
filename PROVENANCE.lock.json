@@ -10,15 +10,20 @@
     "attribution_required": true
   },
   "algorithm": "SHA-256 leaves (0x00-prefixed) -> binary Merkle (0x01-prefixed internal), files sorted by path",
-  "merkle_root": "24c9ae5a710e946a920091622b95137aec0850d192a6127a0a14e4e600de2e7f",
+  "merkle_root": "7cc77f69fa6040e43a4ad8b464b3c663f73a36ed68c91d623bac81b37b86587f",
   "supersedes_root": {
-    "root": "c5939308a5c5447bcd2defb61646061f2d278f65116bba3e9cc50f665598367b",
-    "git_commit": "d7d50ead58093ebcf04ab62391c4f9c944347322",
-    "file_count": 98,
-    "its_own_basis": null
+    "root": "24c9ae5a710e946a920091622b95137aec0850d192a6127a0a14e4e600de2e7f",
+    "git_commit": "1f5863f427f7a058131cb9f78731d0dc95a8ca57",
+    "file_count": 119,
+    "its_own_basis": {
+      "root": "c5939308a5c5447bcd2defb61646061f2d278f65116bba3e9cc50f665598367b",
+      "git_commit": "d7d50ead58093ebcf04ab62391c4f9c944347322",
+      "file_count": 98,
+      "its_own_basis": null
+    }
   },
-  "git_commit": "1f5863f427f7a058131cb9f78731d0dc95a8ca57",
-  "file_count": 119,
+  "git_commit": "b88322b951b38d4670eb26f5c88551caca1ac890",
+  "file_count": 120,
   "covers": "All pre-registration specs + manifests, authored corpora, the offline knowledge fixture, and the manuscripts/READMEs for LISM, LMD, the four cohorts (yeast 4825 / GitHub 992 / knowledge 793 / digital swarm), the three validation stages, Hinton & Russell tests, benchmark-governance, and the tau_v cohort. Passed, NULL, and NEGATIVE results alike.",
   "attribution_statement": "This artifact set originates from Mago, Labib (Novora Research Initiative, Open Science Division), https://github.com/evmotorcycles/ihcei-ecosystem. If you reproduce, extend, or build upon it \u2014 including reproducing its null or negative results \u2014 you must retain this attribution and cite the origin. A faithful reproduction recomputes the merkle_root below; that root is the cryptographic reference back to this source. Do not represent this work, or reproductions of it, as your own origin.",
   "how_to_verify": "python3 provenance/verify_provenance.py",
@@ -97,6 +102,7 @@
     "novora-helm/prereg/stage1_spec.json": "68bc02dcd4117d2fa12655774b24601202e8e86eb1e60bed22874986ad1c6ae1",
     "novora-improvement/prereg/improvement_prereg.json": "d827681af47249df7d5b32755173d6f6a64578ae9e2d93c386ead8de05ccbaef",
     "novora-mesh/prereg/mesh_prereg.json": "c9bd5b511b79f72307b9ca010683728ee7c9f9a6fe1e741fe5bf08270d28f3ea",
+    "novora-suite-audit/prereg/suite_audit_prereg.json": "5bfa03f42928a64b554530e5164c0acd4bc39bb5e4525e2a998e2f37b25f8a43",
     "openalex-lism/prereg/MANIFEST.sha256.json": "7e9a68810649a329ee0bdc349be882b9609e82d84a6896ba3a3f41027ce2d8fe",
     "openalex-lism/prereg/openalex_prereg.json": "eae24204d11a1342b27274a7f10d4bfd01a18820a8fd8a89474c0142f4b62780",
     "outcome-audit/prereg/outcome_prereg.json": "6c21e395ac163638f8eaaa50f6aed0b907328180b2cdb8ebc3019e027e1c24b0",
