@@ -125,3 +125,61 @@ cairn/
   README.md           this file
   screen_*.png        captured from a real headless Chrome session
 ```
+
+---
+
+## The Python engine, wired to the browser
+
+```
+python3 cairn/ei_server.py     # starts the engine on 127.0.0.1:8765
+# then open cairn/cairn.html — the header badge flips to "engine: python"
+```
+
+`ei_llm.py` is the engine (pure stdlib, importable, testable). `ei_server.py` serves it
+locally — bound to `127.0.0.1` only, so nothing it sees leaves the machine. If the server
+isn't running, the GUI falls back to its built-in on-device logic and says so in the badge.
+
+## Hinton's Grand Canyon test, run against an EI
+
+Hinton told a chatbot *"I saw the Grand Canyon flying to Chicago."* It attached the
+participle to the object, objected that the canyon can't fly, was corrected, and said *"Oh,
+I see. I misunderstood you."* His argument: you can't **mis**understand without attempting
+to understand.
+
+**Cairn answers differently, and that is the point.** The sentence is a participial
+attachment ambiguity — the text alone does not determine which reading was meant. So it
+declines to commit:
+
+```
+verdict   : AMBIGUOUS      committed answer: None
+ (A) attaches to subject   plausible=True   I was flying to Chicago, and I saw the Grand Canyon
+ (B) attaches to object    plausible=False  I saw the Grand Canyon, and the Grand Canyon was flying
+asks      : Which did you mean — were you flying, or was the Grand Canyon flying?
+receipt   : b74961f0c896fb43
+```
+
+Then the correction turn (`"No, it was me flying to Chicago."`) produces:
+
+```
+receipt 81c9375bb5b92782 · revises b74961f0c896fb43
+```
+
+**An assistant says "I misunderstood" and the prior state is gone. An EI keeps both states
+linked**, so the revision can be inspected later by someone who trusts neither party.
+
+### The anti-overclaim control — the only informative gate
+
+Give it a structurally identical sentence where **both** readings are perfectly sensible —
+*"I photographed the woman walking to the station."* — and it flags that too. **That proves
+it is doing syntactic pattern matching, not comprehension.** It does not know what a canyon
+is; it knows what a participle is attached to. The plausibility check reads a hand-written
+list of 15 landform nouns.
+
+**So this does not refute Hinton, and does not claim EI understands anything.** Hinton's
+argument concerns whether a system builds a semantic model; this experiment does not engage
+that question. What it shows is narrower and checkable: **on underdetermined text an EI
+declines and asks where an assistant commits and later apologises — and the EI's revision
+leaves an audit trail.** A claim about failure modes and accountability, not intelligence.
+
+Reproduce: `python3 cairn/hinton_test.py` · guard: `python3 -m pytest cairn/test_ei_llm.py`
+Verified in a live browser: `screen_hinton.png`.

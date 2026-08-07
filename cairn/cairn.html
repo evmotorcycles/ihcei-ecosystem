@@ -159,6 +159,7 @@ h4{margin:22px 0 8px;font-size:1rem}
   <header>
     <h1 id="ttl">New chat</h1>
     <span class="pill" id="crumb">on-device</span>
+    <span class="pill" id="engine" title="Which engine produced the verdict">engine: built-in</span>
     <span class="spacer"></span>
     <div class="mdl">
       <button class="mdlbtn" id="mbtn"><span class="dot" id="mdot"></span><span id="mname">Cairn Slate</span>
@@ -311,27 +312,71 @@ function addUser(text){
   d.innerHTML=`<div class="who2"><span>You</span></div><div class="bub"><p>${esc(text)}</p></div>`;
   thread.appendChild(d); scroll();
 }
+// ---- bridge to the Python EI engine (cairn/ei_server.py) -------------------
+const EI_URL='http://127.0.0.1:8765';
+let pyEngine=false;
+async function probeEngine(){
+  try{ const r=await fetch(EI_URL+'/health',{cache:'no-store'});
+       pyEngine = r.ok && (await r.json()).ok===true; }
+  catch(_){ pyEngine=false; }
+  const el=document.querySelector('#engine');
+  el.textContent = pyEngine? 'engine: python' : 'engine: built-in';
+  el.style.color = pyEngine? 'var(--ac)' : '';
+  el.style.borderColor = pyEngine? 'color-mix(in srgb,var(--ac) 45%,transparent)' : '';
+}
+async function pyAssay(text,parent){
+  const r=await fetch(EI_URL+'/assay',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({text,model:model.id,parent:parent||null})});
+  if(!r.ok) throw new Error('engine '+r.status);
+  return r.json();
+}
+let lastReceipt=null;
+
 async function addCairn(text){
-  const a = assay(text);
-  const rc = await receipt(model.id+'|'+text);
-  const col = a.conf>=.7?'var(--ac)':a.conf>=.45?'var(--bl)':a.conf>=.25?'var(--am)':'var(--rd)';
-  const body = a.abstain
-    ? `<div class="abst"><b>I don't have enough to go on.</b> There isn't enough checkable detail in that for me to
+  let R=null;
+  if(pyEngine){ try{ R=await pyAssay(text,lastReceipt); }catch(_){ pyEngine=false; probeEngine(); } }
+  const a = assay(text);                                  // built-in fallback / display maths
+  const conf = R? R.confidence : a.conf;
+  const band = R? R.band : a.band;
+  const rc   = R? R.receipt : await receipt(model.id+'|'+text);
+  if(R) lastReceipt = R.receipt;
+  const abstain = R? R.abstained : a.abstain;
+  const col = conf>=.7?'var(--ac)':conf>=.45?'var(--bl)':conf>=.25?'var(--am)':'var(--rd)';
+
+  // the Python engine can additionally report an AMBIGUITY it refuses to resolve
+  let body;
+  if(R && R.verdict==='AMBIGUOUS'){
+    const rs=R.ambiguity.readings.map(x=>`<div class="evi ${x.plausible?'y':'n'}"><span class="m">${x.id}</span><span>${esc(x.paraphrase)} <em style="opacity:.75">— ${esc(x.why)}</em></span></div>`).join('');
+    body=`<div class="abst"><b>That sentence has two readings and I can't tell which you meant.</b>
+      Rather than pick one and correct myself later, here are both — and the question that settles it.</div>
+      <div class="ev" style="margin-top:11px"><div class="evh">the two readings</div>${rs}</div>
+      <p style="margin-top:11px"><b>${esc(R.question)}</b></p>`;
+  } else if(R && R.verdict==='IMPLAUSIBLE'){
+    body=`<div class="abst"><b>Taken literally, that isn't physically possible.</b>
+      ${esc(R.implausible.subject)} cannot be ${esc(R.implausible.action)}.
+      <br><span style="opacity:.8">Basis: ${esc(R.implausible.basis)}</span></div>
+      <p style="margin-top:10px"><b>${esc(R.question)}</b></p>`;
+  } else if(abstain){
+    body=`<div class="abst"><b>I don't have enough to go on.</b> There isn't enough checkable detail in that for me to
         give you an answer you could rely on. Rather than guess, here is exactly what's missing — add any one of
-        these and I can work with it.</div>`
-    : `<p>Here's what I can support from what you've given me, and I've marked the limit of it below.
-        ${a.band==='high'?'Most of this rests on checkable detail.':a.band==='moderate'?'Part of this rests on checkable detail; the rest is context.':'This is thin — treat it as a starting point, not a finding.'}</p>
+        these and I can work with it.</div>`;
+  } else {
+    body=`<p>Here's what I can support from what you've given me, and I've marked the limit of it below.
+        ${band==='high'?'Most of this rests on checkable detail.':band==='moderate'?'Part of this rests on checkable detail; the rest is context.':'This is thin — treat it as a starting point, not a finding.'}</p>
        <p>${esc(summarise(text,a))}</p>`;
-  const ev = a.checks.map(c=>`<div class="evi ${c.hit?'y':'n'}"><span class="m">${c.hit?'✓':'—'}</span><span>${c.hit?c.y:c.n}</span></div>`).join('');
+  }
+  const checks = R? R.evidence.map(c=>({hit:c.hit,note:c.note})) : a.checks.map(c=>({hit:c.hit,note:c.hit?c.y:c.n}));
+  const ev = checks.map(c=>`<div class="evi ${c.hit?'y':'n'}"><span class="m">${c.hit?'✓':'—'}</span><span>${esc(c.note)}</span></div>`).join('');
+  const hits = R? R.evidence_hits : a.hits;
   const d=document.createElement('div'); d.className='msg';
-  d.innerHTML=`<div class="who2"><span class="dot" style="background:${model.c}"></span><span>${model.name}</span></div>
+  d.innerHTML=`<div class="who2"><span class="dot" style="background:${model.c}"></span><span>${model.name}</span>${R?'<span class="pill" style="font-size:.58rem">python engine</span>':''}</div>
     <div class="bub">${body}
       <div class="ei">
         <div class="conf"><span class="lab">confidence</span>
-          <span class="bar"><i style="width:${Math.round(a.conf*100)}%;background:${col}"></i></span>
-          <span class="val" style="color:${col}">${a.band}</span></div>
+          <span class="bar"><i style="width:${Math.round(conf*100)}%;background:${col}"></i></span>
+          <span class="val" style="color:${col}">${band}</span></div>
         <div class="ev"><div class="evh">what I checked</div>${ev}</div>
-        <div class="rc"><span>receipt <b>${rc}</b></span><span>· model ${model.id}</span><span>· ${a.hits}/5 evidence signals</span><span>· re-checkable offline</span></div>
+        <div class="rc"><span>receipt <b>${rc}</b></span><span>· model ${model.id}</span><span>· ${hits}/5 evidence signals</span>${R&&R.parent_receipt?`<span>· revises <b>${R.parent_receipt}</b></span>`:''}<span>· re-checkable offline</span></div>
       </div></div>`;
   thread.appendChild(d); scroll();
 }
@@ -349,7 +394,8 @@ function summarise(t,a){
 function scroll(){ $('#chat').scrollTop = $('#chat').scrollHeight; }
 
 // ---- interaction -----------------------------------------------------------
-const CHIPS=['Our supplier says their uptime is "industry leading" — is that a real claim?',
+const CHIPS=['I saw the Grand Canyon flying to Chicago.',
+             'Our supplier says their uptime is "industry leading" — is that a real claim?',
              'In 2024 we cut response time from 41 to 12 minutes across 3 hospitals, measured by dispatch logs. Is that solid?',
              'is it good'];
 $('#chips').innerHTML = CHIPS.map(c=>`<button class="chip">${esc(c)}</button>`).join('');
@@ -391,6 +437,8 @@ $('#pcbody').innerHTML = PERMS.map(p=>`<tr><td>${p[0]}</td><td><code>${esc(p[1])
 const rows=(arr)=>arr.map((r,i)=>`<div class="row"><div><div class="t">${r[0]}</div><div class="d">${r[1]}</div></div><button class="sw" aria-pressed="${r[2]}" aria-label="${r[0]}"></button></div>`).join('');
 $('#custrows').innerHTML = rows(CUST); $('#desrows').innerHTML = rows(DES);
 document.addEventListener('click',e=>{const s=e.target.closest('.sw'); if(s) s.setAttribute('aria-pressed', s.getAttribute('aria-pressed')==='true'?'false':'true');});
+
+probeEngine(); setInterval(probeEngine, 15000);
 
 // opening message
 (async()=>{
