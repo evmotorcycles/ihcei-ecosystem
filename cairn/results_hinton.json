@@ -1,0 +1,58 @@
+{
+  "lock_ok": true,
+  "H1_ambiguity_not_committed": {
+    "sentence": "I saw the Grand Canyon flying to Chicago.",
+    "readings": 2,
+    "verdict": "AMBIGUOUS",
+    "committed_answer": null,
+    "question": "Which did you mean: were you flying (reading A), or was the Grand Canyon flying (reading B)?",
+    "reading_detail": [
+      {
+        "id": "A",
+        "attaches_to": "subject",
+        "paraphrase": "I was flying to Chicago, and I saw the Grand Canyon",
+        "plausible": true,
+        "why": "The subject is an agent, so it can perform the action."
+      },
+      {
+        "id": "B",
+        "attaches_to": "object",
+        "paraphrase": "I saw the Grand Canyon, and the Grand Canyon was flying to Chicago",
+        "plausible": false,
+        "why": "'Grand Canyon' is in the declared immobile-landform lexicon and 'flying' is self-propelled motion, so this reading is physically implausible."
+      }
+    ],
+    "pass": true
+  },
+  "H2_disambiguated_resolves": {
+    "sentence": "I was flying to Chicago and I saw the Grand Canyon.",
+    "ambiguous": false,
+    "verdict": "INSUFFICIENT_EVIDENCE",
+    "pass": true
+  },
+  "H3_impossible_flagged": {
+    "sentence": "The Grand Canyon was flying to Chicago.",
+    "verdict": "IMPLAUSIBLE",
+    "basis": "declared immobile-landform lexicon (a hand-written list of 15 nouns), NOT comprehension",
+    "pass": true
+  },
+  "H4_revision_auditable": {
+    "prior_receipt": "b74961f0c896fb43",
+    "revised_receipt": "81c9375bb5b92782",
+    "parent_link": "b74961f0c896fb43",
+    "chained": true,
+    "pass": true
+  },
+  "H5_anti_overclaim_control": {
+    "sentence": "I photographed the woman walking to the station.",
+    "ambiguity_flagged": true,
+    "both_readings_plausible": true,
+    "conclusion": "The engine flags a structurally identical sentence in which BOTH readings are plausible. This demonstrates SYNTACTIC PATTERN MATCHING, not comprehension. Detecting an ambiguity is not understanding it.",
+    "pass": true
+  },
+  "what_this_does_not_show": "This does not show the engine understands language, does not refute Hinton, and does not claim EI is more intelligent than an AI assistant. Hinton's argument concerns whether a system builds a semantic model; this experiment does not engage that question.",
+  "what_it_does_show": "On text that does not determine an answer, an EI declines and asks, while an assistant commits and later apologises -- and the EI's revision leaves an auditable trail where the assistant's does not. A claim about failure modes and accountability, not comprehension.",
+  "declared_limitation": "Plausibility rests on a hand-written lexicon of 15 landform nouns. Ambiguity detection is one regular expression over participial attachment.",
+  "honest_reporting": true,
+  "pass": true
+}
