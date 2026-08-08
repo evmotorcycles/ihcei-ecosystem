@@ -5,7 +5,7 @@
     "readings": 2,
     "verdict": "AMBIGUOUS",
     "committed_answer": null,
-    "question": "Which did you mean: were you flying (reading A), or was the Grand Canyon flying (reading B)?",
+    "question": "Which did you mean: were you flying, or was the Grand Canyon flying?",
     "reading_detail": [
       {
         "id": "A",

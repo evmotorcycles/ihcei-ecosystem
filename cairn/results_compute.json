@@ -1,0 +1,8 @@
+{
+  "n": 20000,
+  "seconds": 1.4746,
+  "microseconds_each": 73.73,
+  "per_sec_per_core": 13563,
+  "gpu_required": false,
+  "note": "Deterministic tier only (regex + lexicon). No model weights, no GPU, no network."
+}
