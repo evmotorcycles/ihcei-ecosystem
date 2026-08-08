@@ -183,3 +183,71 @@ leaves an audit trail.** A claim about failure modes and accountability, not int
 
 Reproduce: `python3 cairn/hinton_test.py` · guard: `python3 -m pytest cairn/test_ei_llm.py`
 Verified in a live browser: `screen_hinton.png`.
+
+
+---
+
+## v1.1 — what the field audits changed
+
+Real usage surfaced three problems. All three are fixed, and the fixes are locked in
+`test_ei_llm.py`.
+
+### 1. Definitions no longer look like failures *(the big one)*
+
+Pasting *"Epistemology is the study of knowledge"* used to return a red **0/5
+INSUFFICIENT_EVIDENCE**. That is a correct engine looking broken — the text was never
+auditable in the first place. Cairn now **routes the claim before scoring it**:
+
+| input | routed as | shown as |
+|---|---|---|
+| *"Revenue rose 14% in Q3, per the annual report"* | EMPIRICAL | audited normally |
+| *"Epistemology is the study of knowledge"* | CONCEPTUAL | **out of scope, no score** |
+| *"I think green tea is great"* | OPINION | **out of scope, no score** |
+| *"What is inflation?"* | QUESTION | **out of scope**, offers to audit an answer |
+
+Out-of-scope renders in **neutral grey with no number at all** — because a score people
+read as a grade is a grade. The receipt line reads `no score — nothing to measure`.
+
+### 2. Structure is never mistaken for safety
+
+An audit gave an un-emulsified glycolic-acid serum **3/5** — it was well-specified *and*
+chemically unstable. A user could read that as "mostly fine". Cairn now detects
+**domain risk** (chemistry, medical, legal, financial, safety-critical) and says so:
+
+> **I checked the wording, not the subject matter.** This touches **medical/health**. A
+> well-formed claim here can still be wrong or unsafe — a specialist has to review the
+> content itself. My score says nothing about that.
+
+### 3. Every uncertain result carries a next move
+
+Low or out-of-scope results now list **what would settle it** as clickable prompts, so the
+user leaves with an action rather than anxiety.
+
+### Onboarding teaches the boundary *first*
+
+A four-step overlay runs before the first audit, and step two is the empirical/conceptual
+line side by side — the distinction that caused the 0/5 confusion. Re-openable any time
+with `?`.
+
+### Navigation
+
+`Ctrl/Cmd-K` command palette (13 entries: jump to any panel, switch model, new chat),
+`?` for help, a working mobile drawer under 820px, and keyboard navigation throughout.
+
+---
+
+## The compute question, measured
+
+*"Won't an EI need as much compute as an LLM?"* — for the deterministic tier, no, and this
+is measured rather than asserted:
+
+```
+20,000 audits in 1.475s  ->  73.7 microseconds each
+13,563 audits/sec/core   ->  CPU only, no GPU, no model weights, no network
+```
+
+**Honest caveat:** that is the *deterministic* tier — regex, a lexicon and arithmetic. The
+moment an LLM is used for semantic parsing, its compute cost is inherited in full. The
+architecture that stays cheap is **deterministic-first, escalate rarely**: route and score
+every claim for microseconds, and spend model compute only on the minority that needs it.
+Cairn is cheap because most claims never reach a model — not because auditing is magic.
