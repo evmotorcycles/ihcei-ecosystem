@@ -82,6 +82,7 @@ run "cohort-audit: Yeast 4825 / GitHub 992 / swarm evidentiary audit — gaps + 
 run "cohort-audit: gap closure — yeast outcome CLOSED, GitHub 992 still open, G2 miss recorded" py cohort-audit/test_gap_closure.py
 run "ei-dashboards: ASSAY — real stack over real Qwen+DeepSeek repos + offline dashboards" node_test ei-dashboards/assay.test.mjs
 run "cairn: EI engine + Hinton Grand Canyon test (anti-overclaim control locked)" py cairn/test_ei_llm.py
+run "cairn CI: centric intelligence on real Qwen+DeepSeek — calibration gate FALSIFIED, locked" py cairn/test_ci.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py
