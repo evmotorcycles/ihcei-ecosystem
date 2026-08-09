@@ -1,0 +1,34 @@
+# vendor.plumb -- "is this open-source project safe to depend on?"
+#
+# This is the question an ordinary person actually has. Note what the language
+# FORCES you to write down before it will give you any answer at all.
+
+plumb "vendor-fitness" {
+
+  # Q1 (purpose): capacity alone is inert. Stars are reach, not fidelity.
+  # E = U x D_encode x D_decode -- if either leg is zero, the product is zero.
+  capacity  U from field "stars"
+
+  # leg 1: can the project take information IN? Fewer open issues per unit of
+  # attention means the inbound channel is being read. 'inverse' makes a big
+  # backlog a small number.
+  encode    Denc from field "open_issues" inverse
+
+  # leg 2: can information get OUT and be reused by someone else? A fork is a
+  # decode event: somebody received the project well enough to run it.
+  decode    Ddec from ratio "forks"/"stars"
+
+  floor 0.02
+
+  # Q4 (reference-lock): whatever the project says about itself is DELETED from
+  # the record before evaluation. Not "ignored" -- deleted.
+  blind "description"
+  blind "topics"
+
+  # Q3 (stewardship): the two legs must carry different information, or the
+  # program halts rather than reporting a confident number twice.
+  independent encode decode
+
+  require evidence 4 of 5
+  receipt
+}

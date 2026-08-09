@@ -1,0 +1,8 @@
+{
+  "prereg_file": "plumb/PREREG.md",
+  "prereg_sha256": "ce99c624431de2e86251b6a237423e95e16c91af9ddc56617aa36de3777027a8",
+  "program_file": "plumb/examples/vendor.plumb",
+  "program_sha256": "0c7ef1f594251a4178e08de1b995a86694124f32d3abfe8bc4d480e1d20a64d0",
+  "locked_utc": "2026-08-09T15:19:04Z",
+  "note": "Locked BEFORE the out-of-sample cohort B run (P5-P7). Any later edit to either file changes these digests and fails plumb/test_plumb.py."
+}
