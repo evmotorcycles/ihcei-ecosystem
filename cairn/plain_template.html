@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Cairn — plain tools for checking things</title>
+<title>Governance Console — Cairn · Page Code · HELM · Trig</title>
 <style>
 :root{
   --paper:#F6F7F5; --card:#FFFFFF; --ink:#14171A; --stone:#68736C; --line:#DEE3DD;
@@ -143,7 +143,7 @@ footer{border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1.3rem;col
     <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
       <path d="M4 21h16M6.5 21c0-3 2.4-4.2 5.5-4.2s5.5 1.2 5.5 4.2M8 16.6c-.6-2.4 1.4-3.6 4-3.6s4.6 1.2 4 3.6M9.4 12.8c-.5-2 1-3 2.6-3s3.1 1 2.6 3M10.6 9.4c-.3-1.5.5-2.4 1.4-2.4s1.7.9 1.4 2.4"/>
     </svg>
-    <span class="brand">Cairn</span>
+    <span class="brand">Governance Console</span>
     <span class="sp"></span>
     <button class="ghost" id="back">← All tools</button>
     <button class="ghost" id="theme" title="Switch light / dark">◐</button>
@@ -165,28 +165,28 @@ footer{border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1.3rem;col
       <span><b>Check a claim</b>
         <span>Someone told you a fact, or an AI gave you an answer. Paste it here and find
               out how much of it can actually be checked — and what's missing.</span>
-        <em>Cairn EI</em></span>
+        <em>Cairn · claim checker</em></span>
     </button>
     <button class="job" data-go="pc">
       <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span>
       <span><b>Decide what an app may touch</b>
         <span>Write down, in plain words, exactly which of your files an app or assistant
               is allowed to open. Anything you didn't list is refused automatically.</span>
-        <em>Page Code</em></span>
+        <em>Page Code · permissions</em></span>
     </button>
     <button class="job" data-go="helm">
       <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 6h14M5 12h14M5 18h14"/><circle cx="19" cy="6" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/></svg></span>
         <span><b>Keep a record nobody can quietly edit</b>
         <span>Log what happened and when. Each entry seals the one before it, so if
               anyone changes an old line, the page shows you exactly where.</span>
-        <em>HELM</em></span>
+        <em>HELM · tamper-evident record</em></span>
     </button>
     <button class="job" data-go="ci">
       <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 19V5M4 19h16"/><path d="M8 15l3.5-5 3 3L20 7"/></svg></span>
       <span><b>See whether confidence matches reality</b>
         <span>When a tool says it is 70% sure, is it right 70% of the time? We ran that
               test on ourselves. We failed it. The result is here.</span>
-        <em>CI</em></span>
+        <em>Trig · calibration</em></span>
     </button>
   </div>
 
@@ -274,8 +274,9 @@ footer{border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1.3rem;col
 
 <!-- ============================ CI ============================ -->
 <section class="page" id="ci">
-  <h2>Does our confidence match reality?</h2>
-  <p class="lede">We took {{n}} real software projects, had the claim-checker rate them, and
+  <h2>Trig — does our confidence match reality?</h2>
+  <p class="lede">Named for the trig point: the fixed survey pillar you measure against to confirm where you
+     actually are. We took {{n}} real software projects, had the claim-checker rate them, and
      compared its confidence against an independent measure it never saw. Here is what
      came back.</p>
 

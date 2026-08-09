@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Novora — nine tools for pressing what you are told</title>
+<style>
+:root{
+  --paper:#F4F5F2; --card:#FFFFFF; --ink:#15181B; --stone:#6B7570; --line:#DDE2DC;
+  --accent:#2E4E5E; --accent-soft:#E2ECF0; --ok:#22694B; --ok-soft:#E3F0E9;
+  --warn:#8A5A0B; --warn-soft:#FBF1DF; --stop:#8C2F2F; --stop-soft:#FBEAEA;
+  --shadow:0 1px 2px rgba(21,24,27,.05),0 8px 22px rgba(21,24,27,.05);
+  --serif:ui-serif,Georgia,"Iowan Old Style",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E1112; --card:#171A1C; --ink:#E7ECEA; --stone:#95A09B; --line:#242A2C;
+  --accent:#7FB2C6; --accent-soft:#152329; --ok:#5FBF92; --ok-soft:#132320;
+  --warn:#D9A441; --warn-soft:#241D0F; --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --paper:#0E1112; --card:#171A1C; --ink:#E7ECEA; --stone:#95A09B; --line:#242A2C;
+  --accent:#7FB2C6; --accent-soft:#152329; --ok:#5FBF92; --ok-soft:#132320;
+  --warn:#D9A441; --warn-soft:#241D0F; --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;padding-bottom:4rem}
+.wrap{max-width:48rem;margin:0 auto;padding:0 1.15rem}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;text-wrap:balance;letter-spacing:-.018em}
+button{font:inherit;cursor:pointer}
+.mono{font-family:var(--mono);font-size:.85em}
+
+header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px)}
+.bar{max-width:48rem;margin:0 auto;padding:.7rem 1.15rem;display:flex;align-items:center;gap:.7rem}
+.brand{font-family:var(--serif);font-size:1.1rem;font-weight:600}
+.bar .sp{flex:1}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);border-radius:99px;
+  padding:.32rem .8rem;font-size:.82rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+#back{display:none}
+
+.hero{padding:2.4rem 0 1.4rem}
+.hero h1{font-size:clamp(1.85rem,5vw,2.6rem);line-height:1.14}
+.hero p{color:var(--stone);margin:.8rem 0 0;max-width:35rem;font-size:1.04rem}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.8rem;
+  padding-bottom:1.4rem}
+.card{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:13px;
+  padding:1.05rem 1.1rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.4rem;
+  transition:transform .12s ease,border-color .12s ease}
+.card:hover{transform:translateY(-1px);border-color:var(--accent)}
+.card .nm{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--accent)}
+.card .q{font-family:var(--serif);font-size:1.08rem;font-weight:600;line-height:1.3}
+.card .d{color:var(--stone);font-size:.88rem;line-height:1.5}
+
+.page{display:none;padding:1.5rem 0}
+.page.on{display:block}
+.page h2{font-size:1.55rem}
+.lede{color:var(--stone);margin:.45rem 0 1.3rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:1.1rem;
+  box-shadow:var(--shadow);margin-bottom:1rem}
+label.f{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--stone);margin-bottom:.45rem}
+textarea{width:100%;background:var(--paper);color:var(--ink);border:1px solid var(--line);
+  border-radius:10px;padding:.8rem .9rem;font:inherit;resize:vertical}
+textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.go{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:.72rem 1.4rem;
+  font-weight:600;margin-top:.8rem}
+.go:hover{filter:brightness(1.1)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.chip{background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:.3rem .75rem;
+  font-size:.82rem;color:var(--stone)}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+
+.verdict{border-left:4px solid var(--stone);padding-left:1rem}
+.verdict h3{font-size:1.28rem}
+.verdict p{margin:.35rem 0 0;color:var(--stone)}
+.v-ok{border-color:var(--ok)} .v-ok h3{color:var(--ok)}
+.v-mid{border-color:var(--warn)} .v-mid h3{color:var(--warn)}
+.v-bad{border-color:var(--stop)} .v-bad h3{color:var(--stop)}
+.v-abs{border-color:var(--stone)}
+.meterwrap{margin-top:1rem}
+.meter{display:block;height:.6rem;background:var(--line);border-radius:99px;overflow:hidden;position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;border-radius:99px;background:var(--accent)}
+.mlbl{display:flex;justify-content:space-between;font-size:.8rem;color:var(--stone);margin-top:.35rem}
+.mlbl b{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.9rem}
+.tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;padding:.2rem .5rem;
+  border-radius:3px;background:var(--accent-soft);color:var(--accent)}
+.tag.bad{background:var(--stop-soft);color:var(--stop)}
+.detail{margin-top:1rem;display:grid;gap:.4rem}
+.detail div{display:flex;justify-content:space-between;gap:1rem;font-size:.9rem;
+  border-bottom:1px solid var(--line);padding-bottom:.35rem}
+.detail span:last-child{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.rcpt{font-family:var(--mono);font-size:.75rem;color:var(--stone);margin-top:1rem;
+  border-top:1px dashed var(--line);padding-top:.7rem;word-break:break-all}
+.honest{border:1px solid var(--line);border-left:4px solid var(--stop);background:var(--stop-soft);
+  border-radius:0 11px 11px 0;padding:1rem 1.1rem;margin:1.2rem 0;font-size:.94rem}
+.honest b{color:var(--stop);display:block;margin-bottom:.35rem}
+footer{border-top:1px solid var(--line);margin-top:2.4rem;padding-top:1.3rem;color:var(--stone);
+  font-size:.86rem}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <span class="brand">Novora</span>
+    <span class="sp"></span>
+    <button class="ghost" id="back">← All nine</button>
+    <button class="ghost" id="theme" title="Switch light / dark">◐</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="page on" id="home">
+  <div class="hero">
+    <h1>Nine tools for pressing what you are told.</h1>
+    <p>Paste something in, and get back what it is actually made of — before you believe it,
+       sign it, act on it, or accept it. Everything runs on your own device. No account,
+       no internet connection, nothing uploaded.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <div class="honest">
+    <b>Read this before you trust a number here</b>
+    These are <em>screens</em>, not judges. They look for the words and structures that
+    usually accompany a problem — they do not understand what you pasted, and they cannot
+    tell whether it is true, legal, or safe. A high score means "nothing obvious was
+    caught", never "this is fine". When the answer matters, use these to find your
+    questions, and take those questions to a person who is qualified to answer them.
+  </div>
+</section>
+
+<section class="page" id="tool">
+  <h2 id="t-title">—</h2>
+  <p class="lede" id="t-lede">—</p>
+  <div class="panel">
+    <label class="f" for="inp" id="t-label">Paste the text</label>
+    <textarea id="inp" rows="6" placeholder="Paste here…"></textarea>
+    <div class="chips" id="egs"></div>
+    <button class="go" id="run">Press it</button>
+  </div>
+  <div id="out"></div>
+</section>
+
+<footer class="wrap" style="padding:1.3rem 1.15rem 0">
+  Runs entirely on your device. The engine here is the same offline screen the project's
+  test suite exercises — a parity test compares this browser copy against the tested module
+  across all nine tools and fails on any divergence.
+</footer>
+</main>
+
+<script>{{ENGINE}}</script>
+<script>
+"use strict";
+var $=function(s){return document.querySelector(s)}, $$=function(s){return [].slice.call(document.querySelectorAll(s))};
+
+/* Each product, described by the everyday moment it belongs to. The `id` values
+   are the engine's own product ids — the UI never invents a tenth. */
+var TOOLS = [
+ {id:"pages", nm:"PAGES", q:"Is there anything underneath this?",
+  d:"Press a claim, an article, or a confident answer. Does it rest on method and evidence, or on confident words?",
+  label:"Paste the claim or article",
+  lede:"Looks for the marks of real method — samples, intervals, named sources — and for the phrases that stand in for them when they are missing.",
+  egs:["A 2023 randomised trial (N = 240, p < 0.01, 95% CI) pre-registered at NCT01234567 measured a 12% reduction.",
+       "All experts agree this is settled science and unquestionable — obviously no doubt remains."]},
+ {id:"pulse", nm:"PULSE", q:"Is this AI answer building me up or making me dependent?",
+  d:"Paste a reply from any assistant. See whether it hands you options and reasoning, or just instructions to follow.",
+  label:"Paste the AI's reply",
+  lede:"Reads the reply for whether it widens what you could do, or narrows it to obedience.",
+  egs:["Just follow these steps, you don't need to understand why. Leave it to me.",
+       "Here are three approaches with the trade-offs; you can pick whichever fits, and here's how to check my reasoning."]},
+ {id:"lens", nm:"LENS", q:"What am I giving up if I sign this?",
+  d:"Paste a contract clause, terms of service, or tenancy agreement. See it from your side, not theirs.",
+  label:"Paste the clause or agreement",
+  lede:"Looks for the clauses that move rights away from the person signing.",
+  egs:["The tenant waives your right to dispute, agrees to binding arbitration, and the deposit is non-refundable at our sole discretion.",
+       "Either party may terminate with 30 days notice; disputes go to mediation first and costs are shared."]},
+ {id:"voice", nm:"VOICE", q:"Was this decision about me made fairly?",
+  d:"A rejection, refusal, or dismissal. Check whether it gave criteria, evidence, and a way to appeal.",
+  label:"Paste the decision you were given",
+  lede:"A decision you cannot see the reasons for is a decision you cannot challenge.",
+  egs:["Your application was declined. We are unable to provide further detail and this decision is final.",
+       "Your application was declined because income evidence covered 2 of the required 6 months; you may appeal within 21 days with the missing payslips."]},
+ {id:"mark", nm:"MARK", q:"Can I trust this institution?",
+  d:"Paste an organisation's own statement about itself — a policy, a report, an about page.",
+  label:"Paste the institution's statement",
+  lede:"Checks whether it documents and discloses, or simply asserts.",
+  egs:["We publish our error rates annually, name an independent ombudsman, and list every correction we have issued.",
+       "We are committed to the highest standards of excellence and integrity in everything we do."]},
+ {id:"stand", nm:"STAND", q:"Do I actually have a case here?",
+  d:"Describe what happened to you. See where your account is documented and where it is still just assertion.",
+  label:"Describe what happened",
+  lede:"Separates the parts of your account that are evidenced from the parts that still need evidence.",
+  egs:["I was dismissed two days after reporting a safety issue. I have the email I sent, the reply, and a colleague who witnessed the meeting.",
+       "They treated me unfairly and everyone knows the manager has always had a problem with me."]},
+ {id:"weigh", nm:"WEIGH", q:"Am I ready to make this decision?",
+  d:"Describe the decision you are about to make. See what is still missing before you commit.",
+  label:"Describe the decision",
+  lede:"Checks for the things people wish they had checked: what is assumed, what is reversible, what else was considered.",
+  egs:["I'm taking the job offer tomorrow. I haven't seen the contract, don't know the notice period, and haven't asked why the last person left.",
+       "Comparing two clinics: I have both success rates, the complication data, costs, and I can withdraw up to the day before."]},
+ {id:"bridge", nm:"BRIDGE", q:"Is this message connecting or controlling?",
+  d:"Paste a message from a manager, a partner, a company. See whether it offers you choices or removes them.",
+  label:"Paste the message",
+  lede:"Counts what the message opens up against what it closes down.",
+  egs:["You must do this immediately, don't question it, don't consult anyone, and don't tell the others.",
+       "Here's the situation and two options; take the time you need and tell me which works, or suggest a third."]},
+ {id:"rise", nm:"RISE", q:"Is this stretching my thinking or replacing it?",
+  d:"Paste an explanation you were given. See whether it develops your capacity or substitutes for it.",
+  label:"Paste the explanation",
+  lede:"Looks for whether you were taught the reasoning or handed a conclusion.",
+  egs:["The answer is 42. Don't worry about the method, it's too complex to explain and you don't need it.",
+       "Here's the reasoning step by step, here's where it could break, and here's how you'd check it yourself next time."]}
+];
+
+var BY_ID={}; TOOLS.forEach(function(t){BY_ID[t.id]=t});
+
+/* ---------- home grid ---------- */
+$("#grid").innerHTML = TOOLS.map(function(t){
+  return '<button class="card" data-go="'+t.id+'"><span class="nm">'+t.nm+'</span>'+
+    '<span class="q">'+t.q+'</span><span class="d">'+t.d+'</span></button>';
+}).join("");
+
+/* ---------- navigation (hash-routed so browser Back works) ---------- */
+function go(id){
+  var tool = BY_ID[id];
+  $$(".page").forEach(function(p){p.classList.remove("on")});
+  if(!tool){ $("#home").classList.add("on"); $("#back").style.display="none"; window.scrollTo(0,0); return; }
+  $("#tool").classList.add("on");
+  $("#back").style.display="inline-block";
+  $("#t-title").textContent = tool.nm + " — " + tool.q;
+  $("#t-lede").textContent = tool.lede;
+  $("#t-label").textContent = tool.label;
+  $("#inp").value=""; $("#out").innerHTML="";
+  $("#egs").innerHTML="";
+  tool.egs.forEach(function(x){
+    var b=document.createElement("button"); b.className="chip";
+    b.textContent = x.length>46 ? x.slice(0,46)+"…" : x; b.title=x;
+    b.onclick=function(){ $("#inp").value=x; run(); };
+    $("#egs").appendChild(b);
+  });
+  window.scrollTo(0,0);
+}
+function navigate(id){ if(location.hash.slice(1)!==id) location.hash=id; else go(id); }
+window.addEventListener("hashchange",function(){ go(location.hash.slice(1)) });
+$$(".card").forEach(function(b){ b.onclick=function(){ navigate(b.dataset.go) } });
+$("#back").onclick=function(){ navigate("home") };
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape" && !$("#home").classList.contains("on")) navigate("home");
+});
+$("#theme").onclick=function(){
+  var d=document.documentElement, cur=d.getAttribute("data-theme");
+  var dark = cur ? cur==="dark" : matchMedia("(prefers-color-scheme:dark)").matches;
+  d.setAttribute("data-theme", dark?"light":"dark");
+};
+go(location.hash.slice(1));
+
+/* ---------- running a screen ---------- */
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+var GOOD=/healthy|solid|balanced|agency-preserving|informed|documented|criteria_present|developing|grounded|reasonably/i;
+var BAD=/harmful|hollow|coercive|predatory|opaque|unfair|evidence_gap|dependency|adverse|one-sided/i;
+
+function run(){
+  var id = location.hash.slice(1), tool = BY_ID[id];
+  if(!tool) return;
+  var text = $("#inp").value;
+  var r = NOVORA.screen(id, text);
+
+  var cls = r.insufficient_evidence ? "v-abs"
+          : BAD.test(r.verdict) ? "v-bad" : GOOD.test(r.verdict) ? "v-ok" : "v-mid";
+  var html = '<div class="panel"><div class="verdict '+cls+'"><h3>'+esc(r.verdict)+'</h3><p>'+
+    (r.insufficient_evidence
+      ? esc(r.reason || "There is not enough here to screen. This is not a bad result — it is no result.")
+      : "This is what the screen found in the words you pasted. It is not a judgement about the person or the situation behind them.")+
+    '</p></div>';
+
+  // The score is shown ONLY when the engine says it is safe to show. On thin
+  // input every product still computes a number internally; rendering it would
+  // dress a non-judgement as a verdict.
+  if(r.display_score !== false && typeof r.score === "number"){
+    html += '<div class="meterwrap"><span class="meter"><i style="width:'+(r.score*100).toFixed(0)+'%"></i></span>'+
+      '<span class="mlbl"><span>lower</span><b>'+r.score.toFixed(2)+'</b><span>higher</span></span></div>';
+  }
+
+  if(r.flags && r.flags.length){
+    html += '<div class="tags">'+r.flags.map(function(f){
+      return '<span class="tag'+(BAD.test(f)||/INSUFFICIENT|ABSTAIN|GAP|OPACITY/.test(f)?" bad":"")+'">'+esc(f)+'</span>';
+    }).join("")+'</div>';
+  }
+
+  var extras = ["agency_score","dependency_score","development_score","delta_a","options_count",
+                "commands_count","d_enc","d_dec","f_ground","signal"];
+  var rows = extras.filter(function(k){ return typeof r[k]==="number" && r.display_score!==false; });
+  if(rows.length){
+    html += '<div class="detail">'+rows.map(function(k){
+      return '<div><span>'+k.replace(/_/g," ")+'</span><span>'+r[k]+'</span></div>';
+    }).join("")+'</div>';
+  }
+
+  if(r.attack_detected && r.attack_detected!=="none"){
+    html += '<div class="honest" style="margin-top:1rem"><b>Pattern found: '+esc(r.attack_detected)+'</b>'+
+      'This names a shape in the text, not a proven intent.</div>';
+  }
+
+  html += '<div class="rcpt">receipt '+esc(r.certificate)+' · '+esc(r.engine)+' · on-device screen. '+
+    'A screen looks for known patterns; it does not read meaning, and it can be wrong in both directions.</div></div>';
+  $("#out").innerHTML = html;
+}
+$("#run").onclick = run;
+$("#inp").addEventListener("keydown",function(e){ if((e.metaKey||e.ctrlKey)&&e.key==="Enter") run() });
+</script>
+</body>
+</html>

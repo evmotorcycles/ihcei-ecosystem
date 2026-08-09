@@ -112,6 +112,8 @@ run "cohort-audit: N=992 independent re-analysis — summary recomputes from raw
 run "ei-dashboards: ASSAY — real stack over real Qwen+DeepSeek repos + offline dashboards" node_test ei-dashboards/assay.test.mjs
 run "cairn: EI engine + Hinton Grand Canyon test (anti-overclaim control locked)" py cairn/test_ei_llm.py
 run "cairn CI: centric intelligence on real Qwen+DeepSeek — calibration gate FALSIFIED, locked" py cairn/test_ci.py
+run "novora-suite: browser bundle parity with the tested engine (9 products)" node_test novora-suite/test_bundle_parity.mjs
+run "novora-suite: offline nine-product GUI — abstains, no network, no key" py novora-suite/test_suite_html.py
 run "cairn: browser engine parity with the audited Python engine (20 cases)" py cairn/test_parity.py
 run "cairn: plain-language browser app — offline, measured numbers, limits kept" py cairn/test_plain.py
 run "plumb: governance language semantics + out-of-sample cohort B (pre-registered)" py plumb/test_plumb.py
