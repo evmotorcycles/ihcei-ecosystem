@@ -1,0 +1,209 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cairn Console — EI · Page Code · HELM · CI</title>
+<style>
+:root{--bg:#0c0f14;--sb:#11151d;--pn:#161b25;--p2:#11161f;--ink:#eef1f6;--mut:#98a3b6;--fnt:#5f6a7d;--ln:#222a38;
+ --ac:#5cc0a0;--bl:#6aa2e8;--am:#e0aa4a;--rd:#e2705f;--vi:#a98ae6;
+ --mono:"SFMono-Regular",ui-monospace,Menlo,monospace;--sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;
+ --sh:0 1px 0 rgba(255,255,255,.03),0 18px 42px -28px rgba(0,0,0,.9)}
+:root[data-theme=light]{--bg:#f6f8f9;--sb:#eef2f3;--pn:#fff;--p2:#f1f4f6;--ink:#111820;--mut:#4f5b6b;--fnt:#8a94a3;--ln:#e0e6ea;
+ --ac:#1c8b6c;--bl:#1a6cc0;--am:#9a6f16;--rd:#c04a3a;--vi:#6f4fc0}
+@media(prefers-color-scheme:light){:root:not([data-theme=dark]){--bg:#f6f8f9;--sb:#eef2f3;--pn:#fff;--p2:#f1f4f6;--ink:#111820;--mut:#4f5b6b;--fnt:#8a94a3;--ln:#e0e6ea;
+ --ac:#1c8b6c;--bl:#1a6cc0;--am:#9a6f16;--rd:#c04a3a;--vi:#6f4fc0}}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;display:flex;overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+aside{width:236px;flex:none;background:var(--sb);border-right:1px solid var(--ln);display:flex;flex-direction:column;padding:14px 11px;gap:3px;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:9px;padding:4px 6px 16px}
+.brand svg{width:26px;height:26px;flex:none}
+.brand b{font-size:1.14rem;letter-spacing:-.02em}.brand b em{font-style:normal;color:var(--ac)}
+.applbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--fnt);padding:11px 8px 5px}
+.app{display:grid;grid-template-columns:auto 1fr;gap:1px 11px;width:100%;text-align:left;padding:9px 11px;border-radius:10px;border:1px solid transparent;background:none;color:var(--mut)}
+.app:hover{background:var(--pn);color:var(--ink)}
+.app[aria-current=page]{background:var(--pn);border-color:var(--ln);color:var(--ink)}
+.app .ic{grid-row:1/3;width:17px;height:17px;align-self:center;opacity:.9}
+.app .t{font-size:.89rem;font-weight:600}.app .s{font-size:.72rem;color:var(--fnt)}
+.app[aria-current=page] .t{color:var(--ink)}
+.foot{margin-top:auto;border-top:1px solid var(--ln);padding-top:10px;font-size:.7rem;color:var(--fnt);font-family:var(--mono)}
+main{flex:1;display:flex;flex-direction:column;min-width:0}
+header{display:flex;align-items:center;gap:12px;padding:13px 22px;border-bottom:1px solid var(--ln);flex:none}
+h1{font-size:1rem;margin:0;font-weight:650}
+.sub{font-size:.78rem;color:var(--mut)}
+.sp{flex:1}
+.pill{font-family:var(--mono);font-size:.62rem;padding:3px 8px;border-radius:6px;border:1px solid var(--ln);color:var(--mut)}
+.pill.g{color:var(--ac);border-color:color-mix(in srgb,var(--ac) 45%,transparent)}
+.pill.a{color:var(--am);border-color:color-mix(in srgb,var(--am) 45%,transparent)}
+.wrap{flex:1;overflow-y:auto;padding:24px 22px 40px}
+.w{max-width:940px;margin:0 auto}
+.pg{display:none}.pg.on{display:block}
+h2{font-size:1.15rem;margin:26px 0 4px;letter-spacing:-.01em}h2:first-child{margin-top:0}
+p{margin:.55em 0;color:var(--mut);font-size:.9rem}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:11px;margin:16px 0}
+.k{border:1px solid var(--ln);border-radius:12px;padding:13px 15px;background:var(--pn);box-shadow:var(--sh)}
+.k b{display:block;font-size:1.5rem;line-height:1.15;font-variant-numeric:tabular-nums}
+.k span{font-size:.74rem;color:var(--mut)}
+.k.warn b{color:var(--am)}.k.good b{color:var(--ac)}
+.tw{border:1px solid var(--ln);border-radius:12px;overflow:auto;box-shadow:var(--sh);margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+th,td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--ln);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{background:var(--p2);font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mut)}
+tr:last-child td{border-bottom:none}
+td{font-variant-numeric:tabular-nums}td.n,td.mono{font-family:var(--mono);font-size:.78rem}
+td.neg{color:var(--am)}td.okc{color:var(--ac);font-weight:600}td.noc{color:var(--rd);font-weight:600}
+b.bad{color:var(--rd)}
+.note{border-left:3px solid var(--bl);background:color-mix(in srgb,var(--bl) 9%,transparent);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:.87rem;color:var(--ink)}
+.note.warn{border-left-color:var(--am);background:color-mix(in srgb,var(--am) 11%,transparent)}
+.note.bad{border-left-color:var(--rd);background:color-mix(in srgb,var(--rd) 10%,transparent)}
+.note b{color:var(--ink)}
+.binrow{display:grid;grid-template-columns:64px 44px 1fr 1fr 54px;gap:9px;align-items:center;margin:6px 0;font-family:var(--mono);font-size:.72rem}
+.bl{color:var(--mut)}.bn{color:var(--fnt)}
+.bar2{height:9px;background:var(--p2);border:1px solid var(--ln);border-radius:5px;overflow:hidden}
+.bar2 i{display:block;height:100%}
+.bg2{text-align:right;color:var(--am);font-weight:700}
+.lg{display:flex;gap:16px;font-family:var(--mono);font-size:.68rem;color:var(--mut);margin:8px 0 2px}
+.lg i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.card{border:1px solid var(--ln);border-radius:12px;padding:14px 16px;background:var(--pn);box-shadow:var(--sh)}
+.card h3{margin:0 0 5px;font-size:.92rem}.card p{margin:0;font-size:.82rem}
+code{font-family:var(--mono);font-size:.85em;background:color-mix(in srgb,var(--mut) 15%,transparent);padding:.1em .4em;border-radius:4px}
+.menub{display:none;width:32px;height:32px;border-radius:9px;border:1px solid var(--ln);background:var(--pn);color:var(--ink);place-items:center}
+@media(max-width:820px){aside{position:fixed;inset:0 auto 0 0;z-index:60;transform:translateX(-100%);transition:transform .18s}
+ aside.open{transform:none;box-shadow:0 0 60px rgba(0,0,0,.5)}.menub{display:grid}}
+</style></head><body>
+
+<aside id="side">
+ <div class="brand">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+   <ellipse cx="12" cy="20" rx="8" ry="2.6" fill="currentColor" opacity=".25"/>
+   <ellipse cx="12" cy="16.4" rx="6.2" ry="2.3" fill="#5cc0a0"/><ellipse cx="12" cy="12.4" rx="4.8" ry="2" fill="#5cc0a0" opacity=".82"/>
+   <ellipse cx="12" cy="8.8" rx="3.4" ry="1.7" fill="#5cc0a0" opacity=".64"/><ellipse cx="12" cy="5.8" rx="2.1" ry="1.3" fill="#5cc0a0" opacity=".46"/></svg>
+  <b>C<em>ai</em>rn Console</b></div>
+
+ <div class="applbl">Applications</div>
+ <button class="app" aria-current="page" data-p="ei"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg><span class="t">Cairn EI</span><span class="s">audit a claim</span></button>
+ <button class="app" data-p="pc"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span class="t">Page Code</span><span class="s">what may be touched</span></button>
+ <button class="app" data-p="helm"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16M6.3 6.3l11.4 11.4M17.7 6.3 6.3 17.7"/></svg><span class="t">HELM</span><span class="s">the record</span></button>
+ <button class="app" data-p="ci"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8.2"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/></svg><span class="t">CI</span><span class="s">audits the auditor</span></button>
+
+ <div class="foot">cohort 22 real repos<br>QwenLM + deepseek-ai<br>offline · no network</div>
+</aside>
+
+<main>
+ <header>
+  <button class="menub" id="menub" aria-label="Menu"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <div><h1 id="ttl">Cairn EI</h1><div class="sub" id="sub">audit a claim against five checkable signals</div></div>
+  <span class="sp"></span><span class="pill g">22 real repos</span><span class="pill">offline</span>
+ </header>
+ <div class="wrap"><div class="w">
+
+  <!-- ================= EI ================= -->
+  <section class="pg on" id="ei">
+   <div class="note"><b>What this app is for.</b> Paste a claim. Cairn reports how much checkable
+    evidence is in <i>the wording</i> — and declines when the text does not determine an answer.
+    It routes definitions, opinions and questions to <b>out of scope</b> with no score at all.</div>
+   <h2>Live engine</h2>
+   <p>The interactive chat lives in <code>cairn.html</code>, backed by <code>ei_llm.py</code>. Run
+    <code>python3 cairn/ei_server.py</code> to wire the Python engine to the browser.</p>
+   <div class="two">
+    <div class="card"><h3>Audits</h3><p>Empirical claims — statements about what is measurably the case.</p></div>
+    <div class="card"><h3>Declines</h3><p>Definitions, opinions, questions. Neutral, no score, not a failure.</p></div>
+   </div>
+   <h2>Measured on this cohort</h2>
+   <div class="kpis">
+    <div class="k good"><b>22/22</b><span>descriptions scored</span></div>
+    <div class="k good"><b>1.0</b><span>carry a next step</span></div>
+    <div class="k good"><b>1.0</b><span>name their signals</span></div>
+   </div>
+  </section>
+
+  <!-- ================= PAGE CODE ================= -->
+  <section class="pg" id="pc">
+   <div class="note"><b>What Page Code is for.</b> It answers one question before any agent writes
+    anything: <b>is this agent allowed to touch this exact path, at this stake?</b> It is a table
+    lookup, not a judgement — so it cannot be argued with. <b>Default-deny:</b> anything not listed
+    is refused, and only a human can widen it.</div>
+   <div class="tw"><table><thead><tr><th>agent</th><th>path</th><th>action</th><th>limit</th><th>decision</th></tr></thead>
+    <tbody><tr><td>cairn</td><td class="mono">projects/**</td><td>read</td><td>—</td><td class="okc">allow</td></tr><tr><td>cairn</td><td class="mono">projects/drafts/**</td><td>write</td><td>5 changes</td><td class="okc">allow</td></tr><tr><td>cairn</td><td class="mono">contracts/**</td><td>read</td><td>—</td><td class="okc">allow</td></tr><tr><td>cairn</td><td class="mono">contracts/**</td><td>write</td><td>—</td><td class="noc">deny</td></tr><tr><td>cairn</td><td class="mono">payroll/**</td><td>any</td><td>—</td><td class="noc">deny</td></tr><tr><td>cairn</td><td class="mono">~/.ssh/**</td><td>any</td><td>—</td><td class="noc">deny</td></tr><tr><td>cairn</td><td class="mono">*.env</td><td>any</td><td>—</td><td class="noc">deny</td></tr><tr><td>cairn</td><td class="mono">(anything not listed)</td><td>any</td><td>—</td><td class="noc">deny · default</td></tr></tbody></table></div>
+   <div class="note warn"><b>The rule the agent cannot reach.</b> An agent running under Page Code is
+    denied write access to its own permission table, pre-registration spec and test manifest. It
+    cannot rewrite its own constraints to hide a failure.</div>
+  </section>
+
+  <!-- ================= HELM ================= -->
+  <section class="pg" id="helm">
+   <div class="note"><b>What HELM is for.</b> HELM governs what the stack is allowed to conclude;
+    <b>Echo</b> makes each conclusion permanent and checkable. Together they mean a verdict can be
+    re-examined later by someone who trusts none of the people involved.</div>
+   <div class="kpis">
+    <div class="k good"><b>22</b><span>records sealed</span></div>
+    <div class="k good"><b>caught</b><span>one-byte tamper</span></div>
+    <div class="k warn"><b>2</b><span>publish no license</span></div>
+   </div>
+   <p>Merkle root over all 22 records: <code>3422d8100b86d37297227772278da7c46bee90156bfa92b831f4797a28ef5d53</code></p>
+   <div class="note warn"><b>Governance finding on real data.</b> QwenLM/Qwen3, QwenLM/Qwen3-Coder publish <b>no license at
+    all</b> — a genuine downstream-reuse hazard that popularity completely hides.</div>
+   <div class="tw"><table><thead><tr><th>repository</th><th>stars</th><th>open issues</th><th>license</th><th>leaf</th></tr></thead>
+    <tbody><tr><td class="n">deepseek-ai/DeepSeek-V3</td><td>104,122</td><td>215</td><td>MIT</td><td class="mono">8118b2fdd0b8</td></tr><tr><td class="n">deepseek-ai/DeepSeek-R1</td><td>91,986</td><td>38</td><td>MIT</td><td class="mono">554794ed62a3</td></tr><tr><td class="n">deepseek-ai/awesome-deepseek-integration</td><td>38,528</td><td>120</td><td>CC0-1.0</td><td class="mono">7823ae0a01aa</td></tr><tr><td class="n">QwenLM/Qwen3</td><td>27,483</td><td>60</td><td><b class="bad">none</b></td><td class="mono">4c448f04c874</td></tr><tr><td class="n">QwenLM/qwen-code</td><td>26,792</td><td>881</td><td>Apache-2.0</td><td class="mono">5b414896c69d</td></tr><tr><td class="n">deepseek-ai/DeepSeek-Coder</td><td>24,056</td><td>171</td><td>MIT</td><td class="mono">f6482b6544f1</td></tr><tr><td class="n">deepseek-ai/DeepSeek-OCR</td><td>23,752</td><td>285</td><td>MIT</td><td class="mono">ce930f399d13</td></tr><tr><td class="n">QwenLM/Qwen</td><td>21,567</td><td>46</td><td>Apache-2.0</td><td class="mono">aff4091e2263</td></tr><tr><td class="n">QwenLM/Qwen3-VL</td><td>19,736</td><td>422</td><td>Apache-2.0</td><td class="mono">6dfa0f9fa0c8</td></tr><tr><td class="n">deepseek-ai/Janus</td><td>17,754</td><td>181</td><td>MIT</td><td class="mono">19494a7012c7</td></tr><tr><td class="n">QwenLM/Qwen-Agent</td><td>16,925</td><td>524</td><td>Apache-2.0</td><td class="mono">0869abe7b564</td></tr><tr><td class="n">QwenLM/Qwen3-Coder</td><td>16,773</td><td>111</td><td><b class="bad">none</b></td><td class="mono">f1da377e7255</td></tr><tr><td class="n">QwenLM/Qwen3-TTS</td><td>12,832</td><td>55</td><td>Apache-2.0</td><td class="mono">ad89bbf266ee</td></tr><tr><td class="n">deepseek-ai/FlashMLA</td><td>12,823</td><td>118</td><td>MIT</td><td class="mono">b62d92d6ea34</td></tr><tr><td class="n">deepseek-ai/3FS</td><td>10,104</td><td>155</td><td>MIT</td><td class="mono">c877793beb04</td></tr><tr><td class="n">deepseek-ai/DeepEP</td><td>9,960</td><td>302</td><td>MIT</td><td class="mono">343c037da440</td></tr><tr><td class="n">QwenLM/Qwen-Image</td><td>8,210</td><td>232</td><td>Apache-2.0</td><td class="mono">bd07a3ece6b5</td></tr><tr><td class="n">deepseek-ai/open-infra-index</td><td>8,034</td><td>1</td><td>CC0-1.0</td><td class="mono">951a468e09f0</td></tr><tr><td class="n">deepseek-ai/DeepGEMM</td><td>7,631</td><td>103</td><td>MIT</td><td class="mono">adc928304fce</td></tr><tr><td class="n">deepseek-ai/DeepSeek-LLM</td><td>7,208</td><td>58</td><td>MIT</td><td class="mono">c1e7e279a5ab</td></tr><tr><td class="n">QwenLM/Qwen-VL</td><td>6,721</td><td>324</td><td>NOASSERTION</td><td class="mono">d19ec4b70d9d</td></tr><tr><td class="n">QwenLM/Qwen2.5-Omni</td><td>4,058</td><td>219</td><td>Apache-2.0</td><td class="mono">b5103c9f8b47</td></tr></tbody></table></div>
+  </section>
+
+  <!-- ================= CI ================= -->
+  <section class="pg" id="ci">
+   <div class="note"><b>What CI is for.</b> Every other app audits something else. CI audits
+    <b>the auditor</b>: is the confidence Cairn reports actually trustworthy, does an interaction
+    leave you with more options, and can you check the result without the system?
+    <br><span style="color:var(--mut)">“Centric intelligence” is an existing term family — human-centred,
+    data-centric, target-centric. We claim no novelty for the phrase, only for these three measurements.</span></div>
+
+   <div class="kpis">
+    <div class="k warn"><b>0.3727</b><span>calibration error (ECE)</span></div>
+    <div class="k good"><b>1.0</b><span>option-space</span></div>
+    <div class="k good"><b>1.0</b><span>self-verifiability</span></div>
+    <div class="k good"><b>0</b><span>EI verdicts altered by CI</span></div>
+   </div>
+
+   <div class="note bad"><b>The calibration gate FAILED — and we are publishing it.</b>
+    ECE = <b>0.3727</b> against a pre-registered band fixed before running (&gt;0.30 = poorly
+    calibrated). <b>The band was not moved.</b> Every bin gap is negative, so the engine is
+    systematically <b>under</b>-confident, not over-confident.</div>
+
+   <h2>Confidence vs independent truth, by bin</h2>
+   <div class="lg"><span><i style="background:var(--bl)"></i>stated confidence</span>
+    <span><i style="background:var(--ac)"></i>independent structural truth</span></div>
+   <div class="binrow"><span class="bl">0.4-0.6</span><span class="bn">n=19</span><span class="bar2" title="stated confidence"><i style="width:40%;background:var(--bl)"></i></span><span class="bar2" title="independent truth"><i style="width:79%;background:var(--ac)"></i></span><span class="bg2">-0.389</span></div><div class="binrow"><span class="bl">0.6-0.8</span><span class="bn">n=3</span><span class="bar2" title="stated confidence"><i style="width:60%;background:var(--bl)"></i></span><span class="bar2" title="independent truth"><i style="width:87%;background:var(--ac)"></i></span><span class="bg2">-0.267</span></div>
+
+   <div class="note warn"><b>Diagnosis, stated rather than used as a rescue.</b> Engine confidence measures how checkable the SENTENCE is; ground truth measures how sound the PROJECT is. Different quantities, diverging by 0.37 on real data.</div>
+   <div class="note bad"><b>What this means for you.</b> Cairn confidence is NOT a probability the claim is true and NOT a quality score for the thing described. It measures the text.</div>
+
+   <h2>Per-repository</h2>
+   <div class="tw"><table><thead><tr><th>repository</th><th>confidence</th><th>independent truth</th><th>gap</th><th>next step</th><th>names signals</th></tr></thead>
+    <tbody><tr><td class="n">deepseek-ai/DeepSeek-V3</td><td>0.4</td><td>0.6</td><td class="neg">-0.2</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/DeepSeek-R1</td><td>0.4</td><td>0.6</td><td class="neg">-0.2</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/awesome-deepseek-integration</td><td>0.4</td><td>1.0</td><td class="neg">-0.6</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen3</td><td>0.4</td><td>0.6</td><td class="neg">-0.2</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/qwen-code</td><td>0.6</td><td>1.0</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/DeepSeek-Coder</td><td>0.4</td><td>0.8</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/DeepSeek-OCR</td><td>0.4</td><td>0.6</td><td class="neg">-0.2</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen</td><td>0.4</td><td>1.0</td><td class="neg">-0.6</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen3-VL</td><td>0.4</td><td>0.8</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/Janus</td><td>0.4</td><td>1.0</td><td class="neg">-0.6</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen-Agent</td><td>0.4</td><td>0.8</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen3-Coder</td><td>0.4</td><td>0.6</td><td class="neg">-0.2</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen3-TTS</td><td>0.6</td><td>0.8</td><td class="neg">-0.2</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/FlashMLA</td><td>0.4</td><td>0.8</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/3FS</td><td>0.4</td><td>1.0</td><td class="neg">-0.6</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/DeepEP</td><td>0.4</td><td>0.8</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen-Image</td><td>0.4</td><td>0.8</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/open-infra-index</td><td>0.6</td><td>0.8</td><td class="neg">-0.2</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/DeepGEMM</td><td>0.4</td><td>0.8</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr><tr><td class="n">deepseek-ai/DeepSeek-LLM</td><td>0.4</td><td>0.6</td><td class="neg">-0.2</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen-VL</td><td>0.4</td><td>1.0</td><td class="neg">-0.6</td><td>✓</td><td>✓</td></tr><tr><td class="n">QwenLM/Qwen2.5-Omni</td><td>0.4</td><td>0.8</td><td class="neg">-0.4</td><td>✓</td><td>✓</td></tr></tbody></table></div>
+   <div class="note"><b>Non-circular by construction.</b> The engine saw only a prose sentence about
+    each repository. The ground truth was computed from structured metadata fields the engine was
+    never shown — so this is confidence against independent truth, not confidence against itself.</div>
+  </section>
+
+ </div></div>
+</main>
+
+<script>
+const T={ei:['Cairn EI','audit a claim against five checkable signals'],
+ pc:['Page Code','the default-deny permission table'],
+ helm:['HELM','governance and the tamper-evident record'],
+ ci:['CI','centric intelligence — auditing the auditor']};
+document.querySelectorAll('.app').forEach(b=>b.addEventListener('click',()=>{
+ const p=b.dataset.p;
+ document.querySelectorAll('.pg').forEach(x=>x.classList.toggle('on',x.id===p));
+ document.querySelectorAll('.app').forEach(x=>x.setAttribute('aria-current',x.dataset.p===p?'page':'false'));
+ document.querySelector('#ttl').textContent=T[p][0];
+ document.querySelector('#sub').textContent=T[p][1];
+ document.querySelector('#side').classList.remove('open');
+ document.querySelector('.wrap').scrollTop=0;
+}));
+document.querySelector('#menub').addEventListener('click',()=>document.querySelector('#side').classList.toggle('open'));
+document.addEventListener('keydown',e=>{
+ if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+ const k={1:'ei',2:'pc',3:'helm',4:'ci'}[e.key];
+ if(k)document.querySelector(`[data-p="${k}"]`).click();
+});
+</script></body></html>
