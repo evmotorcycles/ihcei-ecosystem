@@ -71,6 +71,33 @@ keyed to ORFs, and the 992 labelled repository rows. Until then the status stays
 - **C5** swarm is a labelled simulation that reproduces from its seed — a **code-correctness** check, not evidence
 - **C6** cross-cohort integrity ledger emitted, with **≥1 not-reproducible cohort** (the audit does not whitewash itself)
 
+## A correction: the gap-closure results were machine-dependent
+
+`results_gapclosure.json` was at one point committed in a state reporting
+**`G1_992_gap_closed: pass`**, with the detail *"992-row labelled artifact found at
+`govphys_quadratic_results.csv`"*.
+
+That file is **gitignored and has never been committed**. It is produced by
+`govphys_quadratic_prereg_test.py`, which fetches live from the GitHub API. So the
+result was true on the machine that generated it — and **not reproducible from a fresh
+clone**, which is the only claim this repository is entitled to make.
+
+Re-running `gap_closure.py` on a clean checkout produces the honest state, and that is
+what is now committed:
+
+> `G1_992_cannot_be_closed_offline` — no 992-row labelled artifact committed (largest
+> labelled JSON/CSV = 22 rows); **GAP REMAINS OPEN** — the N=992 result must not be
+> cited as offline-reproducible.
+
+The expanded-cohort gate **G2** goes the same way: it reported `union N=1025` on that
+machine and reports `union N=33` on a clean checkout, so **G2 now fails**, honestly.
+The direction of the τ_v separation still holds at the smaller N; the sample size does
+not support what was previously recorded.
+
+Nothing was retuned to recover the pass. The failing state is the committed state,
+which is what the README table above said all along — the JSON had drifted away from
+it, not the other way round.
+
 ## Files
 
 ```
@@ -78,8 +105,11 @@ cohort-audit/
   prereg/cohort_prereg.json      spec (locked) — provenance findings declared BEFORE testing
   prereg/MANIFEST.sha256.json     spec + 4 committed fixtures, hash-pinned
   cohort_audit.py                 the audit runner
+  gap_closure.py                  the follow-up gap-closure run
   test_cohort_audit.py            pytest guard — locks the GAPS as hard as the positives
+  test_gap_closure.py             pytest guard for the gap-closure run
   results_audit.json              emitted results + the integrity ledger
+  results_gapclosure.json         gap-closure results, from a CLEAN checkout only
 ```
 
 Layer-1, offline, `$0`, deterministic. Methodology, not speed. **The gaps are the finding.**

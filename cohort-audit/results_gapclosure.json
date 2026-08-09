@@ -10,12 +10,12 @@
     "multivariate_insample_auc": 0.4275
   },
   "github": {
-    "gap992_open": false,
-    "largest_labelled_json": 992,
-    "union_N": 1025,
-    "union_failed": 759,
-    "median_tau_v_failed": 46.26,
-    "median_tau_v_survived": 17.21
+    "gap992_open": true,
+    "largest_labelled_json": 22,
+    "union_N": 33,
+    "union_failed": 9,
+    "median_tau_v_failed": 45.42,
+    "median_tau_v_survived": 4.28
   },
   "swarm": {
     "real_graph_lin": 0.59,
@@ -47,15 +47,15 @@
       "falsifiable": true
     },
     {
-      "gate": "G1_992_gap_closed",
+      "gate": "G1_992_cannot_be_closed_offline",
       "pass": true,
-      "detail": "992-row labelled artifact found at govphys_quadratic_results.csv; VIF = 1.0199, CV AUC linear = 0.6727 vs quadratic = 0.6809, dAIC = -3.16 (verdict: QUADRATIC_DISCONFIRMED)",
+      "detail": "no 992-row labelled artifact committed (largest labelled JSON/CSV = 22 rows); GAP REMAINS OPEN \u2014 the N=992 result must not be cited as offline-reproducible",
       "falsifiable": true
     },
     {
       "gate": "G2_expanded_labelled_cohort",
-      "pass": true,
-      "detail": "union N=1025 (failed=759, survived=266); median tau_v failed=46.3d vs survived=17.2d (direction holds)",
+      "pass": false,
+      "detail": "union N=33 (failed=9, survived=24); median tau_v failed=45.4d vs survived=4.3d (direction holds)",
       "falsifiable": true
     },
     {
@@ -84,9 +84,11 @@
     }
   ],
   "yeast_outcome_gap_closed": true,
-  "github_992_gap_closed": true,
-  "github_992_gap_open": false,
+  "github_992_gap_closed": false,
+  "github_992_gap_open": true,
   "knowledge_793_gap_closed": true,
   "digital_swarm_gap_closed": true,
-  "missed_predictions": []
+  "missed_predictions": [
+    "G2_expanded_labelled_cohort"
+  ]
 }
