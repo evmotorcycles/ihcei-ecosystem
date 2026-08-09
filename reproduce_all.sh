@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # =============================================================================
 # reproduce_all.sh -- ONE command to reproduce EVERY test across the Novora /
-# IHCEI stack. No API keys, no network. Requires: python3, node (>=18), pytest.
+# IHCEI stack. No API keys, no network.
+#
+# Requires: python3, node (>=18), and the packages in requirements.txt. Most
+# suites are pure stdlib; a handful are not, and without them the run fails with
+# bare ModuleNotFoundError in seven places, which looks like a broken repository
+# rather than a missing install. The preflight check below names what is missing.
 #
 #   bash reproduce_all.sh
 #
@@ -29,6 +34,29 @@ echo "========================================================================"
 echo " NOVORA / IHCEI — full reproducibility run"
 echo " python: $(python3 --version 2>&1 | tr -d '\n')   node: $(node --version)"
 echo "========================================================================"
+
+# --- preflight: name missing packages instead of failing seven suites cryptically
+missing=$(python3 - <<'PY'
+import importlib
+need = {"numpy":"numpy","scipy":"scipy","pandas":"pandas","statsmodels":"statsmodels",
+        "networkx":"networkx","sklearn":"scikit-learn","jax":"jax","openpyxl":"openpyxl"}
+out = []
+for mod, pkg in need.items():
+    try:
+        importlib.import_module(mod)
+    except Exception:
+        out.append(pkg)
+print(" ".join(out))
+PY
+)
+if [ -n "$missing" ]; then
+  echo
+  echo "  NOTE: these Python packages are missing: $missing"
+  echo "        Install them first, or the suites that need them will FAIL on import:"
+  echo "          python3 -m pip install -r requirements.txt"
+  echo "        Everything else below still runs and is unaffected."
+  echo
+fi
 
 bar; echo "  NERE / IHCEI kernel (Python)"; bar
 run "ihcei_v3: NERE/IHCEI kernel"        py ihcei_v3/test_ihcei_nere_v3.py
