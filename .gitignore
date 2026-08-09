@@ -7,6 +7,13 @@ dgap_high_powered_results.csv
 govphys_quadratic_results.csv
 yeast_name_orf_map.csv
 
+# ...but the deposited copy of the GovPhys cohort IS committed, on purpose. The
+# root-level file above is a scratch output of a live GitHub fetch and stays
+# ignored; cohort-audit/data/ holds the artifact produced by the pre-registered
+# CI run, which is what makes the N=992 result reproducible from a clean clone.
+# Ignoring it was the reason the audit had to report the gap as open.
+!cohort-audit/data/govphys_quadratic_results.csv
+
 # NOTE: yeast_interactome_DEG.csv, scer_essential_genes_DEG.csv and
 # scer_essential_orfs.txt were previously ignored here. That is exactly why the
 # cohort audit reported "no essentiality labels are committed anywhere" — the files

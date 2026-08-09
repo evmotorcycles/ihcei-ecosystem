@@ -107,7 +107,8 @@ run "biomedical-agency: 4 telemetry laws on real yeast/PubMed/bioRxiv/GitHub (OQ
 run "bell-telemetry: Bell/CHSH nonlocality as device-independent telemetry (classical 2, quantum 2√2, PR-box rejected)" py bell-telemetry/test_bell.py
 run "knowledge-breakthroughs: status vs fidelity on real GitHub/HF/bioRxiv/PubMed — thesis FALSIFIED, null locked" py knowledge-breakthroughs/test_knowledge.py
 run "cohort-audit: Yeast 4825 / GitHub 992 / swarm evidentiary audit — gaps + simulations locked" py cohort-audit/test_cohort_audit.py
-run "cohort-audit: gap closure — yeast outcome CLOSED, GitHub 992 still open, G2 miss recorded" py cohort-audit/test_gap_closure.py
+run "cohort-audit: gap closure — yeast outcome + GitHub 992 CLOSED (rows committed)" py cohort-audit/test_gap_closure.py
+run "cohort-audit: N=992 independent re-analysis — summary recomputes from raw rows" py cohort-audit/test_992.py
 run "ei-dashboards: ASSAY — real stack over real Qwen+DeepSeek repos + offline dashboards" node_test ei-dashboards/assay.test.mjs
 run "cairn: EI engine + Hinton Grand Canyon test (anti-overclaim control locked)" py cairn/test_ei_llm.py
 run "cairn CI: centric intelligence on real Qwen+DeepSeek — calibration gate FALSIFIED, locked" py cairn/test_ci.py
