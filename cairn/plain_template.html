@@ -155,7 +155,7 @@ footer{border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1.3rem;col
 <!-- ============================ HOME ============================ -->
 <section class="page on" id="home">
   <div class="hero">
-    <h1>Four small tools for checking things you were told.</h1>
+    <h1>Six small tools for checking things you were told.</h1>
     <p>No account, no internet connection, nothing sent anywhere. Everything below runs
        inside this page on your own device. Pick the thing you actually need.</p>
   </div>
@@ -187,6 +187,20 @@ footer{border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1.3rem;col
         <span>When a tool says it is 70% sure, is it right 70% of the time? We ran that
               test on ourselves. We failed it. The result is here.</span>
         <em>Trig · calibration</em></span>
+    </button>
+    <button class="job" data-go="files">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M13 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9z"/><path d="M13 3v6h6"/></svg></span>
+      <span><b>Open a file and see what is really in it</b>
+        <span>A document, a spreadsheet, a transcript, a photo, or source code. You get
+              back what could actually be read — and, just as plainly, what could not.</span>
+        <em>Readers · documents, data, code</em></span>
+    </button>
+    <button class="job" data-go="plan">
+      <span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 5h16M4 12h10M4 19h13"/><circle cx="18.5" cy="12" r="2"/></svg></span>
+      <span><b>Plan something so you can tell if it worked</b>
+        <span>Describe what you want to do. You get a plan where every step names the
+              evidence it needs — and the failure condition is written before you start.</span>
+        <em>Planner · projects with gates</em></span>
     </button>
   </div>
 
@@ -305,6 +319,64 @@ footer{border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1.3rem;col
   </div>
 </section>
 
+
+<!-- ============================ READERS ============================ -->
+<section class="page" id="files">
+  <h2>Open a file and see what is really in it</h2>
+  <p class="lede">Choose a file, or paste text below. Nothing is uploaded — the file is read
+     inside this page on your own device.</p>
+
+  <div class="panel">
+    <label class="f" for="file">Choose a file</label>
+    <input type="file" id="file" style="width:100%">
+    <div class="chips" id="fchips"></div>
+    <label class="f" for="pastebox" style="margin-top:1rem">…or paste text, a transcript, or code</label>
+    <textarea id="pastebox" rows="5" placeholder="Paste here, then pick what it is"></textarea>
+    <div class="row" style="margin-top:.6rem">
+      <button class="go" id="asdoc" style="margin-top:0">Read as document</button>
+      <button class="ghost" id="ascsv">Read as data</button>
+      <button class="ghost" id="ascode">Audit as code</button>
+      <button class="ghost" id="astrans">Read as transcript</button>
+    </div>
+  </div>
+  <div id="fout"></div>
+
+  <div class="honest">
+    <b>What these readers cannot do</b>
+    They parse <em>structure</em>, never meaning. A spreadsheet reader knows a column is
+    numeric; it does not know what the number means. The image reader knows the pixel
+    size and nothing else — <b style="display:inline">there is no vision model here, so a
+    chart, a contract photo and a cat are the same thing to it.</b> There is no network,
+    so no video or web page can be fetched: open it, copy the transcript, paste it in.
+    Every result lists its own blind spots, and those lists are the important part.
+  </div>
+</section>
+
+<!-- ============================ PLANNER ============================ -->
+<section class="page" id="plan">
+  <h2>Plan something so you can tell if it worked</h2>
+  <p class="lede">Most plans list what you will do. This one makes you write down what would
+     count as failure — before you start, while you can still be honest about it.</p>
+
+  <div class="panel">
+    <label class="f" for="goal">What do you want to do?</label>
+    <textarea id="goal" rows="3" placeholder="e.g. Move our customer records to a new provider by March"></textarea>
+    <label class="f" for="cons" style="margin-top:.8rem">Anything fixed? (budget, deadline, people)</label>
+    <input type="text" id="cons" placeholder="optional">
+    <div class="chips" id="pchips"></div>
+    <button class="go" id="doplan">Make the plan</button>
+  </div>
+  <div id="pout"></div>
+
+  <div class="honest">
+    <b>What the planner cannot do</b>
+    It gives you a <em>structure</em>, not advice. It does not know your field, cannot tell
+    you whether the goal is achievable or wise, and cannot estimate cost or time. For
+    anything touching health, money, law or safety it will say so — because a
+    well-structured plan and a safe plan are different things.
+  </div>
+</section>
+
 <footer class="wrap" style="padding:1.3rem 1.15rem 0">
   Runs entirely on your device — no account, no network, nothing uploaded. The numbers in
   the confidence test come from a pre-registered run over {{n}} real projects; the limit was
@@ -313,6 +385,7 @@ footer{border-top:1px solid var(--line);margin-top:2.5rem;padding-top:1.3rem;col
 </main>
 
 <script>{{ENGINE}}</script>
+<script>{{READERS}}</script>
 <script>
 "use strict";
 var DATA = {{DATA}};
@@ -330,7 +403,7 @@ function go(id){
 // Route through the URL hash so the browser's own Back button works — that is
 // the control ordinary people reach for first, and a single-page app that
 // ignores it feels broken.
-var PAGES = ["home","ei","pc","helm","ci"];
+var PAGES = ["home","ei","pc","helm","ci","files","plan"];
 function navigate(id){ if(location.hash.slice(1)!==id) location.hash = id; else go(id) }
 window.addEventListener("hashchange", function(){
   var id = location.hash.slice(1);
@@ -515,6 +588,135 @@ $("#tamper").onclick=function(){
   await addEntry("Deposit paid — 1,000");
   await addEntry("Start date confirmed for the 12th");
 })();
+
+
+/* ---------- 5. readers: files, data, code, transcripts ---------- */
+function renderRead(r){
+  var ok = r.ok;
+  var TITLE = {document:"Document read", dataset:"Data read", code:"Code audited",
+               transcript:"Transcript read", image:"Image inspected", pdf:"PDF not read", plan:"Plan"};
+  var h = '<div class="panel"><div class="verdict '+(ok?"v-ok":"v-no")+'"><h3>'+
+    (TITLE[r.kind]||"Read")+(ok?"":" — declined")+'</h3><p>'+
+    (ok ? "Here is what could actually be read out of it."
+        : "Nothing was read. That is the honest answer, not a failure to try.")+'</p></div>';
+
+  if(r.kind==="dataset" && r.ok){
+    var f=r.facts;
+    h += '<p style="margin-top:1rem"><b>'+f.rows+'</b> rows &middot; <b>'+f.columns+'</b> columns'+
+         (f.ragged_rows_dropped?' &middot; <span style="color:var(--warn)">'+f.ragged_rows_dropped+' malformed row(s) dropped</span>':'')+'</p>';
+    h += '<div class="scroll"><table><thead><tr><th>Column</th><th>Type</th><th>Missing</th><th>Range</th></tr></thead><tbody>'+
+      f.column_summary.map(function(c){
+        return '<tr><td class="mono">'+esc(c.name)+'</td><td>'+(c.numeric?"number":"text")+'</td>'+
+               '<td class="num">'+c.missing+'</td><td class="num">'+
+               (c.numeric? c.min+" – "+c.max+" (mean "+c.mean+")" : c.distinct+" distinct")+'</td></tr>';
+      }).join("")+'</tbody></table></div>';
+    if(f.constant_columns.length)
+      h += '<div class="flag"><b>Columns that never change: '+f.constant_columns.join(", ")+
+           '.</b> A column with one value carries no information — anything that appears to depend on it is depending on nothing.</div>';
+  }
+
+  if(r.kind==="code" && r.ok){
+    var fd=r.facts.findings;
+    h += '<p style="margin-top:1rem">'+r.facts.lines+' lines, '+r.facts.checks_run+' governance patterns checked, '+
+         '<b>'+fd.length+'</b> place(s) to look at.</p>';
+    if(r.facts.governance_signals_present.length)
+      h += '<div class="steps"><b>Governance signals already present</b><ul>'+
+        r.facts.governance_signals_present.map(function(g){return "<li>"+esc(g)+"</li>"}).join("")+'</ul></div>';
+    h += fd.length ? fd.map(function(x){
+      return '<div class="flag" style="margin-top:.7rem"><b>Line '+x.line+' — '+esc(x.title)+'</b>'+
+        '<div class="mono" style="margin:.35rem 0;color:var(--stone)">'+esc(x.snippet)+'</div>'+
+        esc(x.why)+'<div style="margin-top:.4rem"><b style="display:inline;color:var(--accent)">Fix: </b>'+esc(x.fix)+'</div></div>';
+    }).join("") : '<div class="steps"><b>No pattern matched</b><ul><li>That means none of these '+
+      r.facts.checks_run+' patterns fired — it does not mean the code is fine.</li></ul></div>';
+  }
+
+  if((r.kind==="document"||r.kind==="transcript") && r.ok){
+    var ff=r.facts;
+    h += '<p style="margin-top:1rem">'+(ff.words||0)+' words'+
+      (ff.paragraphs?', '+ff.paragraphs+' paragraphs':'')+
+      (ff.timestamps_removed?', '+ff.timestamps_removed+' timestamps stripped':'')+'.</p>';
+    h += '<button class="go" id="auditread">Now check the claims in it</button>';
+  }
+
+  if(r.kind==="image" && r.ok){
+    h += '<p style="margin-top:1rem">'+r.facts.width+' × '+r.facts.height+' pixels ('+
+         r.facts.megapixels+' MP), '+(r.facts.bytes||0)+' bytes, '+esc(r.facts.type||"")+'.</p>';
+  }
+
+  if(r.limits.length)
+    h += '<div class="steps"><b>Limits of this read</b><ul>'+
+      r.limits.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+  h += '<div class="flag"><b>What this reader cannot do</b><ul style="margin:.4rem 0 0;padding-left:1.1rem">'+
+    r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+  h += '</div>';
+  $("#fout").innerHTML = h;
+  var ab = $("#auditread");
+  if(ab) ab.onclick = function(){ $("#claim").value = r.text.slice(0,2000); navigate("ei"); check(); };
+}
+
+var LAST_TEXT = "";
+$("#file").onchange = function(e){
+  var f = e.target.files && e.target.files[0]; if(!f) return;
+  if(/^image\//.test(f.type)){
+    var img=new Image(), url=URL.createObjectURL(f);
+    img.onload=function(){
+      renderRead(READERS.readImage(f.name,{width:img.naturalWidth,height:img.naturalHeight,
+        bytes:f.size,type:f.type}));
+      URL.revokeObjectURL(url);
+    };
+    img.onerror=function(){ renderRead(READERS.readImage(f.name,{width:0,height:0,bytes:f.size,type:f.type})) };
+    img.src=url; return;
+  }
+  var fr=new FileReader();
+  fr.onload=function(){ LAST_TEXT=String(fr.result||""); renderRead(READERS.readFile(f.name, LAST_TEXT, {})) };
+  fr.readAsText(f);
+};
+function pasted(){ return $("#pastebox").value }
+$("#asdoc").onclick   = function(){ renderRead(READERS.readTextDocument("pasted.txt", pasted())) };
+$("#ascsv").onclick   = function(){ renderRead(READERS.readCsv("pasted.csv", pasted())) };
+$("#ascode").onclick  = function(){ renderRead(READERS.auditCode("pasted.py", pasted())) };
+$("#astrans").onclick = function(){ renderRead(READERS.readTranscript("pasted.vtt", pasted())) };
+[["A spreadsheet","name,region,sales\nAlpha,UK,1200\nBeta,EU,980\nGamma,UK,\n","ascsv"],
+ ["Code that reads its own subject","def check(p):\n    s = p[\"forks\"] / p[\"stars\"]\n    if \"best\" in p[\"description\"].lower():\n        s += 0.5\n    return round(s, 3)\n","ascode"],
+ ["A video transcript","WEBVTT\n\n00:00:01.000 --> 00:00:05.000\nA 2023 trial of 240 people in the UK found a 12% drop.\n","astrans"]]
+ .forEach(function(x){
+   var b=document.createElement("button"); b.className="chip"; b.textContent=x[0];
+   b.onclick=function(){ $("#pastebox").value=x[1]; $("#"+x[2]).click(); };
+   $("#fchips").appendChild(b);
+ });
+
+/* ---------- 6. planner ---------- */
+["Move our customer records to a new provider by March",
+ "Launch a small community newsletter next month",
+ "Change my father's medication schedule at home"].forEach(function(t){
+  var b=document.createElement("button"); b.className="chip";
+  b.textContent = t.length>40?t.slice(0,40)+"…":t; b.title=t;
+  b.onclick=function(){ $("#goal").value=t; doplan(); };
+  $("#pchips").appendChild(b);
+});
+function doplan(){
+  var r = READERS.planProject($("#goal").value, $("#cons").value);
+  if(!r.ok){
+    $("#pout").innerHTML = '<div class="panel"><div class="verdict v-no"><h3>Not enough to plan from</h3><p>'+
+      esc(r.cannot[0])+'</p></div></div>';
+    return;
+  }
+  var h = '<div class="panel"><div class="verdict v-ok"><h3>A plan you can be held to</h3>'+
+    '<p>Seven steps. Each names the evidence it needs and the point at which it fails.</p></div>'+
+    '<div class="scroll"><table><thead><tr><th>Step</th><th>Do</th><th>Evidence</th><th>Fails if</th></tr></thead><tbody>'+
+    r.facts.steps.map(function(s,i){
+      return '<tr><td><b>'+(i+1)+'. '+esc(s.phase)+'</b></td><td>'+esc(s.do_)+'</td><td>'+
+             esc(s.evidence)+'</td><td style="color:var(--warn)">'+esc(s.gate)+'</td></tr>';
+    }).join("")+'</tbody></table></div>';
+  if(r.facts.risk_flagged)
+    h += '<div class="flag"><b>This touches an area where structure is not safety.</b> '+
+         'A well-structured plan and a safe plan are different things. Take this one to '+
+         'someone qualified before acting on it.</div>';
+  h += '<div class="flag"><b>What the planner cannot do</b><ul style="margin:.4rem 0 0;padding-left:1.1rem">'+
+    r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div></div>';
+  $("#pout").innerHTML = h;
+}
+$("#doplan").onclick = doplan;
 
 /* ---------- 4. ci bars ---------- */
 $("#bars").innerHTML = DATA.bins.map(function(b){

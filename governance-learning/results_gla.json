@@ -1,0 +1,86 @@
+{
+  "n_total": 992,
+  "n_train": 700,
+  "n_test": 292,
+  "params": {
+    "w": [
+      2.1684303,
+      -0.2033941,
+      -1.2702269
+    ],
+    "b": -2.85295861,
+    "features": [
+      "U",
+      "D_enc",
+      "D_dec"
+    ],
+    "blinded": [
+      "stars",
+      "archived"
+    ],
+    "vif": 1.2812,
+    "independence": "VERIFIED_INDEPENDENT",
+    "halted": null,
+    "n_train": 700
+  },
+  "L1_declines": {
+    "gate": "abstain rate >= 0.10",
+    "measured": 0.2568,
+    "result": "HOLDS"
+  },
+  "L2_selective_prediction_pays": {
+    "gate": "accuracy on answered > accuracy scoring everything",
+    "accuracy_answered": 0.8571,
+    "accuracy_all_forced": 0.8493,
+    "difference": 0.0078,
+    "difference_in_rows": 2.3,
+    "bootstrap_95_ci": [
+      -0.0163,
+      0.0338
+    ],
+    "ci_includes_zero": true,
+    "coverage_cost": 0.2568,
+    "result": "HOLDS",
+    "HONEST_READING": "HOLDS by the letter of the pre-registered gate, but the effect is NOT distinguishable from noise: the 95% bootstrap CI includes zero. Abstaining cost 25.7% of coverage and bought about 2.3 rows out of 292. Read this as 'abstention did not hurt', not as 'abstention helped'."
+  },
+  "L3_blinding_is_physical": {
+    "gate": "adversarial leak column, once blinded, changes no parameter",
+    "measured": true,
+    "result": "HOLDS"
+  },
+  "L4_independence_gate_halts": {
+    "gate": "collapsed feature set produces zero predictions",
+    "halted": true,
+    "vif": "inf",
+    "result": "HOLDS"
+  },
+  "L5_no_bare_return": {
+    "gate": "every output is a Verdict",
+    "measured": true,
+    "result": "HOLDS"
+  },
+  "L6_self_training_refused": {
+    "gate": "fitting on model-generated labels raises",
+    "measured": true,
+    "result": "HOLDS"
+  },
+  "L7_calibration_measured_not_gated": {
+    "note": "no gate. Published whatever it is.",
+    "ece_on_answered": 0.0715,
+    "reading": "well calibrated"
+  },
+  "abstain_reasons": {
+    "D_dec outside the range this model was fitted on": 28,
+    "the model is near-indifferent here": 21,
+    "D_enc outside the range this model was fitted on": 17,
+    "U, D_enc outside the range this model was fitted on": 5,
+    "D_enc, D_dec outside the range this model was fitted on": 1,
+    "U, D_enc, D_dec outside the range this model was fitted on": 2,
+    "U, D_dec outside the range this model was fitted on": 1
+  },
+  "honest_notes": [
+    "The gates test GOVERNANCE properties, not predictive power. A perfectly governed learner can be a useless predictor; L7 exists to make that visible rather than deniable.",
+    "Blinding a column is not fairness. A blinded feature can be reconstructed from correlated ones and nothing here checks for that.",
+    "'archived' was blinded because it is a direct component of the outcome definition. Leaving it in would let the model read the answer."
+  ]
+}

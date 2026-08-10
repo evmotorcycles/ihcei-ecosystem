@@ -144,6 +144,9 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding-top:1.3rem;col
   <h2 id="t-title">—</h2>
   <p class="lede" id="t-lede">—</p>
   <div class="panel">
+    <label class="f" for="drop">Open a file — document, spreadsheet, transcript or code</label>
+    <input type="file" id="drop" style="width:100%;margin-bottom:.9rem">
+    <div id="fileinfo"></div>
     <label class="f" for="inp" id="t-label">Paste the text</label>
     <textarea id="inp" rows="6" placeholder="Paste here…"></textarea>
     <div class="chips" id="egs"></div>
@@ -160,6 +163,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding-top:1.3rem;col
 </main>
 
 <script>{{ENGINE}}</script>
+<script>{{READERS}}</script>
 <script>
 "use strict";
 var $=function(s){return document.querySelector(s)}, $$=function(s){return [].slice.call(document.querySelectorAll(s))};
@@ -264,6 +268,53 @@ $("#theme").onclick=function(){
   d.setAttribute("data-theme", dark?"light":"dark");
 };
 go(location.hash.slice(1));
+
+
+/* ---------- open a file, honestly ---------- */
+$("#drop").onchange = function(e){
+  var f = e.target.files && e.target.files[0];
+  if(!f) return;
+  var info = $("#fileinfo");
+  function show(r, filled){
+    var h = '<div class="verdict '+(r.ok?"v-ok":"v-abs")+'" style="margin-bottom:.9rem">'+
+      '<h3>'+(r.ok? "Read: "+r.kind : "Could not read this")+'</h3><p>'+
+      (filled ? "The text is in the box below — press it when you are ready."
+              : esc(r.cannot[0]))+'</p></div>';
+    if(r.kind==="dataset" && r.ok){
+      h += '<div class="detail"><div><span>rows</span><span>'+r.facts.rows+'</span></div>'+
+           '<div><span>columns</span><span>'+r.facts.columns+'</span></div>'+
+           (r.facts.ragged_rows_dropped?'<div><span>malformed rows dropped</span><span>'+r.facts.ragged_rows_dropped+'</span></div>':'')+
+           '</div>';
+    }
+    if(r.kind==="code" && r.ok){
+      h += '<div class="tags">'+r.facts.findings.map(function(x){
+        return '<span class="tag bad">line '+x.line+': '+esc(x.title)+'</span>'}).join("")+'</div>';
+    }
+    h += '<div class="honest" style="margin-top:.9rem"><b>What this reader cannot do</b><ul style="margin:.3rem 0 0;padding-left:1.1rem">'+
+      r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+    info.innerHTML = h;
+  }
+  if(/^image\//.test(f.type)){
+    var img=new Image(), url=URL.createObjectURL(f);
+    img.onload=function(){ show(READERS.readImage(f.name,{width:img.naturalWidth,
+      height:img.naturalHeight,bytes:f.size,type:f.type}), false); URL.revokeObjectURL(url); };
+    img.src=url; return;
+  }
+  var fr=new FileReader();
+  fr.onload=function(){
+    var r = READERS.readFile(f.name, String(fr.result||""), {});
+    var filled = false;
+    if(r.text){ $("#inp").value = r.text.slice(0, 20000); filled = true; }
+    else if(r.kind==="dataset" && r.records.length){
+      // a screen reads prose, not a table — hand it the header + first rows as text
+      $("#inp").value = Object.keys(r.records[0]).join(", ") + "\n" +
+        r.records.slice(0,20).map(function(x){ return Object.values(x).join(", ") }).join("\n");
+      filled = true;
+    }
+    show(r, filled);
+  };
+  fr.readAsText(f);
+};
 
 /* ---------- running a screen ---------- */
 function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}

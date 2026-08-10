@@ -10,9 +10,10 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 engine = open(os.path.join(HERE, "engine.bundle.js"), encoding="utf-8").read()
+readers = open(os.path.join(os.path.dirname(HERE), "readers/readers.js"), encoding="utf-8").read()
 tpl = open(os.path.join(HERE, "suite_template.html"), encoding="utf-8").read()
 
-out = tpl.replace("{{ENGINE}}", engine)
+out = tpl.replace("{{ENGINE}}", engine).replace("{{READERS}}", readers)
 assert "{{" not in out, "unfilled placeholder left in suite.html"
 path = os.path.join(HERE, "suite.html")
 open(path, "w", encoding="utf-8").write(out)

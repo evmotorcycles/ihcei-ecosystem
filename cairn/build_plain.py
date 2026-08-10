@@ -16,6 +16,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ci = json.load(open(os.path.join(HERE, "results_ci.json")))
 cal = ci["C1_calibration"]
 engine = open(os.path.join(HERE, "ei_engine.js")).read()
+readers = open(os.path.join(os.path.dirname(HERE), "readers/readers.js")).read()
 
 # The permission list, in the words an ordinary person would use for it.
 RULES = [
@@ -39,7 +40,7 @@ DATA = {
 }
 
 tpl = open(os.path.join(HERE, "plain_template.html")).read()
-for key, val in [("{{ENGINE}}", engine),
+for key, val in [("{{ENGINE}}", engine), ("{{READERS}}", readers),
                  ("{{DATA}}", json.dumps(DATA, separators=(",", ":"))),
                  ("{{ece}}", str(cal["ece"])),
                  ("{{n}}", str(ci["cohort_n"])),
