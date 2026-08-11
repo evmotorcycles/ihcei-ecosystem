@@ -1,10 +1,20 @@
 {
   "prereg_sha256": "8ac051f268460b4d119770b8caf9722c523a360612c8b7348c4954ad483aaea9",
-  "files_scanned": 440,
+  "files_scanned": 446,
   "O1_interposition": {
     "gate": "some component can BLOCK an action, not merely report on one",
     "blocking_call_sites": [],
-    "result": "FAILS"
+    "behavioural_check": {
+      "ran": true,
+      "denied_status": 403,
+      "denied_reached_upstream": false,
+      "allowed_status": 200,
+      "allowed_reached_upstream": true,
+      "blocks": true
+    },
+    "method": "behavioural — a denied request is sent and the far side is inspected",
+    "result": "PASSES",
+    "evidence": "a denied request was answered 403 and the upstream log stayed EMPTY, while an allowed request did reach it. The bytes were never sent."
   },
   "O2_mandatory": {
     "gate": "an integration point exists that a program cannot bypass",
@@ -95,12 +105,13 @@
   },
   "O5_honest_label": {
     "gate": "the artefact is named for what it is",
-    "interposition": "FAILS",
+    "interposition": "PASSES",
     "mandatory": "FAILS",
-    "honest_label": "a library, not an operating system",
-    "result": "HOLDS"
+    "honest_label": "a gate that works only where it is the only route",
+    "result": "HOLDS",
+    "why": "It can stop things — that is real and it is new. But nothing forces a program to come through it, so the guarantee is conditional on the layer underneath (a container, a network with no other exit, a firewall rule). Neither 'library' nor 'operating system' is accurate; this is the label that is."
   },
-  "THE_FINDING": "This is NOT an operating system. Nothing here can block an action, and there is no hook a program cannot bypass. Every component returns an OPINION about an action that something else has already taken or will take regardless. What it is: a set of libraries that compose, decline safely, and keep a tamper-evident record — which is genuinely useful and is not the same guarantee.",
+  "THE_FINDING": "There is now a component that genuinely BLOCKS: a denied request is refused at the gate and the far side never receives it, proven by an empty upstream log. That is interposition, and the rest of the stack still does not have it. What is still missing is MANDATORY routing: nothing stops a program from going around the gate. So the honest label is neither library nor operating system — it is a gate that works only where it is the only route, and putting it there is a job for the container or the network, not for this code.",
   "why_the_distinction_matters": "An operating system's value is that a program CANNOT go around it. If a permission table only advises, an agent that ignores it is unaffected, and the person relying on it is worse off than with no table at all, because they believe they are protected.",
   "what_would_close_the_gap": [
     "a browser extension that intercepts requests before they are made",

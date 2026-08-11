@@ -16,9 +16,21 @@ const ROOT = dirname(here);
 execFileSync("node", [join(here, "os_check.mjs")], { cwd: ROOT });
 const R = JSON.parse(readFileSync(join(here, "results_os.json"), "utf8"));
 
-test("it cannot block an action", () => {
-  assert.equal(R.O1_interposition.result, "FAILS");
-  assert.equal(R.O1_interposition.blocking_call_sites.length, 0);
+test("interposition is now REAL, and proven behaviourally not by grep", () => {
+  const o1 = R.O1_interposition;
+  assert.equal(o1.result, "PASSES");
+  assert.equal(o1.behavioural_check.ran, true);
+  assert.equal(o1.behavioural_check.denied_status, 403);
+  assert.equal(o1.behavioural_check.denied_reached_upstream, false,
+    "a denied request reaching upstream would make this advice, not a gate");
+  assert.equal(o1.behavioural_check.allowed_reached_upstream, true,
+    "an allowed request must still get through, or the gate is just broken");
+  assert.match(o1.method, /behavioural/);
+});
+
+test("the grep-only evidence is still empty — the pass is behavioural", () => {
+  assert.equal(R.O1_interposition.blocking_call_sites.length, 0,
+    "pattern matching produced a false negative here; the behavioural check is why it passes");
 });
 
 test("there is no hook a program cannot bypass", () => {
@@ -54,10 +66,17 @@ test("every component declines on evidence-free input", () => {
   assert.ok(R.O4_safe_degradation.checks >= 40);
 });
 
-test("the honest label is recorded, and it is not 'OS'", () => {
-  assert.equal(R.O5_honest_label.honest_label, "a library, not an operating system");
-  assert.match(R.THE_FINDING, /NOT an operating system/);
+test("the honest label is neither 'library' nor 'OS'", () => {
+  assert.equal(R.O5_honest_label.honest_label,
+    "a gate that works only where it is the only route");
+  assert.match(R.O5_honest_label.why, /conditional on the layer/);
+  assert.match(R.THE_FINDING, /genuinely BLOCKS/);
+  assert.match(R.THE_FINDING, /nothing stops a program from going around the gate/);
   assert.match(R.why_the_distinction_matters, /believe they are protected/);
+});
+
+test("mandatory routing is still missing and still said so", () => {
+  assert.equal(R.O2_mandatory.result, "FAILS");
 });
 
 test("what would close the gap is named concretely", () => {

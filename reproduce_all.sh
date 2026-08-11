@@ -113,7 +113,9 @@ run "ei-dashboards: ASSAY — real stack over real Qwen+DeepSeek repos + offline
 run "cairn: EI engine + Hinton Grand Canyon test (anti-overclaim control locked)" py cairn/test_ei_llm.py
 run "cairn CI: centric intelligence on real Qwen+DeepSeek — calibration gate FALSIFIED, locked" py cairn/test_ci.py
 run "safety-coverage: does the warning fire? baseline 61% miss -> 4% on a sealed set" py safety-coverage/test_coverage.py
-run "governance-os: structural test — library, not an operating system" node_test governance-os/os.test.mjs
+run "weir: the gate — refused requests provably never reach upstream" node_test weir/weir.test.mjs
+run "weir: control panel agrees with the gate on every path and method" node_test weir/panel_parity.test.mjs
+run "governance-os: structural test — interposition real, mandatory routing still missing" node_test governance-os/os.test.mjs
 run "layers: IHCEI/NERE stay infrastructure; the desks stay jargon-free" py test_layers.py
 run "growth-study: composition by era + whether the evidence exists (pre-registered)" py growth-study/test_growth.py
 run "governance-learning: 6 obligations inside a learner (pre-registered)" py governance-learning/test_gla.py

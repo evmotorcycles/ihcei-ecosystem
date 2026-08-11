@@ -67,6 +67,42 @@ const raisesOnDeny = grepFiles(
   /\b(raise|throw)\b[^\n]{0,100}\b(PermissionDenied|NotPermitted|Forbidden|AccessDenied)\b/);
 const O1_blocks = [...new Set([...blockingCalls, ...raisesOnDeny])];
 
+// Pattern matching is the weak form of this question and it produced a FALSE
+// NEGATIVE: the gate blocks by refusing to forward, which no grep for `throw`
+// or `process.exit` can see. So the real check is BEHAVIOURAL — stand the gate
+// up, ask it for something denied, and look at whether the far side ever heard
+// about it. That cannot be gamed by wording.
+async function behaviouralInterpositionCheck() {
+  try {
+    const W = await import(join(ROOT, "weir/weir.mjs"));
+    const F = await import(join(ROOT, "weir/upstream_fixture.mjs"));
+    const up = F.createUpstream();
+    await new Promise(r => up.listen(0, "127.0.0.1", r));
+    const key = W.loadKey(join(ROOT, "weir/key.example.json"));
+    const gate = W.createWeir({ key, upstream: `http://127.0.0.1:${up.address().port}` });
+    await new Promise(r => gate.listen(0, "127.0.0.1", r));
+    const base = `http://127.0.0.1:${gate.address().port}`;
+    F.received.length = 0;
+    const denied = await fetch(`${base}/payroll/salaries.csv`);
+    const deniedReachedUpstream = F.received.length > 0;
+    F.received.length = 0;
+    const allowed = await fetch(`${base}/projects/report.md`);
+    const allowedReachedUpstream = F.received.length > 0;
+    gate.close(); up.close();
+    return {
+      ran: true,
+      denied_status: denied.status,
+      denied_reached_upstream: deniedReachedUpstream,
+      allowed_status: allowed.status,
+      allowed_reached_upstream: allowedReachedUpstream,
+      blocks: denied.status === 403 && !deniedReachedUpstream && allowedReachedUpstream,
+    };
+  } catch (e) {
+    return { ran: false, error: String(e.message || e) };
+  }
+}
+const behaviour = await behaviouralInterpositionCheck();
+
 /* ------------------------------------------------- O2 mandatory ---------- */
 const hookPatterns = [
   [/\bLD_PRELOAD\b/, "linker preload"],
@@ -166,7 +202,14 @@ const notDeclined = degrade.filter(d => !d.declined);
 /* ------------------------------------------------- verdicts -------------- */
 const O1 = { gate: "some component can BLOCK an action, not merely report on one",
   blocking_call_sites: O1_blocks,
-  result: O1_blocks.length ? "PASSES" : "FAILS" };
+  behavioural_check: behaviour,
+  method: "behavioural — a denied request is sent and the far side is inspected",
+  result: behaviour.blocks ? "PASSES" : "FAILS",
+  evidence: behaviour.blocks
+    ? `a denied request was answered ${behaviour.denied_status} and the upstream ` +
+      "log stayed EMPTY, while an allowed request did reach it. The bytes were " +
+      "never sent."
+    : "no component stopped a request from reaching its destination" };
 const O2 = { gate: "an integration point exists that a program cannot bypass",
   hooks_found: O2_hooks,
   observer_extension_found: observerExtension,
@@ -184,10 +227,20 @@ const O4 = { gate: "every component declines on evidence-free input",
   result: notDeclined.length ? "FAILS" : "HOLDS" };
 
 const isOS = O1.result === "PASSES" && O2.result === "PASSES";
+const gateOnly = O1.result === "PASSES" && O2.result === "FAILS";
 const O5 = { gate: "the artefact is named for what it is",
   interposition: O1.result, mandatory: O2.result,
-  honest_label: isOS ? "operating system" : "a library, not an operating system",
-  result: "HOLDS" };
+  honest_label: isOS ? "operating system"
+    : gateOnly ? "a gate that works only where it is the only route"
+    : "a library, not an operating system",
+  result: "HOLDS",
+  why: gateOnly
+    ? "It can stop things — that is real and it is new. But nothing forces a " +
+      "program to come through it, so the guarantee is conditional on the layer " +
+      "underneath (a container, a network with no other exit, a firewall rule). " +
+      "Neither 'library' nor 'operating system' is accurate; this is the label " +
+      "that is."
+    : "" };
 
 const out = {
   prereg_sha256: createHash("sha256")
@@ -197,6 +250,15 @@ const out = {
   O4_safe_degradation: O4, O5_honest_label: O5,
   THE_FINDING: isOS
     ? "interposition and mandatory enforcement both present"
+    : gateOnly
+    ? "There is now a component that genuinely BLOCKS: a denied request is " +
+      "refused at the gate and the far side never receives it, proven by an " +
+      "empty upstream log. That is interposition, and the rest of the stack " +
+      "still does not have it. What is still missing is MANDATORY routing: " +
+      "nothing stops a program from going around the gate. So the honest label " +
+      "is neither library nor operating system — it is a gate that works only " +
+      "where it is the only route, and putting it there is a job for the " +
+      "container or the network, not for this code."
     : "This is NOT an operating system. Nothing here can block an action, and " +
       "there is no hook a program cannot bypass. Every component returns an " +
       "OPINION about an action that something else has already taken or will " +
