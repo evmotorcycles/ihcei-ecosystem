@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The stop card — what a refusal to guess looks like on a phone</title>
+<style>
+:root{
+  --wall:#E7E9E4; --wall-2:#DDE1DA; --desk:#FBFBF8; --ink:#15181A; --stone:#66716B;
+  --line:#D5DBD3; --edge:#C3CBC1;
+  --key:#245C6B; --key-soft:#DEEBEF; --on-key:#FBFBF8;
+  --ok:#1E6B48; --ok-soft:#E2F0E8;
+  /* The whole design turns on this token. A stop is not an error, so it must
+     not borrow error colour; and it is not a success for the user's question,
+     so it must not borrow the green tick either. It is stamp ink. */
+  --held:#8A5A0B; --held-soft:#FBF1DF; --held-edge:#E3CE9C;
+  --dead:#8E948F; --dead-soft:#EDEEEC;
+  --shadow:0 1px 1px rgba(21,24,26,.05),0 6px 18px rgba(21,24,26,.08);
+  --lift:0 2px 4px rgba(21,24,26,.07),0 14px 34px rgba(21,24,26,.12);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wall:#101413; --wall-2:#0B0E0D; --desk:#181D1B; --ink:#E8EDEA; --stone:#95A099;
+  --line:#252C29; --edge:#323A36;
+  --key:#6FB6C9; --key-soft:#122228; --on-key:#0B0E0D;
+  --ok:#5FBF92; --ok-soft:#12241C;
+  --held:#D9A441; --held-soft:#241D0F; --held-edge:#4A3D1C;
+  --dead:#767C78; --dead-soft:#1B1F1D;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 4px rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --wall:#101413; --wall-2:#0B0E0D; --desk:#181D1B; --ink:#E8EDEA; --stone:#95A099;
+  --line:#252C29; --edge:#323A36;
+  --key:#6FB6C9; --key-soft:#122228; --on-key:#0B0E0D;
+  --ok:#5FBF92; --ok-soft:#12241C;
+  --held:#D9A441; --held-soft:#241D0F; --held-edge:#4A3D1C;
+  --dead:#767C78; --dead-soft:#1B1F1D;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 4px rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:16px/1.6 var(--sans);
+  background:var(--wall);background-image:radial-gradient(circle at 20% 8%,var(--wall-2),transparent 60%);
+  -webkit-font-smoothing:antialiased}
+button,textarea{font:inherit}
+button{cursor:pointer}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.018em;line-height:1.22;text-wrap:balance}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.page{max-width:63rem;margin:0 auto;padding:1.4rem 1rem 4rem;
+  display:grid;gap:1.6rem;grid-template-columns:minmax(0,1fr)}
+@media (min-width:64rem){.page{grid-template-columns:26rem minmax(0,1fr);align-items:start;gap:2.2rem}}
+
+.intro h1{font-size:clamp(1.5rem,4.4vw,2rem)}
+.intro p{color:var(--stone);margin:.7rem 0 0}
+
+/* ---------------------------------------------------------------- phone -- */
+.phone{background:var(--desk);border:1px solid var(--edge);border-radius:22px;
+  box-shadow:var(--lift);overflow:hidden;max-width:26rem;width:100%}
+.bar{display:flex;align-items:center;gap:.5rem;padding:.7rem .95rem;
+  border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--desk) 70%,var(--wall))}
+.bar b{font-size:.95rem;font-weight:650}
+.bar .sp{flex:1}
+.bar .clock{color:var(--stone);font-size:.78rem}
+.body{padding:.95rem}
+
+/* the input stays on screen. If a person's words vanish and a panel appears,
+   that is the single most crash-like sensation an interface can produce. */
+.ask{display:block;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--stone);font-weight:650;margin-bottom:.4rem}
+textarea{width:100%;min-height:5.2rem;padding:.7rem .8rem;border-radius:12px;
+  border:1px solid var(--edge);background:var(--wall);color:var(--ink);resize:vertical;line-height:1.5}
+textarea:focus-visible{outline:2px solid var(--key);outline-offset:1px}
+.row{display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap}
+.go{flex:1;min-width:8rem;background:var(--key);color:var(--on-key);border:none;border-radius:11px;
+  padding:.62rem 1rem;font-weight:650}
+.chip{background:var(--wall);border:1px solid var(--edge);color:var(--stone);
+  border-radius:999px;padding:.35rem .72rem;font-size:.79rem}
+.chip:hover{color:var(--ink);border-color:var(--stone)}
+
+/* ------------------------------------------------------------ the card --- */
+/* A reading and a stop are rendered by ONE function into ONE silhouette:
+   strip, headline, counts, reasons, next, footer. A person recognises which
+   of the two normal outcomes they got from the SHAPE, before reading a word.
+   Give a stop a different shape and it reads as an exception. */
+.card{margin-top:1rem;border:1px solid var(--edge);border-radius:16px;overflow:hidden;
+  background:var(--desk);box-shadow:var(--shadow)}
+.card.settle{animation:settle .34s cubic-bezier(.2,.9,.3,1)}
+@keyframes settle{from{opacity:0;transform:translateY(-9px) scale(.985)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.card.settle{animation:none}}
+
+.strip{display:flex;align-items:center;gap:.5rem;padding:.5rem .85rem;
+  font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700}
+.card[data-tone="held"] .strip{background:var(--held-soft);color:var(--held);
+  border-bottom:1px solid var(--held-edge)}
+.card[data-tone="ok"] .strip{background:var(--ok-soft);color:var(--ok);
+  border-bottom:1px solid color-mix(in srgb,var(--ok) 35%,transparent)}
+.strip .sp{flex:1}
+.stamp{border:1.5px solid currentColor;border-radius:5px;padding:.06rem .38rem;
+  font-size:.68rem;letter-spacing:.05em;transform:rotate(-1.6deg)}
+
+.head{padding:.9rem .85rem .2rem}
+.head h2{font-size:1.22rem}
+.head .said{color:var(--stone);font-size:.92rem;margin:.4rem 0 0}
+
+/* the counts are the anti-crash evidence: a crashed app cannot produce a
+   number, so a number is proof that work happened */
+.counts{display:flex;gap:.4rem;padding:.75rem .85rem 0;flex-wrap:wrap}
+.count{flex:1 1 5.4rem;background:var(--wall);border:1px solid var(--line);
+  border-radius:11px;padding:.5rem .55rem}
+.count .n{display:block;font-size:1.15rem;font-weight:700;font-family:var(--mono);
+  font-variant-numeric:tabular-nums;line-height:1.15}
+.count .l{display:block;color:var(--stone);font-size:.7rem;line-height:1.3;margin-top:.12rem}
+
+.reasons{list-style:none;margin:.85rem 0 0;padding:0 .85rem;display:grid;gap:.28rem}
+.reasons li{display:flex;gap:.5rem;align-items:flex-start;font-size:.87rem;line-height:1.45}
+.reasons .mk{width:1.05rem;flex:none;text-align:center;font-weight:700}
+.reasons .yes .mk{color:var(--ok)}
+.reasons .no .mk{color:var(--stone)}
+.reasons .no{color:var(--stone)}
+
+/* the next step points at the INPUT, never at the app. "Try again" would be a
+   lie: an honest checker given the same words returns the same answer. */
+.next{margin:.85rem .85rem 0;padding:.7rem .8rem;border-radius:12px;
+  background:var(--held-soft);border:1px solid var(--held-edge);font-size:.88rem;line-height:1.5}
+.card[data-tone="ok"] .next{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 30%,transparent)}
+.next b{display:block;font-size:.71rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--stone);margin-bottom:.2rem}
+.acts{display:flex;gap:.45rem;flex-wrap:wrap;padding:.7rem .85rem 0}
+.act{background:var(--wall);border:1px solid var(--edge);border-radius:10px;
+  padding:.4rem .7rem;font-size:.82rem;color:var(--ink)}
+.act:hover{border-color:var(--key);color:var(--key)}
+
+.foot{margin-top:.9rem;padding:.55rem .85rem;border-top:1px solid var(--line);
+  display:flex;gap:.5rem;align-items:center;color:var(--stone);font-size:.72rem;flex-wrap:wrap}
+.foot .sp{flex:1}
+.foot .mono{font-size:.72rem}
+
+/* ------------------------------------------------------- the anti-pattern */
+.crash{margin-top:1rem;border:1px dashed var(--edge);border-radius:16px;
+  background:var(--dead-soft);padding:2.6rem 1rem;text-align:center;color:var(--dead)}
+.crash .big{font-size:2rem;line-height:1}
+.crash h3{color:var(--dead);font-size:1.05rem;margin-top:.6rem}
+.crash p{font-size:.85rem;margin:.35rem 0 1rem}
+.crash button{background:none;border:1px solid var(--dead);color:var(--dead);
+  border-radius:10px;padding:.4rem .9rem;font-size:.85rem}
+
+/* ------------------------------------------------------------- the notes - */
+.notes{display:grid;gap:1rem;min-width:0}
+.note{background:var(--desk);border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem}
+.note h3{font-size:1.02rem}
+.note p{margin:.5rem 0 0;font-size:.93rem;color:var(--stone)}
+.rules{list-style:none;margin:.7rem 0 0;padding:0;display:grid;gap:.7rem;counter-reset:r}
+.rules li{display:grid;grid-template-columns:1.6rem minmax(0,1fr);gap:.6rem;
+  font-size:.92rem;line-height:1.5;counter-increment:r}
+.rules li::before{content:counter(r);font-family:var(--mono);font-size:.78rem;color:var(--held);
+  font-weight:700;padding-top:.15rem}
+.rules b{display:block}
+.rules span{color:var(--stone)}
+.vs{width:100%;border-collapse:collapse;margin-top:.7rem;font-size:.88rem}
+.vs th,.vs td{text-align:left;padding:.42rem .5rem;border-bottom:1px solid var(--line);vertical-align:top}
+.vs th{color:var(--stone);font-weight:650;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}
+.vs td:first-child{color:var(--stone);width:34%}
+.scroll{overflow-x:auto}
+.lim{background:var(--wall);border:1px solid var(--edge);border-radius:12px;
+  padding:.75rem .9rem;font-size:.86rem;color:var(--stone);margin-top:.8rem}
+.lim b{color:var(--ink);display:block;margin-bottom:.2rem;font-size:.75rem;
+  letter-spacing:.07em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div>
+    <div class="intro">
+      <h1>The stop card</h1>
+      <p>Refusing to guess is one of two normal outcomes, not a failure. This is
+         what that has to look like on a phone so nobody reads it as a crash.</p>
+    </div>
+
+    <!-- ------------------------------------------------------ the phone -- -->
+    <div class="phone">
+      <div class="bar">
+        <b>Check a claim</b><span class="sp"></span><span class="clock" id="clock"></span>
+      </div>
+      <div class="body">
+        <label class="ask" for="t">What do you want checked?</label>
+        <textarea id="t" spellcheck="false">The new process is much better and everyone should switch to it.</textarea>
+        <div class="row">
+          <button class="go" id="go">Check it</button>
+        </div>
+        <div class="row">
+          <button class="chip" data-ex="bare">a bare claim</button>
+          <button class="chip" data-ex="sourced">one with its evidence</button>
+          <button class="chip" data-ex="two">one that reads two ways</button>
+          <button class="chip" data-ex="crash">what a crash looks like</button>
+        </div>
+        <div id="out"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- --------------------------------------------------------- the notes -- -->
+  <div class="notes">
+
+    <div class="note">
+      <h3>The trap is in the name</h3>
+      <p>Design to an <em>empty tray</em> and you will build absence: dead space, a
+         centred line, a spinner that stopped. That is exactly what a crash looks
+         like, so a person reads the more familiar of the two. The tray must not be
+         empty. What comes back is a <b>returned parcel with a slip on it</b> —
+         you get your thing back, plus a note saying what was missing. Nobody has
+         ever thought the postal service crashed.</p>
+      <p>So the signal that separates a stop from a crash is not the absence of an
+         answer. It is the <b>presence of the work</b> that led to not giving one.</p>
+    </div>
+
+    <div class="note">
+      <h3>Eleven rules the card follows</h3>
+      <ol class="rules">
+        <li><b>Fill the card.</b><span>Crash states are centred in dead space. A stop is left-aligned and full, like a document.</span></li>
+        <li><b>Show counts.</b><span>“Read 12 words · looked for 5 kinds of support · found 1.” A broken app cannot produce a number.</span></li>
+        <li><b>Same silhouette as an answer.</b><span>Strip, headline, counts, reasons, next step, footer — identical in both outcomes, so the shape says “normal” before any word is read.</span></li>
+        <li><b>Stamp ink, not a traffic light.</b><span>No red: this is not an error. No green tick either: the person’s question did not get answered. A third colour that means <em>held</em>.</span></li>
+        <li><b>First person, past tense.</b><span>“I stopped before guessing.” A completed action reads as done. “No results” is ambiguous between searched-and-found-none and search-broke.</span></li>
+        <li><b>Name what was avoided.</b><span>The headline says the system <em>could</em> have guessed and chose not to. That is the protection, stated.</span></li>
+        <li><b>A timestamp and a fingerprint.</b><span>The strongest anti-crash evidence available: a crash cannot produce a hash of its own output.</span></li>
+        <li><b>Point the next step at the input.</b><span>“Add a source” fixes the claim. “Try again” fixes the app — and would be a lie, since the same words honestly produce the same answer.</span></li>
+        <li><b>Never clear the input.</b><span>Words vanishing while a panel appears is the most crash-like sensation an interface has.</span></li>
+        <li><b>Let it settle, don’t let it flash.</b><span>A short damped arrival reads as a process completing. Things disappearing reads as failure. Off under reduced-motion.</span></li>
+        <li><b>Say up front there are two outcomes.</b><span>Then a stop is recognised rather than discovered. It is the interface version of pre-registering.</span></li>
+      </ol>
+    </div>
+
+    <div class="note">
+      <h3>Line by line against the thing it must not be</h3>
+      <div class="scroll">
+      <table class="vs">
+        <tr><th>&nbsp;</th><th>A crash</th><th>A stop</th></tr>
+        <tr><td>Space</td><td>empty, centred</td><td>filled, left-aligned</td></tr>
+        <tr><td>Colour</td><td>red, or grey nothing</td><td>stamp ink — held</td></tr>
+        <tr><td>Voice</td><td>“Something went wrong”</td><td>“I stopped before guessing”</td></tr>
+        <tr><td>Numbers</td><td>none — it never got that far</td><td>words read, checks run, checks met</td></tr>
+        <tr><td>Proof of work</td><td>none</td><td>time and fingerprint</td></tr>
+        <tr><td>The button</td><td>Try again</td><td>Add a source</td></tr>
+        <tr><td>Your input</td><td>often gone</td><td>still on screen, untouched</td></tr>
+        <tr><td>Shape</td><td>unlike anything else in the app</td><td>identical to an answer</td></tr>
+      </table>
+      </div>
+      <div class="lim">
+        <b>What this page cannot do</b>
+        The checker behind it does not understand language. It counts five kinds
+        of support — a named source, a specific figure, how it was measured, a date,
+        and who it applies to — and pattern-matches ambiguity. A well-written
+        falsehood carrying all five passes, and a true sentence carrying none is
+        stopped. The design question on this page is how to <em>present</em> a stop,
+        and that is answered independently of how good the checker is.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>/* ei_engine.js -- faithful JS port of cairn/ei_llm.py's assay().
+ *
+ * This exists so the browser app runs the SAME logic as the audited Python
+ * engine, with no server and no network. Parity is not assumed: it is tested by
+ * cairn/test_parity.py, which runs both engines over a shared case list and
+ * fails if any verdict, claim type, confidence or evidence count differs.
+ *
+ * Same limits as the Python engine, restated so nobody reads the port as an
+ * upgrade: this does NOT understand language. Ambiguity detection is syntactic
+ * pattern matching and the plausibility check reads a hand-written list of 15
+ * landform nouns.
+ */
+(function (root) {
+  "use strict";
+
+  var EVIDENCE = [
+    ["source", /\b(according to|source|cited|reference|study|report|dataset|https?:\/\/|\.gov|\.org|doi)\b/i,
+      "A checkable source is named", "No source is named"],
+    ["figures", /\d/, "Contains specific figures", "No specific figures given"],
+    ["method", /\b(method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/i,
+      "Says how it was measured", "Does not say how it was measured"],
+    ["time", /\b(19|20)\d{2}\b|\b(today|yesterday|last (year|month|quarter)|q[1-4])\b/i,
+      "Anchored to a date or period", "No date or period given"],
+    ["scope", /\b(in|across|among|between|per|for)\b[\s\S]{0,28}\b(uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/i,
+      "States who or where it applies", "Scope is not stated"]
+  ];
+
+  var IMMOBILE = ["canyon", "grand canyon", "mountain", "mountains", "valley", "plateau",
+    "cliff", "lake", "river", "desert", "glacier", "volcano", "island", "coastline", "forest"];
+  var SELF_PROPELLED = ["flying", "walking", "running", "driving", "swimming",
+    "travelling", "traveling", "climbing"];
+
+  var ATTACH_RE = /^\s*(i|we|he|she|they|you)\s+(\w+)\s+(the|a|an|my|our|his|her|their)\s+([\w\s]{2,40}?)\s+(\w+ing)\b([\s\S]*)$/i;
+  var CONCEPTUAL_RE = /(\bis (the|a|an) (study|branch|theory|field|concept|term|word|practice|process|state|quality)\b|\bis defined as\b|\bmeans\b|\brefers to\b|\bdefinition of\b|\bby definition\b|^\s*\w+\s*[:—-]\s*(the|a|an)\b)/i;
+  var MATHY_RE = /^\s*[\d\s()+\-*/^=.]+\s*$/;
+  var OPINION_RE = /\b(i think|i believe|in my opinion|i feel|should be|ought to|is better than|is the best|is amazing|is terrible|prefer)\b/i;
+  var QUESTION_RE = /^\s*(what|who|when|where|why|how|is|are|do|does|did|can|could|should|would|will)\b[\s\S]*\?\s*$/i;
+  var IMPERATIVE_RE = /^\s*(mix|add|combine|apply|take|use|heat|stir|install|run|pour|dissolve|blend)\b/i;
+
+  var DOMAIN_RISK = [
+    ["chemistry/formulation", /\b(acid|ph\b|emulsif|oil|solvent|dissolve|concentration|serum|formulation|mix(ing)?|bleach|ammonia)\b/i],
+    ["medical/health", /\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient|participants|infect\w*|outbreak|epidemic|pandemic|bacteri\w*|virus|viral|fungal|parasit\w*|contagio\w*|antibiotic|antimicrobial|pathogen\w*|contaminat\w*|quarantine|measles|cholera|influenza|bird flu|covid|death[s]?|died|dying|fatal\w*|mortality|lethal|survive|survival|kill(s|ed)?|life-threatening|amputat\w*|wound[s]?|illness|disease|disorder|syndrome|cancer|tumou?r|malignan\w*|biopsy|carcinom\w*|diabet\w*|blood pressure|cholesterol|kidney|cardiac|stroke|asthma|vaccin\w*|immunis\w*|immuniz\w*|booster|screening|hospital\w*|clinic\w*|doctor|nurse|prescription|fever|nausea)\b/i],
+    ["legal/regulatory", /\b(contract|clause|liabilit\w*|complian\w*|regulat\w*|statute|gdpr|licen[cs]e|jurisdiction|appeal|waive[sd]?|legal|lawsuit|court|breach|terminat\w*|disclos\w*|entitle\w*|tribunal)\b/i],
+    ["financial", /\b(revenue|profit|forecast|invest\w*|valuation|roi\b|interest rate|loan|credit|guaranteed returns?|returns? of|pension|tax|apr\b|mortgage|debt|refund|deposit|payment|withdraw\w*)\b/i],
+    ["safety-critical", /\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing|carbon monoxide|scaffold\w*|toxic|fumes|corrosive|explosi\w*|asbestos|brake[s]?|overheat\w*|wiring|flue|ventilat\w*|pesticide|solvent)\b/i]
+  ];
+
+  function classifyClaim(text) {
+    var t = (text || "").trim();
+    if (!t) return ["EMPTY", "Nothing to look at yet."];
+    if (QUESTION_RE.test(t)) return ["QUESTION",
+      "That's a question, not a claim. I audit statements — paste an answer you've been given and I'll tell you how far it can be trusted."];
+    if (MATHY_RE.test(t)) return ["CONCEPTUAL",
+      "That's arithmetic. It's true by definition, so there's nothing for me to verify against the world."];
+    if (CONCEPTUAL_RE.test(t) && !/\d/.test(t)) return ["CONCEPTUAL",
+      "That's a definition or a concept. Definitions are true by agreement, not by measurement — so there's no source, date or figure for me to check. This isn't a failure; it's simply outside what I audit."];
+    if (OPINION_RE.test(t)) return ["OPINION",
+      "That's a preference or a judgement. I can't audit what someone values — only claims about what is measurably the case."];
+    if (IMPERATIVE_RE.test(t)) return ["INSTRUCTION",
+      "That's a set of instructions. I can check whether it's specified precisely enough to follow — but NOT whether following it is safe or correct."];
+    return ["EMPIRICAL", ""];
+  }
+
+  function domainFlags(text) {
+    var out = [];
+    for (var i = 0; i < DOMAIN_RISK.length; i++) {
+      if (DOMAIN_RISK[i][1].test(text || "")) out.push(DOMAIN_RISK[i][0]);
+    }
+    return out;
+  }
+
+  function scoreEvidence(text) {
+    return EVIDENCE.map(function (e) {
+      var hit = e[1].test(text || "");
+      return { signal: e[0], hit: hit, note: hit ? e[2] : e[3] };
+    });
+  }
+
+  function nextSteps(checks, kind) {
+    if (kind === "QUESTION") return ["Paste the answer you were given, and I'll audit that instead."];
+    if (kind === "CONCEPTUAL" || kind === "OPINION") return [
+      "Add a measurement, a date or a source and it becomes something I can check.",
+      "For definitions, an ordinary assistant or a dictionary is the right tool."];
+    var fix = {
+      source: "Name where it came from — a study, a report, a link.",
+      figures: "Add the actual numbers.",
+      method: "Say how it was measured.",
+      time: "Add when it was measured.",
+      scope: "Say who or where it applies to."
+    };
+    var missing = checks.filter(function (c) { return !c.hit; }).slice(0, 3)
+      .map(function (c) { return fix[c.signal]; });
+    return missing.length ? missing : ["Nothing material is missing."];
+  }
+
+  function inImmobile(s) {
+    if (IMMOBILE.indexOf(s) !== -1) return true;
+    return s.split(/\s+/).some(function (w) { return IMMOBILE.indexOf(w) !== -1; });
+  }
+
+  function detectAmbiguity(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = ATTACH_RE.exec(t);
+    if (!m) return { ambiguous: false, readings: [], pattern: null };
+    var subj = m[1], verb = m[2], obj = m[4].trim(), part = m[5], rest = m[6].trim();
+    var objKey = obj.toLowerCase().trim();
+    var objImmobile = inImmobile(objKey);
+    var partMoves = SELF_PROPELLED.indexOf(part.toLowerCase()) !== -1;
+    return {
+      ambiguous: true, pattern: "participial attachment", object: obj, participle: part,
+      object_in_immobile_lexicon: objImmobile,
+      readings: [
+        { id: "A", attaches_to: "subject",
+          paraphrase: (subj + " was " + part + " " + rest + ", and " + subj + " " + verb + " the " + obj).trim(),
+          plausible: true, why: "The subject is an agent, so it can perform the action." },
+        { id: "B", attaches_to: "object",
+          paraphrase: (subj + " " + verb + " the " + obj + ", and the " + obj + " was " + part + " " + rest).trim(),
+          plausible: !(objImmobile && partMoves),
+          why: (objImmobile && partMoves)
+            ? "'" + obj + "' is in the declared immobile-landform lexicon and '" + part + "' is self-propelled motion, so this reading is physically implausible."
+            : "Both the object and the action are ordinary, so this reading is perfectly possible." }
+      ]
+    };
+  }
+
+  function checkImpossible(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = /^\s*(the\s+)?([\w\s]{2,40}?)\s+(was|is|were|are)\s+(\w+ing)\b/i.exec(t);
+    if (!m) return null;
+    var obj = m[2].trim().toLowerCase(), part = m[4].toLowerCase();
+    if (inImmobile(obj) && SELF_PROPELLED.indexOf(part) !== -1) {
+      return { implausible: true, subject: obj, action: part,
+        basis: "declared immobile-landform lexicon (a hand-written list of " + IMMOBILE.length + " nouns), NOT comprehension" };
+    }
+    return null;
+  }
+
+  function assay(text, model) {
+    model = model || "slate";
+    text = (text || "").trim();
+    var kr = classifyClaim(text), kind = kr[0], kindNote = kr[1];
+    var checks = scoreEvidence(text);
+    var hits = checks.filter(function (c) { return c.hit; }).length;
+    var words = text ? text.split(/\s+/).length : 0;
+    var amb = detectAmbiguity(text);
+    var impossible = checkImpossible(text);
+    var domains = domainFlags(text);
+
+    if (kind === "CONCEPTUAL" || kind === "OPINION" || kind === "QUESTION" || kind === "EMPTY") {
+      return {
+        input: text, model: model, verdict: "OUT_OF_SCOPE", claim_type: kind,
+        committed_answer: null, confidence: null, band: "not applicable",
+        evidence: [], evidence_hits: 0, evidence_total: EVIDENCE.length,
+        ambiguity: amb, implausible: null, domain_flags: domains,
+        explanation: kindNote, question: null, next_steps: nextSteps(checks, kind),
+        abstained: false, engine: "cairn-ei/1.1 (js)",
+        limits: "Out of scope is not a failure. I audit empirical claims; this text is not one."
+      };
+    }
+
+    var conf = hits / EVIDENCE.length;
+    if (words < 4) conf = 0.0;
+    if (model === "granite" || model === "quartz") conf = Math.min(1.0, conf * 1.12);
+    if (amb.ambiguous) conf = Math.min(conf, 0.35);
+
+    var verdict, committed, question = null;
+    if (amb.ambiguous) {
+      verdict = "AMBIGUOUS"; committed = null;
+      question = "Which did you mean: were you " + amb.participle + ", or was the " + amb.object + " " + amb.participle + "?";
+    } else if (impossible) {
+      verdict = "IMPLAUSIBLE"; committed = null;
+      question = "Did you mean this literally, or is a word missing?";
+    } else if (conf < 0.25) {
+      verdict = "INSUFFICIENT_EVIDENCE"; committed = null;
+      question = "Add a source, a figure, a date, a method or a scope and I can work with it.";
+    } else {
+      verdict = "SUPPORTED"; committed = text;
+    }
+
+    var band = conf >= 0.7 ? "high" : conf >= 0.45 ? "moderate" : conf >= 0.25 ? "low" : "insufficient";
+    return {
+      input: text, model: model, verdict: verdict, claim_type: kind,
+      committed_answer: committed, confidence: Math.round(conf * 1000) / 1000, band: band,
+      evidence: checks, evidence_hits: hits, evidence_total: EVIDENCE.length,
+      ambiguity: amb, implausible: impossible, domain_flags: domains,
+      explanation: kindNote, question: question, next_steps: nextSteps(checks, kind),
+      abstained: committed === null, engine: "cairn-ei/1.1 (js)",
+      limits: "This engine does not understand language. Ambiguity detection is pattern matching; plausibility reads a hand-written list of " + IMMOBILE.length + " landform nouns."
+    };
+  }
+
+  var API = { assay: assay, classifyClaim: classifyClaim, domainFlags: domainFlags,
+    scoreEvidence: scoreEvidence, IMMOBILE: IMMOBILE, EVIDENCE_N: EVIDENCE.length };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.EI = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function(){
+  "use strict";
+  var EX = {
+    bare: "The new process is much better and everyone should switch to it.",
+    sourced: "According to the 2024 cohort study of 1,180 patients published in March, readmission fell 8% (95% CI 3-13%).",
+    two: "The trial was completed after the review board reviewed it.",
+    crash: null
+  };
+  var t = document.getElementById("t"), out = document.getElementById("out");
+  var runs = 0;
+
+  document.getElementById("clock").textContent = clock();
+  setInterval(function(){ document.getElementById("clock").textContent = clock(); }, 20000);
+  function clock(){
+    var d = new Date();
+    return String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+  }
+
+  /* Rule 4 in colour, rule 5 in grammar. Every headline is first person, past
+     tense, and names the thing that was avoided rather than the thing missing. */
+  var HEAD = {
+    SUPPORTED:             ["ok",   "Reading",    "I can work with this.",
+                            "It carries enough of its own evidence for me to commit to it."],
+    INSUFFICIENT_EVIDENCE: ["held", "Stopped",    "I stopped before guessing.",
+                            "I could have produced a confident-sounding answer here. It would not have been grounded in anything."],
+    AMBIGUOUS:             ["held", "Stopped",    "I stopped — this reads two ways.",
+                            "Two readings are equally available. Picking one for you would have hidden the choice."],
+    IMPLAUSIBLE:           ["held", "Stopped",    "I stopped — one part cannot be literal.",
+                            "Answering as written would have carried the impossibility forward as fact."],
+    OUT_OF_SCOPE:          ["held", "Stopped",    "I stopped — this is not the kind of thing I check.",
+                            "I check empirical claims. Answering outside that would be an opinion wearing a verdict's clothes."]
+  };
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+
+  function fingerprint(s){
+    if (window.crypto && crypto.subtle && crypto.subtle.digest) {
+      return crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function(b){
+        return { label: "fingerprint", hex: Array.from(new Uint8Array(b))
+          .map(function(x){ return x.toString(16).padStart(2,"0"); }).join("").slice(0,12) };
+      });
+    }
+    // No hash available. Say so rather than print a number that looks like one.
+    return Promise.resolve({ label: "fingerprint unavailable in this browser", hex: null });
+  }
+
+  /* The card as data, before any pixels. Both normal outcomes come out of this
+     one function with the same keys in the same order — which is what makes
+     "same silhouette" a property a test can check rather than a claim in a
+     design note. */
+  function cardModel(text){
+    var a = EI.assay(text, "slate");
+    var h = HEAD[a.verdict] || HEAD.INSUFFICIENT_EVIDENCE;
+    var tone = h[0];
+    return {
+      tone: tone,
+      outcome: h[1],
+      headline: h[2],
+      said: h[3],
+      counts: [
+        { n: text.trim() ? text.trim().split(/\s+/).length : 0, label: "words read" },
+        { n: a.evidence_total, label: "kinds of support looked for" },
+        { n: a.evidence_hits, label: "found" }
+      ],
+      reasons: a.evidence.map(function(c){ return { hit: c.hit, note: c.note }; }),
+      nextLabel: tone === "ok" ? "What I committed to" : "What would change this",
+      next: tone === "ok" ? a.committed_answer
+            : (a.question || "Add a source, a figure, a date, a method or a scope."),
+      /* Rule 8: every action names something to do to the CLAIM. Nothing here
+         offers to re-run the same input, because the answer would be the same. */
+      acts: tone === "ok"
+        ? [["Keep it", ""], ["Check another", "clear"]]
+        : [["Add a source", " (Source: )"], ["Add a figure", " (about % of )"],
+           ["Add a date", " (in 2024)"], ["Say who it applies to", " (among adults in the UK)"]],
+      verdict: a.verdict
+    };
+  }
+
+  function render(text){
+    var m = cardModel(text);
+    var tone = m.tone, outcome = m.outcome, line = m.headline, said = m.said;
+    var a = { evidence: m.reasons, evidence_total: m.counts[1].n, evidence_hits: m.counts[2].n };
+    var words = m.counts[0].n, acts = m.acts;
+    runs++;
+
+    // returns a promise so a caller can wait for the painted card
+    return fingerprint(text + "|" + m.verdict).then(function(fp){
+      var reasons = a.evidence.map(function(c){
+        return '<li class="' + (c.hit ? "yes" : "no") + '"><span class="mk">' +
+               (c.hit ? "\u2713" : "\u00b7") + '</span><span>' + esc(c.note) + '</span></li>';
+      }).join("");
+
+      out.innerHTML =
+        '<div class="card settle" data-tone="' + tone + '" data-outcome="' + outcome.toUpperCase() + '">' +
+          '<div class="strip" data-sec="strip"><span>' + esc(outcome) + '</span><span class="sp"></span>' +
+            '<span class="stamp">' + (tone === "ok" ? "committed" : "held") + '</span></div>' +
+          '<div class="head" data-sec="head"><h2>' + esc(line) + '</h2>' +
+            '<p class="said">' + esc(said) + '</p></div>' +
+          '<div class="counts" data-sec="counts">' +
+            '<div class="count"><span class="n">' + words + '</span><span class="l">words read</span></div>' +
+            '<div class="count"><span class="n">' + a.evidence_total + '</span><span class="l">kinds of support looked for</span></div>' +
+            '<div class="count"><span class="n">' + a.evidence_hits + '</span><span class="l">found</span></div>' +
+          '</div>' +
+          '<ul class="reasons" data-sec="reasons">' + reasons + '</ul>' +
+          '<div class="next" data-sec="next"><b>' + esc(m.nextLabel) + '</b>' +
+            esc(m.next) + '</div>' +
+          '<div class="acts" data-sec="acts">' + acts.map(function(x){
+              return '<button class="act" data-add="' + esc(x[1]) + '">' +
+                     esc(x[0]) + '</button>'; }).join("") + '</div>' +
+          '<div class="foot" data-sec="foot"><span>checked ' + clock() + '</span>' +
+            '<span class="sp"></span><span>run ' + runs + '</span>' +
+            '<span class="mono">' + (fp.hex ? "· " + esc(fp.hex) : "· " + esc(fp.label)) + '</span></div>' +
+        '</div>';
+
+      Array.prototype.forEach.call(out.querySelectorAll(".act"), function(b){
+        b.addEventListener("click", function(){
+          var add = b.getAttribute("data-add");
+          if (add === "clear" || add === "") { t.value = ""; t.focus(); return; }
+          t.value = t.value.replace(/\s*$/, "") + add; t.focus();
+        });
+      });
+      return m;
+    });
+  }
+
+  /* Deliberately built so it can be looked at next to the real thing. This is
+     the shape the stop card must never be mistaken for. */
+  function renderCrash(){
+    out.innerHTML =
+      '<div class="crash" data-outcome="CRASH">' +
+        '<div class="big">⚠</div>' +
+        '<h3>Something went wrong</h3>' +
+        '<p>Please try again later.</p>' +
+        '<button type="button">Try again</button>' +
+      '</div>';
+  }
+
+  document.getElementById("go").addEventListener("click", function(){ render(t.value); });
+  Array.prototype.forEach.call(document.querySelectorAll("[data-ex]"), function(b){
+    b.addEventListener("click", function(){
+      var k = b.getAttribute("data-ex");
+      if (k === "crash") { renderCrash(); return; }
+      t.value = EX[k]; render(t.value);
+    });
+  });
+  render(t.value);
+  window.__stop = { render: render, renderCrash: renderCrash, cardModel: cardModel, EX: EX };
+})();
+</script>
+</body>
+</html>

@@ -46,6 +46,10 @@ export function globMatch(glob, path) {
   return new RegExp(rx).test(path);
 }
 
+/* Verdicts the content guard understands, weakest first. A rule saying
+ * `require: "SUPPORTED"` withholds anything that does not reach that bar. */
+const LADDER = ["INSUFFICIENT_EVIDENCE", "AMBIGUOUS", "IMPLAUSIBLE", "OUT_OF_SCOPE", "SUPPORTED"];
+
 /* Default deny, refusals beat permissions, most specific permission wins.
  * The same three rules the valet key screen shows a person — enforced here
  * rather than displayed. */
@@ -69,7 +73,38 @@ export function decide(key, method, path) {
   }
   return { allow: true, rule: hit.path, plain: hit.plain,
            why: write ? "write permitted by this rule" : "read permitted by this rule",
-           budget: hit.budget ?? null };
+           budget: hit.budget ?? null,
+           require: hit.require ?? null,
+           on_uncheckable: hit.on_uncheckable ?? "withhold" };
+}
+
+/* Three states, never two. The independence check elsewhere in this project
+ * refuses to collapse "checked and failed" into "could not check", and a gate
+ * must not either — otherwise an unreadable payload silently becomes a pass.
+ *
+ *   MET         the content reached the required bar        -> deliver
+ *   NOT_MET     it was checked and fell short               -> withhold
+ *   UNCHECKABLE nothing could be assayed (binary, empty)    -> the KEY decides
+ *
+ * The default for UNCHECKABLE is withhold, because this is a gate and a gate
+ * fails closed. A key may say `on_uncheckable: "pass"`, and then the response
+ * still carries x-weir-guard: UNCHECKABLE — the distinction is never lost, it
+ * is only acted on differently. */
+export function guard(require, onUncheckable, checked) {
+  if (!require) return { withhold: false, state: "NOT_REQUIRED" };
+  if (!checked) {
+    const pass = onUncheckable === "pass";
+    return { withhold: !pass, state: "UNCHECKABLE", got: null,
+             why: pass ? "nothing could be assayed; this key says pass anyway"
+                       : "nothing could be assayed, and a gate fails closed — " +
+                         "this is 'could not check', not 'checked and failed'" };
+  }
+  const need = LADDER.indexOf(require), got = LADDER.indexOf(checked.verdict);
+  if (need === -1) throw new Error(`a key asked for an unknown bar: ${require}`);
+  if (got >= need) return { withhold: false, state: "MET", got: checked.verdict };
+  return { withhold: true, state: "NOT_MET", got: checked.verdict,
+           why: `this rule delivers only ${require} content; what came back was ` +
+                `${checked.verdict} (${checked.evidence} kinds of support found)` };
 }
 
 /* ------------------------------------------------------------ the tape --- */
@@ -100,7 +135,7 @@ export class Tape {
 /* ----------------------------------------------------------- the gate ---- */
 export function createWeir({ key, upstream, tape = new Tape(), screen = true }) {
   const spent = new Map();          // rule -> writes used, for budgeted rules
-  const stats = { seen: 0, passed: 0, refused: 0, screened: 0, flagged: 0 };
+  const stats = { seen: 0, passed: 0, refused: 0, withheld: 0, screened: 0, flagged: 0 };
 
   const server = http.createServer(async (req, res) => {
     stats.seen++;
@@ -143,7 +178,6 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
       return;
     }
 
-    stats.passed++;
     let checked = null;
     if (screen && /text|json|html/.test(body.type || "")) {
       const a = EI.assay(body.text.slice(0, 4000), "slate");
@@ -152,16 +186,48 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
       const thin = a.verdict === "INSUFFICIENT_EVIDENCE";
       if (risky || thin) stats.flagged++;
       checked = { verdict: a.verdict, evidence: `${a.evidence_hits}/${a.evidence_total}`,
-                  domains: a.domain_flags, thin, risky };
+                  domains: a.domain_flags, thin, risky,
+                  question: a.question, next_steps: a.next_steps,
+                  words: (body.text.trim() ? body.text.trim().split(/\s+/).length : 0) };
     }
 
+    /* ------- the guard: Cairn stops being a label and becomes a refusal ----
+     * Everywhere else in this project Cairn RETURNS A VERDICT and something
+     * downstream decides what to do with it — which is to say, nothing has to.
+     * Here the verdict is the predicate of a refusal. `require` on a rule
+     * means: if the content coming back does not reach this bar, it is not
+     * handed over.
+     *
+     * The guarantee is NARROWER than the one above and must not be blurred
+     * with it. A refused REQUEST never reaches upstream. Withheld CONTENT was
+     * already fetched — upstream saw the request. What is guaranteed is only
+     * that the bytes did not reach the client. */
+    const gr = guard(verdict.require, verdict.on_uncheckable, checked);
+    if (gr.withhold) {
+      stats.withheld++;
+      const entry = tape.add({ what: "WITHHELD", method: req.method, path,
+                               rule: verdict.rule, required: verdict.require,
+                               got: gr.got, why: gr.why });
+      res.writeHead(403, { "content-type": "application/json", "x-weir": "withheld",
+                           "x-weir-rule": verdict.rule, "x-weir-guard": gr.state,
+                           "x-weir-seal": entry.seal.slice(0, 16) });
+      res.end(JSON.stringify({ withheld: true, path, rule: verdict.rule,
+                               required: verdict.require, got: gr.got, why: gr.why,
+                               fetched_but_not_delivered: true,
+                               next_step: checked?.question || null, seal: entry.seal }));
+      return;
+    }
+
+    stats.passed++;
     const entry = tape.add({ what: "PASSED", method: req.method, path,
-                             rule: verdict.rule, bytes: body.text.length, checked });
+                             rule: verdict.rule, bytes: body.text.length, checked,
+                             guard: verdict.require ? gr.state : undefined });
     res.writeHead(body.status || 200, {
       "content-type": body.type || "text/plain",
       "x-weir": "passed",
       "x-weir-rule": verdict.rule,
       "x-weir-seal": entry.seal.slice(0, 16),
+      ...(verdict.require ? { "x-weir-guard": gr.state } : {}),
       ...(checked ? { "x-weir-check": checked.verdict,
                       "x-weir-evidence": checked.evidence,
                       ...(checked.domains.length

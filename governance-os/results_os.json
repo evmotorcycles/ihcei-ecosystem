@@ -1,6 +1,6 @@
 {
   "prereg_sha256": "8ac051f268460b4d119770b8caf9722c523a360612c8b7348c4954ad483aaea9",
-  "files_scanned": 446,
+  "files_scanned": 448,
   "O1_interposition": {
     "gate": "some component can BLOCK an action, not merely report on one",
     "blocking_call_sites": [],

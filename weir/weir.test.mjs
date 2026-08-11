@@ -10,7 +10,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readFileSync } from "node:fs";
 
-import { createWeir, decide, globMatch, loadKey, Tape } from "./weir.mjs";
+import { createWeir, decide, globMatch, guard, loadKey, Tape } from "./weir.mjs";
 import { createUpstream, received } from "./upstream_fixture.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -136,6 +136,59 @@ test("content crossing the gate is screened, and warnings ride on the response",
 test("thin content is marked thin rather than passed off as checked", async () => {
   const r = await get("projects/thin.md");
   assert.equal(r.headers.get("x-weir-check"), "INSUFFICIENT_EVIDENCE");
+});
+
+/* -------------------------------------------------------------- the guard */
+/* Everywhere else Cairn returns a verdict and something downstream may or may
+ * not act on it. Here the verdict IS the refusal. */
+test("content that does not reach the required bar is withheld, not delivered", async () => {
+  const r = await get("briefings/bare.md");
+  assert.equal(r.status, 403);
+  assert.equal(r.headers.get("x-weir"), "withheld");
+  assert.equal(r.headers.get("x-weir-guard"), "NOT_MET");
+  const j = JSON.parse(await r.text());
+  assert.equal(j.required, "SUPPORTED");
+  assert.equal(j.got, "INSUFFICIENT_EVIDENCE");
+  assert.ok(!j.body && !JSON.stringify(j).includes("everyone should switch"),
+    "the content that failed the bar must not ride out inside the refusal");
+  assert.ok(j.next_step, "a withheld response must say what would fix it");
+});
+
+test("withholding is honest that upstream DID see the request", async () => {
+  received.length = 0;
+  const r = await get("briefings/bare.md");
+  assert.equal(r.status, 403);
+  assert.deepEqual(received.map(x => x.path), ["briefings/bare.md"],
+    "content guarding happens after the fetch — that is a weaker claim than refusal");
+  const j = JSON.parse(await r.text());
+  assert.equal(j.fetched_but_not_delivered, true,
+    "the response must not let a reader confuse this with a request that never left");
+});
+
+test("content that does reach the bar is delivered whole", async () => {
+  const r = await get("briefings/sourced.md");
+  assert.equal(r.status, 200);
+  assert.equal(r.headers.get("x-weir-guard"), "MET");
+  assert.match(await r.text(), /readmission fell 8%/);
+});
+
+test("could-not-check is a third state and fails closed by default", async () => {
+  const r = await get("briefings/binary.bin");
+  assert.equal(r.status, 403);
+  assert.equal(r.headers.get("x-weir-guard"), "UNCHECKABLE",
+    "an unreadable payload must not be reported as a failed check");
+  assert.match(JSON.parse(await r.text()).why, /could not check.*not.*checked and failed/);
+});
+
+test("a key may allow uncheckable through, and the stamp still says so", () => {
+  assert.equal(guard("SUPPORTED", "withhold", null).withhold, true);
+  const passed = guard("SUPPORTED", "pass", null);
+  assert.equal(passed.withhold, false);
+  assert.equal(passed.state, "UNCHECKABLE", "passing it must not relabel it as MET");
+});
+
+test("a rule with no bar set guards nothing", () => {
+  assert.deepEqual(guard(null, "withhold", null), { withhold: false, state: "NOT_REQUIRED" });
 });
 
 /* ------------------------------------------------------------ the limits - */

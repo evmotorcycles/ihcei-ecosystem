@@ -115,6 +115,7 @@ run "cairn CI: centric intelligence on real Qwen+DeepSeek — calibration gate F
 run "safety-coverage: does the warning fire? baseline 61% miss -> 4% on a sealed set" py safety-coverage/test_coverage.py
 run "weir: the gate — refused requests provably never reach upstream" node_test weir/weir.test.mjs
 run "weir: control panel agrees with the gate on every path and method" node_test weir/panel_parity.test.mjs
+run "weir: the stop card — a refusal to guess renders as a result, not a crash" py weir/test_stop.py
 run "governance-os: structural test — interposition real, mandatory routing still missing" node_test governance-os/os.test.mjs
 run "layers: IHCEI/NERE stay infrastructure; the desks stay jargon-free" py test_layers.py
 run "growth-study: composition by era + whether the evidence exists (pre-registered)" py growth-study/test_growth.py
