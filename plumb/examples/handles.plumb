@@ -1,0 +1,37 @@
+# handles.plumb -- "4 of 5" is not an answer a person can act on.
+#
+# THE CASE THAT PRODUCED THIS OBLIGATION
+# An assistant wrote: "According to a 2023 randomised trial of 240 participants
+# in the UK, green tea reduced self-reported stress by 12%." No such trial
+# exists. The Label scored it 5 of 5 -- correctly, because it IS built so that
+# someone could go and check it. But a bare "5 of 5" leaves the reader to pull
+# the load-bearing parts out by hand before they can search for anything.
+#
+# The same failure exists in a numeric verdict. "evidence 4/5" tells you how
+# many signals fired and not which, so you cannot go and look at any of them.
+#
+# `handles` is the obligation that a count never travels without the things it
+# counted: which signals were met, which were missing, and the numbers behind
+# them. It does not change any verdict. It makes the verdict checkable.
+
+plumb "vendor-fitness-with-handles" {
+
+  capacity  U from field "stars"
+  encode    Denc from field "open_issues" inverse
+  decode    Ddec from ratio "forks"/"stars"
+
+  floor 0.02
+
+  blind "description"
+  blind "topics"
+
+  independent encode decode
+
+  require evidence 4 of 5
+
+  # Name what carried the count. Without this the reader gets a number and no
+  # way to disagree with it.
+  handles
+
+  receipt
+}

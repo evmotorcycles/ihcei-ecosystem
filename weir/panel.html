@@ -357,6 +357,64 @@ footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px
     });
   }
 
+  /* ------------------------------------------------------------- handles ---
+   * A tick saying "contains specific figures" leaves the reader to find the
+   * figures themselves. The handles are the SPANS that made each signal fire --
+   * the exact words someone would paste into a search engine to go and check.
+   * Strictly additional: same signals, same hits, plus the causing text. */
+  var FIGURE_RX = /\d[\d,.]*(?:\s*(?:%|percent))?(?:\s+[a-z][a-z-]{2,20})?/gi;
+  var YEAR_RX = /\b(?:19|20)\d{2}\b|\b(?:today|yesterday|last (?:year|month|quarter)|q[1-4])\b/gi;
+  var METHOD_RX = /\b(?:[a-z-]+\s+)?(?:method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/gi;
+  var SCOPE_RX = /\b(?:in|across|among|between|per|for)\b.{0,28}?\b(?:uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/gi;
+  var SOURCE_RX = /\b(?:according to|source|cited|reference|study|report|dataset|doi)\b|https?:\/\/\S+|\b\S+\.(?:gov|org)\b/gi;
+  /* A source MARKER ("according to") is not a source NAME. The distinction only
+   * becomes visible once the span is shown, which is the point of showing it. */
+  var NAMED_RX = /https?:\/\/\S+|\bdoi\b|\b\S+\.(?:gov|org)\b|\b(?:the )?[A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)*\s+(?:Journal|Review|Times|Post|University|Institute|Office|Agency|Association|Society)\b|\b(?:Nature|Science|Lancet|BMJ|JAMA|NEJM|WHO|CDC|NHS|ONS|OECD|NASA)\b/g;
+  var STOP = ["a","an","the","of","in","on","at","by","to","and","or","was","were","is","are"];
+
+  function spans(rx, text, limit) {
+    var out = [], m;
+    rx.lastIndex = 0;
+    while ((m = rx.exec(text || "")) !== null) {
+      var s = m[0].replace(/^[\s,.;:]+|[\s,.;:]+$/g, "");
+      if (s && STOP.indexOf(s.toLowerCase()) === -1 && out.indexOf(s) === -1) out.push(s);
+      if (out.length >= limit) break;
+      if (m.index === rx.lastIndex) rx.lastIndex++;
+    }
+    return out;
+  }
+
+  function extractHandles(text) {
+    text = text || "";
+    var all = spans(FIGURE_RX, text, 6);
+    var figures = all.filter(function (s) { return !/^(?:19|20)\d{2}$/.test(s.split(/\s+/)[0]); });
+    if (!figures.length) figures = all;
+    var method = [], mm;
+    METHOD_RX.lastIndex = 0;
+    while ((mm = METHOD_RX.exec(text)) !== null) {
+      var s = mm[0].trim(), first = s.split(/\s+/)[0].toLowerCase();
+      if (s.split(/\s+/).length > 1 && STOP.indexOf(first) !== -1) s = s.split(/\s+/).slice(1).join(" ");
+      if (method.indexOf(s) === -1) method.push(s);
+      if (mm.index === METHOD_RX.lastIndex) METHOD_RX.lastIndex++;
+    }
+    var src = spans(SOURCE_RX, text, 3);
+    spans(NAMED_RX, text, 2).forEach(function (s) { if (src.indexOf(s) === -1) src.push(s); });
+    return {
+      source: src, figures: figures, method: method.slice(0, 3),
+      time: spans(YEAR_RX, text, 3), scope: spans(SCOPE_RX, text, 3),
+      // Reported, never scored.
+      source_named: (NAMED_RX.lastIndex = 0, NAMED_RX.test(text))
+    };
+  }
+
+  function searchLine(h) {
+    var parts = [];
+    ["time", "figures", "method", "scope"].forEach(function (k) {
+      (h[k] || []).forEach(function (s) { if (parts.indexOf(s) === -1) parts.push(s); });
+    });
+    return parts.join(" ");
+  }
+
   function nextSteps(checks, kind) {
     if (kind === "QUESTION") return ["Paste the answer you were given, and I'll audit that instead."];
     if (kind === "CONCEPTUAL" || kind === "OPINION") return [
@@ -422,6 +480,7 @@ footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px
     var kr = classifyClaim(text), kind = kr[0], kindNote = kr[1];
     var checks = scoreEvidence(text);
     var hits = checks.filter(function (c) { return c.hit; }).length;
+    var hnd = extractHandles(text);
     var words = text ? text.split(/\s+/).length : 0;
     var amb = detectAmbiguity(text);
     var impossible = checkImpossible(text);
@@ -432,6 +491,7 @@ footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px
         input: text, model: model, verdict: "OUT_OF_SCOPE", claim_type: kind,
         committed_answer: null, confidence: null, band: "not applicable",
         evidence: [], evidence_hits: 0, evidence_total: EVIDENCE.length,
+        handles: hnd, search_line: searchLine(hnd),
         ambiguity: amb, implausible: null, domain_flags: domains,
         explanation: kindNote, question: null, next_steps: nextSteps(checks, kind),
         abstained: false, engine: "cairn-ei/1.1 (js)",
@@ -463,6 +523,7 @@ footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px
       input: text, model: model, verdict: verdict, claim_type: kind,
       committed_answer: committed, confidence: Math.round(conf * 1000) / 1000, band: band,
       evidence: checks, evidence_hits: hits, evidence_total: EVIDENCE.length,
+      handles: hnd, search_line: searchLine(hnd),
       ambiguity: amb, implausible: impossible, domain_flags: domains,
       explanation: kindNote, question: question, next_steps: nextSteps(checks, kind),
       abstained: committed === null, engine: "cairn-ei/1.1 (js)",
@@ -471,7 +532,8 @@ footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px
   }
 
   var API = { assay: assay, classifyClaim: classifyClaim, domainFlags: domainFlags,
-    scoreEvidence: scoreEvidence, IMMOBILE: IMMOBILE, EVIDENCE_N: EVIDENCE.length };
+    scoreEvidence: scoreEvidence, extractHandles: extractHandles, searchLine: searchLine,
+    IMMOBILE: IMMOBILE, EVIDENCE_N: EVIDENCE.length };
 
   if (typeof module !== "undefined" && module.exports) module.exports = API;
   else root.EI = API;

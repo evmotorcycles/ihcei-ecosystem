@@ -53,6 +53,10 @@ def test_js_matches_python(js, i):
     assert j["ambiguous"] == p["ambiguity"]["ambiguous"], f"ambiguity differs for {label}"
     assert j["implausible"] == bool(p["implausible"]), f"plausibility differs for {label}"
     assert j["next_steps"] == p["next_steps"], f"next steps differ for {label}"
+    # The handles are what a person carries to a search engine. If the port drifts
+    # here, two users doing the same check get different things to look for.
+    assert j["handles"] == p["handles"], f"handles differ for {label}"
+    assert j["search_line"] == p["search_line"], f"search line differs for {label}"
 
 
 def test_shared_constants_did_not_drift(js):

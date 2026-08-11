@@ -1,6 +1,6 @@
 {
   "prereg_sha256": "8ac051f268460b4d119770b8caf9722c523a360612c8b7348c4954ad483aaea9",
-  "files_scanned": 448,
+  "files_scanned": 451,
   "O1_interposition": {
     "gate": "some component can BLOCK an action, not merely report on one",
     "blocking_call_sites": [],
@@ -59,12 +59,14 @@
         "evidence_hits",
         "evidence_total",
         "explanation",
+        "handles",
         "implausible",
         "input",
         "limits",
         "model",
         "next_steps",
         "question",
+        "search_line",
         "verdict"
       ],
       "novora_screen": [

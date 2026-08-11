@@ -177,6 +177,80 @@ def score_evidence(text):
     return checks
 
 
+# ------------------------------------------------------------------ handles ---
+# A tick saying "contains specific figures" leaves the reader to find the figures
+# themselves. The handles are the SPANS that made each signal fire -- the exact
+# words someone would paste into a search engine to go and check.
+#
+# This changes nothing about the score. It is strictly additional: the same five
+# signals, the same hits, plus the text that caused them. The gates are
+# pre-registered and are not being retuned here.
+_FIGURE_RX = re.compile(r"\d[\d,.]*(?:\s*(?:%|percent))?(?:\s+[a-z][a-z-]{2,20})?", re.I)
+_YEAR_RX = re.compile(r"\b(?:19|20)\d{2}\b|\b(?:today|yesterday|last (?:year|month|quarter)|q[1-4])\b", re.I)
+_METHOD_RX = re.compile(r"\b(?:[a-z-]+\s+)?(method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b", re.I)
+_SCOPE_RX = re.compile(r"\b(?:in|across|among|between|per|for)\b.{0,28}?\b(?:uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b", re.I)
+_SOURCE_RX = re.compile(r"\b(?:according to|source|cited|reference|study|report|dataset|doi)\b|https?://\S+|\b\S+\.(?:gov|org)\b", re.I)
+
+# A source MARKER ("according to") is not a source NAME. The distinction only
+# becomes visible once the span is shown, which is the point of showing it.
+_NAMED_RX = re.compile(r"https?://\S+|\bdoi\b|\b\S+\.(?:gov|org)\b"
+                       r"|\b(?:the )?[A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)*\s+"
+                       r"(?:Journal|Review|Times|Post|University|Institute|Office|Agency|Association|Society)\b"
+                       r"|\b(?:Nature|Science|Lancet|BMJ|JAMA|NEJM|WHO|CDC|NHS|ONS|OECD|NASA)\b")
+
+_STOP = {"a", "an", "the", "of", "in", "on", "at", "by", "to", "and", "or", "was", "were", "is", "are"}
+
+
+def _spans(rx, text, limit=4):
+    out = []
+    for m in rx.finditer(text or ""):
+        s = m.group(0).strip(" ,.;:")
+        if s and s.lower() not in _STOP and s not in out:
+            out.append(s)
+        if len(out) >= limit:
+            break
+    return out
+
+
+def extract_handles(text):
+    """The load-bearing spans, per signal. Empty list where the signal did not fire."""
+    text = text or ""
+    figures = [s for s in _spans(_FIGURE_RX, text, 6)
+               if not re.fullmatch(r"(?:19|20)\d{2}", s.split()[0])] or _spans(_FIGURE_RX, text, 6)
+    method = []
+    for m in _METHOD_RX.finditer(text):
+        s = m.group(0).strip()
+        first = s.split()[0].lower()
+        if len(s.split()) > 1 and (first in _STOP or first in ("a", "the")):
+            s = " ".join(s.split()[1:])
+        if s not in method:
+            method.append(s)
+    src = _spans(_SOURCE_RX, text, 3)
+    for s in _spans(_NAMED_RX, text, 2):
+        if s not in src:
+            src.append(s)
+    return {
+        "source": src,
+        "figures": figures,
+        "method": method[:3],
+        "time": _spans(_YEAR_RX, text, 3),
+        "scope": _spans(_SCOPE_RX, text, 3),
+        # Reported, never scored. "According to a trial" fires the source signal
+        # without naming anybody, and a reader can only see that if the span is shown.
+        "source_named": bool(_NAMED_RX.search(text)),
+    }
+
+
+def search_line(handles):
+    """What a person would actually paste into a search engine, in that order."""
+    parts = []
+    for key in ("time", "figures", "method", "scope"):
+        for s in handles.get(key, []):
+            if s not in parts:
+                parts.append(s)
+    return " ".join(parts)
+
+
 def detect_ambiguity(text):
     """Find participial attachment ambiguity. Returns the readings it can parse.
 
@@ -233,6 +307,7 @@ def assay(text, model="slate", parent_receipt=None):
     kind, kind_note = classify_claim(text)
     checks = score_evidence(text)
     hits = sum(1 for c in checks if c["hit"])
+    hnd = extract_handles(text)
     words = len(text.split()) if text else 0
     amb = detect_ambiguity(text)
     impossible = check_impossible_assertion(text)
@@ -246,6 +321,7 @@ def assay(text, model="slate", parent_receipt=None):
             "input": text, "model": model, "verdict": "OUT_OF_SCOPE", "claim_type": kind,
             "committed_answer": None, "confidence": None, "band": "not applicable",
             "evidence": [], "evidence_hits": 0, "evidence_total": len(EVIDENCE),
+            "handles": hnd, "search_line": search_line(hnd),
             "ambiguity": amb, "implausible": None, "domain_flags": domains,
             "explanation": kind_note, "question": None,
             "next_steps": next_steps(checks, kind),
@@ -284,6 +360,7 @@ def assay(text, model="slate", parent_receipt=None):
         "input": text, "model": model, "verdict": verdict, "claim_type": kind,
         "committed_answer": committed, "confidence": round(conf, 3), "band": band,
         "evidence": checks, "evidence_hits": hits, "evidence_total": len(EVIDENCE),
+        "handles": hnd, "search_line": search_line(hnd),
         "ambiguity": amb, "implausible": impossible, "domain_flags": domains,
         "explanation": kind_note, "question": question,
         "next_steps": next_steps(checks, kind),

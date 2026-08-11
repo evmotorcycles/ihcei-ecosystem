@@ -111,6 +111,8 @@ run "cohort-audit: gap closure — yeast outcome + GitHub 992 CLOSED (rows commi
 run "cohort-audit: N=992 independent re-analysis — summary recomputes from raw rows" py cohort-audit/test_992.py
 run "ei-dashboards: ASSAY — real stack over real Qwen+DeepSeek repos + offline dashboards" node_test ei-dashboards/assay.test.mjs
 run "cairn: EI engine + Hinton Grand Canyon test (anti-overclaim control locked)" py cairn/test_ei_llm.py
+run "cairn: the handles — a 5/5 fabrication still hands over what kills it" py cairn/test_handles.py
+run "cairn: the handles reach the screen in both browser apps" py cairn/test_handles_gui.py
 run "cairn CI: centric intelligence on real Qwen+DeepSeek — calibration gate FALSIFIED, locked" py cairn/test_ci.py
 run "safety-coverage: does the warning fire? baseline 61% miss -> 4% on a sealed set" py safety-coverage/test_coverage.py
 run "weir: the gate — refused requests provably never reach upstream" node_test weir/weir.test.mjs
@@ -128,6 +130,7 @@ run "cairn: browser engine parity with the audited Python engine (20 cases)" py 
 run "cairn: plain-language browser app — offline, measured numbers, limits kept" py cairn/test_plain.py
 run "plumb: governance language semantics + out-of-sample cohort B (pre-registered)" py plumb/test_plumb.py
 run "plumb: governance obligations inside ordinary Python (RT vs Governance)" py plumb/test_governance.py
+run "plumb: the handles obligation — a count never travels without what it counted" py plumb/test_handles.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py

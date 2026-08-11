@@ -187,6 +187,25 @@ test("a key may allow uncheckable through, and the stamp still says so", () => {
   assert.equal(passed.state, "UNCHECKABLE", "passing it must not relabel it as MET");
 });
 
+test("a withheld parcel comes back with a slip saying what to check", async () => {
+  const r = await get("briefings/bare.md");
+  const j = JSON.parse(await r.text());
+  assert.ok("handles" in j && "search_line" in j,
+    "handing back nothing to check is the empty tray this design rejects");
+});
+
+/* The case that motivated the handles. A fabrication written in the shape of a
+ * finding is HIGHLY checkable, so it passes the guard — and that is correct.
+ * What the gate can do is hand over the exact spans that kill it. */
+test("a well-dressed fabrication passes the guard, carrying the handles that kill it", async () => {
+  const r = await get("briefings/greentea.md");
+  assert.equal(r.status, 200, "5/5 checkable text is delivered — checkable is not true");
+  assert.equal(r.headers.get("x-weir-guard"), "MET");
+  assert.equal(r.headers.get("x-weir-evidence"), "5/5");
+  assert.match(r.headers.get("x-weir-careful") || "", /medical\/health/,
+    "a health claim must still carry its warning through");
+});
+
 test("a rule with no bar set guards nothing", () => {
   assert.deepEqual(guard(null, "withhold", null), { withhold: false, state: "NOT_REQUIRED" });
 });

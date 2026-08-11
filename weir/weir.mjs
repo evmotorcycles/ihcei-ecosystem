@@ -188,6 +188,9 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
       checked = { verdict: a.verdict, evidence: `${a.evidence_hits}/${a.evidence_total}`,
                   domains: a.domain_flags, thin, risky,
                   question: a.question, next_steps: a.next_steps,
+                  // the spans that made each signal fire — what a person carries
+                  // to a search engine when the gate hands the parcel back
+                  handles: a.handles, search_line: a.search_line,
                   words: (body.text.trim() ? body.text.trim().split(/\s+/).length : 0) };
     }
 
@@ -214,7 +217,12 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
       res.end(JSON.stringify({ withheld: true, path, rule: verdict.rule,
                                required: verdict.require, got: gr.got, why: gr.why,
                                fetched_but_not_delivered: true,
-                               next_step: checked?.question || null, seal: entry.seal }));
+                               next_step: checked?.question || null,
+                               // A returned parcel with a slip on it: the content
+                               // is not handed over, but what to go and check is.
+                               handles: checked?.handles || null,
+                               search_line: checked?.search_line || null,
+                               seal: entry.seal }));
       return;
     }
 

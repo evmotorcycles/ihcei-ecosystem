@@ -24,6 +24,24 @@
   --stop:#E08585; --stop-soft:#241413; --ok:#5FBF92; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
 }
 *{box-sizing:border-box}
+/* ---- the handles: what you take to a search engine ---- */
+.handles{margin-top:1rem;border:1px solid var(--line);border-radius:12px;
+  background:var(--paper);padding:.9rem 1rem}
+.handles>b{display:block;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
+.handles>p{margin:.35rem 0 .8rem;font-size:.9rem;color:var(--stone);line-height:1.5}
+.hgrid{display:grid;gap:.35rem}
+.hrow{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.7rem;align-items:baseline;font-size:.94rem}
+.hrow .hk{color:var(--stone);font-size:.82rem}
+.hrow .hv em{font-style:normal;font-weight:600;background:var(--card);border:1px solid var(--line);
+  border-radius:7px;padding:.08rem .42rem;display:inline-block;margin:.1rem .18rem .1rem 0}
+.hcopy{display:flex;gap:.4rem;margin-top:.85rem;flex-wrap:wrap}
+.hcopy input{flex:1;min-width:9rem;font:inherit;font-size:.9rem;padding:.45rem .6rem;
+  border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink)}
+.hbtn{background:var(--ink);color:var(--paper);border:none;border-radius:9px;padding:.45rem .9rem;
+  font:inherit;font-size:.88rem;font-weight:600;cursor:pointer}
+.hnote{margin-top:.75rem;padding:.55rem .7rem;border-radius:9px;font-size:.88rem;line-height:1.5;
+  background:var(--warn-soft);border:1px solid var(--line);color:var(--ink)}
+.hnote em{font-style:normal;font-weight:650}
 body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--sans);
   -webkit-font-smoothing:antialiased;padding-bottom:4rem}
 .wrap{max-width:46rem;margin:0 auto;padding:0 1.15rem}
@@ -453,6 +471,49 @@ var PLAIN = {source:"Says where it came from", figures:"Gives actual numbers",
 
 function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
 
+
+/* The handles. A tick saying "contains specific figures" leaves the reader to
+   find the figures. These are the exact words that made each row tick — the
+   ones you carry to a search engine. In the case that motivated this they were
+   "2023 / 240 participants / 12% / in the UK", and five seconds of searching
+   showed no such trial exists. The label never said it was true; it said it was
+   checkable, and then handed over what to check. */
+var HNAME={source:"who says so",figures:"the numbers",method:"how it was measured",
+ time:"when",scope:"who or where"};
+function handlesBlock(r){
+  var hd=r.handles; if(!hd) return "";
+  var rows=["source","figures","method","time","scope"].filter(function(k){return hd[k]&&hd[k].length});
+  if(!rows.length) return "";
+  var h='<div class="handles"><b>Take these and go and check it</b>'+
+    '<p>These are the exact words that made the label tick. Paste them into a search '+
+    'engine — if nothing comes back, you have your answer.</p><div class="hgrid">';
+  h+=rows.map(function(k){
+    return '<div class="hrow"><span class="hk">'+HNAME[k]+'</span><span class="hv">'+
+      hd[k].map(function(s){return '<em>'+esc(s)+'</em>'}).join(" ")+'</span></div>';
+  }).join("");
+  h+='</div>';
+  if(r.search_line){
+    h+='<div class="hcopy"><input id="hline" type="text" readonly value="'+esc(r.search_line)+'">'+
+       '<button class="hbtn" id="hcopy">Copy</button></div>';
+  }
+  if(hd.source && hd.source.length && !hd.source_named){
+    h+='<div class="hnote">The source row ticked on the words <em>'+esc(hd.source[0])+
+       '</em> — but nobody is actually named. There is no one here to go and ask.</div>';
+  }
+  return h+'</div>';
+}
+
+function wireCopy(){
+  var cb=$("#hcopy"); if(!cb) return;
+  cb.onclick=function(){
+    var f=$("#hline"); f.select(); f.setSelectionRange(0,999);
+    var done=function(){cb.textContent="Copied";setTimeout(function(){cb.textContent="Copy"},1400)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(f.value).then(done,function(){cb.textContent="Select and copy"});
+    } else { cb.textContent="Select and copy"; }
+  };
+}
+
 function check(){
   var text = $("#claim").value;
   var r = EI.assay(text, "slate");
@@ -468,6 +529,7 @@ function check(){
     html += '<p style="color:var(--stone);font-size:.9rem;margin-top:.8rem">'+
       r.evidence_hits+' of '+r.evidence_total+' things I can check are present.</p>';
   }
+  html += handlesBlock(r);
 
   if(r.ambiguity && r.ambiguity.ambiguous){
     html += '<div class="steps"><b>The two readings</b><ul>' + r.ambiguity.readings.map(function(rd){
@@ -489,6 +551,7 @@ function check(){
   if(r.question) html += '<p style="margin-top:1rem"><b>'+esc(r.question)+'</b></p>';
   html += '<div class="rcpt">'+esc(r.limits)+'</div></div>';
   $("#out").innerHTML = html;
+  wireCopy();
 }
 $("#check").onclick = check;
 $("#claim").addEventListener("keydown", function(e){

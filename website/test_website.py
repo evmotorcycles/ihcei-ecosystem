@@ -97,3 +97,19 @@ def test_animation_respects_reduced_motion():
     src = html()
     assert "prefers-reduced-motion" in src
     assert "reduce" in src and "requestAnimationFrame" in src
+
+def test_the_inlined_engine_is_byte_identical_to_the_audited_one():
+    """The site ships a COPY of cairn/ei_engine.js. A copy nobody checks drifts.
+
+    It drifted once already: the engine gained handle extraction and the site
+    kept serving the previous build, so the demo on the front page and the app
+    behind it stopped being the same thing.
+    """
+    import re as _re
+    site = html()
+    engine = open(os.path.join(ROOT, "cairn/ei_engine.js"), encoding="utf-8").read()
+    m = _re.search(r"<script>(/\* ei_engine\.js.*?)</script>", site, _re.S)
+    assert m, "the inlined engine block is missing from the page"
+    assert m.group(1).strip() == engine.strip(), (
+        "website/index.html is serving a stale copy of cairn/ei_engine.js — "
+        "re-inline it")

@@ -113,6 +113,35 @@ textarea:focus,input:focus{outline:2px solid var(--key);outline-offset:1px;borde
 .lrow .y{color:var(--ok);font-weight:800}
 .lrow .n{color:var(--stone);font-weight:800}
 .lrow .v{font-size:.82rem;color:var(--stone);text-align:right}
+/* On a phone the three-column row squeezes the plain-English name into a
+   four-line column. Below 30rem the note drops under the name instead. */
+@media (max-width:30rem){
+  .lrow{grid-template-columns:1.5rem minmax(0,1fr);row-gap:.15rem}
+  .lrow .v{grid-column:2;text-align:left;font-size:.8rem}
+  .hrow{grid-template-columns:minmax(0,1fr);gap:.15rem}
+  .hrow .hk{font-size:.74rem;letter-spacing:.05em;text-transform:uppercase}
+}
+/* ---- the handles: what you take to a search engine ---- */
+.handles{margin-top:1.1rem;border:1px solid var(--edge);border-radius:12px;
+  background:var(--wall);padding:.9rem 1rem}
+.handles>b{display:block;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--stone)}
+.handles>p{margin:.35rem 0 .8rem;font-size:.88rem;color:var(--stone);line-height:1.5}
+.hgrid{display:grid;gap:.35rem}
+.hrow{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.7rem;align-items:baseline;
+  font-size:.92rem}
+.hrow .hk{color:var(--stone);font-size:.8rem}
+.hrow .hv em{font-style:normal;font-weight:600;background:var(--desk);
+  border:1px solid var(--edge);border-radius:7px;padding:.08rem .42rem;
+  display:inline-block;margin:.1rem .18rem .1rem 0}
+.hcopy{display:flex;gap:.4rem;margin-top:.85rem}
+.hcopy input{flex:1;min-width:0;font:inherit;font-size:.88rem;padding:.45rem .6rem;
+  border:1px solid var(--edge);border-radius:9px;background:var(--desk);color:var(--ink)}
+.hbtn{background:var(--ink);color:var(--desk);border:none;border-radius:9px;
+  padding:.45rem .9rem;font:inherit;font-size:.86rem;font-weight:600;cursor:pointer}
+.hnote{margin-top:.75rem;padding:.55rem .7rem;border-radius:9px;font-size:.86rem;
+  line-height:1.5;background:var(--warn-soft,#FBF1DF);border:1px solid var(--edge);color:var(--ink)}
+.hnote em{font-style:normal;font-weight:650}
 .big-verdict{padding:1rem;border-top:1.5px solid var(--ink);background:var(--wall);
   font-weight:650}
 .gauge{height:.75rem;border-radius:99px;background:var(--line);overflow:hidden;margin:.7rem 0 .35rem}
@@ -434,6 +463,39 @@ var VERDICT={
 var PLAIN={source:"Says where it came from",figures:"Gives real numbers",
  method:"Says how it was measured",time:"Says when",scope:"Says who or where it applies to"};
 
+/* The handles. A tick saying "contains specific figures" leaves the reader to
+   find the figures. These are the exact words that made each row tick — the
+   ones you carry to a search engine. In the case that motivated this, they were
+   "2023 / 240 participants / 12% / in the UK", and five seconds of searching
+   showed no such trial exists. The label never said it was true; it said it was
+   checkable, and then handed over what to check. */
+var HNAME={source:"who says so",figures:"the numbers",method:"how it was measured",
+ time:"when",scope:"who or where"};
+function handlesBlock(r){
+  var hd=r.handles; if(!hd) return "";
+  var rows=["source","figures","method","time","scope"].filter(function(k){return hd[k]&&hd[k].length});
+  if(!rows.length) return "";
+  var h='<div class="handles"><b>Take these and go and check it</b>'+
+    '<p>These are the exact words that made the label tick. Paste them into a search '+
+    'engine — if nothing comes back, you have your answer.</p><div class="hgrid">';
+  h+=rows.map(function(k){
+    return '<div class="hrow"><span class="hk">'+HNAME[k]+'</span><span class="hv">'+
+      hd[k].map(function(s){return '<em>'+esc(s)+'</em>'}).join(" ")+'</span></div>';
+  }).join("");
+  h+='</div>';
+  if(r.search_line){
+    h+='<div class="hcopy"><input id="hline" type="text" readonly value="'+esc(r.search_line)+'">'+
+       '<button class="hbtn" id="hcopy">Copy</button></div>';
+  }
+  /* Showing the span is what makes this visible: "according to a trial" ticks
+     the source row without naming anybody to ask. */
+  if(hd.source && hd.source.length && !hd.source_named){
+    h+='<div class="hnote">The source row ticked on the words <em>'+esc(hd.source[0])+
+       '</em> — but nobody is actually named. There is no one here to go and ask.</div>';
+  }
+  return h+'</div>';
+}
+
 function check(){
   var r=EI.assay($("#claim").value,"slate"), v=VERDICT[r.verdict]||["","",""];
   var pct = r.evidence.length ? Math.round(r.evidence_hits/r.evidence_total*100) : 0;
@@ -454,6 +516,7 @@ function check(){
     h+='<div class="gauge"><i style="width:'+pct+'%"></i></div>'+
        '<div class="gtag"><span>nothing to check</span><span>fully checkable</span></div>';
   }
+  h+=handlesBlock(r);
   h+='<div class="note '+(v[0]||"")+'"><b>'+esc(v[1])+'</b>'+esc(r.explanation||v[2])+'</div>';
   if(r.ambiguity&&r.ambiguity.ambiguous){
     h+='<div class="note warn"><b>Two ways to read it</b><ul>'+r.ambiguity.readings.map(function(rd){
@@ -470,6 +533,14 @@ function check(){
   }
   h+='<div class="rcpt">'+esc(r.limits)+'</div>';
   $("#out").innerHTML=h;
+  var cb=$("#hcopy");
+  if(cb) cb.onclick=function(){
+    var f=$("#hline"); f.select(); f.setSelectionRange(0,999);
+    var done=function(){cb.textContent="Copied";setTimeout(function(){cb.textContent="Copy"},1400)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(f.value).then(done,function(){cb.textContent="Select and copy"});
+    } else { cb.textContent="Select and copy"; }
+  };
 }
 $("#check").onclick=check;
 $("#claim").addEventListener("keydown",function(e){if((e.metaKey||e.ctrlKey)&&e.key==="Enter")check()});

@@ -91,6 +91,7 @@ class Program:
         self.blind = []               # fields physically removed before evaluation
         self.independent = False
         self.require_evidence = None  # (k, n)
+        self.handles = False          # name WHICH signals carried the count
         self.receipt = False
 
 
@@ -139,6 +140,13 @@ def parse(src):
         elif kw == "require":
             eat("word", "evidence"); k = int(eat("num")); eat("word", "of"); n = int(eat("num"))
             prog.require_evidence = (k, n)
+        elif kw == "handles":
+            # A bare count is the failure this obligation exists to stop. "4 of 5"
+            # tells a reader how many signals fired and leaves them to guess which,
+            # so they cannot go and check any of them. `handles` makes the verdict
+            # name the signals it passed, the ones it did not, and the numbers
+            # behind them -- the load-bearing parts, handed over.
+            prog.handles = True
         elif kw == "receipt":
             prog.receipt = True
         else:
@@ -236,6 +244,15 @@ def run(prog, records):
                      "yield": 0.0}
         v.update({"encode": round(e, 4), "decode": round(d, 4), "capacity": round(u, 4),
                   "evidence": f"{hits}/{len(signals)}"})
+        if prog.handles:
+            # (handles) a count never travels without the things it counted
+            v["handles"] = {
+                "met": sorted(k for k, ok in signals.items() if ok),
+                "missing": sorted(k for k, ok in signals.items() if not ok),
+                "values": {"capacity": round(u, 4), "encode": round(e, 4),
+                           "decode": round(d, 4), "weakest_leg": round(weak, 4),
+                           "floor": prog.floor},
+            }
         # (no bare return) every verdict is receipted
         v["receipt"] = hashlib.sha256(
             json.dumps({"p": prog.name, "v": v["verdict"], "r": rec}, sort_keys=True, default=str).encode()

@@ -22,7 +22,9 @@ const out = cases.map((t) => {
     domain_flags: v.domain_flags,
     ambiguous: v.ambiguity.ambiguous,
     implausible: v.implausible ? true : false,
-    next_steps: v.next_steps
+    next_steps: v.next_steps,
+    handles: v.handles,
+    search_line: v.search_line
   };
 });
 process.stdout.write(JSON.stringify(out, null, 1));
