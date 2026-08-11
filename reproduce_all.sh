@@ -112,6 +112,8 @@ run "cohort-audit: N=992 independent re-analysis — summary recomputes from raw
 run "ei-dashboards: ASSAY — real stack over real Qwen+DeepSeek repos + offline dashboards" node_test ei-dashboards/assay.test.mjs
 run "cairn: EI engine + Hinton Grand Canyon test (anti-overclaim control locked)" py cairn/test_ei_llm.py
 run "cairn CI: centric intelligence on real Qwen+DeepSeek — calibration gate FALSIFIED, locked" py cairn/test_ci.py
+run "layers: IHCEI/NERE stay infrastructure; the desks stay jargon-free" py test_layers.py
+run "growth-study: composition by era + whether the evidence exists (pre-registered)" py growth-study/test_growth.py
 run "governance-learning: 6 obligations inside a learner (pre-registered)" py governance-learning/test_gla.py
 run "readers: documents, data, code, transcripts — every reader declares its blind spots" node_test readers/readers.test.mjs
 run "website: self-contained, links resolve, limits and failed gate on the page" py website/test_website.py

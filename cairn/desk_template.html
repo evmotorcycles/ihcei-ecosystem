@@ -1,0 +1,659 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Your Desk — six everyday checks</title>
+<style>
+:root{
+  --wall:#E7E9E4; --wall-2:#DDE1DA; --desk:#FBFBF8; --ink:#15181A; --stone:#66716B;
+  --line:#D5DBD3; --edge:#C3CBC1;
+  --key:#2F5D57; --key-soft:#E1EEEA; --on-key:#FBFBF8;
+  --ok:#1E6B48; --ok-soft:#E2F0E8; --warn:#8A5A0B; --warn-soft:#FBF1DF;
+  --stop:#8C2F2F; --stop-soft:#FBEAEA;
+  --shadow:0 1px 1px rgba(21,24,26,.05),0 6px 18px rgba(21,24,26,.08);
+  --lift:0 2px 4px rgba(21,24,26,.07),0 14px 34px rgba(21,24,26,.12);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wall:#101413; --wall-2:#0B0E0D; --desk:#181D1B; --ink:#E8EDEA; --stone:#95A099;
+  --line:#252C29; --edge:#323A36;
+  --key:#6FBFB2; --key-soft:#142523; --on-key:#0B0E0D;
+  --ok:#5FBF92; --ok-soft:#12241C; --warn:#D9A441; --warn-soft:#241D0F;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 4px rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --wall:#101413; --wall-2:#0B0E0D; --desk:#181D1B; --ink:#E8EDEA; --stone:#95A099;
+  --line:#252C29; --edge:#323A36;
+  --key:#6FBFB2; --key-soft:#142523; --on-key:#0B0E0D;
+  --ok:#5FBF92; --ok-soft:#12241C; --warn:#D9A441; --warn-soft:#241D0F;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 4px rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:17px/1.6 var(--sans);
+  background:var(--wall);background-image:radial-gradient(circle at 22% 12%,var(--wall-2),transparent 55%);
+  -webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.018em;line-height:1.2;text-wrap:balance}
+.mono{font-family:var(--mono);font-size:.85em}
+
+/* ---------------- top shelf ---------------- */
+.shelf{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--wall) 90%,transparent);backdrop-filter:blur(10px)}
+.shelfin{max-width:60rem;margin:0 auto;padding:.6rem 1.1rem;display:flex;align-items:center;gap:.6rem}
+.home{display:flex;align-items:center;gap:.5rem;background:none;border:none;color:inherit;
+  font-weight:650;font-size:1.02rem;padding:.2rem .3rem;border-radius:8px}
+.home:hover{background:var(--key-soft)}
+.home svg{width:22px;height:22px;color:var(--key)}
+.shelfin .sp{flex:1}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);border-radius:8px;
+  padding:.3rem .7rem;font-size:.82rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+
+/* ---------------- the desk ---------------- */
+.room{max-width:60rem;margin:0 auto;padding:0 1.1rem 5rem}
+.welcome{padding:2.6rem 0 1.6rem;text-align:center}
+.welcome h1{font-size:clamp(1.7rem,4.4vw,2.4rem)}
+.welcome p{color:var(--stone);max-width:34rem;margin:.8rem auto 0;font-size:1.02rem}
+
+/* app icons, laid out like a desktop */
+.desktop{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));
+  gap:1rem;padding:1rem 0 2rem}
+.app{display:flex;flex-direction:column;align-items:center;gap:.6rem;background:none;
+  border:1px solid transparent;border-radius:14px;padding:1rem .6rem;text-align:center;
+  transition:transform .13s ease,background .13s ease,border-color .13s ease}
+.app:hover,.app:focus-visible{background:var(--desk);border-color:var(--line);transform:translateY(-2px)}
+.app .icon{width:4.2rem;height:4.2rem;border-radius:18px;background:var(--desk);
+  border:1px solid var(--edge);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--key)}
+.app .icon svg{width:2.1rem;height:2.1rem}
+.app .nm{font-weight:650;font-size:.98rem;line-height:1.25}
+.app .sub{color:var(--stone);font-size:.79rem;line-height:1.4}
+
+/* ---------------- a window ---------------- */
+.win{display:none}
+.win.on{display:block;animation:rise .16s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.frame{background:var(--desk);border:1px solid var(--edge);border-radius:16px;
+  box-shadow:var(--lift);overflow:hidden;margin:1.4rem 0}
+.title{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.1rem;
+  border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--desk) 60%,var(--wall))}
+.title .ic{width:2.1rem;height:2.1rem;border-radius:9px;background:var(--key-soft);
+  display:grid;place-items:center;color:var(--key);flex:none}
+.title .ic svg{width:1.15rem;height:1.15rem}
+.title b{font-size:1.02rem}
+.title span{color:var(--stone);font-size:.86rem;display:block;line-height:1.35}
+.body{padding:1.2rem}
+label.f{display:block;font-size:.86rem;color:var(--stone);margin-bottom:.45rem}
+textarea,input[type=text]{width:100%;background:var(--wall);color:var(--ink);
+  border:1px solid var(--edge);border-radius:11px;padding:.85rem .95rem;font:inherit;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--key);outline-offset:1px;border-color:transparent}
+.go{background:var(--key);color:var(--on-key);border:1px solid var(--key);border-radius:11px;
+  padding:.75rem 1.5rem;font-weight:650;margin-top:.85rem}
+.go:hover{filter:brightness(1.1)}
+.row{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.chip{background:var(--wall);border:1px solid var(--line);border-radius:99px;
+  padding:.3rem .8rem;font-size:.82rem;color:var(--stone)}
+.chip:hover{border-color:var(--key);color:var(--key)}
+
+/* ---------------- the label (Cairn result) ---------------- */
+.label{border:1.5px solid var(--ink);border-radius:12px;overflow:hidden;margin-top:1.1rem;
+  background:var(--desk)}
+.label .cap{padding:.7rem 1rem;border-bottom:1.5px solid var(--ink);
+  font-weight:700;letter-spacing:.02em;font-size:1.05rem}
+.label .rows{padding:.3rem 1rem .8rem}
+.lrow{display:grid;grid-template-columns:1.5rem 1fr auto;gap:.7rem;align-items:baseline;
+  padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.lrow:last-child{border-bottom:none}
+.lrow .y{color:var(--ok);font-weight:800}
+.lrow .n{color:var(--stone);font-weight:800}
+.lrow .v{font-size:.82rem;color:var(--stone);text-align:right}
+.big-verdict{padding:1rem;border-top:1.5px solid var(--ink);background:var(--wall);
+  font-weight:650}
+.gauge{height:.75rem;border-radius:99px;background:var(--line);overflow:hidden;margin:.7rem 0 .35rem}
+.gauge i{display:block;height:100%;border-radius:99px;background:var(--key)}
+.gtag{display:flex;justify-content:space-between;font-size:.8rem;color:var(--stone)}
+
+.note{border-radius:12px;padding:.9rem 1.05rem;margin-top:1rem;font-size:.94rem}
+.note.good{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 30%,transparent)}
+.note.warn{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent)}
+.note.stop{background:var(--stop-soft);border:1px solid color-mix(in srgb,var(--stop) 32%,transparent)}
+.note b{display:block;margin-bottom:.3rem}
+.note.good b{color:var(--ok)} .note.warn b{color:var(--warn)} .note.stop b{color:var(--stop)}
+.note ul{margin:.35rem 0 0;padding-left:1.15rem}
+.note li{margin:.2rem 0}
+
+/* ---------------- valet key (Page Code) ---------------- */
+.keyring{display:grid;gap:.6rem;margin-top:.4rem}
+.krow{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.8rem;align-items:center;
+  background:var(--wall);border:1px solid var(--line);border-radius:12px;padding:.75rem .9rem}
+.krow .ki{width:2.4rem;height:2.4rem;border-radius:9px;display:grid;place-items:center}
+.krow.yes .ki{background:var(--ok-soft);color:var(--ok)}
+.krow.no .ki{background:var(--stop-soft);color:var(--stop)}
+.krow b{display:block;font-size:.96rem}
+.krow span{color:var(--stone);font-size:.83rem}
+.tagy{font-size:.78rem;font-weight:700;color:var(--ok)}
+.tagn{font-size:.78rem;font-weight:700;color:var(--stop)}
+.kdefault{border-style:dashed}
+
+/* ---------------- dashcam (HELM) ---------------- */
+.tape{display:grid;gap:.5rem;margin-top:.4rem}
+.clip{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;background:var(--wall);
+  border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:10px;padding:.7rem .9rem}
+.clip.broken{border-color:var(--stop);border-left-color:var(--stop);background:var(--stop-soft)}
+.clip .no{font-family:var(--mono);color:var(--stone);font-size:.85rem}
+.clip .tx{font-size:.95rem}
+.clip .meta{font-family:var(--mono);font-size:.74rem;color:var(--stone);margin-top:.25rem}
+.sealbar{display:flex;align-items:center;gap:.5rem;font-size:.9rem;font-weight:650;margin-top:.9rem}
+.sealbar .dot{width:.6rem;height:.6rem;border-radius:99px;background:var(--ok)}
+.sealbar.bad .dot{background:var(--stop)}
+.sealbar.bad{color:var(--stop)}
+
+/* ---------------- confidence meter (Trig) ---------------- */
+.meterbox{display:grid;gap:1.1rem;margin-top:.4rem}
+.mrow{display:grid;grid-template-columns:7.5rem 1fr;gap:.9rem;align-items:center}
+.mrow .lab{font-size:.88rem;color:var(--stone)}
+.dual{display:grid;gap:.28rem}
+.bar{height:.7rem;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.b-said{background:var(--stone)} .b-true{background:var(--key)}
+.mkey{display:flex;gap:1.1rem;font-size:.8rem;color:var(--stone);margin-top:.2rem}
+.mkey s{width:.7rem;height:.7rem;border-radius:3px;display:inline-block;text-decoration:none}
+
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:24rem}
+th{text-align:left;font-size:.76rem;color:var(--stone);font-weight:650;padding:.45rem .6rem;
+  border-bottom:1px solid var(--line)}
+td{padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.rcpt{font-family:var(--mono);font-size:.74rem;color:var(--stone);margin-top:1rem;
+  border-top:1px dashed var(--line);padding-top:.7rem;word-break:break-all}
+footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px solid var(--line);
+  color:var(--stone);font-size:.86rem}
+:focus-visible{outline:2px solid var(--key);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="shelf"><div class="shelfin">
+  <button class="home" id="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <path d="M4 21h16M6.5 21c0-3 2.4-4.2 5.5-4.2s5.5 1.2 5.5 4.2M8 16.6c-.6-2.4 1.4-3.6 4-3.6s4.6 1.2 4 3.6M9.4 12.8c-.5-2 1-3 2.6-3s3.1 1 2.6 3M10.6 9.4c-.3-1.5.5-2.4 1.4-2.4s1.7.9 1.4 2.4"/></svg>
+    Your Desk</button>
+  <span class="sp"></span>
+  <button class="ghost" id="theme" title="Light / dark">◐</button>
+</div></div>
+
+<main class="room">
+
+<!-- ======================= THE DESK ======================= -->
+<section class="win on" id="deskview">
+  <div class="welcome">
+    <h1>What do you need to check?</h1>
+    <p>Pick a tool. Nothing here leaves your device — no account, no internet, nothing
+       uploaded. Every answer also tells you what it could not work out.</p>
+  </div>
+  <div class="desktop" id="apps"></div>
+
+  <div class="note stop">
+    <b>Before you rely on any of these</b>
+    None of them knows whether something is <em>true</em>. They check whether a claim can be
+    checked, whether permission was granted, and whether a record was altered. A sentence can
+    pass every check here and still be wrong. Use them to find your questions — then, when it
+    matters, take those questions to a person.
+  </div>
+</section>
+
+<!-- ======================= 1. THE LABEL ======================= -->
+<section class="win" id="label">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+      <span><b>The Label</b><span>Like the nutrition panel on a packet — what is this claim actually made of?</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="claim">Paste what someone told you, or what an AI answered</label>
+      <textarea id="claim" rows="4" placeholder="e.g. Green tea reduces stress by 12%"></textarea>
+      <div class="chips" id="egs"></div>
+      <button class="go" id="check">Read the label</button>
+      <div id="out"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 2. THE VALET KEY ======================= -->
+<section class="win" id="valet">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3.5M15 12v2.5"/></svg></span>
+      <span><b>The Valet Key</b><span>Hand over just enough. A valet key starts the car — it does not open the boot.</span></span>
+    </div>
+    <div class="body">
+      <p style="margin:.2rem 0 1rem;color:var(--stone)">This is what you are giving an app or an
+         assistant. <b style="color:var(--ink)">Anything not on this list is refused automatically</b>,
+         so you never have to guess what it might ask for.</p>
+      <div class="keyring" id="keys"></div>
+      <label class="f" for="ask" style="margin-top:1.3rem">Try it — what if it asks for this?</label>
+      <input type="text" id="ask" value="payroll/salaries-2026.xlsx">
+      <div class="chips" id="asks"></div>
+      <button class="go" id="tryit">See what happens</button>
+      <div id="pcout"></div>
+      <div class="note warn">
+        <b>What a valet key cannot do</b>
+        It stops an app reaching what you never handed over. It does not stop it misusing what
+        you <em>did</em> hand over, and it cannot tell you whether the app is trustworthy. Give
+        the smallest key that does the job.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 3. THE DASHCAM ======================= -->
+<section class="win" id="dashcam">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 11l5-3v8l-5-3"/></svg></span>
+      <span><b>The Dashcam</b><span>A running record. If anyone edits an old entry, the seal breaks and you see it.</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="entry">What just happened?</label>
+      <input type="text" id="entry" placeholder="e.g. Agreed the quote with the builder — £4,200">
+      <div class="row"><button class="go" id="add">Record it</button>
+        <button class="ghost" id="tamper" style="margin-top:.85rem">Try secretly editing entry 1</button></div>
+      <div class="sealbar" id="sealbar"><span class="dot"></span><span id="sealtext"></span></div>
+      <div class="tape" id="tape"></div>
+      <div class="note warn">
+        <b>What a dashcam cannot do</b>
+        It makes tampering <em>visible</em>, not impossible. And it says nothing about whether an
+        entry was true when it was written — somebody can still record a lie; they just cannot
+        rewrite it later without it showing.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 4. THE CONFIDENCE METER ======================= -->
+<section class="win" id="meter">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 20a8 8 0 1 1 8-8"/><path d="M12 12l5-3"/></svg></span>
+      <span><b>The Confidence Meter</b><span>When a tool says it is sure, is it right that often? We checked ourselves.</span></span>
+    </div>
+    <div class="body">
+      <div class="note stop">
+        <b>We failed our own test</b>
+        We tested whether our claim-checker's confidence matches an independent measure it never
+        sees. We set the limit at <b>0.15</b> before looking. We measured <b>{{ece}}</b>.
+        <b style="display:inline">We did not move the limit.</b>
+      </div>
+      <p style="color:var(--stone);margin:1.1rem 0 .3rem">Grey is what it said about itself.
+         Green is what was independently true. Every bar leans the same way — it was consistently
+         <em>less</em> sure than it should have been.</p>
+      <div class="meterbox" id="meters"></div>
+      <div class="mkey"><span><s style="background:var(--stone)"></s> what it said</span>
+        <span><s style="background:var(--key)"></s> what was true</span></div>
+      <div class="note warn">
+        <b>Why show you a failure?</b>
+        Being under-confident is the safer way to fail, but it is still failing. A tool that has
+        never published its own bad result has not been tested — it has been advertised.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 5. THE FILE OPENER ======================= -->
+<section class="win" id="opener">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+      <span><b>The File Opener</b><span>Open a document, spreadsheet, transcript, photo or code — and see what is really in it.</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="file">Choose a file from your device</label>
+      <input type="file" id="file" style="width:100%">
+      <label class="f" for="pastebox" style="margin-top:1.1rem">…or paste something and tell it what it is</label>
+      <textarea id="pastebox" rows="5" placeholder="Paste here"></textarea>
+      <div class="row" style="margin-top:.6rem">
+        <button class="go" id="asdoc" style="margin-top:0">It's writing</button>
+        <button class="ghost" id="ascsv">It's a spreadsheet</button>
+        <button class="ghost" id="ascode">It's code</button>
+        <button class="ghost" id="astrans">It's a transcript</button>
+      </div>
+      <div class="chips" id="fchips"></div>
+      <div id="fout"></div>
+      <div class="note stop">
+        <b>What the opener cannot do</b>
+        It reads <em>shape</em>, never meaning. <b style="display:inline">There is no eyesight
+        here</b> — a photo of a chart, a photo of a contract and a photo of a cat are the same
+        thing to it. And there is no internet, so it cannot fetch a video or a web page: open the
+        video, copy the transcript, paste it in.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 6. THE PLANNER ======================= -->
+<section class="win" id="planner">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 4h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7"/><path d="M4 7l4-4v4z"/><path d="M9 12h7M9 16h5"/></svg></span>
+      <span><b>The Planner</b><span>A plan where you write down what "it didn't work" looks like — before you start.</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="goal">What are you trying to do?</label>
+      <textarea id="goal" rows="3" placeholder="e.g. Move our customer records to a new provider by March"></textarea>
+      <label class="f" for="cons" style="margin-top:.9rem">Anything fixed? (money, deadline, people)</label>
+      <input type="text" id="cons" placeholder="optional">
+      <div class="chips" id="pchips"></div>
+      <button class="go" id="doplan">Make the plan</button>
+      <div id="pout"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Everything runs on your own device. No account, no internet, nothing uploaded. The confidence
+  numbers come from a run over {{n}} real projects, with the limit fixed before the data was seen
+  and not changed afterwards.
+</footer>
+</main>
+
+<script>{{ENGINE}}</script>
+<script>{{READERS}}</script>
+<script>
+"use strict";
+var DATA = {{DATA}};
+var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
+/* Named for the everyday object, not the component. The id is the page; the
+   component name appears nowhere a person can see it. */
+var APPS=[
+ {id:"label",   nm:"The Label",            sub:"Is this claim worth believing?",
+  icon:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'},
+ {id:"valet",   nm:"The Valet Key",        sub:"What may this app touch?",
+  icon:'<circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3.5M15 12v2.5"/>'},
+ {id:"dashcam", nm:"The Dashcam",          sub:"Keep a record nobody can edit",
+  icon:'<rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 11l5-3v8l-5-3"/>'},
+ {id:"meter",   nm:"The Confidence Meter", sub:"Is it as sure as it sounds?",
+  icon:'<path d="M12 20a8 8 0 1 1 8-8"/><path d="M12 12l5-3"/>'},
+ {id:"opener",  nm:"The File Opener",      sub:"What's really in this file?",
+  icon:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'},
+ {id:"planner", nm:"The Planner",          sub:"Plan it so you can tell if it worked",
+  icon:'<path d="M9 4h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7"/><path d="M4 7l4-4v4z"/><path d="M9 12h7M9 16h5"/>'}
+];
+$("#apps").innerHTML=APPS.map(function(a){
+  return '<button class="app" data-go="'+a.id+'"><span class="icon">'+
+   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">'+
+   a.icon+'</svg></span><span class="nm">'+a.nm+'</span><span class="sub">'+a.sub+'</span></button>';
+}).join("");
+
+/* ---- navigation: hash-routed so the browser Back button works ---- */
+var PAGES=["deskview"].concat(APPS.map(function(a){return a.id}));
+function go(id){
+  if(PAGES.indexOf(id)===-1) id="deskview";
+  $$(".win").forEach(function(w){w.classList.toggle("on",w.id===id)});
+  window.scrollTo(0,0);
+}
+function navigate(id){ if(location.hash.slice(1)!==id) location.hash=id; else go(id) }
+window.addEventListener("hashchange",function(){go(location.hash.slice(1)||"deskview")});
+$$(".app").forEach(function(b){b.onclick=function(){navigate(b.dataset.go)}});
+$("#home").onclick=function(){navigate("deskview")};
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape" && !$("#deskview").classList.contains("on")) navigate("deskview");
+});
+go(location.hash.slice(1)||"deskview");
+$("#theme").onclick=function(){
+  var d=document.documentElement,cur=d.getAttribute("data-theme");
+  var dark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  d.setAttribute("data-theme",dark?"light":"dark");
+};
+
+/* ================= 1. THE LABEL ================= */
+var EGS=["Green tea reduces stress.",
+ "According to a 2023 randomised trial of 240 participants in the UK, green tea reduced self-reported stress by 12%.",
+ "Epistemology is the study of knowledge.",
+ "Mix glycolic acid with water and apply to skin.",
+ "I saw the Grand Canyon flying to New York."];
+EGS.forEach(function(t){var b=document.createElement("button");b.className="chip";
+ b.textContent=t.length>40?t.slice(0,40)+"…":t;b.title=t;
+ b.onclick=function(){$("#claim").value=t;check()};$("#egs").appendChild(b)});
+
+var VERDICT={
+ SUPPORTED:["good","Enough here to check","Someone could go and verify this. That does not make it true — it makes it checkable."],
+ INSUFFICIENT_EVIDENCE:["warn","Almost nothing to check","It may well be right. But as written, there is very little anyone could go and confirm."],
+ OUT_OF_SCOPE:["","Not this kind of thing","This tool reads claims about what is measurably the case."],
+ AMBIGUOUS:["warn","This can be read two ways","The sentence has more than one meaning, so it will not guess which you meant."],
+ IMPLAUSIBLE:["warn","Something is off here","Read literally, this says something that cannot happen."]};
+var PLAIN={source:"Says where it came from",figures:"Gives real numbers",
+ method:"Says how it was measured",time:"Says when",scope:"Says who or where it applies to"};
+
+function check(){
+  var r=EI.assay($("#claim").value,"slate"), v=VERDICT[r.verdict]||["","",""];
+  var pct = r.evidence.length ? Math.round(r.evidence_hits/r.evidence_total*100) : 0;
+  var h='<div class="label"><div class="cap">What this claim is made of</div><div class="rows">';
+  if(r.evidence.length){
+    h+=r.evidence.map(function(c){
+      return '<div class="lrow"><span class="'+(c.hit?"y":"n")+'">'+(c.hit?"✓":"—")+'</span>'+
+        '<span>'+PLAIN[c.signal]+'</span><span class="v">'+esc(c.note)+'</span></div>';
+    }).join("");
+  } else {
+    h+='<div class="lrow"><span class="n">—</span><span>Nothing to weigh here</span>'+
+       '<span class="v">this is not a factual claim</span></div>';
+  }
+  h+='</div><div class="big-verdict">'+esc(v[1])+
+     (r.evidence.length? ' · <span style="font-weight:400;color:var(--stone)">'+
+      r.evidence_hits+' of '+r.evidence_total+' checkable parts present</span>':'')+'</div></div>';
+  if(r.evidence.length){
+    h+='<div class="gauge"><i style="width:'+pct+'%"></i></div>'+
+       '<div class="gtag"><span>nothing to check</span><span>fully checkable</span></div>';
+  }
+  h+='<div class="note '+(v[0]||"")+'"><b>'+esc(v[1])+'</b>'+esc(r.explanation||v[2])+'</div>';
+  if(r.ambiguity&&r.ambiguity.ambiguous){
+    h+='<div class="note warn"><b>Two ways to read it</b><ul>'+r.ambiguity.readings.map(function(rd){
+      return '<li>'+esc(rd.paraphrase)+' — <em>'+(rd.plausible?"possible":"not possible")+'</em></li>'}).join("")+'</ul></div>';
+  }
+  if(r.domain_flags.length){
+    h+='<div class="note stop"><b>Careful — this is about '+esc(r.domain_flags.join(", ").replace(/[a-z]+\//g,""))+'</b>'+
+       'Writing can be perfectly well put together and still be dangerous. Nothing above checks '+
+       'whether this is safe to act on. For health, chemicals, money or the law, ask someone qualified.</div>';
+  }
+  if(r.next_steps.length){
+    h+='<div class="note good"><b>What would make it stronger</b><ul>'+
+       r.next_steps.map(function(s){return "<li>"+esc(s)+"</li>"}).join("")+'</ul></div>';
+  }
+  h+='<div class="rcpt">'+esc(r.limits)+'</div>';
+  $("#out").innerHTML=h;
+}
+$("#check").onclick=check;
+$("#claim").addEventListener("keydown",function(e){if((e.metaKey||e.ctrlKey)&&e.key==="Enter")check()});
+
+/* ================= 2. THE VALET KEY ================= */
+var RULES=DATA.rules;
+var YES='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12l5 5L19 7"/></svg>';
+var NO='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+$("#keys").innerHTML=RULES.map(function(r){
+  return '<div class="krow '+(r.allow?"yes":"no")+'"><span class="ki">'+(r.allow?YES:NO)+'</span>'+
+    '<span><b>'+esc(r.plain)+'</b><span>'+esc(r.glob)+(r.allow&&r.limit!=="—"?" · "+esc(r.limit):"")+'</span></span>'+
+    '<span class="'+(r.allow?"tagy":"tagn")+'">'+(r.allow?"allowed":"blocked")+'</span></div>';
+}).join("")+
+ '<div class="krow no kdefault"><span class="ki">'+NO+'</span><span><b>Everything else</b>'+
+ '<span>anything you did not list</span></span><span class="tagn">blocked automatically</span></div>';
+
+function globMatch(g,p){
+  var rx="^"+g.split("**").map(function(part){
+    return part.split("*").map(function(x){return x.replace(/[.+?^${}()|[\]\\]/g,"\\$&")}).join("[^/]*");
+  }).join(".*")+"$";
+  return new RegExp(rx).test(p);
+}
+["projects/notes.md","projects/drafts/new.md","contracts/lease.pdf","payroll/salaries-2026.xlsx",".ssh/id_rsa"]
+ .forEach(function(p){var b=document.createElement("button");b.className="chip";b.textContent=p;
+  b.onclick=function(){$("#ask").value=p;tryit()};$("#asks").appendChild(b)});
+function tryit(){
+  var path=$("#ask").value.trim();
+  var m=RULES.filter(function(r){return globMatch(r.glob,path)});
+  var denies=m.filter(function(r){return !r.allow});
+  var hit=denies.length?denies[0]:m.sort(function(a,b){return b.glob.length-a.glob.length})[0]||null;
+  var ok=hit&&hit.allow;
+  $("#pcout").innerHTML='<div class="note '+(ok?"good":"stop")+'" style="margin-top:1rem"><b>'+
+    (ok?"Allowed":"Blocked")+'</b>'+
+    (hit? 'It matches your rule for <b style="display:inline">'+esc(hit.plain).toLowerCase()+'</b>'+
+          (ok&&hit.limit!=="—"?', limited to '+esc(hit.limit):'')+'.'
+        : 'Nothing on your key covers <span class="mono">'+esc(path)+'</span>, so it is blocked '+
+          'automatically. You never had to think of this one — you only had to say what <em>was</em> allowed.')+
+    '</div>';
+}
+$("#tryit").onclick=tryit; tryit();
+
+/* ================= 3. THE DASHCAM ================= */
+var CHAIN=[];
+async function sha(s){
+  if(crypto&&crypto.subtle){
+    var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));
+    return [].map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,"0")}).join("");
+  }
+  var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0}
+  return ("00000000"+h.toString(16)).slice(-8).repeat(8);
+}
+async function addEntry(text){
+  var prev=CHAIN.length?CHAIN[CHAIN.length-1].seal:"0".repeat(64);
+  var e={text:text,when:new Date().toLocaleString(),prev:prev};
+  e.seal=await sha(JSON.stringify(e));CHAIN.push(e);await render();
+}
+async function render(){
+  var broken=-1,prev="0".repeat(64);
+  for(var i=0;i<CHAIN.length;i++){
+    var e=CHAIN[i];
+    var again=await sha(JSON.stringify({text:e.text,when:e.when,prev:e.prev}));
+    if(e.prev!==prev||again!==e.seal){broken=i;break}
+    prev=e.seal;
+  }
+  $("#tape").innerHTML=CHAIN.map(function(e,i){
+    var bad=broken>=0&&i>=broken;
+    return '<div class="clip'+(bad?" broken":"")+'"><span class="no">'+(i+1)+'</span>'+
+      '<span><span class="tx">'+esc(e.text)+'</span><span class="meta">'+esc(e.when)+
+      ' · seal '+e.seal.slice(0,12)+(bad?' · SEAL BROKEN':'')+'</span></span></div>';
+  }).join("");
+  var sb=$("#sealbar");
+  sb.className="sealbar"+(broken<0?"":" bad");
+  $("#sealtext").textContent = broken<0
+    ? "All "+CHAIN.length+" entries sealed and intact"
+    : "Entry "+(broken+1)+" was altered — every seal after it is broken";
+}
+$("#add").onclick=function(){var v=$("#entry").value.trim();if(!v)return;$("#entry").value="";addEntry(v)};
+$("#entry").addEventListener("keydown",function(e){if(e.key==="Enter")$("#add").click()});
+$("#tamper").onclick=function(){if(!CHAIN.length)return;CHAIN[0].text+=" (quietly changed)";render()};
+(async function(){
+  await addEntry("Quote agreed with the builder — 4,200");
+  await addEntry("Deposit paid — 1,000");
+  await addEntry("Start date confirmed for the 12th");
+})();
+
+/* ================= 4. THE CONFIDENCE METER ================= */
+$("#meters").innerHTML=DATA.bins.map(function(b){
+  return '<div class="mrow"><span class="lab">when it said<br><b>'+Math.round(b.mean_conf*100)+'% sure</b></span>'+
+    '<span class="dual"><span class="bar"><i class="b-said" style="width:'+(b.mean_conf*100)+'%"></i></span>'+
+    '<span class="bar"><i class="b-true" style="width:'+(b.mean_truth*100)+'%"></i></span></span></div>';
+}).join("");
+
+/* ================= 5. THE FILE OPENER ================= */
+function renderRead(r){
+  var T={document:"Read as writing",dataset:"Read as a spreadsheet",code:"Checked the code",
+         transcript:"Read as a transcript",image:"Looked at the picture file",pdf:"Could not read the PDF"};
+  var h='<div class="note '+(r.ok?"good":"warn")+'" style="margin-top:1.1rem"><b>'+
+    (T[r.kind]||"Read")+'</b>'+(r.ok?"Here is what could actually be read out of it."
+      :"Nothing was read. That is the honest answer, not a failure to try.")+'</div>';
+  if(r.kind==="dataset"&&r.ok){
+    h+='<p style="margin:1rem 0 .4rem"><b>'+r.facts.rows+'</b> rows, <b>'+r.facts.columns+'</b> columns'+
+      (r.facts.ragged_rows_dropped?' · <span style="color:var(--warn)">'+r.facts.ragged_rows_dropped+' broken row(s) left out</span>':'')+'</p>'+
+      '<div class="scroll"><table><thead><tr><th>Column</th><th>Holds</th><th>Blank</th><th>Range</th></tr></thead><tbody>'+
+      r.facts.column_summary.map(function(c){
+        return '<tr><td>'+esc(c.name)+'</td><td>'+(c.numeric?"numbers":"words")+'</td><td>'+c.missing+'</td>'+
+        '<td>'+(c.numeric? c.min+" to "+c.max : c.distinct+" different values")+'</td></tr>'}).join("")+
+      '</tbody></table></div>';
+    if(r.facts.constant_columns.length)
+      h+='<div class="note warn"><b>These columns never change: '+esc(r.facts.constant_columns.join(", "))+
+         '</b>A column with one value tells you nothing, so anything that seems to depend on it depends on nothing.</div>';
+  }
+  if(r.kind==="code"&&r.ok){
+    h+='<p style="margin:1rem 0 .4rem">'+r.facts.lines+' lines checked against '+r.facts.checks_run+
+       ' known problems. <b>'+r.facts.findings.length+'</b> place(s) worth a look.</p>';
+    h+=r.facts.findings.length? r.facts.findings.map(function(x){
+      return '<div class="note warn"><b>Line '+x.line+' — '+esc(x.title)+'</b>'+
+      '<div class="mono" style="margin:.3rem 0;color:var(--stone)">'+esc(x.snippet)+'</div>'+
+      esc(x.why)+'<br><b style="display:inline;color:var(--ok)">Fix: </b>'+esc(x.fix)+'</div>'}).join("")
+      : '<div class="note good"><b>Nothing matched</b>That means none of these '+r.facts.checks_run+
+        ' known problems showed up. It does not mean the code is fine.</div>';
+  }
+  if((r.kind==="document"||r.kind==="transcript")&&r.ok){
+    h+='<p style="margin:1rem 0">'+(r.facts.words||0)+' words'+
+      (r.facts.timestamps_removed?', '+r.facts.timestamps_removed+' timestamps taken out':'')+'.</p>'+
+      '<button class="go" id="auditread" style="margin-top:0">Now check the claims in it</button>';
+  }
+  if(r.kind==="image"&&r.ok){
+    h+='<p style="margin:1rem 0">'+r.facts.width+' × '+r.facts.height+' pixels. That is all it can tell you.</p>';
+  }
+  h+='<div class="note stop"><b>What it could not work out</b><ul>'+
+    r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+  $("#fout").innerHTML=h;
+  var ab=$("#auditread");
+  if(ab) ab.onclick=function(){$("#claim").value=r.text.slice(0,2000);navigate("label");check()};
+}
+$("#file").onchange=function(e){
+  var f=e.target.files&&e.target.files[0];if(!f)return;
+  if(/^image\//.test(f.type)){
+    var img=new Image(),url=URL.createObjectURL(f);
+    img.onload=function(){renderRead(READERS.readImage(f.name,{width:img.naturalWidth,
+      height:img.naturalHeight,bytes:f.size,type:f.type}));URL.revokeObjectURL(url)};
+    img.onerror=function(){renderRead(READERS.readImage(f.name,{width:0,height:0,bytes:f.size,type:f.type}))};
+    img.src=url;return;
+  }
+  var fr=new FileReader();
+  fr.onload=function(){renderRead(READERS.readFile(f.name,String(fr.result||""),{}))};
+  fr.readAsText(f);
+};
+function pasted(){return $("#pastebox").value}
+$("#asdoc").onclick=function(){renderRead(READERS.readTextDocument("pasted.txt",pasted()))};
+$("#ascsv").onclick=function(){renderRead(READERS.readCsv("pasted.csv",pasted()))};
+$("#ascode").onclick=function(){renderRead(READERS.auditCode("pasted.py",pasted()))};
+$("#astrans").onclick=function(){renderRead(READERS.readTranscript("pasted.vtt",pasted()))};
+[["Try a spreadsheet","name,region,sales\nAlpha,UK,1200\nBeta,EU,980\nGamma,UK,\n","ascsv"],
+ ["Try some code","def check(p):\n    s = p[\"forks\"] / p[\"stars\"]\n    if \"best\" in p[\"description\"].lower():\n        s += 0.5\n    return round(s, 3)\n","ascode"],
+ ["Try a video transcript","WEBVTT\n\n00:00:01.000 --> 00:00:05.000\nA 2023 trial of 240 people in the UK found a 12% drop.\n","astrans"]]
+ .forEach(function(x){var b=document.createElement("button");b.className="chip";b.textContent=x[0];
+  b.onclick=function(){$("#pastebox").value=x[1];$("#"+x[2]).click()};$("#fchips").appendChild(b)});
+
+/* ================= 6. THE PLANNER ================= */
+["Move our customer records to a new provider by March",
+ "Launch a small community newsletter next month",
+ "Change my father's medication schedule at home"].forEach(function(t){
+  var b=document.createElement("button");b.className="chip";
+  b.textContent=t.length>36?t.slice(0,36)+"…":t;b.title=t;
+  b.onclick=function(){$("#goal").value=t;doplan()};$("#pchips").appendChild(b)});
+function doplan(){
+  var r=READERS.planProject($("#goal").value,$("#cons").value);
+  if(!r.ok){$("#pout").innerHTML='<div class="note warn" style="margin-top:1rem"><b>Not enough to plan from</b>'+
+    esc(r.cannot[0])+'</div>';return;}
+  var h='<div class="note good" style="margin-top:1.1rem"><b>A plan you can be held to</b>'+
+    'Seven steps. Each one says what evidence it needs, and what would mean it did not work.</div>'+
+    '<div class="scroll"><table><thead><tr><th>Step</th><th>What you do</th><th>What proves it</th><th>It failed if</th></tr></thead><tbody>'+
+    r.facts.steps.map(function(s,i){
+      return '<tr><td><b>'+(i+1)+'. '+esc(s.phase)+'</b></td><td>'+esc(s.do_)+'</td><td>'+esc(s.evidence)+
+      '</td><td style="color:var(--warn)">'+esc(s.gate)+'</td></tr>'}).join("")+'</tbody></table></div>';
+  if(r.facts.risk_flagged)
+    h+='<div class="note stop"><b>This one needs a person, not a plan</b>A tidy plan and a safe plan '+
+       'are different things. Take this to someone qualified before you act on it.</div>';
+  h+='<div class="note warn"><b>What the planner cannot do</b><ul>'+
+    r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+  $("#pout").innerHTML=h;
+}
+$("#doplan").onclick=doplan;
+</script>
+</body>
+</html>
