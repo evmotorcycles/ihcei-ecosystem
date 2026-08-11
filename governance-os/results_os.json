@@ -1,0 +1,111 @@
+{
+  "prereg_sha256": "8ac051f268460b4d119770b8caf9722c523a360612c8b7348c4954ad483aaea9",
+  "files_scanned": 440,
+  "O1_interposition": {
+    "gate": "some component can BLOCK an action, not merely report on one",
+    "blocking_call_sites": [],
+    "result": "FAILS"
+  },
+  "O2_mandatory": {
+    "gate": "an integration point exists that a program cannot bypass",
+    "hooks_found": [],
+    "observer_extension_found": {
+      "name": "HELM — Agency Layer",
+      "permissions": [
+        "activeTab",
+        "scripting"
+      ],
+      "can_block": false,
+      "reading": "READS the active tab when clicked. It cannot intercept or block anything, so it observes; it does not interpose."
+    },
+    "result": "FAILS"
+  },
+  "O3_composition": {
+    "gate": "components chain without human translation; record types compared",
+    "chained_end_to_end": true,
+    "keys_shared_by_all_five_components": [],
+    "shapes": {
+      "page_code": [
+        "decision",
+        "path",
+        "rule"
+      ],
+      "helm_entry": [
+        "decision",
+        "prev",
+        "seal",
+        "what"
+      ],
+      "cairn_verdict": [
+        "abstained",
+        "ambiguity",
+        "band",
+        "claim_type",
+        "committed_answer",
+        "confidence",
+        "domain_flags",
+        "engine",
+        "evidence",
+        "evidence_hits",
+        "evidence_total",
+        "explanation",
+        "implausible",
+        "input",
+        "limits",
+        "model",
+        "next_steps",
+        "question",
+        "verdict"
+      ],
+      "novora_screen": [
+        "analysis",
+        "attack_detected",
+        "certificate",
+        "confidence",
+        "d_dec",
+        "d_enc",
+        "display_score",
+        "engine",
+        "f_ground",
+        "flags",
+        "insufficient_evidence",
+        "mode",
+        "score",
+        "signal",
+        "verdict"
+      ],
+      "reader": [
+        "cannot",
+        "facts",
+        "kind",
+        "limits",
+        "ok",
+        "records",
+        "text"
+      ]
+    },
+    "result": "PARTIALLY HOLDS",
+    "note": "they chain, but share NO common field. Every join is hand-written glue, which is what a library looks like, not a kernel."
+  },
+  "O4_safe_degradation": {
+    "gate": "every component declines on evidence-free input",
+    "checks": 48,
+    "failures": [],
+    "result": "HOLDS"
+  },
+  "O5_honest_label": {
+    "gate": "the artefact is named for what it is",
+    "interposition": "FAILS",
+    "mandatory": "FAILS",
+    "honest_label": "a library, not an operating system",
+    "result": "HOLDS"
+  },
+  "THE_FINDING": "This is NOT an operating system. Nothing here can block an action, and there is no hook a program cannot bypass. Every component returns an OPINION about an action that something else has already taken or will take regardless. What it is: a set of libraries that compose, decline safely, and keep a tamper-evident record — which is genuinely useful and is not the same guarantee.",
+  "why_the_distinction_matters": "An operating system's value is that a program CANNOT go around it. If a permission table only advises, an agent that ignores it is unaffected, and the person relying on it is worse off than with no table at all, because they believe they are protected.",
+  "what_would_close_the_gap": [
+    "a browser extension that intercepts requests before they are made",
+    "an OS-level filesystem hook, or a sandbox the agent runs inside",
+    "an MCP or tool-call proxy that the agent must route through",
+    "none of these exist in this repository today"
+  ]
+}

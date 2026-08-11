@@ -1,0 +1,44 @@
+{
+  "prereg_sha256": "346269b975f4b5b2fdc5e9eb70d92d8bfb4feb60f2c0956b95c43fd3d9c9b342",
+  "n_dev": 27,
+  "n_sealed": 23,
+  "n_control": 30,
+  "lexicon_was_revised": true,
+  "S1_baseline_is_bad": {
+    "gate": "baseline misses MORE than 40% of the sealed set",
+    "sealed_miss_rate": 0.6087,
+    "sealed_missed": 14,
+    "result": "SUPPORTED",
+    "note_if_falsified": "the spot check was unrepresentative and this module is unnecessary"
+  },
+  "S2_revision_transfers": {
+    "gate": "revised lexicon misses FEWER than 20% of the sealed set",
+    "sealed_miss_rate": 0.0435,
+    "sealed_missed": 1,
+    "still_missed": [
+      "Wear gloves when handling the concentrate; it burns on contact."
+    ],
+    "result": "SUPPORTED"
+  },
+  "S3_precision_holds": {
+    "gate": "at most 10% of the control set fires",
+    "control_fire_rate": 0.0,
+    "fired_on": [],
+    "result": "SUPPORTED",
+    "why_it_matters": "a warning that appears on everything is a warning nobody reads"
+  },
+  "S4_overfitting_check": {
+    "dev_miss_rate_baseline": 0.6667,
+    "dev_miss_rate_revised": 0.0,
+    "sealed_miss_rate_baseline": 0.6087,
+    "sealed_miss_rate_revised": 0.0435,
+    "sealed_minus_dev": 0.0435,
+    "reading": "the revision generalises: the sealed set is no worse than the set it was written against"
+  },
+  "honest_notes": [
+    "A warning firing means 'this touches a domain where structure is not safety'. It says nothing about whether the content is correct or dangerous.",
+    "This is word matching, not comprehension. It will miss any phrasing nobody thought of; the sealed miss rate is a floor on that, not a ceiling.",
+    "The corpus was written by one author for this test. Real evaluation needs text people actually pasted, and that has not been collected.",
+    "This does not make the tool safe to rely on for health decisions. It makes the tool more likely to say so. Those are different things."
+  ]
+}

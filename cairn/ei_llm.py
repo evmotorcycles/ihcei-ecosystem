@@ -79,10 +79,40 @@ IMPERATIVE_RE = re.compile(r"^\s*(mix|add|combine|apply|take|use|heat|stir|insta
 # well-formed and chemically unstable at the same time.
 DOMAIN_RISK = {
     "chemistry/formulation": re.compile(r"\b(acid|ph\b|emulsif|oil|solvent|dissolve|concentration|serum|formulation|mix(ing)?|bleach|ammonia)\b", re.I),
-    "medical/health":        re.compile(r"\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient|participants)\b", re.I),
-    "legal/regulatory":      re.compile(r"\b(contract|clause|liabilit|complian|regulat|statute|gdpr|licen[cs]e|jurisdiction)\b", re.I),
-    "financial":             re.compile(r"\b(revenue|profit|forecast|invest|valuation|roi\b|interest rate|loan|credit)\b", re.I),
-    "safety-critical":       re.compile(r"\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing)\b", re.I),
+    # Widened after a coverage study found the original missed 61% of a sealed
+    # set of health texts -- it fired on clinical vocabulary (dose, patient,
+    # therapy) and missed infectious disease, mortality, oncology and
+    # vaccination entirely, which is most of what ordinary people forward.
+    # Written against the DEV split only; see safety-coverage/.
+    "medical/health":        re.compile(
+        r"\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum"
+        r"|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient"
+        r"|participants"
+        # infectious disease and outbreaks
+        r"|infect\w*|outbreak|epidemic|pandemic|bacteri\w*|virus|viral|fungal|parasit\w*"
+        r"|contagio\w*|antibiotic|antimicrobial|pathogen\w*|contaminat\w*|quarantine"
+        r"|measles|cholera|influenza|bird flu|covid"
+        # mortality and severity
+        r"|death[s]?|died|dying|fatal\w*|mortality|lethal|survive|survival|kill(s|ed)?"
+        r"|life-threatening|amputat\w*|wound[s]?|illness|disease|disorder|syndrome"
+        # oncology and chronic conditions
+        r"|cancer|tumou?r|malignan\w*|biopsy|carcinom\w*|diabet\w*|blood pressure"
+        r"|cholesterol|kidney|cardiac|stroke|asthma"
+        # prevention and care
+        r"|vaccin\w*|immunis\w*|immuniz\w*|booster|screening|hospital\w*|clinic\w*"
+        r"|doctor|nurse|prescription|fever|nausea)\b", re.I),
+    "legal/regulatory":      re.compile(
+        r"\b(contract|clause|liabilit\w*|complian\w*|regulat\w*|statute|gdpr|licen[cs]e"
+        r"|jurisdiction|appeal|waive[sd]?|legal|lawsuit|court|breach|terminat\w*"
+        r"|disclos\w*|entitle\w*|tribunal)\b", re.I),
+    "financial":             re.compile(
+        r"\b(revenue|profit|forecast|invest\w*|valuation|roi\b|interest rate|loan|credit"
+        r"|guaranteed returns?|returns? of|pension|tax|apr\b|mortgage|debt|refund"
+        r"|deposit|payment|withdraw\w*)\b", re.I),
+    "safety-critical":       re.compile(
+        r"\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing"
+        r"|carbon monoxide|scaffold\w*|toxic|fumes|corrosive|explosi\w*|asbestos"
+        r"|brake[s]?|overheat\w*|wiring|flue|ventilat\w*|pesticide|solvent)\b", re.I),
 }
 
 

@@ -429,10 +429,10 @@ footer a:hover{color:var(--deep-2)}
 
   var DOMAIN_RISK = [
     ["chemistry/formulation", /\b(acid|ph\b|emulsif|oil|solvent|dissolve|concentration|serum|formulation|mix(ing)?|bleach|ammonia)\b/i],
-    ["medical/health", /\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient|participants)\b/i],
-    ["legal/regulatory", /\b(contract|clause|liabilit|complian|regulat|statute|gdpr|licen[cs]e|jurisdiction)\b/i],
-    ["financial", /\b(revenue|profit|forecast|invest|valuation|roi\b|interest rate|loan|credit)\b/i],
-    ["safety-critical", /\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing)\b/i]
+    ["medical/health", /\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient|participants|infect\w*|outbreak|epidemic|pandemic|bacteri\w*|virus|viral|fungal|parasit\w*|contagio\w*|antibiotic|antimicrobial|pathogen\w*|contaminat\w*|quarantine|measles|cholera|influenza|bird flu|covid|death[s]?|died|dying|fatal\w*|mortality|lethal|survive|survival|kill(s|ed)?|life-threatening|amputat\w*|wound[s]?|illness|disease|disorder|syndrome|cancer|tumou?r|malignan\w*|biopsy|carcinom\w*|diabet\w*|blood pressure|cholesterol|kidney|cardiac|stroke|asthma|vaccin\w*|immunis\w*|immuniz\w*|booster|screening|hospital\w*|clinic\w*|doctor|nurse|prescription|fever|nausea)\b/i],
+    ["legal/regulatory", /\b(contract|clause|liabilit\w*|complian\w*|regulat\w*|statute|gdpr|licen[cs]e|jurisdiction|appeal|waive[sd]?|legal|lawsuit|court|breach|terminat\w*|disclos\w*|entitle\w*|tribunal)\b/i],
+    ["financial", /\b(revenue|profit|forecast|invest\w*|valuation|roi\b|interest rate|loan|credit|guaranteed returns?|returns? of|pension|tax|apr\b|mortgage|debt|refund|deposit|payment|withdraw\w*)\b/i],
+    ["safety-critical", /\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing|carbon monoxide|scaffold\w*|toxic|fumes|corrosive|explosi\w*|asbestos|brake[s]?|overheat\w*|wiring|flue|ventilat\w*|pesticide|solvent)\b/i]
   ];
 
   function classifyClaim(text) {
