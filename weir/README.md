@@ -98,6 +98,41 @@ differently.
 
 ---
 
+## Three tiers, because a slip for every crossing is not protection
+
+An agent doing ordinary work crosses this gate hundreds of times a minute. Show
+a slip for each one and you have built notification fatigue: someone who has
+dismissed forty slips dismisses the forty-first without reading it. That is
+exactly how **Allow** became a reflex on every other system.
+
+So a crossing lands in one of three tiers, and **only one of them interrupts**:
+
+| Tier | When | What the person sees |
+|---|---|---|
+| `LEDGER` | it passed | nothing — sealed to the tape, always inspectable |
+| `BATCH` | held for want of evidence | one line at the end: *"47 done · 3 held for missing sources"* |
+| `STOP` | a boundary was crossed, or the content is high-stakes | immediately, on its own |
+
+The dividing line is deliberate. `BATCH` means *your input was thin* — that can
+always wait. `STOP` means *something reached past the boundary you drew, or what
+came back could hurt you* — that cannot. A withheld health, safety, money or law
+claim is promoted out of the batch for the same reason.
+
+```js
+weir.manifest()
+// { summary: "47 done · 3 held for missing a source",
+//   done: 47, interruptions: 0, crossings: 50,
+//   held: [ { path, why, missing: ["a source", "a date"], search_line, seal } ],
+//   sealed: { ok: true, entries: 50 } }
+```
+
+The count never travels alone: `held` names which paths were held and what each
+was missing, so *"3 held"* is something a person can act on rather than a number
+they have to take on trust. That is the same obligation `handles` enforces in
+Plumb, applied to a run instead of a verdict.
+
+---
+
 ## The stop card — what a refusal looks like to a person
 
 ```

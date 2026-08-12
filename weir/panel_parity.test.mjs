@@ -9,7 +9,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { decide, loadKey } from "./weir.mjs";
+import { decide, loadKey, tierOf } from "./weir.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const KEY = loadKey(join(here, "key.example.json"));
@@ -67,4 +67,24 @@ test("the panel keeps jargon off the screen", () => {
                       /default-deny/i, /\bproxy\b/i, /\b403\b/]) {
     assert.ok(!word.test(text), `panel shows jargon: ${word}`);
   }
+});
+
+/* -------------------------------------------------- the escalation tiers -- */
+test("the panel sorts crossings into the same three tiers as the gate", () => {
+  const fn = html.match(/function tierOf\(e\)\{[^}]*\}/);
+  assert.ok(fn, "the panel must classify crossings, not just list them");
+  const panelTier = new Function("e", `${fn[0]}; return tierOf(e);`);
+  for (const what of ["PASSED", "WITHHELD", "REFUSED"]) {
+    assert.equal(panelTier({ what }), tierOf({ what, domains: [] }),
+      `panel and gate disagree on where a ${what} crossing belongs`);
+  }
+});
+
+test("the panel reports one receipt for a run, and says how often it interrupted", () => {
+  const text = html.replace(/<script[\s\S]*?<\/script>/gi, " ")
+                   .replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
+  assert.match(text, /At the end of the run/i,
+    "a run needs one receipt, not a slip per crossing");
+  assert.match(html, /You were interrupted/,
+    "the count that matters to a person is how many times they were stopped");
 });

@@ -137,6 +137,14 @@ textarea:focus,input:focus{outline:2px solid var(--key);outline-offset:1px;borde
 .krow.no .ki{background:var(--stop-soft);color:var(--stop)}
 .krow b{display:block;font-size:.96rem}
 .krow span{color:var(--stone);font-size:.83rem}
+/* On a phone the three-column key row squeezes the plain-English name into a
+   four-line column. Below 30rem the "goes through" tag drops under it. */
+@media (max-width:30rem){
+  .krow{grid-template-columns:2.4rem minmax(0,1fr);row-gap:.3rem}
+  .krow .tagy,.krow .tagn{grid-column:2;text-align:left}
+  .flow{grid-template-columns:2rem minmax(0,1fr);row-gap:.2rem}
+  .flow .r{grid-column:2;text-align:left}
+}
 .tagy{font-size:.78rem;font-weight:700;color:var(--ok)}
 .tagn{font-size:.78rem;font-weight:700;color:var(--stop)}
 .kdefault{border-style:dashed}
@@ -185,6 +193,13 @@ footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px
 .gate{width:3.4rem;height:5rem;border-radius:6px;background:var(--key-soft);border:2px solid var(--key);
   display:grid;place-items:center;color:var(--key);margin:0 auto;position:relative}
 .gate svg{width:1.8rem;height:1.8rem}
+.receipt{margin-top:.9rem;border:1px solid var(--edge);border-radius:12px;
+  background:var(--wall);padding:.85rem 1rem}
+.receipt>b{display:block;font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--stone);margin-bottom:.3rem}
+.rline{font-size:1.06rem;font-weight:650;font-variant-numeric:tabular-nums}
+.rsub{margin-top:.35rem;color:var(--stone);font-size:.87rem;line-height:1.5}
+.rsub b{color:var(--ink);font-weight:600}
 .flowlist{display:grid;gap:.5rem;margin-top:.5rem;max-height:26rem;overflow-y:auto}
 .flow{display:grid;grid-template-columns:2rem 1fr auto;gap:.7rem;align-items:center;
   background:var(--wall);border:1px solid var(--line);border-left:3px solid var(--ok);
@@ -257,6 +272,14 @@ footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px
         <div><b id="c-pass">0</b><span>got through</span></div>
         <div><b id="c-stop" style="color:var(--stop)">0</b><span>stopped</span></div>
         <div><b id="c-seal">intact</b><span>seals</span></div>
+      </div>
+      <!-- One receipt for the whole run. A slip per crossing is not protection:
+           somebody who has dismissed forty slips dismisses the forty-first
+           without reading it. -->
+      <div class="receipt" id="receipt">
+        <b>At the end of the run</b>
+        <div class="rline" id="r-summary">nothing has crossed yet</div>
+        <div class="rsub" id="r-sub"></div>
       </div>
       <div class="flowlist" id="flow"></div>
       <button class="ghost" id="tamper" style="margin-top:.9rem">Try quietly editing the first entry</button>
@@ -356,6 +379,34 @@ async function draw(){
   $("#c-stop").textContent=TAPE.filter(function(e){return e.what==="REFUSED"}).length;
   $("#c-seal").textContent = broken<0 ? "intact" : "broken";
   $("#c-seal").style.color = broken<0 ? "" : "var(--stop)";
+  drawReceipt();
+}
+
+/* Three tiers, and only one of them interrupts. A crossing that PASSED is a
+   number. A thin one waits for the end of the run. A boundary breach — reaching
+   for something that was never on the key — is shown at once. */
+function tierOf(e){ return e.what==="REFUSED" ? "STOP" : e.what==="WITHHELD" ? "BATCH" : "LEDGER"; }
+function drawReceipt(){
+  var done=0, held=[], stopped=[];
+  TAPE.forEach(function(e){
+    var t=tierOf(e);
+    if(t==="LEDGER") done++; else if(t==="BATCH") held.push(e); else stopped.push(e);
+  });
+  if(!TAPE.length){ $("#r-summary").textContent="nothing has crossed yet"; $("#r-sub").textContent=""; return; }
+  var line = done+" done";
+  if(held.length) line += " · "+held.length+" held";
+  if(stopped.length) line += " · "+stopped.length+" stopped";
+  $("#r-summary").textContent = line;
+  var sub;
+  if(stopped.length){
+    sub = "You were interrupted <b>"+stopped.length+"</b> "+(stopped.length===1?"time":"times")+
+      " — each one was something reaching past your key. Everything else is on the list below, "+
+      "sealed, without having asked you anything.";
+  } else {
+    sub = "You were interrupted <b>no times</b>. Every crossing is on the list below, sealed. "+
+      "That is the point: a slip for each one would be forty taps you stop reading.";
+  }
+  $("#r-sub").innerHTML = sub;
 }
 $("#tamper").onclick=function(){ if(!TAPE.length)return; TAPE[0].path+="/quietly-changed"; draw(); };
 

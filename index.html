@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Open the tools</title>
+<meta name="description" content="Every screen in one place. Everything runs on your own device — no account, no internet, nothing uploaded.">
+<style>
+:root{
+  --wall:#E9EAE5; --wall-2:#DFE1DA; --card:#FBFBF8; --ink:#14181A; --ink-2:#454E4A;
+  --stone:#68726C; --line:#D6DBD3; --edge:#C2CAC0;
+  --water:#245C6B; --water-soft:#DEEBEF;
+  --held:#8A5A0B; --held-soft:#F8F0DC; --held-edge:#E2CC97;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --shadow:0 1px 1px rgba(20,24,26,.05),0 6px 18px rgba(20,24,26,.08);
+  --lift:0 2px 5px rgba(20,24,26,.08),0 16px 36px rgba(20,24,26,.13);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wall:#0F1312; --wall-2:#0A0D0C; --card:#171C1A; --ink:#E9EEEB; --ink-2:#B3BDB7;
+  --stone:#8D9791; --line:#242B28; --edge:#333B37;
+  --water:#6FB6C9; --water-soft:#122228;
+  --held:#DBA645; --held-soft:#221B0D; --held-edge:#4A3D1C;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 5px rgba(0,0,0,.5),0 16px 36px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --wall:#0F1312; --wall-2:#0A0D0C; --card:#171C1A; --ink:#E9EEEB; --ink-2:#B3BDB7;
+  --stone:#8D9791; --line:#242B28; --edge:#333B37;
+  --water:#6FB6C9; --water-soft:#122228;
+  --held:#DBA645; --held-soft:#221B0D; --held-edge:#4A3D1C;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 5px rgba(0,0,0,.5),0 16px 36px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--wall);color:var(--ink);
+  font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse at 18% 0%,var(--wall-2),transparent 55%)}
+h1,h2,h3{margin:0;font-weight:660;letter-spacing:-.02em;line-height:1.18;text-wrap:balance}
+a{color:var(--water)}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:58rem;margin:0 auto;padding:2.4rem 1.15rem 5rem}
+
+/* ---------------------------------------------------------------- head -- */
+.top{display:flex;align-items:center;gap:.7rem;margin-bottom:2.4rem}
+.top .mark{width:2.3rem;height:2.3rem;color:var(--water);flex:none}
+.top b{font-size:1.06rem;font-weight:660}
+.top .sp{flex:1}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);
+  border-radius:99px;padding:.32rem .8rem;font-size:.82rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+
+.hero h1{font-size:clamp(1.9rem,5.2vw,2.7rem)}
+.hero p{color:var(--ink-2);font-size:1.1rem;margin:.9rem 0 0;max-width:36rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1.3rem}
+.badge{background:var(--card);border:1px solid var(--line);border-radius:99px;
+  padding:.28rem .8rem;font-size:.82rem;color:var(--stone)}
+
+/* --------------------------------------------------------------- cards -- */
+h2.sec{font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:var(--stone);
+  margin:3rem 0 .2rem;font-weight:700}
+h2.sec + p{color:var(--stone);font-size:.95rem;margin:.3rem 0 0;max-width:38rem}
+.grid{display:grid;gap:.9rem;margin-top:1.3rem;
+  grid-template-columns:repeat(auto-fill,minmax(15.5rem,1fr))}
+a.card{display:flex;flex-direction:column;gap:.5rem;text-decoration:none;color:inherit;
+  background:var(--card);border:1px solid var(--line);border-radius:15px;
+  padding:1.15rem 1.2rem;box-shadow:var(--shadow);
+  transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease}
+a.card:hover,a.card:focus-visible{transform:translateY(-2px);border-color:var(--water);
+  box-shadow:var(--lift);outline:none}
+a.card:focus-visible{outline:2px solid var(--water);outline-offset:2px}
+.card .ic{width:2.9rem;height:2.9rem;border-radius:13px;background:var(--water-soft);
+  color:var(--water);display:grid;place-items:center;flex:none}
+.card .ic svg{width:1.6rem;height:1.6rem}
+.card h3{font-size:1.06rem}
+.card p{margin:0;color:var(--stone);font-size:.9rem;line-height:1.5}
+.card .go{margin-top:auto;padding-top:.5rem;color:var(--water);font-weight:650;font-size:.88rem}
+a.card.wide{grid-column:1/-1}
+@media(min-width:48rem){a.card.wide{display:grid;grid-template-columns:2.9rem minmax(0,1fr);
+  gap:.4rem 1.1rem;align-items:start}
+  a.card.wide .ic{grid-row:1/4}
+  a.card.wide h3,a.card.wide p,a.card.wide .go{grid-column:2}
+  a.card.wide .go{padding-top:.35rem}}
+/* Weir is the one that can actually stop something, so it is marked as such. */
+a.card.gate{background:var(--held-soft);border-color:var(--held-edge)}
+a.card.gate .ic{background:var(--card);color:var(--held)}
+a.card.gate .go{color:var(--held)}
+a.card.gate:hover{border-color:var(--held)}
+
+/* --------------------------------------------------------------- notes -- */
+.note{margin-top:2.6rem;background:var(--card);border:1px solid var(--line);
+  border-left:3px solid var(--held);border-radius:0 14px 14px 0;padding:1.1rem 1.3rem}
+.note b{display:block;font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--held);margin-bottom:.35rem}
+.note p{margin:.35rem 0 0;font-size:.95rem;line-height:1.6;color:var(--ink-2)}
+.foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);
+  color:var(--stone);font-size:.87rem}
+.foot a{color:var(--stone)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 8h18M3 16h18"/><path d="M9 4v16M15 4v16"/>
+    </svg>
+    <b>Open the tools</b>
+    <span class="sp"></span>
+    <button class="ghost" id="theme" type="button">Light / dark</button>
+  </div>
+
+  <div class="hero">
+    <h1>Every screen, in one place.</h1>
+    <p>Nothing here leaves your device. No account, no internet, nothing uploaded. Every
+       screen also tells you what it could <em>not</em> work out.</p>
+    <div class="badges">
+      <span class="badge">runs offline</span>
+      <span class="badge">no sign-in</span>
+      <span class="badge">nothing uploaded</span>
+      <span class="badge">free</span>
+    </div>
+  </div>
+
+  <!-- ================================================= start here ======= -->
+  <h2 class="sec">Start here</h2>
+  <p>If you only open one thing, open this. Paste something you were told and see what
+     it is made of.</p>
+  <div class="grid">
+    <a class="card wide" href="cairn/desk.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/>
+        <path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+      <h3>Your Desk — six everyday checks</h3>
+      <p>The Label, the Valet Key, the Dashcam, the Confidence Meter, the File Opener and the
+         Planner. The Label reads a claim the way a nutrition panel reads a packet, then hands you
+         the exact words to go and check it yourself.</p>
+      <span class="go">Open the desk →</span>
+    </a>
+  </div>
+
+  <!-- ================================================= the gate ========= -->
+  <h2 class="sec">The gate</h2>
+  <p>Everything above gives you an opinion about something. These two are the only parts that
+     can actually stop it.</p>
+  <div class="grid">
+    <a class="card gate" href="weir/panel.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18M3 17h18"/>
+        <rect x="10" y="2" width="4" height="20" rx="1"/></svg></span>
+      <h3>Weir — the gate</h3>
+      <p>A low wall across a stream. Everything crosses in one place, so everything is
+         counted — and what is not on your key does not cross at all.</p>
+      <span class="go">Open the gate →</span>
+    </a>
+    <a class="card gate" href="weir/stop.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/>
+        <path d="M3 10h18M8 6V4h8v2"/><path d="M9 15h6"/></svg></span>
+      <h3>The stop card</h3>
+      <p>What it looks like when the answer is “I stopped before guessing.” A returned parcel
+         with a slip on it — never a blank screen.</p>
+      <span class="go">See a stop →</span>
+    </a>
+  </div>
+
+  <!-- ================================================= everyday ========= -->
+  <h2 class="sec">Everyday worries</h2>
+  <p>Nine screens for the things people actually paste in: is this claim real, what am I giving
+     up in this contract, is this message pressuring me.</p>
+  <div class="grid">
+    <a class="card" href="novora-suite/suite.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/>
+        <rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+      <h3>The nine screens</h3>
+      <p>Claims, contracts, pressure, decisions, and whether an answer is teaching you or
+         making you dependent.</p>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="novora-suite/desk.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><rect x="4" y="5" width="16" height="11" rx="2"/>
+        <path d="M9 20v-4M15 20v-4"/></svg></span>
+      <h3>The same nine, as a desk</h3>
+      <p>Laid out as objects on a table rather than a list of products.</p>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="cairn/plain.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><path d="M12 20a8 8 0 100-16 8 8 0 000 16z"/>
+        <path d="M12 16v-4M12 8h.01"/></svg></span>
+      <h3>Plain language</h3>
+      <p>The same checks written for someone who has never heard any of the words behind
+         them.</p>
+      <span class="go">Open →</span>
+    </a>
+  </div>
+
+  <!-- ================================================= for builders ===== -->
+  <h2 class="sec">If you build things</h2>
+  <p>The same tools, with the workings shown.</p>
+  <div class="grid">
+    <a class="card" href="cairn/console.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/>
+        <path d="M7 9l3 3-3 3M13 15h4"/></svg></span>
+      <h3>The console</h3>
+      <p>Plans with gates, readers for files and code, and the measured numbers behind
+         each screen.</p>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="ei-dashboards/dashboards.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+      <h3>The measurements</h3>
+      <p>Real open-source projects and real published models, run through the stack with
+         the limits stated.</p>
+      <span class="go">Open →</span>
+    </a>
+    <a class="card" href="website/index.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
+        stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/>
+        <path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/></svg></span>
+      <h3>What all of this is</h3>
+      <p>The longer explanation, including the tests that failed and what they cost.</p>
+      <span class="go">Open →</span>
+    </a>
+  </div>
+
+  <div class="note">
+    <b>Before you rely on any of these</b>
+    <p>None of them knows whether something is <em>true</em>. They check whether a claim can be
+      checked, whether permission was granted, and whether a record was altered. A sentence can
+      pass every check here and still be wrong — that is not a fault, it is the design. Use them
+      to find your questions, then take those questions to a person.</p>
+  </div>
+
+  <div class="foot">
+    <p>Everything on this page is a file on your own machine. Open any of them straight from the
+      folder — no server needed. The gate itself is a program you run:
+      <span style="font-family:var(--mono);font-size:.85em">bash weir/install.sh</span>.</p>
+    <p><a href="weir/README.md">How the gate works, and what it cannot do</a></p>
+  </div>
+
+</div>
+<script>
+document.getElementById("theme").onclick = function () {
+  var d = document.documentElement;
+  var dark = d.getAttribute("data-theme") === "dark" ||
+    (!d.getAttribute("data-theme") && matchMedia("(prefers-color-scheme:dark)").matches);
+  d.setAttribute("data-theme", dark ? "light" : "dark");
+};
+</script>
+</body>
+</html>

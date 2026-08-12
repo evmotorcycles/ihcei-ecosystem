@@ -132,6 +132,70 @@ export class Tape {
   }
 }
 
+/* --------------------------------------------------------- escalation ---- *
+ * An agent doing ordinary work crosses this gate hundreds of times a minute.
+ * A slip for every crossing is not protection — it is notification fatigue, and
+ * a person who has dismissed forty slips will dismiss the forty-first without
+ * reading it. That is how "Allow" became a reflex on every other system.
+ *
+ * So a crossing lands in one of three tiers, and only one of them interrupts:
+ *
+ *   LEDGER  it passed. Sealed to the tape, nothing shown. The tape is always
+ *           there to inspect; the person's attention is not spent.
+ *   BATCH   held for want of evidence. Collected, and reported ONCE at the end
+ *           of the run: "47 done · 3 held for missing sources."
+ *   STOP    a boundary was crossed, or the content is high-stakes. Shown
+ *           immediately, on its own.
+ *
+ * The dividing line is deliberate: BATCH is "your input was thin", which can
+ * always wait. STOP is "something tried to leave the boundary you drew, or what
+ * came back could hurt you", which cannot. */
+export const TIERS = ["LEDGER", "BATCH", "STOP"];
+const HIGH_STAKES = ["medical/health", "safety-critical", "financial", "legal/regulatory"];
+
+export function tierOf({ what, domains = [] }) {
+  // A refusal is always a boundary breach: the request was for something that
+  // was never on the key. That is the one thing a person must see at once.
+  if (what === "REFUSED") return "STOP";
+  if (what === "WITHHELD") {
+    return domains.some(d => HIGH_STAKES.includes(d)) ? "STOP" : "BATCH";
+  }
+  return "LEDGER";
+}
+
+const SIGNAL_PLAIN = { source: "a source", figures: "a figure", method: "how it was measured",
+                       time: "a date", scope: "who it applies to" };
+
+/* The end-of-run receipt. Everything that passed is a number; everything that
+ * was held or stopped is named. */
+export function manifest(tape) {
+  const es = tape.entries;
+  const by = t => es.filter(e => (e.tier || tierOf(e)) === t);
+  const ledger = by("LEDGER"), batch = by("BATCH"), stops = by("STOP");
+  const slip = e => ({
+    path: e.path, why: e.why,
+    missing: (e.missing || []).map(s => SIGNAL_PLAIN[s] || s),
+    search_line: e.search_line || null,
+    seal: e.seal.slice(0, 12),
+  });
+  // The most common missing thing across the batch — what a person would fix once.
+  const tally = {};
+  for (const e of batch) for (const m of e.missing || []) tally[m] = (tally[m] || 0) + 1;
+  const commonest = Object.entries(tally).sort((a, b) => b[1] - a[1])[0];
+  return {
+    summary: `${ledger.length} done` +
+      (batch.length ? ` · ${batch.length} held` +
+        (commonest ? ` for missing ${SIGNAL_PLAIN[commonest[0]] || commonest[0]}` : "") : "") +
+      (stops.length ? ` · ${stops.length} stopped` : ""),
+    done: ledger.length,
+    held: batch.map(slip),
+    stopped: stops.map(slip),
+    interruptions: stops.length,      // how many times the person was actually interrupted
+    crossings: es.length,
+    sealed: tape.verify(),
+  };
+}
+
 /* ----------------------------------------------------------- the gate ---- */
 export function createWeir({ key, upstream, tape = new Tape(), screen = true }) {
   const spent = new Map();          // rule -> writes used, for budgeted rules
@@ -157,12 +221,13 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
     if (!verdict.allow) {
       stats.refused++;
       const entry = tape.add({ what: "REFUSED", method: req.method, path,
-                               rule: verdict.rule, why: verdict.why });
+                               rule: verdict.rule, why: verdict.why, tier: "STOP" });
       res.writeHead(403, { "content-type": "application/json",
-                           "x-weir": "refused", "x-weir-seal": entry.seal.slice(0, 16) });
+                           "x-weir": "refused", "x-weir-tier": "STOP",
+                           "x-weir-seal": entry.seal.slice(0, 16) });
       // The request is answered here. It is NEVER forwarded: upstream does not
       // see it, because the bytes are never sent.
-      res.end(JSON.stringify({ refused: true, path, rule: verdict.rule,
+      res.end(JSON.stringify({ refused: true, path, rule: verdict.rule, tier: "STOP",
                                why: verdict.why, seal: entry.seal }));
       return;
     }
@@ -191,6 +256,7 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
                   // the spans that made each signal fire — what a person carries
                   // to a search engine when the gate hands the parcel back
                   handles: a.handles, search_line: a.search_line,
+                  missing: a.evidence.filter(c => !c.hit).map(c => c.signal),
                   words: (body.text.trim() ? body.text.trim().split(/\s+/).length : 0) };
     }
 
@@ -208,13 +274,18 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
     const gr = guard(verdict.require, verdict.on_uncheckable, checked);
     if (gr.withhold) {
       stats.withheld++;
+      const tier = tierOf({ what: "WITHHELD", domains: checked?.domains || [] });
       const entry = tape.add({ what: "WITHHELD", method: req.method, path,
                                rule: verdict.rule, required: verdict.require,
-                               got: gr.got, why: gr.why });
+                               got: gr.got, why: gr.why, tier,
+                               domains: checked?.domains || [],
+                               missing: checked ? checked.missing : null,
+                               search_line: checked?.search_line || null });
       res.writeHead(403, { "content-type": "application/json", "x-weir": "withheld",
                            "x-weir-rule": verdict.rule, "x-weir-guard": gr.state,
+                           "x-weir-tier": tier,
                            "x-weir-seal": entry.seal.slice(0, 16) });
-      res.end(JSON.stringify({ withheld: true, path, rule: verdict.rule,
+      res.end(JSON.stringify({ withheld: true, path, rule: verdict.rule, tier,
                                required: verdict.require, got: gr.got, why: gr.why,
                                fetched_but_not_delivered: true,
                                next_step: checked?.question || null,
@@ -229,10 +300,12 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
     stats.passed++;
     const entry = tape.add({ what: "PASSED", method: req.method, path,
                              rule: verdict.rule, bytes: body.text.length, checked,
+                             tier: "LEDGER",
                              guard: verdict.require ? gr.state : undefined });
     res.writeHead(body.status || 200, {
       "content-type": body.type || "text/plain",
       "x-weir": "passed",
+      "x-weir-tier": "LEDGER",
       "x-weir-rule": verdict.rule,
       "x-weir-seal": entry.seal.slice(0, 16),
       ...(verdict.require ? { "x-weir-guard": gr.state } : {}),
@@ -246,6 +319,11 @@ export function createWeir({ key, upstream, tape = new Tape(), screen = true }) 
 
   server.stats = stats;
   server.tape = tape;
+  /* One receipt for a whole run, instead of a slip per crossing. The count
+   * never travels alone: `held` names which paths were held and what each was
+   * missing, so "3 held" is something a person can act on rather than a number
+   * they have to take on trust. (Same obligation as `handles` in Plumb.) */
+  server.manifest = () => manifest(tape);
   return server;
 }
 
