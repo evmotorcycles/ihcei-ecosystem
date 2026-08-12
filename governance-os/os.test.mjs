@@ -33,9 +33,25 @@ test("the grep-only evidence is still empty — the pass is behavioural", () => 
     "pattern matching produced a false negative here; the behavioural check is why it passes");
 });
 
-test("there is no hook a program cannot bypass", () => {
+test("the bypass is DEMONSTRATED, not merely asserted", () => {
+  const b = R.O2_mandatory.behavioural_check;
   assert.equal(R.O2_mandatory.result, "FAILS");
-  assert.equal(R.O2_mandatory.hooks_found.length, 0);
+  assert.equal(b.ran, true, "the check has to actually run to mean anything");
+  assert.equal(b.blocked_at_gate, true,
+    "the gate must really refuse it, or the bypass proves nothing");
+  assert.equal(b.bypassed, true);
+  assert.equal(b.got_the_protected_bytes, true,
+    "a program that ignored the gate read the file the gate refused");
+});
+
+test("a word in a build script is not evidence of mandatory routing", () => {
+  // grep reported PASSES once because keel/build_exe.py contains NODE_SEA_FUSE_,
+  // the sentinel Node stamps into a single-file executable. The pattern list is
+  // kept, but it no longer decides the gate.
+  assert.match(R.O2_mandatory.method, /^behavioural/);
+  if (R.O2_mandatory.hooks_found.length) {
+    assert.match(R.O2_mandatory.hooks_note, /pattern matches only/);
+  }
 });
 
 test("the extension is an observer, and is described as one", () => {

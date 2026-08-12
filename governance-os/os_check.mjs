@@ -103,6 +103,39 @@ async function behaviouralInterpositionCheck() {
 }
 const behaviour = await behaviouralInterpositionCheck();
 
+/* Can a program simply not use the gate? Stand the gate up, then talk straight
+ * to the far side. This is not an exotic attack; it is one line of ordinary
+ * code, which is the point. */
+async function behaviouralBypassCheck() {
+  try {
+    const { createWeir, loadKey } = await import(join(ROOT, "weir/weir.mjs"));
+    const { createUpstream, received } = await import(join(ROOT, "weir/upstream_fixture.mjs"));
+    const up = createUpstream();
+    await new Promise(r => up.listen(0, "127.0.0.1", r));
+    const upPort = up.address().port;
+    const gate = createWeir({ key: loadKey(join(ROOT, "weir/key.example.json")),
+                              upstream: `http://127.0.0.1:${upPort}` });
+    await new Promise(r => gate.listen(0, "127.0.0.1", r));
+
+    // the gate refuses this path, and never forwards it
+    received.length = 0;
+    const throughGate = await fetch(`http://127.0.0.1:${gate.address().port}/payroll/salaries.csv`);
+    const blockedAtGate = throughGate.status === 403 && received.length === 0;
+
+    // now go round it: same forbidden path, straight to the far side
+    const direct = await fetch(`http://127.0.0.1:${upPort}/payroll/salaries.csv`);
+    const body = await direct.text();
+    const bypassed = direct.status === 200 && body.includes("salary");
+
+    gate.close(); up.close();
+    return { ran: true, blocked_at_gate: blockedAtGate, direct_status: direct.status,
+             got_the_protected_bytes: body.includes("salary"), bypassed,
+             how: "fetch() to the upstream port, ignoring the gate entirely" };
+  } catch (e) {
+    return { ran: false, error: String(e.message || e) };
+  }
+}
+
 /* ------------------------------------------------- O2 mandatory ---------- */
 const hookPatterns = [
   [/\bLD_PRELOAD\b/, "linker preload"],
@@ -210,10 +243,34 @@ const O1 = { gate: "some component can BLOCK an action, not merely report on one
       "log stayed EMPTY, while an allowed request did reach it. The bytes were " +
       "never sent."
     : "no component stopped a request from reaching its destination" };
+/* Grep answered this question wrongly twice. First it found nothing and the
+ * label was right by luck; then keel/build_exe.py mentioned NODE_SEA_FUSE_ --
+ * the sentinel Node stamps into a single-file executable, nothing to do with
+ * filesystems -- and the detector reported that mandatory routing PASSES. A
+ * pattern that matches a word in a build script is not evidence that a program
+ * cannot get round the gate.
+ *
+ * So this is answered the same way O1 is: behaviourally. The gate is stood up,
+ * and then a program DELIBERATELY GOES ROUND IT -- opens its own socket
+ * straight to the far side, exactly as any real program could. If that
+ * succeeds, there is no mandatory routing, and the failure is demonstrated
+ * rather than asserted. */
+const bypass = await behaviouralBypassCheck();
 const O2 = { gate: "an integration point exists that a program cannot bypass",
   hooks_found: O2_hooks,
+  hooks_note: O2_hooks.length
+    ? "pattern matches only — none of these are an installed hook, and the " +
+      "behavioural check below is what decides this gate"
+    : "",
   observer_extension_found: observerExtension,
-  result: O2_hooks.length ? "PASSES" : "FAILS" };
+  behavioural_check: bypass,
+  method: "behavioural — a program opens its own connection past the gate and " +
+    "the far side is inspected",
+  result: bypass.bypassed === false ? "PASSES" : "FAILS",
+  evidence: bypass.bypassed
+    ? "a program that ignored the gate reached the far side directly: the " +
+      "upstream log recorded a request the gate never saw"
+    : "nothing got past" };
 const O3 = { gate: "components chain without human translation; record types compared",
   chained_end_to_end: chained,
   keys_shared_by_all_five_components: shared,

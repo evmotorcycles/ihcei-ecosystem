@@ -1,6 +1,6 @@
 {
   "prereg_sha256": "8ac051f268460b4d119770b8caf9722c523a360612c8b7348c4954ad483aaea9",
-  "files_scanned": 452,
+  "files_scanned": 465,
   "O1_interposition": {
     "gate": "some component can BLOCK an action, not merely report on one",
     "blocking_call_sites": [],
@@ -18,7 +18,15 @@
   },
   "O2_mandatory": {
     "gate": "an integration point exists that a program cannot bypass",
-    "hooks_found": [],
+    "hooks_found": [
+      {
+        "label": "filesystem driver",
+        "files": [
+          "keel/build_exe.py"
+        ]
+      }
+    ],
+    "hooks_note": "pattern matches only — none of these are an installed hook, and the behavioural check below is what decides this gate",
     "observer_extension_found": {
       "name": "HELM — Agency Layer",
       "permissions": [
@@ -28,7 +36,17 @@
       "can_block": false,
       "reading": "READS the active tab when clicked. It cannot intercept or block anything, so it observes; it does not interpose."
     },
-    "result": "FAILS"
+    "behavioural_check": {
+      "ran": true,
+      "blocked_at_gate": true,
+      "direct_status": 200,
+      "got_the_protected_bytes": true,
+      "bypassed": true,
+      "how": "fetch() to the upstream port, ignoring the gate entirely"
+    },
+    "method": "behavioural — a program opens its own connection past the gate and the far side is inspected",
+    "result": "FAILS",
+    "evidence": "a program that ignored the gate reached the far side directly: the upstream log recorded a request the gate never saw"
   },
   "O3_composition": {
     "gate": "components chain without human translation; record types compared",

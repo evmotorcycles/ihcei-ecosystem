@@ -1,0 +1,1450 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Keel — the console</title>
+<meta name="description" content="One page: check what a claim is made of, screen everyday worries, and see what an assistant is allowed to do. Runs on your device.">
+<style>
+:root{
+  --wall:#E8EAE5; --wall-2:#DEE1DA; --desk:#FBFBF8; --ink:#14181A; --ink-2:#454E4A;
+  --stone:#68726C; --line:#D6DBD3; --edge:#C2CAC0;
+  --sea:#245C6B; --sea-soft:#DEEBEF; --on-sea:#FBFBF8;
+  --ok:#1E6B48; --ok-soft:#E1EFE7;
+  --held:#8A5A0B; --held-soft:#F8F0DC; --held-edge:#E2CC97;
+  --stop:#8C2F2F; --stop-soft:#F8EAEA;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --shadow:0 1px 1px rgba(20,24,26,.05),0 6px 18px rgba(20,24,26,.08);
+  --lift:0 2px 5px rgba(20,24,26,.08),0 16px 36px rgba(20,24,26,.12);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wall:#0F1312; --wall-2:#0A0D0C; --desk:#171C1A; --ink:#E9EEEB; --ink-2:#B3BDB7;
+  --stone:#8D9791; --line:#242B28; --edge:#333B37;
+  --sea:#6FB6C9; --sea-soft:#122228; --on-sea:#0A0D0C;
+  --ok:#5FBF92; --ok-soft:#11231B;
+  --held:#DBA645; --held-soft:#221B0D; --held-edge:#4A3D1C;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 5px rgba(0,0,0,.5),0 16px 36px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --wall:#0F1312; --wall-2:#0A0D0C; --desk:#171C1A; --ink:#E9EEEB; --ink-2:#B3BDB7;
+  --stone:#8D9791; --line:#242B28; --edge:#333B37;
+  --sea:#6FB6C9; --sea-soft:#122228; --on-sea:#0A0D0C;
+  --ok:#5FBF92; --ok-soft:#11231B;
+  --held:#DBA645; --held-soft:#221B0D; --held-edge:#4A3D1C;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 5px rgba(0,0,0,.5),0 16px 36px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--wall);color:var(--ink);
+  font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse at 18% 0%,var(--wall-2),transparent 55%)}
+h1,h2,h3{margin:0;font-weight:655;letter-spacing:-.019em;line-height:1.2;text-wrap:balance}
+button,textarea,input,select{font:inherit}
+button{cursor:pointer}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.room{max-width:56rem;margin:0 auto;padding:0 1.05rem 5rem}
+
+/* ------------------------------------------------------------------ bar -- */
+.bar{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--wall) 92%,transparent);backdrop-filter:blur(10px)}
+.barin{max-width:56rem;margin:0 auto;padding:.55rem 1.05rem;display:flex;align-items:center;gap:.55rem}
+.home{display:flex;align-items:center;gap:.5rem;background:none;border:0;color:inherit;
+  font-weight:655;font-size:1.02rem;padding:.2rem .3rem;border-radius:8px}
+.home:hover{background:var(--sea-soft)}
+.home svg{width:22px;height:22px;color:var(--sea)}
+.barin .sp{flex:1}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);border-radius:99px;
+  padding:.28rem .75rem;font-size:.8rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+
+/* ----------------------------------------------------------------- home -- */
+.welcome{padding:2.4rem 0 1.2rem;text-align:center}
+.welcome h1{font-size:clamp(1.7rem,4.6vw,2.4rem)}
+.welcome p{color:var(--ink-2);max-width:34rem;margin:.85rem auto 0}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));gap:.9rem;padding:1.2rem 0 2rem}
+.app{display:flex;flex-direction:column;align-items:center;gap:.55rem;background:none;
+  border:1px solid transparent;border-radius:15px;padding:1rem .55rem;text-align:center;color:inherit;
+  transition:transform .13s ease,background .13s ease,border-color .13s ease}
+.app:hover,.app:focus-visible{background:var(--desk);border-color:var(--line);transform:translateY(-2px);outline:none}
+.app:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.app .icon{width:3.9rem;height:3.9rem;border-radius:17px;background:var(--desk);border:1px solid var(--edge);
+  box-shadow:var(--shadow);display:grid;place-items:center;color:var(--sea)}
+.app .icon svg{width:1.95rem;height:1.95rem}
+.app.gate .icon{background:var(--held-soft);border-color:var(--held-edge);color:var(--held)}
+.app .nm{font-weight:650;font-size:.96rem;line-height:1.25}
+.app .sub{color:var(--stone);font-size:.77rem;line-height:1.4}
+
+/* --------------------------------------------------------------- window -- */
+.win{display:none}
+.win.on{display:block;animation:rise .16s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.win.on{animation:none}}
+.frame{background:var(--desk);border:1px solid var(--edge);border-radius:16px;box-shadow:var(--lift);
+  overflow:hidden;margin:1.3rem 0}
+.title{display:flex;align-items:center;gap:.7rem;padding:.8rem 1.05rem;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--desk) 60%,var(--wall))}
+.title .ic{width:2.1rem;height:2.1rem;border-radius:9px;background:var(--sea-soft);display:grid;
+  place-items:center;color:var(--sea);flex:none}
+.title .ic svg{width:1.15rem;height:1.15rem}
+.title b{font-size:1.01rem;display:block}
+.title span{color:var(--stone);font-size:.85rem;display:block;line-height:1.35}
+.body{padding:1.1rem}
+label.f{display:block;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--stone);font-weight:650;margin-bottom:.4rem}
+textarea,input[type=text],select{width:100%;background:var(--wall);color:var(--ink);
+  border:1px solid var(--edge);border-radius:11px;padding:.75rem .9rem;resize:vertical}
+textarea:focus,input:focus,select:focus{outline:2px solid var(--sea);outline-offset:1px;border-color:transparent}
+.go{background:var(--sea);color:var(--on-sea);border:1px solid var(--sea);border-radius:11px;
+  padding:.7rem 1.4rem;font-weight:650;margin-top:.8rem}
+.go:hover{filter:brightness(1.1)}
+.chips{display:flex;flex-wrap:wrap;gap:.38rem;margin-top:.75rem}
+.chip{background:var(--wall);border:1px solid var(--line);border-radius:99px;padding:.28rem .75rem;
+  font-size:.8rem;color:var(--stone)}
+.chip:hover{border-color:var(--sea);color:var(--sea)}
+.chip[aria-pressed=true]{background:var(--sea);border-color:var(--sea);color:var(--on-sea)}
+
+/* ---------------------------------------------------------------- label -- */
+.label{border:1.5px solid var(--ink);border-radius:12px;overflow:hidden;margin-top:1rem;background:var(--desk)}
+.label .cap{padding:.65rem 1rem;border-bottom:1.5px solid var(--ink);font-weight:700;font-size:1.02rem}
+.label .rows{padding:.25rem 1rem .7rem}
+.lrow{display:grid;grid-template-columns:1.5rem minmax(0,1fr) auto;gap:.6rem;align-items:baseline;
+  padding:.5rem 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.lrow:last-child{border-bottom:none}
+.lrow .y{color:var(--ok);font-weight:800}
+.lrow .n{color:var(--stone);font-weight:800}
+.lrow .v{font-size:.8rem;color:var(--stone);text-align:right}
+@media (max-width:30rem){
+  .lrow{grid-template-columns:1.5rem minmax(0,1fr);row-gap:.12rem}
+  .lrow .v{grid-column:2;text-align:left}
+  .hrow{grid-template-columns:minmax(0,1fr);gap:.12rem}
+  .hrow .hk{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+  .krow{grid-template-columns:2.2rem minmax(0,1fr);row-gap:.3rem}
+  .krow .tag{grid-column:2;text-align:left}
+}
+.tot{padding:.8rem 1rem;border-top:1.5px solid var(--ink);background:var(--wall);font-weight:650}
+.tot span{font-weight:400;color:var(--stone)}
+.gauge{height:.7rem;border-radius:99px;background:var(--line);overflow:hidden;margin:.7rem 0 .3rem}
+.gauge i{display:block;height:100%;border-radius:99px;background:var(--sea)}
+.gtag{display:flex;justify-content:space-between;font-size:.78rem;color:var(--stone)}
+
+.handles{margin-top:1rem;border:1px solid var(--edge);border-radius:12px;background:var(--wall);padding:.85rem 1rem}
+.handles>b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
+.handles>p{margin:.3rem 0 .75rem;font-size:.87rem;color:var(--stone);line-height:1.5}
+.hrow{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.65rem;align-items:baseline;font-size:.92rem;padding:.1rem 0}
+.hrow .hk{color:var(--stone);font-size:.79rem}
+.hrow em{font-style:normal;font-weight:620;background:var(--desk);border:1px solid var(--edge);
+  border-radius:7px;padding:.06rem .4rem;display:inline-block;margin:.08rem .15rem .08rem 0}
+.hcopy{display:flex;gap:.4rem;margin-top:.8rem;flex-wrap:wrap}
+.hcopy input{flex:1;min-width:9rem;font-size:.87rem;padding:.42rem .58rem;background:var(--desk)}
+.hbtn{background:var(--ink);color:var(--desk);border:0;border-radius:9px;padding:.42rem .85rem;
+  font-size:.85rem;font-weight:620}
+.hnote{margin-top:.7rem;padding:.5rem .65rem;border-radius:9px;font-size:.86rem;line-height:1.5;
+  background:var(--held-soft);border:1px solid var(--held-edge)}
+.hnote em{font-style:normal;font-weight:640}
+
+.note{border-radius:12px;padding:.85rem 1rem;margin-top:.95rem;font-size:.93rem;line-height:1.55}
+.note b{display:block;margin-bottom:.25rem}
+.note.good{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 30%,transparent)}
+.note.good b{color:var(--ok)}
+.note.warn{background:var(--held-soft);border:1px solid var(--held-edge)}
+.note.warn b{color:var(--held)}
+.note.stop{background:var(--stop-soft);border:1px solid color-mix(in srgb,var(--stop) 32%,transparent)}
+.note.stop b{color:var(--stop)}
+
+/* ----------------------------------------------------------------- nine -- */
+.nine{display:grid;grid-template-columns:repeat(auto-fill,minmax(10rem,1fr));gap:.55rem}
+.nine button{background:var(--wall);border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;
+  text-align:left;color:inherit}
+.nine button:hover{border-color:var(--sea)}
+.nine button[aria-pressed=true]{background:var(--sea-soft);border-color:var(--sea)}
+.nine b{display:block;font-size:.93rem;font-weight:650}
+.nine span{color:var(--stone);font-size:.78rem;line-height:1.35;display:block}
+.result{margin-top:1rem;border:1px solid var(--edge);border-radius:13px;overflow:hidden;background:var(--wall)}
+.result .rh{display:flex;align-items:center;gap:.5rem;padding:.5rem .85rem;border-bottom:1px solid var(--line);
+  font-size:.71rem;letter-spacing:.09em;text-transform:uppercase;font-weight:750}
+.result .rh .sp{flex:1}
+.result[data-t=ok] .rh{background:var(--ok-soft);color:var(--ok)}
+.result[data-t=held] .rh{background:var(--held-soft);color:var(--held)}
+.result .rb{padding:.85rem}
+.result h3{font-size:1.1rem}
+.result p{margin:.35rem 0 0;color:var(--stone);font-size:.9rem}
+.flags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
+.flags span{background:var(--desk);border:1px solid var(--edge);border-radius:99px;
+  padding:.15rem .55rem;font-size:.73rem;color:var(--stone);font-family:var(--mono)}
+
+/* ------------------------------------------------------------------ key -- */
+.keyring{display:grid;gap:.5rem}
+.krow{display:grid;grid-template-columns:2.2rem minmax(0,1fr) auto;gap:.7rem;align-items:center;
+  background:var(--wall);border:1px solid var(--line);border-radius:12px;padding:.7rem .85rem}
+.krow .ki{width:2.2rem;height:2.2rem;border-radius:9px;display:grid;place-items:center}
+.krow.yes .ki{background:var(--ok-soft);color:var(--ok)}
+.krow.no .ki{background:var(--stop-soft);color:var(--stop)}
+.krow b{display:block;font-size:.94rem}
+.krow small{color:var(--stone);font-size:.8rem}
+.krow .tag{font-size:.76rem;font-weight:700;white-space:nowrap}
+.krow.yes .tag{color:var(--ok)} .krow.no .tag{color:var(--stop)}
+
+.receipt{margin-top:1rem;border:1px solid var(--edge);border-radius:12px;background:var(--wall);padding:.85rem 1rem}
+.receipt>b{display:block;font-size:.71rem;letter-spacing:.09em;text-transform:uppercase;color:var(--stone);margin-bottom:.28rem}
+.receipt .big{font-size:1.08rem;font-weight:650;font-variant-numeric:tabular-nums}
+.receipt .sub{margin-top:.32rem;color:var(--stone);font-size:.87rem;line-height:1.5}
+.receipt .sub b{display:inline;color:var(--ink);font-weight:640}
+.tape{display:grid;gap:.4rem;margin-top:.8rem;max-height:22rem;overflow-y:auto}
+.te{display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:.6rem;align-items:baseline;
+  background:var(--desk);border:1px solid var(--line);border-left-width:3px;border-radius:9px;padding:.45rem .65rem;font-size:.85rem}
+.te.LEDGER{border-left-color:var(--ok)} .te.BATCH{border-left-color:var(--held)} .te.STOP{border-left-color:var(--stop)}
+.te .t{font-size:.67rem;letter-spacing:.06em;text-transform:uppercase;font-weight:750;color:var(--stone)}
+.te.STOP .t{color:var(--stop)} .te.BATCH .t{color:var(--held)} .te.LEDGER .t{color:var(--ok)}
+.te .p{font-family:var(--mono);font-size:.8rem;word-break:break-all}
+.te .w{color:var(--stone);font-size:.8rem;grid-column:2}
+.foot{color:var(--stone);font-size:.85rem;margin-top:2rem;padding-top:1.1rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="barin">
+  <button class="home" id="gohome" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v13"/><path d="M12 16c-3.5 0-6 2-6 5h12c0-3-2.5-5-6-5z"/><path d="M12 6l5 3M12 6L7 9"/></svg>
+    Keel
+  </button>
+  <span class="sp"></span>
+  <button class="ghost" id="theme" type="button">Light / dark</button>
+</div></div>
+
+<div class="room">
+
+<!-- ============================== HOME ============================== -->
+<section class="win on" id="home">
+  <div class="welcome">
+    <h1>What do you need to check?</h1>
+    <p>Everything here runs on this device. No account, no internet, nothing uploaded.
+       Every answer also tells you what it could not work out.</p>
+  </div>
+  <div class="shelf" id="shelf"></div>
+  <div class="note stop">
+    <b>Before you rely on any of this</b>
+    None of it knows whether something is <em>true</em>. It checks whether a claim can be
+    checked, whether permission was given, and whether a record was altered. A sentence can pass
+    every check here and still be wrong. Use it to find your questions — then take those
+    questions to a person.
+  </div>
+</section>
+
+<!-- ============================== LABEL ============================= -->
+<section class="win" id="label">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+      <span><b>The Label</b><span>Like the panel on a packet — what is this claim actually made of?</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="claim">Paste what someone told you, or what an assistant answered</label>
+      <textarea id="claim" rows="3">According to a 2023 randomised trial of 240 participants in the UK, green tea reduced self-reported stress by 12%.</textarea>
+      <div class="chips" id="egs"></div>
+      <button class="go" id="read">Read the label</button>
+      <div id="lout"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== NINE ============================== -->
+<section class="win" id="nine">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+      <span><b>Everyday worries</b><span>Nine screens for the things people actually paste in.</span></span>
+    </div>
+    <div class="body">
+      <div class="nine" id="nineList"></div>
+      <label class="f" for="ntext" style="margin-top:1.1rem">Paste the message, clause or answer</label>
+      <textarea id="ntext" rows="4">You waive all rights to a refund and agree to binding arbitration. Cancellation requires 90 days written notice.</textarea>
+      <button class="go" id="nrun">Screen it</button>
+      <div id="nout"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== GATE ============================== -->
+<section class="win" id="gate">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7h18M3 17h18"/><rect x="10" y="2" width="4" height="20" rx="1"/></svg></span>
+      <span><b>The gate</b><span>A low wall across a stream. Everything crosses in one place, so everything is counted.</span></span>
+    </div>
+    <div class="body">
+      <label class="f">What the assistant may do</label>
+      <div class="keyring" id="keys"></div>
+
+      <label class="f" for="verb" style="margin-top:1.2rem">Try it — what if it tries this?</label>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <select id="verb" style="flex:0 0 8rem"><option value="read">read</option><option value="write">change</option></select>
+        <input type="text" id="target" value="payroll/salaries-2026.xlsx" style="flex:1;min-width:12rem">
+      </div>
+      <label class="f" for="payload" style="margin-top:.8rem">…carrying this (optional)</label>
+      <textarea id="payload" rows="2"></textarea>
+      <div class="chips" id="tryegs"></div>
+      <button class="go" id="try">See what happens</button>
+      <div id="gout"></div>
+
+      <div class="receipt" id="receipt">
+        <b>At the end of the run</b>
+        <div class="big" id="rsum">nothing has crossed yet</div>
+        <div class="sub" id="rsub"></div>
+        <div class="tape" id="tape"></div>
+        <button class="ghost" id="tamper" style="margin-top:.8rem">Try quietly editing the first entry</button>
+      </div>
+
+      <div class="note stop">
+        <b>What this gate cannot do</b>
+        It stops what comes through it. <b style="display:inline">It cannot stop a program that does
+        not come through it at all</b> — a program that opens its own connection is unaffected.
+        Making it unavoidable is a job for the machine underneath: a container, or a network with no
+        other way out. That part is real and standard, and it is not built here. A gate you can walk
+        around is a gate you should not rely on alone.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="foot">
+  Everything on this page runs on your own device — no account, no internet, nothing uploaded.
+  The claim checker does not understand language: it looks for five kinds of support and matches
+  patterns. A well-written falsehood carrying all five gets through.
+</div>
+</div>
+
+<script>/* ei_engine.js -- faithful JS port of cairn/ei_llm.py's assay().
+ *
+ * This exists so the browser app runs the SAME logic as the audited Python
+ * engine, with no server and no network. Parity is not assumed: it is tested by
+ * cairn/test_parity.py, which runs both engines over a shared case list and
+ * fails if any verdict, claim type, confidence or evidence count differs.
+ *
+ * Same limits as the Python engine, restated so nobody reads the port as an
+ * upgrade: this does NOT understand language. Ambiguity detection is syntactic
+ * pattern matching and the plausibility check reads a hand-written list of 15
+ * landform nouns.
+ */
+(function (root) {
+  "use strict";
+
+  var EVIDENCE = [
+    ["source", /\b(according to|source|cited|reference|study|report|dataset|https?:\/\/|\.gov|\.org|doi)\b/i,
+      "A checkable source is named", "No source is named"],
+    ["figures", /\d/, "Contains specific figures", "No specific figures given"],
+    ["method", /\b(method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/i,
+      "Says how it was measured", "Does not say how it was measured"],
+    ["time", /\b(19|20)\d{2}\b|\b(today|yesterday|last (year|month|quarter)|q[1-4])\b/i,
+      "Anchored to a date or period", "No date or period given"],
+    ["scope", /\b(in|across|among|between|per|for)\b[\s\S]{0,28}\b(uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/i,
+      "States who or where it applies", "Scope is not stated"]
+  ];
+
+  var IMMOBILE = ["canyon", "grand canyon", "mountain", "mountains", "valley", "plateau",
+    "cliff", "lake", "river", "desert", "glacier", "volcano", "island", "coastline", "forest"];
+  var SELF_PROPELLED = ["flying", "walking", "running", "driving", "swimming",
+    "travelling", "traveling", "climbing"];
+
+  var ATTACH_RE = /^\s*(i|we|he|she|they|you)\s+(\w+)\s+(the|a|an|my|our|his|her|their)\s+([\w\s]{2,40}?)\s+(\w+ing)\b([\s\S]*)$/i;
+  var CONCEPTUAL_RE = /(\bis (the|a|an) (study|branch|theory|field|concept|term|word|practice|process|state|quality)\b|\bis defined as\b|\bmeans\b|\brefers to\b|\bdefinition of\b|\bby definition\b|^\s*\w+\s*[:—-]\s*(the|a|an)\b)/i;
+  var MATHY_RE = /^\s*[\d\s()+\-*/^=.]+\s*$/;
+  var OPINION_RE = /\b(i think|i believe|in my opinion|i feel|should be|ought to|is better than|is the best|is amazing|is terrible|prefer)\b/i;
+  var QUESTION_RE = /^\s*(what|who|when|where|why|how|is|are|do|does|did|can|could|should|would|will)\b[\s\S]*\?\s*$/i;
+  var IMPERATIVE_RE = /^\s*(mix|add|combine|apply|take|use|heat|stir|install|run|pour|dissolve|blend)\b/i;
+
+  var DOMAIN_RISK = [
+    ["chemistry/formulation", /\b(acid|ph\b|emulsif|oil|solvent|dissolve|concentration|serum|formulation|mix(ing)?|bleach|ammonia)\b/i],
+    ["medical/health", /\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient|participants|infect\w*|outbreak|epidemic|pandemic|bacteri\w*|virus|viral|fungal|parasit\w*|contagio\w*|antibiotic|antimicrobial|pathogen\w*|contaminat\w*|quarantine|measles|cholera|influenza|bird flu|covid|death[s]?|died|dying|fatal\w*|mortality|lethal|survive|survival|kill(s|ed)?|life-threatening|amputat\w*|wound[s]?|illness|disease|disorder|syndrome|cancer|tumou?r|malignan\w*|biopsy|carcinom\w*|diabet\w*|blood pressure|cholesterol|kidney|cardiac|stroke|asthma|vaccin\w*|immunis\w*|immuniz\w*|booster|screening|hospital\w*|clinic\w*|doctor|nurse|prescription|fever|nausea)\b/i],
+    ["legal/regulatory", /\b(contract|clause|liabilit\w*|complian\w*|regulat\w*|statute|gdpr|licen[cs]e|jurisdiction|appeal|waive[sd]?|legal|lawsuit|court|breach|terminat\w*|disclos\w*|entitle\w*|tribunal)\b/i],
+    ["financial", /\b(revenue|profit|forecast|invest\w*|valuation|roi\b|interest rate|loan|credit|guaranteed returns?|returns? of|pension|tax|apr\b|mortgage|debt|refund|deposit|payment|withdraw\w*)\b/i],
+    ["safety-critical", /\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing|carbon monoxide|scaffold\w*|toxic|fumes|corrosive|explosi\w*|asbestos|brake[s]?|overheat\w*|wiring|flue|ventilat\w*|pesticide|solvent)\b/i]
+  ];
+
+  function classifyClaim(text) {
+    var t = (text || "").trim();
+    if (!t) return ["EMPTY", "Nothing to look at yet."];
+    if (QUESTION_RE.test(t)) return ["QUESTION",
+      "That's a question, not a claim. I audit statements — paste an answer you've been given and I'll tell you how far it can be trusted."];
+    if (MATHY_RE.test(t)) return ["CONCEPTUAL",
+      "That's arithmetic. It's true by definition, so there's nothing for me to verify against the world."];
+    if (CONCEPTUAL_RE.test(t) && !/\d/.test(t)) return ["CONCEPTUAL",
+      "That's a definition or a concept. Definitions are true by agreement, not by measurement — so there's no source, date or figure for me to check. This isn't a failure; it's simply outside what I audit."];
+    if (OPINION_RE.test(t)) return ["OPINION",
+      "That's a preference or a judgement. I can't audit what someone values — only claims about what is measurably the case."];
+    if (IMPERATIVE_RE.test(t)) return ["INSTRUCTION",
+      "That's a set of instructions. I can check whether it's specified precisely enough to follow — but NOT whether following it is safe or correct."];
+    return ["EMPIRICAL", ""];
+  }
+
+  function domainFlags(text) {
+    var out = [];
+    for (var i = 0; i < DOMAIN_RISK.length; i++) {
+      if (DOMAIN_RISK[i][1].test(text || "")) out.push(DOMAIN_RISK[i][0]);
+    }
+    return out;
+  }
+
+  function scoreEvidence(text) {
+    return EVIDENCE.map(function (e) {
+      var hit = e[1].test(text || "");
+      return { signal: e[0], hit: hit, note: hit ? e[2] : e[3] };
+    });
+  }
+
+  /* ------------------------------------------------------------- handles ---
+   * A tick saying "contains specific figures" leaves the reader to find the
+   * figures themselves. The handles are the SPANS that made each signal fire --
+   * the exact words someone would paste into a search engine to go and check.
+   * Strictly additional: same signals, same hits, plus the causing text. */
+  var FIGURE_RX = /\d[\d,.]*(?:\s*(?:%|percent))?(?:\s+[a-z][a-z-]{2,20})?/gi;
+  var YEAR_RX = /\b(?:19|20)\d{2}\b|\b(?:today|yesterday|last (?:year|month|quarter)|q[1-4])\b/gi;
+  var METHOD_RX = /\b(?:[a-z-]+\s+)?(?:method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/gi;
+  var SCOPE_RX = /\b(?:in|across|among|between|per|for)\b.{0,28}?\b(?:uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/gi;
+  var SOURCE_RX = /\b(?:according to|source|cited|reference|study|report|dataset|doi)\b|https?:\/\/\S+|\b\S+\.(?:gov|org)\b/gi;
+  /* A source MARKER ("according to") is not a source NAME. The distinction only
+   * becomes visible once the span is shown, which is the point of showing it. */
+  var NAMED_RX = /https?:\/\/\S+|\bdoi\b|\b\S+\.(?:gov|org)\b|\b(?:the )?[A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)*\s+(?:Journal|Review|Times|Post|University|Institute|Office|Agency|Association|Society)\b|\b(?:Nature|Science|Lancet|BMJ|JAMA|NEJM|WHO|CDC|NHS|ONS|OECD|NASA)\b/g;
+  var STOP = ["a","an","the","of","in","on","at","by","to","and","or","was","were","is","are"];
+
+  function spans(rx, text, limit) {
+    var out = [], m;
+    rx.lastIndex = 0;
+    while ((m = rx.exec(text || "")) !== null) {
+      var s = m[0].replace(/^[\s,.;:]+|[\s,.;:]+$/g, "");
+      if (s && STOP.indexOf(s.toLowerCase()) === -1 && out.indexOf(s) === -1) out.push(s);
+      if (out.length >= limit) break;
+      if (m.index === rx.lastIndex) rx.lastIndex++;
+    }
+    return out;
+  }
+
+  function extractHandles(text) {
+    text = text || "";
+    var all = spans(FIGURE_RX, text, 6);
+    var figures = all.filter(function (s) { return !/^(?:19|20)\d{2}$/.test(s.split(/\s+/)[0]); });
+    if (!figures.length) figures = all;
+    var method = [], mm;
+    METHOD_RX.lastIndex = 0;
+    while ((mm = METHOD_RX.exec(text)) !== null) {
+      var s = mm[0].trim(), first = s.split(/\s+/)[0].toLowerCase();
+      if (s.split(/\s+/).length > 1 && STOP.indexOf(first) !== -1) s = s.split(/\s+/).slice(1).join(" ");
+      if (method.indexOf(s) === -1) method.push(s);
+      if (mm.index === METHOD_RX.lastIndex) METHOD_RX.lastIndex++;
+    }
+    var src = spans(SOURCE_RX, text, 3);
+    spans(NAMED_RX, text, 2).forEach(function (s) { if (src.indexOf(s) === -1) src.push(s); });
+    return {
+      source: src, figures: figures, method: method.slice(0, 3),
+      time: spans(YEAR_RX, text, 3), scope: spans(SCOPE_RX, text, 3),
+      // Reported, never scored.
+      source_named: (NAMED_RX.lastIndex = 0, NAMED_RX.test(text))
+    };
+  }
+
+  function searchLine(h) {
+    var parts = [];
+    ["time", "figures", "method", "scope"].forEach(function (k) {
+      (h[k] || []).forEach(function (s) { if (parts.indexOf(s) === -1) parts.push(s); });
+    });
+    return parts.join(" ");
+  }
+
+  function nextSteps(checks, kind) {
+    if (kind === "QUESTION") return ["Paste the answer you were given, and I'll audit that instead."];
+    if (kind === "CONCEPTUAL" || kind === "OPINION") return [
+      "Add a measurement, a date or a source and it becomes something I can check.",
+      "For definitions, an ordinary assistant or a dictionary is the right tool."];
+    var fix = {
+      source: "Name where it came from — a study, a report, a link.",
+      figures: "Add the actual numbers.",
+      method: "Say how it was measured.",
+      time: "Add when it was measured.",
+      scope: "Say who or where it applies to."
+    };
+    var missing = checks.filter(function (c) { return !c.hit; }).slice(0, 3)
+      .map(function (c) { return fix[c.signal]; });
+    return missing.length ? missing : ["Nothing material is missing."];
+  }
+
+  function inImmobile(s) {
+    if (IMMOBILE.indexOf(s) !== -1) return true;
+    return s.split(/\s+/).some(function (w) { return IMMOBILE.indexOf(w) !== -1; });
+  }
+
+  function detectAmbiguity(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = ATTACH_RE.exec(t);
+    if (!m) return { ambiguous: false, readings: [], pattern: null };
+    var subj = m[1], verb = m[2], obj = m[4].trim(), part = m[5], rest = m[6].trim();
+    var objKey = obj.toLowerCase().trim();
+    var objImmobile = inImmobile(objKey);
+    var partMoves = SELF_PROPELLED.indexOf(part.toLowerCase()) !== -1;
+    return {
+      ambiguous: true, pattern: "participial attachment", object: obj, participle: part,
+      object_in_immobile_lexicon: objImmobile,
+      readings: [
+        { id: "A", attaches_to: "subject",
+          paraphrase: (subj + " was " + part + " " + rest + ", and " + subj + " " + verb + " the " + obj).trim(),
+          plausible: true, why: "The subject is an agent, so it can perform the action." },
+        { id: "B", attaches_to: "object",
+          paraphrase: (subj + " " + verb + " the " + obj + ", and the " + obj + " was " + part + " " + rest).trim(),
+          plausible: !(objImmobile && partMoves),
+          why: (objImmobile && partMoves)
+            ? "'" + obj + "' is in the declared immobile-landform lexicon and '" + part + "' is self-propelled motion, so this reading is physically implausible."
+            : "Both the object and the action are ordinary, so this reading is perfectly possible." }
+      ]
+    };
+  }
+
+  function checkImpossible(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = /^\s*(the\s+)?([\w\s]{2,40}?)\s+(was|is|were|are)\s+(\w+ing)\b/i.exec(t);
+    if (!m) return null;
+    var obj = m[2].trim().toLowerCase(), part = m[4].toLowerCase();
+    if (inImmobile(obj) && SELF_PROPELLED.indexOf(part) !== -1) {
+      return { implausible: true, subject: obj, action: part,
+        basis: "declared immobile-landform lexicon (a hand-written list of " + IMMOBILE.length + " nouns), NOT comprehension" };
+    }
+    return null;
+  }
+
+  function assay(text, model) {
+    model = model || "slate";
+    text = (text || "").trim();
+    var kr = classifyClaim(text), kind = kr[0], kindNote = kr[1];
+    var checks = scoreEvidence(text);
+    var hits = checks.filter(function (c) { return c.hit; }).length;
+    var hnd = extractHandles(text);
+    var words = text ? text.split(/\s+/).length : 0;
+    var amb = detectAmbiguity(text);
+    var impossible = checkImpossible(text);
+    var domains = domainFlags(text);
+
+    if (kind === "CONCEPTUAL" || kind === "OPINION" || kind === "QUESTION" || kind === "EMPTY") {
+      return {
+        input: text, model: model, verdict: "OUT_OF_SCOPE", claim_type: kind,
+        committed_answer: null, confidence: null, band: "not applicable",
+        evidence: [], evidence_hits: 0, evidence_total: EVIDENCE.length,
+        handles: hnd, search_line: searchLine(hnd),
+        ambiguity: amb, implausible: null, domain_flags: domains,
+        explanation: kindNote, question: null, next_steps: nextSteps(checks, kind),
+        abstained: false, engine: "cairn-ei/1.1 (js)",
+        limits: "Out of scope is not a failure. I audit empirical claims; this text is not one."
+      };
+    }
+
+    var conf = hits / EVIDENCE.length;
+    if (words < 4) conf = 0.0;
+    if (model === "granite" || model === "quartz") conf = Math.min(1.0, conf * 1.12);
+    if (amb.ambiguous) conf = Math.min(conf, 0.35);
+
+    var verdict, committed, question = null;
+    if (amb.ambiguous) {
+      verdict = "AMBIGUOUS"; committed = null;
+      question = "Which did you mean: were you " + amb.participle + ", or was the " + amb.object + " " + amb.participle + "?";
+    } else if (impossible) {
+      verdict = "IMPLAUSIBLE"; committed = null;
+      question = "Did you mean this literally, or is a word missing?";
+    } else if (conf < 0.25) {
+      verdict = "INSUFFICIENT_EVIDENCE"; committed = null;
+      question = "Add a source, a figure, a date, a method or a scope and I can work with it.";
+    } else {
+      verdict = "SUPPORTED"; committed = text;
+    }
+
+    var band = conf >= 0.7 ? "high" : conf >= 0.45 ? "moderate" : conf >= 0.25 ? "low" : "insufficient";
+    return {
+      input: text, model: model, verdict: verdict, claim_type: kind,
+      committed_answer: committed, confidence: Math.round(conf * 1000) / 1000, band: band,
+      evidence: checks, evidence_hits: hits, evidence_total: EVIDENCE.length,
+      handles: hnd, search_line: searchLine(hnd),
+      ambiguity: amb, implausible: impossible, domain_flags: domains,
+      explanation: kindNote, question: question, next_steps: nextSteps(checks, kind),
+      abstained: committed === null, engine: "cairn-ei/1.1 (js)",
+      limits: "This engine does not understand language. Ambiguity detection is pattern matching; plausibility reads a hand-written list of " + IMMOBILE.length + " landform nouns."
+    };
+  }
+
+  var API = { assay: assay, classifyClaim: classifyClaim, domainFlags: domainFlags,
+    scoreEvidence: scoreEvidence, extractHandles: extractHandles, searchLine: searchLine,
+    IMMOBILE: IMMOBILE, EVIDENCE_N: EVIDENCE.length };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.EI = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* engine.bundle.js — GENERATED by novora-suite/build_bundle.py. Do not edit.
+ *
+ * The nine Novora screens, inlined for the browser. Parity with the real ES
+ * module is asserted by novora-suite/test_bundle_parity.mjs over all nine
+ * products; if this file drifts from engine/fastmode.mjs, that test fails.
+ *
+ * Honest scope, carried over verbatim from the engine: fast mode is a SCREEN,
+ * not a semantic judge. It agrees with deep mode on the clear cases and returns
+ * a calibrated score plus the product's verdict enum. Genuine
+ * paraphrase-vs-substance on the ambiguous middle is not something this can do,
+ * and a confident-looking number here is not a judgement about a person.
+ */
+(function (root) {
+"use strict";
+
+// ---- inlined from api/govern.js -------------------------------------------
+const P = {
+  g1: [/\bimpressive\b/i, /\bexcellent\b/i, /\bstaggering\b/i, /\bparadigm[- ]shift\b/i, /\bunprecedented\b/i, /\bgroundbreaking\b/i],
+  g2: [/\beveryone\s+agrees\b/i, /\bbroad\s+consensus\b/i, /\bscholars\s+agree\b/i, /\buniversally\s+accepted\b/i, /\bwell[- ]established\b/i, /\bwidely\s+known\b/i],
+  g4: [/\bbypass\b/i, /\bskip\s+the\b/i, /\bno\s+need\s+to\s+(check|verify|review)\b/i, /\bdon'?t\s+(need|have)\s+to\s+verify\b/i, /\bignore\s+the\s+procedure\b/i, /\bjust\s+trust\b/i, /\bdo\s+not\s+ask\s+questions\b/i, /\bdon'?t\s+ask\s+questions\b/i, /\bno\s+questions\b/i, /\bdon'?t\s+question\s+(?:this|it|me)\b/i],
+  g5: [/\bexperts\s+confirm\b/i, /\bfda\s+says\b/i, /\bpeer[- ]reviewed\s+research\s+proves\b/i, /\bauthorities\s+confirm\b/i, /\baccording\s+to\s+(?:the\s+)?(?:experts|scholars)\b/i],
+  g6: [/\bas\s+you\s+know\b/i, /\bthe\s+complexity\s+here\b/i, /\bthis\s+is\s+very\s+technical\b/i, /\btoo\s+complex\s+to\s+explain\b/i, /\btoo\s+complex\s+for\s+you\b/i, /\bbeyond\s+what'?s?\s+useful\s+to\s+explain\b/i],
+  iso: [/\bdo\s*n'?t\s+consult\b/i, /\bdo\s+not\s+consult\b/i, /\b(?:no\s?one|nobody)\s+else\b/i, /\bdon'?t\s+(?:tell|involve|loop\s+in)\b/i, /\bdo\s+not\s+(?:tell|involve)\b/i, /\bkeep\s+this\s+(?:between\s+us|quiet|secret)\b/i, /\bwithout\s+(?:telling|involving)\b/i],
+  urgency: [/\bimmediately\b/i, /\bright\s+now\b/i, /\bno\s+time\b/i, /\bcrisis\b/i, /\bdo\s+not\s+ask\s+questions\b/i, /\bjust\s+execute\b/i, /\bdon'?t\s+overthink\b/i],
+  fear: [/\bwill\s+go\s+bankrupt\b/i, /\blose\s+everything\b/i, /\bcritical\s+warning\b/i, /\bdestroying\s+our\b/i, /\bcat[a]?strophic\b/i, /\bwill\s+cause\s+harm\b/i],
+  options: [/\boption[s]?\b/i, /\balternative[s]?\b/i, /\bcould\s+(?:also|consider)\b/i, /\byou\s+(?:can|may|might)\b/i, /\bpossib(?:ly|le)\b/i, /\balternative\s+approach(?:es)?\b/i, /\bapproaches\b/i],
+  imperatives: [/\bmus[t]?\b/i, /\bhave\s+to\b/i, /\bneed\s+to\b/i, /\bmandatory\b/i, /\brequired\b/i, /\bonly\s+(?:one\s+)?(?:way|option|path)\b/i, /\bonly\s+one\s+correct\b/i, /\bexactly\s+this\s+(?:sequence|order|way)\b/i],
+  methodology: [/\bmethodolog\w+\b/i, /\bverif\w+\b/i, /\bsourc\w+\b/i, /\bprocess\w*\b/i, /\bprocedure\b/i, /\bauditable\b/i, /\bfalsifiable\b/i, /\btraceable\b/i, /\bbecause\b/i, /\bdata\b/i, /\bevidence\b/i, /\banalysis\b/i],
+};
+
+const count = (pats, t) => pats.reduce((n, p) => n + (p.test(t) ? 1 : 0), 0);
+
+function extractEvidenceFast(text) {
+  const words = Math.max(text.split(/\s+/).length, 1);
+  const hits = { 1: count(P.g1, text), 2: count(P.g2, text), 4: count(P.g4, text), 5: count(P.g5, text), 6: count(P.g6, text) };
+  const iso = count(P.iso, text);
+  const urg = count(P.urgency, text), fear = count(P.fear, text);
+  const opt = count(P.options, text), imp = count(P.imperatives, text), meth = count(P.methodology, text);
+  const T = Math.min(1, meth / Math.max(words * 0.05, 3));
+  const deltaA = (opt - imp) / Math.max(opt + imp, 1);
+  const g3s = Math.max(0, (0.35 - T) / 0.35);
+  const g7s = Math.max(0, -deltaA);
+  return { hits, iso, urg, fear, opt, imp, meth, T, deltaA, g3s, g7s };
+}
+
+// ---- inlined from pages/pages.mjs -----------------------------------------
+const STOP = new Set('the a an and or of to in is are was were be been being for on with as by at this that these those it its from into their our your his her they we you i not no do does did have has had will would can could may might than then so such also more most much many few'.split(' '));
+const words = s => (s.toLowerCase().match(/[a-z0-9]+/g) || []);
+const nums = s => (s.match(/\d+(?:\.\d+)?%?/g) || []);
+function groundFast(source, claim) {
+  const src = new Set(words(source));
+  const cw = words(claim).filter(w => !STOP.has(w) && w.length > 2);
+  const overlap = cw.length ? cw.filter(w => src.has(w)).length / cw.length : 1;
+  const claimNums = nums(claim), srcNums = new Set(nums(source));
+  const addedNumbers = claimNums.filter(n => !srcNums.has(n));   // fabricated statistic = classic media hallucination
+  let p = overlap;
+  if (addedNumbers.length) p = Math.min(p, 0.25);
+  return {
+    grounded: p >= 0.6 && addedNumbers.length === 0,
+    p_alignment: +Math.max(0.02, Math.min(0.98, p)).toFixed(3),
+    overlap: +overlap.toFixed(2), addedNumbers, mode: 'fast',
+  };
+}
+
+// ---- novora-suite/engine/fastmode.mjs -------------------------------------
+// fastmode.mjs — on-device ($0) screening for all nine Novora products.
+// ============================================================================
+// Each Novora product has a DEEP mode (Claude via api/analyse.js — real semantic
+// reasoning, paid) and, here, a FAST mode: a $0, no-network structural + lexical
+// screen that reuses the SAME tested NERE kernel the rest of the stack runs on.
+//
+// Epistemological, not ethical: IHCEI/NERE do not adjudicate morality or "AI
+// safety." They test the FIDELITY, METHODOLOGY, and GROUNDING of communication —
+// is a claim corroborated, is an agreement balanced, does a message preserve the
+// receiver's agency — i.e. verifiable epistemic properties, not subjective values.
+//
+// Honest scope: fast mode is a SCREEN, not the semantic judge. It agrees with
+// deep mode on the clear cases (a plainly-coercive message, a plainly-hollow
+// claim, a plainly-predatory clause) and returns a calibrated score + the
+// product's verdict enum; genuine paraphrase-vs-substance on the ambiguous
+// middle is deep mode's job. Three products map directly onto the tested kernel
+// (PAGES grounding, PULSE/BRIDGE agency-coercion); the other six run a
+// structural screen over domain cue-sets. Every result is shaped exactly like
+// the deep-mode JSON so the client renders either identically, and every
+// analysis can be hash-chained into Echo for a tamper-evident certificate.
+
+
+
+const clip = (x, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, x));
+const hex8 = s => {
+  let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h.toString(16).toUpperCase().padStart(8, '0');
+};
+const band = (score, [loName, midName, hiName], [t1, t2]) =>
+  score < t1 ? loName : score < t2 ? midName : hiName;
+const countRe = (text, re) => (text.match(re) || []).length;
+
+// Shared coercion/agency read from the tested fast extractor.
+function agencyRead(text) {
+  const ev = extractEvidenceFast(text);
+  const pressure = ev.urg + ev.fear + Math.max(ev.imp - ev.opt, 0);
+  const coercion = (ev.hits?.[2] || 0) + (ev.hits?.[4] || 0) + (ev.hits?.[5] || 0) + (ev.iso || 0);
+  const commands = countRe(text, /\b(?:must|immediately|do not|don'?t|non-negotiable|comply|no other|only one|execute)\b/gi);
+  const options = countRe(text, /\b(?:option|could|consider|alternativ|you (?:can|may)|happy to|your choice|discuss)\b/gi);
+  // Corroboration signal: real pressure/fear/coercion alongside any imperatives.
+  // A lone technical imperative ("Do not remove <> from an inline link") is NOT
+  // coercion — it only counts when corroborated, the same gate the stack uses.
+  const corroborated = (coercion + ev.urg + ev.fear + (ev.iso || 0)) > 0;
+  return { pressure, coercion, commands, options, urg: ev.urg, corroborated };
+}
+
+// ── the nine product screens ─────────────────────────────────────────────────
+const PRODUCTS = {
+  // PAGES — methodology / grounding press. Higher = better grounded.
+  pages(text) {
+    const meth = countRe(text, /\b(?:RCT|N\s*=\s*\d+|p\s*[=<≈~]\s*\d|95%\s*CI|confidence interval|pre-?regist\w*|randomi[sz]ed|NCT\d|DOI|ΔAIC|SHA-?256|dataset|methodolog\w*|control group|sample size|VIF|AUC|interactome\w*|cohort)\b/gi);
+    const hollow = countRe(text, /\b(?:all (?:experts|economists|scientists) agree|settled science|everyone knows|unquestionable|obviously|it'?s clear that|proven fact|no doubt|inevitable)\b/gi);
+    const numbers = groundFast(text, text).addedNumbers.length; // reflexive: any hard numbers at all
+    const score = clip(0.35 + 0.14 * meth - 0.22 * hollow + 0.03 * Math.min(numbers, 3));
+    const attack = hollow >= 2 ? 'T5_authority_cascade' : 'none';
+    // AGENCY + SECURITY (not speed): the amount of gradable grounding evidence in
+    // the text. Without this, PAGES emits a precise-looking ~0.35 both when a claim
+    // is genuinely middling AND when there is simply nothing to grade — false
+    // precision that misleads the reader. `confidence` separates the two, and when
+    // there is NO gradable signal PAGES ABSTAINS ('Insufficient Evidence') instead
+    // of dressing a non-judgement as a grounding verdict.
+    const signal = meth + hollow + Math.min(numbers, 3);
+    const confidence = signal >= 3 ? 'high' : signal >= 1 ? 'medium' : 'low';
+    if (confidence === 'low') {
+      return { score, confidence, insufficient_evidence: true, signal,
+        verdict: 'Insufficient Evidence',
+        d_enc: clip(0.3), d_dec: clip(0.3), f_ground: clip(0.2), attack_detected: attack,
+        flags: ['INSUFFICIENT_SIGNAL', 'ABSTAIN'] };
+    }
+    return { score, confidence, insufficient_evidence: false, signal,
+      verdict: band(score, ['Hollow Assertion', 'Partially Grounded', 'Solid'], [0.35, 0.7]),
+      d_enc: clip(0.3 + 0.12 * meth), d_dec: clip(0.3 + 0.1 * meth), f_ground: clip(0.2 + 0.16 * meth - 0.2 * hollow),
+      attack_detected: attack, flags: hollow ? ['AUTHORITY_CASCADE'] : meth ? ['METHODOLOGY_PRESENT'] : ['NO_METHODOLOGY'] };
+  },
+  // PULSE — AI-response cognitive health. Higher = healthier (develops, not dependency).
+  pulse(text) {
+    const a = agencyRead(text);
+    const depend = countRe(text, /\b(?:just (?:follow|tell me|trust)|don'?t need to understand|I(?:'| wi)ll do everything|without question|no need to think|leave it to me)\b/gi);
+    const score = clip(0.6 + 0.08 * a.options - 0.14 * a.commands - 0.18 * depend - 0.06 * a.coercion);
+    return { score, verdict: band(score, ['Harmful', 'Monitor', 'Healthy'], [0.4, 0.66]),
+      agency_score: clip(0.5 + 0.1 * a.options - 0.12 * a.commands), dependency_score: clip(0.2 + 0.2 * depend),
+      development_score: clip(0.6 - 0.15 * depend), flags: depend ? ['DEPENDENCY_CREATING'] : a.commands ? ['DIRECTIVE'] : ['AGENCY_PRESERVING'] };
+  },
+  // BRIDGE — Agency Delta (ΔA): options minus commands. Direct kernel map.
+  bridge(text) {
+    const a = agencyRead(text);
+    const delta_a = clip((a.options - a.commands - a.coercion) / Math.max(3, a.options + a.commands + 2), -1, 1);
+    const score = clip(0.5 + delta_a / 2);
+    let verdict = band(score, ['Coercive', 'Monitor', 'Agency-Preserving'], [0.4, 0.62]);
+    // Corroboration gate: a lone uncorroborated imperative is not coercion.
+    if (verdict === 'Coercive' && !a.corroborated) verdict = 'Monitor';
+    return { score, delta_a: +delta_a.toFixed(2), verdict,
+      options_count: a.options, commands_count: a.commands,
+      flags: verdict === 'Coercive' ? ['COERCIVE'] : delta_a > 0.2 ? ['OPTIONS_OFFERED'] : ['MIXED'] };
+  },
+  // LENS — contract balance for the signing party. Higher = more balanced.
+  lens(text) {
+    const adverse = countRe(text, /\b(?:irrevocabl|sole (?:and exclusive|discretion)|waive[ds]? your right|class action|binding arbitration|without notice|perpetual|royalty-free|at (?:our|its) discretion|penalty|assigns all|non-refundable)\b/gi);
+    const score = clip(0.75 - 0.16 * adverse);
+    return { score, verdict: band(score, ['High Risk', 'Review Carefully', 'Reasonably Balanced'], [0.4, 0.7]),
+      rights_surrendered: adverse >= 2 ? 'multiple rights permanently transferred' : adverse ? 'one significant right' : 'none flagged',
+      flags: adverse >= 2 ? ['RIGHTS_SURRENDERED', 'POWER_ASYMMETRY'] : adverse ? ['REVIEW_CLAUSE'] : ['BALANCED'] };
+  },
+  // VOICE — institutional-decision fairness. Higher = fairer process.
+  voice(text) {
+    const unfair = countRe(text, /\b(?:no (?:reason|criteria|specific|paperwork)|does not meet (?:lending )?criteria|not (?:given|stated|disclosed)|no (?:appeal|consultation|selection criteria)|without (?:cause|explanation)|insufficient)\b/gi);
+    const disclosed = countRe(text, /\b(?:criteria (?:were|are) (?:disclosed|specific)|reason given|evidence (?:cited|provided)|appeal (?:pathway|process))\b/gi);
+    const score = clip(0.55 - 0.14 * unfair + 0.12 * disclosed);
+    return { score, verdict: band(score, ['Serious Fairness Failures', 'Fairness Gaps', 'Process Adequate'], [0.4, 0.66]),
+      criteria_finding: unfair ? 'criteria not disclosed / non-specific' : 'criteria appear disclosed',
+      flags: unfair >= 2 ? ['NO_CRITERIA', 'NO_APPEAL'] : unfair ? ['CRITERIA_GAP'] : ['CRITERIA_PRESENT'] };
+  },
+  // MARK — institutional governance health. Higher = trust more justified.
+  mark(text) {
+    const opaque = countRe(text, /\b(?:cannot disclose|proprietary|committed to|we are committed|our (?:greatest asset|employees)|zero tolerance|100% of|trust us|responsible)\b/gi);
+    const documented = countRe(text, /\b(?:published|independent (?:tribunal|oversight|review)|quarterly|measured against|audited|supporting evidence|external|we publish (?:reasons|the))\b/gi);
+    const score = clip(0.5 - 0.1 * opaque + 0.14 * documented);
+    return { score, verdict: band(score, ['Low Trust', 'Conditional Trust', 'Trust Justified'], [0.42, 0.66]),
+      transparency_finding: documented > opaque ? 'documented, not merely asserted' : 'asserted without documentation',
+      flags: documented > opaque ? ['TRANSPARENT', 'EXTERNAL_OVERSIGHT'] : ['OPACITY', 'ASSERTED_NOT_DOCUMENTED'] };
+  },
+  // STAND — personal case strength. Higher = stronger, better-documented case.
+  stand(text) {
+    const evidence = countRe(text, /\b(?:signed|contract|email|dated?|documented|in my possession|witness|record|\d{4}|receipt|letter|no (?:consultation|reason|paperwork))\b/gi);
+    const score = clip(0.3 + 0.09 * evidence);
+    return { score, verdict: band(score, ['Early Stage', 'Developing Case', 'Strong Case'], [0.45, 0.7]),
+      evidence_present: evidence >= 3 ? 'multiple documented elements' : evidence ? 'some documentation' : 'largely undocumented',
+      flags: evidence >= 3 ? ['DOCUMENTED', 'GROUNDED'] : ['EVIDENCE_GAP'] };
+  },
+  // WEIGH — decision readiness. Higher = more ready to decide.
+  weigh(text) {
+    const gaps = countRe(text, /\b(?:no (?:second opinion|advisor|physiotherapy|consultation)|not (?:signed|consulted|tried)|must decide by|by (?:week'?s end|end of)|no time)\b/gi);
+    const info = countRe(text, /\b(?:alternativ|reversib|evidence|second opinion|success rate|trade-?off|consulted|compared)\b/gi);
+    const score = clip(0.55 - 0.13 * gaps + 0.1 * info);
+    return { score, verdict: band(score, ['Not Ready', 'Proceed with Caution', 'Decision-Ready'], [0.42, 0.66]),
+      critical_assumption: gaps ? 'key alternative/verification not yet done' : 'assumptions appear examined',
+      flags: gaps >= 2 ? ['MISSING_INFO', 'PRESSURE'] : gaps ? ['INFO_GAP'] : ['INFORMED'] };
+  },
+  // RISE — cognitive development calibration. Higher = develops capacity (not dependency).
+  rise(text) {
+    const depend = countRe(text, /\b(?:just (?:follow|memorise)|only one correct|there is no other way|the answer is simple|all experts agree|settled|anyone who questions)\b/gi);
+    const develop = countRe(text, /\b(?:however|criticism|underdetermination|trade-?off|falsifiab|in principle|evidence|derived|why|consider whether)\b/gi);
+    const complexity = clip((develop) / 4 + 0.3) * 9;
+    const score = clip(0.5 + 0.12 * develop - 0.16 * depend);
+    return { score, complexity_estimate: Math.max(1, Math.round(complexity)),
+      verdict: band(score, ['Below Station', 'Well-Matched', 'Above Station'], [0.42, 0.7]),
+      dependency_finding: depend ? 'gives answers / discourages questioning' : 'develops capacity',
+      flags: depend ? ['DEPENDENCY_RISK'] : develop ? ['DEVELOPMENTAL'] : ['NEUTRAL'] };
+  },
+};
+
+const CERT_PREFIX = { pages: 'PGS', pulse: 'PLS', weigh: 'WGH', lens: 'LNS', voice: 'VCE', mark: 'MRK', stand: 'STD', bridge: 'BRG', rise: 'RSE' };
+const PRODUCT_IDS = Object.keys(PRODUCTS);
+
+// Minimum gradable input. PAGES already abstained when it had nothing to grade;
+// the other eight products did not, so an EMPTY box returned a confident-looking
+// number — LENS called an empty contract "0.75 BALANCED", PULSE called silence
+// "0.6 AGENCY_PRESERVING". That is false precision pointed at an ordinary user,
+// and it is worse than saying nothing. Every product now abstains when there is
+// too little text to screen. Found by the browser-bundle parity suite.
+const MIN_WORDS = 4;
+function tooLittleToScreen(text) {
+  const t = String(text || '').trim();
+  return t.length < 12 || t.split(/\s+/).filter(Boolean).length < MIN_WORDS;
+}
+
+// Screen `text` with product `id`. Returns the deep-mode-shaped JSON + a $0 cert.
+function screen(id, text) {
+  const fn = PRODUCTS[id];
+  if (!fn) throw new Error('unknown product: ' + id);
+  if (tooLittleToScreen(text)) {
+    // `score` stays NUMERIC on purpose: downstream consumers in this repo are
+    // tested against a numeric contract and null would surface as NaN. The
+    // honesty lives in the flags, and in display_score, which tells a UI not to
+    // render the number at all. A number that must not be shown is safer than a
+    // null that crashes a chart.
+    const r = fn(String(text || ''));
+    r.score = +clip(r.score).toFixed(3);
+    r.confidence = 'low';
+    r.insufficient_evidence = true;
+    r.signal = 0;
+    r.display_score = false;
+    r.verdict = 'Insufficient Evidence';
+    r.flags = ['INSUFFICIENT_SIGNAL', 'ABSTAIN'];
+    r.reason = `fewer than ${MIN_WORDS} words to screen — the score below is not a `
+             + 'judgement and must not be shown as one';
+    r.certificate = CERT_PREFIX[id] + '-' + hex8(id + '|' + text);
+    r.engine = 'novora-fast-v0.1';
+    r.mode = 'fast';
+    r.analysis = 'Insufficient Evidence (nothing gradable was supplied)';
+    return r;
+  }
+  const r = fn(String(text || ''));
+  r.score = +clip(r.score).toFixed(3);
+  if (r.display_score === undefined) r.display_score = !r.insufficient_evidence;
+  r.certificate = CERT_PREFIX[id] + '-' + hex8(id + '|' + text);
+  r.engine = 'novora-fast-v0.1';
+  r.mode = 'fast';
+  r.analysis = r.analysis || (r.verdict + ' (on-device screen; deep mode via /api/analyse for the ambiguous middle)');
+  return r;
+}
+
+
+root.NOVORA = { screen: screen, PRODUCT_IDS: PRODUCT_IDS };
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+/* SHA-256, synchronous, so the page seals its ledger with the SAME function the
+   command-line kernel uses. The browser's own crypto.subtle is asynchronous, and
+   swapping in a different hash here would mean the screen and the tested program
+   were sealing differently. keel/test_console.py compares this against node. */
+var SEAL = (function () {
+  var K = [], H0 = [], i = 0, n = 2, x, r;
+  function frac(v) { return Math.floor((v - Math.floor(v)) * 4294967296) | 0; }
+  while (K.length < 64) {
+    var p = true;
+    for (var d = 2; d * d <= n; d++) if (n % d === 0) { p = false; break; }
+    if (p) { if (H0.length < 8) H0.push(frac(Math.pow(n, 1 / 2))); K.push(frac(Math.pow(n, 1 / 3))); }
+    n++;
+  }
+  function rotr(a, b) { return (a >>> b) | (a << (32 - b)); }
+  return function (msg) {
+    var bytes = new TextEncoder().encode(msg), l = bytes.length;
+    var withOne = l + 1, blocks = Math.ceil((withOne + 8) / 64), total = blocks * 64;
+    var b = new Uint8Array(total); b.set(bytes); b[l] = 0x80;
+    var bits = l * 8, dv = new DataView(b.buffer);
+    dv.setUint32(total - 4, bits >>> 0); dv.setUint32(total - 8, Math.floor(bits / 4294967296));
+    var H = H0.slice(), w = new Int32Array(64);
+    for (var j = 0; j < blocks; j++) {
+      for (i = 0; i < 16; i++) w[i] = dv.getInt32(j * 64 + i * 4);
+      for (i = 16; i < 64; i++) {
+        var s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+        var s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+        w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+      }
+      var a = H[0], bb = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
+      for (i = 0; i < 64; i++) {
+        var S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+        var ch = (e & f) ^ (~e & g);
+        var t1 = (h + S1 + ch + K[i] + w[i]) | 0;
+        var S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+        var mj = (a & bb) ^ (a & c) ^ (bb & c);
+        var t2 = (S0 + mj) | 0;
+        h = g; g = f; f = e; e = (d + t1) | 0; d = c; c = bb; bb = a; a = (t1 + t2) | 0;
+      }
+      H[0] = (H[0] + a) | 0; H[1] = (H[1] + bb) | 0; H[2] = (H[2] + c) | 0; H[3] = (H[3] + d) | 0;
+      H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0; H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;
+    }
+    for (r = "", i = 0; i < 8; i++) r += ("00000000" + (H[i] >>> 0).toString(16)).slice(-8);
+    return r;
+  };
+})();
+</script>
+<script>
+/* the governance kernel, flattened out of keel/kernel.mjs by build_console.py */
+/* keel/kernel.mjs — the governance kernel.
+ * ===========================================================================
+ * KEEL is the part of a boat you never see. It does not power the boat, steer
+ * it, or choose where it goes. It removes ONE degree of freedom: the sideways
+ * one. Without a keel you go where the wind pushes you. With one you go where
+ * you are pointed. "On an even keel" is already ordinary speech for this.
+ *
+ * That is the whole relationship to Windows, macOS, Android, HarmonyOS and
+ * Linux. They are the hull, the engine and the cargo hold, and they are good at
+ * it. Keel is added underneath. It competes with none of them because it
+ * answers a different question:
+ *
+ *     A traditional kernel asks:  MAY this program do this?
+ *     Keel asks:                  are there GROUNDS to do this?
+ *
+ * Those are orthogonal, which is why holding both matters. A hallucinated
+ * instruction with valid permissions executes perfectly on every operating
+ * system in the world. The permission was never the thing that was wrong.
+ *
+ * The inversion, stated once:
+ *
+ *     Traditional default:  DO IT unless something objects.
+ *     Keel default:         DO NOT unless there are grounds.
+ *
+ * ---------------------------------------------------------------------------
+ * THE ONE ENTRY POINT
+ * Every action goes through admit(). There is no second path, no fast path and
+ * no privileged caller. Six stages run in a fixed order and EVERY STAGE CAN
+ * ONLY REFUSE — not one of them can grant. Passing simply means nothing
+ * stopped you.
+ *
+ *   1 NAME    an action must say what it is        (nothing anonymous moves)
+ *   2 KEY     default deny                          (you list what IS allowed)
+ *   3 BUDGET  a permission may be finite            (five changes, then ask)
+ *   4 ASSAY   measure the evidence behind it        (three states, never two)
+ *   5 BAR     policy may demand a standard          (below it, withhold)
+ *   6 SEAL    write it to a chain that cannot be quietly edited
+ *
+ * ---------------------------------------------------------------------------
+ * WHAT THIS IS NOT
+ * This is not a kernel in the operating-system sense and calling it one without
+ * this paragraph would be a lie. It does not schedule, allocate memory, drive
+ * hardware or isolate processes, and NOTHING FORCES A PROGRAM TO COME THROUGH
+ * IT. It governs the actions handed to it. Making it unavoidable is a job for
+ * the layer underneath — a container, a network namespace with no other exit, a
+ * platform that will only call out through this — and that is not in this
+ * repository. A gate you can walk around is a gate you should not rely on
+ * alone. Every screen this project ships says so, and a test fails if the
+ * sentence is removed.
+ */
+
+
+
+
+
+
+
+
+
+const VERSION = "keel/1.0";
+
+/* Verdicts the bar understands, weakest first. */
+const LADDER = ["INSUFFICIENT_EVIDENCE", "AMBIGUOUS", "IMPLAUSIBLE", "OUT_OF_SCOPE", "SUPPORTED"];
+
+/* Domains where being well-formed is not the same as being safe. A held action
+ * touching any of these is promoted out of the end-of-run batch. */
+const HIGH_STAKES = ["medical/health", "safety-critical", "financial", "legal/regulatory"];
+
+const READ_VERBS = ["read", "open", "list", "get", "head"];
+const SIGNAL_PLAIN = { source: "a source", figures: "a figure", method: "how it was measured",
+                       time: "a date", scope: "who it applies to" };
+
+/* ------------------------------------------------------------- stage 2 --- */
+function globMatch(glob, path) {
+  const rx = "^" + glob.split("**").map(part =>
+    part.split("*").map(p => p.replace(/[.+?^${}()|[\]\\]/g, "\\$&")).join("[^/]*")
+  ).join(".*") + "$";
+  return new RegExp(rx).test(path);
+}
+
+/* Default deny; a refusal beats a permission written above it; the most
+ * specific permission wins; reading never implies writing. */
+function consultKey(policy, verb, target) {
+  const writing = !READ_VERBS.includes(String(verb).toLowerCase());
+  const matches = (policy.rules || []).filter(r => globMatch(r.path, target));
+  const denied = matches.find(r => !r.allow);
+  if (denied) {
+    return { ok: false, rule: denied.path, plain: denied.plain,
+             why: "a refusal always beats a permission" };
+  }
+  const hit = matches.sort((a, b) => b.path.length - a.path.length)[0];
+  if (!hit) {
+    return { ok: false, rule: "(nothing on the key)", plain: "not on the key",
+             why: "default deny — only what is listed can happen" };
+  }
+  if (writing && !hit.write) {
+    return { ok: false, rule: hit.path, plain: hit.plain,
+             why: `the key permits reading ${hit.path}, not changing it` };
+  }
+  return { ok: true, rule: hit.path, plain: hit.plain, writing,
+           budget: hit.budget ?? null, bar: hit.require ?? null,
+           on_uncheckable: hit.on_uncheckable ?? "withhold" };
+}
+
+/* ------------------------------------------------------------- stage 4 --- */
+/* Three states, never two. Collapsing "could not check" into "checked and
+ * failed" turns an unreadable payload into a silent pass, and collapsing it the
+ * other way turns an honest gap into a fabricated verdict. */
+function assay(content) {
+  if (content == null || String(content).trim() === "") return null;   // UNCHECKABLE
+  const a = EI.assay(String(content).slice(0, 4000), "slate");
+  return {
+    verdict: a.verdict,
+    found: a.evidence_hits, of: a.evidence_total,
+    missing: a.evidence.filter(c => !c.hit).map(c => c.signal),
+    domains: a.domain_flags,
+    handles: a.handles,
+    search_line: a.search_line,
+    question: a.question,
+  };
+}
+
+/* ------------------------------------------------------------- stage 5 --- */
+function meetsBar(bar, onUncheckable, checked) {
+  if (!bar) return { ok: true, state: "NOT_REQUIRED" };
+  if (!checked) {
+    const pass = onUncheckable === "pass";
+    return { ok: pass, state: "UNCHECKABLE",
+             why: pass ? "nothing could be measured; this policy proceeds anyway"
+                       : "nothing could be measured, and the default is not to — " +
+                         "this is 'could not check', not 'checked and failed'" };
+  }
+  const need = LADDER.indexOf(bar);
+  if (need === -1) throw new Error(`policy asked for an unknown bar: ${bar}`);
+  if (LADDER.indexOf(checked.verdict) >= need) {
+    return { ok: true, state: "MET", got: checked.verdict };
+  }
+  return { ok: false, state: "NOT_MET", got: checked.verdict,
+           why: `this rule acts only on ${bar} material; what arrived was ` +
+                `${checked.verdict} (${checked.found} of ${checked.of} kinds of support)` };
+}
+
+/* ------------------------------------------------------------- stage 6 --- */
+class Ledger {
+  constructor() { this.entries = []; }
+  get head() { return this.entries.length ? this.entries.at(-1).seal : "0".repeat(64); }
+  add(body) {
+    const e = { ...body, at: new Date().toISOString(), prev: this.head };
+    e.seal = SEAL(JSON.stringify(e));
+    this.entries.push(e);
+    return e;
+  }
+  verify() {
+    let prev = "0".repeat(64);
+    for (let i = 0; i < this.entries.length; i++) {
+      const { seal, ...body } = this.entries[i];
+      if (this.entries[i].prev !== prev) {
+        return { ok: false, broken: i, why: "does not follow the entry before it" };
+      }
+      if (SEAL(JSON.stringify(body)) !== seal) {
+        return { ok: false, broken: i, why: "changed after it was written" };
+      }
+      prev = seal;
+    }
+    return { ok: true, entries: this.entries.length };
+  }
+}
+
+/* --------------------------------------------------------- escalation ---- */
+/* A slip for every action is not protection. Someone who has dismissed forty
+ * slips dismisses the forty-first without reading it — which is exactly how
+ * "Allow" became a reflex on every other system. */
+function tierOf(outcome, domains = []) {
+  if (outcome === "REFUSED") return "STOP";                 // a boundary was crossed
+  if (outcome === "HELD") {
+    return domains.some(d => HIGH_STAKES.includes(d)) ? "STOP" : "BATCH";
+  }
+  return "LEDGER";
+}
+
+/* ============================== THE KERNEL ============================== */
+function boot({ policy, ledger = new Ledger() } = {}) {
+  if (!policy || !Array.isArray(policy.rules)) {
+    throw new Error("keel needs a policy with a rules array — there is no implicit default");
+  }
+  const spent = new Map();
+  const stats = { seen: 0, admitted: 0, refused: 0, held: 0 };
+
+  /* The governance syscall. Returns a decision; never throws for a refusal,
+   * because a refusal is a normal result, not an exception. */
+  function admit(action = {}) {
+    stats.seen++;
+    const { verb, target, content = null, why: intent = null } = action;
+
+    const decide = (outcome, stage, why, extra = {}) => {
+      const checked = extra.checked ?? null;
+      const tier = tierOf(outcome, checked?.domains || []);
+      const entry = ledger.add({
+        outcome, stage, verb: verb ?? null, target: target ?? null, tier, why,
+        rule: extra.rule ?? null, intent,
+        found: checked ? `${checked.found}/${checked.of}` : null,
+        missing: checked?.missing ?? null,
+        domains: checked?.domains ?? [],
+      });
+      if (outcome === "ADMITTED") stats.admitted++;
+      else if (outcome === "HELD") stats.held++;
+      else stats.refused++;
+      return {
+        admitted: outcome === "ADMITTED", outcome, stage, tier, why,
+        rule: extra.rule ?? null,
+        checked,
+        // What to do about it, pointed at the action rather than at the system.
+        next: outcome === "ADMITTED" ? null
+              : (checked?.question ?? "Name the action and put it on the key."),
+        handles: checked?.handles ?? null,
+        search_line: checked?.search_line ?? null,
+        seal: entry.seal, at: entry.at,
+      };
+    };
+
+    // 1 NAME — nothing anonymous moves.
+    if (!verb || !target) {
+      return decide("REFUSED", "NAME",
+        "an action has to say what it is and what it touches before anything else can look at it");
+    }
+
+    // 2 KEY — default deny.
+    const key = consultKey(policy, verb, target);
+    if (!key.ok) return decide("REFUSED", "KEY", key.why, { rule: key.rule });
+
+    // 3 BUDGET — a permission may be finite.
+    if (key.writing && key.budget != null) {
+      const used = spent.get(key.rule) || 0;
+      if (used >= key.budget) {
+        return decide("REFUSED", "BUDGET",
+          `the key allowed ${key.budget} changes here and they are used up`, { rule: key.rule });
+      }
+      spent.set(key.rule, used + 1);
+    }
+
+    // 4 ASSAY + 5 BAR — grounds, not permission.
+    const checked = assay(content);
+    const bar = meetsBar(key.bar, key.on_uncheckable, checked);
+    if (!bar.ok) return decide("HELD", "BAR", bar.why, { rule: key.rule, checked });
+
+    // 6 SEAL happens inside decide() for every outcome, admitted included.
+    return decide("ADMITTED", "SEAL",
+      key.writing ? "on the key, within budget, and the material meets the bar"
+                  : "on the key, and the material meets the bar",
+      { rule: key.rule, checked });
+  }
+
+  /* One receipt for a whole run, instead of a slip per action. The count never
+   * travels alone: what was held is named, with what each one was missing. */
+  function manifest() {
+    const es = ledger.entries;
+    const at = t => es.filter(e => e.tier === t);
+    const done = at("LEDGER"), held = at("BATCH"), stopped = at("STOP");
+    const slip = e => ({
+      verb: e.verb, target: e.target, why: e.why,
+      missing: (e.missing || []).map(s => SIGNAL_PLAIN[s] || s),
+      seal: e.seal.slice(0, 12),
+    });
+    const tally = {};
+    for (const e of held) for (const m of e.missing || []) tally[m] = (tally[m] || 0) + 1;
+    const commonest = Object.entries(tally).sort((a, b) => b[1] - a[1])[0];
+    return {
+      summary: `${done.length} done` +
+        (held.length ? ` · ${held.length} held` +
+          (commonest ? ` for missing ${SIGNAL_PLAIN[commonest[0]] || commonest[0]}` : "") : "") +
+        (stopped.length ? ` · ${stopped.length} stopped` : ""),
+      done: done.length,
+      held: held.map(slip),
+      stopped: stopped.map(slip),
+      interruptions: stopped.length,
+      actions: es.length,
+      sealed: ledger.verify(),
+    };
+  }
+
+  return { admit, manifest, ledger, stats, policy, version: VERSION };
+}
+
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var POLICY = {"name":"Example policy \u2014 what an assistant may do on this machine","note":"Anything not listed here does not happen. You never have to predict the bad action.","rules":[{"path":"projects/**","plain":"read anything in projects","allow":true,"write":false},{"path":"projects/drafts/**","plain":"change files in drafts","allow":true,"write":true,"budget":5},{"path":"public/**","plain":"read published data","allow":true,"write":false},{"path":"posts/**","plain":"publish, but only things that carry their evidence","allow":true,"write":true,"require":"SUPPORTED"},{"path":"payroll/**","plain":"anything in payroll","allow":false},{"path":"**/.env","plain":"files holding passwords","allow":false},{"path":".ssh/**","plain":"your login keys","allow":false}]};
+  var keel = boot({ policy: POLICY });
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  /* ------------------------------------------------------- navigation --- */
+  var APPS = [
+    ["label", "The Label", "Is this claim worth believing?",
+      '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'],
+    ["nine", "Everyday worries", "Contracts, pressure, decisions",
+      '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'],
+    ["gate", "The gate", "What may an assistant do?",
+      '<path d="M3 7h18M3 17h18"/><rect x="10" y="2" width="4" height="20" rx="1"/>', "gate"]
+  ];
+  $("#shelf").innerHTML = APPS.map(function (a) {
+    return '<button class="app ' + (a[4] || "") + '" data-go="' + a[0] + '" type="button">' +
+      '<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + a[3] + '</svg></span>' +
+      '<span class="nm">' + a[1] + '</span><span class="sub">' + a[2] + '</span></button>';
+  }).join("");
+  function go(id) {
+    var t = document.getElementById(id) ? id : "home";
+    Array.prototype.forEach.call(document.querySelectorAll(".win"), function (w) {
+      w.classList.toggle("on", w.id === t);
+    });
+    window.scrollTo(0, 0);
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-go]");
+    if (b) { location.hash = b.getAttribute("data-go"); }
+  });
+  window.addEventListener("hashchange", function () { go(location.hash.slice(1) || "home"); });
+  $("#gohome").onclick = function () { location.hash = "home"; };
+  $("#theme").onclick = function () {
+    var d = document.documentElement;
+    var dark = d.getAttribute("data-theme") === "dark" ||
+      (!d.getAttribute("data-theme") && matchMedia("(prefers-color-scheme:dark)").matches);
+    d.setAttribute("data-theme", dark ? "light" : "dark");
+  };
+
+  /* ------------------------------------------------------------ label --- */
+  var VERDICT = {
+    SUPPORTED: ["good", "Enough here to check",
+      "Someone could go and verify this. That does not make it true — it makes it checkable."],
+    INSUFFICIENT_EVIDENCE: ["warn", "Almost nothing to check",
+      "It may well be right. But as written, there is very little anyone could go and confirm."],
+    OUT_OF_SCOPE: ["", "Not this kind of thing", "This tool reads claims about what is measurably the case."],
+    AMBIGUOUS: ["warn", "This can be read two ways", "The sentence has more than one meaning, so it will not guess."],
+    IMPLAUSIBLE: ["warn", "Something is off here", "Read literally, this says something that cannot happen."]
+  };
+  var PLAIN = { source: "Says where it came from", figures: "Gives real numbers",
+    method: "Says how it was measured", time: "Says when", scope: "Says who or where it applies to" };
+  var HNAME = { source: "who says so", figures: "the numbers", method: "how it was measured",
+    time: "when", scope: "who or where" };
+
+  ["Green tea reduces stress.",
+   "According to a 2023 randomised trial of 240 participants in the UK, green tea reduced self-reported stress by 12%.",
+   "A fortnight means two weeks.",
+   "I saw the Grand Canyon flying to New York."].forEach(function (t) {
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    b.textContent = t.length > 38 ? t.slice(0, 38) + "…" : t;
+    b.title = t;
+    b.onclick = function () { $("#claim").value = t; readLabel(); };
+    $("#egs").appendChild(b);
+  });
+
+  function handlesBlock(r) {
+    var hd = r.handles; if (!hd) return "";
+    var rows = ["source", "figures", "method", "time", "scope"].filter(function (k) {
+      return hd[k] && hd[k].length; });
+    if (!rows.length) return "";
+    var h = '<div class="handles"><b>Take these and go and check it</b>' +
+      '<p>These are the exact words that made the label tick. Paste them into a search engine — ' +
+      'if nothing comes back, you have your answer.</p>';
+    h += rows.map(function (k) {
+      return '<div class="hrow"><span class="hk">' + HNAME[k] + '</span><span>' +
+        hd[k].map(function (s) { return "<em>" + esc(s) + "</em>"; }).join(" ") + "</span></div>";
+    }).join("");
+    if (r.search_line) {
+      h += '<div class="hcopy"><input type="text" id="hline" readonly value="' +
+        esc(r.search_line) + '"><button class="hbtn" id="hcopy" type="button">Copy</button></div>';
+    }
+    if (hd.source && hd.source.length && !hd.source_named) {
+      h += '<div class="hnote">The source row ticked on the words <em>' + esc(hd.source[0]) +
+        '</em> — but nobody is actually named. There is no one here to go and ask.</div>';
+    }
+    return h + "</div>";
+  }
+
+  function readLabel() {
+    var r = EI.assay($("#claim").value, "slate");
+    var v = VERDICT[r.verdict] || ["", r.verdict, ""];
+    var pct = r.evidence.length ? Math.round(r.evidence_hits / r.evidence_total * 100) : 0;
+    var h = '<div class="label"><div class="cap">What this claim is made of</div><div class="rows">';
+    h += r.evidence.length
+      ? r.evidence.map(function (c) {
+          return '<div class="lrow"><span class="' + (c.hit ? "y" : "n") + '">' +
+            (c.hit ? "✓" : "—") + "</span><span>" + PLAIN[c.signal] +
+            '</span><span class="v">' + esc(c.note) + "</span></div>";
+        }).join("")
+      : '<div class="lrow"><span class="n">—</span><span>Nothing to weigh here</span>' +
+        '<span class="v">this is not a factual claim</span></div>';
+    h += '</div><div class="tot">' + esc(v[1]) +
+      (r.evidence.length ? ' · <span>' + r.evidence_hits + " of " + r.evidence_total +
+        " checkable parts present</span>" : "") + "</div></div>";
+    if (r.evidence.length) {
+      h += '<div class="gauge"><i style="width:' + pct + '%"></i></div>' +
+        '<div class="gtag"><span>nothing to check</span><span>fully checkable</span></div>';
+    }
+    h += handlesBlock(r);
+    h += '<div class="note ' + (v[0] || "") + '"><b>' + esc(v[1]) + "</b>" + esc(r.explanation || v[2]) + "</div>";
+    if (r.domain_flags.length) {
+      h += '<div class="note stop"><b>Careful — this is about ' +
+        esc(r.domain_flags.join(", ").replace(/[a-z]+\//g, "")) + "</b>" +
+        "Writing can be perfectly well put together and still be dangerous. Nothing above checks " +
+        "whether this is safe to act on. For health, chemicals, money or the law, ask someone qualified.</div>";
+    }
+    $("#lout").innerHTML = h;
+    var cb = $("#hcopy");
+    if (cb) cb.onclick = function () {
+      var f = $("#hline"); f.select(); f.setSelectionRange(0, 999);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(f.value).then(function () {
+          cb.textContent = "Copied"; setTimeout(function () { cb.textContent = "Copy"; }, 1400);
+        }, function () { cb.textContent = "Select and copy"; });
+      } else { cb.textContent = "Select and copy"; }
+    };
+  }
+  $("#read").onclick = readLabel;
+
+  /* ------------------------------------------------------------- nine --- */
+  var NINE = {
+    pages: ["Is this claim real?", "how well grounded a statement is"],
+    lens: ["What am I giving up?", "what a contract or clause takes from you"],
+    bridge: ["Is this pressuring me?", "urgency, coercion and pressure in a message"],
+    pulse: ["Is this answer healthy?", "whether a reply builds you up or makes you dependent"],
+    voice: ["Was I actually heard?", "whether a decision engaged with what you said"],
+    mark: ["Was this fair?", "whether criteria were disclosed and applied"],
+    stand: ["Do I have a case?", "how much of a grievance is documented"],
+    weigh: ["Was this decided well?", "whether alternatives were genuinely considered"],
+    rise: ["Am I learning?", "whether an explanation develops your own judgement"]
+  };
+  var picked = "lens";
+  function drawNine() {
+    $("#nineList").innerHTML = NOVORA.PRODUCT_IDS.map(function (id) {
+      var m = NINE[id] || [id, ""];
+      return '<button type="button" data-p="' + id + '" aria-pressed="' + (id === picked) + '">' +
+        "<b>" + m[0] + "</b><span>" + m[1] + "</span></button>";
+    }).join("");
+    Array.prototype.forEach.call($("#nineList").children, function (b) {
+      b.onclick = function () { picked = b.getAttribute("data-p"); drawNine(); screenIt(); };
+    });
+  }
+  function screenIt() {
+    var text = $("#ntext").value;
+    var r = NOVORA.screen(picked, text);
+    var held = r.insufficient_evidence || r.display_score === false;
+    var h = '<div class="result" data-t="' + (held ? "held" : "ok") + '">' +
+      '<div class="rh"><span>' + (held ? "Stopped" : "Reading") + '</span><span class="sp"></span>' +
+      '<span>' + esc(r.certificate || "") + "</span></div><div class=\"rb\">" +
+      "<h3>" + esc(r.verdict) + "</h3>";
+    h += held
+      ? "<p>There was not enough in this text to grade. That is a result, not a failure — " +
+        "a number here would have been invented.</p>"
+      : "<p>" + esc(r.analysis || "") + "</p>";
+    if (r.flags && r.flags.length) {
+      h += '<div class="flags">' + r.flags.map(function (f) { return "<span>" + esc(f) + "</span>"; }).join("") + "</div>";
+    }
+    h += '</div></div><div class="note warn"><b>What this screen cannot do</b>' +
+      "It reads patterns in the words, not meaning, and it does not know your situation. " +
+      "For anything touching health, money or the law, take it to someone qualified.</div>";
+    $("#nout").innerHTML = h;
+  }
+  $("#nrun").onclick = screenIt;
+  drawNine();
+
+  /* ------------------------------------------------------------- gate --- */
+  var YES = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12l5 5L19 7"/></svg>';
+  var NO = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  $("#keys").innerHTML = POLICY.rules.map(function (r) {
+    var extra = [r.allow && r.write ? "can change it" : r.allow ? "reading only" : null,
+      r.budget ? r.budget + " times" : null,
+      r.require ? "only if it carries its evidence" : null].filter(Boolean).join(" · ");
+    return '<div class="krow ' + (r.allow ? "yes" : "no") + '"><span class="ki">' +
+      (r.allow ? YES : NO) + "</span><span><b>" + esc(r.plain) + "</b>" +
+      (extra ? "<small>" + esc(extra) + "</small>" : "") + '</span><span class="tag">' +
+      (r.allow ? "goes through" : "stopped") + "</span></div>";
+  }).join("") +
+    '<div class="krow no"><span class="ki">' + NO + "</span><span><b>Everything else</b>" +
+    "<small>anything you did not list</small></span><span class=\"tag\">stopped</span></div>";
+
+  [["read", "projects/notes.md", ""],
+   ["read", ".ssh/id_rsa", ""],
+   ["write", "posts/claim.md", "The new process is much better and everyone should switch to it."],
+   ["write", "posts/claim.md", "According to the 2024 ONS survey of 1,180 households across the UK, energy use fell 8%."]
+  ].forEach(function (t, i) {
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    b.textContent = ["an ordinary read", "reaching for your keys", "publishing a bare claim", "publishing a sourced one"][i];
+    b.onclick = function () {
+      $("#verb").value = t[0]; $("#target").value = t[1]; $("#payload").value = t[2]; tryIt();
+    };
+    $("#tryegs").appendChild(b);
+  });
+
+  function tryIt() {
+    var d = keel.admit({ verb: $("#verb").value, target: $("#target").value.trim(),
+      content: $("#payload").value || null });
+    var cls = d.outcome === "ADMITTED" ? "good" : d.outcome === "HELD" ? "warn" : "stop";
+    var head = d.outcome === "ADMITTED" ? "It goes through"
+      : d.outcome === "HELD" ? "Held — fetched, but not handed over" : "Stopped at the gate";
+    var h = '<div class="note ' + cls + '"><b>' + head + "</b>" + esc(d.why);
+    if (d.next && d.outcome !== "ADMITTED") h += "<br><br>" + esc(d.next);
+    h += "</div>";
+    $("#gout").innerHTML = h;
+    drawTape();
+  }
+  $("#try").onclick = tryIt;
+
+  function drawTape() {
+    var m = keel.manifest(), es = keel.ledger.entries;
+    $("#rsum").textContent = es.length ? m.summary : "nothing has crossed yet";
+    $("#rsub").innerHTML = !es.length ? ""
+      : m.interruptions
+        ? "You were stopped <b>" + m.interruptions + "</b> time" + (m.interruptions === 1 ? "" : "s") +
+          " — each one reached past your key. Everything else is below, sealed, without asking you anything."
+        : "You were interrupted <b>no times</b>. Every crossing is below, sealed. A slip for each one " +
+          "would be taps you stop reading.";
+    var v = keel.ledger.verify();
+    $("#tape").innerHTML = es.map(function (e, i) {
+      return '<div class="te ' + e.tier + '"><span class="t">' +
+        (e.tier === "LEDGER" ? "went through" : e.tier === "BATCH" ? "held" : "stopped") +
+        '</span><span class="p">' + esc((e.verb || "?") + " " + (e.target || "(unnamed)")) + "</span>" +
+        '<span class="w">' + esc(e.why) + (v.ok || i < v.broken ? "" : " · seal broken") + "</span></div>";
+    }).join("");
+    if (!v.ok) {
+      $("#tape").insertAdjacentHTML("afterbegin",
+        '<div class="note stop" style="margin:0 0 .4rem"><b>The record has been altered</b>' +
+        "Entry " + v.broken + " no longer matches its seal, and every seal after it is broken too. " +
+        "That is what a sealed list is for.</div>");
+    }
+  }
+  $("#tamper").onclick = function () {
+    var es = keel.ledger.entries;
+    if (!es.length) return;
+    es[0].target = "payroll/salaries.csv";
+    drawTape();
+  };
+
+  readLabel(); screenIt(); drawTape();
+  go(location.hash.slice(1) || "home");
+  window.__keel = { keel: keel, SEAL: SEAL, go: go, readLabel: readLabel,
+    screenIt: screenIt, tryIt: tryIt };
+})();
+</script>
+</body>
+</html>

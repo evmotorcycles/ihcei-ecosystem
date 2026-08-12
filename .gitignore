@@ -34,3 +34,10 @@ scratchpad/
 !.env.example
 *.pem
 *.key
+
+# keel: the single-file executable contains a whole copy of node (~124 MB), so
+# it is BUILT, not committed. python3 keel/build_exe.py --binary makes it, and
+# keel/test_exe.py proves the 34 KB bundle inside it is the tested one.
+keel/dist/keel.blob
+keel/dist/keel-*
+keel/dist/*.exe
