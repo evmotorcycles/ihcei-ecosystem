@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synaptic Mesh Interface</title>
+<style>
+:root{--bg:#F1F3EF;--card:#FFFFFF;--ink:#12171A;--ink2:#46504B;--stone:#6A746E;
+  --line:#D7DBD4;--sea:#20535F;--frame-bg:#0B1220;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0C100F;--card:#151A18;
+  --ink:#E8EDEA;--ink2:#B0BAB4;--stone:#8B958F;--line:#232927;--sea:#6FB6C9}}
+:root[data-theme=dark]{--bg:#0C100F;--card:#151A18;--ink:#E8EDEA;--ink2:#B0BAB4;
+  --stone:#8B958F;--line:#232927;--sea:#6FB6C9}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 var(--sans);
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:52rem;margin:0 auto;padding:2.6rem 1.1rem 5rem}
+h1,h2{margin:0;font-weight:660;letter-spacing:-.02em;line-height:1.18;text-wrap:balance}
+h1{font-size:clamp(1.9rem,5vw,2.6rem)}
+h2{font-size:1.15rem;margin:2.6rem 0 .3rem}
+p{margin:.85rem 0}
+.lede{font-size:1.12rem;color:var(--ink2)}
+.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);font-weight:700}
+figure{margin:1.4rem 0}
+figcaption{color:var(--stone);font-size:.88rem;margin-top:.6rem;line-height:1.5}
+.key{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+.key span{display:inline-flex;align-items:center;gap:.4rem;background:var(--card);
+  border:1px solid var(--line);border-radius:99px;padding:.25rem .7rem;font-size:.82rem;color:var(--stone)}
+.key i{width:.65rem;height:.65rem;border-radius:99px;display:block}
+.note{background:var(--card);border:1px solid var(--line);border-left:3px solid #D97706;
+  border-radius:0 12px 12px 0;padding:.9rem 1.1rem;margin:1.5rem 0}
+.note b{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:#D97706;margin-bottom:.3rem}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem;min-width:22rem}
+th,td{text-align:left;padding:.5rem .55rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--stone);font-weight:700}
+td:first-child{color:var(--stone)}
+code{font-family:var(--mono);font-size:.87em}
+.foot{margin-top:3rem;padding-top:1.1rem;border-top:1px solid var(--line);
+  color:var(--stone);font-size:.87rem}
+</style></head><body><div class="wrap">
+
+<p class="eyebrow">Synaptic Mesh Interface</p>
+<h1>Nothing on this screen was positioned.</h1>
+<p class="lede">Every element is a node in a graph of what depends on what. The distance
+between two of them is the electrical resistance between them on that graph, and the
+picture is whatever best preserves those distances. Move a dependency and the layout
+rearranges because the arithmetic changed.</p>
+
+<div class="key">
+  <span><i style="background:#0EA5E9"></i>live — connected and resolved</span>
+  <span><i style="background:#D97706"></i>held — connected, no value yet</span>
+  <span><i style="background:#475569"></i>rotted — no path back</span>
+</div>
+
+<figure><svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="At rest" style="width:100%;height:auto;font-family:system-ui,sans-serif">
+<rect width="100%" height="100%" fill="var(--frame-bg,#0B1220)" rx="12"/>
+<line x1="60.8" y1="402.8" x2="380.0" y2="173.0" stroke="#0EA5E9" stroke-width="1.69" stroke-opacity="0.82"/>
+<text x="220.4" y="281.9" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">× price</text>
+<line x1="699.2" y1="402.8" x2="380.0" y2="173.0" stroke="#0EA5E9" stroke-width="1.69" stroke-opacity="0.82"/>
+<text x="539.6" y="281.9" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">× qty</text>
+<line x1="380.0" y1="173.0" x2="380.0" y2="75.2" stroke="#0EA5E9" stroke-width="1.51" stroke-opacity="0.86"/>
+<text x="380.0" y="118.1" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">20%</text>
+<line x1="380.0" y1="173.0" x2="380.0" y2="108.7" stroke="#0EA5E9" stroke-width="1.51" stroke-opacity="0.86"/>
+<text x="380.0" y="134.8" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">+ VAT</text>
+<line x1="380.0" y1="75.2" x2="380.0" y2="108.7" stroke="#0EA5E9" stroke-width="1.60" stroke-opacity="0.84"/>
+<text x="380.0" y="86.0" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">cross-check</text>
+<line x1="668.8" y1="174.0" x2="668.8" y2="304.0" stroke="#475569" stroke-width="1.00" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<g opacity="1.00"><rect x="23.8" y="383.8" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="60.8" y="398.8" fill="#94A3B8" font-size="9" text-anchor="middle">Quantity</text><text x="60.8" y="413.8" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">12</text></g>
+<g opacity="1.00"><rect x="660.2" y="383.8" width="78" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="699.2" y="398.8" fill="#94A3B8" font-size="9" text-anchor="middle">Unit price</text><text x="699.2" y="413.8" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">4.5</text></g>
+<g opacity="1.00"><rect x="343.0" y="154.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="380.0" y="169.0" fill="#94A3B8" font-size="9" text-anchor="middle">Net</text><text x="380.0" y="184.0" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">54.0</text></g>
+<g opacity="1.00"><rect x="343.0" y="56.2" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="380.0" y="71.2" fill="#94A3B8" font-size="9" text-anchor="middle">VAT 20%</text><text x="380.0" y="86.2" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">10.8</text></g>
+<g opacity="1.00"><rect x="343.0" y="89.7" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="380.0" y="104.7" fill="#94A3B8" font-size="9" text-anchor="middle">Total due</text><text x="380.0" y="119.7" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">64.8</text></g>
+<g opacity="0.45"><rect x="619.3" y="155.0" width="99" height="38" rx="9" fill="#0F172A" stroke="#475569" stroke-width="1.4"/><text x="668.8" y="170.0" fill="#94A3B8" font-size="9" text-anchor="middle">Payment terms</text><text x="668.8" y="185.0" fill="#475569" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">—</text></g>
+<g opacity="0.45"><rect x="631.8" y="285.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#475569" stroke-width="1.4"/><text x="668.8" y="300.0" fill="#94A3B8" font-size="9" text-anchor="middle">Late fee</text><text x="668.8" y="315.0" fill="#475569" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">—</text></g>
+<text x="14" y="22" fill="#E2E8F0" font-size="12" font-weight="650">At rest</text>
+<rect x="0" y="444" width="760" height="26" fill="#0B1220" opacity=".92"/><text x="14" y="461" fill="#64748B" font-size="10">terms and late are in their own component — grey, dashed, and parked</text>
+</svg><figcaption>Two inputs at the edges, the derived figures pulled into the middle. Payment terms and late fee have no path to the invoice, so they sit apart in grey.</figcaption></figure>
+<figure><svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Total dragged away from Net" style="width:100%;height:auto;font-family:system-ui,sans-serif">
+<rect width="100%" height="100%" fill="var(--frame-bg,#0B1220)" rx="12"/>
+<line x1="60.8" y1="402.8" x2="165.2" y2="239.0" stroke="#0EA5E9" stroke-width="1.64" stroke-opacity="0.83"/>
+<text x="113.0" y="314.9" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">× price</text>
+<line x1="60.8" y1="75.2" x2="165.2" y2="239.0" stroke="#0EA5E9" stroke-width="1.64" stroke-opacity="0.83"/>
+<text x="113.0" y="151.1" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">× qty</text>
+<line x1="165.2" y1="239.0" x2="277.4" y2="239.0" stroke="#0EA5E9" stroke-width="1.49" stroke-opacity="0.86"/>
+<text x="221.3" y="233.0" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">20%</text>
+<line x1="165.2" y1="239.0" x2="699.2" y2="239.0" stroke="#0EA5E9" stroke-width="1.81" stroke-opacity="0.79"/>
+<text x="432.2" y="233.0" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">+ VAT</text>
+<line x1="277.4" y1="239.0" x2="699.2" y2="239.0" stroke="#0EA5E9" stroke-width="1.77" stroke-opacity="0.80"/>
+<text x="488.3" y="233.0" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">cross-check</text>
+<line x1="668.8" y1="174.0" x2="668.8" y2="304.0" stroke="#475569" stroke-width="1.00" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<g opacity="1.00"><rect x="23.8" y="383.8" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="60.8" y="398.8" fill="#94A3B8" font-size="9" text-anchor="middle">Quantity</text><text x="60.8" y="413.8" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">12</text></g>
+<g opacity="1.00"><rect x="21.8" y="56.2" width="78" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="60.8" y="71.2" fill="#94A3B8" font-size="9" text-anchor="middle">Unit price</text><text x="60.8" y="86.2" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">4.5</text></g>
+<g opacity="1.00"><rect x="128.2" y="220.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="165.2" y="235.0" fill="#94A3B8" font-size="9" text-anchor="middle">Net</text><text x="165.2" y="250.0" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">54.0</text></g>
+<g opacity="1.00"><rect x="240.4" y="220.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="277.4" y="235.0" fill="#94A3B8" font-size="9" text-anchor="middle">VAT 20%</text><text x="277.4" y="250.0" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">10.8</text></g>
+<g opacity="1.00"><rect x="662.2" y="220.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="699.2" y="235.0" fill="#94A3B8" font-size="9" text-anchor="middle">Total due</text><text x="699.2" y="250.0" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">64.8</text></g>
+<g opacity="0.45"><rect x="619.3" y="155.0" width="99" height="38" rx="9" fill="#0F172A" stroke="#475569" stroke-width="1.4"/><text x="668.8" y="170.0" fill="#94A3B8" font-size="9" text-anchor="middle">Payment terms</text><text x="668.8" y="185.0" fill="#475569" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">—</text></g>
+<g opacity="0.45"><rect x="631.8" y="285.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#475569" stroke-width="1.4"/><text x="668.8" y="300.0" fill="#94A3B8" font-size="9" text-anchor="middle">Late fee</text><text x="668.8" y="315.0" fill="#475569" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">—</text></g>
+<text x="14" y="22" fill="#E2E8F0" font-size="12" font-weight="650">Total dragged away from Net</text>
+<rect x="0" y="444" width="760" height="26" fill="#0B1220" opacity=".92"/><text x="14" y="461" fill="#64748B" font-size="10">one wire changed: J 8.00 → 0.24</text>
+</svg><figcaption>The coupling on one wire drops from 8.0 to 0.24. Total swings out, VAT follows part of the way, and Quantity does not move at all — a local pull stays local.</figcaption></figure>
+<figure><svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The VAT wire cut" style="width:100%;height:auto;font-family:system-ui,sans-serif">
+<rect width="100%" height="100%" fill="var(--frame-bg,#0B1220)" rx="12"/>
+<line x1="60.8" y1="402.8" x2="72.8" y2="239.0" stroke="#0EA5E9" stroke-width="1.24" stroke-opacity="0.92"/>
+<text x="66.8" y="314.9" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">× price</text>
+<line x1="60.8" y1="75.2" x2="72.8" y2="239.0" stroke="#0EA5E9" stroke-width="1.24" stroke-opacity="0.92"/>
+<text x="66.8" y="151.1" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">× qty</text>
+<line x1="72.8" y1="239.0" x2="699.2" y2="239.0" stroke="#475569" stroke-width="1.00" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<line x1="72.8" y1="239.0" x2="662.1" y2="272.5" stroke="#0EA5E9" stroke-width="1.77" stroke-opacity="0.80"/>
+<text x="367.4" y="249.8" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">+ VAT</text>
+<line x1="699.2" y1="239.0" x2="662.1" y2="272.5" stroke="#0EA5E9" stroke-width="1.35" stroke-opacity="0.90"/>
+<text x="680.6" y="249.8" fill="#0EA5E9" font-size="9" text-anchor="middle" opacity=".75">cross-check</text>
+<line x1="668.8" y1="174.0" x2="668.8" y2="304.0" stroke="#475569" stroke-width="1.00" stroke-opacity="0.35" stroke-dasharray="4 6"/>
+<g opacity="1.00"><rect x="23.8" y="383.8" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="60.8" y="398.8" fill="#94A3B8" font-size="9" text-anchor="middle">Quantity</text><text x="60.8" y="413.8" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">12</text></g>
+<g opacity="1.00"><rect x="21.8" y="56.2" width="78" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="60.8" y="71.2" fill="#94A3B8" font-size="9" text-anchor="middle">Unit price</text><text x="60.8" y="86.2" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">4.5</text></g>
+<g opacity="1.00"><rect x="35.8" y="220.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="72.8" y="235.0" fill="#94A3B8" font-size="9" text-anchor="middle">Net</text><text x="72.8" y="250.0" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">54.0</text></g>
+<g opacity="0.85"><rect x="662.2" y="220.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#D97706" stroke-width="1.4"/><text x="699.2" y="235.0" fill="#94A3B8" font-size="9" text-anchor="middle">VAT 20%</text><text x="699.2" y="250.0" fill="#D97706" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">—</text></g>
+<g opacity="1.00"><rect x="625.1" y="253.5" width="74" height="38" rx="9" fill="#0F172A" stroke="#0EA5E9" stroke-width="1.4"/><text x="662.1" y="268.5" fill="#94A3B8" font-size="9" text-anchor="middle">Total due</text><text x="662.1" y="283.5" fill="#0EA5E9" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">64.8</text></g>
+<g opacity="0.45"><rect x="619.3" y="155.0" width="99" height="38" rx="9" fill="#0F172A" stroke="#475569" stroke-width="1.4"/><text x="668.8" y="170.0" fill="#94A3B8" font-size="9" text-anchor="middle">Payment terms</text><text x="668.8" y="185.0" fill="#475569" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">—</text></g>
+<g opacity="0.45"><rect x="631.8" y="285.0" width="74" height="38" rx="9" fill="#0F172A" stroke="#475569" stroke-width="1.4"/><text x="668.8" y="300.0" fill="#94A3B8" font-size="9" text-anchor="middle">Late fee</text><text x="668.8" y="315.0" fill="#475569" font-size="13" font-weight="650" text-anchor="middle" font-family="ui-monospace,monospace">—</text></g>
+<text x="14" y="22" fill="#E2E8F0" font-size="12" font-weight="650">The VAT wire cut</text>
+<rect x="0" y="444" width="760" height="26" fill="#0B1220" opacity=".92"/><text x="14" y="461" fill="#64748B" font-size="10">VAT is unreachable — no value is shown rather than a stale one</text>
+</svg><figcaption>With the wire gone, VAT has no path back to the invoice. It does not become a distant live element — it rots: grey, dashed, parked, and carrying no number at all.</figcaption></figure>
+
+<h2>The −0.5 slope is arithmetic, not a discovery</h2>
+<p>Scaling every wire by the same <code>J</code> contracts every distance by
+<code>J<sup>−1/2</sup></code> — exactly, with an R² of 1.000000. That is not a property of
+this graph or any graph: <code>pinv(J·L) = J⁻¹·pinv(L)</code>, so it holds on a ring, a
+path, a star, a dense random graph, and anything else you pass it.</p>
+
+<div class="scroll"><table>
+<tr><th>graph</th><th>slope</th><th>R²</th></tr>
+<tr><td>ring N=100 (specified)</td><td>-0.500000</td><td>1.000000</td></tr>
+<tr><td>ring N=7 (odd)</td><td>-0.500000</td><td>1.000000</td></tr>
+<tr><td>path N=40</td><td>-0.500000</td><td>1.000000</td></tr>
+<tr><td>star N=50</td><td>-0.500000</td><td>1.000000</td></tr>
+<tr><td>random p=0.05 N=80</td><td>-0.500000</td><td>1.000000</td></tr>
+<tr><td>random p=0.50 N=30</td><td>-0.500000</td><td>1.000000</td></tr>
+</table></div>
+
+<p>The sweep is kept because it is a good smoke test — it fails the moment the
+pseudo-inverse, the Laplacian or the clipping breaks. It is reported as
+<b>IDENTITY (CONTROL)</b>, never as a pass, and never as evidence that space is emergent.</p>
+
+<h2>Two things the specification got wrong</h2>
+<div class="note">
+  <b>Broken links do not give infinite distance</b>
+  <p>Cut a mesh in two and the pseudo-inverse still returns a modest finite number between
+  the halves — <code>1.118</code> here, <em>smaller</em> than a real distance inside one half.
+  Unguarded, the layout would place two unrelated elements next to each other. Components are
+  detected explicitly, and the engine returns infinity itself.</p>
+</div>
+<div class="note">
+  <b>Zero coupling gives zero distance, not infinity</b>
+  <p>With every wire cut, the Laplacian is zero, its pseudo-inverse is zero, and every distance
+  is <code>0.0</code>. A completely dead mesh measures as <em>perfectly contracted</em> — visually
+  identical to a perfectly coupled one. The dead case is caught before the metric is trusted.</p>
+</div>
+
+<div class="foot">
+<p>Rendered by the real engine, offline, on this machine. No model, no weights, no network,
+no cloud. The whole layout for a hundred elements is one pseudo-inverse. Frames are static
+on this page on purpose: a JavaScript reimplementation of the metric would be a second
+engine to keep in step with the first.</p>
+</div>
+</div></body></html>

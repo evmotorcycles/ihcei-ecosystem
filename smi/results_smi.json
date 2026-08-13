@@ -1,0 +1,339 @@
+{
+ "phase1_prereg": {
+  "backend": "cpu",
+  "devices": [
+   "cpu:0"
+  ],
+  "jax": "0.10.2",
+  "float64": true,
+  "dtype": "float64",
+  "prereg_sha256": "826a1f0da79db3c5173b964386cde0c9378afccee04e75bc3e81bdee7dbd9420",
+  "prereg_intact": true
+ },
+ "phase2_test": {
+  "H0_identity": {
+   "slope": -0.5000000000000082,
+   "r_squared": 0.9999999999999996,
+   "other_graph_slopes": [
+    -0.5,
+    -0.5000000000000007,
+    -0.5,
+    -0.5000000000000002,
+    -0.5
+   ],
+   "result": "IDENTITY (CONTROL)",
+   "note": "pinv(J\u00b7L)=J\u207b\u00b9\u00b7pinv(L); true on every graph; not evidence about space"
+  },
+  "H1_shape_invariance": {
+   "max_drift": 1.3211653993039363e-14,
+   "gate": 0.0001,
+   "result": "HOLDS"
+  },
+  "H2_disconnected_is_finite": {
+   "pair": [
+    0,
+    2
+   ],
+   "raw": 1.1180339887498958,
+   "guarded": "inf",
+   "components": 2,
+   "result": "CONFIRMED"
+  },
+  "H3_zero_coupling_collapses": {
+   "d_at_J0": 0.0,
+   "result": "CONFIRMED"
+  },
+  "H4_local_pull_is_local": {
+   "monotone_fraction": 1.0,
+   "gate": 0.9,
+   "by_hop": [
+    0.2864668538563013,
+    0.15182365431646738,
+    0.11145764311328954,
+    0.08944825853092875,
+    0.07520511008193109,
+    0.0652412755820484
+   ],
+   "result": "HOLDS"
+  },
+  "sweep": {
+   "couplings": [
+    0.1,
+    0.16378937069540642,
+    0.2682695795279726,
+    0.43939705607607904,
+    0.7196856730011519,
+    1.1787686347935873,
+    1.9306977288832496,
+    3.1622776601683795,
+    5.17947467923121,
+    8.483428982440717,
+    13.894954943731374,
+    22.758459260747887,
+    37.27593720314938,
+    61.054022965853264,
+    100.0
+   ],
+   "distances": [
+    15.811388300842411,
+    12.35455613992844,
+    9.653488644415695,
+    7.542953543001082,
+    5.893843173968007,
+    4.605276588447743,
+    3.5984283650058937,
+    2.8117066259516657,
+    2.196985280380264,
+    1.7166600091409725,
+    1.341347897639852,
+    1.0480899962266115,
+    0.8189468534769933,
+    0.6399011069989664,
+    0.49999999999997075
+   ]
+  }
+ },
+ "phase3_finalise": {
+  "frame": {
+   "nodes": [
+    {
+     "id": "qty",
+     "text": "Quantity",
+     "value": 12,
+     "x": 80.0,
+     "y": 588.8,
+     "distance_from_anchor": 0.0,
+     "colour": "#0EA5E9",
+     "opacity": 1.0,
+     "state": "LIVE"
+    },
+    {
+     "id": "unit",
+     "text": "Unit price",
+     "value": 4.5,
+     "x": 920.0,
+     "y": 588.8,
+     "distance_from_anchor": 0.707107,
+     "colour": "#0EA5E9",
+     "opacity": 1.0,
+     "state": "LIVE"
+    },
+    {
+     "id": "net",
+     "text": "Net",
+     "value": 54.0,
+     "x": 500.0,
+     "y": 211.64,
+     "distance_from_anchor": 0.5,
+     "colour": "#0EA5E9",
+     "opacity": 1.0,
+     "state": "LIVE"
+    },
+    {
+     "id": "vat",
+     "text": "VAT at 20%",
+     "value": 10.8,
+     "x": 500.0,
+     "y": 51.2,
+     "distance_from_anchor": 0.595119,
+     "colour": "#0EA5E9",
+     "opacity": 1.0,
+     "state": "LIVE"
+    },
+    {
+     "id": "total",
+     "text": "Total due",
+     "value": 64.8,
+     "x": 513.0,
+     "y": 64.2,
+     "distance_from_anchor": 0.595119,
+     "colour": "#0EA5E9",
+     "opacity": 1.0,
+     "state": "LIVE"
+    },
+    {
+     "id": "terms",
+     "text": "Payment terms",
+     "value": null,
+     "x": 965.0,
+     "y": 213.33,
+     "distance_from_anchor": null,
+     "colour": "#475569",
+     "opacity": 0.45,
+     "state": "ROTTED"
+    },
+    {
+     "id": "late",
+     "text": "Late fee",
+     "value": null,
+     "x": 965.0,
+     "y": 426.67,
+     "distance_from_anchor": null,
+     "colour": "#475569",
+     "opacity": 0.45,
+     "state": "ROTTED"
+    }
+   ],
+   "wires": [
+    {
+     "source": "qty",
+     "target": "net",
+     "label": "\u00d7 unit price",
+     "J": 4.0,
+     "distance": 0.5,
+     "tension": 0.5434,
+     "stroke": "#0EA5E9",
+     "width": 1.691,
+     "opacity": 0.817,
+     "dash": "none",
+     "state": "LIVE"
+    },
+    {
+     "source": "unit",
+     "target": "net",
+     "label": "\u00d7 quantity",
+     "J": 4.0,
+     "distance": 0.5,
+     "tension": 0.5434,
+     "stroke": "#0EA5E9",
+     "width": 1.691,
+     "opacity": 0.817,
+     "dash": "none",
+     "state": "LIVE"
+    },
+    {
+     "source": "net",
+     "target": "vat",
+     "label": "20%",
+     "J": 8.0,
+     "distance": 0.322749,
+     "tension": 0.6484,
+     "stroke": "#0EA5E9",
+     "width": 1.509,
+     "opacity": 0.859,
+     "dash": "none",
+     "state": "LIVE"
+    },
+    {
+     "source": "net",
+     "target": "total",
+     "label": "+ VAT",
+     "J": 8.0,
+     "distance": 0.322749,
+     "tension": 0.6484,
+     "stroke": "#0EA5E9",
+     "width": 1.509,
+     "opacity": 0.859,
+     "dash": "none",
+     "state": "LIVE"
+    },
+    {
+     "source": "vat",
+     "target": "total",
+     "label": "checked against VAT",
+     "J": 2.0,
+     "distance": 0.408248,
+     "tension": 0.5931,
+     "stroke": "#0EA5E9",
+     "width": 1.605,
+     "opacity": 0.837,
+     "dash": "none",
+     "state": "LIVE"
+    },
+    {
+     "source": "terms",
+     "target": "late",
+     "label": "if overdue",
+     "J": 0.5,
+     "distance": 1.414214,
+     "tension": 0.2962,
+     "stroke": "#475569",
+     "width": 1.0,
+     "opacity": 0.35,
+     "dash": "4 6",
+     "state": "ROTTED"
+    }
+   ],
+   "stranded": [
+    "terms",
+    "late"
+   ],
+   "dead": false,
+   "d_ref": 0.595119,
+   "collisions": [
+    [
+     "vat",
+     "total"
+    ]
+   ],
+   "components": 2
+  },
+  "pull": {
+   "wire": "net -> total",
+   "J_before": 8.0,
+   "J_after": 0.2400000000000002,
+   "cut": false,
+   "moved": [
+    {
+     "id": "unit",
+     "moved_px": 997.3,
+     "state_before": "LIVE",
+     "state_after": "LIVE"
+    },
+    {
+     "id": "total",
+     "moved_px": 480.71,
+     "state_before": "LIVE",
+     "state_after": "LIVE"
+    },
+    {
+     "id": "net",
+     "moved_px": 302.69,
+     "state_before": "LIVE",
+     "state_after": "LIVE"
+    },
+    {
+     "id": "vat",
+     "moved_px": 300.81,
+     "state_before": "LIVE",
+     "state_after": "LIVE"
+    },
+    {
+     "id": "qty",
+     "moved_px": 0.0,
+     "state_before": "LIVE",
+     "state_after": "LIVE"
+    },
+    {
+     "id": "terms",
+     "moved_px": 0.0,
+     "state_before": "ROTTED",
+     "state_after": "ROTTED"
+    },
+    {
+     "id": "late",
+     "moved_px": 0.0,
+     "state_before": "ROTTED",
+     "state_after": "ROTTED"
+    }
+   ],
+   "newly_rotted": []
+  },
+  "cut": {
+   "stranded": [
+    "terms",
+    "late"
+   ],
+   "components": 3,
+   "states": {
+    "qty": "LIVE",
+    "unit": "LIVE",
+    "net": "LIVE",
+    "vat": "LIVE",
+    "total": "LIVE",
+    "terms": "ROTTED",
+    "late": "ROTTED"
+   }
+  }
+ }
+}

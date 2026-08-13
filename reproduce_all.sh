@@ -123,6 +123,7 @@ run "keel: the governance kernel — one way in, six stages, every stage can onl
 run "keel: the shipped single file is the tested one" py keel/test_exe.py
 run "keel: the kernel audited from outside itself + the pre-registered NULL" py keel/test_audit.py
 run "keel: the console — three engines on one page, driven in a browser" py keel/test_console.py
+run "smi: LMD metric engine — the -0.5 slope is an identity, and two spec bugs" py smi/test_smi.py
 run "launcher: the front door — every link opens, no jargon reaches it" py test_launcher.py
 run "layers: IHCEI/NERE stay infrastructure; the desks stay jargon-free" py test_layers.py
 run "growth-study: composition by era + whether the evidence exists (pre-registered)" py growth-study/test_growth.py
