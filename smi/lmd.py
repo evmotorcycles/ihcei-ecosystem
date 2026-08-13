@@ -13,12 +13,26 @@ resistance between them on the graph of what depends on what:
 Two elements joined by many strong paths sit close together; two joined only by
 a long weak chain drift apart. Nobody positions anything.
 
-*** THE PART THAT IS AN IDENTITY, NOT A DISCOVERY ***
+*** WHAT IS BEING MEASURED ***
+A dependency graph inside running software: which live elements determine which
+others, and how strongly. J is the strength of one such dependency; d is how far
+apart two elements should sit given all of them. This is telemetry on an
+information layer. It is not a statement about matter or distance, and the name
+is a name -- see SCOPE.md.
+
+*** GLOBAL COUPLING IS A ZOOM, BY CONSTRUCTION ***
 For a scalar J > 0, pinv(J*L0) = (1/J) * pinv(L0). So R(J) = R(1)/J and
 d = sqrt(R) is proportional to J^-0.5 EXACTLY -- for every pair, on every graph,
-at every size. The famous -0.5 log-log slope is elementary linear algebra. It is
-worth measuring because it catches a broken implementation, and it is worth
-being clear that it is not evidence about anything else.
+at every size. That is elementary linear algebra, and in an interface it is a
+property worth having deliberately: a global tension control rescales the whole
+picture and changes NOTHING ELSE. It cannot reorder elements, cannot change what
+is near what, and cannot alter a value. It is safe to hand to a user.
+
+The corollary matters just as much: because the -0.5 slope comes out on every
+graph, measuring it verifies nothing about any particular graph. It is kept as a
+smoke test -- it breaks the moment pinv, the Laplacian or the clipping breaks --
+and never reported as a result. What carries information here is TOPOLOGY and
+LOCAL coupling.
 
 *** THE TWO PLACES pinv WILL QUIETLY LIE TO YOU ***
 1. On a DISCONNECTED graph it returns a finite number between components. Two

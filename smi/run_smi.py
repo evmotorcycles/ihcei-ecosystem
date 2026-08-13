@@ -4,7 +4,7 @@
     python3 smi/run_smi.py
 
   PHASE 1  PRE-REGISTER   hardware, precision, and the architecture
-  PHASE 2  TEST           the sweep, and the four predictions that can fail
+  PHASE 2  TEST           the invariant, and the four predictions that can fail
   PHASE 3  FINALISE       a real mesh, laid out, pulled, and re-composed
 
 Writes smi/results_smi.json. Deterministic: same input, same numbers, offline.
@@ -121,11 +121,13 @@ def phase2():
 
     identity = (sw.matches_identity
                 and all(abs(s + 0.5) <= 1e-4 for s in slopes))
-    print(f"\n  H0  IDENTITY (CONTROL) — {'confirmed' if identity else 'BROKEN'}")
+    print(f"\n  H0  INVARIANT (BY CONSTRUCTION) — {'confirmed' if identity else 'BROKEN'}")
     print("      pinv(J·L) = J⁻¹·pinv(L), so d ∝ J^(−1/2) on every graph, always.")
-    print("      This is linear algebra, not a discovery. It is reported as a")
-    print("      correctness check on the engine — it fails if pinv breaks — and")
-    print("      it is NOT evidence that space is emergent.")
+    print("      In an interface this is a property worth having: a global tension")
+    print("      control is a ZOOM. It rescales everything and changes nothing —")
+    print("      no reordering, no value moves. Safe to hand to a user.")
+    print("      And because it holds on every graph, measuring it verifies nothing")
+    print("      about THIS graph. Kept as a smoke test; never reported as a result.")
 
     # ---- H1: uniform J changes scale, never shape.
     base = normalised(np.asarray(metric_from_laplacian(jnp.asarray(ring_laplacian(40, 1.0)))))
@@ -202,9 +204,10 @@ def phase2():
 
     return {"H0_identity": {"slope": sw.slope, "r_squared": sw.r_squared,
                             "other_graph_slopes": slopes,
-                            "result": "IDENTITY (CONTROL)" if identity else "BROKEN",
-                            "note": "pinv(J·L)=J⁻¹·pinv(L); true on every graph; "
-                                    "not evidence about space"},
+                            "result": "INVARIANT (BY CONSTRUCTION)" if identity else "BROKEN",
+                            "note": "pinv(J·L)=J⁻¹·pinv(L); true on every graph, so a "
+                                    "global tension control is a zoom and verifies "
+                                    "nothing about this graph"},
             "H1_shape_invariance": {"max_drift": drift, "gate": 1e-4,
                                     "result": "HOLDS" if h1 else "FAILS"},
             "H2_disconnected_is_finite": {"pair": [a, b], "raw": raw, "guarded": "inf",
@@ -299,7 +302,7 @@ def main():
     rule("VERDICT")
     p2 = out["phase2_test"]
     table([["H0  d ∝ J^(−1/2)", p2["H0_identity"]["result"],
-            "an algebraic identity, used here as an engine check"],
+            "global tension is a zoom; also an engine smoke test"],
            ["H1  shape invariant under uniform J", p2["H1_shape_invariance"]["result"],
             "a screen can zoom without reordering"],
            ["H2  disconnected ⇒ finite distance", p2["H2_disconnected_is_finite"]["result"],
@@ -310,10 +313,11 @@ def main():
             "what makes dragging meaningful"]],
           ["prediction", "result", "note"])
 
-    print("\n  The sweep reproduces slope −0.500000 with R² 1.000000, and would")
-    print("  do so on any graph anyone ever passes it. That is why it is labelled")
-    print("  IDENTITY (CONTROL) here and not PASS: a check that cannot fail is not")
-    print("  evidence, it is a smoke test — a useful one, kept for that reason.")
+    print("\n  The sweep reproduces slope −0.500000 with R² 1.000000, and would do")
+    print("  so on any graph anyone ever passes it. So it is labelled INVARIANT")
+    print("  (BY CONSTRUCTION), not PASS: it is a design guarantee about the global")
+    print("  tension control and a smoke test on the engine — not a measurement of")
+    print("  this mesh. H1 and H4 are the ones that could have come out otherwise.")
 
     path = os.path.join(HERE, "results_smi.json")
     with open(path, "w", encoding="utf-8") as f:

@@ -91,18 +91,38 @@ def test_the_algebra_behind_it_holds_directly():
         assert np.allclose(scaled, base / J, atol=1e-12)
 
 
-def test_the_results_file_never_calls_the_identity_a_pass():
+def test_the_results_file_never_calls_the_invariant_a_pass():
     r = json.load(open(os.path.join(HERE, "results_smi.json"), encoding="utf-8"))
     h0 = r["phase2_test"]["H0_identity"]
-    assert h0["result"] == "IDENTITY (CONTROL)"
-    assert "not evidence" in h0["note"]
+    assert h0["result"] == "INVARIANT (BY CONSTRUCTION)"
+    assert "verifies\nnothing" in h0["note"] or "verifies nothing" in h0["note"]
 
 
-def test_the_runner_never_claims_space_is_emergent():
+def test_nothing_printed_claims_a_result_about_the_physical_world():
+    """The scope is software. Denying a physics claim four times implied one had
+    been made, so the denials went; what must not appear is the claim itself."""
     src = open(os.path.join(HERE, "run_smi.py"), encoding="utf-8").read()
     printed = "\n".join(ln for ln in src.splitlines() if "print(" in ln)
-    assert "Space is Emergent" not in printed, \
-        "the sweep is an identity; printing that verdict would overclaim"
+    for phrase in ("Space is Emergent", "spacetime", "the nature of space",
+                   "physical distance", "dead matter"):
+        assert phrase.lower() not in printed.lower(), f"printed: {phrase!r}"
+
+
+def test_the_scope_is_stated_and_the_prereg_was_not_rewritten_to_match_it():
+    """An amendment records a framing change. It must not quietly move a gate."""
+    scope = open(os.path.join(HERE, "SCOPE.md"), encoding="utf-8").read()
+    assert "information layer" in scope
+    assert "Changes no prediction, no gate, and no\nnumber" in scope or \
+        "changes no prediction" in scope.lower()
+    # the locked file is still the locked file
+    live = hashlib.sha256(open(os.path.join(HERE, "PREREG.md"), "rb").read()).hexdigest()
+    lock = json.load(open(os.path.join(HERE, "prereg.lock.json"), encoding="utf-8"))
+    assert live == lock["prereg_sha256"], \
+        "the pre-registration was edited to match the amendment — that is not an amendment"
+    # and every gate it fixed is still the gate the code uses
+    prereg = open(os.path.join(HERE, "PREREG.md"), encoding="utf-8").read()
+    for gate in ("−0.5 ± 1e-4", "≥ 0.999999", "< 1e-4", "≥ 0.90"):
+        assert gate in prereg
 
 
 # --------------------------------------------------------- H1: shape vs scale

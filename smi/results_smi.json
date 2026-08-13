@@ -21,8 +21,8 @@
     -0.5000000000000002,
     -0.5
    ],
-   "result": "IDENTITY (CONTROL)",
-   "note": "pinv(J\u00b7L)=J\u207b\u00b9\u00b7pinv(L); true on every graph; not evidence about space"
+   "result": "INVARIANT (BY CONSTRUCTION)",
+   "note": "pinv(J\u00b7L)=J\u207b\u00b9\u00b7pinv(L); true on every graph, so a global tension control is a zoom and verifies nothing about this graph"
   },
   "H1_shape_invariance": {
    "max_drift": 1.3211653993039363e-14,
@@ -144,8 +144,8 @@
      "id": "total",
      "text": "Total due",
      "value": 64.8,
-     "x": 513.0,
-     "y": 64.2,
+     "x": 500.0,
+     "y": 106.2,
      "distance_from_anchor": 0.595119,
      "colour": "#0EA5E9",
      "opacity": 1.0,
@@ -155,7 +155,7 @@
      "id": "terms",
      "text": "Payment terms",
      "value": null,
-     "x": 965.0,
+     "x": 880.0,
      "y": 213.33,
      "distance_from_anchor": null,
      "colour": "#475569",
@@ -166,7 +166,7 @@
      "id": "late",
      "text": "Late fee",
      "value": null,
-     "x": 965.0,
+     "x": 880.0,
      "y": 426.67,
      "distance_from_anchor": null,
      "colour": "#475569",
@@ -282,7 +282,7 @@
     },
     {
      "id": "total",
-     "moved_px": 480.71,
+     "moved_px": 471.29,
      "state_before": "LIVE",
      "state_after": "LIVE"
     },

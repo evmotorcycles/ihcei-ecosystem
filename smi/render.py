@@ -165,20 +165,26 @@ rearranges because the arithmetic changed.</p>
 
 {frames}
 
-<h2>The −0.5 slope is arithmetic, not a discovery</h2>
+<h2>Global tension is a zoom, and that is on purpose</h2>
 <p>Scaling every wire by the same <code>J</code> contracts every distance by
-<code>J<sup>−1/2</sup></code> — exactly, with an R² of 1.000000. That is not a property of
-this graph or any graph: <code>pinv(J·L) = J⁻¹·pinv(L)</code>, so it holds on a ring, a
-path, a star, a dense random graph, and anything else you pass it.</p>
+<code>J<sup>−1/2</sup></code> — exactly, with an R² of 1.000000. It holds on a ring, a
+path, a star, a dense random graph and anything else, because
+<code>pinv(J·L) = J⁻¹·pinv(L)</code>.</p>
+<p>For an interface that is a guarantee worth having: a global tension control
+<b>rescales the whole picture and changes nothing else</b>. It cannot reorder elements,
+cannot change what sits near what, and cannot alter a single value. It is safe to hand
+to a user.</p>
 
 <div class="scroll"><table>
 <tr><th>graph</th><th>slope</th><th>R²</th></tr>
 {slopes}
 </table></div>
 
-<p>The sweep is kept because it is a good smoke test — it fails the moment the
-pseudo-inverse, the Laplacian or the clipping breaks. It is reported as
-<b>IDENTITY (CONTROL)</b>, never as a pass, and never as evidence that space is emergent.</p>
+<p>The same fact has a second edge: because the slope comes out on <em>every</em> graph,
+measuring it tells you nothing about <em>this</em> graph. So it is reported as
+<b>INVARIANT (BY CONSTRUCTION)</b> and never as a pass. It is kept because it is also a
+good smoke test — it fails the moment the pseudo-inverse, the Laplacian or the clipping
+breaks. What carries information here is topology and <em>local</em> coupling.</p>
 
 <h2>Two things the specification got wrong</h2>
 <div class="note">
@@ -200,6 +206,10 @@ pseudo-inverse, the Laplacian or the clipping breaks. It is reported as
 no cloud. The whole layout for a hundred elements is one pseudo-inverse. Frames are static
 on this page on purpose: a JavaScript reimplementation of the metric would be a second
 engine to keep in step with the first.</p>
+<p>This is telemetry on an <b>information layer</b> — a dependency graph inside running
+software. <code>J</code> is how strongly one element determines another;
+<code>d</code> is how far apart they should sit. Nothing here is a claim about matter or
+physical distance, and the name is a name.</p>
 </div>
 </div></body></html>
 """

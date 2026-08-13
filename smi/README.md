@@ -23,10 +23,23 @@ d_ij = √R_ij
 
 ---
 
-## The −0.5 slope is an identity, not a discovery
+## What is being measured
 
-This is the headline result of the specification, and it is worth being exact
-about what it is.
+**A dependency graph inside running software.** `J` is how strongly one element's
+value determines another's; `d` is how far apart two elements should sit given
+all of those dependencies. This is telemetry on an **information layer** — see
+[`SCOPE.md`](SCOPE.md). Nothing here is a claim about matter or physical
+distance, and the name is a name.
+
+The claim, stated once, in the form it should be made:
+
+> **A layout derived from a dependency graph cannot drift out of step with the
+> dependencies.** Change what depends on what, and the picture changes, because
+> the picture *is* the dependency structure rather than a drawing of it.
+
+---
+
+## Global tension is a zoom, by construction
 
 For a scalar J > 0, `pinv(J·L₀) = J⁻¹·pinv(L₀)`. Therefore `R(J) = R(1)/J`, so
 `d = √R ∝ J^(−1/2)` **exactly** — for every pair, on every graph, at every size.
@@ -40,12 +53,21 @@ For a scalar J > 0, `pinv(J·L₀) = J⁻¹·pinv(L₀)`. Therefore `R(J) = R(1)
 | random p=0.05, N=80 | −0.500000 | 1.000000 |
 | random p=0.50, N=30 | −0.500000 | 1.000000 |
 
-The sweep **cannot fail on any connected graph**, so it is not evidence that
-space is emergent, and this module never prints that. It is reported as
-`IDENTITY (CONTROL)` and kept for what it is genuinely good at: it breaks the
-moment `pinv`, the Laplacian construction or the clipping breaks. A check that
-cannot fail is not evidence — but it can still be a good smoke test, and this
-one is.
+**For an interface that is a guarantee worth having on purpose.** A global
+tension control rescales the whole picture and changes nothing else: it cannot
+reorder elements, cannot change what sits near what, and cannot alter a single
+value. It is safe to hand to a user.
+
+The same fact has a second edge. Because the slope comes out on *every* graph,
+measuring it tells you nothing about *this* graph. So it is reported as
+`INVARIANT (BY CONSTRUCTION)`, never as a pass, and kept for the other thing it
+is genuinely good at: it breaks the moment `pinv`, the Laplacian construction or
+the clipping breaks. A measurement that cannot come out otherwise is not a
+verification — but it can still be a good smoke test, and a good design
+guarantee, and this one is both.
+
+**What carries information here is topology and *local* coupling** — which is
+what H4 below measures, and H4 can fail.
 
 Precision matters here. At float32 the N=100 ring reads **−0.500003**, and
 reporting that as "exactly −0.5" would be reading noise as signal. The engine
@@ -134,13 +156,14 @@ looking slightly less important.
 
 ---
 
-## What this is not
+## Scope
 
-The engine computes effective resistance on a graph. **"Latency-Metric Duality"
-is a name for that construction, not a claim about spacetime**, and no result in
-this module is evidence about the nature of space. The value here is that a
-layout derived from a dependency graph cannot drift out of step with the
-dependencies — not that a physics has been demonstrated.
+The engine computes effective resistance on a dependency graph. **"Latency-Metric
+Duality" is a name for that construction**, and the domain is software: which
+live elements determine which others, and how strongly. `SCOPE.md` records the
+one framing correction made after the first write-up, which changed no
+prediction, no gate and no number — the pre-registration remains hash-locked and
+unedited.
 
 Files: `lmd.py` (metric + guards) · `mesh.py` (nodes, wires, MDS layout) ·
 `compositor.py` (states, styles, the pull gesture) · `run_smi.py` (three phases)
