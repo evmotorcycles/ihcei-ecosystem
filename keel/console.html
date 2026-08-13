@@ -269,6 +269,29 @@ textarea:focus,input:focus,select:focus{outline:2px solid var(--sea);outline-off
   </div>
 </section>
 
+<!-- ============================== MESH ============================== -->
+<section class="win" id="mesh">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="17" r="2.2"/><path d="M7.7 7.3 10.6 15M16.4 8.6 13.4 15M8 6.4h7.8"/></svg></span>
+      <span><b>The mesh</b><span>A screen where nothing was positioned — everything sits where the arithmetic put it.</span></span>
+    </div>
+    <div class="body">
+      <p style="margin:.2rem 0 1rem;color:var(--stone)">Every element is a live value, and
+         the wires between them are what one value does to another. How far apart two things
+         sit is worked out from those wires, not chosen. Pull one and the rest move, because
+         the arithmetic moved.</p>
+      <a class="go" style="display:inline-block;text-decoration:none" href="../smi/app.html">Open the mesh</a>
+      <div class="note warn">
+        <b>What the mesh cannot do</b>
+        It shows what depends on what. It has no opinion about whether any of those
+        values are right — a perfectly drawn mesh of wrong numbers looks exactly like
+        a perfectly drawn mesh of right ones.
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== GATE ============================== -->
 <section class="win" id="gate">
   <div class="frame">
@@ -1202,7 +1225,10 @@ function boot({ policy, ledger = new Ledger() } = {}) {
     ["nine", "Everyday worries", "Contracts, pressure, decisions",
       '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'],
     ["gate", "The gate", "What may an assistant do?",
-      '<path d="M3 7h18M3 17h18"/><rect x="10" y="2" width="4" height="20" rx="1"/>', "gate"]
+      '<path d="M3 7h18M3 17h18"/><rect x="10" y="2" width="4" height="20" rx="1"/>', "gate"],
+    ["mesh", "The mesh", "Where do things belong?",
+      '<circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="7" r="2.2"/>' +
+      '<circle cx="12" cy="17" r="2.2"/><path d="M7.7 7.3 10.6 15M16.4 8.6 13.4 15M8 6.4h7.8"/>']
   ];
   $("#shelf").innerHTML = APPS.map(function (a) {
     return '<button class="app ' + (a[4] || "") + '" data-go="' + a[0] + '" type="button">' +

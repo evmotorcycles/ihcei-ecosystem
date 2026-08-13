@@ -81,7 +81,7 @@ setTimeout(function () {
   // every section's visible text, gathered with each one actually shown --
   // reading a hidden section returns "" and would make these checks vacuous
   out.section_text = {};
-  ["home", "label", "nine", "gate"].forEach(function (id) {
+  ["home", "label", "nine", "gate", "mesh"].forEach(function (id) {
     K.go(id);
     out.section_text[id] = d.getElementById(id).innerText;
   });
@@ -229,7 +229,7 @@ def test_nothing_threw(page):
 def test_no_jargon_reaches_the_screen(page):
     """Checked per screen, with each one actually visible — reading a hidden
     section returns nothing and would pass this without looking at anything."""
-    assert all(page["section_text"][s].strip() for s in ("home", "label", "nine", "gate")), \
+    assert all(page["section_text"][s].strip() for s in ("home", "label", "nine", "gate", "mesh")), \
         "a section came back empty; the jargon check would have been vacuous"
     for name, text in page["section_text"].items():
         found = [w for w in JARGON if re.search(w, text, re.I)]

@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0B1220">
+<title>SMI — pull the mesh</title>
+<meta name="description" content="A layout that is computed, not drawn. Drag an element and the picture rearranges because the dependency changed.">
+<style>
+:root{
+  --bg:#0B1220; --panel:#111A2B; --panel-2:#0E1626; --line:#1E2A3F; --edge:#2A3950;
+  --ink:#E6EDF5; --ink-2:#9FB0C6; --stone:#6C7F98;
+  --live:#38BDF8; --live-soft:#0D2B3C;
+  --held:#F59E0B; --held-soft:#2A1F08;
+  --rot:#475569;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+:root[data-theme="light"]{
+  --bg:#EEF1F5; --panel:#FFFFFF; --panel-2:#F5F7FA; --line:#DCE2EA; --edge:#C6D0DC;
+  --ink:#0F1720; --ink-2:#44546A; --stone:#6B7A8D;
+  --live:#0369A1; --live-soft:#DDEEF8;
+  --held:#B45309; --held-soft:#FBF0DC;
+  --rot:#94A3B8;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+h1{margin:0;font-size:1.02rem;font-weight:650;letter-spacing:-.01em}
+button{font:inherit;cursor:pointer;color:inherit}
+
+.top{display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;
+  border-bottom:1px solid var(--line);background:var(--panel-2);
+  padding-top:max(.6rem,env(safe-area-inset-top))}
+.top .sp{flex:1}
+.top .sub{display:block;font-size:.72rem;color:var(--stone);font-weight:400;letter-spacing:0}
+.gh{background:none;border:1px solid var(--line);color:var(--stone);border-radius:99px;
+  padding:.3rem .7rem;font-size:.76rem;min-height:32px}
+.gh:active{background:var(--panel)}
+
+/* the canvas fills what is left */
+.stage{position:relative;width:100%;height:min(58dvh,520px);touch-action:none;
+  background:var(--bg);overflow:hidden}
+svg{display:block;width:100%;height:100%}
+.node{cursor:grab}
+.node:active{cursor:grabbing}
+.hit{fill:transparent}
+
+.tray{padding:.7rem .85rem calc(1.1rem + env(safe-area-inset-bottom));
+  border-top:1px solid var(--line);background:var(--panel-2)}
+.hint{color:var(--stone);font-size:.83rem;margin:0 0 .6rem}
+.hint b{color:var(--ink-2);font-weight:600}
+
+.read{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.2rem,1fr));gap:.4rem}
+.cell{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:.45rem .55rem}
+.cell b{display:block;font-family:var(--mono);font-size:1.02rem;font-variant-numeric:tabular-nums;
+  line-height:1.2}
+.cell span{display:block;color:var(--stone);font-size:.64rem;line-height:1.3;margin-top:.1rem}
+.cell[data-state=LIVE] b{color:var(--live)}
+.cell[data-state=HELD] b{color:var(--held)}
+.cell[data-state=ROTTED] b{color:var(--rot)}
+
+.row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem}
+.act{flex:1 1 auto;min-width:7rem;min-height:44px;background:var(--panel);
+  border:1px solid var(--edge);border-radius:11px;padding:.5rem .7rem;font-size:.86rem}
+.act:active{background:var(--live-soft);border-color:var(--live)}
+.act.warn:active{background:var(--held-soft);border-color:var(--held)}
+
+.legend{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem}
+.legend span{display:inline-flex;align-items:center;gap:.32rem;font-size:.72rem;color:var(--stone)}
+.legend i{width:.6rem;height:.6rem;border-radius:99px;display:block}
+
+.limits{margin-top:.9rem;background:var(--panel);border:1px solid var(--line);
+  border-left:3px solid var(--held);border-radius:0 11px 11px 0;padding:.6rem .75rem;
+  font-size:.79rem;line-height:1.5;color:var(--ink-2)}
+.limits b{display:block;color:var(--held);font-size:.66rem;letter-spacing:.09em;
+  text-transform:uppercase;margin-bottom:.2rem}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>SMI<span class="sub">nothing here was positioned</span></h1>
+  <span class="sp"></span>
+  <button class="gh" id="theme" type="button">Light</button>
+</div>
+
+<div class="stage" id="stage">
+  <svg id="canvas" viewBox="0 0 360 520" preserveAspectRatio="xMidYMid meet"
+       role="img" aria-label="A mesh of dependent values. Drag an element to change how strongly it is coupled."></svg>
+</div>
+
+<div class="tray">
+  <p class="hint"><b>Drag any element.</b> Pulling it away weakens what feeds it;
+     pushing it toward its source tightens. Everything else moves because the
+     arithmetic moved.</p>
+
+  <div class="read" id="read"></div>
+
+  <div class="row">
+    <button class="act" id="reset" type="button">Reset</button>
+    <button class="act warn" id="cut" type="button">Cut the weakest wire</button>
+    <button class="act" id="tighten" type="button">Tension: all ×2</button>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--live)"></i>live</span>
+    <span><i style="background:var(--held)"></i>held — no value yet</span>
+    <span><i style="background:var(--rot)"></i>rotted — no path back</span>
+  </div>
+
+  <div class="limits">
+    <b>What this is</b>
+    Telemetry on an information layer: a dependency graph inside running software.
+    Coupling is how strongly one element determines another; distance is how far
+    apart they should sit. Nothing is claimed about matter or physical distance.
+    <b style="margin-top:.5rem">Try “Tension: all ×2”</b>
+    Everything contracts and <em>nothing else changes</em> — no reordering, no value
+    moves. A global tension control is a zoom, by construction. Dragging one wire
+    is not, which is why dragging is the thing that means something.
+  </div>
+</div>
+
+<script>{{LMD}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var VB = { w: 360, h: 520 };
+  var NODE_W = 92, NODE_H = 40, PAD = 26;
+
+  /* ------------------------------------------------------------ the mesh -- */
+  function freshMesh() {
+    return {
+      nodes: [
+        { id: "qty",   text: "Quantity",    value: 12,   root: true },
+        { id: "unit",  text: "Unit price",  value: 4.5,  root: true },
+        { id: "net",   text: "Net",         value: null },
+        { id: "vat",   text: "VAT 20%",     value: null },
+        { id: "total", text: "Total",       value: null },
+        { id: "terms", text: "Terms",       value: 30,   root: true },
+        { id: "late",  text: "Late fee",    value: null }
+      ],
+      wires: [
+        { s: "qty",   t: "net",   J: 4,   J0: 4,   label: "× price", rule: function (v) { return v * 4.5; } },
+        { s: "unit",  t: "net",   J: 4,   J0: 4,   label: "× qty",   rule: function (v) { return v * 12; } },
+        { s: "net",   t: "vat",   J: 8,   J0: 8,   label: "20%",     rule: function (v) { return Math.round(v * 20) / 100; } },
+        { s: "net",   t: "total", J: 8,   J0: 8,   label: "+ VAT",   rule: function (v) { return Math.round(v * 120) / 100; } },
+        { s: "terms", t: "late",  J: 1.2, J0: 1.2, label: "if late", rule: function (v) { return Math.round(v * 0.05 * 100) / 100; } }
+      ]
+    };
+  }
+  var mesh = freshMesh(), anchor = "qty", pos = {}, drag = null;
+
+  function idx(id) { return mesh.nodes.findIndex(function (n) { return n.id === id; }); }
+
+  /* Values are pushed along live wires. Nothing downstream of a cut gets a
+     number, and no number is ever invented to fill a gap. */
+  function recompute() {
+    var incoming = {};
+    mesh.wires.forEach(function (w) { (incoming[w.t] = incoming[w.t] || []).push(w); });
+    mesh.nodes.forEach(function (n) { if (!n.root) n.value = null; });
+    var settled = {}, changed = true;
+    mesh.nodes.forEach(function (n) { if (n.root) settled[n.id] = true; });
+    while (changed) {
+      changed = false;
+      Object.keys(incoming).forEach(function (t) {
+        if (settled[t]) return;
+        var live = incoming[t].filter(function (w) { return w.J > 0 && settled[w.s]; });
+        if (!live.length) return;
+        var src = mesh.nodes[idx(live[0].s)];
+        if (src.value === null) return;
+        mesh.nodes[idx(t)].value = live[0].rule(src.value);
+        settled[t] = true;
+        changed = true;
+      });
+    }
+  }
+
+  function laplacian() {
+    var edges = mesh.wires.filter(function (w) { return w.J > 0; })
+      .map(function (w) { return [idx(w.s), idx(w.t), w.J]; });
+    return LMD.laplacianFromEdges(mesh.nodes.length, edges);
+  }
+
+  /* ---------------------------------------------------------- the layout -- */
+  function relayout() {
+    var r = LMD.meshMetric(laplacian());
+    var ai = idx(anchor);
+    var keep = [], stranded = [];
+    mesh.nodes.forEach(function (n, k) {
+      (r.dead || !isFinite(r.D[ai][k]) ? stranded : keep).push(k);
+    });
+
+    if (keep.length >= 2) {
+      var xy = LMD.layout2d(r.D, keep);
+      var xs = xy.map(function (p) { return p[0]; }), ys = xy.map(function (p) { return p[1]; });
+      var x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs);
+      var y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
+      var sx = (x1 - x0) || 1, sy = (y1 - y0) || 1;
+      var W = VB.w - (stranded.length ? 108 : 2 * PAD) - PAD;
+      keep.forEach(function (k, i) {
+        pos[mesh.nodes[k].id] = {
+          x: PAD + NODE_W / 2 + (xy[i][0] - x0) / sx * Math.max(W - NODE_W, 10),
+          y: PAD + NODE_H / 2 + (xy[i][1] - y0) / sy * (VB.h - 2 * PAD - NODE_H)
+        };
+      });
+    } else {
+      keep.forEach(function (k, i) {
+        pos[mesh.nodes[k].id] = { x: VB.w / 2, y: (i + 1) * VB.h / (keep.length + 1) };
+      });
+    }
+    stranded.forEach(function (k, i) {
+      pos[mesh.nodes[k].id] = { x: VB.w - 54, y: (i + 1) * VB.h / (stranded.length + 1) };
+    });
+
+    // a node is a BOX, not a point: keep them apart and inside the frame
+    var placed = [];
+    mesh.nodes.forEach(function (n) {
+      var p = pos[n.id], guard = 0;
+      while (placed.some(function (q) {
+        return Math.abs(p.x - q.x) < NODE_W * 0.8 && Math.abs(p.y - q.y) < NODE_H * 1.15;
+      }) && guard++ < mesh.nodes.length) { p.y += NODE_H * 1.2; }
+      p.x = Math.min(Math.max(p.x, NODE_W / 2 + 4), VB.w - NODE_W / 2 - 4);
+      p.y = Math.min(Math.max(p.y, NODE_H / 2 + 4), VB.h - NODE_H / 2 - 4);
+      placed.push({ x: p.x, y: p.y });
+    });
+    return r;
+  }
+
+  /* ------------------------------------------------------------- styling -- */
+  function tension(d, ref) {
+    if (!isFinite(d)) return 0;
+    if (d <= 0) return 1;
+    return 1 / (1 + d / Math.max(ref, 1e-12));
+  }
+
+  function draw() {
+    recompute();
+    var r = relayout();
+    var ai = idx(anchor);
+    var finite = [];
+    for (var i = 0; i < r.D.length; i++)
+      for (var j = 0; j < r.D.length; j++)
+        if (i !== j && isFinite(r.D[i][j])) finite.push(r.D[i][j]);
+    finite.sort(function (a, b) { return a - b; });
+    var ref = finite.length ? finite[Math.floor(finite.length / 2)] : 1;
+
+    var reach = {};
+    mesh.nodes.forEach(function (n, k) { reach[n.id] = !r.dead && isFinite(r.D[ai][k]); });
+
+    var out = [];
+    mesh.wires.forEach(function (w) {
+      var a = pos[w.s], b = pos[w.t];
+      var d = r.D[idx(w.s)][idx(w.t)];
+      var dead = w.J <= 0 || !reach[w.s] || !reach[w.t] || !isFinite(d);
+      var t = tension(d, ref);
+      var stroke = dead ? "var(--rot)" : (t < 0.25 ? "var(--stone)" : "var(--live)");
+      var width = dead ? 1 : (t < 0.25 ? 1.4 : 2.2 - 1.3 * (t - 0.25) / 0.75);
+      out.push('<line x1="' + a.x.toFixed(1) + '" y1="' + a.y.toFixed(1) +
+        '" x2="' + b.x.toFixed(1) + '" y2="' + b.y.toFixed(1) +
+        '" stroke="' + stroke + '" stroke-width="' + width.toFixed(2) + '"' +
+        (dead ? ' stroke-dasharray="4 5" stroke-opacity=".55"' : ' stroke-opacity=".9"') + '/>');
+      if (!dead) {
+        out.push('<text x="' + ((a.x + b.x) / 2).toFixed(1) + '" y="' +
+          ((a.y + b.y) / 2 - 5).toFixed(1) + '" fill="' + stroke +
+          '" font-size="8.5" text-anchor="middle" opacity=".8">' + w.label + '</text>');
+      }
+    });
+
+    mesh.nodes.forEach(function (n) {
+      var p = pos[n.id];
+      var state = !reach[n.id] ? "ROTTED" : (n.value === null ? "HELD" : "LIVE");
+      var col = state === "ROTTED" ? "var(--rot)" : state === "HELD" ? "var(--held)" : "var(--live)";
+      var val = n.value === null ? "—" : String(n.value);
+      out.push(
+        '<g class="node" data-id="' + n.id + '" opacity="' + (state === "ROTTED" ? ".55" : "1") + '">' +
+        '<rect x="' + (p.x - NODE_W / 2).toFixed(1) + '" y="' + (p.y - NODE_H / 2).toFixed(1) +
+        '" width="' + NODE_W + '" height="' + NODE_H + '" rx="10" fill="var(--panel)" stroke="' +
+        col + '" stroke-width="1.5"/>' +
+        '<text x="' + p.x.toFixed(1) + '" y="' + (p.y - 4).toFixed(1) +
+        '" fill="var(--stone)" font-size="8.5" text-anchor="middle">' + n.text + '</text>' +
+        '<text x="' + p.x.toFixed(1) + '" y="' + (p.y + 11).toFixed(1) + '" fill="' + col +
+        '" font-size="13" font-weight="650" text-anchor="middle" ' +
+        'font-family="ui-monospace,monospace">' + val + '</text>' +
+        '<rect class="hit" x="' + (p.x - NODE_W / 2 - 8).toFixed(1) + '" y="' +
+        (p.y - NODE_H / 2 - 8).toFixed(1) + '" width="' + (NODE_W + 16) + '" height="' +
+        (NODE_H + 16) + '"/></g>');
+    });
+
+    $("#canvas").innerHTML = out.join("");
+    readout(r, ref, reach);
+  }
+
+  function readout(r, ref, reach) {
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rotted = mesh.nodes.filter(function (n) { return !reach[n.id]; }).length;
+    var held = mesh.nodes.filter(function (n) { return reach[n.id] && n.value === null; }).length;
+    var live = mesh.nodes.length - rotted - held;
+    var weakest = mesh.wires.filter(function (w) { return w.J > 0; })
+      .reduce(function (a, w) { return (!a || w.J < a.J) ? w : a; }, null);
+    var cells = [
+      ["LIVE", live, "live"],
+      ["HELD", held, "held"],
+      ["ROTTED", rotted, "rotted"],
+      ["", pieces, pieces === 1 ? "one piece" : "pieces"],
+      ["", weakest ? weakest.J.toFixed(2) : "—", "weakest wire"],
+      ["", ref.toFixed(3), "median distance"]
+    ];
+    $("#read").innerHTML = cells.map(function (c) {
+      return '<div class="cell"' + (c[0] ? ' data-state="' + c[0] + '"' : "") +
+        "><b>" + c[1] + "</b><span>" + c[2] + "</span></div>";
+    }).join("");
+  }
+
+  /* ------------------------------------------------------------ dragging -- */
+  /* Dragging is the interaction that MEANS something: it changes one coupling,
+     which is not a global rescale, so the picture genuinely rearranges. */
+  function svgPoint(ev) {
+    var svg = $("#canvas"), rect = svg.getBoundingClientRect();
+    var vb = svg.viewBox.baseVal;
+    var scale = Math.min(rect.width / vb.width, rect.height / vb.height);
+    var ox = (rect.width - vb.width * scale) / 2, oy = (rect.height - vb.height * scale) / 2;
+    return { x: (ev.clientX - rect.left - ox) / scale, y: (ev.clientY - rect.top - oy) / scale };
+  }
+
+  $("#stage").addEventListener("pointerdown", function (ev) {
+    var g = ev.target.closest(".node");
+    if (!g) return;
+    var id = g.getAttribute("data-id");
+    var wire = mesh.wires.find(function (w) { return w.t === id; }) ||
+               mesh.wires.find(function (w) { return w.s === id; });
+    if (!wire) return;
+    var src = pos[wire.s === id ? wire.t : wire.s];
+    var p = svgPoint(ev);
+    drag = { wire: wire, J0: wire.J, r0: Math.hypot(p.x - src.x, p.y - src.y) || 1, src: src };
+    $("#stage").setPointerCapture(ev.pointerId);
+    ev.preventDefault();
+  });
+
+  $("#stage").addEventListener("pointermove", function (ev) {
+    if (!drag) return;
+    var p = svgPoint(ev);
+    var r = Math.hypot(p.x - drag.src.x, p.y - drag.src.y) || 1;
+    // pull further away -> weaker coupling; push closer -> stronger
+    var ratio = drag.r0 / r;
+    drag.wire.J = Math.max(0, Math.min(400, drag.J0 * ratio * ratio));
+    draw();
+    ev.preventDefault();
+  });
+
+  ["pointerup", "pointercancel"].forEach(function (e) {
+    $("#stage").addEventListener(e, function () { drag = null; });
+  });
+
+  /* ------------------------------------------------------------- buttons -- */
+  $("#reset").onclick = function () { mesh = freshMesh(); draw(); };
+  $("#cut").onclick = function () {
+    var live = mesh.wires.filter(function (w) { return w.J > 0; });
+    if (!live.length) return;
+    live.reduce(function (a, w) { return w.J < a.J ? w : a; }).J = 0;
+    draw();
+  };
+  $("#tighten").onclick = function () {
+    mesh.wires.forEach(function (w) { if (w.J > 0) w.J = Math.min(400, w.J * 2); });
+    draw();
+  };
+  $("#theme").onclick = function () {
+    var d = document.documentElement;
+    var light = d.getAttribute("data-theme") === "light";
+    d.setAttribute("data-theme", light ? "dark" : "light");
+    $("#theme").textContent = light ? "Light" : "Dark";
+  };
+
+  draw();
+  window.__smi = { mesh: mesh, draw: draw, pos: pos, LMD: LMD,
+                   setJ: function (s, t, J) {
+                     mesh.wires.find(function (w) { return w.s === s && w.t === t; }).J = J;
+                     draw();
+                   } };
+})();
+</script>
+</body>
+</html>

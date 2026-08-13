@@ -45,7 +45,7 @@ def test_every_link_opens_a_real_file():
 def test_every_gui_in_the_repo_is_reachable_from_the_front_door():
     """A screen nobody can find is a screen nobody uses."""
     must_reach = {
-        "keel/console.html",
+        "keel/console.html", "smi/app.html",
         "cairn/desk.html", "cairn/plain.html", "cairn/console.html",
         "novora-suite/suite.html", "novora-suite/desk.html",
         "weir/panel.html", "weir/stop.html",
