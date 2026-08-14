@@ -49,10 +49,14 @@ __all__ = [
     "triangle_violations",
 ]
 
-# A sparse Cholesky-style factorisation is reused across all `dim` right-hand
-# sides, so the direct path amortises far better than repeated CG. It is tried
-# first and falls back automatically when fill-in would exhaust memory.
-_DIRECT_SOLVE_MAX_N = 2_000_000
+# Solver crossover, measured on bipartite item-feature graphs (bench/bench_scale.py).
+# The direct path factorises once and reuses it across all `dim` right-hand sides,
+# which wins decisively while fill-in stays bounded: at 30.5k nodes it took 8.3 s
+# against conjugate gradients' 55.8 s. Fill-in then grows faster than problem size,
+# and by 60.4k nodes the ordering reverses -- 167 s direct against 99.5 s iterative.
+# The crossover sits between those two points; hub features (common n-grams touching
+# many items) are what make fill-in outrun the node count.
+_DIRECT_SOLVE_MAX_N = 40_000
 
 
 def build_system(edges, weights, n_nodes, reach=1e-2):

@@ -133,6 +133,16 @@ sentences do not, and PROX will not pretend otherwise.
 so long items appear as neighbours more often. Measured not to overwhelm topical
 structure across a 32× length range, but it is real.
 
+**Scale is demonstrated at 10³–10⁴ items, not millions.** Queries are fast at every
+size tested (0.61–1.06 ms) and bytes-per-item falls steeply with corpus size
+(14.3 KB → 4.0 KB), but **build time is not yet monotone**: 29 s at 500 items, 10 s
+at 2,000, 101 s at 8,000. Fill-in in the sparse factorisation depends on graph
+structure rather than size, and neither solver wins everywhere — the direct path is
+6.7× faster at 30k nodes and 1.7× slower at 60k. A phone-scale
+index is a design target, not a result. Fixing it needs a Laplacian-specific solver
+and is the most valuable open task here — the mathematics does not obstruct it, the
+current solver is simply the wrong one.
+
 ### So the architecture is a router, not a blend
 
 Term matching and resistance geometry are near-perfect complements, and blending
@@ -176,6 +186,8 @@ ix.neighbors(42)                 # 'more like this', no query at all
 
 Zero-install browser build: open `demo/prox_console.html`. It never contacts a
 server; the whole engine is a few hundred lines of dependency-free JavaScript.
+Published and runnable at
+<https://claude.ai/code/artifact/d0a2e336-4165-4572-b42d-eeed51d07d7a>.
 
 Reproduce every number in this document:
 
