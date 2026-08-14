@@ -143,6 +143,68 @@ def build():
                     "gracefully when the source is withdrawn. It is intact and inert "
                     "at the same moment."))
 
+    # --------------------------------------------------------------- LISM ---
+    # E = U*D, with D = D_enc * D_dec -- two multiplicative fidelity hops.
+    out.append(Abstraction(
+        measured="D is the PRODUCT of two hops, encode and decode. Across the "
+                 "swarm cohort mean D falls from 0.838 at the first remove to "
+                 "0.014 at the 39th.",
+        source="lism-cohorts/results_meta.json", field="cohorts.D_swarm.meanD_last",
+        value=_read("lism-cohorts/results_meta.json", "cohorts.D_swarm.meanD_last"),
+        figure="Speaking through a wall and being heard through a wall. Neither "
+               "wall has to be thick; two thin ones multiply.",
+        illustrates="Transmission has two sides and they compound rather than "
+                    "add. Saying it well does not survive being received badly, "
+                    "and a fault on either side is a fault in the whole."))
+
+    out.append(Abstraction(
+        measured="The accelerating law E = U·D² was pre-registered and LOST: on "
+                 "992 real repositories the linear law reaches AUC ~0.73 and the "
+                 "quadratic ~0.59 under cross-validation. Four cohorts out of "
+                 "four: the plain law was enough.",
+        source="lism-cohorts/results_meta.json", field="cohorts.B_github.verdict",
+        value=_read("lism-cohorts/results_meta.json", "cohorts.B_github.verdict"),
+        figure="Expecting that effort rewards itself faster and faster, and "
+               "finding it only ever pays what it pays.",
+        illustrates="A hope for acceleration is worth writing down before "
+                    "looking, precisely so that it can be given up. Nothing in "
+                    "the record improves by being wished at."))
+
+    out.append(Abstraction(
+        measured="A dataset counts as a valid test only if the two hops come from "
+                 "physically distinct measurements (VIF < 5). Yeast passes at "
+                 "1.003; SEC EDGAR fails at 6.4 and its outcome is circular.",
+        source="lism-cohorts/results_meta.json", field="cohorts.A_yeast.VIF",
+        value=_read("lism-cohorts/results_meta.json", "cohorts.A_yeast.VIF"),
+        figure="Two witnesses who turn out to have been standing together the "
+               "whole time. There was only ever one account.",
+        illustrates="Independence is a property of how testimony was OBTAINED, "
+                    "not of how much of it there is. Agreement between two "
+                    "things that share a source is not corroboration."))
+
+    out.append(Abstraction(
+        measured="A test is only valid if the failing region is populated: at "
+                 "least 100 real cases where the outcome did NOT occur. The "
+                 "GitHub cohort splits 750 fail / 242 survive.",
+        source="lism-cohorts/results_meta.json", field="cohorts.B_github.split",
+        value=_read("lism-cohorts/results_meta.json", "cohorts.B_github.split"),
+        figure="Asking only the people who arrived how they found the road.",
+        illustrates="A claim that has never been given the chance to come out "
+                    "false has not been examined. The ones who did not make it "
+                    "have to be in the count."))
+
+    out.append(Abstraction(
+        measured="The knowledge cohort passed every validity gate and the effect "
+                 "was still weak: AUC 0.58-0.62 on N=793, with a time confound "
+                 "recorded rather than removed.",
+        source="lism-cohorts/results_meta.json", field="cohorts.C_knowledge.effect",
+        value=_read("lism-cohorts/results_meta.json", "cohorts.C_knowledge.effect"),
+        figure="A properly conducted search that finds very little, written up "
+               "at exactly the size it was.",
+        illustrates="Doing the procedure correctly does not entitle anyone to a "
+                    "result. A small finding reported small is worth more than "
+                    "the same finding reported large."))
+
     return out
 
 
