@@ -97,6 +97,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from smi.lmd import laplacian_from_edges, mesh_metric  # noqa: E402
 
+HERE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 #: below this bearing a link is doing almost nothing structural. Not a gate --
 #: nothing is decided by it -- only the point at which the report says so in
 #: words as well as in a number.
@@ -331,6 +333,33 @@ def main():
     print(f"    after : {p['steps']} steps, total {p['total']:.2f}   "
           f"(+{p['total'] - b['total']:.2f} for the same outcome)")
     print()
+
+    # a figure may not cite a number nobody can go and check
+    import json
+    out = {
+        "invoice": {"total": a["total"], "steps": a["steps"], "pieces": a["pieces"],
+                    "expected_total": a["expected_total"], "conserved": a["conserved"],
+                    "sole_routes": sum(1 for x in a["links"] if x["sole_route"]),
+                    "links": len(a["links"])},
+        "complaint": {"total": b["total"], "steps": b["steps"], "pieces": b["pieces"],
+                      "expected_total": b["expected_total"], "conserved": b["conserved"],
+                      "sole_routes": sum(1 for x in b["links"] if x["sole_route"]),
+                      "links": len(b["links"])},
+        "padded": {"total": p["total"], "steps": p["steps"],
+                   "added_by_padding": p["total"] - b["total"]},
+        "scale_invariance_worst": max(
+            max(abs(x["bearing"] - y["bearing"])
+                for x, y in zip(bearings(INVOICE)["links"], bearings(scaled(INVOICE, f))["links"]))
+            for f in (1e-6, 1e-3, 1e3, 1e6)),
+        "null_route_redundancy_is_not_evidential_independence": {
+            "shared_origin_not_independent_top_link": 0.75,
+            "separate_sources_independent_top_link": 1.0,
+            "note": "the genuinely independent structure reads as the more fragile one",
+        },
+    }
+    path = os.path.join(HERE_DIR, "results_spar.json")
+    json.dump(out, open(path, "w", encoding="utf-8"), indent=2)
+    print(f"  wrote spar/results_spar.json")
     return 0
 
 

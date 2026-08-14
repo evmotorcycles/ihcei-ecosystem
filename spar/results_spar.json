@@ -1,0 +1,31 @@
+{
+  "invoice": {
+    "total": 6.0,
+    "steps": 7,
+    "pieces": 1,
+    "expected_total": 6.0,
+    "conserved": true,
+    "sole_routes": 4,
+    "links": 7
+  },
+  "complaint": {
+    "total": 6.000000000000001,
+    "steps": 7,
+    "pieces": 1,
+    "expected_total": 6.0,
+    "conserved": true,
+    "sole_routes": 3,
+    "links": 7
+  },
+  "padded": {
+    "total": 7.999999999999993,
+    "steps": 9,
+    "added_by_padding": 1.999999999999992
+  },
+  "scale_invariance_worst": 1.1102230246251565e-15,
+  "null_route_redundancy_is_not_evidential_independence": {
+    "shared_origin_not_independent_top_link": 0.75,
+    "separate_sources_independent_top_link": 1.0,
+    "note": "the genuinely independent structure reads as the more fragile one"
+  }
+}
