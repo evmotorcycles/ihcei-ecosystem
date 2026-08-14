@@ -24,6 +24,12 @@
 
   var DEAD_MESH_EPS = 1e-12;
 
+  /* A coupling below this is DECLARED FADING: still connected, but too weak to
+   * show at display precision. Without a name for it, a wire reading 0.00 in
+   * the readout while the legend insists "live" is a fourth, unnamed state --
+   * the interface saying connected and the arithmetic saying I move nothing. */
+  var FADE_BELOW = 0.01;
+
   /* Cyclic Jacobi for a real symmetric matrix. Returns { values, vectors }
    * where vectors[i][k] is component i of eigenvector k. */
   function eigSymmetric(Ain, sweeps) {
@@ -203,7 +209,65 @@
     return out;
   }
 
+  /* ------------------------------------------------------- frame alignment --
+   * Classical MDS fixes an embedding only up to rotation and reflection: the
+   * eigenvectors are defined up to sign, so a small change in the graph can
+   * hand back the same picture upside down. Deterministic per input, and to a
+   * person dragging it, the map flipping under their finger reads as the
+   * positions being arbitrary -- which is exactly the claim SMI makes against.
+   *
+   * So each new embedding is rotated/reflected onto the previous one, choosing
+   * whichever orthogonal transform moves the shared nodes least. Real change
+   * still shows; the cosmetic flips stop. This is the orthogonal Procrustes
+   * problem, solved in closed form because 2-D needs no SVD.
+   */
+  function procrustes2d(Q, P) {
+    var n = Math.min(Q.length, P.length), i;
+    if (n < 2) return Q.slice();
+    var qc = [0, 0], pc = [0, 0];
+    for (i = 0; i < n; i++) {
+      qc[0] += Q[i][0]; qc[1] += Q[i][1];
+      pc[0] += P[i][0]; pc[1] += P[i][1];
+    }
+    qc = [qc[0] / n, qc[1] / n];
+    pc = [pc[0] / n, pc[1] / n];
+
+    function residual(theta, flip) {
+      var c = Math.cos(theta), s2 = Math.sin(theta), tot = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var x = c * qx - s2 * qy, y = s2 * qx + c * qy;
+        tot += (x - (P[k][0] - pc[0])) * (x - (P[k][0] - pc[0])) +
+               (y - (P[k][1] - pc[1])) * (y - (P[k][1] - pc[1]));
+      }
+      return tot;
+    }
+    function bestAngle(flip) {
+      var num = 0, den = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var px = P[k][0] - pc[0], py = P[k][1] - pc[1];
+        num += qx * py - qy * px;
+        den += qx * px + qy * py;
+      }
+      return Math.atan2(num, den);
+    }
+    var best = null;
+    [false, true].forEach(function (flip) {
+      var th = bestAngle(flip), r = residual(th, flip);
+      if (best === null || r < best.r) best = { r: r, th: th, flip: flip };
+    });
+    var c = Math.cos(best.th), sn = Math.sin(best.th), out = [];
+    for (i = 0; i < Q.length; i++) {
+      var qx = (Q[i][0] - qc[0]) * (best.flip ? -1 : 1), qy = Q[i][1] - qc[1];
+      out.push([c * qx - sn * qy + pc[0], sn * qx + c * qy + pc[1]]);
+    }
+    return out;
+  }
+
   var API = {
+    procrustes2d: procrustes2d,
+    FADE_BELOW: FADE_BELOW,
     metricFromLaplacian: metricFromLaplacian,
     meshMetric: meshMetric,
     componentsOf: componentsOf,

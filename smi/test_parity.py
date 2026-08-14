@@ -40,18 +40,23 @@ def js():
     return json.loads(out.stdout)
 
 
-def test_the_fixture_covers_more_than_one_kind_of_graph(js):
-    assert len(GRAPHS) == len(js) >= 14
+@pytest.fixture(scope="module")
+def graphs_js(js):
+    return js["graphs"]
+
+
+def test_the_fixture_covers_more_than_one_kind_of_graph(graphs_js):
+    assert len(GRAPHS) == len(graphs_js) >= 14
     names = " ".join(g["name"] for g in GRAPHS)
     for kind in ("ring", "path", "star", "complete", "random", "split", "dead"):
         assert kind in names, f"no {kind} graph in the parity set"
 
 
 @pytest.mark.parametrize("i", range(len(GRAPHS)))
-def test_every_distance_agrees(js, i):
+def test_every_distance_agrees(graphs_js, i):
     name = GRAPHS[i]["name"]
     D_py, lab_py, dead_py = mesh_metric(np.array(GRAPHS[i]["L"], dtype=float))
-    j = js[i]
+    j = graphs_js[i]
     assert j["name"] == name
     assert bool(j["dead"]) == bool(dead_py), f"{name}: disagree on whether the mesh is dead"
 
@@ -68,19 +73,19 @@ def test_every_distance_agrees(js, i):
 
 
 @pytest.mark.parametrize("i", range(len(GRAPHS)))
-def test_the_component_split_agrees(js, i):
+def test_the_component_split_agrees(graphs_js, i):
     _, lab_py, _ = mesh_metric(np.array(GRAPHS[i]["L"], dtype=float))
-    lab_js = js[i]["labels"]
+    lab_js = graphs_js[i]["labels"]
     # labels are arbitrary integers; what must match is the PARTITION
     py = {frozenset(np.nonzero(lab_py == v)[0].tolist()) for v in set(lab_py.tolist())}
     jsp = {frozenset(k for k, v in enumerate(lab_js) if v == g) for g in set(lab_js)}
     assert py == jsp, f"{GRAPHS[i]['name']}: different pieces"
 
 
-def test_the_split_ring_really_does_have_an_unreachable_pair(js):
+def test_the_split_ring_really_does_have_an_unreachable_pair(graphs_js):
     """Otherwise the infinity comparison above would be vacuous."""
     k = next(i for i, g in enumerate(GRAPHS) if g["name"] == "split ring N=8")
-    D = js[k]["D"]
+    D = graphs_js[k]["D"]
     assert any(v is None for row in D for v in row), "no infinite entries to compare"
 
 
@@ -90,3 +95,92 @@ def test_the_js_engine_ships_no_second_set_of_rules():
     assert "DEAD_MESH_EPS = 1e-12" in src, "the dead-mesh threshold must match the Python"
     for banned in ("fetch(", "XMLHttpRequest", "import(", "require('http"):
         assert banned not in src, f"the browser engine reaches out: {banned}"
+
+
+# ------------------------------------------------------- the frame alignment --
+def test_both_engines_align_a_flipped_frame_the_same_way(js):
+    """The fix for the map flipping under a finger has to be the same fix in
+    both engines, or the phone and the harness settle on different pictures."""
+    from smi.lmd import procrustes2d
+    P = np.array([[0, 0], [1, 0], [1, 1], [0, 1], [0.5, 2]], dtype=float)
+    Q = np.array([[0, 0], [-1, 0], [-1, -1], [0, -1], [-0.5, -2]], dtype=float)
+    py = procrustes2d(Q, P)
+    jsa = np.array(js["aligned"], dtype=float)
+    assert np.max(np.abs(py - jsa)) < 1e-9, "the two engines align differently"
+    # and it has to actually undo the flip, not merely agree about doing nothing
+    assert np.max(np.abs(py - P)) < 1e-9, "the flipped frame was not brought back"
+    assert np.max(np.abs(Q - P)) > 1, "the input really was flipped"
+
+
+def test_the_fade_threshold_is_the_same_number_in_both_engines(js):
+    from smi.lmd import FADE_BELOW
+    assert js["fade_below"] == FADE_BELOW, \
+        "a wire that is 'fading' on the phone must be fading in the harness too"
+
+
+def test_both_engines_draw_the_same_flat_picture(graphs_js):
+    """Agreeing about every distance and then drawing a different picture is
+    still a broken port. But the picture is only unique when the spectrum is.
+
+    A star has fourteen interchangeable leaves, so its top eigenvalues are
+    degenerate -- thirteen of them are exactly 1.0 in BOTH engines -- and any
+    two eigenvectors from that eigenspace are a correct MDS solution. numpy and
+    the browser's Jacobi sweep pick different ones, both right.
+
+    Two earlier versions of this test asserted the wrong invariant and were
+    themselves the bug. Matching pictures failed (gram distance 8.7e-01).
+    Matching STRESS -- squared error against the true distances -- also failed,
+    177.00 against 182.12, and that failure is worth keeping in view: on a
+    symmetric mesh the picture SMI draws is one of many equally valid ones, and
+    they do NOT all represent the distances equally well. What classical MDS
+    actually equalises is STRAIN, the error on the double-centred Gram matrix,
+    which depends only on which eigenvalues were discarded. That is the thing
+    both engines must agree on, and it is the thing tested here.
+    """
+    from smi.lmd import layout2d
+    checked, degenerate = 0, []
+    for i, g in enumerate(GRAPHS):
+        j = graphs_js[i]
+        if not j["xy"]:
+            continue
+        D_py, _, _ = mesh_metric(np.array(g["L"], dtype=float))
+        keep = j["xy"]["keep"]
+        py = layout2d(D_py, keep)
+        js = np.array(j["xy"]["xy"], dtype=float)
+        assert py.shape == js.shape, g["name"]
+
+        sub = np.array([[D_py[a][b] for b in keep] for a in keep], dtype=float)
+        sq = sub ** 2
+        rm = sq.mean(1)
+        B = -0.5 * (sq - rm[:, None] - rm[None, :] + rm.mean())
+
+        def strain(xy):
+            return float(np.linalg.norm(B - xy @ xy.T))
+
+        assert abs(strain(py) - strain(js)) < 1e-8, \
+            f"{g['name']}: one engine kept a worse two-dimensional subspace"
+
+        def gram(xy):
+            d = xy[:, None, :] - xy[None, :, :]
+            return np.sqrt((d ** 2).sum(-1))
+
+        # is the picture well posed here? it is iff lambda_2 is clear of lambda_3
+        w = np.sort(np.linalg.eigvalsh(B))[::-1]
+        gap = (w[1] - w[2]) / max(abs(w[0]), 1e-30) if len(w) > 2 else 1.0
+        if gap < 1e-6:
+            degenerate.append(g["name"])
+            continue
+        worst = float(np.max(np.abs(gram(py) - gram(js))))
+        assert worst < 1e-8, \
+            f"{g['name']}: the two engines lay it out differently ({worst:.2e})"
+        checked += 1
+    assert checked >= 5, f"only {checked} graphs had a well-posed layout to compare"
+    assert degenerate, \
+        "no degenerate graph in the parity set, so the well-posedness split is untested"
+
+
+def test_the_flattening_threshold_is_the_same_number_in_both_engines():
+    from smi.lmd import FLAT_WARN
+    src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
+    assert f"var FLAT_WARN = {FLAT_WARN};" in src, \
+        "a pair called 'drawn together' on the phone must be so in the harness too"

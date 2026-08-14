@@ -170,13 +170,21 @@ class SMIMesh:
         top = np.argsort(vals)[::-1][:2]
         coords = vecs[:, top] * np.sqrt(np.clip(vals[top], 0.0, None))
 
+        # ONE scale for both axes. Fitting x and y independently is a shear:
+        # two pairs at the same embedding distance would be drawn at different
+        # screen distances depending on their orientation, which destroys the
+        # very metric this layout exists to preserve.
         span = coords.max(0) - coords.min(0)
         span[span == 0] = 1.0
         pad = 0.08
-        norm = (coords - coords.min(0)) / span
+        avail_w, avail_h = width * (1 - 2 * pad), height * (1 - 2 * pad)
+        scale = min(avail_w / span[0], avail_h / span[1])
+        off_x = width * pad + (avail_w - span[0] * scale) / 2
+        off_y = height * pad + (avail_h - span[1] * scale) / 2
+        base = coords.min(0)
         for slot, k in enumerate(keep):
-            self.nodes[order[k]].x = float((pad + norm[slot, 0] * (1 - 2 * pad)) * width)
-            self.nodes[order[k]].y = float((pad + norm[slot, 1] * (1 - 2 * pad)) * height)
+            self.nodes[order[k]].x = float(off_x + (coords[slot, 0] - base[0]) * scale)
+            self.nodes[order[k]].y = float(off_y + (coords[slot, 1] - base[1]) * scale)
 
         # Stranded nodes go down the right-hand edge, evenly, every time. The
         # inset is generous because a NODE IS A BOX, not a point: parking the

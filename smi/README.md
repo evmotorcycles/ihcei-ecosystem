@@ -129,30 +129,97 @@ wire is not a global rescale, so the layout genuinely rearranges:
 
 ---
 
-## Three visual states, never two
+## Four visual states, never two
 
 | state | when | how it draws |
 |---|---|---|
 | `LIVE` | connected and resolved | full contrast, solid; **taut = thinner**, a hairline reads as tight |
 | `HELD` | connected, no value yet | amber, still real — not pretending to a number |
-| `ROTTED` | no path back to the anchor | `#475569` grey, dashed, parked |
+| `FADING` | connected, coupling below `FADE_BELOW = 0.01` | grey, `1 4` dash, no label; the readout prints `<0.01`, never `0.00` |
+| `ROTTED` | no path back to the anchor | `#475569` grey, `4 5` dash, parked |
 
 `ROTTED` is not "very slack". An element cut off from its source has no distance
 at all, and drawing it as merely distant puts something unrelated in the picture
 looking slightly less important.
 
-### Three rendering bugs found by looking at the output
+`FADING` exists because the readout used to print `0.00` for a wire the legend
+still called live — a fourth state the interface had without naming, the picture
+saying *connected* while the arithmetic said *I move nothing*.
 
-- **A wire between two rotted elements drew LIVE.** Two cut-off nodes are still
-  perfectly coupled *to each other*, so their own distance is small and the wire
-  styled itself taut — inside a region of the screen that was entirely dead. A
-  wire is live only if what it joins is still attached to the picture.
-- **Two elements landed on exactly the same pixel.** VAT and Total are the same
-  distance from everything by symmetry, so a flat projection stacks them. Nodes
-  are boxes, not points: separation now clears the box, and collisions are
-  reported in the frame.
-- **Stranded nodes hung half off the edge**, and nodes drifted under the title
-  band. Both were the same mistake — laying out points and then drawing boxes.
+The moment a value loses its source gets a sentence, not a colour change:
+`VAT 20% has no path back — now rotted.`
+
+---
+
+## The picture cannot show everything, and now it says so
+
+This is the most important thing in SMI and it was wrong in this README until it
+was measured.
+
+Five elements generally need **four** dimensions to hold their distances. A
+screen has two. Classical MDS keeps the best plane and drops the rest **in
+silence**. On the invoice mesh SMI ships with:
+
+| pair | drawn at | true distance | mesh diameter |
+|---|---|---|---|
+| `VAT 20%` / `Total` | `4.3e-16` of it | `0.5000` | `0.7071` |
+
+VAT and Total hang off Net with identical couplings, so they are
+interchangeable, and the axis that separates them is not in the top two. They
+are drawn **on top of each other** while being 71% of the mesh's diameter apart.
+
+An earlier version of this file listed that as a *rendering bug*, "fixed" by
+pushing the two boxes apart until they cleared. **That fix was the bug.** The
+gap you then see between them is manufactured by the overlap pass; it is the one
+distance on screen that means nothing at all, and an interface whose entire
+claim is *position means something* had been quietly inventing one.
+
+So it is measured (`lmd.flatness`), named (`FLAT_WARN = 0.25`), and shown three
+ways: a `flattest pair drawn` cell in the readout, a sentence naming the pair and
+its real distance, and a dashed **`gap lost`** tie drawn between the two boxes.
+
+`smi/test_smi.py::test_the_shipped_mesh_draws_two_elements_on_top_of_each_other`
+exists so that the day someone separates them quietly, it fails.
+
+---
+
+## Making the layout hold still
+
+The reviewer's complaint was that the map flips and jumps under a finger. Four
+separate causes, each measured before and after rather than argued about:
+
+| cause | before | after |
+|---|---|---|
+| MDS is fixed only up to rotation/reflection | worst drag move `0.7113` | `0.3268` (Procrustes onto the previous frame) |
+| overlap resolved by shoving a node down a fixed step | **167 px** teleport on a 360×520 frame | separation by penetration depth, continuous |
+| boxes too big to fit, so the relaxation fought every frame | steady 1.0 px before separation, **24 px** after | boxes given the room the metric asks for; pass goes quiet |
+| stranded elements in a right-hand column | mesh drawn in ~⅓ of the canvas | bottom strip; `240×355` of `360×520` |
+
+What is left is **one** frame of ~40 px at `J ≈ 3.97`, and it does not shrink
+when the drag is sampled 32× finer — because it is not a rendering artefact.
+That is where two nodes pass **through** each other in the projection: at the
+crossing there is no direction to separate them along, so which side they come
+out on flips. The interface announces the collapse rather than hiding the jump.
+
+A centroid-and-max-radius fit was also tried, on the reasonable theory that a
+bounding box is not rotation-invariant. It measured no better — `39.4 px`
+against `39.8 px` — and wasted most of the canvas. Recorded because it is the
+kind of plausible fix that gets adopted on reasoning alone.
+
+### On a symmetric mesh the picture is not unique
+
+`smi/test_parity.py` first asserted the two engines draw the same picture. On
+`star N=15` that failed (gram distance `8.7e-01`), then a stress-matching version
+failed too (`177.00` against `182.12`). Both engines are correct: fourteen
+interchangeable leaves make thirteen eigenvalues exactly `1.0`, so any two of
+those eigenvectors are a valid answer, and numpy and the browser's Jacobi sweep
+pick different ones.
+
+The second failure is the one worth keeping in view: **those equally-valid
+pictures do not represent the distances equally well.** What classical MDS
+equalises is *strain* — error on the double-centred Gram matrix — not *stress*.
+That is what the parity test asserts now, plus identical pictures wherever the
+eigenvalue gap makes the picture well posed.
 
 ---
 

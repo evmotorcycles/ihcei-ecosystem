@@ -25,7 +25,8 @@ sys.path.insert(0, ROOT)
 import jax                                                              # noqa: E402
 import jax.numpy as jnp                                                 # noqa: E402
 
-from smi.lmd import (components, laplacian_from_edges, mesh_metric,     # noqa: E402
+from smi.lmd import (FLAT_WARN, components, flatness,                   # noqa: E402
+                     laplacian_from_edges, layout2d, mesh_metric,
                      metric_from_laplacian, normalised, ring_laplacian,
                      sweep_coupling)
 from smi.mesh import SMIMesh                                            # noqa: E402
@@ -328,3 +329,134 @@ def test_it_runs_offline_with_no_model_and_no_network():
         src = open(os.path.join(HERE, name), encoding="utf-8").read()
         for bad in ("requests", "urllib", "http", "torch", "sklearn", "openai", "socket"):
             assert bad not in src, f"{name} reaches for {bad}"
+
+
+# ================== defects found by a reviewer looking at three phone frames ==
+def test_the_drawing_is_a_pure_uniform_scale_of_the_embedding():
+    """Fitting x and y to the viewport INDEPENDENTLY is a shear: two pairs at the
+    same embedding distance get drawn at different screen distances depending on
+    their orientation, silently destroying the metric the engine exists to
+    preserve. One scale for both axes."""
+    import itertools
+    m = SMIMesh()
+    for k in "abcdef":
+        m.add_node(k, k.upper(), 1.0)
+    for s_, t_, J in [("a", "b", 3), ("b", "c", 1), ("c", "d", 5), ("d", "e", 2),
+                      ("e", "f", 4), ("a", "f", 0.7), ("b", "e", 1.3)]:
+        m.connect(s_, t_, J=J)
+    D, _, _ = m.distances()
+    order = m.order
+    m.layout(1000.0, 640.0, anchor="a")
+    keep = [k for k in range(len(order)) if np.isfinite(D[m.index("a"), k])]
+    sub = D[np.ix_(keep, keep)] ** 2
+    n = len(keep)
+    Jc = np.eye(n) - np.ones((n, n)) / n
+    vals, vecs = np.linalg.eigh(-0.5 * Jc @ sub @ Jc)
+    top = np.argsort(vals)[::-1][:2]
+    C = vecs[:, top] * np.sqrt(np.clip(vals[top], 0, None))
+    S = np.array([[m.nodes[order[k]].x, m.nodes[order[k]].y] for k in keep])
+    ratios = [np.linalg.norm(S[i] - S[j]) / np.linalg.norm(C[i] - C[j])
+              for i, j in itertools.combinations(range(n), 2)
+              if np.linalg.norm(C[i] - C[j]) > 1e-9]
+    ratios = np.array(ratios)
+    assert (ratios.max() - ratios.min()) / ratios.mean() < 1e-9, \
+        f"the drawing shears the embedding: ratio spread {ratios.ptp():.4f}"
+
+
+def test_procrustes_undoes_a_flip_and_a_rotation():
+    """Classical MDS fixes an embedding only up to rotation and reflection, so a
+    small change can hand back the same picture upside down. To a person dragging
+    it, the map flipping reads as the positions being arbitrary."""
+    from smi.lmd import procrustes2d
+    P = np.array([[0., 0.], [1., 0.], [1., 1.], [0., 1.], [.5, 2.]])
+    for name, Q in [("flipped", P * np.array([-1., 1.])),
+                    ("rotated", P @ np.array([[0., -1.], [1., 0.]]).T),
+                    ("both", (P * np.array([-1., 1.])) @ np.array([[0., -1.], [1., 0.]]).T)]:
+        assert np.max(np.abs(procrustes2d(Q, P) - P)) < 1e-9, f"{name} not undone"
+        assert np.max(np.abs(Q - P)) > 0.5, f"{name} was not actually transformed"
+
+
+def test_alignment_leaves_a_real_change_visible():
+    """It must remove the cosmetic flip WITHOUT flattening genuine movement."""
+    from smi.lmd import procrustes2d
+    P = np.array([[0., 0.], [1., 0.], [1., 1.], [0., 1.], [.5, 2.]])
+    moved = P.copy()
+    moved[4] = [3.0, 2.0]                      # one node genuinely relocated
+    out = procrustes2d(moved, P)
+    assert np.linalg.norm(out[4] - P[4]) > 0.5, "a real move was aligned away"
+
+
+def test_a_wire_below_the_display_floor_has_a_name():
+    """A wire reading 0.00 while the legend insists 'live' is a fourth, unnamed
+    state: the picture saying connected, the arithmetic saying I move nothing."""
+    from smi.lmd import FADE_BELOW
+    assert 0 < FADE_BELOW < 0.1
+    src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
+    assert "fading" in src.lower()
+    assert '"<" + LMD.FADE_BELOW.toFixed(2)' in src, \
+        "the readout must print <0.01, never 0.00, for something still connected"
+
+
+def test_losing_a_source_is_announced_as_a_sentence():
+    """The moment a value loses its source is the discontinuity these guards are
+    for. It deserves a sentence, not a silent colour change."""
+    src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
+    assert "has no path back — now rotted." in src
+    assert 'id="snap"' in src
+
+
+# ------------------------------------------- what the flat picture threw away --
+def _invoice_mesh():
+    """The mesh SMI actually ships in smi/app.html, as a Laplacian."""
+    ids = ["qty", "unit", "net", "vat", "total"]
+    edges = [("qty", "net", 4.0), ("unit", "net", 4.0),
+             ("net", "vat", 8.0), ("net", "total", 8.0)]
+    return ids, laplacian_from_edges(
+        len(ids), [(ids.index(a), ids.index(b), w) for a, b, w in edges])
+
+
+def test_the_shipped_mesh_draws_two_elements_on_top_of_each_other():
+    """The one that matters. VAT and Total both hang off Net with the same
+    coupling, so they are interchangeable: the axis that tells them apart is
+    not among the top two, and the flat picture puts them in the same place
+    while the metric says they are half a unit apart -- one of the largest
+    distances in the mesh.
+
+    An interface whose whole claim is that POSITION MEANS SOMETHING cannot let
+    that pass unsaid. This test exists so the day someone 'fixes' the layout by
+    quietly separating them, it fails.
+    """
+    ids, L = _invoice_mesh()
+    D, _, dead = mesh_metric(L)
+    assert not dead
+    keep = list(range(len(ids)))
+    xy = layout2d(D, keep)
+    ratio, a, b = flatness(D, keep, xy)
+
+    assert {ids[a], ids[b]} == {"vat", "total"}, \
+        f"expected VAT/Total to be the collapsed pair, got {ids[a]}/{ids[b]}"
+    assert ratio < 0.01, f"the pair is drawn at {ratio:.1%} of its true distance"
+    assert D[keep.index(a)][keep.index(b)] > 0.4, \
+        "the pair must genuinely be far apart, or there is nothing being hidden"
+    assert ratio < FLAT_WARN, "this must trip the interface's own warning"
+
+
+def test_flatness_reports_one_when_nothing_was_lost():
+    """A triangle fits in a plane exactly, so the picture is the whole truth.
+    Without this the test above could be passing on a broken measure."""
+    L = laplacian_from_edges(3, [(0, 1, 1.0), (1, 2, 1.0), (0, 2, 1.0)])
+    D, _, _ = mesh_metric(L)
+    keep = [0, 1, 2]
+    ratio, _, _ = flatness(D, keep, layout2d(D, keep))
+    assert ratio > 0.999, f"a flat mesh should lose nothing, lost {1 - ratio:.3f}"
+
+
+def test_the_app_shows_the_pair_it_cannot_draw():
+    """Measuring it is not enough; the person holding the phone has to be told,
+    and the cosmetic gap between the two boxes has to be marked as cosmetic."""
+    src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
+    assert "var FLAT_WARN = 0.25;" in src
+    assert "flattest pair drawn" in src, "the readout must carry the number"
+    assert "are drawn together here" in src, "and say which pair, in a sentence"
+    assert "gap lost" in src, "and mark the gap on the drawing itself"
+    assert "lastFlatPairs.forEach" in src, "every collapsed pair, not just the worst"

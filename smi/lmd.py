@@ -47,6 +47,8 @@ Both are guarded below and both are asserted by smi/test_smi.py.
 """
 from __future__ import annotations
 
+import math
+
 from dataclasses import dataclass
 
 import jax
@@ -59,6 +61,12 @@ jax.config.update("jax_enable_x64", True)
 
 #: below this total edge weight the mesh is treated as dead rather than measured
 DEAD_MESH_EPS = 1e-12
+
+#: A coupling below this is DECLARED FADING: still connected, but too weak to
+#: show at display precision. Without a name for it, a wire reading 0.00 in a
+#: readout while the legend insists "live" is a fourth, unnamed state -- the
+#: interface saying connected and the arithmetic saying I move nothing.
+FADE_BELOW = 0.01
 
 
 @jax.jit
@@ -179,6 +187,95 @@ def sweep_coupling(L_unit, pair, lo=-1.0, hi=2.0, steps=15):
     slope, _ = np.polyfit(np.log10(Js), np.log10(ds), 1)
     r2 = float(np.corrcoef(np.log10(Js), np.log10(ds))[0, 1] ** 2)
     return Sweep(Js, ds, float(slope), r2, (i, j))
+
+
+def procrustes2d(Q, P):
+    """Rotate/reflect a new embedding onto the previous one.
+
+    Classical MDS fixes an embedding only up to rotation and reflection: the
+    eigenvectors are defined up to sign, so a small change in the graph can hand
+    back the same picture upside down. Deterministic per input, and to a person
+    dragging it, the map flipping under their finger reads as the positions
+    being arbitrary -- which is exactly the claim this engine makes against.
+
+    Whichever orthogonal transform moves the shared nodes least is chosen. Real
+    change still shows; the cosmetic flips stop. Closed form: 2-D needs no SVD.
+    """
+    Q = np.asarray(Q, dtype=float)
+    P = np.asarray(P, dtype=float)
+    n = min(len(Q), len(P))
+    if n < 2:
+        return Q.copy()
+    qc, pc = Q[:n].mean(0), P[:n].mean(0)
+    best = None
+    for flip in (1.0, -1.0):
+        q = (Q[:n] - qc) * np.array([flip, 1.0])
+        p = P[:n] - pc
+        num = float((q[:, 0] * p[:, 1] - q[:, 1] * p[:, 0]).sum())
+        den = float((q[:, 0] * p[:, 0] + q[:, 1] * p[:, 1]).sum())
+        th = math.atan2(num, den)
+        c, s = math.cos(th), math.sin(th)
+        rot = np.array([[c, -s], [s, c]])
+        resid = float((((q @ rot.T) - p) ** 2).sum())
+        if best is None or resid < best[0]:
+            best = (resid, th, flip)
+    _, th, flip = best
+    c, s = math.cos(th), math.sin(th)
+    rot = np.array([[c, -s], [s, c]])
+    return ((Q - qc) * np.array([flip, 1.0])) @ rot.T + pc
+
+
+FLAT_WARN = 0.25
+
+
+def layout2d(D, keep):
+    """Classical MDS: double-centre the squared distances, take the top two
+    eigenvectors. The flat picture that best preserves the metric.
+
+    Mirrors smi/lmd.js layout2d exactly; smi/test_parity.py checks that.
+    """
+    keep = list(keep)
+    m = len(keep)
+    sq = np.array([[float(D[a][b]) ** 2 for b in keep] for a in keep], dtype=float)
+    rm = sq.mean(1)
+    B = -0.5 * (sq - rm[:, None] - rm[None, :] + rm.mean())
+    w, V = np.linalg.eigh(B)
+    order = np.argsort(w)[::-1]
+    k1 = order[0]
+    k2 = order[1] if m > 1 else order[0]
+    return np.column_stack([
+        V[:, k1] * math.sqrt(max(float(w[k1]), 0.0)),
+        V[:, k2] * math.sqrt(max(float(w[k2]), 0.0)),
+    ])
+
+
+def flatness(D, keep, xy):
+    """How much of the metric survived being flattened onto a plane.
+
+    Returns (worst_ratio, a, b): the pair whose DRAWN separation is the smallest
+    fraction of its TRUE distance, and which pair that is. 1.0 means every
+    distance in the picture is the real one.
+
+    This is not a nicety. A mesh of five elements generally needs four
+    dimensions; a screen has two, and classical MDS drops the difference in
+    silence. On the invoice mesh SMI ships with, `VAT` and `Total` are drawn on
+    top of each other while their true distance is 0.5 -- among the largest in
+    the mesh. An interface whose whole claim is that POSITION MEANS SOMETHING
+    cannot leave that unsaid, any more than it can print 0.00 for a wire it
+    still calls live. Measure it, name it, show it.
+    """
+    keep = list(keep)
+    worst, pair = 1.0, (None, None)
+    for i in range(len(keep)):
+        for j in range(i + 1, len(keep)):
+            true_d = float(D[keep[i]][keep[j]])
+            if not np.isfinite(true_d) or true_d <= 0:
+                continue
+            drawn = float(np.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]))
+            ratio = drawn / true_d
+            if ratio < worst:
+                worst, pair = ratio, (keep[i], keep[j])
+    return worst, pair[0], pair[1]
 
 
 def normalised(D):

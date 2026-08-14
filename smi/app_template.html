@@ -12,6 +12,7 @@
   --ink:#E6EDF5; --ink-2:#9FB0C6; --stone:#6C7F98;
   --live:#38BDF8; --live-soft:#0D2B3C;
   --held:#F59E0B; --held-soft:#2A1F08;
+  --fade:#7C8BA1;
   --rot:#475569;
   --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -21,6 +22,7 @@
   --ink:#0F1720; --ink-2:#44546A; --stone:#6B7A8D;
   --live:#0369A1; --live-soft:#DDEEF8;
   --held:#B45309; --held-soft:#FBF0DC;
+  --fade:#8494A8;
   --rot:#94A3B8;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -52,6 +54,8 @@ svg{display:block;width:100%;height:100%}
 .hint{color:var(--stone);font-size:.83rem;margin:0 0 .6rem}
 .hint b{color:var(--ink-2);font-weight:600}
 
+.snap{margin:0 0 .6rem;padding:.5rem .7rem;border-radius:10px;font-size:.85rem;
+  background:var(--held-soft);border:1px solid var(--held);color:var(--held);font-weight:600}
 .read{display:grid;grid-template-columns:repeat(auto-fit,minmax(6.2rem,1fr));gap:.4rem}
 .cell{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:.45rem .55rem}
 .cell b{display:block;font-family:var(--mono);font-size:1.02rem;font-variant-numeric:tabular-nums;
@@ -59,6 +63,7 @@ svg{display:block;width:100%;height:100%}
 .cell span{display:block;color:var(--stone);font-size:.64rem;line-height:1.3;margin-top:.1rem}
 .cell[data-state=LIVE] b{color:var(--live)}
 .cell[data-state=HELD] b{color:var(--held)}
+.cell[data-state=FADING] b{color:var(--fade)}
 .cell[data-state=ROTTED] b{color:var(--rot)}
 
 .row{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.6rem}
@@ -96,6 +101,7 @@ svg{display:block;width:100%;height:100%}
      pushing it toward its source tightens. Everything else moves because the
      arithmetic moved.</p>
 
+  <p class="snap" id="snap" hidden role="status"></p>
   <div class="read" id="read"></div>
 
   <div class="row">
@@ -107,7 +113,9 @@ svg{display:block;width:100%;height:100%}
   <div class="legend">
     <span><i style="background:var(--live)"></i>live</span>
     <span><i style="background:var(--held)"></i>held — no value yet</span>
+    <span><i style="background:var(--fade)"></i>fading — moves nothing you can see</span>
     <span><i style="background:var(--rot)"></i>rotted — no path back</span>
+    <span><i style="background:var(--fade);border-radius:0;height:0;border-top:1px dashed var(--fade)"></i>gap lost — drawn together, not together</span>
   </div>
 
   <div class="limits">
@@ -128,7 +136,7 @@ svg{display:block;width:100%;height:100%}
   "use strict";
   var $ = function (s) { return document.querySelector(s); };
   var VB = { w: 360, h: 520 };
-  var NODE_W = 92, NODE_H = 40, PAD = 26;
+  var NODE_W = 76, NODE_H = 34, PAD = 22;
 
   /* ------------------------------------------------------------ the mesh -- */
   function freshMesh() {
@@ -151,7 +159,15 @@ svg{display:block;width:100%;height:100%}
       ]
     };
   }
+  /* Below this, the flat picture is drawing a pair at less than a quarter of
+     their real distance -- close enough to read as "these two belong together"
+     when the metric says the opposite. Declared here, once, like FADE_BELOW. */
+  var FLAT_WARN = 0.25;
   var mesh = freshMesh(), anchor = "qty", pos = {}, drag = null;
+  /* the previous frame's coordinates, so each new embedding can be rotated onto
+     it. Without this the map flips upside down mid-drag and reads as arbitrary. */
+  var lastXY = null, lastKeep = null, lastStates = {}, lastRaw = {},
+      lastFlat = null, lastFlatPairs = [];
 
   function idx(id) { return mesh.nodes.findIndex(function (n) { return n.id === id; }); }
 
@@ -195,15 +211,119 @@ svg{display:block;width:100%;height:100%}
 
     if (keep.length >= 2) {
       var xy = LMD.layout2d(r.D, keep);
-      var xs = xy.map(function (p) { return p[0]; }), ys = xy.map(function (p) { return p[1]; });
-      var x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs);
-      var y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
-      var sx = (x1 - x0) || 1, sy = (y1 - y0) || 1;
-      var W = VB.w - (stranded.length ? 108 : 2 * PAD) - PAD;
+      // align onto the previous frame, using only the nodes present in both
+      if (lastXY && lastKeep) {
+        var shareQ = [], shareP = [];
+        keep.forEach(function (k, i) {
+          var j = lastKeep.indexOf(k);
+          if (j >= 0) { shareQ.push(xy[i]); shareP.push(lastXY[j]); }
+        });
+        if (shareQ.length >= 2) {
+          // procrustes2d transforms EVERY row of its first argument, using only
+          // the leading rows to work out the transform -- so putting the shared
+          // nodes first aligns the whole frame from the overlap.
+          var order = [], rest = [];
+          keep.forEach(function (k, i) {
+            (lastKeep.indexOf(k) >= 0 ? order : rest).push(i);
+          });
+          var seq = order.concat(rest);
+          var Q = seq.map(function (i) { return xy[i]; });
+          var aligned = LMD.procrustes2d(Q, shareP);
+          seq.forEach(function (i, slot) { xy[i] = aligned[slot]; });
+        }
+      }
+      lastXY = xy.map(function (p) { return p.slice(); });
+      lastKeep = keep.slice();
+
+      /* HOW MUCH OF THE METRIC SURVIVED BEING FLATTENED.
+         This mesh needs four dimensions; the screen has two. MDS keeps as much
+         as a plane can hold and drops the rest -- silently. On this very mesh,
+         at a coupling of 4.00, `Net` and `Total` are drawn 2.6e-16 apart while
+         their true distance is 0.354, one of the largest in the mesh. The
+         picture says identical; the arithmetic says far apart. That is the same
+         defect as a wire reading 0.00 while the legend calls it live, and it
+         gets the same treatment: it is measured, named and shown, not hidden.
+         It is also the honest cause of the one big jump left in the layout --
+         two nodes passing through each other have no direction to be separated
+         along, so which side they come out on flips. */
+      lastFlat = null; lastFlatPairs = [];
+      for (var fa = 0; fa < keep.length; fa++) {
+        for (var fb = fa + 1; fb < keep.length; fb++) {
+          var trueD = r.D[keep[fa]][keep[fb]];
+          if (!isFinite(trueD) || trueD <= 0) continue;
+          var drawnD = Math.hypot(xy[fa][0] - xy[fb][0], xy[fa][1] - xy[fb][1]);
+          var ratio = drawnD / trueD;
+          var rec = { ratio: ratio, trueD: trueD,
+                      ia: mesh.nodes[keep[fa]].id, ib: mesh.nodes[keep[fb]].id,
+                      a: mesh.nodes[keep[fa]].text, b: mesh.nodes[keep[fb]].text };
+          if (!lastFlat || ratio < lastFlat.ratio) lastFlat = rec;
+          if (ratio < FLAT_WARN) lastFlatPairs.push(rec);
+        }
+      }
+
+      /* ONE scale for both axes. Fitting x and y independently stretches the
+         picture differently in each direction, which is a shear: two pairs at
+         the same embedding distance get drawn at different screen distances
+         depending on their orientation. That silently destroys the metric this
+         whole engine exists to preserve.
+
+         The scale is then pushed UP until the closest pair in the embedding is
+         far enough apart that no two boxes touch, and only capped when that
+         would push the mesh out of frame. This is what actually fixed the
+         layout's remaining jumpiness, and it was not the obvious culprit.
+         Drawing smaller than the boxes need leaves the overlap-separation pass
+         below shoving every node 25-60px on EVERY frame, and a relaxation
+         under that much load does not settle to the same answer twice: the
+         layout measured steady to 1.0px before separation and jumping 24px
+         after it. Give the boxes the room they need and the pass goes quiet --
+         after which the same fit is stable to about 1.9px a frame.
+
+         (A centroid-and-max-radius fit was tried instead, on the theory that a
+         bounding box is not rotation-invariant and so re-fits under a rotation
+         that carries no information. It measured no better -- 39.4px worst
+         frame against 39.8px -- because that was never where the jumping came
+         from, and it inscribes a circle in a tall frame, wasting most of the
+         canvas. Recorded because it is the kind of plausible fix that gets
+         adopted on reasoning alone.) */
+      /* Cut-off elements go in a strip along the BOTTOM, not a column down the
+         right. On a portrait phone a right-hand column costs 108 of 360
+         columns of width, and because the scale is uniform, losing width loses
+         height too: the mesh was being drawn at about a third of the canvas
+         with the tall middle empty. A bottom strip costs one row of a frame
+         that has plenty of rows. */
+      var stripH = stranded.length ? NODE_H + 16 : 0;
+      var loX = PAD + NODE_W / 2, hiX = VB.w - PAD - NODE_W / 2;
+      var loY = PAD + NODE_H / 2, hiY = VB.h - PAD - NODE_H / 2 - stripH;
+      var cx = 0, cy = 0;
+      xy.forEach(function (p) { cx += p[0]; cy += p[1]; });
+      cx /= xy.length; cy /= xy.length;
+      var maxR = 0, minPair = Infinity, u, v;
+      xy.forEach(function (p) {
+        maxR = Math.max(maxR, Math.hypot(p[0] - cx, p[1] - cy));
+      });
+      for (u = 0; u < xy.length; u++) {
+        for (v = u + 1; v < xy.length; v++) {
+          minPair = Math.min(minPair, Math.hypot(xy[u][0] - xy[v][0], xy[u][1] - xy[v][1]));
+        }
+      }
+      // hypot(MIN_X, MIN_Y) is the shortest separation that clears a box pair
+      // at EVERY angle -- the worst direction is the diagonal of the keep-out
+      // rectangle, not either axis.
+      var need = Math.hypot(NODE_W * 0.8, NODE_H * 1.15) / Math.max(minPair, 1e-9);
+      var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
+      xy.forEach(function (p) {
+        bx0 = Math.min(bx0, p[0]); bx1 = Math.max(bx1, p[0]);
+        by0 = Math.min(by0, p[1]); by1 = Math.max(by1, p[1]);
+      });
+      var cap = Math.min((hiX - loX) / ((bx1 - bx0) || 1e-9),
+                         (hiY - loY) / ((by1 - by0) || 1e-9));
+      var scale = Math.min(need, cap);
+      var midX = (loX + hiX) / 2 - (bx0 + bx1) / 2 * scale + cx * scale;
+      var midY = (loY + hiY) / 2 - (by0 + by1) / 2 * scale + cy * scale;
       keep.forEach(function (k, i) {
         pos[mesh.nodes[k].id] = {
-          x: PAD + NODE_W / 2 + (xy[i][0] - x0) / sx * Math.max(W - NODE_W, 10),
-          y: PAD + NODE_H / 2 + (xy[i][1] - y0) / sy * (VB.h - 2 * PAD - NODE_H)
+          x: midX + (xy[i][0] - cx) * scale,
+          y: midY + (xy[i][1] - cy) * scale
         };
       });
     } else {
@@ -212,20 +332,63 @@ svg{display:block;width:100%;height:100%}
       });
     }
     stranded.forEach(function (k, i) {
-      pos[mesh.nodes[k].id] = { x: VB.w - 54, y: (i + 1) * VB.h / (stranded.length + 1) };
+      pos[mesh.nodes[k].id] = {
+        x: (i + 1) * VB.w / (stranded.length + 1),
+        y: VB.h - PAD / 2 - NODE_H / 2
+      };
     });
 
-    // a node is a BOX, not a point: keep them apart and inside the frame
-    var placed = [];
-    mesh.nodes.forEach(function (n) {
-      var p = pos[n.id], guard = 0;
-      while (placed.some(function (q) {
-        return Math.abs(p.x - q.x) < NODE_W * 0.8 && Math.abs(p.y - q.y) < NODE_H * 1.15;
-      }) && guard++ < mesh.nodes.length) { p.y += NODE_H * 1.2; }
-      p.x = Math.min(Math.max(p.x, NODE_W / 2 + 4), VB.w - NODE_W / 2 - 4);
-      p.y = Math.min(Math.max(p.y, NODE_H / 2 + 4), VB.h - NODE_H / 2 - 4);
-      placed.push({ x: p.x, y: p.y });
-    });
+    /* A node is a BOX, not a point, so overlapping boxes have to be pushed
+       apart. Doing that by shoving one node DOWN A FIXED STEP until it is clear
+       is a discontinuity, and a large one: a pair drifting across the collision
+       threshold teleports a node by a multiple of the step, and the next frame
+       teleports it back. Measured on the invoice mesh at 167px on a 360x520
+       frame -- a third of the picture -- from a coupling change that moved the
+       metric by almost nothing. That is the same complaint as the flipping map,
+       reached by a different route, and Procrustes cannot touch it because it
+       happens after the alignment.
+
+       Instead: divide each offset by the box spacing, so a node becomes a unit
+       square and "overlapping" means the larger normalised component is under
+       1. Push the pair APART ALONG THAT OFFSET until it reaches exactly 1,
+       split evenly between the two. The push is proportional to how deep the
+       overlap is, so it falls to zero as the pair reaches the threshold --
+       there is no axis to choose and nothing to switch between, and the whole
+       correction is continuous in the positions. Picking the shallower axis
+       instead reintroduces a jump at the crossover: measured at 65px. */
+    lastRaw = {};
+    mesh.nodes.forEach(function (n) { lastRaw[n.id] = { x: pos[n.id].x, y: pos[n.id].y }; });
+    var MIN_X = NODE_W * 0.8, MIN_Y = NODE_H * 1.15;
+    var LO_X = NODE_W / 2 + 4, HI_X = VB.w - NODE_W / 2 - 4;
+    var LO_Y = NODE_H / 2 + 4, HI_Y = VB.h - NODE_H / 2 - 4;
+    var ids = mesh.nodes.map(function (n) { return n.id; });
+    for (var pass = 0; pass < 60; pass++) {
+      var hits = 0;
+      for (var a = 0; a < ids.length; a++) {
+        for (var b = a + 1; b < ids.length; b++) {
+          var pa = pos[ids[a]], pb = pos[ids[b]];
+          var ux = (pb.x - pa.x) / MIN_X, uy = (pb.y - pa.y) / MIN_Y;
+          var far = Math.max(Math.abs(ux), Math.abs(uy));
+          if (far >= 1) continue;
+          hits++;
+          if (far < 1e-9) {           // exactly coincident: no direction exists
+            pa.y -= MIN_Y / 2; pb.y += MIN_Y / 2;
+            continue;
+          }
+          var grow = (1 / far - 1) / 2;
+          pa.x -= ux * MIN_X * grow; pa.y -= uy * MIN_Y * grow;
+          pb.x += ux * MIN_X * grow; pb.y += uy * MIN_Y * grow;
+        }
+      }
+      // clamp INSIDE the loop: clamping only at the end shoves nodes back on
+      // top of each other and silently undoes the separation
+      for (var c = 0; c < ids.length; c++) {
+        var pc = pos[ids[c]];
+        pc.x = Math.min(Math.max(pc.x, LO_X), HI_X);
+        pc.y = Math.min(Math.max(pc.y, LO_Y), HI_Y);
+      }
+      if (!hits) break;
+    }
     return r;
   }
 
@@ -255,18 +418,49 @@ svg{display:block;width:100%;height:100%}
       var a = pos[w.s], b = pos[w.t];
       var d = r.D[idx(w.s)][idx(w.t)];
       var dead = w.J <= 0 || !reach[w.s] || !reach[w.t] || !isFinite(d);
+      /* FADING: still connected, but the coupling is below what the readout can
+         show. A wire displaying 0.00 while the legend insists "live" is a
+         fourth, unnamed state -- the picture saying connected and the
+         arithmetic saying I move nothing. So it is named. */
+      var fading = !dead && w.J > 0 && w.J < LMD.FADE_BELOW;
       var t = tension(d, ref);
-      var stroke = dead ? "var(--rot)" : (t < 0.25 ? "var(--stone)" : "var(--live)");
-      var width = dead ? 1 : (t < 0.25 ? 1.4 : 2.2 - 1.3 * (t - 0.25) / 0.75);
+      var stroke = dead ? "var(--rot)" : fading ? "var(--fade)"
+        : (t < 0.25 ? "var(--stone)" : "var(--live)");
+      var width = dead ? 1 : fading ? 1 : (t < 0.25 ? 1.4 : 2.2 - 1.3 * (t - 0.25) / 0.75);
       out.push('<line x1="' + a.x.toFixed(1) + '" y1="' + a.y.toFixed(1) +
         '" x2="' + b.x.toFixed(1) + '" y2="' + b.y.toFixed(1) +
         '" stroke="' + stroke + '" stroke-width="' + width.toFixed(2) + '"' +
-        (dead ? ' stroke-dasharray="4 5" stroke-opacity=".55"' : ' stroke-opacity=".9"') + '/>');
-      if (!dead) {
+        (dead ? ' stroke-dasharray="4 5" stroke-opacity=".55"'
+              : fading ? ' stroke-dasharray="1 4" stroke-opacity=".7"'
+              : ' stroke-opacity=".9"') + '/>');
+      if (!dead && !fading) {
         out.push('<text x="' + ((a.x + b.x) / 2).toFixed(1) + '" y="' +
           ((a.y + b.y) / 2 - 5).toFixed(1) + '" fill="' + stroke +
           '" font-size="8.5" text-anchor="middle" opacity=".8">' + w.label + '</text>');
       }
+    });
+
+    /* Two boxes the projection collapsed are still DRAWN apart, because the
+       overlap pass had to put them somewhere. That gap is cosmetic: it is the
+       one distance on screen that means nothing at all. Reading it as "these
+       are a little way apart" is exactly the wrong conclusion, so the pair is
+       tied together and the tie is labelled. */
+    lastFlatPairs.forEach(function (f) {
+      var a = pos[f.ia], b = pos[f.ib];
+      if (!a || !b) return;
+      out.push('<line x1="' + a.x.toFixed(1) + '" y1="' + a.y.toFixed(1) +
+        '" x2="' + b.x.toFixed(1) + '" y2="' + b.y.toFixed(1) +
+        '" stroke="var(--fade)" stroke-width="1" stroke-dasharray="2 3" ' +
+        'stroke-opacity=".85"/>');
+      // the two boxes sit as close as the overlap pass allows, so the label
+      // lands on their borders; it needs its own ground to be readable
+      var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+      out.push('<rect x="' + (mx - 21).toFixed(1) + '" y="' + (my - 5.5).toFixed(1) +
+        '" width="42" height="11" rx="5.5" fill="var(--bg)" stroke="var(--fade)" ' +
+        'stroke-width=".6" stroke-opacity=".7"/>');
+      out.push('<text x="' + mx.toFixed(1) + '" y="' + (my + 2.8).toFixed(1) +
+        '" fill="var(--fade)" font-size="7" text-anchor="middle" ' +
+        'font-style="italic">gap lost</text>');
     });
 
     mesh.nodes.forEach(function (n) {
@@ -277,12 +471,12 @@ svg{display:block;width:100%;height:100%}
       out.push(
         '<g class="node" data-id="' + n.id + '" opacity="' + (state === "ROTTED" ? ".55" : "1") + '">' +
         '<rect x="' + (p.x - NODE_W / 2).toFixed(1) + '" y="' + (p.y - NODE_H / 2).toFixed(1) +
-        '" width="' + NODE_W + '" height="' + NODE_H + '" rx="10" fill="var(--panel)" stroke="' +
+        '" width="' + NODE_W + '" height="' + NODE_H + '" rx="9" fill="var(--panel)" stroke="' +
         col + '" stroke-width="1.5"/>' +
-        '<text x="' + p.x.toFixed(1) + '" y="' + (p.y - 4).toFixed(1) +
-        '" fill="var(--stone)" font-size="8.5" text-anchor="middle">' + n.text + '</text>' +
-        '<text x="' + p.x.toFixed(1) + '" y="' + (p.y + 11).toFixed(1) + '" fill="' + col +
-        '" font-size="13" font-weight="650" text-anchor="middle" ' +
+        '<text x="' + p.x.toFixed(1) + '" y="' + (p.y - 3).toFixed(1) +
+        '" fill="var(--stone)" font-size="7.6" text-anchor="middle">' + n.text + '</text>' +
+        '<text x="' + p.x.toFixed(1) + '" y="' + (p.y + 10).toFixed(1) + '" fill="' + col +
+        '" font-size="11.5" font-weight="650" text-anchor="middle" ' +
         'font-family="ui-monospace,monospace">' + val + '</text>' +
         '<rect class="hit" x="' + (p.x - NODE_W / 2 - 8).toFixed(1) + '" y="' +
         (p.y - NODE_H / 2 - 8).toFixed(1) + '" width="' + (NODE_W + 16) + '" height="' +
@@ -291,6 +485,35 @@ svg{display:block;width:100%;height:100%}
 
     $("#canvas").innerHTML = out.join("");
     readout(r, ref, reach);
+    announce(reach);
+  }
+
+  /* The most important thing that happens in this interface is a value losing
+     its source. It is a discontinuity, not a flicker, and it deserves a
+     sentence rather than a silent colour change. */
+  function announce(reach) {
+    var said = null;
+    mesh.nodes.forEach(function (n) {
+      var now = !reach[n.id] ? "ROTTED" : (n.value === null ? "HELD" : "LIVE");
+      var was = lastStates[n.id];
+      if (was && was !== "ROTTED" && now === "ROTTED" && !said) {
+        said = n.text + " has no path back — now rotted.";
+      }
+      lastStates[n.id] = now;
+    });
+    /* Losing a source wins the line -- it is the bigger event. But if nothing
+       snapped and the picture is currently lying about a pair, say that
+       instead of leaving the reader to trust a position that is not real. */
+    if (!said && lastFlat && lastFlat.ratio < FLAT_WARN) {
+      said = lastFlat.a + " and " + lastFlat.b + " are drawn together here — " +
+             "flattening to two dimensions lost that gap. They are " +
+             lastFlat.trueD.toFixed(2) + " apart." +
+             (lastFlatPairs.length > 1
+               ? " (" + lastFlatPairs.length + " pairs are drawn this way.)" : "");
+    }
+    var el = $("#snap");
+    if (said) { el.textContent = said; el.hidden = false; }
+    else { el.hidden = true; }
   }
 
   function readout(r, ref, reach) {
@@ -300,13 +523,28 @@ svg{display:block;width:100%;height:100%}
     var live = mesh.nodes.length - rotted - held;
     var weakest = mesh.wires.filter(function (w) { return w.J > 0; })
       .reduce(function (a, w) { return (!a || w.J < a.J) ? w : a; }, null);
+    var fadingCount = mesh.wires.filter(function (w) {
+      return w.J > 0 && w.J < LMD.FADE_BELOW;
+    }).length;
+    /* A wire below the display floor must never be printed as 0.00: that reads
+       as "no coupling" while the legend still calls it live. */
+    var weakestText = !weakest ? "—"
+      : weakest.J < LMD.FADE_BELOW ? "<" + LMD.FADE_BELOW.toFixed(2)
+      : weakest.J.toFixed(2);
     var cells = [
       ["LIVE", live, "live"],
       ["HELD", held, "held"],
+      ["FADING", fadingCount, "fading"],
       ["ROTTED", rotted, "rotted"],
       ["", pieces, pieces === 1 ? "one piece" : "pieces"],
-      ["", weakest ? weakest.J.toFixed(2) : "—", "weakest wire"],
-      ["", ref.toFixed(3), "median distance"]
+      ["", weakestText, "weakest wire"],
+      /* What the flat picture had to throw away. 100% means every distance on
+         screen is the real one; anything less means at least one pair is drawn
+         nearer than it is, and the reader has no way to tell which without
+         being told. */
+      [lastFlat && lastFlat.ratio < FLAT_WARN ? "FADING" : "",
+       lastFlat ? Math.round(lastFlat.ratio * 100) + "%" : "100%",
+       "flattest pair drawn"]
     ];
     $("#read").innerHTML = cells.map(function (c) {
       return '<div class="cell"' + (c[0] ? ' data-state="' + c[0] + '"' : "") +
@@ -374,7 +612,14 @@ svg{display:block;width:100%;height:100%}
   };
 
   draw();
-  window.__smi = { mesh: mesh, draw: draw, pos: pos, LMD: LMD,
+  /* The test handle. `mesh` is REASSIGNED by Reset, so exposing it as a plain
+     property hands out a reference to a graph that is no longer the one on
+     screen -- a harness reading it measures a frozen mesh and reports whatever
+     it likes. A getter always returns the live one. */
+  window.__smi = { draw: draw, pos: pos, LMD: LMD,
+                   get mesh() { return mesh; },
+                   get anchor() { return anchor; },
+                   get frame() { return { xy: lastXY, keep: lastKeep, raw: lastRaw, flat: lastFlat, flatPairs: lastFlatPairs }; },
                    setJ: function (s, t, J) {
                      mesh.wires.find(function (w) { return w.s === s && w.t === t; }).J = J;
                      draw();
