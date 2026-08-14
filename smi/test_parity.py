@@ -184,3 +184,55 @@ def test_the_flattening_threshold_is_the_same_number_in_both_engines():
     src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
     assert f"var FLAT_WARN = {FLAT_WARN};" in src, \
         "a pair called 'drawn together' on the phone must be so in the harness too"
+
+
+def test_both_engines_pick_the_same_alternative_plane(graphs_js):
+    """The 'show the lost gap' button must land on the same picture in the
+    browser as in the harness, or the phone is looking at something the tests
+    never see.
+
+    AND A DECLARED LIMIT. best_axes searches pairs of eigenvector INDICES, so
+    it searches within whatever basis the eigensolver returned. When the
+    spectrum is degenerate the two engines hold different bases for the same
+    subspace, the two searches range over different sets of planes, and they do
+    not merely tie -- they reach genuinely different scores. On star N=15,
+    fourteen interchangeable leaves put thirteen eigenvalues at exactly 1.0 and
+    the engines found planes scoring 0.0365 and 0.0274.
+
+    So the alternative view is well defined only where the spectrum is. On a
+    symmetric mesh it is A better plane, verified better by the engine drawing
+    it, and not reproducible from the other engine. That is a real limit on the
+    feature and it is recorded here rather than tuned away.
+    """
+    from smi.lmd import best_axes
+    js = json.loads(subprocess.run(["node", os.path.join(HERE, "parity_dump.mjs")],
+                                   capture_output=True, text=True, timeout=180).stdout)
+    checked, degenerate = 0, []
+    for i, g in enumerate(GRAPHS):
+        entry = js["graphs"][i]
+        if not entry.get("best"):
+            continue
+        D_py, _, _ = mesh_metric(np.array(g["L"], dtype=float))
+        keep = entry["xy"]["keep"]
+
+        sub = np.array([[D_py[a][b] for b in keep] for a in keep], dtype=float)
+        sq = sub ** 2
+        rm = sq.mean(1)
+        B = -0.5 * (sq - rm[:, None] - rm[None, :] + rm.mean())
+        w = np.sort(np.linalg.eigvalsh(B))[::-1]
+        top = w[:min(4, len(w))]
+        unique = all((top[k] - top[k + 1]) / max(abs(top[0]), 1e-30) > 1e-6
+                     for k in range(len(top) - 1))
+        if not unique:
+            degenerate.append(g["name"])
+            continue
+
+        axes, ratio = best_axes(D_py, keep)
+        assert list(axes) == entry["best"]["axes"], \
+            f"{g['name']}: the engines choose different planes"
+        assert abs(ratio - entry["best"]["ratio"]) < 1e-9, \
+            f"{g['name']}: the engines disagree about how good that plane is"
+        checked += 1
+
+    assert checked >= 5, f"only {checked} graphs had a uniquely determined plane"
+    assert degenerate, "no degenerate graph exercised the declared limit"

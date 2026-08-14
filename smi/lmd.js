@@ -178,7 +178,11 @@
 
   /* Classical MDS: double-centre the squared distances, take the top two
    * eigenvectors. The flat picture that best preserves the metric. */
-  function layout2d(D, keep) {
+  /* `axes` selects WHICH two eigenvectors, by rank. (0,1) is the classical
+   * choice and keeps the most total structure. It is not always the one that
+   * keeps the most useful structure -- see bestAxes. */
+  function layout2d(D, keep, axes) {
+    axes = axes || [0, 1];
     var m = keep.length, i, j;
     var B = [];
     for (i = 0; i < m; i++) B.push(new Array(m).fill(0));
@@ -198,15 +202,49 @@
     var e = eigSymmetric(B);
     var order = e.values.map(function (v, k) { return [v, k]; })
       .sort(function (a, b) { return b[0] - a[0]; });
+    var p1 = order[Math.min(axes[0], m - 1)], p2 = order[Math.min(axes[1], m - 1)];
     var out = [];
     for (i = 0; i < m; i++) {
       out.push([
-        e.vectors[i][order[0][1]] * Math.sqrt(Math.max(order[0][0], 0)),
-        e.vectors[i][order[1] ? order[1][1] : order[0][1]] *
-          Math.sqrt(Math.max(order[1] ? order[1][0] : 0, 0)),
+        e.vectors[i][p1[1]] * Math.sqrt(Math.max(p1[0], 0)),
+        e.vectors[i][p2[1]] * Math.sqrt(Math.max(p2[0], 0)),
       ]);
     }
     return out;
+  }
+
+  /* The worst pair in a layout, as a fraction of its true distance. 1.0 means
+   * every distance on screen is the real one. */
+  function flatness(D, keep, xy) {
+    var worst = 1.0, a = -1, b = -1, i, j;
+    for (i = 0; i < keep.length; i++) {
+      for (j = i + 1; j < keep.length; j++) {
+        var trueD = D[keep[i]][keep[j]];
+        if (!isFinite(trueD) || trueD <= 0) continue;
+        var ratio = Math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]) / trueD;
+        if (ratio < worst) { worst = ratio; a = keep[i]; b = keep[j]; }
+      }
+    }
+    return { ratio: worst, a: a, b: b };
+  }
+
+  /* The plane that leaves NO pair collapsed, if there is one.
+   *
+   * Classical MDS minimises strain, which is a TOTAL -- and a total can be
+   * excellent while one pair is destroyed. On the mesh SMI ships, the
+   * strain-best plane draws two elements on top of each other (0% of their true
+   * distance) while a different plane draws every pair at 71% or better.
+   * Neither view is wrong; they answer different questions. */
+  function bestAxes(D, keep, limit) {
+    limit = Math.min(limit || 4, keep.length);
+    var best = [0, 1], bestRatio = -1, i, j;
+    for (i = 0; i < limit; i++) {
+      for (j = i + 1; j < limit; j++) {
+        var r = flatness(D, keep, layout2d(D, keep, [i, j])).ratio;
+        if (r > bestRatio) { bestRatio = r; best = [i, j]; }
+      }
+    }
+    return { axes: best, ratio: bestRatio };
   }
 
   /* ------------------------------------------------------- frame alignment --
@@ -275,6 +313,8 @@
     ringLaplacian: ringLaplacian,
     eigSymmetric: eigSymmetric,
     layout2d: layout2d,
+    flatness: flatness,
+    bestAxes: bestAxes,
     DEAD_MESH_EPS: DEAD_MESH_EPS,
   };
 

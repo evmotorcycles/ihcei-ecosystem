@@ -86,7 +86,7 @@ svg{display:block;width:100%;height:100%}
 <body>
 
 <div class="top">
-  <h1>SMI<span class="sub">nothing here was positioned</span></h1>
+  <h1>SMI<span class="sub" id="viewname">nothing here was positioned</span></h1>
   <span class="sp"></span>
   <button class="gh" id="theme" type="button">Light</button>
 </div>
@@ -108,6 +108,7 @@ svg{display:block;width:100%;height:100%}
     <button class="act" id="reset" type="button">Reset</button>
     <button class="act warn" id="cut" type="button">Cut the weakest wire</button>
     <button class="act" id="tighten" type="button">Tension: all ×2</button>
+    <button class="act" id="view" type="button" hidden>Show the lost gap</button>
   </div>
 
   <div class="legend">
@@ -164,10 +165,14 @@ svg{display:block;width:100%;height:100%}
      when the metric says the opposite. Declared here, once, like FADE_BELOW. */
   var FLAT_WARN = 0.25;
   var mesh = freshMesh(), anchor = "qty", pos = {}, drag = null;
+  /* which two eigenvectors are being drawn. null = the classical (0,1)
+     plane; otherwise the plane chosen by bestAxes, which keeps the worst
+     pair as honest as any plane can. */
+  var viewAxes = null;
   /* the previous frame's coordinates, so each new embedding can be rotated onto
      it. Without this the map flips upside down mid-drag and reads as arbitrary. */
   var lastXY = null, lastKeep = null, lastStates = {}, lastRaw = {},
-      lastFlat = null, lastFlatPairs = [];
+      lastFlat = null, lastFlatPairs = [], lastFaint = {}, lastBest = null;
 
   function idx(id) { return mesh.nodes.findIndex(function (n) { return n.id === id; }); }
 
@@ -210,7 +215,7 @@ svg{display:block;width:100%;height:100%}
     });
 
     if (keep.length >= 2) {
-      var xy = LMD.layout2d(r.D, keep);
+      var xy = LMD.layout2d(r.D, keep, viewAxes);
       // align onto the previous frame, using only the nodes present in both
       if (lastXY && lastKeep) {
         var shareQ = [], shareP = [];
@@ -246,6 +251,10 @@ svg{display:block;width:100%;height:100%}
          It is also the honest cause of the one big jump left in the layout --
          two nodes passing through each other have no direction to be separated
          along, so which side they come out on flips. */
+      /* Is there a better plane than the one being drawn? Asked every frame,
+         because the answer changes as the mesh does, and a button offering a
+         view that is no improvement is worse than no button. */
+      lastBest = LMD.bestAxes(r.D, keep);
       lastFlat = null; lastFlatPairs = [];
       for (var fa = 0; fa < keep.length; fa++) {
         for (var fb = fa + 1; fb < keep.length; fb++) {
@@ -309,23 +318,60 @@ svg{display:block;width:100%;height:100%}
       // hypot(MIN_X, MIN_Y) is the shortest separation that clears a box pair
       // at EVERY angle -- the worst direction is the diagonal of the keep-out
       // rectangle, not either axis.
-      var need = Math.hypot(NODE_W * 0.8, NODE_H * 1.15) / Math.max(minPair, 1e-9);
-      var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
-      xy.forEach(function (p) {
-        bx0 = Math.min(bx0, p[0]); bx1 = Math.max(bx1, p[0]);
-        by0 = Math.min(by0, p[1]); by1 = Math.max(by1, p[1]);
+      /* A FAINT element -- one joined to the rest only by wires below
+         FADE_BELOW -- is very weakly coupled, so the metric puts it very far
+         away, so it stretches the bounding box, so everything else is drawn
+         smaller. Measured on this mesh: as the VAT wire faded, the four live
+         boxes went from 240x132 (16.9% of the canvas) to 182x6 (0.6%) -- a row
+         of slivers. A quantity the interface has already DECLARED unreliable
+         was setting the zoom for four quantities that are not. That is the
+         same rule broken everywhere else in this stack, so it is fixed the
+         same way: the declared-unreliable thing does not get to govern the
+         reliable one. The scale is taken from the live sub-mesh; faint
+         elements keep their true direction and are parked in the margin. */
+      var faint = keep.map(function (k) {
+        var joins = mesh.wires.filter(function (w) {
+          return (w.s === mesh.nodes[k].id || w.t === mesh.nodes[k].id) && w.J > 0;
+        });
+        return joins.length > 0 && joins.every(function (w) { return w.J < LMD.FADE_BELOW; });
       });
+      var solid = [];
+      keep.forEach(function (k, i) { if (!faint[i]) solid.push(i); });
+      if (solid.length < 2) solid = keep.map(function (_, i) { return i; });
+
+      var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
+      solid.forEach(function (i) {
+        bx0 = Math.min(bx0, xy[i][0]); bx1 = Math.max(bx1, xy[i][0]);
+        by0 = Math.min(by0, xy[i][1]); by1 = Math.max(by1, xy[i][1]);
+      });
+      var minSolid = Infinity, sa, sb;
+      for (sa = 0; sa < solid.length; sa++) {
+        for (sb = sa + 1; sb < solid.length; sb++) {
+          minSolid = Math.min(minSolid, Math.hypot(
+            xy[solid[sa]][0] - xy[solid[sb]][0], xy[solid[sa]][1] - xy[solid[sb]][1]));
+        }
+      }
+      var need = Math.hypot(NODE_W * 0.8, NODE_H * 1.15) /
+                 Math.max(isFinite(minSolid) ? minSolid : minPair, 1e-9);
       var cap = Math.min((hiX - loX) / ((bx1 - bx0) || 1e-9),
                          (hiY - loY) / ((by1 - by0) || 1e-9));
       var scale = Math.min(need, cap);
-      var midX = (loX + hiX) / 2 - (bx0 + bx1) / 2 * scale + cx * scale;
-      var midY = (loY + hiY) / 2 - (by0 + by1) / 2 * scale + cy * scale;
+      var midX = (loX + hiX) / 2 - (bx0 + bx1) / 2 * scale;
+      var midY = (loY + hiY) / 2 - (by0 + by1) / 2 * scale;
       keep.forEach(function (k, i) {
-        pos[mesh.nodes[k].id] = {
-          x: midX + (xy[i][0] - cx) * scale,
-          y: midY + (xy[i][1] - cy) * scale
-        };
+        var px = midX + xy[i][0] * scale, py = midY + xy[i][1] * scale;
+        if (faint[i]) {
+          /* keep the direction the metric gives it, but stop it from leaving
+             the frame or dragging the frame out to meet it */
+          var ax = (bx0 + bx1) / 2 * scale + midX, ay = (by0 + by1) / 2 * scale + midY;
+          var vx = px - ax, vy = py - ay, len = Math.hypot(vx, vy) || 1;
+          var room = Math.min(hiX - loX, hiY - loY) / 2 + NODE_H;
+          if (len > room) { px = ax + vx / len * room; py = ay + vy / len * room; }
+        }
+        pos[mesh.nodes[k].id] = { x: px, y: py };
       });
+      lastFaint = {};
+      keep.forEach(function (k, i) { if (faint[i]) lastFaint[mesh.nodes[k].id] = true; });
     } else {
       keep.forEach(function (k, i) {
         pos[mesh.nodes[k].id] = { x: VB.w / 2, y: (i + 1) * VB.h / (keep.length + 1) };
@@ -546,6 +592,23 @@ svg{display:block;width:100%;height:100%}
        lastFlat ? Math.round(lastFlat.ratio * 100) + "%" : "100%",
        "flattest pair drawn"]
     ];
+    /* Offer the other plane only when it is actually better, and say by how
+       much. "Show the lost gap" that changes nothing is a lie of its own. */
+    $("#viewname").textContent = viewAxes
+      ? "second view — the gap the usual one loses"
+      : "nothing here was positioned";
+    var btn = $("#view");
+    var better = lastBest && lastFlat && lastBest.ratio > lastFlat.ratio + 0.05;
+    if (viewAxes) {
+      btn.hidden = false;
+      btn.textContent = "Back to the usual view";
+    } else if (better) {
+      btn.hidden = false;
+      btn.textContent = "Show the lost gap (" + Math.round(lastBest.ratio * 100) + "%)";
+    } else {
+      btn.hidden = true;
+    }
+
     $("#read").innerHTML = cells.map(function (c) {
       return '<div class="cell"' + (c[0] ? ' data-state="' + c[0] + '"' : "") +
         "><b>" + c[1] + "</b><span>" + c[2] + "</span></div>";
@@ -604,6 +667,17 @@ svg{display:block;width:100%;height:100%}
     mesh.wires.forEach(function (w) { if (w.J > 0) w.J = Math.min(400, w.J * 2); });
     draw();
   };
+  /* The answer to "will an ordinary person understand the banner?" is not a
+     better sentence -- it is a way to LOOK. Classical MDS picks the plane that
+     keeps the most structure in total, and a total can be excellent while one
+     pair is destroyed. Another plane usually keeps that pair. One tap swaps to
+     it, and one tap swaps back; nothing is ever faked in either view, and the
+     readout says which one is on. */
+  $("#view").onclick = function () {
+    viewAxes = viewAxes ? null : (lastBest ? lastBest.axes : [0, 2]);
+    draw();
+  };
+
   $("#theme").onclick = function () {
     var d = document.documentElement;
     var light = d.getAttribute("data-theme") === "light";
@@ -619,7 +693,8 @@ svg{display:block;width:100%;height:100%}
   window.__smi = { draw: draw, pos: pos, LMD: LMD,
                    get mesh() { return mesh; },
                    get anchor() { return anchor; },
-                   get frame() { return { xy: lastXY, keep: lastKeep, raw: lastRaw, flat: lastFlat, flatPairs: lastFlatPairs }; },
+                   get frame() { return { xy: lastXY, keep: lastKeep, raw: lastRaw, flat: lastFlat, flatPairs: lastFlatPairs, faint: lastFaint,
+                              best: lastBest, axes: viewAxes }; },
                    setJ: function (s, t, J) {
                      mesh.wires.find(function (w) { return w.s === s && w.t === t; }).J = J;
                      draw();

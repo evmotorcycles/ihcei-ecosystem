@@ -183,6 +183,69 @@ exists so that the day someone separates them quietly, it fails.
 
 ---
 
+## The second view: what to do when the picture cannot show it
+
+Telling someone "these two are secretly 0.50 apart" and leaving them looking at
+one box on top of another is a confession, not a fix. So there is a second
+plane, one tap away.
+
+Classical MDS spends its two dimensions minimising **strain** — error on the
+double-centred Gram matrix. That is a *total*, and a total can be excellent
+while one pair is destroyed. `lmd.best_axes` searches other eigenvector pairs
+for the plane that maximises the **worst** pair instead:
+
+| plane | worst pair | median pair | mean abs. distance error | strain |
+|---|---|---|---|---|
+| `(0, 1)` classical, the default | **0.0%** | 91.1% | 0.1235 | **0.1291** |
+| `(0, 2)` the second view | **70.7%** | 70.7% | **0.1217** | 0.1953 |
+
+The classical plane draws most pairs almost perfectly and one pair as a total
+lie. The second view draws everything at about 71% and lies about nothing — and
+it has the *lower mean distance error* of the two, because strain is measured on
+the Gram matrix rather than on distances.
+
+The button only appears when the alternative is at least 5 points better, says
+by how much (`Show the lost gap (71%)`), and the header changes to *second view
+— the gap the usual one loses* so nobody is unsure which picture they are
+holding. Neither view invents anything; they answer different questions.
+
+The default is still the classical plane, because that is what is
+pre-registered and what "the MDS layout" means. That it is worse here on two of
+four measures is a finding, not a licence to switch it quietly.
+
+### Declared limit: on a symmetric mesh the second view is basis-dependent
+
+`best_axes` searches pairs of eigenvector **indices**, so it searches inside
+whichever basis the eigensolver returned. Where the spectrum is degenerate the
+two engines hold different bases for the same subspace, range over different
+sets of planes, and do not merely tie — on `star N=15` they found planes scoring
+`0.0365` and `0.0274`. The alternative view is therefore well defined only where
+the spectrum is: elsewhere it is *a* better plane, verified by the engine
+drawing it, and not reproducible from the other. Recorded, not tuned away.
+
+---
+
+## A declared-unreliable quantity must not govern a reliable one
+
+Found in a phone screenshot, not in the tests. A `FADING` element — coupled
+below `FADE_BELOW`, labelled *moves nothing you can see* — is very weakly
+coupled, so the metric puts it very far away, so it stretched the bounding box,
+so everything else was drawn smaller:
+
+| `net→vat` coupling | the four live boxes | share of canvas |
+|---|---|---|
+| `8.000` | 240 × 132 | 16.9% |
+| `0.020` | 161 × 45 | 3.9% |
+| `0.005` *(fading)* | 182 × 29 | 2.9% |
+| `0.001` *(fading)* | 182 × 6 | **0.6%** |
+
+At `J = 0.001` the four elements a person is actually auditing were a row of
+slivers, because one the interface had already declared unreliable was setting
+the zoom. The scale is now taken from the **solid sub-mesh**; faint elements
+keep their true direction and are parked in the margin. `0.6% → 5.0%`.
+
+---
+
 ## Making the layout hold still
 
 The reviewer's complaint was that the map flips and jumps under a finger. Four

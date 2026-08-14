@@ -27,6 +27,10 @@ process.stdout.write(JSON.stringify({
         const keep = r.labels.map((_, k) => k).filter(k => r.labels[k] === r.labels[0]);
         return keep.length >= 2 && !r.dead ? { keep, xy: LMD.layout2d(r.D, keep) } : null;
       })(),
+      best: (() => {
+        const keep = r.labels.map((_, k) => k).filter(k => r.labels[k] === r.labels[0]);
+        return keep.length >= 2 && !r.dead ? LMD.bestAxes(r.D, keep) : null;
+      })(),
     };
   }),
   aligned: LMD.procrustes2d(Q, P),

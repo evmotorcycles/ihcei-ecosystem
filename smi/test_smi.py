@@ -25,7 +25,7 @@ sys.path.insert(0, ROOT)
 import jax                                                              # noqa: E402
 import jax.numpy as jnp                                                 # noqa: E402
 
-from smi.lmd import (FLAT_WARN, components, flatness,                   # noqa: E402
+from smi.lmd import (FLAT_WARN, best_axes, components, flatness,        # noqa: E402
                      laplacian_from_edges, layout2d, mesh_metric,
                      metric_from_laplacian, normalised, ring_laplacian,
                      sweep_coupling)
@@ -460,3 +460,65 @@ def test_the_app_shows_the_pair_it_cannot_draw():
     assert "are drawn together here" in src, "and say which pair, in a sentence"
     assert "gap lost" in src, "and mark the gap on the drawing itself"
     assert "lastFlatPairs.forEach" in src, "every collapsed pair, not just the worst"
+
+
+def test_there_is_a_second_plane_that_loses_no_pair():
+    """The answer to 'how will an ordinary person understand the banner?' is not
+    a better sentence. It is a way to look.
+
+    Classical MDS minimises STRAIN, which is a total, and a total can be
+    excellent while one pair is destroyed. On the mesh SMI ships the
+    strain-best plane draws VAT and Total at 0% of their true distance; the
+    plane through eigenvectors 1 and 3 draws every pair at 70.7% or better.
+    """
+    ids, L = _invoice_mesh()
+    D, _, _ = mesh_metric(L)
+    keep = list(range(len(ids)))
+    axes, ratio = best_axes(D, keep)
+    default, _, _ = flatness(D, keep, layout2d(D, keep))
+    assert default < 0.01, "the default plane is supposed to be the collapsing one"
+    assert ratio > 0.7, f"the alternative plane only reaches {ratio:.1%}"
+    assert axes != (0, 1), "the alternative must be a different plane"
+
+
+def test_the_alternative_plane_is_not_free():
+    """It must be offered honestly. It is better on the worst pair and on mean
+    distance error, and WORSE on the median and on strain -- most pairs are
+    drawn very accurately by the classical plane, and exactly one is a total
+    lie. Whoever changes the default should have to change this test."""
+    ids, L = _invoice_mesh()
+    D, _, _ = mesh_metric(L)
+    keep = list(range(len(ids)))
+    sub = np.array([[D[a][b] for b in keep] for a in keep], dtype=float)
+    iu = np.triu_indices(len(keep), 1)
+
+    def stats(axes):
+        xy = layout2d(D, keep, axes)
+        g = np.sqrt(((xy[:, None, :] - xy[None, :, :]) ** 2).sum(-1))
+        return np.median(g[iu] / sub[iu]), np.abs(g[iu] - sub[iu]).mean()
+
+    med_a, err_a = stats((0, 1))
+    med_b, err_b = stats((0, 2))
+    assert med_a > med_b, "the classical plane should win on the median"
+    assert err_b < err_a, "and lose on mean absolute distance error"
+
+
+def test_the_app_offers_the_other_view_only_when_it_helps():
+    """A button called 'Show the lost gap' that changes nothing is its own lie."""
+    src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
+    assert "LMD.bestAxes(r.D, keep)" in src, "the alternative must be recomputed per frame"
+    assert "lastBest.ratio > lastFlat.ratio + 0.05" in src, \
+        "the button must be hidden when the other plane is no improvement"
+    assert "second view — the gap the usual one loses" in src
+
+
+def test_a_faint_element_does_not_set_the_scale_for_solid_ones():
+    """A quantity the interface has already declared unreliable must not govern
+    the ones it has not. As the VAT wire faded, the four live boxes went from
+    16.9% of the canvas to 0.6% -- a row of slivers -- because a node coupled
+    below FADE_BELOW sits very far away and stretched the bounding box."""
+    src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
+    assert "var faint = keep.map(function (k) {" in src
+    assert "w.J < LMD.FADE_BELOW" in src, "faintness must use the declared threshold"
+    assert "solid.forEach(function (i) {" in src, \
+        "the bounding box must be taken over the solid sub-mesh only"

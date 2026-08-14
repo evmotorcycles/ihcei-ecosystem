@@ -228,9 +228,12 @@ def procrustes2d(Q, P):
 FLAT_WARN = 0.25
 
 
-def layout2d(D, keep):
-    """Classical MDS: double-centre the squared distances, take the top two
-    eigenvectors. The flat picture that best preserves the metric.
+def layout2d(D, keep, axes=(0, 1)):
+    """Classical MDS: double-centre the squared distances, take two eigenvectors.
+
+    `axes` selects WHICH two, by rank. The default (0, 1) is the classical
+    choice and the one that keeps the most total structure. It is not always
+    the one that keeps the most USEFUL structure -- see best_axes.
 
     Mirrors smi/lmd.js layout2d exactly; smi/test_parity.py checks that.
     """
@@ -241,12 +244,36 @@ def layout2d(D, keep):
     B = -0.5 * (sq - rm[:, None] - rm[None, :] + rm.mean())
     w, V = np.linalg.eigh(B)
     order = np.argsort(w)[::-1]
-    k1 = order[0]
-    k2 = order[1] if m > 1 else order[0]
+    k1 = order[min(axes[0], m - 1)]
+    k2 = order[min(axes[1], m - 1)]
     return np.column_stack([
         V[:, k1] * math.sqrt(max(float(w[k1]), 0.0)),
         V[:, k2] * math.sqrt(max(float(w[k2]), 0.0)),
     ])
+
+
+def best_axes(D, keep, limit=4):
+    """The plane that leaves NO pair collapsed, if there is one.
+
+    Classical MDS minimises strain, which is a TOTAL. A total can be excellent
+    while one pair is destroyed, and that is exactly what happens on the mesh
+    SMI ships: the strain-best plane draws VAT and Total on top of each other
+    (0% of their true distance) while a different plane draws every pair at 71%
+    or better. Neither view is wrong. They answer different questions, and a
+    person who has just been told two elements are secretly far apart wants the
+    second one.
+
+    Returns (axes, worst_ratio_there) maximising the WORST pair.
+    """
+    keep = list(keep)
+    m = min(len(keep), limit)
+    best, best_ratio = (0, 1), -1.0
+    for i in range(m):
+        for j in range(i + 1, m):
+            ratio, _, _ = flatness(D, keep, layout2d(D, keep, (i, j)))
+            if ratio > best_ratio:
+                best, best_ratio = (i, j), ratio
+    return best, best_ratio
 
 
 def flatness(D, keep, xy):
