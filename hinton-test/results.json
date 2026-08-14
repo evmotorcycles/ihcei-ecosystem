@@ -57,7 +57,7 @@
       {
         "name": "the correction is recorded in an intact hash chain",
         "pass": true,
-        "detail": "4 turns, Merkle 2dcce676dcbd…"
+        "detail": "4 turns, Merkle 854ca01d1321…"
       },
       {
         "name": "editing a past turn is detected (understanding is auditable)",
@@ -85,5 +85,5 @@
       }
     ]
   },
-  "generated_at": "2026-08-13T22:42:15.473Z"
+  "generated_at": "2026-08-14T04:18:27.004Z"
 }

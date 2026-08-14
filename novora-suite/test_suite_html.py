@@ -108,3 +108,30 @@ def test_navigation_uses_the_hash_so_browser_back_works():
     assert "hashchange" in src
     assert 'display="inline-block"' in src or 'display = "inline-block"' in src or \
            'style.display="inline-block"' in src
+
+
+def test_the_suite_links_to_the_rest_of_the_stack_and_they_all_exist():
+    """The nine read text. Three other screens do something else, and the suite
+    now says so — a link that points at nothing is worse than no link."""
+    import re as _re
+    src = html()
+    hrefs = _re.findall(r'<a class="card" href="([^"]+)"', src)
+    assert {"../keel/console.html", "../smi/app.html", "../weir/panel.html"} <= set(hrefs)
+    for h in hrefs:
+        target = os.path.normpath(os.path.join(HERE, h))
+        assert os.path.exists(target), f"the suite links to nothing: {h}"
+
+
+def test_the_standalone_jax_file_runs_by_itself():
+    """smi/lmd_jax.py is meant to be copied away and run. It must not need the
+    rest of the repository to do that."""
+    import subprocess
+    path = os.path.join(os.path.dirname(HERE), "smi", "lmd_jax.py")
+    src = open(path, encoding="utf-8").read()
+    for banned in ("from smi", "import smi", "from .", "sys.path"):
+        assert banned not in src, f"the standalone file reaches into the repo: {banned}"
+    r = subprocess.run(["python3", path], capture_output=True, text=True,
+                       timeout=300, cwd="/tmp")
+    assert r.returncode == 0, r.stderr[-600:]
+    assert "slope -0.500000" in r.stdout
+    assert "identity, not a result" in r.stdout
