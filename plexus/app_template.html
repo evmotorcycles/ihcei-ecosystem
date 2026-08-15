@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus</title>
+<meta name="description" content="See what a thing is made of, what is holding it up, and what it rests on. Works offline, on any phone or laptop.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="{{ICON}}">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<!-- iOS does not read the manifest for Add to Home Screen and does not accept
+     an SVG here. Without this PNG the installed icon on an iPhone is blank. -->
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Plexus">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B;   --hold-soft:#31150F;   /* nothing else does this      */
+  --share:#D6A63C;  --share-soft:#2C2209;  /* one of several routes       */
+  --spare:#5FB489;  --spare-soft:#12291E;  /* mostly redundant            */
+  --focus:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ------------------------------------------------------------------ top -- */
+.top{display:flex;align-items:center;gap:.55rem;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));
+  border-bottom:1px solid var(--line);background:var(--card-2);
+  position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);
+  letter-spacing:0}
+.sp{flex:1}
+/* 44px is the floor, not a suggestion. These two were 36px and a driven
+   measurement caught them -- an app for every age cannot ship a control an
+   unsteady hand misses. */
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center}
+.chip:active,.chip[aria-pressed=true]{background:var(--card);border-color:var(--edge)}
+
+/* ---------------------------------------------------------------- picker -- */
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.pick{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem}
+.pick button{flex:1 1 auto;min-height:46px;min-width:7.5rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.86rem}
+.pick button[aria-pressed=true]{border-color:var(--hold);background:var(--hold-soft);
+  font-weight:600}
+
+/* ----------------------------------------------------------------- tabs --- */
+.tabs{display:flex;gap:.3rem;background:var(--card-2);border:1px solid var(--line);
+  border-radius:var(--r);padding:.28rem;margin-bottom:.85rem}
+.tabs button{flex:1;min-height:46px;border-radius:10px;font-size:.87rem;color:var(--ink-2);
+  padding:.4rem .3rem;line-height:1.25}
+.tabs button[aria-selected=true]{background:var(--card);color:var(--ink);font-weight:650;
+  box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.tabs button small{display:block;font-size:.66rem;color:var(--mute);font-weight:400}
+
+/* ---------------------------------------------------------------- answer -- */
+.answer{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.9rem .95rem;margin-bottom:.75rem}
+.answer .big{font-size:1.35rem;font-weight:700;line-height:1.2;letter-spacing:-.022em;
+  text-wrap:balance}
+.answer .big em{font-style:normal;color:var(--hold)}
+.answer p{margin:.42rem 0 0;color:var(--ink-2);font-size:.9rem}
+
+/* ----------------------------------------------------------------- rows --- */
+.rows{display:flex;flex-direction:column;gap:.4rem}
+.row{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.62rem .72rem;width:100%;text-align:left;display:block}
+.row .nm{display:flex;gap:.5rem;align-items:baseline;font-size:.9rem}
+.row .nm b{font-weight:600}
+.row .nm .to{color:var(--mute)}
+.row .pct{margin-left:auto;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:.96rem;font-weight:650}
+.bar{height:8px;border-radius:99px;background:var(--card-2);margin-top:.45rem;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.row .say{font-size:.77rem;color:var(--mute);margin-top:.34rem}
+.row[data-k=hold] .pct{color:var(--hold)}   .row[data-k=hold] .bar i{background:var(--hold)}
+.row[data-k=share] .pct{color:var(--share)} .row[data-k=share] .bar i{background:var(--share)}
+.row[data-k=spare] .pct{color:var(--spare)} .row[data-k=spare] .bar i{background:var(--spare)}
+.row[data-off="1"]{opacity:.45}
+.row[data-off="1"] .say{color:var(--hold)}
+
+/* ----------------------------------------------------------------- map ---- */
+.stage{position:relative;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);height:min(46dvh,340px);touch-action:none;overflow:hidden}
+svg{display:block;width:100%;height:100%}
+.node{cursor:grab}
+.hit{fill:transparent}
+.snap{margin:.6rem 0 0;padding:.55rem .72rem;border-radius:10px;font-size:.86rem;
+  background:var(--share-soft);border:1px solid var(--share);color:var(--share);
+  font-weight:600}
+
+/* ---------------------------------------------------------------- totals -- */
+.tot{margin-top:.7rem;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:.62rem .8rem;display:flex;gap:.9rem;
+  align-items:baseline;flex-wrap:wrap}
+.tot b{font-family:var(--mono);font-size:1.16rem;font-variant-numeric:tabular-nums}
+.tot span{color:var(--mute);font-size:.76rem}
+
+/* ----------------------------------------------------------------- acts --- */
+.acts{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem}
+.acts button:active{border-color:var(--focus)}
+
+/* ----------------------------------------------------------------- note --- */
+.note{margin-top:1rem;background:var(--card);border:1px solid var(--line);
+  border-left:3px solid var(--share);border-radius:0 var(--r) var(--r) 0;
+  padding:.72rem .85rem;font-size:.83rem;line-height:1.6;color:var(--ink-2)}
+.note b{display:block;color:var(--share);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;margin:.65rem 0 .2rem}
+.note b:first-child{margin-top:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+  white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">Plexus<span id="tag">what a thing is made of</span></div>
+  <span class="sp"></span>
+  <button class="chip" id="text" type="button" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme" type="button">Light</button>
+</div>
+
+<div class="wrap">
+  <div class="pick" id="pick" role="group" aria-label="Choose something to look at"></div>
+
+  <div class="tabs" role="tablist" aria-label="What to show">
+    <button role="tab" id="tab-map" aria-selected="true" aria-controls="v-map" type="button">
+      Map<small>how it fits together</small></button>
+    <button role="tab" id="tab-hold" aria-selected="false" aria-controls="v-hold" type="button">
+      Holding it up<small>what has no way around it</small></button>
+    <button role="tab" id="tab-rest" aria-selected="false" aria-controls="v-rest" type="button">
+      Resting on<small>if one source were wrong</small></button>
+  </div>
+
+  <section id="v-map" role="tabpanel" aria-labelledby="tab-map">
+    <div class="answer" id="map-answer"></div>
+    <div class="stage" id="stage">
+      <svg id="canvas" viewBox="0 0 360 340" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-labelledby="canvas-desc"></svg>
+      <p id="canvas-desc" class="sr"></p>
+    </div>
+    <p class="snap" id="snap" hidden role="status"></p>
+    <div class="acts">
+      <button id="reset" type="button">Start again</button>
+      <button id="cut" type="button">Remove the weakest link</button>
+    </div>
+  </section>
+
+  <section id="v-hold" role="tabpanel" aria-labelledby="tab-hold" hidden>
+    <div class="answer" id="hold-answer"></div>
+    <div class="rows" id="hold-rows"></div>
+    <div class="tot" id="hold-tot"></div>
+    <div class="acts"><button id="reset2" type="button">Put everything back</button></div>
+  </section>
+
+  <section id="v-rest" role="tabpanel" aria-labelledby="tab-rest" hidden>
+    <div class="answer" id="rest-answer"></div>
+    <div class="rows" id="rest-rows"></div>
+    <div class="acts"><button id="reset3" type="button">Put everything back</button></div>
+  </section>
+
+  <div class="note">
+    <b>Nothing here was scored</b>
+    There is nothing to tune and no weighting to argue with. On the second tab the
+    percentages add up to the number of parts minus the number of separate pieces,
+    always, as a matter of arithmetic — so no step can be made to look more
+    important without another looking less.
+    <b>Turning everything up does nothing</b>
+    Multiply the strength of every link by any number you like and not one
+    percentage moves.
+    <b>Two different questions</b>
+    <em>Holding it up</em> asks whether there is another way <em>round</em> a step.
+    <em>Resting on</em> asks whether there is another way <em>in</em>. They can
+    disagree, and when they do it is worth reading both.
+    <b>What it cannot tell you</b>
+    Whether a step is <em>useful</em>, or whether a source is <em>true</em>. A
+    required form that changes no outcome still reads 100%, because removing it
+    does break the chain. And it only knows the parts you entered.
+    <b>Nothing leaves this device</b>
+    No account, no network, no server. It works with the aeroplane mode on.
+  </div>
+</div>
+
+<script>{{LMD}}</script>
+<script>{{ENGINES}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var VB = { w: 360, h: 340 }, NODE_W = 86, NODE_H = 38, PAD = 16;
+
+  /* ------------------------------------------------------------ the data -- */
+  function library() {
+    return [
+      { name: "An energy bill",
+        conclusion: "Amount due",
+        sources: ["Meter reading", "Unit rate", "Standing charge"],
+        parts: ["Meter reading", "Unit rate", "Standing charge", "Subtotal",
+                "VAT", "Late fee", "Amount due"],
+        links: [["Meter reading", "Subtotal", 8], ["Unit rate", "Subtotal", 8],
+                ["Standing charge", "Subtotal", 3], ["Subtotal", "VAT", 6],
+                ["Subtotal", "Amount due", 6], ["VAT", "Amount due", 6],
+                ["Late fee", "Amount due", 0.4]] },
+      { name: "A complaint",
+        conclusion: "Outcome letter",
+        sources: ["Complaint filed"],
+        parts: ["Complaint filed", "Acknowledgement", "Triage", "Team A review",
+                "Team B review", "Manager sign-off", "Outcome letter"],
+        links: [["Complaint filed", "Acknowledgement", 5],
+                ["Acknowledgement", "Triage", 5], ["Triage", "Team A review", 4],
+                ["Triage", "Team B review", 4], ["Team A review", "Manager sign-off", 4],
+                ["Team B review", "Manager sign-off", 4],
+                ["Manager sign-off", "Outcome letter", 5]] },
+      { name: "A news story",
+        conclusion: "The story",
+        sources: ["Press release", "Named expert", "Public dataset"],
+        parts: ["The story", "Quoted figure", "Quoted expert", "Chart",
+                "Press release", "Named expert", "Public dataset"],
+        links: [["The story", "Quoted figure", 4], ["The story", "Quoted expert", 4],
+                ["The story", "Chart", 3], ["Quoted figure", "Press release", 6],
+                ["Chart", "Press release", 6], ["Quoted expert", "Named expert", 5],
+                ["Chart", "Public dataset", 1.2]] },
+      { name: "Getting to work",
+        conclusion: "At the desk",
+        sources: ["Home"],
+        parts: ["Home", "Bus", "Train", "Cycle", "Station", "At the desk"],
+        links: [["Home", "Bus", 3], ["Home", "Cycle", 2], ["Bus", "Station", 3],
+                ["Cycle", "Station", 2], ["Station", "Train", 5],
+                ["Train", "At the desk", 5]] }
+    ];
+  }
+
+  var LIB = library(), pick = 0, tab = "map", off = {};
+  var lastXY = null, lastKeep = null, lastStates = {}, drag = null, pos = {};
+
+  function ex() { return LIB[pick]; }
+  function liveLinks() {
+    return ex().links.filter(function (l, i) { return !off[i]; });
+  }
+
+  /* ------------------------------------------------------------- the map -- */
+  function relayout() {
+    var e = ex(), names = e.parts, idx = {};
+    names.forEach(function (n, i) { idx[n] = i; });
+    var ls = liveLinks();
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, ls.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var anchor = idx[e.conclusion];
+    var keep = [], stranded = [];
+    names.forEach(function (n, k) {
+      (r.dead || !isFinite(r.D[anchor][k]) ? stranded : keep).push(k);
+    });
+
+    if (keep.length >= 2) {
+      var xy = LMD.layout2d(r.D, keep);
+      /* Align each frame onto the last one. Classical MDS is fixed only up to
+         rotation and reflection, so without this the map turns over between
+         drags and reads as though the positions were arbitrary. */
+      if (lastXY && lastKeep) {
+        var shareP = [], order = [], rest = [];
+        keep.forEach(function (k, i) {
+          var j = lastKeep.indexOf(k);
+          (j >= 0 ? order : rest).push(i);
+          if (j >= 0) shareP.push(lastXY[j]);
+        });
+        if (shareP.length >= 2) {
+          var seq = order.concat(rest);
+          var aligned = LMD.procrustes2d(seq.map(function (i) { return xy[i]; }), shareP);
+          seq.forEach(function (i, slot) { xy[i] = aligned[slot]; });
+        }
+      }
+      lastXY = xy.map(function (p) { return p.slice(); });
+      lastKeep = keep.slice();
+
+      var stripH = stranded.length ? NODE_H + 14 : 0;
+      var loX = PAD + NODE_W / 2, hiX = VB.w - PAD - NODE_W / 2;
+      var loY = PAD + NODE_H / 2, hiY = VB.h - PAD - NODE_H / 2 - stripH;
+      var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity, minPair = Infinity, u, v;
+      xy.forEach(function (p) {
+        bx0 = Math.min(bx0, p[0]); bx1 = Math.max(bx1, p[0]);
+        by0 = Math.min(by0, p[1]); by1 = Math.max(by1, p[1]);
+      });
+      for (u = 0; u < xy.length; u++) {
+        for (v = u + 1; v < xy.length; v++) {
+          minPair = Math.min(minPair, Math.hypot(xy[u][0] - xy[v][0], xy[u][1] - xy[v][1]));
+        }
+      }
+      /* cap is the LARGEST scale at which the cloud still fits the frame, and
+         need is the smallest at which no two boxes touch. Any scale between
+         them is valid, so take cap and fill the frame. Taking min(need, cap)
+         instead -- which is what this did first -- draws as small as it can get
+         away with: measured at 55% of the width and 30% of the height, with the
+         picture huddled in a corner of an empty card. */
+      var need = Math.hypot(NODE_W * 0.8, NODE_H * 1.15) / Math.max(minPair, 1e-9);
+      var cap = Math.min((hiX - loX) / ((bx1 - bx0) || 1e-9),
+                         (hiY - loY) / ((by1 - by0) || 1e-9));
+      var scale = cap;
+      void need;   // kept: when need > cap the separation pass below has work to do
+      var midX = (loX + hiX) / 2 - (bx0 + bx1) / 2 * scale;
+      var midY = (loY + hiY) / 2 - (by0 + by1) / 2 * scale;
+      keep.forEach(function (k, i) {
+        pos[names[k]] = { x: midX + xy[i][0] * scale, y: midY + xy[i][1] * scale };
+      });
+    } else {
+      keep.forEach(function (k, i) {
+        pos[names[k]] = { x: VB.w / 2, y: (i + 1) * VB.h / (keep.length + 1) };
+      });
+    }
+    stranded.forEach(function (k, i) {
+      pos[names[k]] = { x: (i + 1) * VB.w / (stranded.length + 1),
+                        y: VB.h - PAD / 2 - NODE_H / 2 };
+    });
+
+    /* Boxes are separated by their penetration depth, split between the pair,
+       so the correction falls to zero at the threshold and nothing teleports. */
+    var MIN_X = NODE_W * 0.8, MIN_Y = NODE_H * 1.15;
+    var LO_X = NODE_W / 2 + 4, HI_X = VB.w - NODE_W / 2 - 4;
+    var LO_Y = NODE_H / 2 + 4, HI_Y = VB.h - NODE_H / 2 - 4;
+    for (var pass = 0; pass < 60; pass++) {
+      var hits = 0;
+      for (var a = 0; a < names.length; a++) {
+        for (var b = a + 1; b < names.length; b++) {
+          var pa = pos[names[a]], pb = pos[names[b]];
+          if (!pa || !pb) continue;
+          var ux = (pb.x - pa.x) / MIN_X, uy = (pb.y - pa.y) / MIN_Y;
+          var far = Math.max(Math.abs(ux), Math.abs(uy));
+          if (far >= 1) continue;
+          hits++;
+          if (far < 1e-9) { pa.y -= MIN_Y / 2; pb.y += MIN_Y / 2; continue; }
+          var grow = (1 / far - 1) / 2;
+          pa.x -= ux * MIN_X * grow; pa.y -= uy * MIN_Y * grow;
+          pb.x += ux * MIN_X * grow; pb.y += uy * MIN_Y * grow;
+        }
+      }
+      names.forEach(function (n) {
+        var p = pos[n];
+        if (!p) return;
+        p.x = Math.min(Math.max(p.x, LO_X), HI_X);
+        p.y = Math.min(Math.max(p.y, LO_Y), HI_Y);
+      });
+      if (!hits) break;
+    }
+    return { r: r, keep: keep, stranded: stranded, idx: idx, names: names };
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function drawMap() {
+    var e = ex(), st = relayout(), out = [];
+    var reach = {};
+    st.names.forEach(function (n, k) {
+      reach[n] = !st.r.dead && isFinite(st.r.D[st.idx[e.conclusion]][k]);
+    });
+    var bear = PLEXUS.bearings(st.names, liveLinks());
+    var byPair = {};
+    bear.links.forEach(function (b) { byPair[b.from + "\u0000" + b.to] = b; });
+
+    liveLinks().forEach(function (l) {
+      var A = pos[l[0]], B = pos[l[1]];
+      if (!A || !B) return;
+      var b = byPair[l[0] + "\u0000" + l[1]];
+      var cut = !reach[l[0]] || !reach[l[1]];
+      var col = cut ? "var(--mute)"
+        : b && b.soleRoute ? "var(--hold)"
+        : b && b.bearing < 0.25 ? "var(--spare)" : "var(--share)";
+      out.push('<line x1="' + A.x.toFixed(1) + '" y1="' + A.y.toFixed(1) +
+        '" x2="' + B.x.toFixed(1) + '" y2="' + B.y.toFixed(1) + '" stroke="' + col +
+        '" stroke-width="' + (cut ? 1 : 1.2 + 2.2 * (b ? b.bearing : 0.5)).toFixed(2) +
+        '" stroke-opacity="' + (cut ? ".4" : ".85") +
+        (cut ? '" stroke-dasharray="4 5' : "") + '"/>');
+    });
+
+    st.names.forEach(function (n) {
+      var p = pos[n];
+      if (!p) return;
+      var isSrc = e.sources.indexOf(n) >= 0, isEnd = n === e.conclusion;
+      var col = !reach[n] ? "var(--mute)" : isEnd ? "var(--hold)"
+        : isSrc ? "var(--spare)" : "var(--ink-2)";
+      out.push('<g class="node" data-id="' + esc(n) + '" tabindex="0" role="button" ' +
+        'aria-label="' + esc(n) + (isSrc ? ", a source" : isEnd ? ", the result" : "") +
+        '" opacity="' + (reach[n] ? "1" : ".55") + '">' +
+        '<rect x="' + (p.x - NODE_W / 2).toFixed(1) + '" y="' + (p.y - NODE_H / 2).toFixed(1) +
+        '" width="' + NODE_W + '" height="' + NODE_H + '" rx="9" fill="var(--card-2)" ' +
+        'stroke="' + col + '" stroke-width="' + (isEnd ? 2 : 1.4) + '"/>' +
+        '<text x="' + p.x.toFixed(1) + '" y="' + (p.y + 3.5).toFixed(1) + '" fill="' + col +
+        '" font-size="9.4" text-anchor="middle" font-weight="600">' + esc(n) + '</text>' +
+        '<rect class="hit" x="' + (p.x - NODE_W / 2 - 8).toFixed(1) + '" y="' +
+        (p.y - NODE_H / 2 - 8).toFixed(1) + '" width="' + (NODE_W + 16) +
+        '" height="' + (NODE_H + 16) + '"/></g>');
+    });
+
+    $("#canvas").innerHTML = out.join("");
+    $("#canvas-desc").textContent = e.parts.length + " parts and " +
+      liveLinks().length + " links. " + e.conclusion + " is the result. " +
+      "Drag any part to change how strongly it is connected.";
+
+    var cutOff = st.stranded.length;
+    $("#map-answer").innerHTML = cutOff
+      ? '<div class="big"><em>' + cutOff + '</em> part' + (cutOff === 1 ? " is" : "s are") +
+        ' no longer connected to ' + esc(e.conclusion) + '.</div>' +
+        "<p>They sit along the bottom. Nothing reaches the result through them any more.</p>"
+      : '<div class="big">' + esc(e.name) + ', as it actually fits together.</div>' +
+        "<p>Nothing here was positioned by hand. Drag any part: pull it away to " +
+        "weaken what feeds it, push it toward its source to tighten. Everything " +
+        "else moves because the arithmetic moved.</p>";
+
+    var said = null;
+    st.names.forEach(function (n) {
+      var now = reach[n] ? "ON" : "OFF";
+      if (lastStates[n] === "ON" && now === "OFF" && !said) {
+        said = n + " is now cut off from " + e.conclusion + ".";
+      }
+      lastStates[n] = now;
+    });
+    var el = $("#snap");
+    if (said) { el.textContent = said; el.hidden = false; }
+    else if (!cutOff) { el.hidden = true; }
+  }
+
+  /* ------------------------------------------------------ holding it up -- */
+  function drawHold() {
+    var e = ex(), bear = PLEXUS.bearings(e.parts, liveLinks());
+    var on = bear.links.length, sole = bear.links.filter(function (b) { return b.soleRoute; }).length;
+    var head = !on ? "<em>Nothing left</em>"
+      : sole === on ? "<em>Every one</em> of the " + on + " steps is a single point of failure."
+      : "<em>" + sole + " of " + on + "</em> steps have no way around them.";
+    var sub = !on ? "Every link has been removed."
+      : sole === on ? "Nothing in this is checked against anything else. There is no " +
+          "second route to any part of it."
+      : "The rest share the load with another way through, so losing any one of " +
+        "them would not break it.";
+    if (bear.pieces > 1) {
+      sub = "This is now in " + bear.pieces + " separate pieces. Parts of it can no " +
+            "longer reach the rest, and the total below has dropped by one for each break.";
+    }
+    $("#hold-answer").innerHTML = '<div class="big">' + head + "</div><p>" + sub + "</p>";
+
+    var byI = {};
+    bear.links.forEach(function (b) { byI[b.i] = b; });
+    $("#hold-rows").innerHTML = e.links.map(function (l, i) {
+      if (off[i]) {
+        return '<button class="row" data-i="' + i + '" data-off="1" type="button">' +
+          '<span class="nm"><b>' + esc(l[0]) + '</b><span class="to">to ' + esc(l[1]) +
+          '</span><span class="pct">—</span></span>' +
+          '<span class="say">Removed. Tap to put it back.</span></button>';
+      }
+      var b = byI[i];
+      if (!b) return "";
+      var k = b.soleRoute ? "hold" : b.bearing < 0.25 ? "spare" : "share";
+      var others = Math.max(1, Math.round(1 / b.bearing) - 1);
+      var say = b.soleRoute
+        ? "Nothing else does this. Remove it and this breaks in two."
+        : "There " + (others === 1 ? "is 1 other route" : "are about " + others +
+          " other routes") + " around this step.";
+      return '<button class="row" data-i="' + i + '" data-k="' + k + '" type="button">' +
+        '<span class="nm"><b>' + esc(l[0]) + '</b><span class="to">to ' + esc(l[1]) +
+        '</span><span class="pct">' + Math.round(b.bearing * 100) + '%</span></span>' +
+        '<span class="bar"><i style="width:' + (b.bearing * 100).toFixed(1) + '%"></i></span>' +
+        '<span class="say">' + say + "</span></button>";
+    }).join("");
+
+    $("#hold-tot").innerHTML = "<b>" + bear.total.toFixed(2) + "</b><span>total carried<br>" +
+      bear.parts + " parts − " + bear.pieces + " piece" + (bear.pieces === 1 ? "" : "s") +
+      " = " + bear.expected + ", always</span>";
+  }
+
+  /* --------------------------------------------------------- resting on -- */
+  function drawRest() {
+    var e = ex();
+    var s = PLEXUS.sound(e.parts, liveLinks(), e.sources, e.conclusion);
+    var head, sub;
+    if (!s.support) {
+      head = "<em>Nothing reaches</em> " + esc(e.conclusion) + " any more.";
+      sub = "Every route in has been removed.";
+    } else if (s.restsOnOneThread) {
+      head = "It <em>all</em> rests on one source.";
+      sub = "If that source turned out to be wrong, nothing would be left holding " +
+            esc(e.conclusion) + " up.";
+    } else {
+      head = "The worst single loss costs <em>" + Math.round(s.deepest * 100) + "%</em>.";
+      sub = "If the source it leans on hardest turned out to be wrong, " +
+            Math.round(s.remaining * 100) + "% of the support would remain.";
+    }
+    $("#rest-answer").innerHTML = '<div class="big">' + head + "</div><p>" + sub + "</p>";
+
+    $("#rest-rows").innerHTML = s.bySource.map(function (row) {
+      var k = row.carriesItAlone ? "hold" : row.dependence < 0.25 ? "spare" : "share";
+      var say = row.carriesItAlone
+        ? "Everything comes in this way. There is no other source."
+        : "Lose this and " + Math.round((1 - row.dependence) * 100) +
+          "% of the support would still be there.";
+      return '<div class="row" data-k="' + k + '">' +
+        '<span class="nm"><b>If ' + esc(row.source) + ' were wrong</b>' +
+        '<span class="pct">−' + Math.round(row.dependence * 100) + '%</span></span>' +
+        '<span class="bar"><i style="width:' + (row.dependence * 100).toFixed(1) + '%"></i></span>' +
+        '<span class="say">' + say + "</span></div>";
+    }).join("") || '<div class="row"><span class="say">No sources are listed for this one.</span></div>';
+  }
+
+  /* ------------------------------------------------------------- plumbing -- */
+  function draw() {
+    $("#pick").innerHTML = LIB.map(function (x, i) {
+      return '<button type="button" data-i="' + i + '" aria-pressed="' + (i === pick) +
+        '">' + esc(x.name) + "</button>";
+    }).join("");
+    ["map", "hold", "rest"].forEach(function (t) {
+      $("#tab-" + t).setAttribute("aria-selected", String(t === tab));
+      $("#v-" + t).hidden = t !== tab;
+    });
+    if (tab === "map") drawMap();
+    if (tab === "hold") drawHold();
+    if (tab === "rest") drawRest();
+  }
+
+  $("#pick").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-i]");
+    if (!b) return;
+    pick = +b.dataset.i; off = {}; lastXY = null; lastKeep = null; lastStates = {};
+    draw();
+  });
+  ["map", "hold", "rest"].forEach(function (t) {
+    $("#tab-" + t).addEventListener("click", function () { tab = t; draw(); });
+  });
+  $("#hold-rows").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-i]");
+    if (!b) return;
+    var i = +b.dataset.i;
+    off[i] = !off[i];
+    draw();
+  });
+  function resetAll() { off = {}; LIB = library(); lastStates = {}; draw(); }
+  ["#reset", "#reset2", "#reset3"].forEach(function (s) { $(s).onclick = resetAll; });
+  $("#cut").onclick = function () {
+    var live = ex().links.filter(function (l, i) { return !off[i]; });
+    if (!live.length) return;
+    var weakest = 0, best = Infinity;
+    ex().links.forEach(function (l, i) { if (!off[i] && l[2] < best) { best = l[2]; weakest = i; } });
+    off[weakest] = true;
+    draw();
+  };
+  $("#theme").onclick = function () {
+    var d = document.documentElement;
+    var light = d.getAttribute("data-theme") === "light";
+    d.setAttribute("data-theme", light ? "dark" : "light");
+    $("#theme").textContent = light ? "Light" : "Dark";
+  };
+  $("#text").onclick = function () {
+    var d = document.documentElement, on = d.hasAttribute("data-big");
+    if (on) d.removeAttribute("data-big"); else d.setAttribute("data-big", "1");
+    $("#text").setAttribute("aria-pressed", String(!on));
+  };
+
+  /* dragging changes ONE coupling, not all of them */
+  function svgPoint(ev) {
+    var svg = $("#canvas"), rect = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+    var scale = Math.min(rect.width / vb.width, rect.height / vb.height);
+    var ox = (rect.width - vb.width * scale) / 2, oy = (rect.height - vb.height * scale) / 2;
+    return { x: (ev.clientX - rect.left - ox) / scale, y: (ev.clientY - rect.top - oy) / scale };
+  }
+  $("#stage").addEventListener("pointerdown", function (ev) {
+    var g = ev.target.closest(".node");
+    if (!g) return;
+    var id = g.getAttribute("data-id"), e = ex();
+    var k = -1;
+    e.links.forEach(function (l, i) {
+      if (off[i]) return;
+      if (k < 0 && (l[1] === id || l[0] === id)) k = i;
+    });
+    if (k < 0) return;
+    var other = e.links[k][0] === id ? e.links[k][1] : e.links[k][0];
+    var src = pos[other], p = svgPoint(ev);
+    if (!src) return;
+    drag = { k: k, J0: e.links[k][2], r0: Math.hypot(p.x - src.x, p.y - src.y) || 1, src: src };
+    $("#stage").setPointerCapture(ev.pointerId);
+    ev.preventDefault();
+  });
+  $("#stage").addEventListener("pointermove", function (ev) {
+    if (!drag) return;
+    var p = svgPoint(ev);
+    var r = Math.hypot(p.x - drag.src.x, p.y - drag.src.y) || 1;
+    var ratio = drag.r0 / r;
+    ex().links[drag.k][2] = Math.max(0.01, Math.min(400, drag.J0 * ratio * ratio));
+    drawMap();
+    ev.preventDefault();
+  });
+  ["pointerup", "pointercancel"].forEach(function (n) {
+    $("#stage").addEventListener(n, function () { drag = null; });
+  });
+
+  draw();
+  window.__plexus = {
+    LIB: LIB, PLEXUS: PLEXUS, LMD: LMD, draw: draw, pos: pos,
+    get pick() { return pick; }, set pick(v) { pick = v; off = {}; lastXY = null; draw(); },
+    get tab() { return tab; }, set tab(v) { tab = v; draw(); },
+    get off() { return off; }, toggle: function (i) { off[i] = !off[i]; draw(); },
+    setJ: function (i, J) { LIB[pick].links[i][2] = J; draw(); }
+  };
+})();
+</script>
+</body>
+</html>

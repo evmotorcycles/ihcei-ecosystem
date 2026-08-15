@@ -1,0 +1,138 @@
+{
+ "firewall": "layer-1 telemetry \u2192 metaphor. Nothing returns.",
+ "cannot": "No dataset and no computer simulation can prove NCU. The swarm data is simulated; the LMD numbers are measurements of a pseudo-inverse. What is done here is abstraction of computational telemetry into metaphorical representation to illustrate a governance philosophy \u2014 one direction, and no evidential weight in either.",
+ "nafs": {
+  "what": "a cognitive essence",
+  "primary_functions": [
+   "Salat",
+   "Zakat"
+  ],
+  "note": "These are philosophy-layer terms. They describe no measured quantity, index no dataset, and are never computed with. A test fails if any of them appears in a measurement module."
+ },
+ "function_figures": [
+  {
+   "function": "Salat",
+   "figure": "the pull on one thread, applied deliberately and repeatedly to the same place",
+   "drawn_from": "H4 \u2014 a local pull moves the near ring most and falls off with distance; it is the only gesture that rearranges anything",
+   "not": "This does not define, model, measure or evidence Salat. It borrows the SHAPE of a measured falloff to picture a philosophy point.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "function": "Zakat",
+   "figure": "what is passed outward down the lineage, against a measured attenuation of \u03c1 = \u22120.75 per remove",
+   "drawn_from": "S1 \u2014 fidelity falls with depth, so anything handed on arrives thinner than it left",
+   "not": "This does not define, model, measure or evidence Zakat. It borrows the SHAPE of a measured decay to picture a philosophy point.",
+   "proves": "PROVES: NOTHING"
+  }
+ ],
+ "abstractions": [
+  {
+   "measured": "Scaling every coupling by the same factor rescales every distance and changes nothing else: slope \u22120.5, R\u00b2 1.000000, on every graph.",
+   "source": "smi/results_smi.json",
+   "field": "phase2_test.H0_identity.slope",
+   "value": -0.5000000000000082,
+   "figure": "Turning every lamp in a room up together changes how bright the room is and nothing about where anything sits.",
+   "illustrates": "A uniform change in intensity is not a change in structure. Effort applied evenly to everything moves the whole scene and rearranges none of it.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "Raising the coupling on ONE link moves the nearest elements most, and the effect falls off monotonically with hop distance.",
+   "source": "smi/results_smi.json",
+   "field": "phase2_test.H4_local_pull_is_local.by_hop.0",
+   "value": 0.2864668538563013,
+   "figure": "Pulling one thread in a net: what is knotted to it moves a lot, the next ring moves less, the far edge barely stirs.",
+   "illustrates": "A particular attention has a reach, and the reach is finite and graded. It is not the same act as turning everything up.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "Two elements with no path between them come back from the raw pseudo-inverse at a FINITE distance (1.118) \u2014 nearer than a real distance inside one piece (1.732). The engine has to detect the break itself and return infinity.",
+   "source": "smi/results_smi.json",
+   "field": "phase2_test.H2_disconnected_is_finite.raw",
+   "value": 1.1180339887498958,
+   "figure": "Two rooms with no door between them, and a tape measure that still reports a short distance because it went round the outside of the building.",
+   "illustrates": "Proximity is not connection. Something can appear close and have no path to you at all, and only checking for the door tells them apart.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "With every coupling at zero the metric returns distance 0.000000 \u2014 a completely dead mesh measures as PERFECTLY CONTRACTED, identical to a perfectly coupled one.",
+   "source": "smi/results_smi.json",
+   "field": "phase2_test.H3_zero_coupling_collapses.d_at_J0",
+   "value": 0.0,
+   "figure": "A room so dark that everything seems to be touching you.",
+   "illustrates": "Total absence of connection can read, from inside, exactly like total connection. The two are told apart by checking, not by how it feels.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "Fidelity falls with lineage depth: Spearman \u03c1 = \u22120.75 over 40 simulated swarms.",
+   "source": "swarm-lmd/results_swarm.json",
+   "field": "S1_decay_with_depth.rho",
+   "value": -0.7529134523816232,
+   "figure": "A message passed down a long line of people arrives thinner than it left, and each retelling costs something.",
+   "illustrates": "What is inherited attenuates. Distance from the source is not neutral, and nothing preserves itself by being passed on.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "Capacity buys reach and nothing else: \u03c1(U, descendants) = +0.34, \u03c1(U, fidelity received) = \u22120.01.",
+   "source": "swarm-lmd/results_swarm.json",
+   "field": "S5_what_capacity_does.rho_U_descendants",
+   "value": 0.337193488387093,
+   "figure": "A loud voice gathers a bigger crowd and does not, by being loud, receive a truer account of anything.",
+   "illustrates": "Reach and soundness are separate quantities. Growing the first has no effect on the second, which is why counting an audience measures the wrong thing.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "Removing the root's outbound coupling leaves 200 of 200 descendants at infinite distance \u2014 every one of them, immediately.",
+   "source": "swarm-lmd/results_swarm.json",
+   "field": "S4_revocation.cut_off",
+   "value": 200,
+   "figure": "Cut the trunk and every branch is still a branch, still shaped like a branch, and connected to nothing.",
+   "illustrates": "A structure entirely dependent on one source does not degrade gracefully when the source is withdrawn. It is intact and inert at the same moment.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "D is the PRODUCT of two hops, encode and decode. Across the swarm cohort mean D falls from 0.838 at the first remove to 0.014 at the 39th.",
+   "source": "lism-cohorts/results_meta.json",
+   "field": "cohorts.D_swarm.meanD_last",
+   "value": 0.014,
+   "figure": "Speaking through a wall and being heard through a wall. Neither wall has to be thick; two thin ones multiply.",
+   "illustrates": "Transmission has two sides and they compound rather than add. Saying it well does not survive being received badly, and a fault on either side is a fault in the whole.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "The accelerating law E = U\u00b7D\u00b2 was pre-registered and LOST: on 992 real repositories the linear law reaches AUC ~0.73 and the quadratic ~0.59 under cross-validation. Four cohorts out of four: the plain law was enough.",
+   "source": "lism-cohorts/results_meta.json",
+   "field": "cohorts.B_github.verdict",
+   "value": "QUADRATIC DISCONFIRMED (linear AUC ~0.73, quad CV AUC ~0.59, VIF 1.003)",
+   "figure": "Expecting that effort rewards itself faster and faster, and finding it only ever pays what it pays.",
+   "illustrates": "A hope for acceleration is worth writing down before looking, precisely so that it can be given up. Nothing in the record improves by being wished at.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "A dataset counts as a valid test only if the two hops come from physically distinct measurements (VIF < 5). Yeast passes at 1.003; SEC EDGAR fails at 6.4 and its outcome is circular.",
+   "source": "lism-cohorts/results_meta.json",
+   "field": "cohorts.A_yeast.VIF",
+   "value": 1.003,
+   "figure": "Two witnesses who turn out to have been standing together the whole time. There was only ever one account.",
+   "illustrates": "Independence is a property of how testimony was OBTAINED, not of how much of it there is. Agreement between two things that share a source is not corroboration.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "A test is only valid if the failing region is populated: at least 100 real cases where the outcome did NOT occur. The GitHub cohort splits 750 fail / 242 survive.",
+   "source": "lism-cohorts/results_meta.json",
+   "field": "cohorts.B_github.split",
+   "value": "750 fail / 242 survive",
+   "figure": "Asking only the people who arrived how they found the road.",
+   "illustrates": "A claim that has never been given the chance to come out false has not been examined. The ones who did not make it have to be in the count.",
+   "proves": "PROVES: NOTHING"
+  },
+  {
+   "measured": "The knowledge cohort passed every validity gate and the effect was still weak: AUC 0.58-0.62 on N=793, with a time confound recorded rather than removed.",
+   "source": "lism-cohorts/results_meta.json",
+   "field": "cohorts.C_knowledge.effect",
+   "value": "WEAK (AUC 0.58-0.62; newest-first time confound) \u2014 honest scope",
+   "figure": "A properly conducted search that finds very little, written up at exactly the size it was.",
+   "illustrates": "Doing the procedure correctly does not entitle anyone to a result. A small finding reported small is worth more than the same finding reported large.",
+   "proves": "PROVES: NOTHING"
+  }
+ ]
+}
