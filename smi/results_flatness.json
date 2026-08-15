@@ -1,0 +1,25 @@
+{
+  "mesh": "the invoice mesh shipped in smi/app.html",
+  "default_plane": {
+    "axes": [
+      0,
+      1
+    ],
+    "worst_pair": [
+      "VAT 20%",
+      "Total"
+    ],
+    "drawn_at_fraction_of_true": 4.31116727625502e-16,
+    "their_true_distance": 0.49999999999999994,
+    "mesh_diameter": 0.7071067811865477,
+    "share_of_diameter_hidden": 0.7071067811865472
+  },
+  "alternative_plane": {
+    "axes": [
+      0,
+      2
+    ],
+    "worst_pair_there": 0.707106781186546
+  },
+  "the_limit": "This declares the blind spots it can COMPUTE. A projection loss is computable because both the true distance and the drawn distance exist. An omission from a record is not: a ledger cannot contain its own omissions, which is why keel/run.plumb halts rather than reporting completeness."
+}
