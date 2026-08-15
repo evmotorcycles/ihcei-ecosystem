@@ -76,6 +76,18 @@ MANIFEST = """{
 }
 """
 
+# connect-src 'self' in the CSP below is NOT optional, and the reason is worth
+# keeping next to it: without it the service worker registers and then never
+# activates. Its own caches.addAll() during install is a same-origin fetch,
+# default-src 'none' blocks it, install rejects, and the site ships with offline
+# silently not working while every page-level check still passes.
+#
+# That note used to live in the rendered JSON as a "_comment" key. Vercel
+# validates vercel.json against a schema that forbids unknown properties in a
+# header rule and REJECTS THE WHOLE DEPLOYMENT -- so the explanation of one
+# deploy-breaking bug became a second one. It belongs here, in the generator,
+# where it documents the config without being shipped as part of it. A test
+# asserts the rendered file carries no key Vercel does not accept.
 VERCEL = """{
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
@@ -108,7 +120,6 @@ VERCEL = """{
       ]
     },
     {
-      "_comment": "connect-src 'self' is NOT optional. Without it the service worker registers and then never activates: its own caches.addAll() during install is a same-origin fetch, default-src 'none' blocks it, install rejects, and the site ships with offline silently not working while every page-level check still passes.",
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },

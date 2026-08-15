@@ -195,6 +195,33 @@ def test_the_csp_allows_the_service_worker_to_install():
     assert "default-src 'none'" in csp
 
 
+def test_vercel_json_carries_no_key_vercel_will_reject():
+    """The one that DID ship broken, and blocked the deploy.
+
+    A header rule carried a "_comment" key explaining why connect-src is
+    load-bearing. Vercel validates vercel.json against a schema that forbids
+    unknown properties in a rule and rejects the ENTIRE deployment -- so the
+    note documenting one deploy-breaking bug became a second one, and it was
+    invisible until something actually tried to deploy. The explanation now
+    lives in build.py, where it documents the config without being part of it.
+
+    Every check here passed while this file could not be deployed at all: the
+    JSON parsed, the CSP was right, the cache headers were right. Valid JSON is
+    not the same as a config the platform accepts.
+    """
+    cfg = _vercel()
+    top_ok = {"$schema", "cleanUrls", "trailingSlash", "headers", "redirects",
+              "rewrites", "routes", "regions", "framework", "buildCommand",
+              "outputDirectory", "installCommand", "public", "crons", "images"}
+    assert set(cfg) <= top_ok, "Vercel rejects top-level: %s" % sorted(set(cfg) - top_ok)
+    rule_ok = {"source", "headers", "has", "missing"}
+    for rule in cfg["headers"]:
+        extra = set(rule) - rule_ok
+        assert not extra, "Vercel rejects the whole deployment for: %s" % sorted(extra)
+        for h in rule["headers"]:
+            assert set(h) == {"key", "value"}, "bad header entry: %s" % sorted(h)
+
+
 def test_the_manifest_carries_icons_a_real_install_can_use():
     """Chrome's install criteria want a fetchable icon of at least 192x192, and
     a maskable one so Android does not letterbox it."""

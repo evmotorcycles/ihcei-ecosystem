@@ -30,7 +30,6 @@
       ]
     },
     {
-      "_comment": "connect-src 'self' is NOT optional. Without it the service worker registers and then never activates: its own caches.addAll() during install is a same-origin fetch, default-src 'none' blocks it, install rejects, and the site ships with offline silently not working while every page-level check still passes.",
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
