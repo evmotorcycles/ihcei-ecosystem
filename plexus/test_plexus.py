@@ -154,3 +154,98 @@ def test_every_control_is_at_least_44px():
     assert "min-height:44px" in src, "the header chips lost their 44px floor"
     for rule in ("min-height:46px", "min-height:48px"):
         assert rule in src
+
+
+# ------------------------------------------------------------- the PWA files --
+def _manifest():
+    return json.load(open(os.path.join(HERE, "manifest.webmanifest"), encoding="utf-8"))
+
+
+def _vercel():
+    return json.load(open(os.path.join(HERE, "vercel.json"), encoding="utf-8"))
+
+
+def test_index_and_app_are_the_same_bytes():
+    """One is what a server serves, the other is what you double-click. If they
+    drift, the tested page and the shipped page stop being the same page."""
+    a = open(os.path.join(HERE, "index.html"), "rb").read()
+    b = open(os.path.join(HERE, "app.html"), "rb").read()
+    assert a == b and len(a) > 40000
+
+
+def test_the_csp_allows_the_service_worker_to_install():
+    """The one that would have shipped broken.
+
+    With default-src 'none' and no connect-src, the worker REGISTERS and then
+    never activates: caches.addAll() during install is a same-origin fetch, the
+    policy blocks it, install rejects, and the registration is discarded. Driven
+    in a browser: registration returned OK, the cache existed with 0 entries,
+    and an offline reload landed on the browser's error page -- while every
+    page-level check still passed.
+    """
+    csp = None
+    for rule in _vercel()["headers"]:
+        for h in rule["headers"]:
+            if h["key"] == "Content-Security-Policy":
+                csp = h["value"]
+    assert csp, "no Content-Security-Policy is declared"
+    assert "connect-src 'self'" in csp, \
+        "without connect-src the worker installs and never activates"
+    assert "worker-src 'self'" in csp
+    assert "default-src 'none'" in csp
+
+
+def test_the_manifest_carries_icons_a_real_install_can_use():
+    """Chrome's install criteria want a fetchable icon of at least 192x192, and
+    a maskable one so Android does not letterbox it."""
+    m = _manifest()
+    assert m["display"] == "standalone" and m["start_url"] == "./"
+    sizes = {i["sizes"] for i in m["icons"]}
+    assert "192x192" in sizes and "512x512" in sizes
+    purposes = " ".join(i.get("purpose", "") for i in m["icons"])
+    assert "maskable" in purposes
+    for icon in m["icons"]:
+        path = os.path.join(HERE, icon["src"].lstrip("./"))
+        assert os.path.exists(path), f"{icon['src']} is declared and missing"
+        assert not icon["src"].startswith("data:"), \
+            "a data URI is not reliably honoured as a manifest icon"
+
+
+def test_the_png_icons_are_the_size_they_claim_and_are_not_blank():
+    """A blank icon has the right dimensions and the wrong content. The first
+    render produced a 537-byte 192x192 square of pure background and looked
+    correct in every check that did not open it."""
+    import struct
+    for n in (192, 512, 180):
+        path = os.path.join(HERE, f"icon-{n}.png")
+        raw = open(path, "rb").read()
+        w, h = struct.unpack(">II", raw[16:24])
+        assert (w, h) == (n, n), f"icon-{n}.png is {w}x{h}"
+        assert len(raw) > 1500, f"icon-{n}.png is {len(raw)} bytes — blank"
+
+
+def test_ios_gets_a_png_apple_touch_icon():
+    """iOS does not read manifest icons for Add to Home Screen and does not
+    accept SVG in apple-touch-icon. Without this the installed icon is blank."""
+    src = open(os.path.join(HERE, "index.html"), encoding="utf-8").read()
+    assert 'rel="apple-touch-icon" sizes="180x180" href="icon-180.png"' in src
+    assert 'name="apple-mobile-web-app-capable"' in src
+
+
+def test_the_page_the_worker_and_the_manifest_are_not_cached_forever():
+    """An immutable Cache-Control on sw.js strands users on an old worker."""
+    rules = {r["source"]: {h["key"]: h["value"] for h in r["headers"]}
+             for r in _vercel()["headers"]}
+    for src in ("/sw.js", "/manifest.webmanifest", "/(index.html)?"):
+        cc = rules[src]["Cache-Control"]
+        assert "max-age=0" in cc and "must-revalidate" in cc, f"{src}: {cc}"
+    assert "immutable" in rules["/icon-(.*).png"]["Cache-Control"]
+
+
+def test_the_service_worker_caches_what_the_manifest_declares():
+    sw = open(os.path.join(HERE, "sw.js"), encoding="utf-8").read()
+    for f in ("./index.html", "./manifest.webmanifest", "./icon-192.png",
+              "./icon-512.png", "./icon-180.png"):
+        assert f in sw, f"{f} is shipped and never cached"
+    assert 'caches.match("./index.html")' in sw, \
+        "a navigation that misses the cache offline must fall back to the page"

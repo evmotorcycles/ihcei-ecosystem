@@ -5,12 +5,23 @@ installable.
     python3 plexus/build.py
 
 Writes:
-    plexus/app.html               one self-contained file. Open it from a phone,
-                                  a laptop, a USB stick. No server, no account,
-                                  no network. Works in aeroplane mode.
+    plexus/index.html             the page a server serves. Identical bytes to
+                                  app.html; a test asserts that.
+    plexus/app.html               the same file under the name you double-click.
     plexus/manifest.webmanifest   so a browser will offer "Add to Home Screen"
     plexus/sw.js                  so it keeps working once installed
-    plexus/icon.svg               the icon, inline everywhere it is needed
+    plexus/vercel.json            static routing and the cache headers a PWA
+                                  needs -- notably SHORT ones on the page, the
+                                  worker and the manifest
+    plexus/icon.svg               the favicon
+    plexus/icon-{192,512,180}.png real icons, because SVG is not enough
+
+WHY PNG ICONS EXIST HERE
+A data URI in the manifest is not a reliable icon. Chrome's install criteria
+want a fetchable icon of at least 192x192, and iOS does not read manifest icons
+AT ALL for Add to Home Screen -- it reads <link rel="apple-touch-icon">, and it
+does not accept SVG there. An SVG-only, data-URI-only build installs on an
+iPhone with a blank icon. The PNGs are rendered by plexus/make_icons.py.
 
 BEING HONEST ABOUT "INSTALLABLE"
 Opening app.html from a file gives the whole app, offline, on every platform.
@@ -47,14 +58,67 @@ MANIFEST = """{
   "name": "Plexus",
   "short_name": "Plexus",
   "description": "See what a thing is made of, what is holding it up, and what it rests on.",
-  "start_url": "./app.html",
+  "id": "/",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "any",
   "background_color": "#0F1418",
   "theme_color": "#0F1418",
+  "categories": ["utilities", "productivity"],
   "icons": [
-    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
+"""
+
+VERCEL = """{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    },
+    {
+      "source": "/manifest.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" },
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(index.html)?",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/icon-(.*).png",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "_comment": "connect-src 'self' is NOT optional. Without it the service worker registers and then never activates: its own caches.addAll() during install is a same-origin fetch, default-src 'none' blocks it, install rejects, and the site ships with offline silently not working while every page-level check still passes.",
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "no-referrer" },
+        { "key": "Permissions-Policy",
+          "value": "geolocation=(), camera=(), microphone=(), interest-cohort=()" },
+        { "key": "Content-Security-Policy",
+          "value": "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; script-src 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" }
+      ]
+    }
   ]
 }
 """
@@ -66,8 +130,11 @@ SW = """/* sw.js -- Plexus offline.
  * no telemetry. A service worker for an app like this exists only so the
  * platform will let it be installed and opened without a network.
  */
-var CACHE = "plexus-v1";
-var FILES = ["./app.html", "./icon.svg", "./manifest.webmanifest"];
+/* Bump CACHE whenever a shipped file changes. The old cache is deleted on
+ * activate, so a stale page cannot survive a deploy. */
+var CACHE = "plexus-v2";
+var FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg",
+             "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); })
@@ -81,11 +148,23 @@ self.addEventListener("activate", function (e) {
   }).then(function () { return self.clients.claim(); }));
 });
 
+/* Cache first, because there is nothing to be fresh about: no API, no account,
+ * no telemetry. A navigation that misses the cache falls back to the page
+ * itself, so a deep link opened offline still lands somewhere real rather than
+ * on the browser's dinosaur. */
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
-  e.respondWith(caches.match(e.request).then(function (hit) {
-    return hit || fetch(e.request);
-  }));
+  var url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
+  e.respondWith(
+    caches.match(e.request, { ignoreSearch: true }).then(function (hit) {
+      if (hit) return hit;
+      return fetch(e.request).catch(function () {
+        return e.request.mode === "navigate"
+          ? caches.match("./index.html") : Response.error();
+      });
+    })
+  );
 });
 """
 
@@ -116,14 +195,20 @@ def main():
               .replace("</body>", REGISTER + "</body>"))
     assert "{{" not in out, "unfilled placeholder left in app.html"
 
-    open(os.path.join(HERE, "app.html"), "w", encoding="utf-8").write(out)
+    for name in ("app.html", "index.html"):
+        open(os.path.join(HERE, name), "w", encoding="utf-8").write(out)
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
+    open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
     open(os.path.join(HERE, "icon.svg"), "w", encoding="utf-8").write(ICON)
 
-    print("wrote plexus/app.html            (%.1f KB) — open it anywhere, offline"
+    print("wrote plexus/index.html and app.html  (%.1f KB each, identical bytes)"
           % (len(out) / 1024))
-    print("wrote plexus/manifest.webmanifest, sw.js, icon.svg — for install-to-home-screen")
+    print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
+    missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
+               if not os.path.exists(os.path.join(HERE, f))]
+    if missing:
+        print("MISSING ICONS: " + ", ".join(missing) + " — run plexus/make_icons.py")
     return 0
 
 

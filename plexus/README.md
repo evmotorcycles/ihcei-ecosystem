@@ -105,3 +105,74 @@ And it only knows the parts you entered.
 Files: `app_template.html` + `engines.js` + `build.py` → `app.html`,
 `manifest.webmanifest`, `sw.js`, `icon.svg` · `parity_dump.mjs` ·
 `test_plexus.py`.
+
+---
+
+## Deploying it (Vercel)
+
+`plexus/build.py` emits everything the deploy needs. From the repository root:
+
+```bash
+python3 plexus/make_icons.py     # only when the icon changes
+python3 plexus/build.py          # index.html, manifest, sw.js, vercel.json
+python3 -m pytest -q plexus/     # 32 tests, including the PWA files
+
+cd plexus
+npx vercel login                 # once
+npx vercel link                  # once — creates .vercel/, answer "no" to a framework
+npx vercel                       # preview deploy, prints a URL you can test
+npx vercel --prod                # production
+```
+
+There is no build step to configure: it is a static directory. If Vercel asks
+for a framework preset, choose **Other**; output directory `.`, build command
+empty.
+
+To check it before deploying, with the exact headers `vercel.json` declares:
+
+```bash
+python3 plexus/serve_with_headers.py plexus 8080
+# then open http://localhost:8080 — localhost counts as a secure context,
+# so the service worker registers there too
+```
+
+### Verified, not assumed
+
+Driven in a real browser over a served origin with the deployed headers applied:
+
+| Check | Result |
+|---|---|
+| secure context | `true` |
+| service worker | `activated`, scope `/` |
+| manifest parse errors | none |
+| files cached on install | 7 of 7 |
+| every declared icon fetches | `200` with the right content-type |
+| network off, page reloaded | title `Plexus`, 4 examples, engine returns `2.000000` |
+
+### The bug this caught
+
+The first `vercel.json` had `default-src 'none'` with **no `connect-src`**. The
+service worker `register()` call *succeeded*, the cache was *created*, and the
+site would have shipped with **offline silently not working** — because
+`caches.addAll()` during install is a same-origin fetch, the policy blocked it,
+install rejected, and the registration was discarded. Every page-level check
+still passed. Only cutting the network found it.
+
+`connect-src 'self'` is therefore load-bearing, and a test now fails without it.
+
+### Three things in the requested design that would not have worked
+
+- **Data-URI icons in the manifest.** Chrome's install criteria want a fetchable
+  icon of at least 192×192; a data URI is not reliably honoured.
+- **SVG-only icons.** iOS does not read manifest icons for Add to Home Screen at
+  all. It reads `<link rel="apple-touch-icon">`, and it does not accept SVG
+  there — the installed icon on an iPhone would have been blank. Hence
+  `icon-180.png`.
+- **Long cache headers on the PWA assets.** An `immutable` `Cache-Control` on
+  `sw.js` strands users on an old worker forever. The page, the worker and the
+  manifest get `max-age=0, must-revalidate`; only the icons are immutable.
+
+One more, found while rendering: `chrome --screenshot` captures before layout
+settles on small viewports and writes a **blank** square with the correct
+dimensions and a plausible file size. `make_icons.py` checks bytes as well as
+dimensions for that reason.

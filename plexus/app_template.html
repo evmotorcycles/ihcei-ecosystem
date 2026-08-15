@@ -8,7 +8,15 @@
 <meta name="description" content="See what a thing is made of, what is holding it up, and what it rests on. Works offline, on any phone or laptop.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="{{ICON}}">
-<link rel="apple-touch-icon" href="{{ICON}}">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<!-- iOS does not read the manifest for Add to Home Screen and does not accept
+     an SVG here. Without this PNG the installed icon on an iPhone is blank. -->
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Plexus">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
 <style>
 :root{
   --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
