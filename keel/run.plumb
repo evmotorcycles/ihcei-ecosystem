@@ -1,0 +1,60 @@
+# run.plumb -- is a keel run actually GOVERNED, or only logged?
+#
+# *** THIS PROGRAM HALTS ON EVERY KEEL LEDGER, AND THAT IS THE RESULT. ***
+# It is kept exactly as it was first written, before the data was looked at,
+# because the halt is the finding. See keel/NULL.md.
+#
+# The intended reasoning was ordinary: a ledger full of entries proves nothing
+# on its own, because a run can fail in two different ways.
+#
+#   the inbound leg fails  -- things happened that never reached the kernel, so
+#                             the ledger is a partial record presenting itself
+#                             as a complete one
+#   the outbound leg fails -- everything was recorded, but the records carry no
+#                             reason, so nobody can disagree with any of it
+#
+# E = U x D_in x D_out, a PRODUCT on purpose: a run with a huge number of
+# actions and either leg at zero is worth nothing, and multiplication is the
+# only arithmetic that says so without an argument.
+#
+# WHAT ACTUALLY HAPPENED
+# The inbound leg is not measurable from the ledger at all. `sealed/attempted`
+# came back as exactly 1.000 on every run in a 28-run cohort -- zero variance --
+# because the ledger records everything that reaches it, by construction. A
+# record cannot contain its own omissions. Substituting a leg that does vary
+# (`named/attempted`) did not help: it correlates with the outbound leg at
+# r = 1.000, because an action that arrives named is exactly the one that gets a
+# rule. The two legs are one measurement wearing two names.
+#
+# So Plumb halts with VIF infinite, and refuses to report a confident number
+# twice and call it corroboration. That refusal is correct, and it is the same
+# limit the structural check reports elsewhere: whether everything came through
+# the gate cannot be established from inside the gate.
+
+plumb "keel-run-is-governed" {
+
+  capacity  U    from field "actions"
+
+  # leg 1: did everything that happened actually come through the kernel?
+  encode    Din  from ratio "sealed"/"attempted"
+
+  # leg 2: can a person disagree with the decisions? A decision with no named
+  # reason and no named rule is an assertion, not a governance record.
+  decode    Dout from ratio "reasoned"/"actions"
+
+  floor 0.98
+
+  # Whatever the run says about itself is DELETED before evaluation. Not
+  # weighted less -- removed. A run cannot vouch for itself.
+  blind "self_report"
+  blind "summary"
+
+  # The clause that stops this program. Keeping it is the whole point: a
+  # version without it would print a number, and the number would be a lie.
+  independent encode decode
+
+  require evidence 4 of 5
+
+  handles
+  receipt
+}

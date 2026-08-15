@@ -1,0 +1,326 @@
+{
+ "seed": 20260813,
+ "swarms": 40,
+ "agents_per_swarm": 4000,
+ "prereg_sha256": "82e0a2c766fe3e9ca0945c7e637fe8198bfde9f372066c91ff0c1a6b2627e93e",
+ "prereg_intact": true,
+ "S1_decay_with_depth": {
+  "rho": -0.7529134523816232,
+  "gate": -0.5,
+  "result": "HOLDS"
+ },
+ "S2_resistance_predicts": {
+  "rho_resistance": -0.6294479694358823,
+  "rho_depth": -0.7529134523816232,
+  "better": "depth",
+  "result": "FAILS"
+ },
+ "S3_functional_form": {
+  "adj_r2_linear": 0.00034578755191783106,
+  "adj_r2_quadratic": 0.00027611111047809445,
+  "adj_r2_linear_plus_resistance": 0.7390523576053856,
+  "linear_beats_quadratic": true,
+  "note": "no prediction registered; the prior HF run found linear did NOT win and this is reported either way"
+ },
+ "S3_caveat": "BOTH FITS ARE ~0 BECAUSE U NEVER ENTERS THE FIDELITY RECURSION IN THIS MODEL. S3 is uninformative about E = U\u00b7D; it is reported so that nobody reads 0.0003 as a falsification.",
+ "S5_what_capacity_does": {
+  "rho_U_descendants": 0.337193488387093,
+  "rho_U_fidelity": -0.009184730261545641,
+  "result": "CONSISTENT",
+  "note": "capacity buys reach, not received fidelity"
+ },
+ "S4_revocation": {
+  "cut_off": 200,
+  "of": 200,
+  "result": "HOLDS"
+ },
+ "dataset": {
+  "path": "swarm-lmd/data/swarm_rows.csv",
+  "rows": 8800,
+  "sha256": "7bcf870b72e82ff8c27f7b6db4369355654b596b06488b3383c1b10ffcf15ad5",
+  "kind": "SIMULATED",
+  "warning": "evidence about the model, not about the world"
+ },
+ "per_swarm": [
+  {
+   "swarm": 0,
+   "J": 0.049999999999999996,
+   "n_measured": 220,
+   "rho_depth": -0.7827704930041756,
+   "rho_resistance": -0.7937361590866828
+  },
+  {
+   "swarm": 1,
+   "J": 0.08620270870085896,
+   "n_measured": 220,
+   "rho_depth": -0.8453717112862963,
+   "rho_resistance": -0.8357415348551529
+  },
+  {
+   "swarm": 2,
+   "J": 0.1486181397473029,
+   "n_measured": 220,
+   "rho_depth": -0.7776933783380198,
+   "rho_resistance": -0.7475665349960273
+  },
+  {
+   "swarm": 3,
+   "J": 0.256225724166006,
+   "n_measured": 220,
+   "rho_depth": -0.8099491161537898,
+   "rho_resistance": -0.5779311743856466
+  },
+  {
+   "swarm": 4,
+   "J": 0.4417470292389771,
+   "n_measured": 220,
+   "rho_depth": -0.8479108321171174,
+   "rho_resistance": -0.6052224970838992
+  },
+  {
+   "swarm": 5,
+   "J": 0.7615958096191475,
+   "n_measured": 220,
+   "rho_depth": -0.7831378935327364,
+   "rho_resistance": -0.7046899917165832
+  },
+  {
+   "swarm": 6,
+   "J": 1.3130324344878836,
+   "n_measured": 220,
+   "rho_depth": -0.6283845083200442,
+   "rho_resistance": -0.2600553354783814
+  },
+  {
+   "swarm": 7,
+   "J": 2.2637390492987746,
+   "n_measured": 220,
+   "rho_depth": -0.6225184968134203,
+   "rho_resistance": -0.39920659517758633
+  },
+  {
+   "swarm": 8,
+   "J": 3.9028087568292342,
+   "n_measured": 220,
+   "rho_depth": -0.7161582977860174,
+   "rho_resistance": -0.7203597369592535
+  },
+  {
+   "swarm": 9,
+   "J": 6.728653727602237,
+   "n_measured": 220,
+   "rho_depth": -0.6617830195590066,
+   "rho_resistance": -0.7704760992432226
+  },
+  {
+   "swarm": 10,
+   "J": 11.600563544588896,
+   "n_measured": 220,
+   "rho_depth": -0.6386097383679978,
+   "rho_resistance": -0.34788547471867376
+  },
+  {
+   "swarm": 11,
+   "J": 20.000000000000004,
+   "n_measured": 220,
+   "rho_depth": -0.6185627426562157,
+   "rho_resistance": -0.4971853287727583
+  },
+  {
+   "swarm": 12,
+   "J": 0.049999999999999996,
+   "n_measured": 220,
+   "rho_depth": -0.8275223567729612,
+   "rho_resistance": -0.7949555682029493
+  },
+  {
+   "swarm": 13,
+   "J": 0.08620270870085896,
+   "n_measured": 220,
+   "rho_depth": -0.8163098786789359,
+   "rho_resistance": -0.4573392763561982
+  },
+  {
+   "swarm": 14,
+   "J": 0.1486181397473029,
+   "n_measured": 220,
+   "rho_depth": -0.8580571724810242,
+   "rho_resistance": -0.4952502775226385
+  },
+  {
+   "swarm": 15,
+   "J": 0.256225724166006,
+   "n_measured": 220,
+   "rho_depth": -0.7650744098769885,
+   "rho_resistance": -0.7531789725182151
+  },
+  {
+   "swarm": 16,
+   "J": 0.4417470292389771,
+   "n_measured": 220,
+   "rho_depth": -0.7779232854172419,
+   "rho_resistance": -0.6991609518603878
+  },
+  {
+   "swarm": 17,
+   "J": 0.7615958096191475,
+   "n_measured": 220,
+   "rho_depth": -0.749189408496419,
+   "rho_resistance": -0.6703222643593313
+  },
+  {
+   "swarm": 18,
+   "J": 1.3130324344878836,
+   "n_measured": 220,
+   "rho_depth": -0.8380958284262071,
+   "rho_resistance": -0.5756546435031528
+  },
+  {
+   "swarm": 19,
+   "J": 2.2637390492987746,
+   "n_measured": 220,
+   "rho_depth": -0.6458867482235734,
+   "rho_resistance": -0.626154184252492
+  },
+  {
+   "swarm": 20,
+   "J": 3.9028087568292342,
+   "n_measured": 220,
+   "rho_depth": -0.5755374359725689,
+   "rho_resistance": -0.34662662076038386
+  },
+  {
+   "swarm": 21,
+   "J": 6.728653727602237,
+   "n_measured": 220,
+   "rho_depth": -0.7310673210753791,
+   "rho_resistance": -0.6869578447338318
+  },
+  {
+   "swarm": 22,
+   "J": 11.600563544588896,
+   "n_measured": 220,
+   "rho_depth": -0.627239480905879,
+   "rho_resistance": -0.6146396713681161
+  },
+  {
+   "swarm": 23,
+   "J": 20.000000000000004,
+   "n_measured": 220,
+   "rho_depth": -0.6233513464778574,
+   "rho_resistance": -0.44489724618652904
+  },
+  {
+   "swarm": 24,
+   "J": 0.049999999999999996,
+   "n_measured": 220,
+   "rho_depth": -0.8047863498306689,
+   "rho_resistance": -0.7782140502527287
+  },
+  {
+   "swarm": 25,
+   "J": 0.08620270870085896,
+   "n_measured": 220,
+   "rho_depth": -0.8976631748589847,
+   "rho_resistance": -0.8059854730281806
+  },
+  {
+   "swarm": 26,
+   "J": 0.1486181397473029,
+   "n_measured": 220,
+   "rho_depth": -0.8843522311693142,
+   "rho_resistance": -0.6946349379870733
+  },
+  {
+   "swarm": 27,
+   "J": 0.256225724166006,
+   "n_measured": 220,
+   "rho_depth": -0.7858956514879157,
+   "rho_resistance": -0.636506764790407
+  },
+  {
+   "swarm": 28,
+   "J": 0.4417470292389771,
+   "n_measured": 220,
+   "rho_depth": -0.8621549280695131,
+   "rho_resistance": -0.6589959597211813
+  },
+  {
+   "swarm": 29,
+   "J": 0.7615958096191475,
+   "n_measured": 220,
+   "rho_depth": -0.8172328879822837,
+   "rho_resistance": -0.638545499625274
+  },
+  {
+   "swarm": 30,
+   "J": 1.3130324344878836,
+   "n_measured": 220,
+   "rho_depth": -0.8224396071293735,
+   "rho_resistance": -0.7975623087629534
+  },
+  {
+   "swarm": 31,
+   "J": 2.2637390492987746,
+   "n_measured": 220,
+   "rho_depth": -0.6813093433560798,
+   "rho_resistance": -0.6060384418160405
+  },
+  {
+   "swarm": 32,
+   "J": 3.9028087568292342,
+   "n_measured": 220,
+   "rho_depth": -0.7361557056963987,
+   "rho_resistance": -0.7538562968055313
+  },
+  {
+   "swarm": 33,
+   "J": 6.728653727602237,
+   "n_measured": 220,
+   "rho_depth": -0.6421304722674586,
+   "rho_resistance": -0.5033319621554916
+  },
+  {
+   "swarm": 34,
+   "J": 11.600563544588896,
+   "n_measured": 220,
+   "rho_depth": -0.6561807249961964,
+   "rho_resistance": -0.47583778026969004
+  },
+  {
+   "swarm": 35,
+   "J": 20.000000000000004,
+   "n_measured": 220,
+   "rho_depth": -0.5477727751700354,
+   "rho_resistance": -0.5925336549027121
+  },
+  {
+   "swarm": 36,
+   "J": 0.049999999999999996,
+   "n_measured": 220,
+   "rho_depth": -0.8645092216405673,
+   "rho_resistance": -0.8080005409578335
+  },
+  {
+   "swarm": 37,
+   "J": 0.08620270870085896,
+   "n_measured": 220,
+   "rho_depth": -0.814636290381657,
+   "rho_resistance": -0.6595898863425051
+  },
+  {
+   "swarm": 38,
+   "J": 0.1486181397473029,
+   "n_measured": 220,
+   "rho_depth": -0.9129970754467128,
+   "rho_resistance": -0.6229411201208139
+  },
+  {
+   "swarm": 39,
+   "J": 0.256225724166006,
+   "n_measured": 220,
+   "rho_depth": -0.8182167550418961,
+   "rho_resistance": -0.7201501157987862
+  }
+ ]
+}

@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Keel — the console</title>
+<meta name="description" content="One page: check what a claim is made of, screen everyday worries, and see what an assistant is allowed to do. Runs on your device.">
+<style>
+:root{
+  --wall:#E8EAE5; --wall-2:#DEE1DA; --desk:#FBFBF8; --ink:#14181A; --ink-2:#454E4A;
+  --stone:#68726C; --line:#D6DBD3; --edge:#C2CAC0;
+  --sea:#245C6B; --sea-soft:#DEEBEF; --on-sea:#FBFBF8;
+  --ok:#1E6B48; --ok-soft:#E1EFE7;
+  --held:#8A5A0B; --held-soft:#F8F0DC; --held-edge:#E2CC97;
+  --stop:#8C2F2F; --stop-soft:#F8EAEA;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --shadow:0 1px 1px rgba(20,24,26,.05),0 6px 18px rgba(20,24,26,.08);
+  --lift:0 2px 5px rgba(20,24,26,.08),0 16px 36px rgba(20,24,26,.12);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wall:#0F1312; --wall-2:#0A0D0C; --desk:#171C1A; --ink:#E9EEEB; --ink-2:#B3BDB7;
+  --stone:#8D9791; --line:#242B28; --edge:#333B37;
+  --sea:#6FB6C9; --sea-soft:#122228; --on-sea:#0A0D0C;
+  --ok:#5FBF92; --ok-soft:#11231B;
+  --held:#DBA645; --held-soft:#221B0D; --held-edge:#4A3D1C;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 5px rgba(0,0,0,.5),0 16px 36px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --wall:#0F1312; --wall-2:#0A0D0C; --desk:#171C1A; --ink:#E9EEEB; --ink-2:#B3BDB7;
+  --stone:#8D9791; --line:#242B28; --edge:#333B37;
+  --sea:#6FB6C9; --sea-soft:#122228; --on-sea:#0A0D0C;
+  --ok:#5FBF92; --ok-soft:#11231B;
+  --held:#DBA645; --held-soft:#221B0D; --held-edge:#4A3D1C;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 5px rgba(0,0,0,.5),0 16px 36px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--wall);color:var(--ink);
+  font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse at 18% 0%,var(--wall-2),transparent 55%)}
+h1,h2,h3{margin:0;font-weight:655;letter-spacing:-.019em;line-height:1.2;text-wrap:balance}
+button,textarea,input,select{font:inherit}
+button{cursor:pointer}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.room{max-width:56rem;margin:0 auto;padding:0 1.05rem 5rem}
+
+/* ------------------------------------------------------------------ bar -- */
+.bar{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--wall) 92%,transparent);backdrop-filter:blur(10px)}
+.barin{max-width:56rem;margin:0 auto;padding:.55rem 1.05rem;display:flex;align-items:center;gap:.55rem}
+.home{display:flex;align-items:center;gap:.5rem;background:none;border:0;color:inherit;
+  font-weight:655;font-size:1.02rem;padding:.2rem .3rem;border-radius:8px}
+.home:hover{background:var(--sea-soft)}
+.home svg{width:22px;height:22px;color:var(--sea)}
+.barin .sp{flex:1}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);border-radius:99px;
+  padding:.28rem .75rem;font-size:.8rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+
+/* ----------------------------------------------------------------- home -- */
+.welcome{padding:2.4rem 0 1.2rem;text-align:center}
+.welcome h1{font-size:clamp(1.7rem,4.6vw,2.4rem)}
+.welcome p{color:var(--ink-2);max-width:34rem;margin:.85rem auto 0}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));gap:.9rem;padding:1.2rem 0 2rem}
+.app{display:flex;flex-direction:column;align-items:center;gap:.55rem;background:none;
+  border:1px solid transparent;border-radius:15px;padding:1rem .55rem;text-align:center;color:inherit;
+  transition:transform .13s ease,background .13s ease,border-color .13s ease}
+.app:hover,.app:focus-visible{background:var(--desk);border-color:var(--line);transform:translateY(-2px);outline:none}
+.app:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.app .icon{width:3.9rem;height:3.9rem;border-radius:17px;background:var(--desk);border:1px solid var(--edge);
+  box-shadow:var(--shadow);display:grid;place-items:center;color:var(--sea)}
+.app .icon svg{width:1.95rem;height:1.95rem}
+.app.gate .icon{background:var(--held-soft);border-color:var(--held-edge);color:var(--held)}
+.app .nm{font-weight:650;font-size:.96rem;line-height:1.25}
+.app .sub{color:var(--stone);font-size:.77rem;line-height:1.4}
+
+/* --------------------------------------------------------------- window -- */
+.win{display:none}
+.win.on{display:block;animation:rise .16s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.win.on{animation:none}}
+.frame{background:var(--desk);border:1px solid var(--edge);border-radius:16px;box-shadow:var(--lift);
+  overflow:hidden;margin:1.3rem 0}
+.title{display:flex;align-items:center;gap:.7rem;padding:.8rem 1.05rem;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--desk) 60%,var(--wall))}
+.title .ic{width:2.1rem;height:2.1rem;border-radius:9px;background:var(--sea-soft);display:grid;
+  place-items:center;color:var(--sea);flex:none}
+.title .ic svg{width:1.15rem;height:1.15rem}
+.title b{font-size:1.01rem;display:block}
+.title span{color:var(--stone);font-size:.85rem;display:block;line-height:1.35}
+.body{padding:1.1rem}
+label.f{display:block;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--stone);font-weight:650;margin-bottom:.4rem}
+textarea,input[type=text],select{width:100%;background:var(--wall);color:var(--ink);
+  border:1px solid var(--edge);border-radius:11px;padding:.75rem .9rem;resize:vertical}
+textarea:focus,input:focus,select:focus{outline:2px solid var(--sea);outline-offset:1px;border-color:transparent}
+.go{background:var(--sea);color:var(--on-sea);border:1px solid var(--sea);border-radius:11px;
+  padding:.7rem 1.4rem;font-weight:650;margin-top:.8rem}
+.go:hover{filter:brightness(1.1)}
+.chips{display:flex;flex-wrap:wrap;gap:.38rem;margin-top:.75rem}
+.chip{background:var(--wall);border:1px solid var(--line);border-radius:99px;padding:.28rem .75rem;
+  font-size:.8rem;color:var(--stone)}
+.chip:hover{border-color:var(--sea);color:var(--sea)}
+.chip[aria-pressed=true]{background:var(--sea);border-color:var(--sea);color:var(--on-sea)}
+
+/* ---------------------------------------------------------------- label -- */
+.label{border:1.5px solid var(--ink);border-radius:12px;overflow:hidden;margin-top:1rem;background:var(--desk)}
+.label .cap{padding:.65rem 1rem;border-bottom:1.5px solid var(--ink);font-weight:700;font-size:1.02rem}
+.label .rows{padding:.25rem 1rem .7rem}
+.lrow{display:grid;grid-template-columns:1.5rem minmax(0,1fr) auto;gap:.6rem;align-items:baseline;
+  padding:.5rem 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.lrow:last-child{border-bottom:none}
+.lrow .y{color:var(--ok);font-weight:800}
+.lrow .n{color:var(--stone);font-weight:800}
+.lrow .v{font-size:.8rem;color:var(--stone);text-align:right}
+@media (max-width:30rem){
+  .lrow{grid-template-columns:1.5rem minmax(0,1fr);row-gap:.12rem}
+  .lrow .v{grid-column:2;text-align:left}
+  .hrow{grid-template-columns:minmax(0,1fr);gap:.12rem}
+  .hrow .hk{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+  .krow{grid-template-columns:2.2rem minmax(0,1fr);row-gap:.3rem}
+  .krow .tag{grid-column:2;text-align:left}
+}
+.tot{padding:.8rem 1rem;border-top:1.5px solid var(--ink);background:var(--wall);font-weight:650}
+.tot span{font-weight:400;color:var(--stone)}
+.gauge{height:.7rem;border-radius:99px;background:var(--line);overflow:hidden;margin:.7rem 0 .3rem}
+.gauge i{display:block;height:100%;border-radius:99px;background:var(--sea)}
+.gtag{display:flex;justify-content:space-between;font-size:.78rem;color:var(--stone)}
+
+.handles{margin-top:1rem;border:1px solid var(--edge);border-radius:12px;background:var(--wall);padding:.85rem 1rem}
+.handles>b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--stone)}
+.handles>p{margin:.3rem 0 .75rem;font-size:.87rem;color:var(--stone);line-height:1.5}
+.hrow{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.65rem;align-items:baseline;font-size:.92rem;padding:.1rem 0}
+.hrow .hk{color:var(--stone);font-size:.79rem}
+.hrow em{font-style:normal;font-weight:620;background:var(--desk);border:1px solid var(--edge);
+  border-radius:7px;padding:.06rem .4rem;display:inline-block;margin:.08rem .15rem .08rem 0}
+.hcopy{display:flex;gap:.4rem;margin-top:.8rem;flex-wrap:wrap}
+.hcopy input{flex:1;min-width:9rem;font-size:.87rem;padding:.42rem .58rem;background:var(--desk)}
+.hbtn{background:var(--ink);color:var(--desk);border:0;border-radius:9px;padding:.42rem .85rem;
+  font-size:.85rem;font-weight:620}
+.hnote{margin-top:.7rem;padding:.5rem .65rem;border-radius:9px;font-size:.86rem;line-height:1.5;
+  background:var(--held-soft);border:1px solid var(--held-edge)}
+.hnote em{font-style:normal;font-weight:640}
+
+.note{border-radius:12px;padding:.85rem 1rem;margin-top:.95rem;font-size:.93rem;line-height:1.55}
+.note b{display:block;margin-bottom:.25rem}
+.note.good{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 30%,transparent)}
+.note.good b{color:var(--ok)}
+.note.warn{background:var(--held-soft);border:1px solid var(--held-edge)}
+.note.warn b{color:var(--held)}
+.note.stop{background:var(--stop-soft);border:1px solid color-mix(in srgb,var(--stop) 32%,transparent)}
+.note.stop b{color:var(--stop)}
+
+/* ----------------------------------------------------------------- nine -- */
+.nine{display:grid;grid-template-columns:repeat(auto-fill,minmax(10rem,1fr));gap:.55rem}
+.nine button{background:var(--wall);border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;
+  text-align:left;color:inherit}
+.nine button:hover{border-color:var(--sea)}
+.nine button[aria-pressed=true]{background:var(--sea-soft);border-color:var(--sea)}
+.nine b{display:block;font-size:.93rem;font-weight:650}
+.nine span{color:var(--stone);font-size:.78rem;line-height:1.35;display:block}
+.result{margin-top:1rem;border:1px solid var(--edge);border-radius:13px;overflow:hidden;background:var(--wall)}
+.result .rh{display:flex;align-items:center;gap:.5rem;padding:.5rem .85rem;border-bottom:1px solid var(--line);
+  font-size:.71rem;letter-spacing:.09em;text-transform:uppercase;font-weight:750}
+.result .rh .sp{flex:1}
+.result[data-t=ok] .rh{background:var(--ok-soft);color:var(--ok)}
+.result[data-t=held] .rh{background:var(--held-soft);color:var(--held)}
+.result .rb{padding:.85rem}
+.result h3{font-size:1.1rem}
+.result p{margin:.35rem 0 0;color:var(--stone);font-size:.9rem}
+.flags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.7rem}
+.flags span{background:var(--desk);border:1px solid var(--edge);border-radius:99px;
+  padding:.15rem .55rem;font-size:.73rem;color:var(--stone);font-family:var(--mono)}
+
+/* ------------------------------------------------------------------ key -- */
+.keyring{display:grid;gap:.5rem}
+.krow{display:grid;grid-template-columns:2.2rem minmax(0,1fr) auto;gap:.7rem;align-items:center;
+  background:var(--wall);border:1px solid var(--line);border-radius:12px;padding:.7rem .85rem}
+.krow .ki{width:2.2rem;height:2.2rem;border-radius:9px;display:grid;place-items:center}
+.krow.yes .ki{background:var(--ok-soft);color:var(--ok)}
+.krow.no .ki{background:var(--stop-soft);color:var(--stop)}
+.krow b{display:block;font-size:.94rem}
+.krow small{color:var(--stone);font-size:.8rem}
+.krow .tag{font-size:.76rem;font-weight:700;white-space:nowrap}
+.krow.yes .tag{color:var(--ok)} .krow.no .tag{color:var(--stop)}
+
+.receipt{margin-top:1rem;border:1px solid var(--edge);border-radius:12px;background:var(--wall);padding:.85rem 1rem}
+.receipt>b{display:block;font-size:.71rem;letter-spacing:.09em;text-transform:uppercase;color:var(--stone);margin-bottom:.28rem}
+.receipt .big{font-size:1.08rem;font-weight:650;font-variant-numeric:tabular-nums}
+.receipt .sub{margin-top:.32rem;color:var(--stone);font-size:.87rem;line-height:1.5}
+.receipt .sub b{display:inline;color:var(--ink);font-weight:640}
+.tape{display:grid;gap:.4rem;margin-top:.8rem;max-height:22rem;overflow-y:auto}
+.te{display:grid;grid-template-columns:4.6rem minmax(0,1fr);gap:.6rem;align-items:baseline;
+  background:var(--desk);border:1px solid var(--line);border-left-width:3px;border-radius:9px;padding:.45rem .65rem;font-size:.85rem}
+.te.LEDGER{border-left-color:var(--ok)} .te.BATCH{border-left-color:var(--held)} .te.STOP{border-left-color:var(--stop)}
+.te .t{font-size:.67rem;letter-spacing:.06em;text-transform:uppercase;font-weight:750;color:var(--stone)}
+.te.STOP .t{color:var(--stop)} .te.BATCH .t{color:var(--held)} .te.LEDGER .t{color:var(--ok)}
+.te .p{font-family:var(--mono);font-size:.8rem;word-break:break-all}
+.te .w{color:var(--stone);font-size:.8rem;grid-column:2}
+.foot{color:var(--stone);font-size:.85rem;margin-top:2rem;padding-top:1.1rem;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<div class="bar"><div class="barin">
+  <button class="home" id="gohome" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v13"/><path d="M12 16c-3.5 0-6 2-6 5h12c0-3-2.5-5-6-5z"/><path d="M12 6l5 3M12 6L7 9"/></svg>
+    Keel
+  </button>
+  <span class="sp"></span>
+  <button class="ghost" id="theme" type="button">Light / dark</button>
+</div></div>
+
+<div class="room">
+
+<!-- ============================== HOME ============================== -->
+<section class="win on" id="home">
+  <div class="welcome">
+    <h1>What do you need to check?</h1>
+    <p>Everything here runs on this device. No account, no internet, nothing uploaded.
+       Every answer also tells you what it could not work out.</p>
+  </div>
+  <div class="shelf" id="shelf"></div>
+  <div class="note stop">
+    <b>Before you rely on any of this</b>
+    None of it knows whether something is <em>true</em>. It checks whether a claim can be
+    checked, whether permission was given, and whether a record was altered. A sentence can pass
+    every check here and still be wrong. Use it to find your questions — then take those
+    questions to a person.
+  </div>
+</section>
+
+<!-- ============================== LABEL ============================= -->
+<section class="win" id="label">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+      <span><b>The Label</b><span>Like the panel on a packet — what is this claim actually made of?</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="claim">Paste what someone told you, or what an assistant answered</label>
+      <textarea id="claim" rows="3">According to a 2023 randomised trial of 240 participants in the UK, green tea reduced self-reported stress by 12%.</textarea>
+      <div class="chips" id="egs"></div>
+      <button class="go" id="read">Read the label</button>
+      <div id="lout"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== NINE ============================== -->
+<section class="win" id="nine">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+      <span><b>Everyday worries</b><span>Nine screens for the things people actually paste in.</span></span>
+    </div>
+    <div class="body">
+      <div class="nine" id="nineList"></div>
+      <label class="f" for="ntext" style="margin-top:1.1rem">Paste the message, clause or answer</label>
+      <textarea id="ntext" rows="4">You waive all rights to a refund and agree to binding arbitration. Cancellation requires 90 days written notice.</textarea>
+      <button class="go" id="nrun">Screen it</button>
+      <div id="nout"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== MESH ============================== -->
+<section class="win" id="mesh">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="17" r="2.2"/><path d="M7.7 7.3 10.6 15M16.4 8.6 13.4 15M8 6.4h7.8"/></svg></span>
+      <span><b>The mesh</b><span>A screen where nothing was positioned — everything sits where the arithmetic put it.</span></span>
+    </div>
+    <div class="body">
+      <p style="margin:.2rem 0 1rem;color:var(--stone)">Every element is a live value, and
+         the wires between them are what one value does to another. How far apart two things
+         sit is worked out from those wires, not chosen. Pull one and the rest move, because
+         the arithmetic moved.</p>
+      <a class="go" style="display:inline-block;text-decoration:none" href="../smi/app.html">Open the mesh</a>
+      <div class="note warn">
+        <b>What the mesh cannot do</b>
+        It shows what depends on what. It has no opinion about whether any of those
+        values are right — a perfectly drawn mesh of wrong numbers looks exactly like
+        a perfectly drawn mesh of right ones.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== GATE ============================== -->
+<section class="win" id="gate">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7h18M3 17h18"/><rect x="10" y="2" width="4" height="20" rx="1"/></svg></span>
+      <span><b>The gate</b><span>A low wall across a stream. Everything crosses in one place, so everything is counted.</span></span>
+    </div>
+    <div class="body">
+      <label class="f">What the assistant may do</label>
+      <div class="keyring" id="keys"></div>
+
+      <label class="f" for="verb" style="margin-top:1.2rem">Try it — what if it tries this?</label>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <select id="verb" style="flex:0 0 8rem"><option value="read">read</option><option value="write">change</option></select>
+        <input type="text" id="target" value="payroll/salaries-2026.xlsx" style="flex:1;min-width:12rem">
+      </div>
+      <label class="f" for="payload" style="margin-top:.8rem">…carrying this (optional)</label>
+      <textarea id="payload" rows="2"></textarea>
+      <div class="chips" id="tryegs"></div>
+      <button class="go" id="try">See what happens</button>
+      <div id="gout"></div>
+
+      <div class="receipt" id="receipt">
+        <b>At the end of the run</b>
+        <div class="big" id="rsum">nothing has crossed yet</div>
+        <div class="sub" id="rsub"></div>
+        <div class="tape" id="tape"></div>
+        <button class="ghost" id="tamper" style="margin-top:.8rem">Try quietly editing the first entry</button>
+      </div>
+
+      <div class="note stop">
+        <b>What this gate cannot do</b>
+        It stops what comes through it. <b style="display:inline">It cannot stop a program that does
+        not come through it at all</b> — a program that opens its own connection is unaffected.
+        Making it unavoidable is a job for the machine underneath: a container, or a network with no
+        other way out. That part is real and standard, and it is not built here. A gate you can walk
+        around is a gate you should not rely on alone.
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="foot">
+  Everything on this page runs on your own device — no account, no internet, nothing uploaded.
+  The claim checker does not understand language: it looks for five kinds of support and matches
+  patterns. A well-written falsehood carrying all five gets through.
+</div>
+</div>
+
+<script>{{EI}}</script>
+<script>{{NOVORA}}</script>
+<script>
+/* SHA-256, synchronous, so the page seals its ledger with the SAME function the
+   command-line kernel uses. The browser's own crypto.subtle is asynchronous, and
+   swapping in a different hash here would mean the screen and the tested program
+   were sealing differently. keel/test_console.py compares this against node. */
+var SEAL = (function () {
+  var K = [], H0 = [], i = 0, n = 2, x, r;
+  function frac(v) { return Math.floor((v - Math.floor(v)) * 4294967296) | 0; }
+  while (K.length < 64) {
+    var p = true;
+    for (var d = 2; d * d <= n; d++) if (n % d === 0) { p = false; break; }
+    if (p) { if (H0.length < 8) H0.push(frac(Math.pow(n, 1 / 2))); K.push(frac(Math.pow(n, 1 / 3))); }
+    n++;
+  }
+  function rotr(a, b) { return (a >>> b) | (a << (32 - b)); }
+  return function (msg) {
+    var bytes = new TextEncoder().encode(msg), l = bytes.length;
+    var withOne = l + 1, blocks = Math.ceil((withOne + 8) / 64), total = blocks * 64;
+    var b = new Uint8Array(total); b.set(bytes); b[l] = 0x80;
+    var bits = l * 8, dv = new DataView(b.buffer);
+    dv.setUint32(total - 4, bits >>> 0); dv.setUint32(total - 8, Math.floor(bits / 4294967296));
+    var H = H0.slice(), w = new Int32Array(64);
+    for (var j = 0; j < blocks; j++) {
+      for (i = 0; i < 16; i++) w[i] = dv.getInt32(j * 64 + i * 4);
+      for (i = 16; i < 64; i++) {
+        var s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+        var s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+        w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+      }
+      var a = H[0], bb = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
+      for (i = 0; i < 64; i++) {
+        var S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+        var ch = (e & f) ^ (~e & g);
+        var t1 = (h + S1 + ch + K[i] + w[i]) | 0;
+        var S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+        var mj = (a & bb) ^ (a & c) ^ (bb & c);
+        var t2 = (S0 + mj) | 0;
+        h = g; g = f; f = e; e = (d + t1) | 0; d = c; c = bb; bb = a; a = (t1 + t2) | 0;
+      }
+      H[0] = (H[0] + a) | 0; H[1] = (H[1] + bb) | 0; H[2] = (H[2] + c) | 0; H[3] = (H[3] + d) | 0;
+      H[4] = (H[4] + e) | 0; H[5] = (H[5] + f) | 0; H[6] = (H[6] + g) | 0; H[7] = (H[7] + h) | 0;
+    }
+    for (r = "", i = 0; i < 8; i++) r += ("00000000" + (H[i] >>> 0).toString(16)).slice(-8);
+    return r;
+  };
+})();
+</script>
+<script>
+/* the governance kernel, flattened out of keel/kernel.mjs by build_console.py */
+{{KERNEL}}
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var POLICY = {{POLICY}};
+  var keel = boot({ policy: POLICY });
+
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  /* ------------------------------------------------------- navigation --- */
+  var APPS = [
+    ["label", "The Label", "Is this claim worth believing?",
+      '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'],
+    ["nine", "Everyday worries", "Contracts, pressure, decisions",
+      '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>'],
+    ["gate", "The gate", "What may an assistant do?",
+      '<path d="M3 7h18M3 17h18"/><rect x="10" y="2" width="4" height="20" rx="1"/>', "gate"],
+    ["mesh", "The mesh", "Where do things belong?",
+      '<circle cx="6" cy="6" r="2.2"/><circle cx="18" cy="7" r="2.2"/>' +
+      '<circle cx="12" cy="17" r="2.2"/><path d="M7.7 7.3 10.6 15M16.4 8.6 13.4 15M8 6.4h7.8"/>']
+  ];
+  $("#shelf").innerHTML = APPS.map(function (a) {
+    return '<button class="app ' + (a[4] || "") + '" data-go="' + a[0] + '" type="button">' +
+      '<span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + a[3] + '</svg></span>' +
+      '<span class="nm">' + a[1] + '</span><span class="sub">' + a[2] + '</span></button>';
+  }).join("");
+  function go(id) {
+    var t = document.getElementById(id) ? id : "home";
+    Array.prototype.forEach.call(document.querySelectorAll(".win"), function (w) {
+      w.classList.toggle("on", w.id === t);
+    });
+    window.scrollTo(0, 0);
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-go]");
+    if (b) { location.hash = b.getAttribute("data-go"); }
+  });
+  window.addEventListener("hashchange", function () { go(location.hash.slice(1) || "home"); });
+  $("#gohome").onclick = function () { location.hash = "home"; };
+  $("#theme").onclick = function () {
+    var d = document.documentElement;
+    var dark = d.getAttribute("data-theme") === "dark" ||
+      (!d.getAttribute("data-theme") && matchMedia("(prefers-color-scheme:dark)").matches);
+    d.setAttribute("data-theme", dark ? "light" : "dark");
+  };
+
+  /* ------------------------------------------------------------ label --- */
+  var VERDICT = {
+    SUPPORTED: ["good", "Enough here to check",
+      "Someone could go and verify this. That does not make it true — it makes it checkable."],
+    INSUFFICIENT_EVIDENCE: ["warn", "Almost nothing to check",
+      "It may well be right. But as written, there is very little anyone could go and confirm."],
+    OUT_OF_SCOPE: ["", "Not this kind of thing", "This tool reads claims about what is measurably the case."],
+    AMBIGUOUS: ["warn", "This can be read two ways", "The sentence has more than one meaning, so it will not guess."],
+    IMPLAUSIBLE: ["warn", "Something is off here", "Read literally, this says something that cannot happen."]
+  };
+  var PLAIN = { source: "Says where it came from", figures: "Gives real numbers",
+    method: "Says how it was measured", time: "Says when", scope: "Says who or where it applies to" };
+  var HNAME = { source: "who says so", figures: "the numbers", method: "how it was measured",
+    time: "when", scope: "who or where" };
+
+  ["Green tea reduces stress.",
+   "According to a 2023 randomised trial of 240 participants in the UK, green tea reduced self-reported stress by 12%.",
+   "A fortnight means two weeks.",
+   "I saw the Grand Canyon flying to New York."].forEach(function (t) {
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    b.textContent = t.length > 38 ? t.slice(0, 38) + "…" : t;
+    b.title = t;
+    b.onclick = function () { $("#claim").value = t; readLabel(); };
+    $("#egs").appendChild(b);
+  });
+
+  function handlesBlock(r) {
+    var hd = r.handles; if (!hd) return "";
+    var rows = ["source", "figures", "method", "time", "scope"].filter(function (k) {
+      return hd[k] && hd[k].length; });
+    if (!rows.length) return "";
+    var h = '<div class="handles"><b>Take these and go and check it</b>' +
+      '<p>These are the exact words that made the label tick. Paste them into a search engine — ' +
+      'if nothing comes back, you have your answer.</p>';
+    h += rows.map(function (k) {
+      return '<div class="hrow"><span class="hk">' + HNAME[k] + '</span><span>' +
+        hd[k].map(function (s) { return "<em>" + esc(s) + "</em>"; }).join(" ") + "</span></div>";
+    }).join("");
+    if (r.search_line) {
+      h += '<div class="hcopy"><input type="text" id="hline" readonly value="' +
+        esc(r.search_line) + '"><button class="hbtn" id="hcopy" type="button">Copy</button></div>';
+    }
+    if (hd.source && hd.source.length && !hd.source_named) {
+      h += '<div class="hnote">The source row ticked on the words <em>' + esc(hd.source[0]) +
+        '</em> — but nobody is actually named. There is no one here to go and ask.</div>';
+    }
+    return h + "</div>";
+  }
+
+  function readLabel() {
+    var r = EI.assay($("#claim").value, "slate");
+    var v = VERDICT[r.verdict] || ["", r.verdict, ""];
+    var pct = r.evidence.length ? Math.round(r.evidence_hits / r.evidence_total * 100) : 0;
+    var h = '<div class="label"><div class="cap">What this claim is made of</div><div class="rows">';
+    h += r.evidence.length
+      ? r.evidence.map(function (c) {
+          return '<div class="lrow"><span class="' + (c.hit ? "y" : "n") + '">' +
+            (c.hit ? "✓" : "—") + "</span><span>" + PLAIN[c.signal] +
+            '</span><span class="v">' + esc(c.note) + "</span></div>";
+        }).join("")
+      : '<div class="lrow"><span class="n">—</span><span>Nothing to weigh here</span>' +
+        '<span class="v">this is not a factual claim</span></div>';
+    h += '</div><div class="tot">' + esc(v[1]) +
+      (r.evidence.length ? ' · <span>' + r.evidence_hits + " of " + r.evidence_total +
+        " checkable parts present</span>" : "") + "</div></div>";
+    if (r.evidence.length) {
+      h += '<div class="gauge"><i style="width:' + pct + '%"></i></div>' +
+        '<div class="gtag"><span>nothing to check</span><span>fully checkable</span></div>';
+    }
+    h += handlesBlock(r);
+    h += '<div class="note ' + (v[0] || "") + '"><b>' + esc(v[1]) + "</b>" + esc(r.explanation || v[2]) + "</div>";
+    if (r.domain_flags.length) {
+      h += '<div class="note stop"><b>Careful — this is about ' +
+        esc(r.domain_flags.join(", ").replace(/[a-z]+\//g, "")) + "</b>" +
+        "Writing can be perfectly well put together and still be dangerous. Nothing above checks " +
+        "whether this is safe to act on. For health, chemicals, money or the law, ask someone qualified.</div>";
+    }
+    $("#lout").innerHTML = h;
+    var cb = $("#hcopy");
+    if (cb) cb.onclick = function () {
+      var f = $("#hline"); f.select(); f.setSelectionRange(0, 999);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(f.value).then(function () {
+          cb.textContent = "Copied"; setTimeout(function () { cb.textContent = "Copy"; }, 1400);
+        }, function () { cb.textContent = "Select and copy"; });
+      } else { cb.textContent = "Select and copy"; }
+    };
+  }
+  $("#read").onclick = readLabel;
+
+  /* ------------------------------------------------------------- nine --- */
+  var NINE = {
+    pages: ["Is this claim real?", "how well grounded a statement is"],
+    lens: ["What am I giving up?", "what a contract or clause takes from you"],
+    bridge: ["Is this pressuring me?", "urgency, coercion and pressure in a message"],
+    pulse: ["Is this answer healthy?", "whether a reply builds you up or makes you dependent"],
+    voice: ["Was I actually heard?", "whether a decision engaged with what you said"],
+    mark: ["Was this fair?", "whether criteria were disclosed and applied"],
+    stand: ["Do I have a case?", "how much of a grievance is documented"],
+    weigh: ["Was this decided well?", "whether alternatives were genuinely considered"],
+    rise: ["Am I learning?", "whether an explanation develops your own judgement"]
+  };
+  var picked = "lens";
+  function drawNine() {
+    $("#nineList").innerHTML = NOVORA.PRODUCT_IDS.map(function (id) {
+      var m = NINE[id] || [id, ""];
+      return '<button type="button" data-p="' + id + '" aria-pressed="' + (id === picked) + '">' +
+        "<b>" + m[0] + "</b><span>" + m[1] + "</span></button>";
+    }).join("");
+    Array.prototype.forEach.call($("#nineList").children, function (b) {
+      b.onclick = function () { picked = b.getAttribute("data-p"); drawNine(); screenIt(); };
+    });
+  }
+  function screenIt() {
+    var text = $("#ntext").value;
+    var r = NOVORA.screen(picked, text);
+    var held = r.insufficient_evidence || r.display_score === false;
+    var h = '<div class="result" data-t="' + (held ? "held" : "ok") + '">' +
+      '<div class="rh"><span>' + (held ? "Stopped" : "Reading") + '</span><span class="sp"></span>' +
+      '<span>' + esc(r.certificate || "") + "</span></div><div class=\"rb\">" +
+      "<h3>" + esc(r.verdict) + "</h3>";
+    h += held
+      ? "<p>There was not enough in this text to grade. That is a result, not a failure — " +
+        "a number here would have been invented.</p>"
+      : "<p>" + esc(r.analysis || "") + "</p>";
+    if (r.flags && r.flags.length) {
+      h += '<div class="flags">' + r.flags.map(function (f) { return "<span>" + esc(f) + "</span>"; }).join("") + "</div>";
+    }
+    h += '</div></div><div class="note warn"><b>What this screen cannot do</b>' +
+      "It reads patterns in the words, not meaning, and it does not know your situation. " +
+      "For anything touching health, money or the law, take it to someone qualified.</div>";
+    $("#nout").innerHTML = h;
+  }
+  $("#nrun").onclick = screenIt;
+  drawNine();
+
+  /* ------------------------------------------------------------- gate --- */
+  var YES = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12l5 5L19 7"/></svg>';
+  var NO = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  $("#keys").innerHTML = POLICY.rules.map(function (r) {
+    var extra = [r.allow && r.write ? "can change it" : r.allow ? "reading only" : null,
+      r.budget ? r.budget + " times" : null,
+      r.require ? "only if it carries its evidence" : null].filter(Boolean).join(" · ");
+    return '<div class="krow ' + (r.allow ? "yes" : "no") + '"><span class="ki">' +
+      (r.allow ? YES : NO) + "</span><span><b>" + esc(r.plain) + "</b>" +
+      (extra ? "<small>" + esc(extra) + "</small>" : "") + '</span><span class="tag">' +
+      (r.allow ? "goes through" : "stopped") + "</span></div>";
+  }).join("") +
+    '<div class="krow no"><span class="ki">' + NO + "</span><span><b>Everything else</b>" +
+    "<small>anything you did not list</small></span><span class=\"tag\">stopped</span></div>";
+
+  [["read", "projects/notes.md", ""],
+   ["read", ".ssh/id_rsa", ""],
+   ["write", "posts/claim.md", "The new process is much better and everyone should switch to it."],
+   ["write", "posts/claim.md", "According to the 2024 ONS survey of 1,180 households across the UK, energy use fell 8%."]
+  ].forEach(function (t, i) {
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button";
+    b.textContent = ["an ordinary read", "reaching for your keys", "publishing a bare claim", "publishing a sourced one"][i];
+    b.onclick = function () {
+      $("#verb").value = t[0]; $("#target").value = t[1]; $("#payload").value = t[2]; tryIt();
+    };
+    $("#tryegs").appendChild(b);
+  });
+
+  function tryIt() {
+    var d = keel.admit({ verb: $("#verb").value, target: $("#target").value.trim(),
+      content: $("#payload").value || null });
+    var cls = d.outcome === "ADMITTED" ? "good" : d.outcome === "HELD" ? "warn" : "stop";
+    var head = d.outcome === "ADMITTED" ? "It goes through"
+      : d.outcome === "HELD" ? "Held — fetched, but not handed over" : "Stopped at the gate";
+    var h = '<div class="note ' + cls + '"><b>' + head + "</b>" + esc(d.why);
+    if (d.next && d.outcome !== "ADMITTED") h += "<br><br>" + esc(d.next);
+    h += "</div>";
+    $("#gout").innerHTML = h;
+    drawTape();
+  }
+  $("#try").onclick = tryIt;
+
+  function drawTape() {
+    var m = keel.manifest(), es = keel.ledger.entries;
+    $("#rsum").textContent = es.length ? m.summary : "nothing has crossed yet";
+    $("#rsub").innerHTML = !es.length ? ""
+      : m.interruptions
+        ? "You were stopped <b>" + m.interruptions + "</b> time" + (m.interruptions === 1 ? "" : "s") +
+          " — each one reached past your key. Everything else is below, sealed, without asking you anything."
+        : "You were interrupted <b>no times</b>. Every crossing is below, sealed. A slip for each one " +
+          "would be taps you stop reading.";
+    var v = keel.ledger.verify();
+    $("#tape").innerHTML = es.map(function (e, i) {
+      return '<div class="te ' + e.tier + '"><span class="t">' +
+        (e.tier === "LEDGER" ? "went through" : e.tier === "BATCH" ? "held" : "stopped") +
+        '</span><span class="p">' + esc((e.verb || "?") + " " + (e.target || "(unnamed)")) + "</span>" +
+        '<span class="w">' + esc(e.why) + (v.ok || i < v.broken ? "" : " · seal broken") + "</span></div>";
+    }).join("");
+    if (!v.ok) {
+      $("#tape").insertAdjacentHTML("afterbegin",
+        '<div class="note stop" style="margin:0 0 .4rem"><b>The record has been altered</b>' +
+        "Entry " + v.broken + " no longer matches its seal, and every seal after it is broken too. " +
+        "That is what a sealed list is for.</div>");
+    }
+  }
+  $("#tamper").onclick = function () {
+    var es = keel.ledger.entries;
+    if (!es.length) return;
+    es[0].target = "payroll/salaries.csv";
+    drawTape();
+  };
+
+  readLabel(); screenIt(); drawTape();
+  go(location.hash.slice(1) || "home");
+  window.__keel = { keel: keel, SEAL: SEAL, go: go, readLabel: readLabel,
+    screenIt: screenIt, tryIt: tryIt };
+})();
+</script>
+</body>
+</html>

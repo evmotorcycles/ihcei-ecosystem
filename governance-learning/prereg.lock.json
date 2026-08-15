@@ -1,0 +1,8 @@
+{
+  "prereg_file": "governance-learning/PREREG.md",
+  "prereg_sha256": "7ee97e66b908efed24fb537514126fcc4eb028f7e1347a44f188aea7f92ec6ca",
+  "data_file": "cohort-audit/data/govphys_quadratic_results.csv",
+  "data_sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+  "locked_utc": "2026-08-10T18:20:54Z",
+  "note": "Locked BEFORE the model was fitted."
+}

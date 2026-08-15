@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Novora — check it before you believe it</title>
+<meta name="description" content="Tools that show you what a claim, a contract, a decision or a dataset is actually made of. Runs on your device. No account, no upload.">
+<style>
+:root{
+  --ink:#0E1614; --paper:#F2F4F1; --card:#FFFFFF; --stone:#5F6B65; --line:#DCE3DD;
+  --deep:#0B3B3C; --deep-2:#14615E; --spark:#C9A227; --ok:#1F6B4A; --stop:#8C2F2F;
+  --serif:ui-serif,"Hoefler Text","Iowan Old Style",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(14,22,20,.05),0 12px 32px rgba(14,22,20,.07);
+  --on-deep:#F2F4F1;   /* text ON the deep fill, defined in every theme state */
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ink:#E9EFEB; --paper:#0A0E0D; --card:#131817; --stone:#93A099; --line:#212927;
+  --deep:#7FD1CB; --deep-2:#4FA9A4; --spark:#E3C25A; --ok:#5FBF92; --stop:#E08585;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.35);
+  --on-deep:#0A0E0D;
+}}
+:root[data-theme="dark"]{
+  --ink:#E9EFEB; --paper:#0A0E0D; --card:#131817; --stone:#93A099; --line:#212927;
+  --deep:#7FD1CB; --deep-2:#4FA9A4; --spark:#E3C25A; --ok:#5FBF92; --stop:#E08585;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 12px 32px rgba(0,0,0,.35);
+  --on-deep:#0A0E0D;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.65 var(--sans);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:64rem;margin:0 auto;padding:0 1.3rem}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;letter-spacing:-.022em;
+  line-height:1.12;text-wrap:balance}
+a{color:var(--deep-2);text-decoration-thickness:1px;text-underline-offset:3px}
+button{font:inherit;cursor:pointer}
+.mono{font-family:var(--mono)}
+
+/* ---------------- nav ---------------- */
+nav{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--paper) 86%,transparent);backdrop-filter:blur(12px)}
+.nav{max-width:64rem;margin:0 auto;padding:.75rem 1.3rem;display:flex;align-items:center;gap:1.2rem}
+.logo{display:flex;align-items:center;gap:.55rem;font-family:var(--serif);font-weight:600;
+  font-size:1.14rem;letter-spacing:-.01em}
+.logo svg{width:24px;height:24px;color:var(--deep-2)}
+.nav .sp{flex:1}
+.nav a{color:var(--stone);text-decoration:none;font-size:.9rem}
+.nav a:hover{color:var(--ink)}
+@media (max-width:44rem){.nav a.hideable{display:none}}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);border-radius:99px;
+  padding:.3rem .75rem;font-size:.8rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+
+/* ---------------- hero ---------------- */
+.hero{position:relative;padding:4.5rem 0 2rem;overflow:hidden}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none}
+.hero .inner{position:relative}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--stone);margin:0 0 1rem}
+.hero h1{font-size:clamp(2.4rem,7vw,4.3rem)}
+.hero h1 em{font-style:normal;color:var(--deep-2)}
+.hero p.sub{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--stone);max-width:36rem;margin:1.2rem 0 0}
+.cta{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:2rem}
+/* Colour comes from a token defined in ALL three theme states, never from
+   inside a media query — an override there outranks the component rule and
+   painted the outline button in near-white on light paper. */
+.btn{display:inline-block;background:var(--deep);color:var(--on-deep);border:1px solid var(--deep);
+  border-radius:10px;padding:.8rem 1.5rem;font-weight:600;text-decoration:none;font-size:.98rem}
+.btn:hover{filter:brightness(1.12)}
+.btn.alt{background:transparent;color:var(--ink);border-color:var(--line)}
+.btn.alt:hover{border-color:var(--deep-2);color:var(--deep-2);filter:none}
+
+/* the live demo strip */
+.demo{margin-top:2.6rem;background:var(--card);border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow);overflow:hidden}
+.demo .top{display:flex;align-items:center;gap:.5rem;padding:.6rem .9rem;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--stone)}
+.demo .top i{width:.55rem;height:.55rem;border-radius:99px;background:var(--line);display:block}
+.demo .body{padding:1.2rem}
+.demo textarea{width:100%;background:var(--paper);color:var(--ink);border:1px solid var(--line);
+  border-radius:10px;padding:.8rem .9rem;font:inherit;resize:vertical}
+.demo textarea:focus{outline:2px solid var(--deep-2);outline-offset:1px;border-color:transparent}
+.demo .row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem;align-items:center}
+.pill{background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:.28rem .7rem;
+  font-size:.8rem;color:var(--stone)}
+.pill:hover{border-color:var(--deep-2);color:var(--deep-2)}
+#dout{margin-top:1rem}
+.vd{border-left:4px solid var(--stone);padding-left:.95rem}
+.vd h3{font-size:1.16rem}.vd p{margin:.3rem 0 0;color:var(--stone);font-size:.94rem}
+.vd.ok{border-color:var(--ok)}.vd.ok h3{color:var(--ok)}
+.vd.no{border-color:var(--spark)}.vd.no h3{color:var(--spark)}
+.vd.oos{border-color:var(--stone)}
+.chk{list-style:none;padding:0;margin:.9rem 0 0;display:grid;gap:.35rem;font-size:.92rem}
+.chk li{display:grid;grid-template-columns:1.2rem 1fr;gap:.5rem}
+.chk .y{color:var(--ok);font-weight:700}.chk .n{color:var(--stone)}
+
+/* ---------------- sections ---------------- */
+section{padding:4rem 0}
+section h2{font-size:clamp(1.6rem,3.6vw,2.3rem)}
+section .lede{color:var(--stone);max-width:38rem;margin:.9rem 0 0;font-size:1.05rem}
+.grid{display:grid;gap:1rem;margin-top:2.2rem}
+.g3{grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(20rem,1fr))}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.3rem;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.45rem;
+  transition:transform .14s ease,border-color .14s ease}
+a.tile{text-decoration:none;color:inherit}
+a.tile:hover{transform:translateY(-2px);border-color:var(--deep-2)}
+.tile .nm{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;color:var(--deep-2)}
+.tile h3{font-size:1.1rem;line-height:1.3}
+.tile p{margin:0;color:var(--stone);font-size:.9rem;line-height:1.55}
+
+.band{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:2rem;margin-top:1.8rem}
+.fig .n{font-family:var(--mono);font-size:2.5rem;line-height:1;letter-spacing:-.03em;
+  font-variant-numeric:tabular-nums}
+.fig .l{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--stone);margin-top:.5rem;line-height:1.45}
+
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.93rem;min-width:30rem}
+th{text-align:left;font-family:var(--mono);font-weight:500;font-size:.7rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--stone);padding:.5rem .9rem .5rem 0;border-bottom:1px solid var(--line)}
+td{padding:.65rem .9rem .65rem 0;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+
+.honest{border:1px solid var(--line);border-left:4px solid var(--stop);background:var(--card);
+  border-radius:0 14px 14px 0;padding:1.4rem 1.6rem;margin-top:2rem}
+.honest b{display:block;font-family:var(--mono);font-size:.75rem;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--stop);margin-bottom:.6rem;font-weight:500}
+.honest ol{margin:0;padding-left:1.2rem}.honest li{margin:.5rem 0}
+
+footer{border-top:1px solid var(--line);padding:2.5rem 0 3.5rem;color:var(--stone);font-size:.88rem}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:1.5rem;margin-bottom:2rem}
+footer h4{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;
+  margin:0 0 .6rem;color:var(--ink)}
+footer a{display:block;color:var(--stone);text-decoration:none;padding:.15rem 0}
+footer a:hover{color:var(--deep-2)}
+:focus-visible{outline:2px solid var(--deep-2);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav">
+    <span class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 21h16M6.5 21c0-3 2.4-4.2 5.5-4.2s5.5 1.2 5.5 4.2M8 16.6c-.6-2.4 1.4-3.6 4-3.6s4.6 1.2 4 3.6M9.4 12.8c-.5-2 1-3 2.6-3s3.1 1 2.6 3M10.6 9.4c-.3-1.5.5-2.4 1.4-2.4s1.7.9 1.4 2.4"/>
+      </svg>Novora</span>
+    <span class="sp"></span>
+    <a href="#tools" class="hideable">Tools</a>
+    <a href="#how" class="hideable">How it works</a>
+    <a href="#evidence" class="hideable">Evidence</a>
+    <a href="#limits">Limits</a>
+    <button class="ghost" id="theme" title="Light / dark">◐</button>
+  </div>
+</nav>
+
+<!-- ============================= HERO ============================= -->
+<header class="hero">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <div class="wrap inner">
+    <p class="eyebrow">Runs on your device · no account · nothing uploaded</p>
+    <h1>Check it <em>before</em> you believe it.</h1>
+    <p class="sub">Somebody told you a fact. An app wants your files. A contract needs signing.
+       Novora shows you what any of them is actually made of — and, just as plainly, what it
+       cannot tell you.</p>
+    <div class="cta">
+      <a class="btn" href="#tools">Open the tools</a>
+      <a class="btn alt" href="#evidence">See where we failed our own test</a>
+    </div>
+
+    <!-- live, working demo -->
+    <div class="demo">
+      <div class="top"><i></i><i></i><i></i><span style="margin-left:.5rem">Try it right here</span></div>
+      <div class="body">
+        <textarea id="din" rows="3">Green tea reduces stress.</textarea>
+        <div class="row">
+          <button class="btn" id="dgo" style="padding:.55rem 1.1rem">Check it</button>
+          <button class="pill" data-eg="0">a vague claim</button>
+          <button class="pill" data-eg="1">a sourced claim</button>
+          <button class="pill" data-eg="2">a definition</button>
+        </div>
+        <div id="dout"></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================= TOOLS ============================= -->
+<section id="tools">
+  <div class="wrap">
+    <h2>Two apps. Both open straight in your browser.</h2>
+    <p class="lede">Nothing to install, no sign-up, no connection needed. Open the file and it
+       works — on a laptop, on a phone, on a plane.</p>
+
+    <div class="grid g2">
+      <a class="tile" href="../cairn/desk.html">
+        <span class="nm">Governance Console</span>
+        <h3>Six everyday checks</h3>
+        <p>Check a claim. Decide what an app may touch. Keep a record nobody can quietly edit.
+           See whether our confidence matches reality. Open a file and see what is really in it.
+           Plan something so you can tell if it worked.</p>
+        <p style="color:var(--deep-2);font-weight:600;margin-top:.4rem">Open your desk →</p>
+      </a>
+      <a class="tile" href="../novora-suite/desk.html">
+        <span class="nm">Novora Suite</span>
+        <h3>Nine tools for pressing what you are told</h3>
+        <p>Is there anything underneath this? What am I giving up if I sign? Was this decision
+           about me fair? Can I trust this institution? Do I have a case? Am I ready to decide?
+           Is this message connecting or controlling?</p>
+        <p style="color:var(--deep-2);font-weight:600;margin-top:.4rem">Open the suite →</p>
+      </a>
+    </div>
+
+    <div class="grid g3" style="margin-top:1rem">
+      <div class="tile"><span class="nm">Cairn</span><h3>Claim checker</h3>
+        <p>Five checkable things: source, figures, method, date, scope. It tells you which are
+           missing and writes the follow-up question for you.</p></div>
+      <div class="tile"><span class="nm">Page Code</span><h3>Permissions in plain words</h3>
+        <p>List what an app <em>may</em> do. Everything else is refused automatically — you never
+           have to predict the bad request.</p></div>
+      <div class="tile"><span class="nm">HELM</span><h3>Tamper-evident record</h3>
+        <p>Each entry seals the one before it. Edit an old line and every seal after it visibly
+           breaks.</p></div>
+      <div class="tile"><span class="nm">Trig</span><h3>Calibration</h3>
+        <p>Named for the survey pillar you triangulate against. It checks whether stated
+           confidence matches an independent measure.</p></div>
+      <div class="tile"><span class="nm">Readers</span><h3>Files, data, code</h3>
+        <p>Documents, spreadsheets, transcripts and source code — read on your device, with the
+           blind spots listed every time.</p></div>
+      <a class="tile" href="../weir/panel.html"><span class="nm">Weir</span><h3>The gate itself</h3>
+        <p>The one piece that does not just advise. What is on your key goes through;
+           everything else stops and never reaches the other side at all.</p>
+        <p style="color:var(--deep-2);font-weight:600;margin-top:.4rem">Open the gate →</p></a>
+      <a class="tile" href="../weir/stop.html"><span class="nm">Stop card</span><h3>When it refuses to guess</h3>
+        <p>Not an empty screen. You get a filled card: what was read, what was looked for,
+           what was found, and the one thing that would change the answer.</p>
+        <p style="color:var(--deep-2);font-weight:600;margin-top:.4rem">See a stop →</p></a>
+      <div class="tile"><span class="nm">Planner</span><h3>Plans with gates</h3>
+        <p>Every step names its evidence, and the failure condition is written down before you
+           start.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= HOW ============================= -->
+<section id="how" class="band">
+  <div class="wrap">
+    <h2>The one idea underneath all of it</h2>
+    <p class="lede">Most software asks you to trust that whoever wrote it was careful. These
+       tools are built so that carelessness is <em>structurally impossible</em> rather than
+       merely discouraged.</p>
+
+    <div class="grid g2" style="margin-top:2rem">
+      <div class="tile">
+        <span class="nm">Ordinary code</span>
+        <h3 style="font-family:var(--mono);font-size:2.2rem;color:var(--stop)">0.800</h3>
+        <p>A real function scoring a software project. It quietly reads the project's own
+           marketing description and adds half a point. It has no bugs. It passes every check.
+           The number arrives looking exactly like a measurement.</p>
+      </div>
+      <div class="tile">
+        <span class="nm">The same intent, governed</span>
+        <h3 style="font-family:var(--mono);font-size:2.2rem;color:var(--ok)">0.300</h3>
+        <p>The honest answer. The self-description was <em>deleted from the record</em> before the
+           function ran — not ignored by policy, not skipped by a careful author. It could not
+           have been read.</p>
+      </div>
+    </div>
+
+    <div class="grid g3" style="margin-top:1rem">
+      <div class="tile"><span class="nm">Rule 1</span><h3>No bare answers</h3>
+        <p>Every result carries its confidence, its reasons, and a receipt. A lonely number
+           cannot be argued with, because it has no reasons attached.</p></div>
+      <div class="tile"><span class="nm">Rule 2</span><h3>Blind means deleted</h3>
+        <p>Not "ignored". Removed before the check begins, and the removal is written into the
+           receipt so an auditor can verify it happened.</p></div>
+      <div class="tile"><span class="nm">Rule 3</span><h3>Two checks must be two</h3>
+        <p>If your two sources secretly carry the same information, you looked twice and learned
+           once. The program halts rather than sounding twice as sure.</p></div>
+      <div class="tile"><span class="nm">Rule 4</span><h3>"I don't know" is an answer</h3>
+        <p>Declining is a normal, successful result — not a crash. If saying it is expensive,
+           software stops saying it and starts guessing.</p></div>
+      <div class="tile"><span class="nm">Rule 5</span><h3>Gates written first</h3>
+        <p>What would count as failure is fixed and hash-locked before the data is seen. Change
+           it later and the hash changes visibly.</p></div>
+      <div class="tile"><span class="nm">Rule 6</span><h3>Nothing learns from itself</h3>
+        <p>A system trained on its own output measures its own consistency, not the world. Ours
+           refuses those labels outright.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= EVIDENCE ============================= -->
+<section id="evidence">
+  <div class="wrap">
+    <h2>The part most products leave out</h2>
+    <p class="lede">We ran a calibration test on ourselves: when the claim checker states a
+       confidence, does it match an independent measure it never sees? We set the limit
+       beforehand. We failed.</p>
+
+    <div class="figs">
+      <div class="fig"><div class="n" style="color:var(--stop)">0.3727</div>
+        <div class="l">measured gap between our confidence and reality</div></div>
+      <div class="fig"><div class="n">0.15</div>
+        <div class="l">the limit we set before looking</div></div>
+      <div class="fig"><div class="n">not moved</div>
+        <div class="l">what we did to the limit afterwards</div></div>
+    </div>
+
+    <p class="lede" style="margin-top:2rem">It is on the front page of the tool itself, not in an
+       appendix. A product that has never published its own failure has not yet been tested.</p>
+
+    <h3 style="margin-top:2.5rem;font-size:1.25rem">Everything else, measured</h3>
+    <div class="scroll" style="margin-top:1rem">
+      <table>
+        <thead><tr><th>What was tested</th><th>Result</th><th>Honest reading</th></tr></thead>
+        <tbody>
+          <tr><td>Coupling law on 992 real software projects</td><td class="mono">quadratic disconfirmed</td>
+              <td>Both gates met, not waived. Does not prove the linear law — only that the quadratic earned nothing.</td></tr>
+          <tr><td>Governed learner: does declining help?</td><td class="mono">holds by 2 rows</td>
+              <td>The confidence interval includes zero. Read it as "abstaining did not hurt", not "abstaining helped".</td></tr>
+          <tr><td>Two arrival-verb families in a large text</td><td class="mono">+0.1534 vs a 0.15 gate</td>
+              <td>Direction robust across every variant; magnitude marginal. Five of ten word choices break the verdict.</td></tr>
+          <tr><td>Orthographic split claim</td><td class="mono">untestable</td>
+              <td>Only 7 instances exist. A statement about sample size, not about whether the claim is true.</td></tr>
+          <tr><td>Browser engines vs the audited originals</td><td class="mono">parity, all cases</td>
+              <td>What you run in the browser is the code the test suite exercises.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============================= LIMITS ============================= -->
+<section id="limits" class="band">
+  <div class="wrap">
+    <h2>What Novora cannot do</h2>
+    <p class="lede">This section is not a disclaimer. It is the most useful page here, because a
+       tool that hides its limits gets trusted once — wrongly — and then abandoned.</p>
+
+    <div class="honest">
+      <b>Read this before relying on anything</b>
+      <ol>
+        <li><strong>Nothing here knows whether something is true.</strong> The tools check whether
+          a claim is <em>checkable</em>, whether permission was granted, whether a record was
+          altered. A sentence can pass every check and still be false.</li>
+        <li><strong>These are screens, not judges.</strong> They match patterns in text. They do
+          not understand what you paste, and they can be wrong in both directions.</li>
+        <li><strong>There is no vision model.</strong> The image reader knows the pixel
+          dimensions. A chart, a contract photo and a cat are the same thing to it.</li>
+        <li><strong>No video can be fetched.</strong> There is no network by design. Open the
+          video, copy the transcript, paste it in — that path is honest and it works.</li>
+        <li><strong>Structure is not safety.</strong> For anything touching health, money, law or
+          chemicals, a well-formed claim and a safe one are different things. The tools say so
+          every time, and then you still need a qualified person.</li>
+        <li><strong>The record is tamper-evident, not tamper-proof.</strong> It makes editing
+          visible. It does not prevent it.</li>
+        <li><strong>We make no claim about market size or valuation.</strong> Those depend on
+          things no repository can measure, and any figure would be invented.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><h4>Apps</h4>
+        <a href="../cairn/desk.html">Your Desk — six checks</a>
+        <a href="../cairn/plain.html">Governance Console (detailed)</a>
+        <a href="../novora-suite/desk.html">Novora — nine checks</a>
+        <a href="../novora-suite/suite.html">Novora Suite (detailed)</a></div>
+      <div><h4>Read</h4>
+        <a href="../plumb/TEACH.md">Learning Plumb</a>
+        <a href="../plumb/GOVERNANCE_VS_RT.md">Governance vs RT computing</a>
+        <a href="../cairn/ORDINARY_USE.md">What each tool is for</a></div>
+      <div><h4>Evidence</h4>
+        <a href="../cohort-audit/README.md">The 992 cohort audit</a>
+        <a href="../governance-learning/PREREG.md">Learning algorithm pre-registration</a>
+        <a href="../text-channel/README.md">Textual claims study</a></div>
+      <div><h4>Verify</h4>
+        <a href="../reproduce_all.sh">reproduce_all.sh</a>
+        <a href="../requirements.txt">requirements.txt</a>
+        <a href="../weir/README.md">Weir — the gate</a>
+        <a href="../readers/readers.js">readers.js</a></div>
+    </div>
+    <p style="max-width:44rem">Every page here runs on your own device with no account and no
+      network. Pre-registrations are hash-locked before their runs and re-checked by the test
+      suite, so editing one after seeing results fails the build. Nulls, halts and our own
+      failed gates are published at the same size as the successes.</p>
+  </div>
+</footer>
+
+<script>/* ei_engine.js -- faithful JS port of cairn/ei_llm.py's assay().
+ *
+ * This exists so the browser app runs the SAME logic as the audited Python
+ * engine, with no server and no network. Parity is not assumed: it is tested by
+ * cairn/test_parity.py, which runs both engines over a shared case list and
+ * fails if any verdict, claim type, confidence or evidence count differs.
+ *
+ * Same limits as the Python engine, restated so nobody reads the port as an
+ * upgrade: this does NOT understand language. Ambiguity detection is syntactic
+ * pattern matching and the plausibility check reads a hand-written list of 15
+ * landform nouns.
+ */
+(function (root) {
+  "use strict";
+
+  var EVIDENCE = [
+    ["source", /\b(according to|source|cited|reference|study|report|dataset|https?:\/\/|\.gov|\.org|doi)\b/i,
+      "A checkable source is named", "No source is named"],
+    ["figures", /\d/, "Contains specific figures", "No specific figures given"],
+    ["method", /\b(method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/i,
+      "Says how it was measured", "Does not say how it was measured"],
+    ["time", /\b(19|20)\d{2}\b|\b(today|yesterday|last (year|month|quarter)|q[1-4])\b/i,
+      "Anchored to a date or period", "No date or period given"],
+    ["scope", /\b(in|across|among|between|per|for)\b[\s\S]{0,28}\b(uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/i,
+      "States who or where it applies", "Scope is not stated"]
+  ];
+
+  var IMMOBILE = ["canyon", "grand canyon", "mountain", "mountains", "valley", "plateau",
+    "cliff", "lake", "river", "desert", "glacier", "volcano", "island", "coastline", "forest"];
+  var SELF_PROPELLED = ["flying", "walking", "running", "driving", "swimming",
+    "travelling", "traveling", "climbing"];
+
+  var ATTACH_RE = /^\s*(i|we|he|she|they|you)\s+(\w+)\s+(the|a|an|my|our|his|her|their)\s+([\w\s]{2,40}?)\s+(\w+ing)\b([\s\S]*)$/i;
+  var CONCEPTUAL_RE = /(\bis (the|a|an) (study|branch|theory|field|concept|term|word|practice|process|state|quality)\b|\bis defined as\b|\bmeans\b|\brefers to\b|\bdefinition of\b|\bby definition\b|^\s*\w+\s*[:—-]\s*(the|a|an)\b)/i;
+  var MATHY_RE = /^\s*[\d\s()+\-*/^=.]+\s*$/;
+  var OPINION_RE = /\b(i think|i believe|in my opinion|i feel|should be|ought to|is better than|is the best|is amazing|is terrible|prefer)\b/i;
+  var QUESTION_RE = /^\s*(what|who|when|where|why|how|is|are|do|does|did|can|could|should|would|will)\b[\s\S]*\?\s*$/i;
+  var IMPERATIVE_RE = /^\s*(mix|add|combine|apply|take|use|heat|stir|install|run|pour|dissolve|blend)\b/i;
+
+  var DOMAIN_RISK = [
+    ["chemistry/formulation", /\b(acid|ph\b|emulsif|oil|solvent|dissolve|concentration|serum|formulation|mix(ing)?|bleach|ammonia)\b/i],
+    ["medical/health", /\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient|participants|infect\w*|outbreak|epidemic|pandemic|bacteri\w*|virus|viral|fungal|parasit\w*|contagio\w*|antibiotic|antimicrobial|pathogen\w*|contaminat\w*|quarantine|measles|cholera|influenza|bird flu|covid|death[s]?|died|dying|fatal\w*|mortality|lethal|survive|survival|kill(s|ed)?|life-threatening|amputat\w*|wound[s]?|illness|disease|disorder|syndrome|cancer|tumou?r|malignan\w*|biopsy|carcinom\w*|diabet\w*|blood pressure|cholesterol|kidney|cardiac|stroke|asthma|vaccin\w*|immunis\w*|immuniz\w*|booster|screening|hospital\w*|clinic\w*|doctor|nurse|prescription|fever|nausea)\b/i],
+    ["legal/regulatory", /\b(contract|clause|liabilit\w*|complian\w*|regulat\w*|statute|gdpr|licen[cs]e|jurisdiction|appeal|waive[sd]?|legal|lawsuit|court|breach|terminat\w*|disclos\w*|entitle\w*|tribunal)\b/i],
+    ["financial", /\b(revenue|profit|forecast|invest\w*|valuation|roi\b|interest rate|loan|credit|guaranteed returns?|returns? of|pension|tax|apr\b|mortgage|debt|refund|deposit|payment|withdraw\w*)\b/i],
+    ["safety-critical", /\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing|carbon monoxide|scaffold\w*|toxic|fumes|corrosive|explosi\w*|asbestos|brake[s]?|overheat\w*|wiring|flue|ventilat\w*|pesticide|solvent)\b/i]
+  ];
+
+  function classifyClaim(text) {
+    var t = (text || "").trim();
+    if (!t) return ["EMPTY", "Nothing to look at yet."];
+    if (QUESTION_RE.test(t)) return ["QUESTION",
+      "That's a question, not a claim. I audit statements — paste an answer you've been given and I'll tell you how far it can be trusted."];
+    if (MATHY_RE.test(t)) return ["CONCEPTUAL",
+      "That's arithmetic. It's true by definition, so there's nothing for me to verify against the world."];
+    if (CONCEPTUAL_RE.test(t) && !/\d/.test(t)) return ["CONCEPTUAL",
+      "That's a definition or a concept. Definitions are true by agreement, not by measurement — so there's no source, date or figure for me to check. This isn't a failure; it's simply outside what I audit."];
+    if (OPINION_RE.test(t)) return ["OPINION",
+      "That's a preference or a judgement. I can't audit what someone values — only claims about what is measurably the case."];
+    if (IMPERATIVE_RE.test(t)) return ["INSTRUCTION",
+      "That's a set of instructions. I can check whether it's specified precisely enough to follow — but NOT whether following it is safe or correct."];
+    return ["EMPIRICAL", ""];
+  }
+
+  function domainFlags(text) {
+    var out = [];
+    for (var i = 0; i < DOMAIN_RISK.length; i++) {
+      if (DOMAIN_RISK[i][1].test(text || "")) out.push(DOMAIN_RISK[i][0]);
+    }
+    return out;
+  }
+
+  function scoreEvidence(text) {
+    return EVIDENCE.map(function (e) {
+      var hit = e[1].test(text || "");
+      return { signal: e[0], hit: hit, note: hit ? e[2] : e[3] };
+    });
+  }
+
+  /* ------------------------------------------------------------- handles ---
+   * A tick saying "contains specific figures" leaves the reader to find the
+   * figures themselves. The handles are the SPANS that made each signal fire --
+   * the exact words someone would paste into a search engine to go and check.
+   * Strictly additional: same signals, same hits, plus the causing text. */
+  var FIGURE_RX = /\d[\d,.]*(?:\s*(?:%|percent))?(?:\s+[a-z][a-z-]{2,20})?/gi;
+  var YEAR_RX = /\b(?:19|20)\d{2}\b|\b(?:today|yesterday|last (?:year|month|quarter)|q[1-4])\b/gi;
+  var METHOD_RX = /\b(?:[a-z-]+\s+)?(?:method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/gi;
+  var SCOPE_RX = /\b(?:in|across|among|between|per|for)\b.{0,28}?\b(?:uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/gi;
+  var SOURCE_RX = /\b(?:according to|source|cited|reference|study|report|dataset|doi)\b|https?:\/\/\S+|\b\S+\.(?:gov|org)\b/gi;
+  /* A source MARKER ("according to") is not a source NAME. The distinction only
+   * becomes visible once the span is shown, which is the point of showing it. */
+  var NAMED_RX = /https?:\/\/\S+|\bdoi\b|\b\S+\.(?:gov|org)\b|\b(?:the )?[A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)*\s+(?:Journal|Review|Times|Post|University|Institute|Office|Agency|Association|Society)\b|\b(?:Nature|Science|Lancet|BMJ|JAMA|NEJM|WHO|CDC|NHS|ONS|OECD|NASA)\b/g;
+  var STOP = ["a","an","the","of","in","on","at","by","to","and","or","was","were","is","are"];
+
+  function spans(rx, text, limit) {
+    var out = [], m;
+    rx.lastIndex = 0;
+    while ((m = rx.exec(text || "")) !== null) {
+      var s = m[0].replace(/^[\s,.;:]+|[\s,.;:]+$/g, "");
+      if (s && STOP.indexOf(s.toLowerCase()) === -1 && out.indexOf(s) === -1) out.push(s);
+      if (out.length >= limit) break;
+      if (m.index === rx.lastIndex) rx.lastIndex++;
+    }
+    return out;
+  }
+
+  function extractHandles(text) {
+    text = text || "";
+    var all = spans(FIGURE_RX, text, 6);
+    var figures = all.filter(function (s) { return !/^(?:19|20)\d{2}$/.test(s.split(/\s+/)[0]); });
+    if (!figures.length) figures = all;
+    var method = [], mm;
+    METHOD_RX.lastIndex = 0;
+    while ((mm = METHOD_RX.exec(text)) !== null) {
+      var s = mm[0].trim(), first = s.split(/\s+/)[0].toLowerCase();
+      if (s.split(/\s+/).length > 1 && STOP.indexOf(first) !== -1) s = s.split(/\s+/).slice(1).join(" ");
+      if (method.indexOf(s) === -1) method.push(s);
+      if (mm.index === METHOD_RX.lastIndex) METHOD_RX.lastIndex++;
+    }
+    var src = spans(SOURCE_RX, text, 3);
+    spans(NAMED_RX, text, 2).forEach(function (s) { if (src.indexOf(s) === -1) src.push(s); });
+    return {
+      source: src, figures: figures, method: method.slice(0, 3),
+      time: spans(YEAR_RX, text, 3), scope: spans(SCOPE_RX, text, 3),
+      // Reported, never scored.
+      source_named: (NAMED_RX.lastIndex = 0, NAMED_RX.test(text))
+    };
+  }
+
+  function searchLine(h) {
+    var parts = [];
+    ["time", "figures", "method", "scope"].forEach(function (k) {
+      (h[k] || []).forEach(function (s) { if (parts.indexOf(s) === -1) parts.push(s); });
+    });
+    return parts.join(" ");
+  }
+
+  function nextSteps(checks, kind) {
+    if (kind === "QUESTION") return ["Paste the answer you were given, and I'll audit that instead."];
+    if (kind === "CONCEPTUAL" || kind === "OPINION") return [
+      "Add a measurement, a date or a source and it becomes something I can check.",
+      "For definitions, an ordinary assistant or a dictionary is the right tool."];
+    var fix = {
+      source: "Name where it came from — a study, a report, a link.",
+      figures: "Add the actual numbers.",
+      method: "Say how it was measured.",
+      time: "Add when it was measured.",
+      scope: "Say who or where it applies to."
+    };
+    var missing = checks.filter(function (c) { return !c.hit; }).slice(0, 3)
+      .map(function (c) { return fix[c.signal]; });
+    return missing.length ? missing : ["Nothing material is missing."];
+  }
+
+  function inImmobile(s) {
+    if (IMMOBILE.indexOf(s) !== -1) return true;
+    return s.split(/\s+/).some(function (w) { return IMMOBILE.indexOf(w) !== -1; });
+  }
+
+  function detectAmbiguity(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = ATTACH_RE.exec(t);
+    if (!m) return { ambiguous: false, readings: [], pattern: null };
+    var subj = m[1], verb = m[2], obj = m[4].trim(), part = m[5], rest = m[6].trim();
+    var objKey = obj.toLowerCase().trim();
+    var objImmobile = inImmobile(objKey);
+    var partMoves = SELF_PROPELLED.indexOf(part.toLowerCase()) !== -1;
+    return {
+      ambiguous: true, pattern: "participial attachment", object: obj, participle: part,
+      object_in_immobile_lexicon: objImmobile,
+      readings: [
+        { id: "A", attaches_to: "subject",
+          paraphrase: (subj + " was " + part + " " + rest + ", and " + subj + " " + verb + " the " + obj).trim(),
+          plausible: true, why: "The subject is an agent, so it can perform the action." },
+        { id: "B", attaches_to: "object",
+          paraphrase: (subj + " " + verb + " the " + obj + ", and the " + obj + " was " + part + " " + rest).trim(),
+          plausible: !(objImmobile && partMoves),
+          why: (objImmobile && partMoves)
+            ? "'" + obj + "' is in the declared immobile-landform lexicon and '" + part + "' is self-propelled motion, so this reading is physically implausible."
+            : "Both the object and the action are ordinary, so this reading is perfectly possible." }
+      ]
+    };
+  }
+
+  function checkImpossible(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = /^\s*(the\s+)?([\w\s]{2,40}?)\s+(was|is|were|are)\s+(\w+ing)\b/i.exec(t);
+    if (!m) return null;
+    var obj = m[2].trim().toLowerCase(), part = m[4].toLowerCase();
+    if (inImmobile(obj) && SELF_PROPELLED.indexOf(part) !== -1) {
+      return { implausible: true, subject: obj, action: part,
+        basis: "declared immobile-landform lexicon (a hand-written list of " + IMMOBILE.length + " nouns), NOT comprehension" };
+    }
+    return null;
+  }
+
+  function assay(text, model) {
+    model = model || "slate";
+    text = (text || "").trim();
+    var kr = classifyClaim(text), kind = kr[0], kindNote = kr[1];
+    var checks = scoreEvidence(text);
+    var hits = checks.filter(function (c) { return c.hit; }).length;
+    var hnd = extractHandles(text);
+    var words = text ? text.split(/\s+/).length : 0;
+    var amb = detectAmbiguity(text);
+    var impossible = checkImpossible(text);
+    var domains = domainFlags(text);
+
+    if (kind === "CONCEPTUAL" || kind === "OPINION" || kind === "QUESTION" || kind === "EMPTY") {
+      return {
+        input: text, model: model, verdict: "OUT_OF_SCOPE", claim_type: kind,
+        committed_answer: null, confidence: null, band: "not applicable",
+        evidence: [], evidence_hits: 0, evidence_total: EVIDENCE.length,
+        handles: hnd, search_line: searchLine(hnd),
+        ambiguity: amb, implausible: null, domain_flags: domains,
+        explanation: kindNote, question: null, next_steps: nextSteps(checks, kind),
+        abstained: false, engine: "cairn-ei/1.1 (js)",
+        limits: "Out of scope is not a failure. I audit empirical claims; this text is not one."
+      };
+    }
+
+    var conf = hits / EVIDENCE.length;
+    if (words < 4) conf = 0.0;
+    if (model === "granite" || model === "quartz") conf = Math.min(1.0, conf * 1.12);
+    if (amb.ambiguous) conf = Math.min(conf, 0.35);
+
+    var verdict, committed, question = null;
+    if (amb.ambiguous) {
+      verdict = "AMBIGUOUS"; committed = null;
+      question = "Which did you mean: were you " + amb.participle + ", or was the " + amb.object + " " + amb.participle + "?";
+    } else if (impossible) {
+      verdict = "IMPLAUSIBLE"; committed = null;
+      question = "Did you mean this literally, or is a word missing?";
+    } else if (conf < 0.25) {
+      verdict = "INSUFFICIENT_EVIDENCE"; committed = null;
+      question = "Add a source, a figure, a date, a method or a scope and I can work with it.";
+    } else {
+      verdict = "SUPPORTED"; committed = text;
+    }
+
+    var band = conf >= 0.7 ? "high" : conf >= 0.45 ? "moderate" : conf >= 0.25 ? "low" : "insufficient";
+    return {
+      input: text, model: model, verdict: verdict, claim_type: kind,
+      committed_answer: committed, confidence: Math.round(conf * 1000) / 1000, band: band,
+      evidence: checks, evidence_hits: hits, evidence_total: EVIDENCE.length,
+      handles: hnd, search_line: searchLine(hnd),
+      ambiguity: amb, implausible: impossible, domain_flags: domains,
+      explanation: kindNote, question: question, next_steps: nextSteps(checks, kind),
+      abstained: committed === null, engine: "cairn-ei/1.1 (js)",
+      limits: "This engine does not understand language. Ambiguity detection is pattern matching; plausibility reads a hand-written list of " + IMMOBILE.length + " landform nouns."
+    };
+  }
+
+  var API = { assay: assay, classifyClaim: classifyClaim, domainFlags: domainFlags,
+    scoreEvidence: scoreEvidence, extractHandles: extractHandles, searchLine: searchLine,
+    IMMOBILE: IMMOBILE, EVIDENCE_N: EVIDENCE.length };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.EI = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);</script>
+<script>
+"use strict";
+var $=function(s){return document.querySelector(s)};
+$("#theme").onclick=function(){
+  var d=document.documentElement,cur=d.getAttribute("data-theme");
+  var dark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  d.setAttribute("data-theme",dark?"light":"dark");
+  paint();
+};
+
+/* ---- live demo, running the real audited engine ---- */
+var EGS=["Green tea reduces stress.",
+ "According to a 2023 randomised trial of 240 participants in the UK, green tea reduced self-reported stress by 12%.",
+ "Epistemology is the study of knowledge."];
+var HEAD={SUPPORTED:["ok","There's something here you can check",
+  "This names enough that someone could go and verify it. That does not make it true — it makes it checkable."],
+ INSUFFICIENT_EVIDENCE:["no","Not enough here to rely on",
+  "It may well be correct, but as written there is almost nothing anyone could go and check."],
+ OUT_OF_SCOPE:["oos","This isn't the kind of thing I check",
+  "Only claims about what is measurably the case."],
+ AMBIGUOUS:["oos","This can be read two ways","The sentence has more than one meaning, so it will not guess."],
+ IMPLAUSIBLE:["oos","Something looks off here","Read literally, this says something that cannot happen."]};
+var PLAIN={source:"Says where it came from",figures:"Gives actual numbers",
+ method:"Says how it was measured",time:"Says when",scope:"Says who or where it applies to"};
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function demo(){
+  var r=EI.assay($("#din").value,"slate"), h=HEAD[r.verdict]||["","",""];
+  var out='<div class="vd '+h[0]+'"><h3>'+h[1]+'</h3><p>'+esc(r.explanation||h[2])+'</p></div>';
+  if(r.evidence.length){
+    out+='<ul class="chk">'+r.evidence.map(function(c){
+      return '<li><span class="'+(c.hit?"y":"n")+'">'+(c.hit?"✓":"·")+'</span><span>'+
+        PLAIN[c.signal]+' — <span style="color:var(--stone)">'+esc(c.note)+'</span></span></li>';
+    }).join("")+'</ul>';
+  }
+  out+='<p style="color:var(--stone);font-size:.85rem;margin-top:.9rem">'+esc(r.limits)+'</p>';
+  $("#dout").innerHTML=out;
+}
+$("#dgo").onclick=demo;
+[].forEach.call(document.querySelectorAll("[data-eg]"),function(b){
+  b.onclick=function(){$("#din").value=EGS[+b.dataset.eg];demo()};
+});
+demo();
+
+/* ---- hero background: a plumb line settling to true vertical ---- */
+var cv=$("#bg"),ctx=cv.getContext("2d"),W=0,H=0,t=0,raf=null;
+var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+function size(){var r=cv.getBoundingClientRect();W=cv.width=r.width*devicePixelRatio;
+  H=cv.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);}
+function paint(){
+  if(!W)size();
+  var w=W/devicePixelRatio,h=H/devicePixelRatio;
+  ctx.clearRect(0,0,w,h);
+  var css=getComputedStyle(document.documentElement);
+  var line=css.getPropertyValue("--line").trim();
+  var deep=css.getPropertyValue("--deep-2").trim();
+  // faint survey grid
+  ctx.strokeStyle=line;ctx.lineWidth=1;ctx.globalAlpha=.55;
+  for(var x=0;x<w;x+=56){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
+  for(var y=0;y<h;y+=56){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+  // the plumb line, swinging less and less until it is exactly vertical
+  ctx.globalAlpha=1;
+  var ax=w*0.86, ay=0, len=Math.min(h*0.72,340);
+  var decay=Math.exp(-t/120), ang=Math.sin(t/9)*0.42*decay;
+  var bx=ax+Math.sin(ang)*len, by=ay+Math.cos(ang)*len;
+  ctx.strokeStyle=line;ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax,ay+len+22);ctx.stroke();
+  ctx.strokeStyle=deep;ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(bx,by);ctx.stroke();
+  ctx.fillStyle=deep;ctx.beginPath();
+  ctx.moveTo(bx-7,by);ctx.lineTo(bx+7,by);ctx.lineTo(bx,by+18);ctx.closePath();ctx.fill();
+}
+function loop(){t+=1;paint();if(t<900&&!reduce)raf=requestAnimationFrame(loop);}
+addEventListener("resize",function(){size();paint()});
+size();
+if(reduce){t=900;paint();}else loop();
+</script>
+</body>
+</html>

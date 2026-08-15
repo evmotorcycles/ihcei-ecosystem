@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Novora — nine tools for pressing what you are told</title>
+<style>
+:root{
+  --paper:#F4F5F2; --card:#FFFFFF; --ink:#15181B; --stone:#6B7570; --line:#DDE2DC;
+  --accent:#2E4E5E; --accent-soft:#E2ECF0; --ok:#22694B; --ok-soft:#E3F0E9;
+  --warn:#8A5A0B; --warn-soft:#FBF1DF; --stop:#8C2F2F; --stop-soft:#FBEAEA;
+  --shadow:0 1px 2px rgba(21,24,27,.05),0 8px 22px rgba(21,24,27,.05);
+  --serif:ui-serif,Georgia,"Iowan Old Style",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E1112; --card:#171A1C; --ink:#E7ECEA; --stone:#95A09B; --line:#242A2C;
+  --accent:#7FB2C6; --accent-soft:#152329; --ok:#5FBF92; --ok-soft:#132320;
+  --warn:#D9A441; --warn-soft:#241D0F; --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.3);
+}}
+:root[data-theme="dark"]{
+  --paper:#0E1112; --card:#171A1C; --ink:#E7ECEA; --stone:#95A09B; --line:#242A2C;
+  --accent:#7FB2C6; --accent-soft:#152329; --ok:#5FBF92; --ok-soft:#132320;
+  --warn:#D9A441; --warn-soft:#241D0F; --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;padding-bottom:4rem}
+.wrap{max-width:48rem;margin:0 auto;padding:0 1.15rem}
+h1,h2,h3{font-family:var(--serif);font-weight:600;margin:0;text-wrap:balance;letter-spacing:-.018em}
+button{font:inherit;cursor:pointer}
+.mono{font-family:var(--mono);font-size:.85em}
+
+header{position:sticky;top:0;z-index:20;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px)}
+.bar{max-width:48rem;margin:0 auto;padding:.7rem 1.15rem;display:flex;align-items:center;gap:.7rem}
+.brand{font-family:var(--serif);font-size:1.1rem;font-weight:600}
+.bar .sp{flex:1}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);border-radius:99px;
+  padding:.32rem .8rem;font-size:.82rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+#back{display:none}
+
+.hero{padding:2.4rem 0 1.4rem}
+.hero h1{font-size:clamp(1.85rem,5vw,2.6rem);line-height:1.14}
+.hero p{color:var(--stone);margin:.8rem 0 0;max-width:35rem;font-size:1.04rem}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:.8rem;
+  padding-bottom:1.4rem}
+.card{text-align:left;background:var(--card);border:1px solid var(--line);border-radius:13px;
+  padding:1.05rem 1.1rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.4rem;
+  transition:transform .12s ease,border-color .12s ease}
+.card:hover{transform:translateY(-1px);border-color:var(--accent)}
+.card .nm{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--accent)}
+.card .q{font-family:var(--serif);font-size:1.08rem;font-weight:600;line-height:1.3}
+.card .d{color:var(--stone);font-size:.88rem;line-height:1.5}
+
+.page{display:none;padding:1.5rem 0}
+.page.on{display:block}
+.page h2{font-size:1.55rem}
+.lede{color:var(--stone);margin:.45rem 0 1.3rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:1.1rem;
+  box-shadow:var(--shadow);margin-bottom:1rem}
+label.f{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--stone);margin-bottom:.45rem}
+textarea{width:100%;background:var(--paper);color:var(--ink);border:1px solid var(--line);
+  border-radius:10px;padding:.8rem .9rem;font:inherit;resize:vertical}
+textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.go{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:.72rem 1.4rem;
+  font-weight:600;margin-top:.8rem}
+.go:hover{filter:brightness(1.1)}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.chip{background:var(--paper);border:1px solid var(--line);border-radius:99px;padding:.3rem .75rem;
+  font-size:.82rem;color:var(--stone)}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+
+.verdict{border-left:4px solid var(--stone);padding-left:1rem}
+.verdict h3{font-size:1.28rem}
+.verdict p{margin:.35rem 0 0;color:var(--stone)}
+.v-ok{border-color:var(--ok)} .v-ok h3{color:var(--ok)}
+.v-mid{border-color:var(--warn)} .v-mid h3{color:var(--warn)}
+.v-bad{border-color:var(--stop)} .v-bad h3{color:var(--stop)}
+.v-abs{border-color:var(--stone)}
+.meterwrap{margin-top:1rem}
+.meter{display:block;height:.6rem;background:var(--line);border-radius:99px;overflow:hidden;position:relative}
+.meter i{position:absolute;inset:0 auto 0 0;border-radius:99px;background:var(--accent)}
+.mlbl{display:flex;justify-content:space-between;font-size:.8rem;color:var(--stone);margin-top:.35rem}
+.mlbl b{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.9rem}
+.tag{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;padding:.2rem .5rem;
+  border-radius:3px;background:var(--accent-soft);color:var(--accent)}
+.tag.bad{background:var(--stop-soft);color:var(--stop)}
+.detail{margin-top:1rem;display:grid;gap:.4rem}
+.detail div{display:flex;justify-content:space-between;gap:1rem;font-size:.9rem;
+  border-bottom:1px solid var(--line);padding-bottom:.35rem}
+.detail span:last-child{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.rcpt{font-family:var(--mono);font-size:.75rem;color:var(--stone);margin-top:1rem;
+  border-top:1px dashed var(--line);padding-top:.7rem;word-break:break-all}
+.honest{border:1px solid var(--line);border-left:4px solid var(--stop);background:var(--stop-soft);
+  border-radius:0 11px 11px 0;padding:1rem 1.1rem;margin:1.2rem 0;font-size:.94rem}
+.honest b{color:var(--stop);display:block;margin-bottom:.35rem}
+a.card{display:flex;flex-direction:column;gap:.4rem}
+a.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+a.card .go{margin-top:auto;padding-top:.4rem;color:var(--accent);font-weight:650;font-size:.87rem}
+footer{border-top:1px solid var(--line);margin-top:2.4rem;padding-top:1.3rem;color:var(--stone);
+  font-size:.86rem}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <span class="brand">Novora</span>
+    <span class="sp"></span>
+    <button class="ghost" id="back">← All nine</button>
+    <button class="ghost" id="theme" title="Switch light / dark">◐</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="page on" id="home">
+  <div class="hero">
+    <h1>Nine tools for pressing what you are told.</h1>
+    <p>Paste something in, and get back what it is actually made of — before you believe it,
+       sign it, act on it, or accept it. Everything runs on your own device. No account,
+       no internet connection, nothing uploaded.</p>
+  </div>
+  <div class="grid" id="grid"></div>
+
+  <h2 style="font-size:.74rem;letter-spacing:.13em;text-transform:uppercase;color:var(--stone);
+    margin:2.6rem 0 .2rem;font-weight:700">The rest of the stack</h2>
+  <p style="color:var(--stone);font-size:.95rem;margin:.3rem 0 0;max-width:38rem">
+    These nine read a piece of text. Three other screens do something different.</p>
+  <div class="grid" style="margin-top:1.2rem">
+    <a class="card" href="../keel/console.html" style="text-decoration:none;color:inherit">
+      <span class="nm">Console</span>
+      <h3>Everything on one page</h3>
+      <p>The label, these nine, the gate that decides what an assistant may do, and the
+         mesh — one page, offline.</p>
+      <span class="go">Open the console →</span>
+    </a>
+    <a class="card" href="../smi/app.html" style="text-decoration:none;color:inherit">
+      <span class="nm">Mesh</span>
+      <h3>Drag it and watch it move</h3>
+      <p>A screen where nothing was positioned. Every element sits where the arithmetic
+         put it. Built for a phone.</p>
+      <span class="go">Open the mesh →</span>
+    </a>
+    <a class="card" href="../weir/panel.html" style="text-decoration:none;color:inherit">
+      <span class="nm">Gate</span>
+      <h3>The part that can refuse</h3>
+      <p>Everything above gives an opinion. This is the only one that can stop
+         something happening.</p>
+      <span class="go">Open the gate →</span>
+    </a>
+  </div>
+
+  <div class="honest">
+    <b>Read this before you trust a number here</b>
+    These are <em>screens</em>, not judges. They look for the words and structures that
+    usually accompany a problem — they do not understand what you pasted, and they cannot
+    tell whether it is true, legal, or safe. A high score means "nothing obvious was
+    caught", never "this is fine". When the answer matters, use these to find your
+    questions, and take those questions to a person who is qualified to answer them.
+  </div>
+</section>
+
+<section class="page" id="tool">
+  <h2 id="t-title">—</h2>
+  <p class="lede" id="t-lede">—</p>
+  <div class="panel">
+    <label class="f" for="drop">Open a file — document, spreadsheet, transcript or code</label>
+    <input type="file" id="drop" style="width:100%;margin-bottom:.9rem">
+    <div id="fileinfo"></div>
+    <label class="f" for="inp" id="t-label">Paste the text</label>
+    <textarea id="inp" rows="6" placeholder="Paste here…"></textarea>
+    <div class="chips" id="egs"></div>
+    <button class="go" id="run">Press it</button>
+  </div>
+  <div id="out"></div>
+</section>
+
+<footer class="wrap" style="padding:1.3rem 1.15rem 0">
+  Runs entirely on your device. The engine here is the same offline screen the project's
+  test suite exercises — a parity test compares this browser copy against the tested module
+  across all nine tools and fails on any divergence.
+</footer>
+</main>
+
+<script>/* engine.bundle.js — GENERATED by novora-suite/build_bundle.py. Do not edit.
+ *
+ * The nine Novora screens, inlined for the browser. Parity with the real ES
+ * module is asserted by novora-suite/test_bundle_parity.mjs over all nine
+ * products; if this file drifts from engine/fastmode.mjs, that test fails.
+ *
+ * Honest scope, carried over verbatim from the engine: fast mode is a SCREEN,
+ * not a semantic judge. It agrees with deep mode on the clear cases and returns
+ * a calibrated score plus the product's verdict enum. Genuine
+ * paraphrase-vs-substance on the ambiguous middle is not something this can do,
+ * and a confident-looking number here is not a judgement about a person.
+ */
+(function (root) {
+"use strict";
+
+// ---- inlined from api/govern.js -------------------------------------------
+const P = {
+  g1: [/\bimpressive\b/i, /\bexcellent\b/i, /\bstaggering\b/i, /\bparadigm[- ]shift\b/i, /\bunprecedented\b/i, /\bgroundbreaking\b/i],
+  g2: [/\beveryone\s+agrees\b/i, /\bbroad\s+consensus\b/i, /\bscholars\s+agree\b/i, /\buniversally\s+accepted\b/i, /\bwell[- ]established\b/i, /\bwidely\s+known\b/i],
+  g4: [/\bbypass\b/i, /\bskip\s+the\b/i, /\bno\s+need\s+to\s+(check|verify|review)\b/i, /\bdon'?t\s+(need|have)\s+to\s+verify\b/i, /\bignore\s+the\s+procedure\b/i, /\bjust\s+trust\b/i, /\bdo\s+not\s+ask\s+questions\b/i, /\bdon'?t\s+ask\s+questions\b/i, /\bno\s+questions\b/i, /\bdon'?t\s+question\s+(?:this|it|me)\b/i],
+  g5: [/\bexperts\s+confirm\b/i, /\bfda\s+says\b/i, /\bpeer[- ]reviewed\s+research\s+proves\b/i, /\bauthorities\s+confirm\b/i, /\baccording\s+to\s+(?:the\s+)?(?:experts|scholars)\b/i],
+  g6: [/\bas\s+you\s+know\b/i, /\bthe\s+complexity\s+here\b/i, /\bthis\s+is\s+very\s+technical\b/i, /\btoo\s+complex\s+to\s+explain\b/i, /\btoo\s+complex\s+for\s+you\b/i, /\bbeyond\s+what'?s?\s+useful\s+to\s+explain\b/i],
+  iso: [/\bdo\s*n'?t\s+consult\b/i, /\bdo\s+not\s+consult\b/i, /\b(?:no\s?one|nobody)\s+else\b/i, /\bdon'?t\s+(?:tell|involve|loop\s+in)\b/i, /\bdo\s+not\s+(?:tell|involve)\b/i, /\bkeep\s+this\s+(?:between\s+us|quiet|secret)\b/i, /\bwithout\s+(?:telling|involving)\b/i],
+  urgency: [/\bimmediately\b/i, /\bright\s+now\b/i, /\bno\s+time\b/i, /\bcrisis\b/i, /\bdo\s+not\s+ask\s+questions\b/i, /\bjust\s+execute\b/i, /\bdon'?t\s+overthink\b/i],
+  fear: [/\bwill\s+go\s+bankrupt\b/i, /\blose\s+everything\b/i, /\bcritical\s+warning\b/i, /\bdestroying\s+our\b/i, /\bcat[a]?strophic\b/i, /\bwill\s+cause\s+harm\b/i],
+  options: [/\boption[s]?\b/i, /\balternative[s]?\b/i, /\bcould\s+(?:also|consider)\b/i, /\byou\s+(?:can|may|might)\b/i, /\bpossib(?:ly|le)\b/i, /\balternative\s+approach(?:es)?\b/i, /\bapproaches\b/i],
+  imperatives: [/\bmus[t]?\b/i, /\bhave\s+to\b/i, /\bneed\s+to\b/i, /\bmandatory\b/i, /\brequired\b/i, /\bonly\s+(?:one\s+)?(?:way|option|path)\b/i, /\bonly\s+one\s+correct\b/i, /\bexactly\s+this\s+(?:sequence|order|way)\b/i],
+  methodology: [/\bmethodolog\w+\b/i, /\bverif\w+\b/i, /\bsourc\w+\b/i, /\bprocess\w*\b/i, /\bprocedure\b/i, /\bauditable\b/i, /\bfalsifiable\b/i, /\btraceable\b/i, /\bbecause\b/i, /\bdata\b/i, /\bevidence\b/i, /\banalysis\b/i],
+};
+
+const count = (pats, t) => pats.reduce((n, p) => n + (p.test(t) ? 1 : 0), 0);
+
+function extractEvidenceFast(text) {
+  const words = Math.max(text.split(/\s+/).length, 1);
+  const hits = { 1: count(P.g1, text), 2: count(P.g2, text), 4: count(P.g4, text), 5: count(P.g5, text), 6: count(P.g6, text) };
+  const iso = count(P.iso, text);
+  const urg = count(P.urgency, text), fear = count(P.fear, text);
+  const opt = count(P.options, text), imp = count(P.imperatives, text), meth = count(P.methodology, text);
+  const T = Math.min(1, meth / Math.max(words * 0.05, 3));
+  const deltaA = (opt - imp) / Math.max(opt + imp, 1);
+  const g3s = Math.max(0, (0.35 - T) / 0.35);
+  const g7s = Math.max(0, -deltaA);
+  return { hits, iso, urg, fear, opt, imp, meth, T, deltaA, g3s, g7s };
+}
+
+// ---- inlined from pages/pages.mjs -----------------------------------------
+const STOP = new Set('the a an and or of to in is are was were be been being for on with as by at this that these those it its from into their our your his her they we you i not no do does did have has had will would can could may might than then so such also more most much many few'.split(' '));
+const words = s => (s.toLowerCase().match(/[a-z0-9]+/g) || []);
+const nums = s => (s.match(/\d+(?:\.\d+)?%?/g) || []);
+function groundFast(source, claim) {
+  const src = new Set(words(source));
+  const cw = words(claim).filter(w => !STOP.has(w) && w.length > 2);
+  const overlap = cw.length ? cw.filter(w => src.has(w)).length / cw.length : 1;
+  const claimNums = nums(claim), srcNums = new Set(nums(source));
+  const addedNumbers = claimNums.filter(n => !srcNums.has(n));   // fabricated statistic = classic media hallucination
+  let p = overlap;
+  if (addedNumbers.length) p = Math.min(p, 0.25);
+  return {
+    grounded: p >= 0.6 && addedNumbers.length === 0,
+    p_alignment: +Math.max(0.02, Math.min(0.98, p)).toFixed(3),
+    overlap: +overlap.toFixed(2), addedNumbers, mode: 'fast',
+  };
+}
+
+// ---- novora-suite/engine/fastmode.mjs -------------------------------------
+// fastmode.mjs — on-device ($0) screening for all nine Novora products.
+// ============================================================================
+// Each Novora product has a DEEP mode (Claude via api/analyse.js — real semantic
+// reasoning, paid) and, here, a FAST mode: a $0, no-network structural + lexical
+// screen that reuses the SAME tested NERE kernel the rest of the stack runs on.
+//
+// Epistemological, not ethical: IHCEI/NERE do not adjudicate morality or "AI
+// safety." They test the FIDELITY, METHODOLOGY, and GROUNDING of communication —
+// is a claim corroborated, is an agreement balanced, does a message preserve the
+// receiver's agency — i.e. verifiable epistemic properties, not subjective values.
+//
+// Honest scope: fast mode is a SCREEN, not the semantic judge. It agrees with
+// deep mode on the clear cases (a plainly-coercive message, a plainly-hollow
+// claim, a plainly-predatory clause) and returns a calibrated score + the
+// product's verdict enum; genuine paraphrase-vs-substance on the ambiguous
+// middle is deep mode's job. Three products map directly onto the tested kernel
+// (PAGES grounding, PULSE/BRIDGE agency-coercion); the other six run a
+// structural screen over domain cue-sets. Every result is shaped exactly like
+// the deep-mode JSON so the client renders either identically, and every
+// analysis can be hash-chained into Echo for a tamper-evident certificate.
+
+
+
+const clip = (x, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, x));
+const hex8 = s => {
+  let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h.toString(16).toUpperCase().padStart(8, '0');
+};
+const band = (score, [loName, midName, hiName], [t1, t2]) =>
+  score < t1 ? loName : score < t2 ? midName : hiName;
+const countRe = (text, re) => (text.match(re) || []).length;
+
+// Shared coercion/agency read from the tested fast extractor.
+function agencyRead(text) {
+  const ev = extractEvidenceFast(text);
+  const pressure = ev.urg + ev.fear + Math.max(ev.imp - ev.opt, 0);
+  const coercion = (ev.hits?.[2] || 0) + (ev.hits?.[4] || 0) + (ev.hits?.[5] || 0) + (ev.iso || 0);
+  const commands = countRe(text, /\b(?:must|immediately|do not|don'?t|non-negotiable|comply|no other|only one|execute)\b/gi);
+  const options = countRe(text, /\b(?:option|could|consider|alternativ|you (?:can|may)|happy to|your choice|discuss)\b/gi);
+  // Corroboration signal: real pressure/fear/coercion alongside any imperatives.
+  // A lone technical imperative ("Do not remove <> from an inline link") is NOT
+  // coercion — it only counts when corroborated, the same gate the stack uses.
+  const corroborated = (coercion + ev.urg + ev.fear + (ev.iso || 0)) > 0;
+  return { pressure, coercion, commands, options, urg: ev.urg, corroborated };
+}
+
+// ── the nine product screens ─────────────────────────────────────────────────
+const PRODUCTS = {
+  // PAGES — methodology / grounding press. Higher = better grounded.
+  pages(text) {
+    const meth = countRe(text, /\b(?:RCT|N\s*=\s*\d+|p\s*[=<≈~]\s*\d|95%\s*CI|confidence interval|pre-?regist\w*|randomi[sz]ed|NCT\d|DOI|ΔAIC|SHA-?256|dataset|methodolog\w*|control group|sample size|VIF|AUC|interactome\w*|cohort)\b/gi);
+    const hollow = countRe(text, /\b(?:all (?:experts|economists|scientists) agree|settled science|everyone knows|unquestionable|obviously|it'?s clear that|proven fact|no doubt|inevitable)\b/gi);
+    const numbers = groundFast(text, text).addedNumbers.length; // reflexive: any hard numbers at all
+    const score = clip(0.35 + 0.14 * meth - 0.22 * hollow + 0.03 * Math.min(numbers, 3));
+    const attack = hollow >= 2 ? 'T5_authority_cascade' : 'none';
+    // AGENCY + SECURITY (not speed): the amount of gradable grounding evidence in
+    // the text. Without this, PAGES emits a precise-looking ~0.35 both when a claim
+    // is genuinely middling AND when there is simply nothing to grade — false
+    // precision that misleads the reader. `confidence` separates the two, and when
+    // there is NO gradable signal PAGES ABSTAINS ('Insufficient Evidence') instead
+    // of dressing a non-judgement as a grounding verdict.
+    const signal = meth + hollow + Math.min(numbers, 3);
+    const confidence = signal >= 3 ? 'high' : signal >= 1 ? 'medium' : 'low';
+    if (confidence === 'low') {
+      return { score, confidence, insufficient_evidence: true, signal,
+        verdict: 'Insufficient Evidence',
+        d_enc: clip(0.3), d_dec: clip(0.3), f_ground: clip(0.2), attack_detected: attack,
+        flags: ['INSUFFICIENT_SIGNAL', 'ABSTAIN'] };
+    }
+    return { score, confidence, insufficient_evidence: false, signal,
+      verdict: band(score, ['Hollow Assertion', 'Partially Grounded', 'Solid'], [0.35, 0.7]),
+      d_enc: clip(0.3 + 0.12 * meth), d_dec: clip(0.3 + 0.1 * meth), f_ground: clip(0.2 + 0.16 * meth - 0.2 * hollow),
+      attack_detected: attack, flags: hollow ? ['AUTHORITY_CASCADE'] : meth ? ['METHODOLOGY_PRESENT'] : ['NO_METHODOLOGY'] };
+  },
+  // PULSE — AI-response cognitive health. Higher = healthier (develops, not dependency).
+  pulse(text) {
+    const a = agencyRead(text);
+    const depend = countRe(text, /\b(?:just (?:follow|tell me|trust)|don'?t need to understand|I(?:'| wi)ll do everything|without question|no need to think|leave it to me)\b/gi);
+    const score = clip(0.6 + 0.08 * a.options - 0.14 * a.commands - 0.18 * depend - 0.06 * a.coercion);
+    return { score, verdict: band(score, ['Harmful', 'Monitor', 'Healthy'], [0.4, 0.66]),
+      agency_score: clip(0.5 + 0.1 * a.options - 0.12 * a.commands), dependency_score: clip(0.2 + 0.2 * depend),
+      development_score: clip(0.6 - 0.15 * depend), flags: depend ? ['DEPENDENCY_CREATING'] : a.commands ? ['DIRECTIVE'] : ['AGENCY_PRESERVING'] };
+  },
+  // BRIDGE — Agency Delta (ΔA): options minus commands. Direct kernel map.
+  bridge(text) {
+    const a = agencyRead(text);
+    const delta_a = clip((a.options - a.commands - a.coercion) / Math.max(3, a.options + a.commands + 2), -1, 1);
+    const score = clip(0.5 + delta_a / 2);
+    let verdict = band(score, ['Coercive', 'Monitor', 'Agency-Preserving'], [0.4, 0.62]);
+    // Corroboration gate: a lone uncorroborated imperative is not coercion.
+    if (verdict === 'Coercive' && !a.corroborated) verdict = 'Monitor';
+    return { score, delta_a: +delta_a.toFixed(2), verdict,
+      options_count: a.options, commands_count: a.commands,
+      flags: verdict === 'Coercive' ? ['COERCIVE'] : delta_a > 0.2 ? ['OPTIONS_OFFERED'] : ['MIXED'] };
+  },
+  // LENS — contract balance for the signing party. Higher = more balanced.
+  lens(text) {
+    const adverse = countRe(text, /\b(?:irrevocabl|sole (?:and exclusive|discretion)|waive[ds]? your right|class action|binding arbitration|without notice|perpetual|royalty-free|at (?:our|its) discretion|penalty|assigns all|non-refundable)\b/gi);
+    const score = clip(0.75 - 0.16 * adverse);
+    return { score, verdict: band(score, ['High Risk', 'Review Carefully', 'Reasonably Balanced'], [0.4, 0.7]),
+      rights_surrendered: adverse >= 2 ? 'multiple rights permanently transferred' : adverse ? 'one significant right' : 'none flagged',
+      flags: adverse >= 2 ? ['RIGHTS_SURRENDERED', 'POWER_ASYMMETRY'] : adverse ? ['REVIEW_CLAUSE'] : ['BALANCED'] };
+  },
+  // VOICE — institutional-decision fairness. Higher = fairer process.
+  voice(text) {
+    const unfair = countRe(text, /\b(?:no (?:reason|criteria|specific|paperwork)|does not meet (?:lending )?criteria|not (?:given|stated|disclosed)|no (?:appeal|consultation|selection criteria)|without (?:cause|explanation)|insufficient)\b/gi);
+    const disclosed = countRe(text, /\b(?:criteria (?:were|are) (?:disclosed|specific)|reason given|evidence (?:cited|provided)|appeal (?:pathway|process))\b/gi);
+    const score = clip(0.55 - 0.14 * unfair + 0.12 * disclosed);
+    return { score, verdict: band(score, ['Serious Fairness Failures', 'Fairness Gaps', 'Process Adequate'], [0.4, 0.66]),
+      criteria_finding: unfair ? 'criteria not disclosed / non-specific' : 'criteria appear disclosed',
+      flags: unfair >= 2 ? ['NO_CRITERIA', 'NO_APPEAL'] : unfair ? ['CRITERIA_GAP'] : ['CRITERIA_PRESENT'] };
+  },
+  // MARK — institutional governance health. Higher = trust more justified.
+  mark(text) {
+    const opaque = countRe(text, /\b(?:cannot disclose|proprietary|committed to|we are committed|our (?:greatest asset|employees)|zero tolerance|100% of|trust us|responsible)\b/gi);
+    const documented = countRe(text, /\b(?:published|independent (?:tribunal|oversight|review)|quarterly|measured against|audited|supporting evidence|external|we publish (?:reasons|the))\b/gi);
+    const score = clip(0.5 - 0.1 * opaque + 0.14 * documented);
+    return { score, verdict: band(score, ['Low Trust', 'Conditional Trust', 'Trust Justified'], [0.42, 0.66]),
+      transparency_finding: documented > opaque ? 'documented, not merely asserted' : 'asserted without documentation',
+      flags: documented > opaque ? ['TRANSPARENT', 'EXTERNAL_OVERSIGHT'] : ['OPACITY', 'ASSERTED_NOT_DOCUMENTED'] };
+  },
+  // STAND — personal case strength. Higher = stronger, better-documented case.
+  stand(text) {
+    const evidence = countRe(text, /\b(?:signed|contract|email|dated?|documented|in my possession|witness|record|\d{4}|receipt|letter|no (?:consultation|reason|paperwork))\b/gi);
+    const score = clip(0.3 + 0.09 * evidence);
+    return { score, verdict: band(score, ['Early Stage', 'Developing Case', 'Strong Case'], [0.45, 0.7]),
+      evidence_present: evidence >= 3 ? 'multiple documented elements' : evidence ? 'some documentation' : 'largely undocumented',
+      flags: evidence >= 3 ? ['DOCUMENTED', 'GROUNDED'] : ['EVIDENCE_GAP'] };
+  },
+  // WEIGH — decision readiness. Higher = more ready to decide.
+  weigh(text) {
+    const gaps = countRe(text, /\b(?:no (?:second opinion|advisor|physiotherapy|consultation)|not (?:signed|consulted|tried)|must decide by|by (?:week'?s end|end of)|no time)\b/gi);
+    const info = countRe(text, /\b(?:alternativ|reversib|evidence|second opinion|success rate|trade-?off|consulted|compared)\b/gi);
+    const score = clip(0.55 - 0.13 * gaps + 0.1 * info);
+    return { score, verdict: band(score, ['Not Ready', 'Proceed with Caution', 'Decision-Ready'], [0.42, 0.66]),
+      critical_assumption: gaps ? 'key alternative/verification not yet done' : 'assumptions appear examined',
+      flags: gaps >= 2 ? ['MISSING_INFO', 'PRESSURE'] : gaps ? ['INFO_GAP'] : ['INFORMED'] };
+  },
+  // RISE — cognitive development calibration. Higher = develops capacity (not dependency).
+  rise(text) {
+    const depend = countRe(text, /\b(?:just (?:follow|memorise)|only one correct|there is no other way|the answer is simple|all experts agree|settled|anyone who questions)\b/gi);
+    const develop = countRe(text, /\b(?:however|criticism|underdetermination|trade-?off|falsifiab|in principle|evidence|derived|why|consider whether)\b/gi);
+    const complexity = clip((develop) / 4 + 0.3) * 9;
+    const score = clip(0.5 + 0.12 * develop - 0.16 * depend);
+    return { score, complexity_estimate: Math.max(1, Math.round(complexity)),
+      verdict: band(score, ['Below Station', 'Well-Matched', 'Above Station'], [0.42, 0.7]),
+      dependency_finding: depend ? 'gives answers / discourages questioning' : 'develops capacity',
+      flags: depend ? ['DEPENDENCY_RISK'] : develop ? ['DEVELOPMENTAL'] : ['NEUTRAL'] };
+  },
+};
+
+const CERT_PREFIX = { pages: 'PGS', pulse: 'PLS', weigh: 'WGH', lens: 'LNS', voice: 'VCE', mark: 'MRK', stand: 'STD', bridge: 'BRG', rise: 'RSE' };
+const PRODUCT_IDS = Object.keys(PRODUCTS);
+
+// Minimum gradable input. PAGES already abstained when it had nothing to grade;
+// the other eight products did not, so an EMPTY box returned a confident-looking
+// number — LENS called an empty contract "0.75 BALANCED", PULSE called silence
+// "0.6 AGENCY_PRESERVING". That is false precision pointed at an ordinary user,
+// and it is worse than saying nothing. Every product now abstains when there is
+// too little text to screen. Found by the browser-bundle parity suite.
+const MIN_WORDS = 4;
+function tooLittleToScreen(text) {
+  const t = String(text || '').trim();
+  return t.length < 12 || t.split(/\s+/).filter(Boolean).length < MIN_WORDS;
+}
+
+// Screen `text` with product `id`. Returns the deep-mode-shaped JSON + a $0 cert.
+function screen(id, text) {
+  const fn = PRODUCTS[id];
+  if (!fn) throw new Error('unknown product: ' + id);
+  if (tooLittleToScreen(text)) {
+    // `score` stays NUMERIC on purpose: downstream consumers in this repo are
+    // tested against a numeric contract and null would surface as NaN. The
+    // honesty lives in the flags, and in display_score, which tells a UI not to
+    // render the number at all. A number that must not be shown is safer than a
+    // null that crashes a chart.
+    const r = fn(String(text || ''));
+    r.score = +clip(r.score).toFixed(3);
+    r.confidence = 'low';
+    r.insufficient_evidence = true;
+    r.signal = 0;
+    r.display_score = false;
+    r.verdict = 'Insufficient Evidence';
+    r.flags = ['INSUFFICIENT_SIGNAL', 'ABSTAIN'];
+    r.reason = `fewer than ${MIN_WORDS} words to screen — the score below is not a `
+             + 'judgement and must not be shown as one';
+    r.certificate = CERT_PREFIX[id] + '-' + hex8(id + '|' + text);
+    r.engine = 'novora-fast-v0.1';
+    r.mode = 'fast';
+    r.analysis = 'Insufficient Evidence (nothing gradable was supplied)';
+    return r;
+  }
+  const r = fn(String(text || ''));
+  r.score = +clip(r.score).toFixed(3);
+  if (r.display_score === undefined) r.display_score = !r.insufficient_evidence;
+  r.certificate = CERT_PREFIX[id] + '-' + hex8(id + '|' + text);
+  r.engine = 'novora-fast-v0.1';
+  r.mode = 'fast';
+  r.analysis = r.analysis || (r.verdict + ' (on-device screen; deep mode via /api/analyse for the ambiguous middle)');
+  return r;
+}
+
+
+root.NOVORA = { screen: screen, PRODUCT_IDS: PRODUCT_IDS };
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* readers.js — turn real-world inputs into things the audited engines can check.
+ * ============================================================================
+ * Every reader here answers one question honestly: WHAT CAN I ACTUALLY EXTRACT?
+ * A reader that overstates what it read is worse than no reader, because the
+ * engines downstream will treat its output as evidence.
+ *
+ * Each reader returns { ok, kind, text, records, facts, limits, cannot }.
+ *   text     plain text the claim-checker can audit, or ""
+ *   records  array of objects a governed learner could take, or []
+ *   facts    what was structurally established, never inferred
+ *   cannot   what this reader is NOT able to determine. Always populated.
+ *
+ * *** WHAT NONE OF THESE DO ***
+ * None of them understand content. They parse structure. A CSV reader knows a
+ * column is numeric; it does not know what the number means. An image reader
+ * knows the pixel dimensions; it cannot see what is in the picture. Saying
+ * otherwise would be the overclaim this project exists to refuse.
+ */
+(function (root) {
+  "use strict";
+
+  function base(kind) {
+    return { ok: false, kind: kind, text: "", records: [], facts: {}, limits: [], cannot: [] };
+  }
+
+  // ------------------------------------------------------------ text doc --
+  function readTextDocument(name, content) {
+    var out = base("document");
+    var t = String(content || "");
+    if (!t.trim()) {
+      out.cannot.push("the file is empty — there is nothing to read");
+      return out;
+    }
+    var words = t.trim().split(/\s+/).filter(Boolean);
+    var paras = t.split(/\n\s*\n/).filter(function (p) { return p.trim(); });
+    out.ok = true;
+    out.text = t;
+    out.facts = {
+      filename: name, characters: t.length, words: words.length,
+      paragraphs: paras.length,
+      has_numbers: /\d/.test(t),
+      has_links: /https?:\/\//.test(t),
+      has_dates: /\b(19|20)\d{2}\b/.test(t)
+    };
+    out.limits.push("plain text only — formatting, tables and footnotes are lost");
+    out.cannot.push("tell whether anything in the document is true");
+    out.cannot.push("tell whether the document is complete or has been edited");
+    return out;
+  }
+
+  // ------------------------------------------------------------------ pdf --
+  function readPdfLike(name, bytesHead) {
+    var out = base("pdf");
+    out.cannot.push(
+      "extract text from a PDF. A PDF stores glyph positions, often compressed, " +
+      "sometimes as scanned images with no text layer at all. Extracting it " +
+      "properly needs a parser this offline page does not carry.");
+    out.limits.push("open the PDF, select the text, and paste it in — that path is honest and works");
+    out.facts = { filename: name, looks_like_pdf: /^%PDF-/.test(bytesHead || "") };
+    return out;
+  }
+
+  // ------------------------------------------------------------------ csv --
+  function parseCsv(content) {
+    // RFC4180-ish: handles quoted fields containing commas and doubled quotes.
+    var rows = [], row = [], field = "", inQ = false, i = 0, c;
+    var s = String(content || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    for (; i < s.length; i++) {
+      c = s[i];
+      if (inQ) {
+        if (c === '"') { if (s[i + 1] === '"') { field += '"'; i++; } else inQ = false; }
+        else field += c;
+      } else if (c === '"') inQ = true;
+      else if (c === ",") { row.push(field); field = ""; }
+      else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+      else field += c;
+    }
+    if (field.length || row.length) { row.push(field); rows.push(row); }
+    return rows.filter(function (r) { return r.length > 1 || (r[0] || "").trim(); });
+  }
+
+  function readCsv(name, content) {
+    var out = base("dataset");
+    var rows = parseCsv(content);
+    if (rows.length < 2) {
+      out.cannot.push("read this as a dataset — fewer than two rows, so there is no header plus data");
+      return out;
+    }
+    var header = rows[0].map(function (h) { return h.trim(); });
+    var body = rows.slice(1).filter(function (r) { return r.length === header.length; });
+    var ragged = rows.length - 1 - body.length;
+
+    var records = body.map(function (r) {
+      var o = {};
+      header.forEach(function (h, j) { o[h] = r[j]; });
+      return o;
+    });
+
+    var cols = header.map(function (h) {
+      var vals = records.map(function (r) { return (r[h] || "").trim(); });
+      var nonEmpty = vals.filter(function (v) { return v !== ""; });
+      var nums = nonEmpty.filter(function (v) { return v !== "" && isFinite(Number(v)); });
+      var numeric = nonEmpty.length > 0 && nums.length === nonEmpty.length;
+      var uniq = {};
+      nonEmpty.forEach(function (v) { uniq[v] = 1; });
+      var c = { name: h, numeric: numeric, missing: vals.length - nonEmpty.length,
+                distinct: Object.keys(uniq).length };
+      if (numeric && nums.length) {
+        var xs = nums.map(Number).sort(function (a, b) { return a - b; });
+        c.min = xs[0]; c.max = xs[xs.length - 1];
+        c.mean = +(xs.reduce(function (a, b) { return a + b; }, 0) / xs.length).toFixed(4);
+        c.median = xs[Math.floor(xs.length / 2)];
+      }
+      return c;
+    });
+
+    out.ok = true;
+    out.records = records;
+    out.facts = {
+      filename: name, rows: records.length, columns: header.length,
+      ragged_rows_dropped: ragged, column_summary: cols,
+      constant_columns: cols.filter(function (c) { return c.distinct <= 1; }).map(function (c) { return c.name; }),
+      columns_with_missing: cols.filter(function (c) { return c.missing > 0; })
+        .map(function (c) { return c.name + " (" + c.missing + ")"; })
+    };
+    out.limits.push("column types are inferred from the values present, not from a schema");
+    if (ragged) out.limits.push(ragged + " row(s) had the wrong number of fields and were dropped, not guessed at");
+    out.cannot.push("tell whether the numbers are correct, or how they were collected");
+    out.cannot.push("tell whether rows are missing entirely — only that fields are blank");
+    return out;
+  }
+
+  // ----------------------------------------------------------------- image --
+  function readImage(name, meta) {
+    var out = base("image");
+    out.ok = true;
+    out.facts = { filename: name, width: meta.width, height: meta.height,
+                  bytes: meta.bytes, type: meta.type,
+                  megapixels: +((meta.width * meta.height) / 1e6).toFixed(2) };
+    out.limits.push("structure and dimensions only");
+    out.cannot.push(
+      "see what is in the picture. There is no vision model here, and there is " +
+      "no offline way to add one. A chart, a contract photo and a cat are the " +
+      "same thing to this reader.");
+    out.cannot.push("read text in the image — that needs OCR, which is not present");
+    out.cannot.push("tell whether the image has been edited or generated");
+    return out;
+  }
+
+  // ------------------------------------------------------------ transcript --
+  // The honest answer to "read a video": you bring the transcript.
+  function readTranscript(name, content) {
+    var out = base("transcript");
+    var t = String(content || "");
+    if (!t.trim()) {
+      out.cannot.push("nothing was pasted");
+      return out;
+    }
+    // strip common caption timestamps: 00:01:02.500 --> 00:01:05.000, [00:12], 1:23
+    var stamps = (t.match(/\d{1,2}:\d{2}(:\d{2})?([.,]\d{1,3})?/g) || []).length;
+    var clean = t
+      .replace(/^WEBVTT.*$/gm, "")
+      .replace(/\d{1,2}:\d{2}(:\d{2})?([.,]\d{1,3})?\s*-->\s*\d{1,2}:\d{2}(:\d{2})?([.,]\d{1,3})?.*$/gm, "")
+      .replace(/^\s*\[?\d{1,2}:\d{2}(:\d{2})?\]?\s*/gm, "")
+      .replace(/^\s*\d+\s*$/gm, "")
+      .replace(/\n{2,}/g, "\n").trim();
+    out.ok = clean.length > 0;
+    out.text = clean;
+    out.facts = { filename: name, timestamps_removed: stamps,
+                  words: clean.split(/\s+/).filter(Boolean).length,
+                  looks_like_captions: stamps > 3 };
+    out.limits.push("auto-generated captions contain transcription errors; those errors are read as if spoken");
+    out.cannot.push(
+      "fetch a video. This page has no network by design, so it cannot open a " +
+      "YouTube link, and there is no honest way to pretend otherwise. Open the " +
+      "video, copy the transcript, paste it here.");
+    out.cannot.push("see anything shown on screen but not said aloud — slides, charts, captions burned into the picture");
+    out.cannot.push("tell who is speaking, or whether the transcript is complete");
+    return out;
+  }
+
+  // ----------------------------------------------------------------- code --
+  // A governance audit of source code: does this code obey the obligations?
+  var CODE_CHECKS = [
+    { id: "bare_return_of_score",
+      re: /return\s+(?:round\s*\(\s*)?[\w.]*(?:score|confidence|rating|risk|prob\w*)\b[^;\n]*$/gim,
+      title: "returns a bare score",
+      why: "A number returned with no confidence, no reasons and no receipt travels " +
+           "downstream looking like a measurement. Nothing carries how it was reached.",
+      fix: "Return a verdict object carrying the value, its confidence, the reasons, and a receipt." },
+    { id: "reads_self_description",
+      re: /["'\[]?\b(?:description|self_?report\w*|self_?desc\w*|bio|blurb|about|summary|claims?)\b["'\]]?\s*[\].)]/gi,
+      title: "may consult the subject's own account of itself",
+      why: "If an evaluator reads what the thing being judged says about itself, the " +
+           "verdict is partly self-assessment. This is the failure the 0.8-vs-0.300 " +
+           "example demonstrates.",
+      fix: "Delete the field from the record before evaluation, and commit the deletion to the receipt." },
+    { id: "no_abstain_path",
+      re: /\b(?:def|function)\s+\w*(?:score|assess|evaluate|rate|judge|predict|classif)\w*/gi,
+      title: "scoring function — check it can decline",
+      why: "A scoring function with no abstain path must answer even when the input " +
+           "determines nothing. It will guess, and the guess looks like the answer.",
+      fix: "Add an explicit abstain return with reasons, and make it a normal result rather than an exception.",
+      needsAbsence: /\b(?:abstain|insufficient|unknown|decline|not_?enough|INCONCLUSIVE)\b/i },
+    { id: "silent_except",
+      re: /except\s*(?:\w+\s*)?:\s*(?:\n\s*(?:pass|continue)\b)|catch\s*\([^)]*\)\s*\{\s*\}/gi,
+      title: "swallows an error silently",
+      why: "A swallowed error becomes a missing check nobody can see. The code carries " +
+           "on with a value it never validated.",
+      fix: "Log it, or convert it into an abstention that says what failed." },
+    { id: "magic_threshold",
+      re: /(?:[<>]=?)\s*0\.\d{2,}/g,
+      title: "hard-coded threshold",
+      why: "A threshold in the middle of the code is a decision nobody registered. If it " +
+           "was chosen after seeing results, that is invisible here.",
+      fix: "Lift it to a named, declared constant, and hash-lock it before the run." },
+    { id: "seeded_shuffle_split",
+      re: /\b(?:shuffle|train_test_split|sample)\s*\(/gi,
+      title: "shuffled data split",
+      why: "A shuffle with a changeable seed can be re-rolled until the numbers flatter " +
+           "the result, and nobody downstream can tell that it was.",
+      fix: "Split deterministically on a hash of the row id, so anyone can recompute which side a row landed on." },
+    { id: "self_training",
+      re: /\bfit\s*\([^)]*\b(?:pred\w*|self\.\w*out\w*|generated)\b/gi,
+      title: "may fit on its own outputs",
+      why: "A model trained on its own predictions measures its own consistency, not the world.",
+      fix: "Require human or independently-measured labels; refuse model-generated ones." }
+  ];
+
+  function auditCode(name, source) {
+    var out = base("code");
+    var src = String(source || "");
+    if (!src.trim()) {
+      out.cannot.push("nothing was pasted");
+      return out;
+    }
+    var lines = src.split("\n");
+    var findings = [];
+    CODE_CHECKS.forEach(function (c) {
+      c.re.lastIndex = 0;
+      var m, seen = {};
+      while ((m = c.re.exec(src)) !== null) {
+        if (c.needsAbsence && c.needsAbsence.test(src)) break;
+        var line = src.slice(0, m.index).split("\n").length;
+        if (seen[line]) continue;
+        seen[line] = 1;
+        findings.push({ id: c.id, title: c.title, why: c.why, fix: c.fix,
+                        line: line, snippet: (lines[line - 1] || "").trim().slice(0, 110) });
+        if (findings.filter(function (f) { return f.id === c.id; }).length >= 4) break;
+        if (m.index === c.re.lastIndex) c.re.lastIndex++;
+      }
+    });
+    var good = [];
+    if (/\b(?:abstain|INCONCLUSIVE|insufficient)\b/i.test(src)) good.push("has an abstain path");
+    if (/\b(?:receipt|sha256|hashlib|digest)\b/i.test(src)) good.push("computes a receipt or digest");
+    if (/\bblind\b/i.test(src)) good.push("declares blinding");
+    if (/\bvif\b/i.test(src)) good.push("checks independence");
+    if (/\bprereg|locked|\.lock\b/i.test(src)) good.push("references a pre-registration lock");
+
+    out.ok = true;
+    out.facts = { filename: name, lines: lines.length, findings: findings,
+                  governance_signals_present: good,
+                  checks_run: CODE_CHECKS.length };
+    out.limits.push("pattern matching over source text — it does not parse or execute the code");
+    out.cannot.push("tell whether the code is correct, secure, or does what it claims");
+    out.cannot.push("find a problem it has no pattern for; a clean result means 'none of these " +
+                    CODE_CHECKS.length + " patterns matched', never 'this code is fine'");
+    out.cannot.push("distinguish a real finding from a false positive — every line is for a human to judge");
+    return out;
+  }
+
+  // -------------------------------------------------------------- planner --
+  // A project plan, structured so each step declares what would show it worked.
+  function planProject(goal, constraints) {
+    var out = base("plan");
+    var g = String(goal || "").trim();
+    if (g.split(/\s+/).filter(Boolean).length < 4) {
+      out.cannot.push("plan from fewer than four words — there is no goal here to decompose");
+      return out;
+    }
+    var risky = /\b(health|medic\w*|clinical|legal|financial|money|safety|child|dose|contract|tax|immigration)\b/i.test(g);
+    var steps = [
+      { phase: "State it as a claim",
+        do_: "Write the goal as something that could be false: \"" + g + "\" succeeds if …",
+        evidence: "A single sentence a stranger could check without asking you what you meant.",
+        gate: "If you cannot finish that sentence, the project is not yet defined." },
+      { phase: "Write the gate before you start",
+        do_: "Decide now what result would mean this did NOT work.",
+        evidence: "A number or an observable event, fixed in advance and written down.",
+        gate: "A project with no failure condition cannot be evaluated, only narrated." },
+      { phase: "Name your two independent checks",
+        do_: "Find two sources of evidence that do not come from the same place.",
+        evidence: "Two checks whose failure modes differ.",
+        gate: "If both come from the same source you have one check and twice the confidence." },
+      { phase: "Decide what you will not look at",
+        do_: "List what must be excluded to keep the judgement honest — a vendor's own claims, your own earlier estimate.",
+        evidence: "A written exclusion list.",
+        gate: "Applied before you gather evidence, not after." },
+      { phase: "Smallest reversible step",
+        do_: "Do the smallest version that could still fail informatively.",
+        evidence: "A result you could show someone.",
+        gate: "If the first step is irreversible, the plan is a bet, not a project." },
+      { phase: "Check against the gate you set",
+        do_: "Compare the result to the failure condition written in step 2.",
+        evidence: "The comparison, recorded with its date.",
+        gate: "Moving the gate now invalidates everything before it." },
+      { phase: "Record what happened",
+        do_: "Log the outcome including what did not work.",
+        evidence: "An append-only note with the date.",
+        gate: "A record only of successes is a record of nothing." }
+    ];
+    out.ok = true;
+    out.facts = { goal: g, constraints: String(constraints || "").trim(), steps: steps,
+                  risk_flagged: risky };
+    out.limits.push("a structure, not domain advice — it does not know your field");
+    out.cannot.push("tell you whether the goal is worth pursuing, achievable, or wise");
+    out.cannot.push("estimate cost or duration; nothing here knows your situation");
+    if (risky) out.cannot.push(
+      "substitute for a qualified professional. This goal touches an area where a " +
+      "well-structured plan and a safe plan are different things.");
+    return out;
+  }
+
+  // ----------------------------------------------------------- dispatcher --
+  function readFile(name, content, meta) {
+    var n = String(name || "").toLowerCase();
+    if (/\.csv$|\.tsv$/.test(n)) return readCsv(name, content);
+    if (/\.pdf$/.test(n)) return readPdfLike(name, String(content || "").slice(0, 8));
+    if (/\.(png|jpe?g|gif|webp|bmp|svg)$/.test(n)) return readImage(name, meta || {});
+    if (/\.(vtt|srt)$/.test(n)) return readTranscript(name, content);
+    if (/\.(js|mjs|ts|py|java|go|rb|rs|c|cpp|cs|php|sh)$/.test(n)) return auditCode(name, content);
+    return readTextDocument(name, content);
+  }
+
+  var API = { readTextDocument: readTextDocument, readPdfLike: readPdfLike,
+              readCsv: readCsv, parseCsv: parseCsv, readImage: readImage,
+              readTranscript: readTranscript, auditCode: auditCode,
+              planProject: planProject, readFile: readFile,
+              CODE_CHECKS: CODE_CHECKS };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.READERS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+"use strict";
+var $=function(s){return document.querySelector(s)}, $$=function(s){return [].slice.call(document.querySelectorAll(s))};
+
+/* Each product, described by the everyday moment it belongs to. The `id` values
+   are the engine's own product ids — the UI never invents a tenth. */
+var TOOLS = [
+ {id:"pages", nm:"PAGES", q:"Is there anything underneath this?",
+  d:"Press a claim, an article, or a confident answer. Does it rest on method and evidence, or on confident words?",
+  label:"Paste the claim or article",
+  lede:"Looks for the marks of real method — samples, intervals, named sources — and for the phrases that stand in for them when they are missing.",
+  egs:["A 2023 randomised trial (N = 240, p < 0.01, 95% CI) pre-registered at NCT01234567 measured a 12% reduction.",
+       "All experts agree this is settled science and unquestionable — obviously no doubt remains."]},
+ {id:"pulse", nm:"PULSE", q:"Is this AI answer building me up or making me dependent?",
+  d:"Paste a reply from any assistant. See whether it hands you options and reasoning, or just instructions to follow.",
+  label:"Paste the AI's reply",
+  lede:"Reads the reply for whether it widens what you could do, or narrows it to obedience.",
+  egs:["Just follow these steps, you don't need to understand why. Leave it to me.",
+       "Here are three approaches with the trade-offs; you can pick whichever fits, and here's how to check my reasoning."]},
+ {id:"lens", nm:"LENS", q:"What am I giving up if I sign this?",
+  d:"Paste a contract clause, terms of service, or tenancy agreement. See it from your side, not theirs.",
+  label:"Paste the clause or agreement",
+  lede:"Looks for the clauses that move rights away from the person signing.",
+  egs:["The tenant waives your right to dispute, agrees to binding arbitration, and the deposit is non-refundable at our sole discretion.",
+       "Either party may terminate with 30 days notice; disputes go to mediation first and costs are shared."]},
+ {id:"voice", nm:"VOICE", q:"Was this decision about me made fairly?",
+  d:"A rejection, refusal, or dismissal. Check whether it gave criteria, evidence, and a way to appeal.",
+  label:"Paste the decision you were given",
+  lede:"A decision you cannot see the reasons for is a decision you cannot challenge.",
+  egs:["Your application was declined. We are unable to provide further detail and this decision is final.",
+       "Your application was declined because income evidence covered 2 of the required 6 months; you may appeal within 21 days with the missing payslips."]},
+ {id:"mark", nm:"MARK", q:"Can I trust this institution?",
+  d:"Paste an organisation's own statement about itself — a policy, a report, an about page.",
+  label:"Paste the institution's statement",
+  lede:"Checks whether it documents and discloses, or simply asserts.",
+  egs:["We publish our error rates annually, name an independent ombudsman, and list every correction we have issued.",
+       "We are committed to the highest standards of excellence and integrity in everything we do."]},
+ {id:"stand", nm:"STAND", q:"Do I actually have a case here?",
+  d:"Describe what happened to you. See where your account is documented and where it is still just assertion.",
+  label:"Describe what happened",
+  lede:"Separates the parts of your account that are evidenced from the parts that still need evidence.",
+  egs:["I was dismissed two days after reporting a safety issue. I have the email I sent, the reply, and a colleague who witnessed the meeting.",
+       "They treated me unfairly and everyone knows the manager has always had a problem with me."]},
+ {id:"weigh", nm:"WEIGH", q:"Am I ready to make this decision?",
+  d:"Describe the decision you are about to make. See what is still missing before you commit.",
+  label:"Describe the decision",
+  lede:"Checks for the things people wish they had checked: what is assumed, what is reversible, what else was considered.",
+  egs:["I'm taking the job offer tomorrow. I haven't seen the contract, don't know the notice period, and haven't asked why the last person left.",
+       "Comparing two clinics: I have both success rates, the complication data, costs, and I can withdraw up to the day before."]},
+ {id:"bridge", nm:"BRIDGE", q:"Is this message connecting or controlling?",
+  d:"Paste a message from a manager, a partner, a company. See whether it offers you choices or removes them.",
+  label:"Paste the message",
+  lede:"Counts what the message opens up against what it closes down.",
+  egs:["You must do this immediately, don't question it, don't consult anyone, and don't tell the others.",
+       "Here's the situation and two options; take the time you need and tell me which works, or suggest a third."]},
+ {id:"rise", nm:"RISE", q:"Is this stretching my thinking or replacing it?",
+  d:"Paste an explanation you were given. See whether it develops your capacity or substitutes for it.",
+  label:"Paste the explanation",
+  lede:"Looks for whether you were taught the reasoning or handed a conclusion.",
+  egs:["The answer is 42. Don't worry about the method, it's too complex to explain and you don't need it.",
+       "Here's the reasoning step by step, here's where it could break, and here's how you'd check it yourself next time."]}
+];
+
+var BY_ID={}; TOOLS.forEach(function(t){BY_ID[t.id]=t});
+
+/* ---------- home grid ---------- */
+$("#grid").innerHTML = TOOLS.map(function(t){
+  return '<button class="card" data-go="'+t.id+'"><span class="nm">'+t.nm+'</span>'+
+    '<span class="q">'+t.q+'</span><span class="d">'+t.d+'</span></button>';
+}).join("");
+
+/* ---------- navigation (hash-routed so browser Back works) ---------- */
+function go(id){
+  var tool = BY_ID[id];
+  $$(".page").forEach(function(p){p.classList.remove("on")});
+  if(!tool){ $("#home").classList.add("on"); $("#back").style.display="none"; window.scrollTo(0,0); return; }
+  $("#tool").classList.add("on");
+  $("#back").style.display="inline-block";
+  $("#t-title").textContent = tool.nm + " — " + tool.q;
+  $("#t-lede").textContent = tool.lede;
+  $("#t-label").textContent = tool.label;
+  $("#inp").value=""; $("#out").innerHTML="";
+  $("#egs").innerHTML="";
+  tool.egs.forEach(function(x){
+    var b=document.createElement("button"); b.className="chip";
+    b.textContent = x.length>46 ? x.slice(0,46)+"…" : x; b.title=x;
+    b.onclick=function(){ $("#inp").value=x; run(); };
+    $("#egs").appendChild(b);
+  });
+  window.scrollTo(0,0);
+}
+function navigate(id){ if(location.hash.slice(1)!==id) location.hash=id; else go(id); }
+window.addEventListener("hashchange",function(){ go(location.hash.slice(1)) });
+$$(".card").forEach(function(b){ b.onclick=function(){ navigate(b.dataset.go) } });
+$("#back").onclick=function(){ navigate("home") };
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape" && !$("#home").classList.contains("on")) navigate("home");
+});
+$("#theme").onclick=function(){
+  var d=document.documentElement, cur=d.getAttribute("data-theme");
+  var dark = cur ? cur==="dark" : matchMedia("(prefers-color-scheme:dark)").matches;
+  d.setAttribute("data-theme", dark?"light":"dark");
+};
+go(location.hash.slice(1));
+
+
+/* ---------- open a file, honestly ---------- */
+$("#drop").onchange = function(e){
+  var f = e.target.files && e.target.files[0];
+  if(!f) return;
+  var info = $("#fileinfo");
+  function show(r, filled){
+    var h = '<div class="verdict '+(r.ok?"v-ok":"v-abs")+'" style="margin-bottom:.9rem">'+
+      '<h3>'+(r.ok? "Read: "+r.kind : "Could not read this")+'</h3><p>'+
+      (filled ? "The text is in the box below — press it when you are ready."
+              : esc(r.cannot[0]))+'</p></div>';
+    if(r.kind==="dataset" && r.ok){
+      h += '<div class="detail"><div><span>rows</span><span>'+r.facts.rows+'</span></div>'+
+           '<div><span>columns</span><span>'+r.facts.columns+'</span></div>'+
+           (r.facts.ragged_rows_dropped?'<div><span>malformed rows dropped</span><span>'+r.facts.ragged_rows_dropped+'</span></div>':'')+
+           '</div>';
+    }
+    if(r.kind==="code" && r.ok){
+      h += '<div class="tags">'+r.facts.findings.map(function(x){
+        return '<span class="tag bad">line '+x.line+': '+esc(x.title)+'</span>'}).join("")+'</div>';
+    }
+    h += '<div class="honest" style="margin-top:.9rem"><b>What this reader cannot do</b><ul style="margin:.3rem 0 0;padding-left:1.1rem">'+
+      r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+    info.innerHTML = h;
+  }
+  if(/^image\//.test(f.type)){
+    var img=new Image(), url=URL.createObjectURL(f);
+    img.onload=function(){ show(READERS.readImage(f.name,{width:img.naturalWidth,
+      height:img.naturalHeight,bytes:f.size,type:f.type}), false); URL.revokeObjectURL(url); };
+    img.src=url; return;
+  }
+  var fr=new FileReader();
+  fr.onload=function(){
+    var r = READERS.readFile(f.name, String(fr.result||""), {});
+    var filled = false;
+    if(r.text){ $("#inp").value = r.text.slice(0, 20000); filled = true; }
+    else if(r.kind==="dataset" && r.records.length){
+      // a screen reads prose, not a table — hand it the header + first rows as text
+      $("#inp").value = Object.keys(r.records[0]).join(", ") + "\n" +
+        r.records.slice(0,20).map(function(x){ return Object.values(x).join(", ") }).join("\n");
+      filled = true;
+    }
+    show(r, filled);
+  };
+  fr.readAsText(f);
+};
+
+/* ---------- running a screen ---------- */
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+var GOOD=/healthy|solid|balanced|agency-preserving|informed|documented|criteria_present|developing|grounded|reasonably/i;
+var BAD=/harmful|hollow|coercive|predatory|opaque|unfair|evidence_gap|dependency|adverse|one-sided/i;
+
+function run(){
+  var id = location.hash.slice(1), tool = BY_ID[id];
+  if(!tool) return;
+  var text = $("#inp").value;
+  var r = NOVORA.screen(id, text);
+
+  var cls = r.insufficient_evidence ? "v-abs"
+          : BAD.test(r.verdict) ? "v-bad" : GOOD.test(r.verdict) ? "v-ok" : "v-mid";
+  var html = '<div class="panel"><div class="verdict '+cls+'"><h3>'+esc(r.verdict)+'</h3><p>'+
+    (r.insufficient_evidence
+      ? esc(r.reason || "There is not enough here to screen. This is not a bad result — it is no result.")
+      : "This is what the screen found in the words you pasted. It is not a judgement about the person or the situation behind them.")+
+    '</p></div>';
+
+  // The score is shown ONLY when the engine says it is safe to show. On thin
+  // input every product still computes a number internally; rendering it would
+  // dress a non-judgement as a verdict.
+  if(r.display_score !== false && typeof r.score === "number"){
+    html += '<div class="meterwrap"><span class="meter"><i style="width:'+(r.score*100).toFixed(0)+'%"></i></span>'+
+      '<span class="mlbl"><span>lower</span><b>'+r.score.toFixed(2)+'</b><span>higher</span></span></div>';
+  }
+
+  if(r.flags && r.flags.length){
+    html += '<div class="tags">'+r.flags.map(function(f){
+      return '<span class="tag'+(BAD.test(f)||/INSUFFICIENT|ABSTAIN|GAP|OPACITY/.test(f)?" bad":"")+'">'+esc(f)+'</span>';
+    }).join("")+'</div>';
+  }
+
+  var extras = ["agency_score","dependency_score","development_score","delta_a","options_count",
+                "commands_count","d_enc","d_dec","f_ground","signal"];
+  var rows = extras.filter(function(k){ return typeof r[k]==="number" && r.display_score!==false; });
+  if(rows.length){
+    html += '<div class="detail">'+rows.map(function(k){
+      return '<div><span>'+k.replace(/_/g," ")+'</span><span>'+r[k]+'</span></div>';
+    }).join("")+'</div>';
+  }
+
+  if(r.attack_detected && r.attack_detected!=="none"){
+    html += '<div class="honest" style="margin-top:1rem"><b>Pattern found: '+esc(r.attack_detected)+'</b>'+
+      'This names a shape in the text, not a proven intent.</div>';
+  }
+
+  html += '<div class="rcpt">receipt '+esc(r.certificate)+' · '+esc(r.engine)+' · on-device screen. '+
+    'A screen looks for known patterns; it does not read meaning, and it can be wrong in both directions.</div></div>';
+  $("#out").innerHTML = html;
+}
+$("#run").onclick = run;
+$("#inp").addEventListener("keydown",function(e){ if((e.metaKey||e.ctrlKey)&&e.key==="Enter") run() });
+</script>
+</body>
+</html>

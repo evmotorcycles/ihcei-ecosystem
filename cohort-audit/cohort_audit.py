@@ -142,12 +142,18 @@ def c4_github_992_gap():
     gf = json.load(open(FIX["github_frozen"]))
     available["github-lism/data/github_cohort_frozen.json"] = {"rows": len(gf["repos"]), "has_survival_label": False}
 
-    csv_path = os.path.join(ROOT, "govphys_quadratic_results.csv")
-    csv_found = os.path.exists(csv_path)
-    if csv_found:
-        with open(csv_path) as f:
-            rows_count = sum(1 for _ in f) - 1
-        available["govphys_quadratic_results.csv"] = {"rows": rows_count, "has_survival_label": True}
+    # Prefer the COMMITTED deposit. The root-level file is a scratch output of a
+    # live GitHub fetch and is gitignored, so a result that depends on it is not
+    # reproducible from a clean clone — which is what left this gap open before.
+    for rel in ("cohort-audit/data/govphys_quadratic_results.csv",
+                "govphys_quadratic_results.csv"):
+        csv_path = os.path.join(ROOT, rel)
+        if os.path.exists(csv_path):
+            with open(csv_path) as f:
+                rows_count = sum(1 for _ in f) - 1
+            available[rel] = {"rows": rows_count, "has_survival_label": True}
+            break
+    csv_found = any(k.endswith("govphys_quadratic_results.csv") for k in available)
 
     largest_labelled = max(v["rows"] for v in available.values() if v["has_survival_label"])
     found_992 = largest_labelled >= 992
@@ -304,7 +310,13 @@ def main():
            "C5_swarm_SIMULATION": c5,
            "C6_integrity_ledger": {"ledger": ledger, "not_offline_reproducible": not_repro,
                                    "simulations": sims, "pass": c6_pass},
-           "note": "Yeast channel invariants are backed by committed real STRING v12 data (VIF %.4f at N=%d). The yeast OUTCOME coupling and the entire N=992 GitHub cohort are NOT offline-reproducible from this repository. The digital swarm is a seeded simulation. This does not disprove the LISM mathematics; it establishes precisely what this repository can substantiate offline." % (c1["vif"], c1["N"]),
+           "note": ("Yeast channel invariants are backed by committed real STRING v12 data "
+                    "(VIF %.4f at N=%d). %s This establishes precisely what this repository "
+                    "can substantiate offline, and nothing beyond it."
+                    % (c1["vif"], c1["N"],
+                       ("Every cohort claim above is now backed by committed rows."
+                        if not not_repro else
+                        "Still NOT offline-reproducible: " + ", ".join(sorted(not_repro)) + "."))),
            "honest_reporting": True, "pass": reproduced}
     json.dump(out, open(os.path.join(HERE, "results_audit.json"), "w"), indent=2)
 
@@ -315,13 +327,19 @@ def main():
     if c2["gap_closed"]:
         print("                           AND the yeast OUTCOME COUPLING (labels now committed:")
         print("                           1055 essential ORFs; CV AUC linear 0.666 > quadratic 0.591).")
-        print(" WHAT IT CANNOT BACK     : the N=992 GitHub cohort (rows were never committed).")
         print(" CORRECTED               : the published 'quadratic AUC ~0.47' reproduces ONLY as a")
         print("                           non-converged multivariate fit (in-sample 0.4275) -- an artifact.")
+    if c4["gap_closed"]:
+        print("                           AND the N=992 GitHub cohort (992 rows committed, 750 fail /")
+        print("                           242 survive; VIF 1.0203; QUADRATIC DISCONFIRMED, dAIC -3.48).")
+    # Derived from the ledger, never asserted: a hardcoded banner is exactly how
+    # this file previously kept claiming a gap its own ledger had already closed.
+    if not_repro:
+        print(" WHAT IT CANNOT BACK     : " + "; ".join(sorted(not_repro)))
     else:
-        print(" WHAT IT CANNOT BACK     : the yeast outcome-coupling result (no essentiality labels committed)")
-        print("                           and the entire N=992 GitHub cohort (rows never committed).")
-    print(" SIMULATIONS, NOT DATA   : the digital swarm, and the already-retracted knowledge cohort.")
+        print(" WHAT IT CANNOT BACK     : every cohort claim above is backed by committed rows.")
+    if sims:
+        print(" SIMULATIONS, NOT DATA   : " + "; ".join(sorted(sims)))
     n_gap = sum(1 for v in ledger.values() if "NOT_OFFLINE" in v)
     print(" The LISM mathematics is not disproved -- %d claim(s) remain not offline-reproducible here." % n_gap)
     print(BAR)

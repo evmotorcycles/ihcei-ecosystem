@@ -1,0 +1,14 @@
+{
+  "name": "Example policy — what an assistant may do on this machine",
+  "note": "Anything not listed here does not happen. You never have to predict the bad action.",
+  "rules": [
+    { "path": "projects/**",        "plain": "read anything in projects",       "allow": true,  "write": false },
+    { "path": "projects/drafts/**", "plain": "change files in drafts",          "allow": true,  "write": true, "budget": 5 },
+    { "path": "public/**",          "plain": "read published data",             "allow": true,  "write": false },
+    { "path": "posts/**",           "plain": "publish, but only things that carry their evidence",
+      "allow": true,  "write": true,  "require": "SUPPORTED" },
+    { "path": "payroll/**",         "plain": "anything in payroll",             "allow": false },
+    { "path": "**/.env",            "plain": "files holding passwords",         "allow": false },
+    { "path": ".ssh/**",            "plain": "your login keys",                 "allow": false }
+  ]
+}

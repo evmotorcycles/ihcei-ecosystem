@@ -1,0 +1,14 @@
+{
+  "name": "Example key — what an assistant may reach",
+  "note": "Anything not listed here is refused. You never have to predict the bad request.",
+  "rules": [
+    { "path": "projects/**",        "plain": "read anything in projects",     "allow": true,  "write": false },
+    { "path": "projects/drafts/**", "plain": "change files in drafts",        "allow": true,  "write": true, "budget": 5 },
+    { "path": "public/**",          "plain": "read published data",           "allow": true,  "write": false },
+    { "path": "briefings/**",       "plain": "read briefings, but only ones that carry their evidence",
+      "allow": true,  "write": false, "require": "SUPPORTED" },
+    { "path": "payroll/**",         "plain": "anything in payroll",           "allow": false },
+    { "path": "**/.env",            "plain": "files holding passwords",       "allow": false },
+    { "path": ".ssh/**",            "plain": "your login keys",               "allow": false }
+  ]
+}

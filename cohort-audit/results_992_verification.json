@@ -1,0 +1,19 @@
+{
+  "n_total": 992,
+  "n_fail": 750,
+  "n_surv": 242,
+  "pearson_Denc_Ddec": 0.1412,
+  "VIF": 1.0203,
+  "aic_lin": 1088.215,
+  "aic_quad": 1091.698,
+  "dAIC_lin_minus_quad": -3.483,
+  "permutation_z": 9.185,
+  "tau_fail_mean": 50.61,
+  "tau_surv_mean": 19.76,
+  "gate_pass": true,
+  "verdict_recomputed": "QUADRATIC_DISCONFIRMED",
+  "verdict_claimed": "QUADRATIC_DISCONFIRMED",
+  "summary_reproduces": true,
+  "csv_sha256": "d09accf214577b32fd84a4ad7f78ec65b4edbbfc327f6d77db518239afc397f7",
+  "spec_sha256_claimed": "cac34f44b2cea0ee3346921d708f00913f6b67cc36376e0b2e4630b9e77001f7"
+}

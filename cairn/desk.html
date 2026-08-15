@@ -1,0 +1,1331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Your Desk — six everyday checks</title>
+<style>
+:root{
+  --wall:#E7E9E4; --wall-2:#DDE1DA; --desk:#FBFBF8; --ink:#15181A; --stone:#66716B;
+  --line:#D5DBD3; --edge:#C3CBC1;
+  --key:#2F5D57; --key-soft:#E1EEEA; --on-key:#FBFBF8;
+  --ok:#1E6B48; --ok-soft:#E2F0E8; --warn:#8A5A0B; --warn-soft:#FBF1DF;
+  --stop:#8C2F2F; --stop-soft:#FBEAEA;
+  --shadow:0 1px 1px rgba(21,24,26,.05),0 6px 18px rgba(21,24,26,.08);
+  --lift:0 2px 4px rgba(21,24,26,.07),0 14px 34px rgba(21,24,26,.12);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wall:#101413; --wall-2:#0B0E0D; --desk:#181D1B; --ink:#E8EDEA; --stone:#95A099;
+  --line:#252C29; --edge:#323A36;
+  --key:#6FBFB2; --key-soft:#142523; --on-key:#0B0E0D;
+  --ok:#5FBF92; --ok-soft:#12241C; --warn:#D9A441; --warn-soft:#241D0F;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 4px rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --wall:#101413; --wall-2:#0B0E0D; --desk:#181D1B; --ink:#E8EDEA; --stone:#95A099;
+  --line:#252C29; --edge:#323A36;
+  --key:#6FBFB2; --key-soft:#142523; --on-key:#0B0E0D;
+  --ok:#5FBF92; --ok-soft:#12241C; --warn:#D9A441; --warn-soft:#241D0F;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 4px rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:17px/1.6 var(--sans);
+  background:var(--wall);background-image:radial-gradient(circle at 22% 12%,var(--wall-2),transparent 55%);
+  -webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.018em;line-height:1.2;text-wrap:balance}
+.mono{font-family:var(--mono);font-size:.85em}
+
+/* ---------------- top shelf ---------------- */
+.shelf{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--wall) 90%,transparent);backdrop-filter:blur(10px)}
+.shelfin{max-width:60rem;margin:0 auto;padding:.6rem 1.1rem;display:flex;align-items:center;gap:.6rem}
+.home{display:flex;align-items:center;gap:.5rem;background:none;border:none;color:inherit;
+  font-weight:650;font-size:1.02rem;padding:.2rem .3rem;border-radius:8px}
+.home:hover{background:var(--key-soft)}
+.home svg{width:22px;height:22px;color:var(--key)}
+.shelfin .sp{flex:1}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);border-radius:8px;
+  padding:.3rem .7rem;font-size:.82rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+
+/* ---------------- the desk ---------------- */
+.room{max-width:60rem;margin:0 auto;padding:0 1.1rem 5rem}
+.welcome{padding:2.6rem 0 1.6rem;text-align:center}
+.welcome h1{font-size:clamp(1.7rem,4.4vw,2.4rem)}
+.welcome p{color:var(--stone);max-width:34rem;margin:.8rem auto 0;font-size:1.02rem}
+
+/* app icons, laid out like a desktop */
+.desktop{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));
+  gap:1rem;padding:1rem 0 2rem}
+.app{display:flex;flex-direction:column;align-items:center;gap:.6rem;background:none;
+  border:1px solid transparent;border-radius:14px;padding:1rem .6rem;text-align:center;
+  transition:transform .13s ease,background .13s ease,border-color .13s ease}
+.app:hover,.app:focus-visible{background:var(--desk);border-color:var(--line);transform:translateY(-2px)}
+.app .icon{width:4.2rem;height:4.2rem;border-radius:18px;background:var(--desk);
+  border:1px solid var(--edge);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--key)}
+.app .icon svg{width:2.1rem;height:2.1rem}
+.app .nm{font-weight:650;font-size:.98rem;line-height:1.25}
+.app .sub{color:var(--stone);font-size:.79rem;line-height:1.4}
+
+/* ---------------- a window ---------------- */
+.win{display:none}
+.win.on{display:block;animation:rise .16s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.frame{background:var(--desk);border:1px solid var(--edge);border-radius:16px;
+  box-shadow:var(--lift);overflow:hidden;margin:1.4rem 0}
+.title{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.1rem;
+  border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--desk) 60%,var(--wall))}
+.title .ic{width:2.1rem;height:2.1rem;border-radius:9px;background:var(--key-soft);
+  display:grid;place-items:center;color:var(--key);flex:none}
+.title .ic svg{width:1.15rem;height:1.15rem}
+.title b{font-size:1.02rem}
+.title span{color:var(--stone);font-size:.86rem;display:block;line-height:1.35}
+.body{padding:1.2rem}
+label.f{display:block;font-size:.86rem;color:var(--stone);margin-bottom:.45rem}
+textarea,input[type=text]{width:100%;background:var(--wall);color:var(--ink);
+  border:1px solid var(--edge);border-radius:11px;padding:.85rem .95rem;font:inherit;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--key);outline-offset:1px;border-color:transparent}
+.go{background:var(--key);color:var(--on-key);border:1px solid var(--key);border-radius:11px;
+  padding:.75rem 1.5rem;font-weight:650;margin-top:.85rem}
+.go:hover{filter:brightness(1.1)}
+.row{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.chip{background:var(--wall);border:1px solid var(--line);border-radius:99px;
+  padding:.3rem .8rem;font-size:.82rem;color:var(--stone)}
+.chip:hover{border-color:var(--key);color:var(--key)}
+
+/* ---------------- the label (Cairn result) ---------------- */
+.label{border:1.5px solid var(--ink);border-radius:12px;overflow:hidden;margin-top:1.1rem;
+  background:var(--desk)}
+.label .cap{padding:.7rem 1rem;border-bottom:1.5px solid var(--ink);
+  font-weight:700;letter-spacing:.02em;font-size:1.05rem}
+.label .rows{padding:.3rem 1rem .8rem}
+.lrow{display:grid;grid-template-columns:1.5rem 1fr auto;gap:.7rem;align-items:baseline;
+  padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.lrow:last-child{border-bottom:none}
+.lrow .y{color:var(--ok);font-weight:800}
+.lrow .n{color:var(--stone);font-weight:800}
+.lrow .v{font-size:.82rem;color:var(--stone);text-align:right}
+/* On a phone the three-column row squeezes the plain-English name into a
+   four-line column. Below 30rem the note drops under the name instead. */
+@media (max-width:30rem){
+  .lrow{grid-template-columns:1.5rem minmax(0,1fr);row-gap:.15rem}
+  .lrow .v{grid-column:2;text-align:left;font-size:.8rem}
+  .hrow{grid-template-columns:minmax(0,1fr);gap:.15rem}
+  .hrow .hk{font-size:.74rem;letter-spacing:.05em;text-transform:uppercase}
+}
+/* ---- the handles: what you take to a search engine ---- */
+.handles{margin-top:1.1rem;border:1px solid var(--edge);border-radius:12px;
+  background:var(--wall);padding:.9rem 1rem}
+.handles>b{display:block;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--stone)}
+.handles>p{margin:.35rem 0 .8rem;font-size:.88rem;color:var(--stone);line-height:1.5}
+.hgrid{display:grid;gap:.35rem}
+.hrow{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:.7rem;align-items:baseline;
+  font-size:.92rem}
+.hrow .hk{color:var(--stone);font-size:.8rem}
+.hrow .hv em{font-style:normal;font-weight:600;background:var(--desk);
+  border:1px solid var(--edge);border-radius:7px;padding:.08rem .42rem;
+  display:inline-block;margin:.1rem .18rem .1rem 0}
+.hcopy{display:flex;gap:.4rem;margin-top:.85rem}
+.hcopy input{flex:1;min-width:0;font:inherit;font-size:.88rem;padding:.45rem .6rem;
+  border:1px solid var(--edge);border-radius:9px;background:var(--desk);color:var(--ink)}
+.hbtn{background:var(--ink);color:var(--desk);border:none;border-radius:9px;
+  padding:.45rem .9rem;font:inherit;font-size:.86rem;font-weight:600;cursor:pointer}
+.hnote{margin-top:.75rem;padding:.55rem .7rem;border-radius:9px;font-size:.86rem;
+  line-height:1.5;background:var(--warn-soft,#FBF1DF);border:1px solid var(--edge);color:var(--ink)}
+.hnote em{font-style:normal;font-weight:650}
+.big-verdict{padding:1rem;border-top:1.5px solid var(--ink);background:var(--wall);
+  font-weight:650}
+.gauge{height:.75rem;border-radius:99px;background:var(--line);overflow:hidden;margin:.7rem 0 .35rem}
+.gauge i{display:block;height:100%;border-radius:99px;background:var(--key)}
+.gtag{display:flex;justify-content:space-between;font-size:.8rem;color:var(--stone)}
+
+.note{border-radius:12px;padding:.9rem 1.05rem;margin-top:1rem;font-size:.94rem}
+.note.good{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 30%,transparent)}
+.note.warn{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent)}
+.note.stop{background:var(--stop-soft);border:1px solid color-mix(in srgb,var(--stop) 32%,transparent)}
+.note b{display:block;margin-bottom:.3rem}
+.note.good b{color:var(--ok)} .note.warn b{color:var(--warn)} .note.stop b{color:var(--stop)}
+.note ul{margin:.35rem 0 0;padding-left:1.15rem}
+.note li{margin:.2rem 0}
+
+/* ---------------- valet key (Page Code) ---------------- */
+.keyring{display:grid;gap:.6rem;margin-top:.4rem}
+.krow{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.8rem;align-items:center;
+  background:var(--wall);border:1px solid var(--line);border-radius:12px;padding:.75rem .9rem}
+.krow .ki{width:2.4rem;height:2.4rem;border-radius:9px;display:grid;place-items:center}
+.krow.yes .ki{background:var(--ok-soft);color:var(--ok)}
+.krow.no .ki{background:var(--stop-soft);color:var(--stop)}
+.krow b{display:block;font-size:.96rem}
+.krow span{color:var(--stone);font-size:.83rem}
+.tagy{font-size:.78rem;font-weight:700;color:var(--ok)}
+.tagn{font-size:.78rem;font-weight:700;color:var(--stop)}
+.kdefault{border-style:dashed}
+
+/* ---------------- dashcam (HELM) ---------------- */
+.tape{display:grid;gap:.5rem;margin-top:.4rem}
+.clip{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;background:var(--wall);
+  border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:10px;padding:.7rem .9rem}
+.clip.broken{border-color:var(--stop);border-left-color:var(--stop);background:var(--stop-soft)}
+.clip .no{font-family:var(--mono);color:var(--stone);font-size:.85rem}
+.clip .tx{font-size:.95rem}
+.clip .meta{font-family:var(--mono);font-size:.74rem;color:var(--stone);margin-top:.25rem}
+.sealbar{display:flex;align-items:center;gap:.5rem;font-size:.9rem;font-weight:650;margin-top:.9rem}
+.sealbar .dot{width:.6rem;height:.6rem;border-radius:99px;background:var(--ok)}
+.sealbar.bad .dot{background:var(--stop)}
+.sealbar.bad{color:var(--stop)}
+
+/* ---------------- confidence meter (Trig) ---------------- */
+.meterbox{display:grid;gap:1.1rem;margin-top:.4rem}
+.mrow{display:grid;grid-template-columns:7.5rem 1fr;gap:.9rem;align-items:center}
+.mrow .lab{font-size:.88rem;color:var(--stone)}
+.dual{display:grid;gap:.28rem}
+.bar{height:.7rem;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.b-said{background:var(--stone)} .b-true{background:var(--key)}
+.mkey{display:flex;gap:1.1rem;font-size:.8rem;color:var(--stone);margin-top:.2rem}
+.mkey s{width:.7rem;height:.7rem;border-radius:3px;display:inline-block;text-decoration:none}
+
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:24rem}
+th{text-align:left;font-size:.76rem;color:var(--stone);font-weight:650;padding:.45rem .6rem;
+  border-bottom:1px solid var(--line)}
+td{padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.rcpt{font-family:var(--mono);font-size:.74rem;color:var(--stone);margin-top:1rem;
+  border-top:1px dashed var(--line);padding-top:.7rem;word-break:break-all}
+footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px solid var(--line);
+  color:var(--stone);font-size:.86rem}
+:focus-visible{outline:2px solid var(--key);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="shelf"><div class="shelfin">
+  <button class="home" id="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <path d="M4 21h16M6.5 21c0-3 2.4-4.2 5.5-4.2s5.5 1.2 5.5 4.2M8 16.6c-.6-2.4 1.4-3.6 4-3.6s4.6 1.2 4 3.6M9.4 12.8c-.5-2 1-3 2.6-3s3.1 1 2.6 3M10.6 9.4c-.3-1.5.5-2.4 1.4-2.4s1.7.9 1.4 2.4"/></svg>
+    Your Desk</button>
+  <span class="sp"></span>
+  <button class="ghost" id="theme" title="Light / dark">◐</button>
+</div></div>
+
+<main class="room">
+
+<!-- ======================= THE DESK ======================= -->
+<section class="win on" id="deskview">
+  <div class="welcome">
+    <h1>What do you need to check?</h1>
+    <p>Pick a tool. Nothing here leaves your device — no account, no internet, nothing
+       uploaded. Every answer also tells you what it could not work out.</p>
+  </div>
+  <div class="desktop" id="apps"></div>
+
+  <div class="note stop">
+    <b>Before you rely on any of these</b>
+    None of them knows whether something is <em>true</em>. They check whether a claim can be
+    checked, whether permission was granted, and whether a record was altered. A sentence can
+    pass every check here and still be wrong. Use them to find your questions — then, when it
+    matters, take those questions to a person.
+  </div>
+</section>
+
+<!-- ======================= 1. THE LABEL ======================= -->
+<section class="win" id="label">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+      <span><b>The Label</b><span>Like the nutrition panel on a packet — what is this claim actually made of?</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="claim">Paste what someone told you, or what an AI answered</label>
+      <textarea id="claim" rows="4" placeholder="e.g. Green tea reduces stress by 12%"></textarea>
+      <div class="chips" id="egs"></div>
+      <button class="go" id="check">Read the label</button>
+      <div id="out"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 2. THE VALET KEY ======================= -->
+<section class="win" id="valet">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3.5M15 12v2.5"/></svg></span>
+      <span><b>The Valet Key</b><span>Hand over just enough. A valet key starts the car — it does not open the boot.</span></span>
+    </div>
+    <div class="body">
+      <p style="margin:.2rem 0 1rem;color:var(--stone)">This is what you are giving an app or an
+         assistant. <b style="color:var(--ink)">Anything not on this list is refused automatically</b>,
+         so you never have to guess what it might ask for.</p>
+      <div class="keyring" id="keys"></div>
+      <label class="f" for="ask" style="margin-top:1.3rem">Try it — what if it asks for this?</label>
+      <input type="text" id="ask" value="payroll/salaries-2026.xlsx">
+      <div class="chips" id="asks"></div>
+      <button class="go" id="tryit">See what happens</button>
+      <div id="pcout"></div>
+      <div class="note warn">
+        <b>What a valet key cannot do</b>
+        It stops an app reaching what you never handed over. It does not stop it misusing what
+        you <em>did</em> hand over, and it cannot tell you whether the app is trustworthy. Give
+        the smallest key that does the job.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 3. THE DASHCAM ======================= -->
+<section class="win" id="dashcam">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 11l5-3v8l-5-3"/></svg></span>
+      <span><b>The Dashcam</b><span>A running record. If anyone edits an old entry, the seal breaks and you see it.</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="entry">What just happened?</label>
+      <input type="text" id="entry" placeholder="e.g. Agreed the quote with the builder — £4,200">
+      <div class="row"><button class="go" id="add">Record it</button>
+        <button class="ghost" id="tamper" style="margin-top:.85rem">Try secretly editing entry 1</button></div>
+      <div class="sealbar" id="sealbar"><span class="dot"></span><span id="sealtext"></span></div>
+      <div class="tape" id="tape"></div>
+      <div class="note warn">
+        <b>What a dashcam cannot do</b>
+        It makes tampering <em>visible</em>, not impossible. And it says nothing about whether an
+        entry was true when it was written — somebody can still record a lie; they just cannot
+        rewrite it later without it showing.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 4. THE CONFIDENCE METER ======================= -->
+<section class="win" id="meter">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 20a8 8 0 1 1 8-8"/><path d="M12 12l5-3"/></svg></span>
+      <span><b>The Confidence Meter</b><span>When a tool says it is sure, is it right that often? We checked ourselves.</span></span>
+    </div>
+    <div class="body">
+      <div class="note stop">
+        <b>We failed our own test</b>
+        We tested whether our claim-checker's confidence matches an independent measure it never
+        sees. We set the limit at <b>0.15</b> before looking. We measured <b>0.3727</b>.
+        <b style="display:inline">We did not move the limit.</b>
+      </div>
+      <p style="color:var(--stone);margin:1.1rem 0 .3rem">Grey is what it said about itself.
+         Green is what was independently true. Every bar leans the same way — it was consistently
+         <em>less</em> sure than it should have been.</p>
+      <div class="meterbox" id="meters"></div>
+      <div class="mkey"><span><s style="background:var(--stone)"></s> what it said</span>
+        <span><s style="background:var(--key)"></s> what was true</span></div>
+      <div class="note warn">
+        <b>Why show you a failure?</b>
+        Being under-confident is the safer way to fail, but it is still failing. A tool that has
+        never published its own bad result has not been tested — it has been advertised.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 5. THE FILE OPENER ======================= -->
+<section class="win" id="opener">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span>
+      <span><b>The File Opener</b><span>Open a document, spreadsheet, transcript, photo or code — and see what is really in it.</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="file">Choose a file from your device</label>
+      <input type="file" id="file" style="width:100%">
+      <label class="f" for="pastebox" style="margin-top:1.1rem">…or paste something and tell it what it is</label>
+      <textarea id="pastebox" rows="5" placeholder="Paste here"></textarea>
+      <div class="row" style="margin-top:.6rem">
+        <button class="go" id="asdoc" style="margin-top:0">It's writing</button>
+        <button class="ghost" id="ascsv">It's a spreadsheet</button>
+        <button class="ghost" id="ascode">It's code</button>
+        <button class="ghost" id="astrans">It's a transcript</button>
+      </div>
+      <div class="chips" id="fchips"></div>
+      <div id="fout"></div>
+      <div class="note stop">
+        <b>What the opener cannot do</b>
+        It reads <em>shape</em>, never meaning. <b style="display:inline">There is no eyesight
+        here</b> — a photo of a chart, a photo of a contract and a photo of a cat are the same
+        thing to it. And there is no internet, so it cannot fetch a video or a web page: open the
+        video, copy the transcript, paste it in.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= 6. THE PLANNER ======================= -->
+<section class="win" id="planner">
+  <div class="frame">
+    <div class="title">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 4h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7"/><path d="M4 7l4-4v4z"/><path d="M9 12h7M9 16h5"/></svg></span>
+      <span><b>The Planner</b><span>A plan where you write down what "it didn't work" looks like — before you start.</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="goal">What are you trying to do?</label>
+      <textarea id="goal" rows="3" placeholder="e.g. Move our customer records to a new provider by March"></textarea>
+      <label class="f" for="cons" style="margin-top:.9rem">Anything fixed? (money, deadline, people)</label>
+      <input type="text" id="cons" placeholder="optional">
+      <div class="chips" id="pchips"></div>
+      <button class="go" id="doplan">Make the plan</button>
+      <div id="pout"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Everything runs on your own device. No account, no internet, nothing uploaded. The confidence
+  numbers come from a run over 22 real projects, with the limit fixed before the data was seen
+  and not changed afterwards.
+</footer>
+</main>
+
+<script>/* ei_engine.js -- faithful JS port of cairn/ei_llm.py's assay().
+ *
+ * This exists so the browser app runs the SAME logic as the audited Python
+ * engine, with no server and no network. Parity is not assumed: it is tested by
+ * cairn/test_parity.py, which runs both engines over a shared case list and
+ * fails if any verdict, claim type, confidence or evidence count differs.
+ *
+ * Same limits as the Python engine, restated so nobody reads the port as an
+ * upgrade: this does NOT understand language. Ambiguity detection is syntactic
+ * pattern matching and the plausibility check reads a hand-written list of 15
+ * landform nouns.
+ */
+(function (root) {
+  "use strict";
+
+  var EVIDENCE = [
+    ["source", /\b(according to|source|cited|reference|study|report|dataset|https?:\/\/|\.gov|\.org|doi)\b/i,
+      "A checkable source is named", "No source is named"],
+    ["figures", /\d/, "Contains specific figures", "No specific figures given"],
+    ["method", /\b(method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/i,
+      "Says how it was measured", "Does not say how it was measured"],
+    ["time", /\b(19|20)\d{2}\b|\b(today|yesterday|last (year|month|quarter)|q[1-4])\b/i,
+      "Anchored to a date or period", "No date or period given"],
+    ["scope", /\b(in|across|among|between|per|for)\b[\s\S]{0,28}\b(uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/i,
+      "States who or where it applies", "Scope is not stated"]
+  ];
+
+  var IMMOBILE = ["canyon", "grand canyon", "mountain", "mountains", "valley", "plateau",
+    "cliff", "lake", "river", "desert", "glacier", "volcano", "island", "coastline", "forest"];
+  var SELF_PROPELLED = ["flying", "walking", "running", "driving", "swimming",
+    "travelling", "traveling", "climbing"];
+
+  var ATTACH_RE = /^\s*(i|we|he|she|they|you)\s+(\w+)\s+(the|a|an|my|our|his|her|their)\s+([\w\s]{2,40}?)\s+(\w+ing)\b([\s\S]*)$/i;
+  var CONCEPTUAL_RE = /(\bis (the|a|an) (study|branch|theory|field|concept|term|word|practice|process|state|quality)\b|\bis defined as\b|\bmeans\b|\brefers to\b|\bdefinition of\b|\bby definition\b|^\s*\w+\s*[:—-]\s*(the|a|an)\b)/i;
+  var MATHY_RE = /^\s*[\d\s()+\-*/^=.]+\s*$/;
+  var OPINION_RE = /\b(i think|i believe|in my opinion|i feel|should be|ought to|is better than|is the best|is amazing|is terrible|prefer)\b/i;
+  var QUESTION_RE = /^\s*(what|who|when|where|why|how|is|are|do|does|did|can|could|should|would|will)\b[\s\S]*\?\s*$/i;
+  var IMPERATIVE_RE = /^\s*(mix|add|combine|apply|take|use|heat|stir|install|run|pour|dissolve|blend)\b/i;
+
+  var DOMAIN_RISK = [
+    ["chemistry/formulation", /\b(acid|ph\b|emulsif|oil|solvent|dissolve|concentration|serum|formulation|mix(ing)?|bleach|ammonia)\b/i],
+    ["medical/health", /\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient|participants|infect\w*|outbreak|epidemic|pandemic|bacteri\w*|virus|viral|fungal|parasit\w*|contagio\w*|antibiotic|antimicrobial|pathogen\w*|contaminat\w*|quarantine|measles|cholera|influenza|bird flu|covid|death[s]?|died|dying|fatal\w*|mortality|lethal|survive|survival|kill(s|ed)?|life-threatening|amputat\w*|wound[s]?|illness|disease|disorder|syndrome|cancer|tumou?r|malignan\w*|biopsy|carcinom\w*|diabet\w*|blood pressure|cholesterol|kidney|cardiac|stroke|asthma|vaccin\w*|immunis\w*|immuniz\w*|booster|screening|hospital\w*|clinic\w*|doctor|nurse|prescription|fever|nausea)\b/i],
+    ["legal/regulatory", /\b(contract|clause|liabilit\w*|complian\w*|regulat\w*|statute|gdpr|licen[cs]e|jurisdiction|appeal|waive[sd]?|legal|lawsuit|court|breach|terminat\w*|disclos\w*|entitle\w*|tribunal)\b/i],
+    ["financial", /\b(revenue|profit|forecast|invest\w*|valuation|roi\b|interest rate|loan|credit|guaranteed returns?|returns? of|pension|tax|apr\b|mortgage|debt|refund|deposit|payment|withdraw\w*)\b/i],
+    ["safety-critical", /\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing|carbon monoxide|scaffold\w*|toxic|fumes|corrosive|explosi\w*|asbestos|brake[s]?|overheat\w*|wiring|flue|ventilat\w*|pesticide|solvent)\b/i]
+  ];
+
+  function classifyClaim(text) {
+    var t = (text || "").trim();
+    if (!t) return ["EMPTY", "Nothing to look at yet."];
+    if (QUESTION_RE.test(t)) return ["QUESTION",
+      "That's a question, not a claim. I audit statements — paste an answer you've been given and I'll tell you how far it can be trusted."];
+    if (MATHY_RE.test(t)) return ["CONCEPTUAL",
+      "That's arithmetic. It's true by definition, so there's nothing for me to verify against the world."];
+    if (CONCEPTUAL_RE.test(t) && !/\d/.test(t)) return ["CONCEPTUAL",
+      "That's a definition or a concept. Definitions are true by agreement, not by measurement — so there's no source, date or figure for me to check. This isn't a failure; it's simply outside what I audit."];
+    if (OPINION_RE.test(t)) return ["OPINION",
+      "That's a preference or a judgement. I can't audit what someone values — only claims about what is measurably the case."];
+    if (IMPERATIVE_RE.test(t)) return ["INSTRUCTION",
+      "That's a set of instructions. I can check whether it's specified precisely enough to follow — but NOT whether following it is safe or correct."];
+    return ["EMPIRICAL", ""];
+  }
+
+  function domainFlags(text) {
+    var out = [];
+    for (var i = 0; i < DOMAIN_RISK.length; i++) {
+      if (DOMAIN_RISK[i][1].test(text || "")) out.push(DOMAIN_RISK[i][0]);
+    }
+    return out;
+  }
+
+  function scoreEvidence(text) {
+    return EVIDENCE.map(function (e) {
+      var hit = e[1].test(text || "");
+      return { signal: e[0], hit: hit, note: hit ? e[2] : e[3] };
+    });
+  }
+
+  /* ------------------------------------------------------------- handles ---
+   * A tick saying "contains specific figures" leaves the reader to find the
+   * figures themselves. The handles are the SPANS that made each signal fire --
+   * the exact words someone would paste into a search engine to go and check.
+   * Strictly additional: same signals, same hits, plus the causing text. */
+  var FIGURE_RX = /\d[\d,.]*(?:\s*(?:%|percent))?(?:\s+[a-z][a-z-]{2,20})?/gi;
+  var YEAR_RX = /\b(?:19|20)\d{2}\b|\b(?:today|yesterday|last (?:year|month|quarter)|q[1-4])\b/gi;
+  var METHOD_RX = /\b(?:[a-z-]+\s+)?(?:method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/gi;
+  var SCOPE_RX = /\b(?:in|across|among|between|per|for)\b.{0,28}?\b(?:uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/gi;
+  var SOURCE_RX = /\b(?:according to|source|cited|reference|study|report|dataset|doi)\b|https?:\/\/\S+|\b\S+\.(?:gov|org)\b/gi;
+  /* A source MARKER ("according to") is not a source NAME. The distinction only
+   * becomes visible once the span is shown, which is the point of showing it. */
+  var NAMED_RX = /https?:\/\/\S+|\bdoi\b|\b\S+\.(?:gov|org)\b|\b(?:the )?[A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)*\s+(?:Journal|Review|Times|Post|University|Institute|Office|Agency|Association|Society)\b|\b(?:Nature|Science|Lancet|BMJ|JAMA|NEJM|WHO|CDC|NHS|ONS|OECD|NASA)\b/g;
+  var STOP = ["a","an","the","of","in","on","at","by","to","and","or","was","were","is","are"];
+
+  function spans(rx, text, limit) {
+    var out = [], m;
+    rx.lastIndex = 0;
+    while ((m = rx.exec(text || "")) !== null) {
+      var s = m[0].replace(/^[\s,.;:]+|[\s,.;:]+$/g, "");
+      if (s && STOP.indexOf(s.toLowerCase()) === -1 && out.indexOf(s) === -1) out.push(s);
+      if (out.length >= limit) break;
+      if (m.index === rx.lastIndex) rx.lastIndex++;
+    }
+    return out;
+  }
+
+  function extractHandles(text) {
+    text = text || "";
+    var all = spans(FIGURE_RX, text, 6);
+    var figures = all.filter(function (s) { return !/^(?:19|20)\d{2}$/.test(s.split(/\s+/)[0]); });
+    if (!figures.length) figures = all;
+    var method = [], mm;
+    METHOD_RX.lastIndex = 0;
+    while ((mm = METHOD_RX.exec(text)) !== null) {
+      var s = mm[0].trim(), first = s.split(/\s+/)[0].toLowerCase();
+      if (s.split(/\s+/).length > 1 && STOP.indexOf(first) !== -1) s = s.split(/\s+/).slice(1).join(" ");
+      if (method.indexOf(s) === -1) method.push(s);
+      if (mm.index === METHOD_RX.lastIndex) METHOD_RX.lastIndex++;
+    }
+    var src = spans(SOURCE_RX, text, 3);
+    spans(NAMED_RX, text, 2).forEach(function (s) { if (src.indexOf(s) === -1) src.push(s); });
+    return {
+      source: src, figures: figures, method: method.slice(0, 3),
+      time: spans(YEAR_RX, text, 3), scope: spans(SCOPE_RX, text, 3),
+      // Reported, never scored.
+      source_named: (NAMED_RX.lastIndex = 0, NAMED_RX.test(text))
+    };
+  }
+
+  function searchLine(h) {
+    var parts = [];
+    ["time", "figures", "method", "scope"].forEach(function (k) {
+      (h[k] || []).forEach(function (s) { if (parts.indexOf(s) === -1) parts.push(s); });
+    });
+    return parts.join(" ");
+  }
+
+  function nextSteps(checks, kind) {
+    if (kind === "QUESTION") return ["Paste the answer you were given, and I'll audit that instead."];
+    if (kind === "CONCEPTUAL" || kind === "OPINION") return [
+      "Add a measurement, a date or a source and it becomes something I can check.",
+      "For definitions, an ordinary assistant or a dictionary is the right tool."];
+    var fix = {
+      source: "Name where it came from — a study, a report, a link.",
+      figures: "Add the actual numbers.",
+      method: "Say how it was measured.",
+      time: "Add when it was measured.",
+      scope: "Say who or where it applies to."
+    };
+    var missing = checks.filter(function (c) { return !c.hit; }).slice(0, 3)
+      .map(function (c) { return fix[c.signal]; });
+    return missing.length ? missing : ["Nothing material is missing."];
+  }
+
+  function inImmobile(s) {
+    if (IMMOBILE.indexOf(s) !== -1) return true;
+    return s.split(/\s+/).some(function (w) { return IMMOBILE.indexOf(w) !== -1; });
+  }
+
+  function detectAmbiguity(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = ATTACH_RE.exec(t);
+    if (!m) return { ambiguous: false, readings: [], pattern: null };
+    var subj = m[1], verb = m[2], obj = m[4].trim(), part = m[5], rest = m[6].trim();
+    var objKey = obj.toLowerCase().trim();
+    var objImmobile = inImmobile(objKey);
+    var partMoves = SELF_PROPELLED.indexOf(part.toLowerCase()) !== -1;
+    return {
+      ambiguous: true, pattern: "participial attachment", object: obj, participle: part,
+      object_in_immobile_lexicon: objImmobile,
+      readings: [
+        { id: "A", attaches_to: "subject",
+          paraphrase: (subj + " was " + part + " " + rest + ", and " + subj + " " + verb + " the " + obj).trim(),
+          plausible: true, why: "The subject is an agent, so it can perform the action." },
+        { id: "B", attaches_to: "object",
+          paraphrase: (subj + " " + verb + " the " + obj + ", and the " + obj + " was " + part + " " + rest).trim(),
+          plausible: !(objImmobile && partMoves),
+          why: (objImmobile && partMoves)
+            ? "'" + obj + "' is in the declared immobile-landform lexicon and '" + part + "' is self-propelled motion, so this reading is physically implausible."
+            : "Both the object and the action are ordinary, so this reading is perfectly possible." }
+      ]
+    };
+  }
+
+  function checkImpossible(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = /^\s*(the\s+)?([\w\s]{2,40}?)\s+(was|is|were|are)\s+(\w+ing)\b/i.exec(t);
+    if (!m) return null;
+    var obj = m[2].trim().toLowerCase(), part = m[4].toLowerCase();
+    if (inImmobile(obj) && SELF_PROPELLED.indexOf(part) !== -1) {
+      return { implausible: true, subject: obj, action: part,
+        basis: "declared immobile-landform lexicon (a hand-written list of " + IMMOBILE.length + " nouns), NOT comprehension" };
+    }
+    return null;
+  }
+
+  function assay(text, model) {
+    model = model || "slate";
+    text = (text || "").trim();
+    var kr = classifyClaim(text), kind = kr[0], kindNote = kr[1];
+    var checks = scoreEvidence(text);
+    var hits = checks.filter(function (c) { return c.hit; }).length;
+    var hnd = extractHandles(text);
+    var words = text ? text.split(/\s+/).length : 0;
+    var amb = detectAmbiguity(text);
+    var impossible = checkImpossible(text);
+    var domains = domainFlags(text);
+
+    if (kind === "CONCEPTUAL" || kind === "OPINION" || kind === "QUESTION" || kind === "EMPTY") {
+      return {
+        input: text, model: model, verdict: "OUT_OF_SCOPE", claim_type: kind,
+        committed_answer: null, confidence: null, band: "not applicable",
+        evidence: [], evidence_hits: 0, evidence_total: EVIDENCE.length,
+        handles: hnd, search_line: searchLine(hnd),
+        ambiguity: amb, implausible: null, domain_flags: domains,
+        explanation: kindNote, question: null, next_steps: nextSteps(checks, kind),
+        abstained: false, engine: "cairn-ei/1.1 (js)",
+        limits: "Out of scope is not a failure. I audit empirical claims; this text is not one."
+      };
+    }
+
+    var conf = hits / EVIDENCE.length;
+    if (words < 4) conf = 0.0;
+    if (model === "granite" || model === "quartz") conf = Math.min(1.0, conf * 1.12);
+    if (amb.ambiguous) conf = Math.min(conf, 0.35);
+
+    var verdict, committed, question = null;
+    if (amb.ambiguous) {
+      verdict = "AMBIGUOUS"; committed = null;
+      question = "Which did you mean: were you " + amb.participle + ", or was the " + amb.object + " " + amb.participle + "?";
+    } else if (impossible) {
+      verdict = "IMPLAUSIBLE"; committed = null;
+      question = "Did you mean this literally, or is a word missing?";
+    } else if (conf < 0.25) {
+      verdict = "INSUFFICIENT_EVIDENCE"; committed = null;
+      question = "Add a source, a figure, a date, a method or a scope and I can work with it.";
+    } else {
+      verdict = "SUPPORTED"; committed = text;
+    }
+
+    var band = conf >= 0.7 ? "high" : conf >= 0.45 ? "moderate" : conf >= 0.25 ? "low" : "insufficient";
+    return {
+      input: text, model: model, verdict: verdict, claim_type: kind,
+      committed_answer: committed, confidence: Math.round(conf * 1000) / 1000, band: band,
+      evidence: checks, evidence_hits: hits, evidence_total: EVIDENCE.length,
+      handles: hnd, search_line: searchLine(hnd),
+      ambiguity: amb, implausible: impossible, domain_flags: domains,
+      explanation: kindNote, question: question, next_steps: nextSteps(checks, kind),
+      abstained: committed === null, engine: "cairn-ei/1.1 (js)",
+      limits: "This engine does not understand language. Ambiguity detection is pattern matching; plausibility reads a hand-written list of " + IMMOBILE.length + " landform nouns."
+    };
+  }
+
+  var API = { assay: assay, classifyClaim: classifyClaim, domainFlags: domainFlags,
+    scoreEvidence: scoreEvidence, extractHandles: extractHandles, searchLine: searchLine,
+    IMMOBILE: IMMOBILE, EVIDENCE_N: EVIDENCE.length };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.EI = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* readers.js — turn real-world inputs into things the audited engines can check.
+ * ============================================================================
+ * Every reader here answers one question honestly: WHAT CAN I ACTUALLY EXTRACT?
+ * A reader that overstates what it read is worse than no reader, because the
+ * engines downstream will treat its output as evidence.
+ *
+ * Each reader returns { ok, kind, text, records, facts, limits, cannot }.
+ *   text     plain text the claim-checker can audit, or ""
+ *   records  array of objects a governed learner could take, or []
+ *   facts    what was structurally established, never inferred
+ *   cannot   what this reader is NOT able to determine. Always populated.
+ *
+ * *** WHAT NONE OF THESE DO ***
+ * None of them understand content. They parse structure. A CSV reader knows a
+ * column is numeric; it does not know what the number means. An image reader
+ * knows the pixel dimensions; it cannot see what is in the picture. Saying
+ * otherwise would be the overclaim this project exists to refuse.
+ */
+(function (root) {
+  "use strict";
+
+  function base(kind) {
+    return { ok: false, kind: kind, text: "", records: [], facts: {}, limits: [], cannot: [] };
+  }
+
+  // ------------------------------------------------------------ text doc --
+  function readTextDocument(name, content) {
+    var out = base("document");
+    var t = String(content || "");
+    if (!t.trim()) {
+      out.cannot.push("the file is empty — there is nothing to read");
+      return out;
+    }
+    var words = t.trim().split(/\s+/).filter(Boolean);
+    var paras = t.split(/\n\s*\n/).filter(function (p) { return p.trim(); });
+    out.ok = true;
+    out.text = t;
+    out.facts = {
+      filename: name, characters: t.length, words: words.length,
+      paragraphs: paras.length,
+      has_numbers: /\d/.test(t),
+      has_links: /https?:\/\//.test(t),
+      has_dates: /\b(19|20)\d{2}\b/.test(t)
+    };
+    out.limits.push("plain text only — formatting, tables and footnotes are lost");
+    out.cannot.push("tell whether anything in the document is true");
+    out.cannot.push("tell whether the document is complete or has been edited");
+    return out;
+  }
+
+  // ------------------------------------------------------------------ pdf --
+  function readPdfLike(name, bytesHead) {
+    var out = base("pdf");
+    out.cannot.push(
+      "extract text from a PDF. A PDF stores glyph positions, often compressed, " +
+      "sometimes as scanned images with no text layer at all. Extracting it " +
+      "properly needs a parser this offline page does not carry.");
+    out.limits.push("open the PDF, select the text, and paste it in — that path is honest and works");
+    out.facts = { filename: name, looks_like_pdf: /^%PDF-/.test(bytesHead || "") };
+    return out;
+  }
+
+  // ------------------------------------------------------------------ csv --
+  function parseCsv(content) {
+    // RFC4180-ish: handles quoted fields containing commas and doubled quotes.
+    var rows = [], row = [], field = "", inQ = false, i = 0, c;
+    var s = String(content || "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    for (; i < s.length; i++) {
+      c = s[i];
+      if (inQ) {
+        if (c === '"') { if (s[i + 1] === '"') { field += '"'; i++; } else inQ = false; }
+        else field += c;
+      } else if (c === '"') inQ = true;
+      else if (c === ",") { row.push(field); field = ""; }
+      else if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; }
+      else field += c;
+    }
+    if (field.length || row.length) { row.push(field); rows.push(row); }
+    return rows.filter(function (r) { return r.length > 1 || (r[0] || "").trim(); });
+  }
+
+  function readCsv(name, content) {
+    var out = base("dataset");
+    var rows = parseCsv(content);
+    if (rows.length < 2) {
+      out.cannot.push("read this as a dataset — fewer than two rows, so there is no header plus data");
+      return out;
+    }
+    var header = rows[0].map(function (h) { return h.trim(); });
+    var body = rows.slice(1).filter(function (r) { return r.length === header.length; });
+    var ragged = rows.length - 1 - body.length;
+
+    var records = body.map(function (r) {
+      var o = {};
+      header.forEach(function (h, j) { o[h] = r[j]; });
+      return o;
+    });
+
+    var cols = header.map(function (h) {
+      var vals = records.map(function (r) { return (r[h] || "").trim(); });
+      var nonEmpty = vals.filter(function (v) { return v !== ""; });
+      var nums = nonEmpty.filter(function (v) { return v !== "" && isFinite(Number(v)); });
+      var numeric = nonEmpty.length > 0 && nums.length === nonEmpty.length;
+      var uniq = {};
+      nonEmpty.forEach(function (v) { uniq[v] = 1; });
+      var c = { name: h, numeric: numeric, missing: vals.length - nonEmpty.length,
+                distinct: Object.keys(uniq).length };
+      if (numeric && nums.length) {
+        var xs = nums.map(Number).sort(function (a, b) { return a - b; });
+        c.min = xs[0]; c.max = xs[xs.length - 1];
+        c.mean = +(xs.reduce(function (a, b) { return a + b; }, 0) / xs.length).toFixed(4);
+        c.median = xs[Math.floor(xs.length / 2)];
+      }
+      return c;
+    });
+
+    out.ok = true;
+    out.records = records;
+    out.facts = {
+      filename: name, rows: records.length, columns: header.length,
+      ragged_rows_dropped: ragged, column_summary: cols,
+      constant_columns: cols.filter(function (c) { return c.distinct <= 1; }).map(function (c) { return c.name; }),
+      columns_with_missing: cols.filter(function (c) { return c.missing > 0; })
+        .map(function (c) { return c.name + " (" + c.missing + ")"; })
+    };
+    out.limits.push("column types are inferred from the values present, not from a schema");
+    if (ragged) out.limits.push(ragged + " row(s) had the wrong number of fields and were dropped, not guessed at");
+    out.cannot.push("tell whether the numbers are correct, or how they were collected");
+    out.cannot.push("tell whether rows are missing entirely — only that fields are blank");
+    return out;
+  }
+
+  // ----------------------------------------------------------------- image --
+  function readImage(name, meta) {
+    var out = base("image");
+    out.ok = true;
+    out.facts = { filename: name, width: meta.width, height: meta.height,
+                  bytes: meta.bytes, type: meta.type,
+                  megapixels: +((meta.width * meta.height) / 1e6).toFixed(2) };
+    out.limits.push("structure and dimensions only");
+    out.cannot.push(
+      "see what is in the picture. There is no vision model here, and there is " +
+      "no offline way to add one. A chart, a contract photo and a cat are the " +
+      "same thing to this reader.");
+    out.cannot.push("read text in the image — that needs OCR, which is not present");
+    out.cannot.push("tell whether the image has been edited or generated");
+    return out;
+  }
+
+  // ------------------------------------------------------------ transcript --
+  // The honest answer to "read a video": you bring the transcript.
+  function readTranscript(name, content) {
+    var out = base("transcript");
+    var t = String(content || "");
+    if (!t.trim()) {
+      out.cannot.push("nothing was pasted");
+      return out;
+    }
+    // strip common caption timestamps: 00:01:02.500 --> 00:01:05.000, [00:12], 1:23
+    var stamps = (t.match(/\d{1,2}:\d{2}(:\d{2})?([.,]\d{1,3})?/g) || []).length;
+    var clean = t
+      .replace(/^WEBVTT.*$/gm, "")
+      .replace(/\d{1,2}:\d{2}(:\d{2})?([.,]\d{1,3})?\s*-->\s*\d{1,2}:\d{2}(:\d{2})?([.,]\d{1,3})?.*$/gm, "")
+      .replace(/^\s*\[?\d{1,2}:\d{2}(:\d{2})?\]?\s*/gm, "")
+      .replace(/^\s*\d+\s*$/gm, "")
+      .replace(/\n{2,}/g, "\n").trim();
+    out.ok = clean.length > 0;
+    out.text = clean;
+    out.facts = { filename: name, timestamps_removed: stamps,
+                  words: clean.split(/\s+/).filter(Boolean).length,
+                  looks_like_captions: stamps > 3 };
+    out.limits.push("auto-generated captions contain transcription errors; those errors are read as if spoken");
+    out.cannot.push(
+      "fetch a video. This page has no network by design, so it cannot open a " +
+      "YouTube link, and there is no honest way to pretend otherwise. Open the " +
+      "video, copy the transcript, paste it here.");
+    out.cannot.push("see anything shown on screen but not said aloud — slides, charts, captions burned into the picture");
+    out.cannot.push("tell who is speaking, or whether the transcript is complete");
+    return out;
+  }
+
+  // ----------------------------------------------------------------- code --
+  // A governance audit of source code: does this code obey the obligations?
+  var CODE_CHECKS = [
+    { id: "bare_return_of_score",
+      re: /return\s+(?:round\s*\(\s*)?[\w.]*(?:score|confidence|rating|risk|prob\w*)\b[^;\n]*$/gim,
+      title: "returns a bare score",
+      why: "A number returned with no confidence, no reasons and no receipt travels " +
+           "downstream looking like a measurement. Nothing carries how it was reached.",
+      fix: "Return a verdict object carrying the value, its confidence, the reasons, and a receipt." },
+    { id: "reads_self_description",
+      re: /["'\[]?\b(?:description|self_?report\w*|self_?desc\w*|bio|blurb|about|summary|claims?)\b["'\]]?\s*[\].)]/gi,
+      title: "may consult the subject's own account of itself",
+      why: "If an evaluator reads what the thing being judged says about itself, the " +
+           "verdict is partly self-assessment. This is the failure the 0.8-vs-0.300 " +
+           "example demonstrates.",
+      fix: "Delete the field from the record before evaluation, and commit the deletion to the receipt." },
+    { id: "no_abstain_path",
+      re: /\b(?:def|function)\s+\w*(?:score|assess|evaluate|rate|judge|predict|classif)\w*/gi,
+      title: "scoring function — check it can decline",
+      why: "A scoring function with no abstain path must answer even when the input " +
+           "determines nothing. It will guess, and the guess looks like the answer.",
+      fix: "Add an explicit abstain return with reasons, and make it a normal result rather than an exception.",
+      needsAbsence: /\b(?:abstain|insufficient|unknown|decline|not_?enough|INCONCLUSIVE)\b/i },
+    { id: "silent_except",
+      re: /except\s*(?:\w+\s*)?:\s*(?:\n\s*(?:pass|continue)\b)|catch\s*\([^)]*\)\s*\{\s*\}/gi,
+      title: "swallows an error silently",
+      why: "A swallowed error becomes a missing check nobody can see. The code carries " +
+           "on with a value it never validated.",
+      fix: "Log it, or convert it into an abstention that says what failed." },
+    { id: "magic_threshold",
+      re: /(?:[<>]=?)\s*0\.\d{2,}/g,
+      title: "hard-coded threshold",
+      why: "A threshold in the middle of the code is a decision nobody registered. If it " +
+           "was chosen after seeing results, that is invisible here.",
+      fix: "Lift it to a named, declared constant, and hash-lock it before the run." },
+    { id: "seeded_shuffle_split",
+      re: /\b(?:shuffle|train_test_split|sample)\s*\(/gi,
+      title: "shuffled data split",
+      why: "A shuffle with a changeable seed can be re-rolled until the numbers flatter " +
+           "the result, and nobody downstream can tell that it was.",
+      fix: "Split deterministically on a hash of the row id, so anyone can recompute which side a row landed on." },
+    { id: "self_training",
+      re: /\bfit\s*\([^)]*\b(?:pred\w*|self\.\w*out\w*|generated)\b/gi,
+      title: "may fit on its own outputs",
+      why: "A model trained on its own predictions measures its own consistency, not the world.",
+      fix: "Require human or independently-measured labels; refuse model-generated ones." }
+  ];
+
+  function auditCode(name, source) {
+    var out = base("code");
+    var src = String(source || "");
+    if (!src.trim()) {
+      out.cannot.push("nothing was pasted");
+      return out;
+    }
+    var lines = src.split("\n");
+    var findings = [];
+    CODE_CHECKS.forEach(function (c) {
+      c.re.lastIndex = 0;
+      var m, seen = {};
+      while ((m = c.re.exec(src)) !== null) {
+        if (c.needsAbsence && c.needsAbsence.test(src)) break;
+        var line = src.slice(0, m.index).split("\n").length;
+        if (seen[line]) continue;
+        seen[line] = 1;
+        findings.push({ id: c.id, title: c.title, why: c.why, fix: c.fix,
+                        line: line, snippet: (lines[line - 1] || "").trim().slice(0, 110) });
+        if (findings.filter(function (f) { return f.id === c.id; }).length >= 4) break;
+        if (m.index === c.re.lastIndex) c.re.lastIndex++;
+      }
+    });
+    var good = [];
+    if (/\b(?:abstain|INCONCLUSIVE|insufficient)\b/i.test(src)) good.push("has an abstain path");
+    if (/\b(?:receipt|sha256|hashlib|digest)\b/i.test(src)) good.push("computes a receipt or digest");
+    if (/\bblind\b/i.test(src)) good.push("declares blinding");
+    if (/\bvif\b/i.test(src)) good.push("checks independence");
+    if (/\bprereg|locked|\.lock\b/i.test(src)) good.push("references a pre-registration lock");
+
+    out.ok = true;
+    out.facts = { filename: name, lines: lines.length, findings: findings,
+                  governance_signals_present: good,
+                  checks_run: CODE_CHECKS.length };
+    out.limits.push("pattern matching over source text — it does not parse or execute the code");
+    out.cannot.push("tell whether the code is correct, secure, or does what it claims");
+    out.cannot.push("find a problem it has no pattern for; a clean result means 'none of these " +
+                    CODE_CHECKS.length + " patterns matched', never 'this code is fine'");
+    out.cannot.push("distinguish a real finding from a false positive — every line is for a human to judge");
+    return out;
+  }
+
+  // -------------------------------------------------------------- planner --
+  // A project plan, structured so each step declares what would show it worked.
+  function planProject(goal, constraints) {
+    var out = base("plan");
+    var g = String(goal || "").trim();
+    if (g.split(/\s+/).filter(Boolean).length < 4) {
+      out.cannot.push("plan from fewer than four words — there is no goal here to decompose");
+      return out;
+    }
+    var risky = /\b(health|medic\w*|clinical|legal|financial|money|safety|child|dose|contract|tax|immigration)\b/i.test(g);
+    var steps = [
+      { phase: "State it as a claim",
+        do_: "Write the goal as something that could be false: \"" + g + "\" succeeds if …",
+        evidence: "A single sentence a stranger could check without asking you what you meant.",
+        gate: "If you cannot finish that sentence, the project is not yet defined." },
+      { phase: "Write the gate before you start",
+        do_: "Decide now what result would mean this did NOT work.",
+        evidence: "A number or an observable event, fixed in advance and written down.",
+        gate: "A project with no failure condition cannot be evaluated, only narrated." },
+      { phase: "Name your two independent checks",
+        do_: "Find two sources of evidence that do not come from the same place.",
+        evidence: "Two checks whose failure modes differ.",
+        gate: "If both come from the same source you have one check and twice the confidence." },
+      { phase: "Decide what you will not look at",
+        do_: "List what must be excluded to keep the judgement honest — a vendor's own claims, your own earlier estimate.",
+        evidence: "A written exclusion list.",
+        gate: "Applied before you gather evidence, not after." },
+      { phase: "Smallest reversible step",
+        do_: "Do the smallest version that could still fail informatively.",
+        evidence: "A result you could show someone.",
+        gate: "If the first step is irreversible, the plan is a bet, not a project." },
+      { phase: "Check against the gate you set",
+        do_: "Compare the result to the failure condition written in step 2.",
+        evidence: "The comparison, recorded with its date.",
+        gate: "Moving the gate now invalidates everything before it." },
+      { phase: "Record what happened",
+        do_: "Log the outcome including what did not work.",
+        evidence: "An append-only note with the date.",
+        gate: "A record only of successes is a record of nothing." }
+    ];
+    out.ok = true;
+    out.facts = { goal: g, constraints: String(constraints || "").trim(), steps: steps,
+                  risk_flagged: risky };
+    out.limits.push("a structure, not domain advice — it does not know your field");
+    out.cannot.push("tell you whether the goal is worth pursuing, achievable, or wise");
+    out.cannot.push("estimate cost or duration; nothing here knows your situation");
+    if (risky) out.cannot.push(
+      "substitute for a qualified professional. This goal touches an area where a " +
+      "well-structured plan and a safe plan are different things.");
+    return out;
+  }
+
+  // ----------------------------------------------------------- dispatcher --
+  function readFile(name, content, meta) {
+    var n = String(name || "").toLowerCase();
+    if (/\.csv$|\.tsv$/.test(n)) return readCsv(name, content);
+    if (/\.pdf$/.test(n)) return readPdfLike(name, String(content || "").slice(0, 8));
+    if (/\.(png|jpe?g|gif|webp|bmp|svg)$/.test(n)) return readImage(name, meta || {});
+    if (/\.(vtt|srt)$/.test(n)) return readTranscript(name, content);
+    if (/\.(js|mjs|ts|py|java|go|rb|rs|c|cpp|cs|php|sh)$/.test(n)) return auditCode(name, content);
+    return readTextDocument(name, content);
+  }
+
+  var API = { readTextDocument: readTextDocument, readPdfLike: readPdfLike,
+              readCsv: readCsv, parseCsv: parseCsv, readImage: readImage,
+              readTranscript: readTranscript, auditCode: auditCode,
+              planProject: planProject, readFile: readFile,
+              CODE_CHECKS: CODE_CHECKS };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.READERS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+"use strict";
+var DATA = {"rules":[{"glob":"projects/**","plain":"Read anything in your projects folder","allow":true,"limit":"\u2014"},{"glob":"projects/drafts/**","plain":"Change files in your drafts folder","allow":true,"limit":"5 changes, then it asks again"},{"glob":"contracts/**","plain":"Read your contracts","allow":true,"limit":"reading only"},{"glob":"payroll/**","plain":"Anything in payroll","allow":false,"limit":"\u2014"},{"glob":"*.env","plain":"Files holding passwords and keys","allow":false,"limit":"\u2014"},{"glob":".ssh/**","plain":"Your login keys","allow":false,"limit":"\u2014"}],"bins":[{"bin":"0.4-0.6","n":19,"mean_conf":0.4,"mean_truth":0.789,"gap":-0.389},{"bin":"0.6-0.8","n":3,"mean_conf":0.6,"mean_truth":0.867,"gap":-0.267}],"ece":0.3727,"cohort_n":22};
+var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
+/* Named for the everyday object, not the component. The id is the page; the
+   component name appears nowhere a person can see it. */
+var APPS=[
+ {id:"label",   nm:"The Label",            sub:"Is this claim worth believing?",
+  icon:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'},
+ {id:"valet",   nm:"The Valet Key",        sub:"What may this app touch?",
+  icon:'<circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3.5M15 12v2.5"/>'},
+ {id:"dashcam", nm:"The Dashcam",          sub:"Keep a record nobody can edit",
+  icon:'<rect x="3" y="7" width="13" height="10" rx="2"/><path d="M16 11l5-3v8l-5-3"/>'},
+ {id:"meter",   nm:"The Confidence Meter", sub:"Is it as sure as it sounds?",
+  icon:'<path d="M12 20a8 8 0 1 1 8-8"/><path d="M12 12l5-3"/>'},
+ {id:"opener",  nm:"The File Opener",      sub:"What's really in this file?",
+  icon:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'},
+ {id:"planner", nm:"The Planner",          sub:"Plan it so you can tell if it worked",
+  icon:'<path d="M9 4h9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7"/><path d="M4 7l4-4v4z"/><path d="M9 12h7M9 16h5"/>'}
+];
+$("#apps").innerHTML=APPS.map(function(a){
+  return '<button class="app" data-go="'+a.id+'"><span class="icon">'+
+   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">'+
+   a.icon+'</svg></span><span class="nm">'+a.nm+'</span><span class="sub">'+a.sub+'</span></button>';
+}).join("");
+
+/* ---- navigation: hash-routed so the browser Back button works ---- */
+var PAGES=["deskview"].concat(APPS.map(function(a){return a.id}));
+function go(id){
+  if(PAGES.indexOf(id)===-1) id="deskview";
+  $$(".win").forEach(function(w){w.classList.toggle("on",w.id===id)});
+  window.scrollTo(0,0);
+}
+function navigate(id){ if(location.hash.slice(1)!==id) location.hash=id; else go(id) }
+window.addEventListener("hashchange",function(){go(location.hash.slice(1)||"deskview")});
+$$(".app").forEach(function(b){b.onclick=function(){navigate(b.dataset.go)}});
+$("#home").onclick=function(){navigate("deskview")};
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape" && !$("#deskview").classList.contains("on")) navigate("deskview");
+});
+go(location.hash.slice(1)||"deskview");
+$("#theme").onclick=function(){
+  var d=document.documentElement,cur=d.getAttribute("data-theme");
+  var dark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  d.setAttribute("data-theme",dark?"light":"dark");
+};
+
+/* ================= 1. THE LABEL ================= */
+var EGS=["Green tea reduces stress.",
+ "According to a 2023 randomised trial of 240 participants in the UK, green tea reduced self-reported stress by 12%.",
+ "Epistemology is the study of knowledge.",
+ "Mix glycolic acid with water and apply to skin.",
+ "I saw the Grand Canyon flying to New York."];
+EGS.forEach(function(t){var b=document.createElement("button");b.className="chip";
+ b.textContent=t.length>40?t.slice(0,40)+"…":t;b.title=t;
+ b.onclick=function(){$("#claim").value=t;check()};$("#egs").appendChild(b)});
+
+var VERDICT={
+ SUPPORTED:["good","Enough here to check","Someone could go and verify this. That does not make it true — it makes it checkable."],
+ INSUFFICIENT_EVIDENCE:["warn","Almost nothing to check","It may well be right. But as written, there is very little anyone could go and confirm."],
+ OUT_OF_SCOPE:["","Not this kind of thing","This tool reads claims about what is measurably the case."],
+ AMBIGUOUS:["warn","This can be read two ways","The sentence has more than one meaning, so it will not guess which you meant."],
+ IMPLAUSIBLE:["warn","Something is off here","Read literally, this says something that cannot happen."]};
+var PLAIN={source:"Says where it came from",figures:"Gives real numbers",
+ method:"Says how it was measured",time:"Says when",scope:"Says who or where it applies to"};
+
+/* The handles. A tick saying "contains specific figures" leaves the reader to
+   find the figures. These are the exact words that made each row tick — the
+   ones you carry to a search engine. In the case that motivated this, they were
+   "2023 / 240 participants / 12% / in the UK", and five seconds of searching
+   showed no such trial exists. The label never said it was true; it said it was
+   checkable, and then handed over what to check. */
+var HNAME={source:"who says so",figures:"the numbers",method:"how it was measured",
+ time:"when",scope:"who or where"};
+function handlesBlock(r){
+  var hd=r.handles; if(!hd) return "";
+  var rows=["source","figures","method","time","scope"].filter(function(k){return hd[k]&&hd[k].length});
+  if(!rows.length) return "";
+  var h='<div class="handles"><b>Take these and go and check it</b>'+
+    '<p>These are the exact words that made the label tick. Paste them into a search '+
+    'engine — if nothing comes back, you have your answer.</p><div class="hgrid">';
+  h+=rows.map(function(k){
+    return '<div class="hrow"><span class="hk">'+HNAME[k]+'</span><span class="hv">'+
+      hd[k].map(function(s){return '<em>'+esc(s)+'</em>'}).join(" ")+'</span></div>';
+  }).join("");
+  h+='</div>';
+  if(r.search_line){
+    h+='<div class="hcopy"><input id="hline" type="text" readonly value="'+esc(r.search_line)+'">'+
+       '<button class="hbtn" id="hcopy">Copy</button></div>';
+  }
+  /* Showing the span is what makes this visible: "according to a trial" ticks
+     the source row without naming anybody to ask. */
+  if(hd.source && hd.source.length && !hd.source_named){
+    h+='<div class="hnote">The source row ticked on the words <em>'+esc(hd.source[0])+
+       '</em> — but nobody is actually named. There is no one here to go and ask.</div>';
+  }
+  return h+'</div>';
+}
+
+function check(){
+  var r=EI.assay($("#claim").value,"slate"), v=VERDICT[r.verdict]||["","",""];
+  var pct = r.evidence.length ? Math.round(r.evidence_hits/r.evidence_total*100) : 0;
+  var h='<div class="label"><div class="cap">What this claim is made of</div><div class="rows">';
+  if(r.evidence.length){
+    h+=r.evidence.map(function(c){
+      return '<div class="lrow"><span class="'+(c.hit?"y":"n")+'">'+(c.hit?"✓":"—")+'</span>'+
+        '<span>'+PLAIN[c.signal]+'</span><span class="v">'+esc(c.note)+'</span></div>';
+    }).join("");
+  } else {
+    h+='<div class="lrow"><span class="n">—</span><span>Nothing to weigh here</span>'+
+       '<span class="v">this is not a factual claim</span></div>';
+  }
+  h+='</div><div class="big-verdict">'+esc(v[1])+
+     (r.evidence.length? ' · <span style="font-weight:400;color:var(--stone)">'+
+      r.evidence_hits+' of '+r.evidence_total+' checkable parts present</span>':'')+'</div></div>';
+  if(r.evidence.length){
+    h+='<div class="gauge"><i style="width:'+pct+'%"></i></div>'+
+       '<div class="gtag"><span>nothing to check</span><span>fully checkable</span></div>';
+  }
+  h+=handlesBlock(r);
+  h+='<div class="note '+(v[0]||"")+'"><b>'+esc(v[1])+'</b>'+esc(r.explanation||v[2])+'</div>';
+  if(r.ambiguity&&r.ambiguity.ambiguous){
+    h+='<div class="note warn"><b>Two ways to read it</b><ul>'+r.ambiguity.readings.map(function(rd){
+      return '<li>'+esc(rd.paraphrase)+' — <em>'+(rd.plausible?"possible":"not possible")+'</em></li>'}).join("")+'</ul></div>';
+  }
+  if(r.domain_flags.length){
+    h+='<div class="note stop"><b>Careful — this is about '+esc(r.domain_flags.join(", ").replace(/[a-z]+\//g,""))+'</b>'+
+       'Writing can be perfectly well put together and still be dangerous. Nothing above checks '+
+       'whether this is safe to act on. For health, chemicals, money or the law, ask someone qualified.</div>';
+  }
+  if(r.next_steps.length){
+    h+='<div class="note good"><b>What would make it stronger</b><ul>'+
+       r.next_steps.map(function(s){return "<li>"+esc(s)+"</li>"}).join("")+'</ul></div>';
+  }
+  h+='<div class="rcpt">'+esc(r.limits)+'</div>';
+  $("#out").innerHTML=h;
+  var cb=$("#hcopy");
+  if(cb) cb.onclick=function(){
+    var f=$("#hline"); f.select(); f.setSelectionRange(0,999);
+    var done=function(){cb.textContent="Copied";setTimeout(function(){cb.textContent="Copy"},1400)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(f.value).then(done,function(){cb.textContent="Select and copy"});
+    } else { cb.textContent="Select and copy"; }
+  };
+}
+$("#check").onclick=check;
+$("#claim").addEventListener("keydown",function(e){if((e.metaKey||e.ctrlKey)&&e.key==="Enter")check()});
+
+/* ================= 2. THE VALET KEY ================= */
+var RULES=DATA.rules;
+var YES='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12l5 5L19 7"/></svg>';
+var NO='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+$("#keys").innerHTML=RULES.map(function(r){
+  return '<div class="krow '+(r.allow?"yes":"no")+'"><span class="ki">'+(r.allow?YES:NO)+'</span>'+
+    '<span><b>'+esc(r.plain)+'</b><span>'+esc(r.glob)+(r.allow&&r.limit!=="—"?" · "+esc(r.limit):"")+'</span></span>'+
+    '<span class="'+(r.allow?"tagy":"tagn")+'">'+(r.allow?"allowed":"blocked")+'</span></div>';
+}).join("")+
+ '<div class="krow no kdefault"><span class="ki">'+NO+'</span><span><b>Everything else</b>'+
+ '<span>anything you did not list</span></span><span class="tagn">blocked automatically</span></div>';
+
+function globMatch(g,p){
+  var rx="^"+g.split("**").map(function(part){
+    return part.split("*").map(function(x){return x.replace(/[.+?^${}()|[\]\\]/g,"\\$&")}).join("[^/]*");
+  }).join(".*")+"$";
+  return new RegExp(rx).test(p);
+}
+["projects/notes.md","projects/drafts/new.md","contracts/lease.pdf","payroll/salaries-2026.xlsx",".ssh/id_rsa"]
+ .forEach(function(p){var b=document.createElement("button");b.className="chip";b.textContent=p;
+  b.onclick=function(){$("#ask").value=p;tryit()};$("#asks").appendChild(b)});
+function tryit(){
+  var path=$("#ask").value.trim();
+  var m=RULES.filter(function(r){return globMatch(r.glob,path)});
+  var denies=m.filter(function(r){return !r.allow});
+  var hit=denies.length?denies[0]:m.sort(function(a,b){return b.glob.length-a.glob.length})[0]||null;
+  var ok=hit&&hit.allow;
+  $("#pcout").innerHTML='<div class="note '+(ok?"good":"stop")+'" style="margin-top:1rem"><b>'+
+    (ok?"Allowed":"Blocked")+'</b>'+
+    (hit? 'It matches your rule for <b style="display:inline">'+esc(hit.plain).toLowerCase()+'</b>'+
+          (ok&&hit.limit!=="—"?', limited to '+esc(hit.limit):'')+'.'
+        : 'Nothing on your key covers <span class="mono">'+esc(path)+'</span>, so it is blocked '+
+          'automatically. You never had to think of this one — you only had to say what <em>was</em> allowed.')+
+    '</div>';
+}
+$("#tryit").onclick=tryit; tryit();
+
+/* ================= 3. THE DASHCAM ================= */
+var CHAIN=[];
+async function sha(s){
+  if(crypto&&crypto.subtle){
+    var b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));
+    return [].map.call(new Uint8Array(b),function(x){return x.toString(16).padStart(2,"0")}).join("");
+  }
+  var h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0}
+  return ("00000000"+h.toString(16)).slice(-8).repeat(8);
+}
+async function addEntry(text){
+  var prev=CHAIN.length?CHAIN[CHAIN.length-1].seal:"0".repeat(64);
+  var e={text:text,when:new Date().toLocaleString(),prev:prev};
+  e.seal=await sha(JSON.stringify(e));CHAIN.push(e);await render();
+}
+async function render(){
+  var broken=-1,prev="0".repeat(64);
+  for(var i=0;i<CHAIN.length;i++){
+    var e=CHAIN[i];
+    var again=await sha(JSON.stringify({text:e.text,when:e.when,prev:e.prev}));
+    if(e.prev!==prev||again!==e.seal){broken=i;break}
+    prev=e.seal;
+  }
+  $("#tape").innerHTML=CHAIN.map(function(e,i){
+    var bad=broken>=0&&i>=broken;
+    return '<div class="clip'+(bad?" broken":"")+'"><span class="no">'+(i+1)+'</span>'+
+      '<span><span class="tx">'+esc(e.text)+'</span><span class="meta">'+esc(e.when)+
+      ' · seal '+e.seal.slice(0,12)+(bad?' · SEAL BROKEN':'')+'</span></span></div>';
+  }).join("");
+  var sb=$("#sealbar");
+  sb.className="sealbar"+(broken<0?"":" bad");
+  $("#sealtext").textContent = broken<0
+    ? "All "+CHAIN.length+" entries sealed and intact"
+    : "Entry "+(broken+1)+" was altered — every seal after it is broken";
+}
+$("#add").onclick=function(){var v=$("#entry").value.trim();if(!v)return;$("#entry").value="";addEntry(v)};
+$("#entry").addEventListener("keydown",function(e){if(e.key==="Enter")$("#add").click()});
+$("#tamper").onclick=function(){if(!CHAIN.length)return;CHAIN[0].text+=" (quietly changed)";render()};
+(async function(){
+  await addEntry("Quote agreed with the builder — 4,200");
+  await addEntry("Deposit paid — 1,000");
+  await addEntry("Start date confirmed for the 12th");
+})();
+
+/* ================= 4. THE CONFIDENCE METER ================= */
+$("#meters").innerHTML=DATA.bins.map(function(b){
+  return '<div class="mrow"><span class="lab">when it said<br><b>'+Math.round(b.mean_conf*100)+'% sure</b></span>'+
+    '<span class="dual"><span class="bar"><i class="b-said" style="width:'+(b.mean_conf*100)+'%"></i></span>'+
+    '<span class="bar"><i class="b-true" style="width:'+(b.mean_truth*100)+'%"></i></span></span></div>';
+}).join("");
+
+/* ================= 5. THE FILE OPENER ================= */
+function renderRead(r){
+  var T={document:"Read as writing",dataset:"Read as a spreadsheet",code:"Checked the code",
+         transcript:"Read as a transcript",image:"Looked at the picture file",pdf:"Could not read the PDF"};
+  var h='<div class="note '+(r.ok?"good":"warn")+'" style="margin-top:1.1rem"><b>'+
+    (T[r.kind]||"Read")+'</b>'+(r.ok?"Here is what could actually be read out of it."
+      :"Nothing was read. That is the honest answer, not a failure to try.")+'</div>';
+  if(r.kind==="dataset"&&r.ok){
+    h+='<p style="margin:1rem 0 .4rem"><b>'+r.facts.rows+'</b> rows, <b>'+r.facts.columns+'</b> columns'+
+      (r.facts.ragged_rows_dropped?' · <span style="color:var(--warn)">'+r.facts.ragged_rows_dropped+' broken row(s) left out</span>':'')+'</p>'+
+      '<div class="scroll"><table><thead><tr><th>Column</th><th>Holds</th><th>Blank</th><th>Range</th></tr></thead><tbody>'+
+      r.facts.column_summary.map(function(c){
+        return '<tr><td>'+esc(c.name)+'</td><td>'+(c.numeric?"numbers":"words")+'</td><td>'+c.missing+'</td>'+
+        '<td>'+(c.numeric? c.min+" to "+c.max : c.distinct+" different values")+'</td></tr>'}).join("")+
+      '</tbody></table></div>';
+    if(r.facts.constant_columns.length)
+      h+='<div class="note warn"><b>These columns never change: '+esc(r.facts.constant_columns.join(", "))+
+         '</b>A column with one value tells you nothing, so anything that seems to depend on it depends on nothing.</div>';
+  }
+  if(r.kind==="code"&&r.ok){
+    h+='<p style="margin:1rem 0 .4rem">'+r.facts.lines+' lines checked against '+r.facts.checks_run+
+       ' known problems. <b>'+r.facts.findings.length+'</b> place(s) worth a look.</p>';
+    h+=r.facts.findings.length? r.facts.findings.map(function(x){
+      return '<div class="note warn"><b>Line '+x.line+' — '+esc(x.title)+'</b>'+
+      '<div class="mono" style="margin:.3rem 0;color:var(--stone)">'+esc(x.snippet)+'</div>'+
+      esc(x.why)+'<br><b style="display:inline;color:var(--ok)">Fix: </b>'+esc(x.fix)+'</div>'}).join("")
+      : '<div class="note good"><b>Nothing matched</b>That means none of these '+r.facts.checks_run+
+        ' known problems showed up. It does not mean the code is fine.</div>';
+  }
+  if((r.kind==="document"||r.kind==="transcript")&&r.ok){
+    h+='<p style="margin:1rem 0">'+(r.facts.words||0)+' words'+
+      (r.facts.timestamps_removed?', '+r.facts.timestamps_removed+' timestamps taken out':'')+'.</p>'+
+      '<button class="go" id="auditread" style="margin-top:0">Now check the claims in it</button>';
+  }
+  if(r.kind==="image"&&r.ok){
+    h+='<p style="margin:1rem 0">'+r.facts.width+' × '+r.facts.height+' pixels. That is all it can tell you.</p>';
+  }
+  h+='<div class="note stop"><b>What it could not work out</b><ul>'+
+    r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+  $("#fout").innerHTML=h;
+  var ab=$("#auditread");
+  if(ab) ab.onclick=function(){$("#claim").value=r.text.slice(0,2000);navigate("label");check()};
+}
+$("#file").onchange=function(e){
+  var f=e.target.files&&e.target.files[0];if(!f)return;
+  if(/^image\//.test(f.type)){
+    var img=new Image(),url=URL.createObjectURL(f);
+    img.onload=function(){renderRead(READERS.readImage(f.name,{width:img.naturalWidth,
+      height:img.naturalHeight,bytes:f.size,type:f.type}));URL.revokeObjectURL(url)};
+    img.onerror=function(){renderRead(READERS.readImage(f.name,{width:0,height:0,bytes:f.size,type:f.type}))};
+    img.src=url;return;
+  }
+  var fr=new FileReader();
+  fr.onload=function(){renderRead(READERS.readFile(f.name,String(fr.result||""),{}))};
+  fr.readAsText(f);
+};
+function pasted(){return $("#pastebox").value}
+$("#asdoc").onclick=function(){renderRead(READERS.readTextDocument("pasted.txt",pasted()))};
+$("#ascsv").onclick=function(){renderRead(READERS.readCsv("pasted.csv",pasted()))};
+$("#ascode").onclick=function(){renderRead(READERS.auditCode("pasted.py",pasted()))};
+$("#astrans").onclick=function(){renderRead(READERS.readTranscript("pasted.vtt",pasted()))};
+[["Try a spreadsheet","name,region,sales\nAlpha,UK,1200\nBeta,EU,980\nGamma,UK,\n","ascsv"],
+ ["Try some code","def check(p):\n    s = p[\"forks\"] / p[\"stars\"]\n    if \"best\" in p[\"description\"].lower():\n        s += 0.5\n    return round(s, 3)\n","ascode"],
+ ["Try a video transcript","WEBVTT\n\n00:00:01.000 --> 00:00:05.000\nA 2023 trial of 240 people in the UK found a 12% drop.\n","astrans"]]
+ .forEach(function(x){var b=document.createElement("button");b.className="chip";b.textContent=x[0];
+  b.onclick=function(){$("#pastebox").value=x[1];$("#"+x[2]).click()};$("#fchips").appendChild(b)});
+
+/* ================= 6. THE PLANNER ================= */
+["Move our customer records to a new provider by March",
+ "Launch a small community newsletter next month",
+ "Change my father's medication schedule at home"].forEach(function(t){
+  var b=document.createElement("button");b.className="chip";
+  b.textContent=t.length>36?t.slice(0,36)+"…":t;b.title=t;
+  b.onclick=function(){$("#goal").value=t;doplan()};$("#pchips").appendChild(b)});
+function doplan(){
+  var r=READERS.planProject($("#goal").value,$("#cons").value);
+  if(!r.ok){$("#pout").innerHTML='<div class="note warn" style="margin-top:1rem"><b>Not enough to plan from</b>'+
+    esc(r.cannot[0])+'</div>';return;}
+  var h='<div class="note good" style="margin-top:1.1rem"><b>A plan you can be held to</b>'+
+    'Seven steps. Each one says what evidence it needs, and what would mean it did not work.</div>'+
+    '<div class="scroll"><table><thead><tr><th>Step</th><th>What you do</th><th>What proves it</th><th>It failed if</th></tr></thead><tbody>'+
+    r.facts.steps.map(function(s,i){
+      return '<tr><td><b>'+(i+1)+'. '+esc(s.phase)+'</b></td><td>'+esc(s.do_)+'</td><td>'+esc(s.evidence)+
+      '</td><td style="color:var(--warn)">'+esc(s.gate)+'</td></tr>'}).join("")+'</tbody></table></div>';
+  if(r.facts.risk_flagged)
+    h+='<div class="note stop"><b>This one needs a person, not a plan</b>A tidy plan and a safe plan '+
+       'are different things. Take this to someone qualified before you act on it.</div>';
+  h+='<div class="note warn"><b>What the planner cannot do</b><ul>'+
+    r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+  $("#pout").innerHTML=h;
+}
+$("#doplan").onclick=doplan;
+</script>
+</body>
+</html>

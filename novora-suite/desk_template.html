@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Novora — nine everyday checks</title>
+<style>
+:root{
+  --wall:#E7E9E4; --wall-2:#DDE1DA; --desk:#FBFBF8; --ink:#15181A; --stone:#66716B;
+  --line:#D5DBD3; --edge:#C3CBC1;
+  --key:#2E4E5E; --key-soft:#E2ECF0; --on-key:#FBFBF8;
+  --ok:#1E6B48; --ok-soft:#E2F0E8; --warn:#8A5A0B; --warn-soft:#FBF1DF;
+  --stop:#8C2F2F; --stop-soft:#FBEAEA;
+  --shadow:0 1px 1px rgba(21,24,26,.05),0 6px 18px rgba(21,24,26,.08);
+  --lift:0 2px 4px rgba(21,24,26,.07),0 14px 34px rgba(21,24,26,.12);
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --wall:#101413; --wall-2:#0B0E0D; --desk:#181D1B; --ink:#E8EDEA; --stone:#95A099;
+  --line:#252C29; --edge:#323A36;
+  --key:#7FB2C6; --key-soft:#152329; --on-key:#0B0E0D;
+  --ok:#5FBF92; --ok-soft:#12241C; --warn:#D9A441; --warn-soft:#241D0F;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 4px rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.5);
+}}
+:root[data-theme="dark"]{
+  --wall:#101413; --wall-2:#0B0E0D; --desk:#181D1B; --ink:#E8EDEA; --stone:#95A099;
+  --line:#252C29; --edge:#323A36;
+  --key:#7FB2C6; --key-soft:#152329; --on-key:#0B0E0D;
+  --ok:#5FBF92; --ok-soft:#12241C; --warn:#D9A441; --warn-soft:#241D0F;
+  --stop:#E08585; --stop-soft:#241413;
+  --shadow:0 1px 1px rgba(0,0,0,.5),0 6px 18px rgba(0,0,0,.4);
+  --lift:0 2px 4px rgba(0,0,0,.5),0 14px 34px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:17px/1.6 var(--sans);
+  background:var(--wall);background-image:radial-gradient(circle at 22% 12%,var(--wall-2),transparent 55%);
+  -webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer}
+h1,h2,h3{margin:0;font-weight:650;letter-spacing:-.018em;line-height:1.2;text-wrap:balance}
+.mono{font-family:var(--mono);font-size:.85em}
+
+/* ---------------- top shelf ---------------- */
+.shelf{position:sticky;top:0;z-index:40;border-bottom:1px solid var(--line);
+  background:color-mix(in srgb,var(--wall) 90%,transparent);backdrop-filter:blur(10px)}
+.shelfin{max-width:60rem;margin:0 auto;padding:.6rem 1.1rem;display:flex;align-items:center;gap:.6rem}
+.home{display:flex;align-items:center;gap:.5rem;background:none;border:none;color:inherit;
+  font-weight:650;font-size:1.02rem;padding:.2rem .3rem;border-radius:8px}
+.home:hover{background:var(--key-soft)}
+.home svg{width:22px;height:22px;color:var(--key)}
+.shelfin .sp{flex:1}
+.ghost{background:none;border:1px solid var(--line);color:var(--stone);border-radius:8px;
+  padding:.3rem .7rem;font-size:.82rem}
+.ghost:hover{color:var(--ink);border-color:var(--stone)}
+
+/* ---------------- the desk ---------------- */
+.room{max-width:60rem;margin:0 auto;padding:0 1.1rem 5rem}
+.welcome{padding:2.6rem 0 1.6rem;text-align:center}
+.welcome h1{font-size:clamp(1.7rem,4.4vw,2.4rem)}
+.welcome p{color:var(--stone);max-width:34rem;margin:.8rem auto 0;font-size:1.02rem}
+
+/* app icons, laid out like a desktop */
+.desktop{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));
+  gap:1rem;padding:1rem 0 2rem}
+.app{display:flex;flex-direction:column;align-items:center;gap:.6rem;background:none;
+  border:1px solid transparent;border-radius:14px;padding:1rem .6rem;text-align:center;
+  transition:transform .13s ease,background .13s ease,border-color .13s ease}
+.app:hover,.app:focus-visible{background:var(--desk);border-color:var(--line);transform:translateY(-2px)}
+.app .icon{width:4.2rem;height:4.2rem;border-radius:18px;background:var(--desk);
+  border:1px solid var(--edge);box-shadow:var(--shadow);display:grid;place-items:center;color:var(--key)}
+.app .icon svg{width:2.1rem;height:2.1rem}
+.app .nm{font-weight:650;font-size:.98rem;line-height:1.25}
+.app .sub{color:var(--stone);font-size:.79rem;line-height:1.4}
+
+/* ---------------- a window ---------------- */
+.win{display:none}
+.win.on{display:block;animation:rise .16s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.frame{background:var(--desk);border:1px solid var(--edge);border-radius:16px;
+  box-shadow:var(--lift);overflow:hidden;margin:1.4rem 0}
+.title{display:flex;align-items:center;gap:.7rem;padding:.85rem 1.1rem;
+  border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--desk) 60%,var(--wall))}
+.title .ic{width:2.1rem;height:2.1rem;border-radius:9px;background:var(--key-soft);
+  display:grid;place-items:center;color:var(--key);flex:none}
+.title .ic svg{width:1.15rem;height:1.15rem}
+.title b{font-size:1.02rem}
+.title span{color:var(--stone);font-size:.86rem;display:block;line-height:1.35}
+.body{padding:1.2rem}
+label.f{display:block;font-size:.86rem;color:var(--stone);margin-bottom:.45rem}
+textarea,input[type=text]{width:100%;background:var(--wall);color:var(--ink);
+  border:1px solid var(--edge);border-radius:11px;padding:.85rem .95rem;font:inherit;resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--key);outline-offset:1px;border-color:transparent}
+.go{background:var(--key);color:var(--on-key);border:1px solid var(--key);border-radius:11px;
+  padding:.75rem 1.5rem;font-weight:650;margin-top:.85rem}
+.go:hover{filter:brightness(1.1)}
+.row{display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem}
+.chip{background:var(--wall);border:1px solid var(--line);border-radius:99px;
+  padding:.3rem .8rem;font-size:.82rem;color:var(--stone)}
+.chip:hover{border-color:var(--key);color:var(--key)}
+
+/* ---------------- the label (Cairn result) ---------------- */
+.label{border:1.5px solid var(--ink);border-radius:12px;overflow:hidden;margin-top:1.1rem;
+  background:var(--desk)}
+.label .cap{padding:.7rem 1rem;border-bottom:1.5px solid var(--ink);
+  font-weight:700;letter-spacing:.02em;font-size:1.05rem}
+.label .rows{padding:.3rem 1rem .8rem}
+.lrow{display:grid;grid-template-columns:1.5rem 1fr auto;gap:.7rem;align-items:baseline;
+  padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.96rem}
+.lrow:last-child{border-bottom:none}
+.lrow .y{color:var(--ok);font-weight:800}
+.lrow .n{color:var(--stone);font-weight:800}
+.lrow .v{font-size:.82rem;color:var(--stone);text-align:right}
+.big-verdict{padding:1rem;border-top:1.5px solid var(--ink);background:var(--wall);
+  font-weight:650}
+.gauge{height:.75rem;border-radius:99px;background:var(--line);overflow:hidden;margin:.7rem 0 .35rem}
+.gauge i{display:block;height:100%;border-radius:99px;background:var(--key)}
+.gtag{display:flex;justify-content:space-between;font-size:.8rem;color:var(--stone)}
+
+.note{border-radius:12px;padding:.9rem 1.05rem;margin-top:1rem;font-size:.94rem}
+.note.good{background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 30%,transparent)}
+.note.warn{background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--warn) 32%,transparent)}
+.note.stop{background:var(--stop-soft);border:1px solid color-mix(in srgb,var(--stop) 32%,transparent)}
+.note b{display:block;margin-bottom:.3rem}
+.note.good b{color:var(--ok)} .note.warn b{color:var(--warn)} .note.stop b{color:var(--stop)}
+.note ul{margin:.35rem 0 0;padding-left:1.15rem}
+.note li{margin:.2rem 0}
+
+/* ---------------- valet key (Page Code) ---------------- */
+.keyring{display:grid;gap:.6rem;margin-top:.4rem}
+.krow{display:grid;grid-template-columns:2.4rem 1fr auto;gap:.8rem;align-items:center;
+  background:var(--wall);border:1px solid var(--line);border-radius:12px;padding:.75rem .9rem}
+.krow .ki{width:2.4rem;height:2.4rem;border-radius:9px;display:grid;place-items:center}
+.krow.yes .ki{background:var(--ok-soft);color:var(--ok)}
+.krow.no .ki{background:var(--stop-soft);color:var(--stop)}
+.krow b{display:block;font-size:.96rem}
+.krow span{color:var(--stone);font-size:.83rem}
+.tagy{font-size:.78rem;font-weight:700;color:var(--ok)}
+.tagn{font-size:.78rem;font-weight:700;color:var(--stop)}
+.kdefault{border-style:dashed}
+
+/* ---------------- dashcam (HELM) ---------------- */
+.tape{display:grid;gap:.5rem;margin-top:.4rem}
+.clip{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;background:var(--wall);
+  border:1px solid var(--line);border-left:3px solid var(--ok);border-radius:10px;padding:.7rem .9rem}
+.clip.broken{border-color:var(--stop);border-left-color:var(--stop);background:var(--stop-soft)}
+.clip .no{font-family:var(--mono);color:var(--stone);font-size:.85rem}
+.clip .tx{font-size:.95rem}
+.clip .meta{font-family:var(--mono);font-size:.74rem;color:var(--stone);margin-top:.25rem}
+.sealbar{display:flex;align-items:center;gap:.5rem;font-size:.9rem;font-weight:650;margin-top:.9rem}
+.sealbar .dot{width:.6rem;height:.6rem;border-radius:99px;background:var(--ok)}
+.sealbar.bad .dot{background:var(--stop)}
+.sealbar.bad{color:var(--stop)}
+
+/* ---------------- confidence meter (Trig) ---------------- */
+.meterbox{display:grid;gap:1.1rem;margin-top:.4rem}
+.mrow{display:grid;grid-template-columns:7.5rem 1fr;gap:.9rem;align-items:center}
+.mrow .lab{font-size:.88rem;color:var(--stone)}
+.dual{display:grid;gap:.28rem}
+.bar{height:.7rem;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.b-said{background:var(--stone)} .b-true{background:var(--key)}
+.mkey{display:flex;gap:1.1rem;font-size:.8rem;color:var(--stone);margin-top:.2rem}
+.mkey s{width:.7rem;height:.7rem;border-radius:3px;display:inline-block;text-decoration:none}
+
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:24rem}
+th{text-align:left;font-size:.76rem;color:var(--stone);font-weight:650;padding:.45rem .6rem;
+  border-bottom:1px solid var(--line)}
+td{padding:.55rem .6rem;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.rcpt{font-family:var(--mono);font-size:.74rem;color:var(--stone);margin-top:1rem;
+  border-top:1px dashed var(--line);padding-top:.7rem;word-break:break-all}
+footer{max-width:60rem;margin:2rem auto 0;padding:1.3rem 1.1rem 0;border-top:1px solid var(--line);
+  color:var(--stone);font-size:.86rem}
+:focus-visible{outline:2px solid var(--key);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="shelf"><div class="shelfin">
+  <button class="home" id="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+      <path d="M4 21h16M6.5 21c0-3 2.4-4.2 5.5-4.2s5.5 1.2 5.5 4.2M8 16.6c-.6-2.4 1.4-3.6 4-3.6s4.6 1.2 4 3.6M9.4 12.8c-.5-2 1-3 2.6-3s3.1 1 2.6 3M10.6 9.4c-.3-1.5.5-2.4 1.4-2.4s1.7.9 1.4 2.4"/></svg>
+    Novora</button>
+  <span class="sp"></span>
+  <button class="ghost" id="theme" title="Light / dark">◐</button>
+</div></div>
+
+<main class="room">
+
+<section class="win on" id="deskview">
+  <div class="welcome">
+    <h1>What are you worried about?</h1>
+    <p>Pick the one that sounds like your situation. Paste in what you were sent, and see what
+       it is actually made of. Nothing leaves your device.</p>
+  </div>
+  <div class="desktop" id="apps"></div>
+  <div class="note stop">
+    <b>Read this before you trust a number here</b>
+    These are <em>screens</em>, not judges. They look for the words and shapes that usually come
+    with a problem — they do not understand what you pasted, and they cannot tell whether it is
+    true, legal or safe. A good score means "nothing obvious was caught", never "this is fine".
+    When it matters, use them to find your questions and take those to someone qualified.
+  </div>
+</section>
+
+<section class="win" id="tool">
+  <div class="frame">
+    <div class="title">
+      <span class="ic" id="t-ic"></span>
+      <span><b id="t-title">—</b><span id="t-lede">—</span></span>
+    </div>
+    <div class="body">
+      <label class="f" for="drop">Open a file — writing, a spreadsheet, a transcript or code</label>
+      <input type="file" id="drop" style="width:100%;margin-bottom:1rem">
+      <div id="fileinfo"></div>
+      <label class="f" for="inp" id="t-label">Paste it here</label>
+      <textarea id="inp" rows="6" placeholder="Paste here"></textarea>
+      <div class="chips" id="egs"></div>
+      <button class="go" id="run">Check it</button>
+      <div id="out"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Everything runs on your own device. No account, no internet, nothing uploaded. The engine here
+  is the same one the project's test suite exercises — a parity test compares this copy against
+  the tested version across all nine and fails on any difference.
+</footer>
+</main>
+
+<script>{{ENGINE}}</script>
+<script>{{READERS}}</script>
+<script>
+"use strict";
+var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+
+/* Named for the worry, not the product. The three-letter code never appears. */
+var TOOLS=[
+ {id:"pages", nm:"Is this for real?", sub:"A claim, an article, an AI answer",
+  icon:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  lede:"Looks for the marks of real evidence — samples, numbers, named sources — and for the phrases people use when those are missing.",
+  label:"Paste the claim or article",
+  egs:["A 2023 randomised trial (N = 240, p < 0.01, 95% CI) pre-registered at NCT01234567 measured a 12% reduction.",
+       "All experts agree this is settled science and unquestionable — obviously no doubt remains."]},
+ {id:"pulse", nm:"Is this AI helping me think?", sub:"Or doing my thinking for me",
+  icon:'<path d="M12 3a6 6 0 0 1 6 6c0 3-2 4-2 6H8c0-2-2-3-2-6a6 6 0 0 1 6-6z"/><path d="M9 19h6M10 22h4"/>',
+  lede:"Reads a reply for whether it widens what you could do, or narrows it to just following instructions.",
+  label:"Paste the AI's reply",
+  egs:["Just follow these steps, you don't need to understand why. Leave it to me.",
+       "Here are three approaches with the trade-offs; you can pick whichever fits, and here's how to check my reasoning."]},
+ {id:"lens", nm:"What am I giving up?", sub:"Before you sign anything",
+  icon:'<path d="M4 6h16v12H4z"/><path d="M7 10h7M7 14h5"/>',
+  lede:"Looks for the clauses that quietly move rights away from the person signing.",
+  label:"Paste the clause or agreement",
+  egs:["The tenant waives your right to dispute, agrees to binding arbitration, and the deposit is non-refundable at our sole discretion.",
+       "Either party may terminate with 30 days notice; disputes go to mediation first and costs are shared."]},
+ {id:"voice", nm:"Was that decision fair?", sub:"A rejection, refusal or dismissal",
+  icon:'<path d="M12 3v18M5 8l7-5 7 5"/><path d="M5 8v8a7 7 0 0 0 14 0V8"/>',
+  lede:"A decision you cannot see the reasons for is a decision you cannot challenge.",
+  label:"Paste what you were told",
+  egs:["Your application was declined. We are unable to provide further detail and this decision is final.",
+       "Your application was declined because income evidence covered 2 of the required 6 months; you may appeal within 21 days."]},
+ {id:"mark", nm:"Can I trust this organisation?", sub:"What it says about itself",
+  icon:'<path d="M12 3l8 4v6c0 4.5-3.4 7.3-8 8-4.6-.7-8-3.5-8-8V7z"/>',
+  lede:"Checks whether it documents and discloses, or simply asserts.",
+  label:"Paste their statement or policy",
+  egs:["We publish our error rates annually, name an independent ombudsman, and list every correction we have issued.",
+       "We are committed to the highest standards of excellence and integrity in everything we do."]},
+ {id:"stand", nm:"Do I have a case?", sub:"Something happened to you",
+  icon:'<path d="M12 3v18M6 8h12"/><path d="M3 12l3-4 3 4a3 3 0 0 1-6 0zM15 12l3-4 3 4a3 3 0 0 1-6 0z"/>',
+  lede:"Separates the parts of your account that are evidenced from the parts that still need evidence.",
+  label:"Describe what happened",
+  egs:["I was dismissed two days after reporting a safety issue. I have the email I sent, the reply, and a colleague who witnessed the meeting.",
+       "They treated me unfairly and everyone knows the manager has always had a problem with me."]},
+ {id:"weigh", nm:"Am I ready to decide?", sub:"Before you commit to something",
+  icon:'<path d="M12 4v16M5 8h14"/><circle cx="12" cy="4" r="1.5"/><path d="M5 8l-2 6a3 3 0 0 0 6 0zM19 8l-2 6a3 3 0 0 0 6 0z"/>',
+  lede:"Checks for the things people wish they had checked: what is assumed, what is reversible, what else was considered.",
+  label:"Describe the decision",
+  egs:["I'm taking the job offer tomorrow. I haven't seen the contract, don't know the notice period, and haven't asked why the last person left.",
+       "Comparing two clinics: I have both success rates, the complication data, costs, and I can withdraw up to the day before."]},
+ {id:"bridge", nm:"Is this message pressuring me?", sub:"From a boss, a partner, a company",
+  icon:'<path d="M4 12h16M9 7l-5 5 5 5M15 7l5 5-5 5"/>',
+  lede:"Counts what the message opens up against what it closes down.",
+  label:"Paste the message",
+  egs:["You must do this immediately, don't question it, don't consult anyone, and don't tell the others.",
+       "Here's the situation and two options; take the time you need and tell me which works, or suggest a third."]},
+ {id:"rise", nm:"Am I learning or just being told?", sub:"An explanation you were given",
+  icon:'<path d="M4 19V5M4 19h16"/><path d="M8 15l3.5-5 3 3L20 7"/>',
+  lede:"Looks for whether you were taught the reasoning or handed a conclusion.",
+  label:"Paste the explanation",
+  egs:["The answer is 42. Don't worry about the method, it's too complex to explain and you don't need it.",
+       "Here's the reasoning step by step, here's where it could break, and here's how you'd check it yourself next time."]}
+];
+var BY={};TOOLS.forEach(function(t){BY[t.id]=t});
+
+$("#apps").innerHTML=TOOLS.map(function(t){
+  return '<button class="app" data-go="'+t.id+'"><span class="icon">'+
+  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">'+
+  t.icon+'</svg></span><span class="nm">'+t.nm+'</span><span class="sub">'+t.sub+'</span></button>';
+}).join("");
+
+function go(id){
+  var t=BY[id];
+  $$(".win").forEach(function(w){w.classList.remove("on")});
+  if(!t){$("#deskview").classList.add("on");window.scrollTo(0,0);return}
+  $("#tool").classList.add("on");
+  $("#t-ic").innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">'+t.icon+'</svg>';
+  $("#t-title").textContent=t.nm; $("#t-lede").textContent=t.lede;
+  $("#t-label").textContent=t.label;
+  $("#inp").value="";$("#out").innerHTML="";$("#fileinfo").innerHTML="";$("#egs").innerHTML="";
+  t.egs.forEach(function(x){var b=document.createElement("button");b.className="chip";
+    b.textContent=x.length>44?x.slice(0,44)+"…":x;b.title=x;
+    b.onclick=function(){$("#inp").value=x;run()};$("#egs").appendChild(b)});
+  window.scrollTo(0,0);
+}
+function navigate(id){if(location.hash.slice(1)!==id)location.hash=id;else go(id)}
+window.addEventListener("hashchange",function(){go(location.hash.slice(1))});
+$$(".app").forEach(function(b){b.onclick=function(){navigate(b.dataset.go)}});
+$("#home").onclick=function(){navigate("deskview")};
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"&&!$("#deskview").classList.contains("on"))navigate("deskview")});
+$("#theme").onclick=function(){var d=document.documentElement,c=d.getAttribute("data-theme");
+  var dark=c?c==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  d.setAttribute("data-theme",dark?"light":"dark")};
+go(location.hash.slice(1));
+
+/* ---- open a file ---- */
+$("#drop").onchange=function(e){
+  var f=e.target.files&&e.target.files[0];if(!f)return;
+  function show(r,filled){
+    var h='<div class="note '+(r.ok?"good":"warn")+'"><b>'+(r.ok?"Opened it":"Could not read this")+'</b>'+
+      (filled?"The words are in the box below — check them when you're ready.":esc(r.cannot[0]))+'</div>'+
+      '<div class="note stop"><b>What it could not work out</b><ul>'+
+      r.cannot.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+'</ul></div>';
+    $("#fileinfo").innerHTML=h;
+  }
+  if(/^image\//.test(f.type)){
+    var img=new Image(),url=URL.createObjectURL(f);
+    img.onload=function(){show(READERS.readImage(f.name,{width:img.naturalWidth,height:img.naturalHeight,
+      bytes:f.size,type:f.type}),false);URL.revokeObjectURL(url)};
+    img.src=url;return;
+  }
+  var fr=new FileReader();
+  fr.onload=function(){
+    var r=READERS.readFile(f.name,String(fr.result||""),{}),filled=false;
+    if(r.text){$("#inp").value=r.text.slice(0,20000);filled=true}
+    else if(r.kind==="dataset"&&r.records.length){
+      $("#inp").value=Object.keys(r.records[0]).join(", ")+"\n"+
+        r.records.slice(0,20).map(function(x){return Object.values(x).join(", ")}).join("\n");
+      filled=true;
+    }
+    show(r,filled);
+  };
+  fr.readAsText(f);
+};
+
+/* ---- run a screen ---- */
+var GOOD=/healthy|solid|balanced|agency-preserving|informed|documented|criteria_present|developing|grounded|reasonably|justified|adequate|strong|well-matched/i;
+var BAD=/harmful|hollow|coercive|predatory|opaque|unfair|evidence_gap|dependency|adverse|one-sided|high risk|serious|low trust|not ready|below/i;
+var PLAINV={"Insufficient Evidence":"Not enough here to go on"};
+function run(){
+  var id=location.hash.slice(1),t=BY[id];if(!t)return;
+  var r=NOVORA.screen(id,$("#inp").value);
+  var cls=r.insufficient_evidence?"warn":BAD.test(r.verdict)?"stop":GOOD.test(r.verdict)?"good":"warn";
+  var h='<div class="note '+cls+'" style="margin-top:1.1rem"><b>'+esc(PLAINV[r.verdict]||r.verdict)+'</b>'+
+    (r.insufficient_evidence
+      ? esc(r.reason||"There is not enough here to check. That is not a bad result — it is no result.")
+      : "This is what the check found in the words you pasted. It is not a judgement about the person or the situation behind them.")+
+    '</div>';
+  if(r.display_score!==false&&typeof r.score==="number"){
+    h+='<div class="gauge" style="margin-top:1rem"><i style="width:'+(r.score*100).toFixed(0)+'%"></i></div>'+
+       '<div class="gtag"><span>worse</span><span>better</span></div>';
+  }
+  if(r.flags&&r.flags.length){
+    h+='<p style="margin:.9rem 0 0;color:var(--stone);font-size:.9rem">What stood out: '+
+       r.flags.map(function(f){return esc(f.toLowerCase().replace(/_/g," "))}).join(" · ")+'</p>';
+  }
+  if(r.attack_detected&&r.attack_detected!=="none"){
+    h+='<div class="note warn"><b>A known pattern showed up</b>'+
+       'This names a shape in the writing, not a proven intention.</div>';
+  }
+  h+='<div class="rcpt">receipt '+esc(r.certificate)+' · runs on your device. '+
+     'A check looks for known patterns; it does not read meaning, and it can be wrong in both directions.</div>';
+  $("#out").innerHTML=h;
+}
+$("#run").onclick=run;
+$("#inp").addEventListener("keydown",function(e){if((e.metaKey||e.ctrlKey)&&e.key==="Enter")run()});
+</script>
+</body>
+</html>

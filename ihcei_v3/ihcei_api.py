@@ -38,8 +38,8 @@ IHCEI does not prove Layer 3.
 
 NOMENCLATURE — v2.0 ARCHITECTURAL CORRECTION
 ---------------------------------------------
-IHCEI = Integrated Human Cognitive Epistemological Interface
-        (Corrected from: "Integrated Human-Centric Ethical Intelligence")
+IHCEI = Integrated Human Epistemological Interface
+        (Corrected from: "Integrated Human Epistemological Interface")
 
   "Ethical Intelligence" → "Cognitive Epistemological Interface"
     Ethics (RLHF) = subjective cultural preference, shifting baselines, sycophancy.

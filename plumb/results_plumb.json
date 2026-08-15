@@ -1,0 +1,70 @@
+{
+  "_prereg_lock": {
+    "prereg_file": "plumb/PREREG.md",
+    "prereg_sha256": "ce99c624431de2e86251b6a237423e95e16c91af9ddc56617aa36de3777027a8",
+    "program_file": "plumb/examples/vendor.plumb",
+    "program_sha256": "0c7ef1f594251a4178e08de1b995a86694124f32d3abfe8bc4d480e1d20a64d0",
+    "locked_utc": "2026-08-09T15:19:04Z",
+    "note": "Locked BEFORE the out-of-sample cohort B run (P5-P7). Any later edit to either file changes these digests and fails plumb/test_plumb.py."
+  },
+  "_program_sha256": "0c7ef1f594251a4178e08de1b995a86694124f32d3abfe8bc4d480e1d20a64d0",
+  "cohort_A_descriptive_only": {
+    "records": 22,
+    "supported": 3,
+    "abstained": 19,
+    "vif": 1.2374,
+    "independent": true,
+    "halted": null,
+    "blind_fields": [
+      "description",
+      "topics"
+    ],
+    "blind_values_stripped": 44
+  },
+  "cohort_B_out_of_sample": {
+    "records": 28,
+    "supported": 10,
+    "abstained": 18,
+    "vif": 1.0041,
+    "independent": true,
+    "halted": null,
+    "blind_fields": [
+      "description",
+      "topics"
+    ],
+    "blind_values_stripped": 0
+  },
+  "negative_control_expected_halt": {
+    "records": 22,
+    "supported": 0,
+    "abstained": 0,
+    "vif": "inf",
+    "independent": false,
+    "halted": "the two legs are not independent (VIF infinite) \u2014 a program whose encode and decode carry the same information is rejected",
+    "blind_fields": [],
+    "blind_values_stripped": 0
+  },
+  "prereg_outcomes": {
+    "P5_independence_transfers": {
+      "gate": "cohort B VIF finite and < 5.0",
+      "measured": 1.0041,
+      "result": "HOLDS"
+    },
+    "P6_abstention_dominates": {
+      "gate": "cohort B abstain rate >= 0.50 (informed by cohort A)",
+      "measured": 0.6429,
+      "result": "HOLDS"
+    },
+    "P7_no_silent_drop": {
+      "gate": "supported + abstained == records",
+      "measured": 28,
+      "result": "HOLDS"
+    }
+  },
+  "_honest_notes": [
+    "Cohort A numbers are DESCRIPTIVE. They were measured before PREREG.md was written and carry no confirmatory weight.",
+    "blind_values_stripped is 0 on cohort B because that cohort has no 'description' or 'topics' columns at all. The blinding did not fail; there was nothing to blind. P1 is therefore tested on cohort A and on a synthetic poisoned record, NOT on cohort B.",
+    "The high abstain rate on BOTH cohorts is a property of the 1/(1+open_issues) transform saturating for large projects. It is not evidence that those projects are bad. The floor was not moved.",
+    "Plumb checks structure, not truth. Q2 and Q5 of the five governance questions are not resolved here or anywhere in this repository."
+  ]
+}

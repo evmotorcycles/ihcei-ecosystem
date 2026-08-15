@@ -153,12 +153,47 @@ const PRODUCTS = {
 const CERT_PREFIX = { pages: 'PGS', pulse: 'PLS', weigh: 'WGH', lens: 'LNS', voice: 'VCE', mark: 'MRK', stand: 'STD', bridge: 'BRG', rise: 'RSE' };
 export const PRODUCT_IDS = Object.keys(PRODUCTS);
 
+// Minimum gradable input. PAGES already abstained when it had nothing to grade;
+// the other eight products did not, so an EMPTY box returned a confident-looking
+// number — LENS called an empty contract "0.75 BALANCED", PULSE called silence
+// "0.6 AGENCY_PRESERVING". That is false precision pointed at an ordinary user,
+// and it is worse than saying nothing. Every product now abstains when there is
+// too little text to screen. Found by the browser-bundle parity suite.
+const MIN_WORDS = 4;
+function tooLittleToScreen(text) {
+  const t = String(text || '').trim();
+  return t.length < 12 || t.split(/\s+/).filter(Boolean).length < MIN_WORDS;
+}
+
 // Screen `text` with product `id`. Returns the deep-mode-shaped JSON + a $0 cert.
 export function screen(id, text) {
   const fn = PRODUCTS[id];
   if (!fn) throw new Error('unknown product: ' + id);
+  if (tooLittleToScreen(text)) {
+    // `score` stays NUMERIC on purpose: downstream consumers in this repo are
+    // tested against a numeric contract and null would surface as NaN. The
+    // honesty lives in the flags, and in display_score, which tells a UI not to
+    // render the number at all. A number that must not be shown is safer than a
+    // null that crashes a chart.
+    const r = fn(String(text || ''));
+    r.score = +clip(r.score).toFixed(3);
+    r.confidence = 'low';
+    r.insufficient_evidence = true;
+    r.signal = 0;
+    r.display_score = false;
+    r.verdict = 'Insufficient Evidence';
+    r.flags = ['INSUFFICIENT_SIGNAL', 'ABSTAIN'];
+    r.reason = `fewer than ${MIN_WORDS} words to screen — the score below is not a `
+             + 'judgement and must not be shown as one';
+    r.certificate = CERT_PREFIX[id] + '-' + hex8(id + '|' + text);
+    r.engine = 'novora-fast-v0.1';
+    r.mode = 'fast';
+    r.analysis = 'Insufficient Evidence (nothing gradable was supplied)';
+    return r;
+  }
   const r = fn(String(text || ''));
   r.score = +clip(r.score).toFixed(3);
+  if (r.display_score === undefined) r.display_score = !r.insufficient_evidence;
   r.certificate = CERT_PREFIX[id] + '-' + hex8(id + '|' + text);
   r.engine = 'novora-fast-v0.1';
   r.mode = 'fast';

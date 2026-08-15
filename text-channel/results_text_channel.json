@@ -1,0 +1,149 @@
+{
+  "corpus_sha256": "bb2fe2b9e86b532228d7f74005080c1679c14aa2da6024fe30d29772f4f5b189",
+  "prereg_lock_ok": true,
+  "claim1_orthographic_partition": {
+    "status": "UNTESTABLE_AT_THIS_N",
+    "alif_omitted_n": 3,
+    "alif_omitted_at": [
+      [
+        1,
+        1
+      ],
+      [
+        11,
+        41
+      ],
+      [
+        27,
+        30
+      ]
+    ],
+    "alif_retained_n": 4,
+    "alif_retained_at": [
+      [
+        56,
+        74
+      ],
+      [
+        56,
+        96
+      ],
+      [
+        69,
+        52
+      ],
+      [
+        96,
+        1
+      ]
+    ],
+    "total_n": 7,
+    "why_untestable": "N = 7 total. A 3/4 split of 7 items cannot be statistically distinguished from any other narrative partition of 7 items. This is a statement about sample size, not about whether the claim is true.",
+    "not_a_finding_note": "This is DESCRIPTIVE. The counts were taken before PREREG.md was written and carry no confirmatory weight."
+  },
+  "claim2_directed_transmission": {
+    "n_family_A": 355,
+    "n_family_B_form_I": 280,
+    "n_form_IV_excluded": 247,
+    "n_dropped_both_families": 24,
+    "payload_rate_A": 0.5606,
+    "payload_rate_B": 0.4071,
+    "difference_A_minus_B": 0.1534,
+    "permutation_p_two_sided": 0.0001,
+    "n_permutations": 10000,
+    "seed": 42,
+    "length_adjusted_payload_per_10_words_A": 0.4865,
+    "length_adjusted_payload_per_10_words_B": 0.2917,
+    "mean_words_A": 17.77,
+    "mean_words_B": 17.14,
+    "gate": "SUPPORTED if diff >= 0.15 and p < 0.01; FALSIFIED if diff <= 0; else INCONCLUSIVE",
+    "verdict": "SUPPORTED",
+    "verdict_reason": "difference >= 0.15 and permutation p < 0.01",
+    "gate_moved": false
+  },
+  "claim2_robustness_post_hoc": {
+    "status": "POST_HOC_NOT_PREREGISTERED",
+    "leave_one_out": [
+      {
+        "dropped": "كتب",
+        "difference": 0.16,
+        "p": 0.0,
+        "still_clears_gate": true
+      },
+      {
+        "dropped": "بين",
+        "difference": 0.1309,
+        "p": 0.0012,
+        "still_clears_gate": false
+      },
+      {
+        "dropped": "رسل",
+        "difference": 0.1426,
+        "p": 0.0006,
+        "still_clears_gate": false
+      },
+      {
+        "dropped": "علم",
+        "difference": 0.1614,
+        "p": 0.0,
+        "still_clears_gate": true
+      },
+      {
+        "dropped": "هدى",
+        "difference": 0.1534,
+        "p": 0.0001,
+        "still_clears_gate": true
+      },
+      {
+        "dropped": "ايت",
+        "difference": 0.1497,
+        "p": 0.0002,
+        "still_clears_gate": false
+      },
+      {
+        "dropped": "حكم",
+        "difference": 0.1613,
+        "p": 0.0,
+        "still_clears_gate": true
+      },
+      {
+        "dropped": "ذكر",
+        "difference": 0.1467,
+        "p": 0.0002,
+        "still_clears_gate": false
+      },
+      {
+        "dropped": "حق",
+        "difference": 0.1384,
+        "p": 0.0005,
+        "still_clears_gate": false
+      },
+      {
+        "dropped": "امر",
+        "difference": 0.1726,
+        "p": 0.0,
+        "still_clears_gate": true
+      }
+    ],
+    "terms_whose_removal_drops_below_gate": [
+      "بين",
+      "رسل",
+      "ايت",
+      "ذكر",
+      "حق"
+    ],
+    "direction_held_in_all_variants": true,
+    "max_p_across_variants": 0.0012,
+    "reading": "The DIRECTION is robust: family A leads in all 10 variants, every p <= 0.0012. The VERDICT is fragile: removing any one of 5 of 10 payload terms drops the effect size below the pre-registered 0.15 gate. Honest summary: direction robust, magnitude marginal."
+  },
+  "claim3_adversarial_vocabulary": {
+    "status": "NOT_OPERATIONALISED",
+    "why": "the word lists that would define 'toxic' are the claim itself; choosing them chooses the answer"
+  },
+  "boundaries": [
+    "No measurement of a network licenses a claim about a text. Datasets 2-4 of the proposed design measure networks.",
+    "Even a fully positive result here would show lexical structure, not purpose. Structure is evidence about a text; purpose is a claim about an author.",
+    "Surface-form matching over un-lemmatised text misses forms and admits false positives. This limits precision and is not claimed away."
+  ],
+  "layer": "Layer-1 measurement only; no interpretation is asserted"
+}

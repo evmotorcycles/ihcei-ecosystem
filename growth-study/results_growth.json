@@ -1,0 +1,57 @@
+{
+  "prereg_sha256": "ed1b92d1af416983b4761171f835fe6dfbd64d229ae109d88f22c1f6e6e09ebb",
+  "era_boundary": "2023-01-01",
+  "seed": 42,
+  "n_permutations": 10000,
+  "G1_composition_changed": {
+    "gate": "two-sided permutation p < 0.05 on mean D_dec between eras",
+    "n_early": 25,
+    "n_recent": 25,
+    "mean_D_dec_early": 0.199,
+    "mean_D_dec_recent": 0.1066,
+    "difference": 0.0923,
+    "p": 0.0008,
+    "also_D_enc": {
+      "difference": -0.0035,
+      "p": 0.9259
+    },
+    "result": "SUPPORTED",
+    "DISCOUNTED_BY_CONTROL": true,
+    "HONEST_READING": "SUPPORTED at p=0.0008, but THE CONTROL FAILED. The pre-registration said in advance that if G2 cannot detect the effect that must be there, G1 should be discounted. It could not, so G1 IS DISCOUNTED. The most likely reason is that these cohorts were assembled by popularity, which puts a ceiling on stars regardless of age and makes era comparisons unreliable. This is what a control is for, and it is being honoured rather than reinterpreted."
+  },
+  "G2_capacity_rises_with_age_CONTROL": {
+    "gate": "mean log10(stars) higher in the early group, p < 0.05  [CONTROL]",
+    "mean_U_early": 4.4027,
+    "mean_U_recent": 4.275,
+    "difference": 0.1277,
+    "p": 0.3982,
+    "result": "FAILED",
+    "meaning_if_failed": "the instrument cannot detect even the effect that must be there, so G1's result should be discounted"
+  },
+  "G3_evidence_mostly_absent": {
+    "gate": "fraction of models with published evaluation results < 0.50",
+    "n": 43,
+    "with_eval_results": 0.2558,
+    "with_linked_paper": 0.3488,
+    "with_license": 0.8605,
+    "with_none_of_the_three": 0.1395,
+    "result": "SUPPORTED"
+  },
+  "G4_popularity_is_not_evidence": {
+    "gate": "|r| between log10(1+downloads) and having eval results < 0.30",
+    "r": 0.0878,
+    "result": "SUPPORTED",
+    "reading": "popularity is not evidence \u2014 a widely downloaded model is no more likely to publish what it was measured against"
+  },
+  "G5_no_forecast_produced": {
+    "gate": "no projected user counts, adoption curves, market sizes or valuations appear anywhere in this module",
+    "result": "HOLDS",
+    "why": "forecasting adoption of tools that have no users is not a measurement, and no dataset in this repository could support one"
+  },
+  "dominant_limit": "SURVIVORSHIP. Every cohort contains only projects that still exist. This can describe what survived; it cannot estimate a growth rate, because the denominator was deleted before collection.",
+  "honest_notes": [
+    "N is 50 and 43, from cohorts assembled for other purposes. These are descriptions of specific committed cohorts, not of the field.",
+    "The era boundary was set by the question that prompted the study, not chosen to maximise any difference.",
+    "A composition result is not a growth rate. Any reader who reads it as one has been misled, and the pre-registration says so in advance."
+  ]
+}

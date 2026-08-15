@@ -1,0 +1,30 @@
+{
+  "shared_origin": {
+    "deepest_dependence": 1.0,
+    "rests_on_one_thread": true
+  },
+  "separate_sources": {
+    "deepest_dependence": 0.49999999999999967,
+    "rests_on_one_thread": false
+  },
+  "three_sources": {
+    "deepest_dependence": 0.3333333333333335
+  },
+  "lopsided": {
+    "deepest_dependence": 0.9782608695652174,
+    "by_source": [
+      {
+        "source": "Main study",
+        "support_without_it": 0.20000000000000007,
+        "dependence": 0.9782608695652174,
+        "carries_it_alone": false
+      },
+      {
+        "source": "A blog post",
+        "support_without_it": 8.999999999999995,
+        "dependence": 0.021739130434783704,
+        "carries_it_alone": false
+      }
+    ]
+  }
+}
