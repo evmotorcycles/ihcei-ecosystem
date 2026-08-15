@@ -1,0 +1,1134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus</title>
+<meta name="description" content="See what a thing is made of, what is holding it up, and what it rests on. Works offline, on any phone or laptop.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B;   --hold-soft:#31150F;   /* nothing else does this      */
+  --share:#D6A63C;  --share-soft:#2C2209;  /* one of several routes       */
+  --spare:#5FB489;  --spare-soft:#12291E;  /* mostly redundant            */
+  --focus:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ------------------------------------------------------------------ top -- */
+.top{display:flex;align-items:center;gap:.55rem;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));
+  border-bottom:1px solid var(--line);background:var(--card-2);
+  position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);
+  letter-spacing:0}
+.sp{flex:1}
+/* 44px is the floor, not a suggestion. These two were 36px and a driven
+   measurement caught them -- an app for every age cannot ship a control an
+   unsteady hand misses. */
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center}
+.chip:active,.chip[aria-pressed=true]{background:var(--card);border-color:var(--edge)}
+
+/* ---------------------------------------------------------------- picker -- */
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.pick{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem}
+.pick button{flex:1 1 auto;min-height:46px;min-width:7.5rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.86rem}
+.pick button[aria-pressed=true]{border-color:var(--hold);background:var(--hold-soft);
+  font-weight:600}
+
+/* ----------------------------------------------------------------- tabs --- */
+.tabs{display:flex;gap:.3rem;background:var(--card-2);border:1px solid var(--line);
+  border-radius:var(--r);padding:.28rem;margin-bottom:.85rem}
+.tabs button{flex:1;min-height:46px;border-radius:10px;font-size:.87rem;color:var(--ink-2);
+  padding:.4rem .3rem;line-height:1.25}
+.tabs button[aria-selected=true]{background:var(--card);color:var(--ink);font-weight:650;
+  box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.tabs button small{display:block;font-size:.66rem;color:var(--mute);font-weight:400}
+
+/* ---------------------------------------------------------------- answer -- */
+.answer{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.9rem .95rem;margin-bottom:.75rem}
+.answer .big{font-size:1.35rem;font-weight:700;line-height:1.2;letter-spacing:-.022em;
+  text-wrap:balance}
+.answer .big em{font-style:normal;color:var(--hold)}
+.answer p{margin:.42rem 0 0;color:var(--ink-2);font-size:.9rem}
+
+/* ----------------------------------------------------------------- rows --- */
+.rows{display:flex;flex-direction:column;gap:.4rem}
+.row{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.62rem .72rem;width:100%;text-align:left;display:block}
+.row .nm{display:flex;gap:.5rem;align-items:baseline;font-size:.9rem}
+.row .nm b{font-weight:600}
+.row .nm .to{color:var(--mute)}
+.row .pct{margin-left:auto;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:.96rem;font-weight:650}
+.bar{height:8px;border-radius:99px;background:var(--card-2);margin-top:.45rem;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.row .say{font-size:.77rem;color:var(--mute);margin-top:.34rem}
+.row[data-k=hold] .pct{color:var(--hold)}   .row[data-k=hold] .bar i{background:var(--hold)}
+.row[data-k=share] .pct{color:var(--share)} .row[data-k=share] .bar i{background:var(--share)}
+.row[data-k=spare] .pct{color:var(--spare)} .row[data-k=spare] .bar i{background:var(--spare)}
+.row[data-off="1"]{opacity:.45}
+.row[data-off="1"] .say{color:var(--hold)}
+
+/* ----------------------------------------------------------------- map ---- */
+.stage{position:relative;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);height:min(46dvh,340px);touch-action:none;overflow:hidden}
+svg{display:block;width:100%;height:100%}
+.node{cursor:grab}
+.hit{fill:transparent}
+.snap{margin:.6rem 0 0;padding:.55rem .72rem;border-radius:10px;font-size:.86rem;
+  background:var(--share-soft);border:1px solid var(--share);color:var(--share);
+  font-weight:600}
+
+/* ---------------------------------------------------------------- totals -- */
+.tot{margin-top:.7rem;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);padding:.62rem .8rem;display:flex;gap:.9rem;
+  align-items:baseline;flex-wrap:wrap}
+.tot b{font-family:var(--mono);font-size:1.16rem;font-variant-numeric:tabular-nums}
+.tot span{color:var(--mute);font-size:.76rem}
+
+/* ----------------------------------------------------------------- acts --- */
+.acts{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem}
+.acts button:active{border-color:var(--focus)}
+
+/* ----------------------------------------------------------------- note --- */
+.note{margin-top:1rem;background:var(--card);border:1px solid var(--line);
+  border-left:3px solid var(--share);border-radius:0 var(--r) var(--r) 0;
+  padding:.72rem .85rem;font-size:.83rem;line-height:1.6;color:var(--ink-2)}
+.note b{display:block;color:var(--share);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;margin:.65rem 0 .2rem}
+.note b:first-child{margin-top:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+  white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">Plexus<span id="tag">what a thing is made of</span></div>
+  <span class="sp"></span>
+  <button class="chip" id="text" type="button" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme" type="button">Light</button>
+</div>
+
+<div class="wrap">
+  <div class="pick" id="pick" role="group" aria-label="Choose something to look at"></div>
+
+  <div class="tabs" role="tablist" aria-label="What to show">
+    <button role="tab" id="tab-map" aria-selected="true" aria-controls="v-map" type="button">
+      Map<small>how it fits together</small></button>
+    <button role="tab" id="tab-hold" aria-selected="false" aria-controls="v-hold" type="button">
+      Holding it up<small>what has no way around it</small></button>
+    <button role="tab" id="tab-rest" aria-selected="false" aria-controls="v-rest" type="button">
+      Resting on<small>if one source were wrong</small></button>
+  </div>
+
+  <section id="v-map" role="tabpanel" aria-labelledby="tab-map">
+    <div class="answer" id="map-answer"></div>
+    <div class="stage" id="stage">
+      <svg id="canvas" viewBox="0 0 360 340" preserveAspectRatio="xMidYMid meet"
+           role="img" aria-labelledby="canvas-desc"></svg>
+      <p id="canvas-desc" class="sr"></p>
+    </div>
+    <p class="snap" id="snap" hidden role="status"></p>
+    <div class="acts">
+      <button id="reset" type="button">Start again</button>
+      <button id="cut" type="button">Remove the weakest link</button>
+    </div>
+  </section>
+
+  <section id="v-hold" role="tabpanel" aria-labelledby="tab-hold" hidden>
+    <div class="answer" id="hold-answer"></div>
+    <div class="rows" id="hold-rows"></div>
+    <div class="tot" id="hold-tot"></div>
+    <div class="acts"><button id="reset2" type="button">Put everything back</button></div>
+  </section>
+
+  <section id="v-rest" role="tabpanel" aria-labelledby="tab-rest" hidden>
+    <div class="answer" id="rest-answer"></div>
+    <div class="rows" id="rest-rows"></div>
+    <div class="acts"><button id="reset3" type="button">Put everything back</button></div>
+  </section>
+
+  <div class="note">
+    <b>Nothing here was scored</b>
+    There is nothing to tune and no weighting to argue with. On the second tab the
+    percentages add up to the number of parts minus the number of separate pieces,
+    always, as a matter of arithmetic — so no step can be made to look more
+    important without another looking less.
+    <b>Turning everything up does nothing</b>
+    Multiply the strength of every link by any number you like and not one
+    percentage moves.
+    <b>Two different questions</b>
+    <em>Holding it up</em> asks whether there is another way <em>round</em> a step.
+    <em>Resting on</em> asks whether there is another way <em>in</em>. They can
+    disagree, and when they do it is worth reading both.
+    <b>What it cannot tell you</b>
+    Whether a step is <em>useful</em>, or whether a source is <em>true</em>. A
+    required form that changes no outcome still reads 100%, because removing it
+    does break the chain. And it only knows the parts you entered.
+    <b>Nothing leaves this device</b>
+    No account, no network, no server. It works with the aeroplane mode on.
+  </div>
+</div>
+
+<script>/* lmd.js -- the LMD metric engine, in the browser.
+ * ===========================================================================
+ * A faithful port of smi/lmd.py so SMI runs on a phone with no server. A port
+ * is a liability unless it is checked: smi/test_parity.py runs both engines
+ * over a shared list of graphs and fails if any distance differs by more than
+ * 1e-9. The port is not trusted; it is tested.
+ *
+ * There is no linear-algebra library here on purpose. The Laplacian is real and
+ * symmetric, so the cyclic Jacobi eigenvalue algorithm gives an exact
+ * eigendecomposition in about forty lines, and the pseudo-inverse is then
+ *
+ *     pinv(L) = V · diag(1/λ for λ above tolerance, else 0) · Vᵀ
+ *
+ * which is all this needs. Fifty nodes is well under a millisecond.
+ *
+ * WHAT IS BEING MEASURED
+ * A dependency graph inside running software: which live elements determine
+ * which others, and how strongly. J is the strength of a dependency; d is how
+ * far apart two elements should sit given all of them. Information layer. Not
+ * a claim about matter or physical distance.
+ */
+(function (root) {
+  "use strict";
+
+  var DEAD_MESH_EPS = 1e-12;
+
+  /* A coupling below this is DECLARED FADING: still connected, but too weak to
+   * show at display precision. Without a name for it, a wire reading 0.00 in
+   * the readout while the legend insists "live" is a fourth, unnamed state --
+   * the interface saying connected and the arithmetic saying I move nothing. */
+  var FADE_BELOW = 0.01;
+
+  /* Cyclic Jacobi for a real symmetric matrix. Returns { values, vectors }
+   * where vectors[i][k] is component i of eigenvector k. */
+  function eigSymmetric(Ain, sweeps) {
+    var n = Ain.length, i, j, k, p, q, s;
+    var A = Ain.map(function (r) { return r.slice(); });
+    var V = [];
+    for (i = 0; i < n; i++) {
+      V.push(new Array(n).fill(0));
+      V[i][i] = 1;
+    }
+    sweeps = sweeps || 60;
+    for (s = 0; s < sweeps; s++) {
+      var off = 0;
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) off += A[i][j] * A[i][j];
+      if (off < 1e-30) break;
+      for (p = 0; p < n - 1; p++) {
+        for (q = p + 1; q < n; q++) {
+          if (Math.abs(A[p][q]) < 1e-300) continue;
+          var theta = (A[q][q] - A[p][p]) / (2 * A[p][q]);
+          var t = Math.sign(theta || 1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+          var c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+          for (k = 0; k < n; k++) {
+            var akp = A[k][p], akq = A[k][q];
+            A[k][p] = c * akp - sn * akq;
+            A[k][q] = sn * akp + c * akq;
+          }
+          for (k = 0; k < n; k++) {
+            var apk = A[p][k], aqk = A[q][k];
+            A[p][k] = c * apk - sn * aqk;
+            A[q][k] = sn * apk + c * aqk;
+          }
+          for (k = 0; k < n; k++) {
+            var vkp = V[k][p], vkq = V[k][q];
+            V[k][p] = c * vkp - sn * vkq;
+            V[k][q] = sn * vkp + c * vkq;
+          }
+        }
+      }
+    }
+    var vals = [];
+    for (i = 0; i < n; i++) vals.push(A[i][i]);
+    return { values: vals, vectors: V };
+  }
+
+  /* d_ij = sqrt(R_ij), R_ij = L⁺_ii + L⁺_jj − 2·L⁺_ij. Same as the Python. */
+  function metricFromLaplacian(L) {
+    var n = L.length, i, j, k;
+    var e = eigSymmetric(L);
+    var maxAbs = 0;
+    for (i = 0; i < n; i++) maxAbs = Math.max(maxAbs, Math.abs(e.values[i]));
+    // the same rank tolerance numpy/jax use for pinv on a symmetric matrix
+    var tol = maxAbs * n * 2.220446049250313e-16;
+
+    var P = [];
+    for (i = 0; i < n; i++) P.push(new Array(n).fill(0));
+    for (k = 0; k < n; k++) {
+      if (Math.abs(e.values[k]) <= tol) continue;
+      var inv = 1 / e.values[k];
+      for (i = 0; i < n; i++) {
+        var vik = e.vectors[i][k];
+        if (vik === 0) continue;
+        for (j = 0; j < n; j++) P[i][j] += inv * vik * e.vectors[j][k];
+      }
+    }
+    var D = [];
+    for (i = 0; i < n; i++) {
+      D.push(new Array(n).fill(0));
+      for (j = 0; j < n; j++) {
+        var R = P[i][i] + P[j][j] - 2 * P[i][j];
+        D[i][j] = Math.sqrt(R > 0 ? R : 0);
+      }
+    }
+    return D;
+  }
+
+  /* Which nodes can actually reach which. pinv neither knows nor cares that a
+   * graph is in pieces; this does. */
+  function componentsOf(L, tol) {
+    tol = tol || 1e-12;
+    var n = L.length, label = new Array(n).fill(-1), next = 0, i, u, v;
+    for (i = 0; i < n; i++) {
+      if (label[i] !== -1) continue;
+      var stack = [i];
+      label[i] = next;
+      while (stack.length) {
+        u = stack.pop();
+        for (v = 0; v < n; v++) {
+          if (v !== u && Math.abs(L[u][v]) > tol && label[v] === -1) {
+            label[v] = next;
+            stack.push(v);
+          }
+        }
+      }
+      next++;
+    }
+    return label;
+  }
+
+  /* The distance matrix an interface may actually trust: the raw metric with
+   * the two places pinv lies removed.
+   *   - pairs in different pieces come back Infinity, not a small number
+   *   - a mesh with no coupling left comes back all-Infinity, not all-zero */
+  function meshMetric(L) {
+    var n = L.length, i, j, off = 0, D;
+    for (i = 0; i < n; i++) for (j = 0; j < n; j++) if (i !== j) off += Math.abs(L[i][j]);
+    if (off < DEAD_MESH_EPS) {
+      D = [];
+      for (i = 0; i < n; i++) {
+        D.push(new Array(n).fill(Infinity));
+        D[i][i] = 0;
+      }
+      return { D: D, labels: Array.from({ length: n }, function (_, k) { return k; }), dead: true };
+    }
+    D = metricFromLaplacian(L);
+    var lab = componentsOf(L);
+    var pieces = Math.max.apply(null, lab);
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        if (i === j) D[i][j] = 0;
+        else if (pieces > 0 && lab[i] !== lab[j]) D[i][j] = Infinity;
+      }
+    }
+    return { D: D, labels: lab, dead: false };
+  }
+
+  function laplacianFromEdges(n, edges) {
+    var W = [], i;
+    for (i = 0; i < n; i++) W.push(new Array(n).fill(0));
+    edges.forEach(function (e) {
+      if (e[0] === e[1]) throw new Error("a node cannot depend on itself: " + e[0]);
+      W[e[0]][e[1]] = W[e[1]][e[0]] = e[2];
+    });
+    var L = [];
+    for (i = 0; i < n; i++) {
+      L.push(W[i].map(function (w) { return -w; }));
+      L[i][i] = W[i].reduce(function (a, b) { return a + b; }, 0);
+    }
+    return L;
+  }
+
+  function ringLaplacian(n, J) {
+    var edges = [], i;
+    for (i = 0; i < n; i++) edges.push([i, (i + 1) % n, J]);
+    return laplacianFromEdges(n, edges);
+  }
+
+  /* Classical MDS: double-centre the squared distances, take the top two
+   * eigenvectors. The flat picture that best preserves the metric. */
+  /* `axes` selects WHICH two eigenvectors, by rank. (0,1) is the classical
+   * choice and keeps the most total structure. It is not always the one that
+   * keeps the most useful structure -- see bestAxes. */
+  function layout2d(D, keep, axes) {
+    axes = axes || [0, 1];
+    var m = keep.length, i, j;
+    var B = [];
+    for (i = 0; i < m; i++) B.push(new Array(m).fill(0));
+    var sq = [];
+    for (i = 0; i < m; i++) {
+      sq.push(new Array(m).fill(0));
+      for (j = 0; j < m; j++) {
+        var d = D[keep[i]][keep[j]];
+        sq[i][j] = d * d;
+      }
+    }
+    var rowMean = sq.map(function (r) { return r.reduce(function (a, b) { return a + b; }, 0) / m; });
+    var grand = rowMean.reduce(function (a, b) { return a + b; }, 0) / m;
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < m; j++) B[i][j] = -0.5 * (sq[i][j] - rowMean[i] - rowMean[j] + grand);
+    }
+    var e = eigSymmetric(B);
+    var order = e.values.map(function (v, k) { return [v, k]; })
+      .sort(function (a, b) { return b[0] - a[0]; });
+    var p1 = order[Math.min(axes[0], m - 1)], p2 = order[Math.min(axes[1], m - 1)];
+    var out = [];
+    for (i = 0; i < m; i++) {
+      out.push([
+        e.vectors[i][p1[1]] * Math.sqrt(Math.max(p1[0], 0)),
+        e.vectors[i][p2[1]] * Math.sqrt(Math.max(p2[0], 0)),
+      ]);
+    }
+    return out;
+  }
+
+  /* The worst pair in a layout, as a fraction of its true distance. 1.0 means
+   * every distance on screen is the real one. */
+  function flatness(D, keep, xy) {
+    var worst = 1.0, a = -1, b = -1, i, j;
+    for (i = 0; i < keep.length; i++) {
+      for (j = i + 1; j < keep.length; j++) {
+        var trueD = D[keep[i]][keep[j]];
+        if (!isFinite(trueD) || trueD <= 0) continue;
+        var ratio = Math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]) / trueD;
+        if (ratio < worst) { worst = ratio; a = keep[i]; b = keep[j]; }
+      }
+    }
+    return { ratio: worst, a: a, b: b };
+  }
+
+  /* The plane that leaves NO pair collapsed, if there is one.
+   *
+   * Classical MDS minimises strain, which is a TOTAL -- and a total can be
+   * excellent while one pair is destroyed. On the mesh SMI ships, the
+   * strain-best plane draws two elements on top of each other (0% of their true
+   * distance) while a different plane draws every pair at 71% or better.
+   * Neither view is wrong; they answer different questions. */
+  function bestAxes(D, keep, limit) {
+    limit = Math.min(limit || 4, keep.length);
+    var best = [0, 1], bestRatio = -1, i, j;
+    for (i = 0; i < limit; i++) {
+      for (j = i + 1; j < limit; j++) {
+        var r = flatness(D, keep, layout2d(D, keep, [i, j])).ratio;
+        if (r > bestRatio) { bestRatio = r; best = [i, j]; }
+      }
+    }
+    return { axes: best, ratio: bestRatio };
+  }
+
+  /* ------------------------------------------------------- frame alignment --
+   * Classical MDS fixes an embedding only up to rotation and reflection: the
+   * eigenvectors are defined up to sign, so a small change in the graph can
+   * hand back the same picture upside down. Deterministic per input, and to a
+   * person dragging it, the map flipping under their finger reads as the
+   * positions being arbitrary -- which is exactly the claim SMI makes against.
+   *
+   * So each new embedding is rotated/reflected onto the previous one, choosing
+   * whichever orthogonal transform moves the shared nodes least. Real change
+   * still shows; the cosmetic flips stop. This is the orthogonal Procrustes
+   * problem, solved in closed form because 2-D needs no SVD.
+   */
+  function procrustes2d(Q, P) {
+    var n = Math.min(Q.length, P.length), i;
+    if (n < 2) return Q.slice();
+    var qc = [0, 0], pc = [0, 0];
+    for (i = 0; i < n; i++) {
+      qc[0] += Q[i][0]; qc[1] += Q[i][1];
+      pc[0] += P[i][0]; pc[1] += P[i][1];
+    }
+    qc = [qc[0] / n, qc[1] / n];
+    pc = [pc[0] / n, pc[1] / n];
+
+    function residual(theta, flip) {
+      var c = Math.cos(theta), s2 = Math.sin(theta), tot = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var x = c * qx - s2 * qy, y = s2 * qx + c * qy;
+        tot += (x - (P[k][0] - pc[0])) * (x - (P[k][0] - pc[0])) +
+               (y - (P[k][1] - pc[1])) * (y - (P[k][1] - pc[1]));
+      }
+      return tot;
+    }
+    function bestAngle(flip) {
+      var num = 0, den = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var px = P[k][0] - pc[0], py = P[k][1] - pc[1];
+        num += qx * py - qy * px;
+        den += qx * px + qy * py;
+      }
+      return Math.atan2(num, den);
+    }
+    var best = null;
+    [false, true].forEach(function (flip) {
+      var th = bestAngle(flip), r = residual(th, flip);
+      if (best === null || r < best.r) best = { r: r, th: th, flip: flip };
+    });
+    var c = Math.cos(best.th), sn = Math.sin(best.th), out = [];
+    for (i = 0; i < Q.length; i++) {
+      var qx = (Q[i][0] - qc[0]) * (best.flip ? -1 : 1), qy = Q[i][1] - qc[1];
+      out.push([c * qx - sn * qy + pc[0], sn * qx + c * qy + pc[1]]);
+    }
+    return out;
+  }
+
+  var API = {
+    procrustes2d: procrustes2d,
+    FADE_BELOW: FADE_BELOW,
+    metricFromLaplacian: metricFromLaplacian,
+    meshMetric: meshMetric,
+    componentsOf: componentsOf,
+    laplacianFromEdges: laplacianFromEdges,
+    ringLaplacian: ringLaplacian,
+    eigSymmetric: eigSymmetric,
+    layout2d: layout2d,
+    flatness: flatness,
+    bestAxes: bestAxes,
+    DEAD_MESH_EPS: DEAD_MESH_EPS,
+  };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LMD = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* engines.js -- SPAR and FATHOM in the browser, on top of the tested LMD engine.
+ * ===========================================================================
+ * Loaded after smi/lmd.js, which supplies meshMetric, laplacianFromEdges,
+ * layout2d, procrustes2d and the two guards. That engine is parity-checked
+ * against the JAX engine over fourteen graphs; nothing here re-implements it.
+ *
+ * These two are checked the same way, by plexus/test_plexus.py, against the
+ * Python in spar/spar.py and fathom/fathom.py.
+ */
+(function (root) {
+  "use strict";
+
+  var LMD = root.LMD || (typeof require === "function" ? require("../smi/lmd.js") : null);
+
+  /* ------------------------------------------------------------- SPAR ---- */
+  /* bearing = w * R = P(this link is in a random spanning tree) = how often the
+   * link is the thing holding the structure together. The bearings sum to
+   * exactly parts - pieces, by Foster's theorem, which is why nothing here is a
+   * score somebody chose. */
+  function bearings(names, links) {
+    var idx = {}, i;
+    for (i = 0; i < names.length; i++) idx[names[i]] = i;
+    if (!links.length) {
+      return { links: [], total: 0, pieces: names.length, parts: names.length,
+               expected: 0, conserved: true, dead: true };
+    }
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rows = [], total = 0;
+    links.forEach(function (l, k) {
+      var d = r.D[idx[l[0]]][idx[l[1]]];
+      var b = l[2] * d * d;
+      total += b;
+      rows.push({ i: k, from: l[0], to: l[1], weight: l[2], bearing: b,
+                  soleRoute: b >= 0.999 });
+    });
+    var expected = names.length - pieces;
+    return { links: rows, total: total, pieces: pieces, parts: names.length,
+             expected: expected, conserved: Math.abs(total - expected) < 1e-9,
+             dead: false };
+  }
+
+  /* Which PARTS everything passes through. A link's bearing cannot answer this,
+   * and it is computed by removal rather than by a formula. */
+  function singlePoints(names, links) {
+    if (names.length < 3 || !links.length) return [];
+    var base = bearings(names, links).pieces, out = [];
+    names.forEach(function (n) {
+      var rest = names.filter(function (x) { return x !== n; });
+      var kept = links.filter(function (l) { return l[0] !== n && l[1] !== n; });
+      // NOT skipped when kept is empty: a part whose removal leaves no links at
+      // all is the most complete break there is.
+      var after = kept.length ? bearings(rest, kept).pieces : rest.length;
+      if (after > base) out.push({ part: n, piecesAfter: after });
+    });
+    return out;
+  }
+
+  /* ----------------------------------------------------------- FATHOM ---- */
+  var GROUND = "\u0000ground";   // cannot collide with a real name
+
+  function support(names, links, sources, drop) {
+    var keep = sources.filter(function (s) { return s !== drop; });
+    if (!keep.length) return null;
+    var live = links.filter(function (l) { return l[0] !== drop && l[1] !== drop; });
+    var isSrc = {};
+    keep.forEach(function (s) { isSrc[s] = true; });
+
+    /* pairs are kept as ARRAYS. An earlier version joined the two names into a
+       string key and split it back with split(""), which splits into single
+       characters -- it worked only for one-character names and silently built
+       nonsense graphs for everything else. */
+    var pairs = [], seen = {};
+    live.forEach(function (l) {
+      var a = isSrc[l[0]] ? GROUND : l[0], b = isSrc[l[1]] ? GROUND : l[1];
+      if (a === b) return;                        // inside the contracted ground
+      var lo = a < b ? a : b, hi = a < b ? b : a;
+      var key = lo + "\u0000" + hi;
+      if (key in seen) { pairs[seen[key]][2] += l[2]; return; }
+      seen[key] = pairs.length;
+      pairs.push([lo, hi, l[2]]);
+    });
+    if (!pairs.length) return null;
+
+    var nm = [], set = {};
+    pairs.forEach(function (p) {
+      [p[0], p[1]].forEach(function (n) {
+        if (!(n in set)) { set[n] = true; nm.push(n); }
+      });
+    });
+    nm.sort();
+    var idx = {}, i;
+    for (i = 0; i < nm.length; i++) idx[nm[i]] = i;
+    return { nm: nm, idx: idx, pairs: pairs };
+  }
+
+  function conductance(names, links, sources, conclusion, drop) {
+    var g = support(names, links, sources, drop);
+    if (!g || !(conclusion in g.idx) || !(GROUND in g.idx)) return 0;
+    var edges = g.pairs.map(function (p) { return [g.idx[p[0]], g.idx[p[1]], p[2]]; });
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.nm.length, edges));
+    if (r.dead) return 0;
+    var d = r.D[g.idx[conclusion]][g.idx[GROUND]];
+    if (!isFinite(d) || d <= 0) return 0;
+    return 1 / (d * d);
+  }
+
+  /* dependence(s) = 1 - support without s / support with all.
+   * Contraction is the move: it stops asking "is there another way round this
+   * link" and starts asking "is there another way IN". */
+  function sound(names, links, sources, conclusion) {
+    var base = conductance(names, links, sources, conclusion, null);
+    var rows = sources.map(function (s) {
+      var without = conductance(names, links, sources, conclusion, s);
+      var dep = base > 0 ? 1 - without / base : 1;
+      return { source: s, dependence: dep, carriesItAlone: dep >= 0.999 };
+    });
+    rows.sort(function (a, b) { return b.dependence - a.dependence; });
+    var deepest = rows.length ? rows[0] : null;
+    return {
+      conclusion: conclusion, support: base, bySource: rows,
+      deepest: deepest ? deepest.dependence : 1,
+      restsOnOneThread: !!(deepest && deepest.carriesItAlone),
+      remaining: deepest ? 1 - deepest.dependence : 0,
+    };
+  }
+
+  /* ------------------------------------------------- suggested links ----- */
+  /* Shared labels only. This is a SUGGESTION and never a measurement: two
+   * things sharing a word are not thereby dependent on one another, and
+   * nothing computed here is fed into a bearing or a sounding unless a person
+   * confirms the link first. */
+  function suggest(items) {
+    var out = [], i, j;
+    for (i = 0; i < items.length; i++) {
+      for (j = i + 1; j < items.length; j++) {
+        var a = items[i].tags || [], b = items[j].tags || [];
+        if (!a.length || !b.length) continue;
+        var inter = a.filter(function (t) { return b.indexOf(t) >= 0; });
+        if (!inter.length) continue;
+        var union = a.concat(b.filter(function (t) { return a.indexOf(t) < 0; }));
+        out.push({ a: items[i].name, b: items[j].name,
+                   shared: inter, score: inter.length / union.length });
+      }
+    }
+    out.sort(function (x, y) { return y.score - x.score; });
+    return out;
+  }
+
+  var API = { bearings: bearings, singlePoints: singlePoints, sound: sound,
+              conductance: conductance, suggest: suggest, GROUND: GROUND };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PLEXUS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var VB = { w: 360, h: 340 }, NODE_W = 86, NODE_H = 38, PAD = 16;
+
+  /* ------------------------------------------------------------ the data -- */
+  function library() {
+    return [
+      { name: "An energy bill",
+        conclusion: "Amount due",
+        sources: ["Meter reading", "Unit rate", "Standing charge"],
+        parts: ["Meter reading", "Unit rate", "Standing charge", "Subtotal",
+                "VAT", "Late fee", "Amount due"],
+        links: [["Meter reading", "Subtotal", 8], ["Unit rate", "Subtotal", 8],
+                ["Standing charge", "Subtotal", 3], ["Subtotal", "VAT", 6],
+                ["Subtotal", "Amount due", 6], ["VAT", "Amount due", 6],
+                ["Late fee", "Amount due", 0.4]] },
+      { name: "A complaint",
+        conclusion: "Outcome letter",
+        sources: ["Complaint filed"],
+        parts: ["Complaint filed", "Acknowledgement", "Triage", "Team A review",
+                "Team B review", "Manager sign-off", "Outcome letter"],
+        links: [["Complaint filed", "Acknowledgement", 5],
+                ["Acknowledgement", "Triage", 5], ["Triage", "Team A review", 4],
+                ["Triage", "Team B review", 4], ["Team A review", "Manager sign-off", 4],
+                ["Team B review", "Manager sign-off", 4],
+                ["Manager sign-off", "Outcome letter", 5]] },
+      { name: "A news story",
+        conclusion: "The story",
+        sources: ["Press release", "Named expert", "Public dataset"],
+        parts: ["The story", "Quoted figure", "Quoted expert", "Chart",
+                "Press release", "Named expert", "Public dataset"],
+        links: [["The story", "Quoted figure", 4], ["The story", "Quoted expert", 4],
+                ["The story", "Chart", 3], ["Quoted figure", "Press release", 6],
+                ["Chart", "Press release", 6], ["Quoted expert", "Named expert", 5],
+                ["Chart", "Public dataset", 1.2]] },
+      { name: "Getting to work",
+        conclusion: "At the desk",
+        sources: ["Home"],
+        parts: ["Home", "Bus", "Train", "Cycle", "Station", "At the desk"],
+        links: [["Home", "Bus", 3], ["Home", "Cycle", 2], ["Bus", "Station", 3],
+                ["Cycle", "Station", 2], ["Station", "Train", 5],
+                ["Train", "At the desk", 5]] }
+    ];
+  }
+
+  var LIB = library(), pick = 0, tab = "map", off = {};
+  var lastXY = null, lastKeep = null, lastStates = {}, drag = null, pos = {};
+
+  function ex() { return LIB[pick]; }
+  function liveLinks() {
+    return ex().links.filter(function (l, i) { return !off[i]; });
+  }
+
+  /* ------------------------------------------------------------- the map -- */
+  function relayout() {
+    var e = ex(), names = e.parts, idx = {};
+    names.forEach(function (n, i) { idx[n] = i; });
+    var ls = liveLinks();
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, ls.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var anchor = idx[e.conclusion];
+    var keep = [], stranded = [];
+    names.forEach(function (n, k) {
+      (r.dead || !isFinite(r.D[anchor][k]) ? stranded : keep).push(k);
+    });
+
+    if (keep.length >= 2) {
+      var xy = LMD.layout2d(r.D, keep);
+      /* Align each frame onto the last one. Classical MDS is fixed only up to
+         rotation and reflection, so without this the map turns over between
+         drags and reads as though the positions were arbitrary. */
+      if (lastXY && lastKeep) {
+        var shareP = [], order = [], rest = [];
+        keep.forEach(function (k, i) {
+          var j = lastKeep.indexOf(k);
+          (j >= 0 ? order : rest).push(i);
+          if (j >= 0) shareP.push(lastXY[j]);
+        });
+        if (shareP.length >= 2) {
+          var seq = order.concat(rest);
+          var aligned = LMD.procrustes2d(seq.map(function (i) { return xy[i]; }), shareP);
+          seq.forEach(function (i, slot) { xy[i] = aligned[slot]; });
+        }
+      }
+      lastXY = xy.map(function (p) { return p.slice(); });
+      lastKeep = keep.slice();
+
+      var stripH = stranded.length ? NODE_H + 14 : 0;
+      var loX = PAD + NODE_W / 2, hiX = VB.w - PAD - NODE_W / 2;
+      var loY = PAD + NODE_H / 2, hiY = VB.h - PAD - NODE_H / 2 - stripH;
+      var bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity, minPair = Infinity, u, v;
+      xy.forEach(function (p) {
+        bx0 = Math.min(bx0, p[0]); bx1 = Math.max(bx1, p[0]);
+        by0 = Math.min(by0, p[1]); by1 = Math.max(by1, p[1]);
+      });
+      for (u = 0; u < xy.length; u++) {
+        for (v = u + 1; v < xy.length; v++) {
+          minPair = Math.min(minPair, Math.hypot(xy[u][0] - xy[v][0], xy[u][1] - xy[v][1]));
+        }
+      }
+      /* cap is the LARGEST scale at which the cloud still fits the frame, and
+         need is the smallest at which no two boxes touch. Any scale between
+         them is valid, so take cap and fill the frame. Taking min(need, cap)
+         instead -- which is what this did first -- draws as small as it can get
+         away with: measured at 55% of the width and 30% of the height, with the
+         picture huddled in a corner of an empty card. */
+      var need = Math.hypot(NODE_W * 0.8, NODE_H * 1.15) / Math.max(minPair, 1e-9);
+      var cap = Math.min((hiX - loX) / ((bx1 - bx0) || 1e-9),
+                         (hiY - loY) / ((by1 - by0) || 1e-9));
+      var scale = cap;
+      void need;   // kept: when need > cap the separation pass below has work to do
+      var midX = (loX + hiX) / 2 - (bx0 + bx1) / 2 * scale;
+      var midY = (loY + hiY) / 2 - (by0 + by1) / 2 * scale;
+      keep.forEach(function (k, i) {
+        pos[names[k]] = { x: midX + xy[i][0] * scale, y: midY + xy[i][1] * scale };
+      });
+    } else {
+      keep.forEach(function (k, i) {
+        pos[names[k]] = { x: VB.w / 2, y: (i + 1) * VB.h / (keep.length + 1) };
+      });
+    }
+    stranded.forEach(function (k, i) {
+      pos[names[k]] = { x: (i + 1) * VB.w / (stranded.length + 1),
+                        y: VB.h - PAD / 2 - NODE_H / 2 };
+    });
+
+    /* Boxes are separated by their penetration depth, split between the pair,
+       so the correction falls to zero at the threshold and nothing teleports. */
+    var MIN_X = NODE_W * 0.8, MIN_Y = NODE_H * 1.15;
+    var LO_X = NODE_W / 2 + 4, HI_X = VB.w - NODE_W / 2 - 4;
+    var LO_Y = NODE_H / 2 + 4, HI_Y = VB.h - NODE_H / 2 - 4;
+    for (var pass = 0; pass < 60; pass++) {
+      var hits = 0;
+      for (var a = 0; a < names.length; a++) {
+        for (var b = a + 1; b < names.length; b++) {
+          var pa = pos[names[a]], pb = pos[names[b]];
+          if (!pa || !pb) continue;
+          var ux = (pb.x - pa.x) / MIN_X, uy = (pb.y - pa.y) / MIN_Y;
+          var far = Math.max(Math.abs(ux), Math.abs(uy));
+          if (far >= 1) continue;
+          hits++;
+          if (far < 1e-9) { pa.y -= MIN_Y / 2; pb.y += MIN_Y / 2; continue; }
+          var grow = (1 / far - 1) / 2;
+          pa.x -= ux * MIN_X * grow; pa.y -= uy * MIN_Y * grow;
+          pb.x += ux * MIN_X * grow; pb.y += uy * MIN_Y * grow;
+        }
+      }
+      names.forEach(function (n) {
+        var p = pos[n];
+        if (!p) return;
+        p.x = Math.min(Math.max(p.x, LO_X), HI_X);
+        p.y = Math.min(Math.max(p.y, LO_Y), HI_Y);
+      });
+      if (!hits) break;
+    }
+    return { r: r, keep: keep, stranded: stranded, idx: idx, names: names };
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function drawMap() {
+    var e = ex(), st = relayout(), out = [];
+    var reach = {};
+    st.names.forEach(function (n, k) {
+      reach[n] = !st.r.dead && isFinite(st.r.D[st.idx[e.conclusion]][k]);
+    });
+    var bear = PLEXUS.bearings(st.names, liveLinks());
+    var byPair = {};
+    bear.links.forEach(function (b) { byPair[b.from + "\u0000" + b.to] = b; });
+
+    liveLinks().forEach(function (l) {
+      var A = pos[l[0]], B = pos[l[1]];
+      if (!A || !B) return;
+      var b = byPair[l[0] + "\u0000" + l[1]];
+      var cut = !reach[l[0]] || !reach[l[1]];
+      var col = cut ? "var(--mute)"
+        : b && b.soleRoute ? "var(--hold)"
+        : b && b.bearing < 0.25 ? "var(--spare)" : "var(--share)";
+      out.push('<line x1="' + A.x.toFixed(1) + '" y1="' + A.y.toFixed(1) +
+        '" x2="' + B.x.toFixed(1) + '" y2="' + B.y.toFixed(1) + '" stroke="' + col +
+        '" stroke-width="' + (cut ? 1 : 1.2 + 2.2 * (b ? b.bearing : 0.5)).toFixed(2) +
+        '" stroke-opacity="' + (cut ? ".4" : ".85") +
+        (cut ? '" stroke-dasharray="4 5' : "") + '"/>');
+    });
+
+    st.names.forEach(function (n) {
+      var p = pos[n];
+      if (!p) return;
+      var isSrc = e.sources.indexOf(n) >= 0, isEnd = n === e.conclusion;
+      var col = !reach[n] ? "var(--mute)" : isEnd ? "var(--hold)"
+        : isSrc ? "var(--spare)" : "var(--ink-2)";
+      out.push('<g class="node" data-id="' + esc(n) + '" tabindex="0" role="button" ' +
+        'aria-label="' + esc(n) + (isSrc ? ", a source" : isEnd ? ", the result" : "") +
+        '" opacity="' + (reach[n] ? "1" : ".55") + '">' +
+        '<rect x="' + (p.x - NODE_W / 2).toFixed(1) + '" y="' + (p.y - NODE_H / 2).toFixed(1) +
+        '" width="' + NODE_W + '" height="' + NODE_H + '" rx="9" fill="var(--card-2)" ' +
+        'stroke="' + col + '" stroke-width="' + (isEnd ? 2 : 1.4) + '"/>' +
+        '<text x="' + p.x.toFixed(1) + '" y="' + (p.y + 3.5).toFixed(1) + '" fill="' + col +
+        '" font-size="9.4" text-anchor="middle" font-weight="600">' + esc(n) + '</text>' +
+        '<rect class="hit" x="' + (p.x - NODE_W / 2 - 8).toFixed(1) + '" y="' +
+        (p.y - NODE_H / 2 - 8).toFixed(1) + '" width="' + (NODE_W + 16) +
+        '" height="' + (NODE_H + 16) + '"/></g>');
+    });
+
+    $("#canvas").innerHTML = out.join("");
+    $("#canvas-desc").textContent = e.parts.length + " parts and " +
+      liveLinks().length + " links. " + e.conclusion + " is the result. " +
+      "Drag any part to change how strongly it is connected.";
+
+    var cutOff = st.stranded.length;
+    $("#map-answer").innerHTML = cutOff
+      ? '<div class="big"><em>' + cutOff + '</em> part' + (cutOff === 1 ? " is" : "s are") +
+        ' no longer connected to ' + esc(e.conclusion) + '.</div>' +
+        "<p>They sit along the bottom. Nothing reaches the result through them any more.</p>"
+      : '<div class="big">' + esc(e.name) + ', as it actually fits together.</div>' +
+        "<p>Nothing here was positioned by hand. Drag any part: pull it away to " +
+        "weaken what feeds it, push it toward its source to tighten. Everything " +
+        "else moves because the arithmetic moved.</p>";
+
+    var said = null;
+    st.names.forEach(function (n) {
+      var now = reach[n] ? "ON" : "OFF";
+      if (lastStates[n] === "ON" && now === "OFF" && !said) {
+        said = n + " is now cut off from " + e.conclusion + ".";
+      }
+      lastStates[n] = now;
+    });
+    var el = $("#snap");
+    if (said) { el.textContent = said; el.hidden = false; }
+    else if (!cutOff) { el.hidden = true; }
+  }
+
+  /* ------------------------------------------------------ holding it up -- */
+  function drawHold() {
+    var e = ex(), bear = PLEXUS.bearings(e.parts, liveLinks());
+    var on = bear.links.length, sole = bear.links.filter(function (b) { return b.soleRoute; }).length;
+    var head = !on ? "<em>Nothing left</em>"
+      : sole === on ? "<em>Every one</em> of the " + on + " steps is a single point of failure."
+      : "<em>" + sole + " of " + on + "</em> steps have no way around them.";
+    var sub = !on ? "Every link has been removed."
+      : sole === on ? "Nothing in this is checked against anything else. There is no " +
+          "second route to any part of it."
+      : "The rest share the load with another way through, so losing any one of " +
+        "them would not break it.";
+    if (bear.pieces > 1) {
+      sub = "This is now in " + bear.pieces + " separate pieces. Parts of it can no " +
+            "longer reach the rest, and the total below has dropped by one for each break.";
+    }
+    $("#hold-answer").innerHTML = '<div class="big">' + head + "</div><p>" + sub + "</p>";
+
+    var byI = {};
+    bear.links.forEach(function (b) { byI[b.i] = b; });
+    $("#hold-rows").innerHTML = e.links.map(function (l, i) {
+      if (off[i]) {
+        return '<button class="row" data-i="' + i + '" data-off="1" type="button">' +
+          '<span class="nm"><b>' + esc(l[0]) + '</b><span class="to">to ' + esc(l[1]) +
+          '</span><span class="pct">—</span></span>' +
+          '<span class="say">Removed. Tap to put it back.</span></button>';
+      }
+      var b = byI[i];
+      if (!b) return "";
+      var k = b.soleRoute ? "hold" : b.bearing < 0.25 ? "spare" : "share";
+      var others = Math.max(1, Math.round(1 / b.bearing) - 1);
+      var say = b.soleRoute
+        ? "Nothing else does this. Remove it and this breaks in two."
+        : "There " + (others === 1 ? "is 1 other route" : "are about " + others +
+          " other routes") + " around this step.";
+      return '<button class="row" data-i="' + i + '" data-k="' + k + '" type="button">' +
+        '<span class="nm"><b>' + esc(l[0]) + '</b><span class="to">to ' + esc(l[1]) +
+        '</span><span class="pct">' + Math.round(b.bearing * 100) + '%</span></span>' +
+        '<span class="bar"><i style="width:' + (b.bearing * 100).toFixed(1) + '%"></i></span>' +
+        '<span class="say">' + say + "</span></button>";
+    }).join("");
+
+    $("#hold-tot").innerHTML = "<b>" + bear.total.toFixed(2) + "</b><span>total carried<br>" +
+      bear.parts + " parts − " + bear.pieces + " piece" + (bear.pieces === 1 ? "" : "s") +
+      " = " + bear.expected + ", always</span>";
+  }
+
+  /* --------------------------------------------------------- resting on -- */
+  function drawRest() {
+    var e = ex();
+    var s = PLEXUS.sound(e.parts, liveLinks(), e.sources, e.conclusion);
+    var head, sub;
+    if (!s.support) {
+      head = "<em>Nothing reaches</em> " + esc(e.conclusion) + " any more.";
+      sub = "Every route in has been removed.";
+    } else if (s.restsOnOneThread) {
+      head = "It <em>all</em> rests on one source.";
+      sub = "If that source turned out to be wrong, nothing would be left holding " +
+            esc(e.conclusion) + " up.";
+    } else {
+      head = "The worst single loss costs <em>" + Math.round(s.deepest * 100) + "%</em>.";
+      sub = "If the source it leans on hardest turned out to be wrong, " +
+            Math.round(s.remaining * 100) + "% of the support would remain.";
+    }
+    $("#rest-answer").innerHTML = '<div class="big">' + head + "</div><p>" + sub + "</p>";
+
+    $("#rest-rows").innerHTML = s.bySource.map(function (row) {
+      var k = row.carriesItAlone ? "hold" : row.dependence < 0.25 ? "spare" : "share";
+      var say = row.carriesItAlone
+        ? "Everything comes in this way. There is no other source."
+        : "Lose this and " + Math.round((1 - row.dependence) * 100) +
+          "% of the support would still be there.";
+      return '<div class="row" data-k="' + k + '">' +
+        '<span class="nm"><b>If ' + esc(row.source) + ' were wrong</b>' +
+        '<span class="pct">−' + Math.round(row.dependence * 100) + '%</span></span>' +
+        '<span class="bar"><i style="width:' + (row.dependence * 100).toFixed(1) + '%"></i></span>' +
+        '<span class="say">' + say + "</span></div>";
+    }).join("") || '<div class="row"><span class="say">No sources are listed for this one.</span></div>';
+  }
+
+  /* ------------------------------------------------------------- plumbing -- */
+  function draw() {
+    $("#pick").innerHTML = LIB.map(function (x, i) {
+      return '<button type="button" data-i="' + i + '" aria-pressed="' + (i === pick) +
+        '">' + esc(x.name) + "</button>";
+    }).join("");
+    ["map", "hold", "rest"].forEach(function (t) {
+      $("#tab-" + t).setAttribute("aria-selected", String(t === tab));
+      $("#v-" + t).hidden = t !== tab;
+    });
+    if (tab === "map") drawMap();
+    if (tab === "hold") drawHold();
+    if (tab === "rest") drawRest();
+  }
+
+  $("#pick").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-i]");
+    if (!b) return;
+    pick = +b.dataset.i; off = {}; lastXY = null; lastKeep = null; lastStates = {};
+    draw();
+  });
+  ["map", "hold", "rest"].forEach(function (t) {
+    $("#tab-" + t).addEventListener("click", function () { tab = t; draw(); });
+  });
+  $("#hold-rows").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-i]");
+    if (!b) return;
+    var i = +b.dataset.i;
+    off[i] = !off[i];
+    draw();
+  });
+  function resetAll() { off = {}; LIB = library(); lastStates = {}; draw(); }
+  ["#reset", "#reset2", "#reset3"].forEach(function (s) { $(s).onclick = resetAll; });
+  $("#cut").onclick = function () {
+    var live = ex().links.filter(function (l, i) { return !off[i]; });
+    if (!live.length) return;
+    var weakest = 0, best = Infinity;
+    ex().links.forEach(function (l, i) { if (!off[i] && l[2] < best) { best = l[2]; weakest = i; } });
+    off[weakest] = true;
+    draw();
+  };
+  $("#theme").onclick = function () {
+    var d = document.documentElement;
+    var light = d.getAttribute("data-theme") === "light";
+    d.setAttribute("data-theme", light ? "dark" : "light");
+    $("#theme").textContent = light ? "Light" : "Dark";
+  };
+  $("#text").onclick = function () {
+    var d = document.documentElement, on = d.hasAttribute("data-big");
+    if (on) d.removeAttribute("data-big"); else d.setAttribute("data-big", "1");
+    $("#text").setAttribute("aria-pressed", String(!on));
+  };
+
+  /* dragging changes ONE coupling, not all of them */
+  function svgPoint(ev) {
+    var svg = $("#canvas"), rect = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+    var scale = Math.min(rect.width / vb.width, rect.height / vb.height);
+    var ox = (rect.width - vb.width * scale) / 2, oy = (rect.height - vb.height * scale) / 2;
+    return { x: (ev.clientX - rect.left - ox) / scale, y: (ev.clientY - rect.top - oy) / scale };
+  }
+  $("#stage").addEventListener("pointerdown", function (ev) {
+    var g = ev.target.closest(".node");
+    if (!g) return;
+    var id = g.getAttribute("data-id"), e = ex();
+    var k = -1;
+    e.links.forEach(function (l, i) {
+      if (off[i]) return;
+      if (k < 0 && (l[1] === id || l[0] === id)) k = i;
+    });
+    if (k < 0) return;
+    var other = e.links[k][0] === id ? e.links[k][1] : e.links[k][0];
+    var src = pos[other], p = svgPoint(ev);
+    if (!src) return;
+    drag = { k: k, J0: e.links[k][2], r0: Math.hypot(p.x - src.x, p.y - src.y) || 1, src: src };
+    $("#stage").setPointerCapture(ev.pointerId);
+    ev.preventDefault();
+  });
+  $("#stage").addEventListener("pointermove", function (ev) {
+    if (!drag) return;
+    var p = svgPoint(ev);
+    var r = Math.hypot(p.x - drag.src.x, p.y - drag.src.y) || 1;
+    var ratio = drag.r0 / r;
+    ex().links[drag.k][2] = Math.max(0.01, Math.min(400, drag.J0 * ratio * ratio));
+    drawMap();
+    ev.preventDefault();
+  });
+  ["pointerup", "pointercancel"].forEach(function (n) {
+    $("#stage").addEventListener(n, function () { drag = null; });
+  });
+
+  draw();
+  window.__plexus = {
+    LIB: LIB, PLEXUS: PLEXUS, LMD: LMD, draw: draw, pos: pos,
+    get pick() { return pick; }, set pick(v) { pick = v; off = {}; lastXY = null; draw(); },
+    get tab() { return tab; }, set tab(v) { tab = v; draw(); },
+    get off() { return off; }, toggle: function (i) { off[i] = !off[i]; draw(); },
+    setJ: function (i, J) { LIB[pick].links[i][2] = J; draw(); }
+  };
+})();
+</script>
+
+<script>
+/* Registers only when the page is served (https or localhost). Opened straight
+   from a file there is no service worker, and the app works anyway -- it is one
+   file with everything already in it. */
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>

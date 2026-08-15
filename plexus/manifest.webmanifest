@@ -1,0 +1,14 @@
+{
+  "name": "Plexus",
+  "short_name": "Plexus",
+  "description": "See what a thing is made of, what is holding it up, and what it rests on.",
+  "start_url": "./app.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0F1418",
+  "theme_color": "#0F1418",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
