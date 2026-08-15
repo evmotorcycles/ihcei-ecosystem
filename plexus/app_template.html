@@ -155,6 +155,41 @@ svg{display:block;width:100%;height:100%}
 .note b{display:block;color:var(--share);font-size:.66rem;letter-spacing:.1em;
   text-transform:uppercase;margin:.65rem 0 .2rem}
 .note b:first-child{margin-top:0}
+
+/* --------------------------------------------------------------- editor -- */
+.ed{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+.fl .hint{display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
+  font-weight:400;color:var(--mute);margin-top:.2rem;line-height:1.45}
+.ed input,.ed select{width:100%;min-height:46px;background:var(--card-2);
+  color:var(--ink);border:1px solid var(--edge);border-radius:10px;
+  padding:.5rem .6rem;font:inherit;font-size:.9rem}
+.addrow{display:flex;gap:.4rem}
+.addrow input{flex:1}
+.addrow button,.addrow3 button{min-height:46px;padding:0 1rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:10px;font-size:.86rem;font-weight:600;
+  white-space:nowrap}
+.addrow button:active,.addrow3 button:active{border-color:var(--focus)}
+.addrow3{display:flex;gap:.4rem;flex-wrap:wrap}
+.addrow3 select{flex:1 1 8rem;width:auto}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+.chips:empty{display:none}
+.tag{display:inline-flex;align-items:center;gap:.45rem;min-height:44px;
+  padding:.3rem .65rem;border-radius:99px;font-size:.8rem;color:var(--ink-2);
+  background:var(--card-2);border:1px solid var(--edge)}
+.tag[aria-pressed=true]{border-color:var(--spare);background:var(--spare-soft);
+  color:var(--spare);font-weight:600}
+.tag b{font-weight:600;color:var(--ink)}
+.tag .x{min-width:30px;min-height:30px;font-size:1.15rem;line-height:1;
+  color:var(--mute);border-radius:99px}
+.tag .x:active{color:var(--hold)}
+.err{margin:.85rem 0 0;padding:.6rem .75rem;border-radius:10px;font-size:.84rem;
+  background:var(--hold-soft);border:1px solid var(--hold);color:var(--hold);
+  font-weight:600}
+.saved{margin-bottom:.75rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
   white-space:nowrap}
 </style>
@@ -207,6 +242,54 @@ svg{display:block;width:100%;height:100%}
     <div class="acts"><button id="reset3" type="button">Put everything back</button></div>
   </section>
 
+  <section id="v-own" aria-label="Put in something of your own" hidden>
+    <div class="answer">
+      <div class="big">Put in something of your own.</div>
+      <p>List the parts, say which one is the result, then join up whatever is
+      worked out from whatever. Nothing you type leaves this device.</p>
+    </div>
+
+    <div class="saved" id="own-saved"></div>
+
+    <div class="ed">
+      <label class="fl" for="own-name">What is it?</label>
+      <input id="own-name" type="text" autocomplete="off" placeholder="My water bill">
+
+      <label class="fl" for="own-part">Its parts
+        <span class="hint">Every reading, charge or step printed on it.</span></label>
+      <div class="addrow">
+        <input id="own-part" type="text" autocomplete="off" placeholder="Meter reading">
+        <button id="own-add" type="button">Add</button>
+      </div>
+      <div class="chips" id="own-parts"></div>
+
+      <label class="fl" for="own-result">Which part is the result?
+        <span class="hint">The number at the bottom &mdash; the one everything else adds up to.</span></label>
+      <select id="own-result"></select>
+
+      <label class="fl">Which parts are sources?
+        <span class="hint">Where a figure comes in from outside, rather than being
+        worked out. Tap to turn on or off.</span></label>
+      <div class="chips" id="own-sources"></div>
+
+      <label class="fl">What is worked out from what?
+        <span class="hint">Join two parts when one is used to get the other.</span></label>
+      <div class="addrow3">
+        <select id="own-from" aria-label="From which part"></select>
+        <select id="own-to" aria-label="To which part"></select>
+        <button id="own-link" type="button">Join</button>
+      </div>
+      <div class="chips" id="own-links"></div>
+
+      <p class="err" id="own-err" hidden role="alert"></p>
+
+      <div class="acts">
+        <button id="own-use" type="button">Use this structure</button>
+        <button id="own-clear" type="button">Start over</button>
+      </div>
+    </div>
+  </section>
+
   <div class="note">
     <b>Nothing here was scored</b>
     There is nothing to tune and no weighting to argue with. On the second tab the
@@ -238,7 +321,7 @@ svg{display:block;width:100%;height:100%}
   var VB = { w: 360, h: 340 }, NODE_W = 86, NODE_H = 38, PAD = 16;
 
   /* ------------------------------------------------------------ the data -- */
-  function library() {
+  function builtins() {
     return [
       { name: "An energy bill",
         conclusion: "Amount due",
@@ -274,11 +357,52 @@ svg{display:block;width:100%;height:100%}
         parts: ["Home", "Bus", "Train", "Cycle", "Station", "At the desk"],
         links: [["Home", "Bus", 3], ["Home", "Cycle", 2], ["Bus", "Station", 3],
                 ["Cycle", "Station", 2], ["Station", "Train", 5],
-                ["Train", "At the desk", 5]] }
+                ["Train", "At the desk", 5]] },
+      /* Laid out the way a metered water bill actually reads: two readings give
+         the units, the units and the tariff give the water charge, and sewerage
+         is taken off that same charge rather than measured separately -- which
+         is why one figure ends up carrying most of the bill. */
+      { name: "A water bill",
+        conclusion: "Amount due",
+        sources: ["Previous reading", "Present reading", "Water tariff"],
+        parts: ["Previous reading", "Present reading", "Units used", "Water tariff",
+                "Water charge", "Sewerage charge", "Service fee", "Arrears",
+                "VAT", "Amount due"],
+        links: [["Previous reading", "Units used", 8], ["Present reading", "Units used", 8],
+                ["Units used", "Water charge", 9], ["Water tariff", "Water charge", 9],
+                ["Water charge", "Sewerage charge", 5], ["Water charge", "VAT", 6],
+                ["Sewerage charge", "VAT", 4], ["Water charge", "Amount due", 7],
+                ["Sewerage charge", "Amount due", 5], ["Service fee", "Amount due", 3],
+                ["Arrears", "Amount due", 2], ["VAT", "Amount due", 6]] }
     ];
   }
 
+  /* Structures a person built themselves. localStorage is the whole store:
+     there is no account and no server to sync to, which is the same promise the
+     rest of the app makes. A browser in private mode THROWS on access rather
+     than returning null, so every call is guarded -- the app keeps working and
+     says plainly that it will forget. */
+  var STORE = "plexus.own.v1", SESSION = [];
+
+  function usable(x) {
+    return !!x && typeof x.name === "string" && typeof x.conclusion === "string" &&
+      Array.isArray(x.parts) && Array.isArray(x.links) && Array.isArray(x.sources) &&
+      x.parts.length >= 2 && x.links.length > 0 && x.parts.indexOf(x.conclusion) >= 0;
+  }
+  function loadSaved() {
+    try {
+      var raw = window.localStorage.getItem(STORE);
+      return raw ? JSON.parse(raw).filter(usable) : [];
+    } catch (err) { return []; }
+  }
+  function saveAll(list) {
+    try { window.localStorage.setItem(STORE, JSON.stringify(list)); return true; }
+    catch (err) { return false; }
+  }
+  function library() { return builtins().concat(loadSaved(), SESSION); }
+
   var LIB = library(), pick = 0, tab = "map", off = {};
+  var ed = { parts: [], sources: {}, links: [], result: "" };
   var lastXY = null, lastKeep = null, lastStates = {}, drag = null, pos = {};
 
   function ex() { return LIB[pick]; }
@@ -551,25 +675,189 @@ svg{display:block;width:100%;height:100%}
 
   /* ------------------------------------------------------------- plumbing -- */
   function draw() {
+    var editing = tab === "own";
     $("#pick").innerHTML = LIB.map(function (x, i) {
-      return '<button type="button" data-i="' + i + '" aria-pressed="' + (i === pick) +
-        '">' + esc(x.name) + "</button>";
-    }).join("");
+      return '<button type="button" data-i="' + i + '" aria-pressed="' +
+        (!editing && i === pick) + '">' + esc(x.name) + "</button>";
+    }).join("") + '<button type="button" data-new="1" aria-pressed="' + editing +
+      '">+ Your own</button>';
+    $(".tabs").hidden = editing;
+    $("#v-own").hidden = !editing;
     ["map", "hold", "rest"].forEach(function (t) {
       $("#tab-" + t).setAttribute("aria-selected", String(t === tab));
-      $("#v-" + t).hidden = t !== tab;
+      $("#v-" + t).hidden = editing || t !== tab;
     });
+    if (editing) { drawEditor(); return; }
     if (tab === "map") drawMap();
     if (tab === "hold") drawHold();
     if (tab === "rest") drawRest();
   }
 
   $("#pick").addEventListener("click", function (ev) {
+    if (ev.target.closest("button[data-new]")) { tab = "own"; draw(); return; }
     var b = ev.target.closest("button[data-i]");
     if (!b) return;
     pick = +b.dataset.i; off = {}; lastXY = null; lastKeep = null; lastStates = {};
+    if (tab === "own") tab = "map";
     draw();
   });
+
+  /* ------------------------------------------------------------ your own -- */
+  /* The examples exist to show what the three questions mean. This is what the
+     app is FOR: a person's own bill, plan or argument. It is deliberately the
+     same arithmetic -- nothing here gets a private code path, so a structure
+     someone typed is measured exactly the way the examples are. */
+  function edErr(msg) {
+    var el = $("#own-err");
+    if (!msg) { el.hidden = true; return; }
+    el.textContent = msg;
+    el.hidden = false;
+  }
+
+  function drawEditor() {
+    var saved = loadSaved();
+    $("#own-saved").innerHTML = !saved.length ? "" : '<div class="chips">' +
+      saved.map(function (s, i) {
+        return '<span class="tag"><b>' + esc(s.name) + '</b><button class="x" ' +
+          'type="button" data-forget="' + i + '" aria-label="Forget ' + esc(s.name) +
+          '">&times;</button></span>';
+      }).join("") + "</div>";
+
+    $("#own-parts").innerHTML = ed.parts.map(function (p, i) {
+      return '<span class="tag"><b>' + esc(p) + '</b><button class="x" type="button" ' +
+        'data-drop="' + i + '" aria-label="Remove ' + esc(p) + '">&times;</button></span>';
+    }).join("");
+
+    $("#own-sources").innerHTML = ed.parts.map(function (p) {
+      return '<button class="tag" type="button" data-src="' + esc(p) +
+        '" aria-pressed="' + !!ed.sources[p] + '">' + esc(p) + "</button>";
+    }).join("");
+
+    var opts = ed.parts.map(function (p) {
+      return '<option value="' + esc(p) + '">' + esc(p) + "</option>";
+    }).join("");
+    ["#own-result", "#own-from", "#own-to"].forEach(function (s) { $(s).innerHTML = opts; });
+    if (ed.result && ed.parts.indexOf(ed.result) >= 0) $("#own-result").value = ed.result;
+
+    $("#own-links").innerHTML = ed.links.map(function (l, i) {
+      return '<span class="tag"><b>' + esc(l[0]) + "</b> to <b>" + esc(l[1]) +
+        '</b><button class="x" type="button" data-unlink="' + i +
+        '" aria-label="Unjoin these">&times;</button></span>';
+    }).join("");
+  }
+
+  $("#own-add").onclick = function () {
+    var inp = $("#own-part"), name = inp.value.trim();
+    if (!name) return;
+    /* Two parts with one name would be indexed onto the same node and quietly
+       merge into a structure nobody described. */
+    if (ed.parts.indexOf(name) >= 0) {
+      edErr("There is already a part called " + name + ".");
+      return;
+    }
+    ed.parts.push(name);
+    if (!ed.result) ed.result = name;
+    inp.value = "";
+    inp.focus();
+    edErr("");
+    drawEditor();
+  };
+  $("#own-part").addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter") { ev.preventDefault(); $("#own-add").click(); }
+  });
+  $("#own-result").addEventListener("change", function () { ed.result = this.value; });
+
+  $("#own-link").onclick = function () {
+    var a = $("#own-from").value, b = $("#own-to").value;
+    if (!a || !b) { edErr("Add at least two parts before joining anything."); return; }
+    if (a === b) { edErr("A part cannot be worked out from itself."); return; }
+    var already = ed.links.some(function (l) {
+      return (l[0] === a && l[1] === b) || (l[0] === b && l[1] === a);
+    });
+    if (already) { edErr(a + " and " + b + " are already joined."); return; }
+    ed.links.push([a, b, 1]);
+    edErr("");
+    drawEditor();
+  };
+
+  $("#own-parts").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-drop]");
+    if (!b) return;
+    var gone = ed.parts.splice(+b.dataset.drop, 1)[0];
+    delete ed.sources[gone];
+    ed.links = ed.links.filter(function (l) { return l[0] !== gone && l[1] !== gone; });
+    if (ed.result === gone) ed.result = ed.parts[ed.parts.length - 1] || "";
+    edErr("");
+    drawEditor();
+  });
+  $("#own-sources").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-src]");
+    if (!b) return;
+    var n = b.getAttribute("data-src");
+    if (ed.sources[n]) delete ed.sources[n]; else ed.sources[n] = true;
+    /* Flipped in place rather than by redrawing the row. Re-rendering the whole
+       list replaces the very button that was just pressed, so keyboard focus
+       falls back to the top of the page on every toggle -- found by driving it,
+       because with a mouse it looks like it works. */
+    b.setAttribute("aria-pressed", String(!!ed.sources[n]));
+  });
+  $("#own-links").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-unlink]");
+    if (!b) return;
+    ed.links.splice(+b.dataset.unlink, 1);
+    edErr("");
+    drawEditor();
+  });
+  $("#own-saved").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-forget]");
+    if (!b) return;
+    var list = loadSaved();
+    list.splice(+b.dataset.forget, 1);
+    saveAll(list);
+    LIB = library();
+    if (pick >= LIB.length) pick = 0;
+    draw();
+  });
+  $("#own-clear").onclick = function () {
+    ed = { parts: [], sources: {}, links: [], result: "" };
+    $("#own-name").value = "";
+    edErr("");
+    drawEditor();
+  };
+
+  $("#own-use").onclick = function () {
+    if (ed.parts.length < 2) { edErr("Add at least two parts first."); return; }
+    if (!ed.links.length) {
+      edErr("Join at least two parts, or there is nothing to work out.");
+      return;
+    }
+    var result = ed.result || $("#own-result").value;
+    if (ed.parts.indexOf(result) < 0) { edErr("Choose which part is the result."); return; }
+    var item = {
+      name: $("#own-name").value.trim() || "My structure",
+      conclusion: result,
+      sources: ed.parts.filter(function (p) { return ed.sources[p] && p !== result; }),
+      parts: ed.parts.slice(),
+      links: ed.links.map(function (l) { return [l[0], l[1], l[2]]; })
+    };
+    var list = loadSaved();
+    list.push(item);
+    var kept = saveAll(list);
+    if (!kept) SESSION.push(item);
+    LIB = library();
+    pick = LIB.length - 1;
+    off = {}; lastXY = null; lastKeep = null; lastStates = {};
+    tab = "map";
+    draw();
+    /* Said out loud rather than swallowed: a private-mode browser refuses to
+       store, and a person who thinks their work is saved when it is not has
+       been misled by the app. */
+    if (!kept) {
+      $("#snap").textContent = "This browser will not let the app store anything, so " +
+        item.name + " will be gone when the tab closes.";
+      $("#snap").hidden = false;
+    }
+  };
   ["map", "hold", "rest"].forEach(function (t) {
     $("#tab-" + t).addEventListener("click", function () { tab = t; draw(); });
   });
@@ -641,7 +929,15 @@ svg{display:block;width:100%;height:100%}
 
   draw();
   window.__plexus = {
-    LIB: LIB, PLEXUS: PLEXUS, LMD: LMD, draw: draw, pos: pos,
+    PLEXUS: PLEXUS, LMD: LMD, draw: draw, pos: pos,
+    /* A getter, not a snapshot. LIB is REASSIGNED every time a structure is
+       saved or forgotten, so a plain reference would go stale at exactly the
+       moment a person starts using their own data -- the same mistake as the
+       stale mesh reference in SMI, which reported a measurement that was no
+       longer the one on screen. */
+    get LIB() { return LIB; },
+    get editor() { return ed; },
+    STORE: STORE,
     get pick() { return pick; }, set pick(v) { pick = v; off = {}; lastXY = null; draw(); },
     get tab() { return tab; }, set tab(v) { tab = v; draw(); },
     get off() { return off; }, toggle: function (i) { off[i] = !off[i]; draw(); },

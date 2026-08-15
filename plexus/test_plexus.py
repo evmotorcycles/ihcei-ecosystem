@@ -45,6 +45,15 @@ STRUCTURES = [
       ("Standing charge", "Subtotal", 3.0), ("Subtotal", "VAT", 6.0),
       ("Subtotal", "Amount due", 6.0), ("VAT", "Amount due", 6.0),
       ("Late fee", "Amount due", 0.4)]),
+    ("a water bill",
+     ["Previous reading", "Present reading", "Units used", "Water tariff",
+      "Water charge", "Sewerage charge", "Service fee", "Arrears", "VAT", "Amount due"],
+     [("Previous reading", "Units used", 8.0), ("Present reading", "Units used", 8.0),
+      ("Units used", "Water charge", 9.0), ("Water tariff", "Water charge", 9.0),
+      ("Water charge", "Sewerage charge", 5.0), ("Water charge", "VAT", 6.0),
+      ("Sewerage charge", "VAT", 4.0), ("Water charge", "Amount due", 7.0),
+      ("Sewerage charge", "Amount due", 5.0), ("Service fee", "Amount due", 3.0),
+      ("Arrears", "Amount due", 2.0), ("VAT", "Amount due", 6.0)]),
 ]
 
 CLAIMS = [
@@ -59,6 +68,14 @@ CLAIMS = [
     ("long names that share a prefix", "The result",
      ["Source alpha", "Source alpha two"],
      [("The result", "Source alpha", 2.0), ("The result", "Source alpha two", 2.0)]),
+    ("the water bill", "Amount due",
+     ["Previous reading", "Present reading", "Water tariff"],
+     [("Previous reading", "Units used", 8.0), ("Present reading", "Units used", 8.0),
+      ("Units used", "Water charge", 9.0), ("Water tariff", "Water charge", 9.0),
+      ("Water charge", "Sewerage charge", 5.0), ("Water charge", "VAT", 6.0),
+      ("Sewerage charge", "VAT", 4.0), ("Water charge", "Amount due", 7.0),
+      ("Sewerage charge", "Amount due", 5.0), ("Service fee", "Amount due", 3.0),
+      ("Arrears", "Amount due", 2.0), ("VAT", "Amount due", 6.0)]),
 ]
 
 
@@ -145,6 +162,80 @@ def test_the_page_states_what_it_cannot_tell_you():
     assert "Whether a step is <em>useful</em>" in src
     assert "only knows the parts you entered" in src
     assert "Nothing leaves this device" in src
+
+
+def test_every_script_is_inline_because_the_csp_forbids_external_ones():
+    """A near miss, caught before it shipped.
+
+    The CSP is script-src 'unsafe-inline' with NO 'self'. That permits inline
+    <script> blocks and forbids <script src="...">, same origin included. A
+    build that splits the engines out into lmd.js and engines.js and links them
+    serves a page whose scripts are all blocked: LMD and PLEXUS never define,
+    nothing draws, and the HTML itself still returns 200 with the right bytes.
+    It looks like a working deploy and is a blank screen.
+
+    That is why index.html is 65 KB rather than 30 KB. The size is the point:
+    everything the page needs is inside the file the CSP already trusts.
+    """
+    import re
+    src = open(os.path.join(HERE, "index.html"), encoding="utf-8").read()
+    external = re.search(r"<script[^>]+\bsrc\s*=", src)
+    assert not external, "an external script cannot load under this CSP"
+
+    csp = None
+    for rule in _vercel()["headers"]:
+        for h in rule["headers"]:
+            if h["key"] == "Content-Security-Policy":
+                csp = h["value"]
+    assert "script-src 'unsafe-inline'" in csp
+    assert "script-src 'self'" not in csp, \
+        "if this ever gains 'self', the inlining rule above stops being load-bearing"
+
+
+def test_a_person_can_put_in_their_own_structure():
+    """The examples exist to show what the three questions mean. Without this
+    the app is a demo: someone holding a bill it does not already know about
+    has nothing to do with it."""
+    src = open(os.path.join(HERE, "app_template.html"), encoding="utf-8").read()
+    for hook in ('id="v-own"', 'id="own-name"', 'id="own-part"', 'id="own-add"',
+                 'id="own-result"', 'id="own-sources"', 'id="own-from"',
+                 'id="own-to"', 'id="own-link"', 'id="own-use"', 'id="own-clear"',
+                 'id="own-err"', 'id="own-saved"'):
+        assert hook in src, f"the editor is missing {hook}"
+    assert "+ Your own" in src, "there is no way to reach the editor"
+    assert "A part cannot be worked out from itself" in src, "self-links are not rejected"
+    assert "There is already a part called" in src, "duplicate names are not rejected"
+
+
+def test_marking_a_source_does_not_destroy_the_button_that_was_pressed():
+    """Found by driving the built page; invisible with a mouse.
+
+    Toggling a source re-rendered the whole row with innerHTML, which replaces
+    the very button just pressed. Keyboard focus drops to the top of the page on
+    every toggle, and a driven run marked only the FIRST of two sources because
+    the rest of the list had been detached from the document mid-loop. In an app
+    whose controls carry a 44px floor for unsteady hands, throwing focus away on
+    every tap is the same defect wearing different clothes. Flipped in place now.
+    """
+    src = open(os.path.join(HERE, "app_template.html"), encoding="utf-8").read()
+    i = src.index('$("#own-sources").addEventListener')
+    body = src[i:src.index("});", i)]
+    assert 'b.setAttribute("aria-pressed"' in body, "the flag is not flipped in place"
+    assert "drawEditor()" not in body, \
+        "re-rendering the row destroys the button that was pressed"
+
+
+def test_what_a_person_types_stays_on_their_device():
+    """Same promise as the rest of the app, now that there is something worth
+    keeping. A private-mode browser THROWS on localStorage rather than returning
+    null, so unguarded access would break the editor for the people most likely
+    to care about where their bill goes."""
+    src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
+    assert '"plexus.own.v1"' in src
+    assert "localStorage" in src
+    assert "catch (err) { return []; }" in src, "private mode would throw uncaught"
+    assert "will be gone when the tab closes" in src, \
+        "a failed save must be said out loud, not swallowed"
 
 
 def test_every_control_is_at_least_44px():

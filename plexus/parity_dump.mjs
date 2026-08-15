@@ -28,6 +28,15 @@ const STRUCTURES = [
     ["Standing charge", "Subtotal", 3], ["Subtotal", "VAT", 6],
     ["Subtotal", "Amount due", 6], ["VAT", "Amount due", 6],
     ["Late fee", "Amount due", 0.4]]],
+  ["a water bill",
+   ["Previous reading", "Present reading", "Units used", "Water tariff",
+    "Water charge", "Sewerage charge", "Service fee", "Arrears", "VAT", "Amount due"],
+   [["Previous reading", "Units used", 8], ["Present reading", "Units used", 8],
+    ["Units used", "Water charge", 9], ["Water tariff", "Water charge", 9],
+    ["Water charge", "Sewerage charge", 5], ["Water charge", "VAT", 6],
+    ["Sewerage charge", "VAT", 4], ["Water charge", "Amount due", 7],
+    ["Sewerage charge", "Amount due", 5], ["Service fee", "Amount due", 3],
+    ["Arrears", "Amount due", 2], ["VAT", "Amount due", 6]]],
 ];
 
 const CLAIMS = [
@@ -42,6 +51,14 @@ const CLAIMS = [
   ["long names that share a prefix", "The result",
    ["Source alpha", "Source alpha two"],
    [["The result", "Source alpha", 2], ["The result", "Source alpha two", 2]]],
+  ["the water bill", "Amount due",
+   ["Previous reading", "Present reading", "Water tariff"],
+   [["Previous reading", "Units used", 8], ["Present reading", "Units used", 8],
+    ["Units used", "Water charge", 9], ["Water tariff", "Water charge", 9],
+    ["Water charge", "Sewerage charge", 5], ["Water charge", "VAT", 6],
+    ["Sewerage charge", "VAT", 4], ["Water charge", "Amount due", 7],
+    ["Sewerage charge", "Amount due", 5], ["Service fee", "Amount due", 3],
+    ["Arrears", "Amount due", 2], ["VAT", "Amount due", 6]]],
 ];
 
 process.stdout.write(JSON.stringify({

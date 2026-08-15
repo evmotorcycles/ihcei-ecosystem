@@ -143,7 +143,7 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v2";
+var CACHE = "plexus-v3";
 var FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg",
              "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
