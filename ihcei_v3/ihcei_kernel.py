@@ -1,7 +1,7 @@
 """
 IHCEI_kernel_v2.py
 ==================
-Integrated Human Cognitive Epistemological Interface
+Integrated Human Epistemological Interface
 Constitutional Kernel v2.3 — OQM-Retrained · Two-Regime Addendum
  — OQM-Retrained
 
@@ -25,8 +25,8 @@ pilot (SHA-locked) is untouched — the floor is regime-agnostic at D→0.
 
 NOMENCLATURE CORRECTION (v2.0 — mandatory architectural update)
 ----------------------------------------------------------------
-Previous label:  "Integrated Human-Centric Ethical Intelligence"
-Correct label:   "Integrated Human Cognitive Epistemological Interface"
+Previous label:  "Integrated Human Epistemological Interface"
+Correct label:   "Integrated Human Epistemological Interface"
 
 This is not a semantic update. It is an architectural correction:
 

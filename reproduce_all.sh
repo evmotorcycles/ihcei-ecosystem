@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 # =============================================================================
 # reproduce_all.sh -- ONE command to reproduce EVERY test across the Novora /
-# IHCEI stack. No API keys, no network. Requires: python3, node (>=18), pytest.
+# IHCEI stack. No API keys, no network.
+#
+# Requires: python3, node (>=18), and the packages in requirements.txt. Most
+# suites are pure stdlib; a handful are not, and without them the run fails with
+# bare ModuleNotFoundError in seven places, which looks like a broken repository
+# rather than a missing install. The preflight check below names what is missing.
 #
 #   bash reproduce_all.sh
 #
@@ -29,6 +34,29 @@ echo "========================================================================"
 echo " NOVORA / IHCEI — full reproducibility run"
 echo " python: $(python3 --version 2>&1 | tr -d '\n')   node: $(node --version)"
 echo "========================================================================"
+
+# --- preflight: name missing packages instead of failing seven suites cryptically
+missing=$(python3 - <<'PY'
+import importlib
+need = {"numpy":"numpy","scipy":"scipy","pandas":"pandas","statsmodels":"statsmodels",
+        "networkx":"networkx","sklearn":"scikit-learn","jax":"jax","openpyxl":"openpyxl"}
+out = []
+for mod, pkg in need.items():
+    try:
+        importlib.import_module(mod)
+    except Exception:
+        out.append(pkg)
+print(" ".join(out))
+PY
+)
+if [ -n "$missing" ]; then
+  echo
+  echo "  NOTE: these Python packages are missing: $missing"
+  echo "        Install them first, or the suites that need them will FAIL on import:"
+  echo "          python3 -m pip install -r requirements.txt"
+  echo "        Everything else below still runs and is unaffected."
+  echo
+fi
 
 bar; echo "  NERE / IHCEI kernel (Python)"; bar
 run "ihcei_v3: NERE/IHCEI kernel"        py ihcei_v3/test_ihcei_nere_v3.py
@@ -79,14 +107,44 @@ run "biomedical-agency: 4 telemetry laws on real yeast/PubMed/bioRxiv/GitHub (OQ
 run "bell-telemetry: Bell/CHSH nonlocality as device-independent telemetry (classical 2, quantum 2√2, PR-box rejected)" py bell-telemetry/test_bell.py
 run "knowledge-breakthroughs: status vs fidelity on real GitHub/HF/bioRxiv/PubMed — thesis FALSIFIED, null locked" py knowledge-breakthroughs/test_knowledge.py
 run "cohort-audit: Yeast 4825 / GitHub 992 / swarm evidentiary audit — gaps + simulations locked" py cohort-audit/test_cohort_audit.py
-run "cohort-audit: gap closure — yeast outcome CLOSED, GitHub 992 still open, G2 miss recorded" py cohort-audit/test_gap_closure.py
+run "cohort-audit: gap closure — yeast outcome + GitHub 992 CLOSED (rows committed)" py cohort-audit/test_gap_closure.py
+run "cohort-audit: N=992 independent re-analysis — summary recomputes from raw rows" py cohort-audit/test_992.py
 run "ei-dashboards: ASSAY — real stack over real Qwen+DeepSeek repos + offline dashboards" node_test ei-dashboards/assay.test.mjs
 run "cairn: EI engine + Hinton Grand Canyon test (anti-overclaim control locked)" py cairn/test_ei_llm.py
+run "cairn: the handles — a 5/5 fabrication still hands over what kills it" py cairn/test_handles.py
+run "cairn: the handles reach the screen in both browser apps" py cairn/test_handles_gui.py
 run "cairn CI: centric intelligence on real Qwen+DeepSeek — calibration gate FALSIFIED, locked" py cairn/test_ci.py
+run "safety-coverage: does the warning fire? baseline 61% miss -> 4% on a sealed set" py safety-coverage/test_coverage.py
+run "weir: the gate — refused requests provably never reach upstream" node_test weir/weir.test.mjs
+run "weir: control panel agrees with the gate on every path and method" node_test weir/panel_parity.test.mjs
+run "weir: the stop card — a refusal to guess renders as a result, not a crash" py weir/test_stop.py
+run "governance-os: structural test — interposition real, mandatory routing still missing" node_test governance-os/os.test.mjs
+run "keel: the governance kernel — one way in, six stages, every stage can only refuse" node_test keel/kernel.test.mjs
+run "keel: the shipped single file is the tested one" py keel/test_exe.py
+run "keel: the kernel audited from outside itself + the pre-registered NULL" py keel/test_audit.py
+run "keel: the console — three engines on one page, driven in a browser" py keel/test_console.py
+run "smi: LMD metric engine — the -0.5 slope is an identity, and two spec bugs" py smi/test_smi.py
+run "smi: browser engine matches the JAX engine over 14 graphs (<1e-9)" py smi/test_parity.py
+run "swarm-lmd: coupling + decay re-run — S2 predicted and FAILED, dataset generated" py swarm-lmd/test_swarm.py
+run "ncu: the firewall — layer-1 telemetry to metaphor, one direction only" py ncu/test_ncu.py
+run "launcher: the front door — every link opens, no jargon reaches it" py test_launcher.py
+run "layers: IHCEI/NERE stay infrastructure; the desks stay jargon-free" py test_layers.py
+run "growth-study: composition by era + whether the evidence exists (pre-registered)" py growth-study/test_growth.py
+run "governance-learning: 6 obligations inside a learner (pre-registered)" py governance-learning/test_gla.py
+run "readers: documents, data, code, transcripts — every reader declares its blind spots" node_test readers/readers.test.mjs
+run "website: self-contained, links resolve, limits and failed gate on the page" py website/test_website.py
+run "novora-suite: browser bundle parity with the tested engine (9 products)" node_test novora-suite/test_bundle_parity.mjs
+run "novora-suite: offline nine-product GUI — abstains, no network, no key" py novora-suite/test_suite_html.py
+run "cairn: browser engine parity with the audited Python engine (20 cases)" py cairn/test_parity.py
+run "cairn: plain-language browser app — offline, measured numbers, limits kept" py cairn/test_plain.py
+run "plumb: governance language semantics + out-of-sample cohort B (pre-registered)" py plumb/test_plumb.py
+run "plumb: governance obligations inside ordinary Python (RT vs Governance)" py plumb/test_governance.py
+run "plumb: the handles obligation — a count never travels without what it counted" py plumb/test_handles.py
 run "biorxiv-lism: tau_v publication-latency law on real bioRxiv (pre-registered)" py biorxiv-lism/test_biorxiv.py
 run "pubmed-lism: retraction failure-burden concentration on real PubMed (pre-registered)" py pubmed-lism/test_pubmed.py
 run "github-lism: engagement + backlog heavy-tail on real GitHub cohort (pre-registered)" py github-lism/test_github.py
 run "openalex-lism: pre-registered NULL (locked gate not met, zero-inflated) reported honestly" py openalex-lism/test_openalex.py
+run "text-channel: pre-registered textual claims — 1 untestable, 1 marginal, 1 not operationalised" py text-channel/test_text_channel.py
 run "qg-cos: 5 questions + Iqra + Nafs/Iblees" py qg-cos/test_five_questions.py qg-cos/test_iqra_channel.py qg-cos/test_nafs_iblees.py
 run "repro: tau_v + yeast + CI attest"   py repro/test_reproduce.py
 run "lism-cohorts: 4-cohort E=U*D meta (pre-registered)" py lism-cohorts/test_meta_lism.py

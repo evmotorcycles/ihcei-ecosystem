@@ -1,0 +1,5 @@
+{
+  "prereg_sha256": "8ac051f268460b4d119770b8caf9722c523a360612c8b7348c4954ad483aaea9",
+  "locked_utc": "2026-08-11T13:40:04Z",
+  "note": "Locked before os_check.mjs was run."
+}

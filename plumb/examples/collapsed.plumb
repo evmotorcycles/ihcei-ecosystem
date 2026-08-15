@@ -1,0 +1,14 @@
+# collapsed.plumb -- NEGATIVE CONTROL, expected to HALT.
+#
+# Both fidelity legs are read from the same column. In an RT language this runs
+# fine and prints a confident number twice. In Plumb it is a halt: a verdict
+# that consults one source twice is not two-hop, and the interpreter says so.
+
+plumb "collapsed-legs" {
+  capacity  U from field "stars"
+  encode    Denc from ratio "forks"/"stars"
+  decode    Ddec from ratio "forks"/"stars"
+  floor 0.02
+  independent encode decode
+  receipt
+}

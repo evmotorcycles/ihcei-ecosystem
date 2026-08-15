@@ -53,7 +53,7 @@
         "rows": 28,
         "has_survival_label": false
       },
-      "govphys_quadratic_results.csv": {
+      "cohort-audit/data/govphys_quadratic_results.csv": {
         "rows": 992,
         "has_survival_label": true
       }
@@ -93,7 +93,7 @@
     "simulations": [],
     "pass": true
   },
-  "note": "Yeast channel invariants are backed by committed real STRING v12 data (VIF 1.0026 at N=4825). The yeast OUTCOME coupling and the entire N=992 GitHub cohort are NOT offline-reproducible from this repository. The digital swarm is a seeded simulation. This does not disprove the LISM mathematics; it establishes precisely what this repository can substantiate offline.",
+  "note": "Yeast channel invariants are backed by committed real STRING v12 data (VIF 1.0026 at N=4825). Every cohort claim above is now backed by committed rows. This establishes precisely what this repository can substantiate offline, and nothing beyond it.",
   "honest_reporting": true,
   "pass": true
 }

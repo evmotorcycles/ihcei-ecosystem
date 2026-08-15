@@ -1,0 +1,9 @@
+{
+  "prereg_file": "text-channel/PREREG.md",
+  "prereg_sha256": "ac3528cd5ec6890c2afd64072a5a8c5a78c057c3a6baa12014f23ee70740b0fd",
+  "corpus_file": "text-channel/data/quran-uthmani.xml",
+  "corpus_sha256": "bb2fe2b9e86b532228d7f74005080c1679c14aa2da6024fe30d29772f4f5b189",
+  "corpus_md5_published": "6aae945d556a1b28cfe682c0ea5ab518",
+  "locked_utc": "2026-08-10T17:51:49Z",
+  "note": "Locked BEFORE the Claim-2 test statistic was computed. Claim 1 counts were taken before this file existed and are marked DESCRIPTIVE in Section B."
+}

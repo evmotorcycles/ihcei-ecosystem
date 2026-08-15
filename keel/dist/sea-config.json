@@ -1,0 +1,5 @@
+{
+  "main": "keel.cjs",
+  "output": "keel.blob",
+  "disableExperimentalSEAWarning": true
+}

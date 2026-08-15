@@ -1,0 +1,7 @@
+{
+  "prereg_sha256": "346269b975f4b5b2fdc5e9eb70d92d8bfb4feb60f2c0956b95c43fd3d9c9b342",
+  "corpus_sha256": "2b6c13312be180ba421637a344ff27e52ac22050836aa489a3284338e788a595",
+  "baseline_lexicon_sha256": "8a3b5cbabef7e2c3b6fb75deff17d60d93ede144482cae946db3332a35670685",
+  "locked_utc": "2026-08-11T13:36:47Z",
+  "note": "Locked BEFORE the lexicon was changed and BEFORE the sealed set was scored."
+}

@@ -1,0 +1,11 @@
+{
+  "prereg_sha256": "ed1b92d1af416983b4761171f835fe6dfbd64d229ae109d88f22c1f6e6e09ebb",
+  "cohorts": {
+    "ei-dashboards/data/qwen_deepseek_frozen.json": "fb05a3d05be43ce574fa80179053783cff9587455e636764f8aede1bb015680a",
+    "github-lism/data/github_cohort_frozen.json": "d5b105905cab0460208d337e278d03817c5362279091295006d8a421d20d1564",
+    "hf-cohort/data/hf_cohort_frozen.json": "537bfb3de2c9852c5a0f81b954195bdb9c49d5988b82d5c0a24912ad8d48818b",
+    "hf-media/data/hf_media_cohort_frozen.json": "3885e06905d1d067fc07b63fa3376464711835ac7c242d213dfaa252d46a5909"
+  },
+  "locked_utc": "2026-08-11T11:58:51Z",
+  "note": "Locked BEFORE any statistic was computed."
+}

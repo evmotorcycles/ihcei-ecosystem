@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#12100E">
+<title>SPAR — what is holding this up</title>
+<meta name="description" content="For any process, which steps actually carry it and which have alternatives. Nothing is scored; the numbers come out of the structure.">
+<style>
+:root{
+  --bg:#12100E; --panel:#1B1815; --panel-2:#171412; --line:#2C2721; --edge:#3B342C;
+  --ink:#F2EDE6; --ink-2:#B8AB9B; --stone:#87796A;
+  --sole:#E0533D;      /* no alternative route */
+  --sole-soft:#33150F;
+  --shared:#C9A227;    /* one of several */
+  --shared-soft:#2B2208;
+  --spare:#5C9E7A;     /* mostly redundant */
+  --spare-soft:#12271D;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+:root[data-theme="light"]{
+  --bg:#F6F2EC; --panel:#FFFFFF; --panel-2:#FBF8F3; --line:#E3DBD0; --edge:#CFC4B5;
+  --ink:#1A1613; --ink-2:#544A40; --stone:#7A6C5D;
+  --sole:#B3341F; --sole-soft:#FBE5E0;
+  --shared:#8A6E0C; --shared-soft:#FAF1D4;
+  --spare:#2F6B4C; --spare-soft:#E0F0E7;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit}
+
+.top{padding:.8rem .9rem;border-bottom:1px solid var(--line);background:var(--panel-2);
+  padding-top:max(.8rem,env(safe-area-inset-top));display:flex;align-items:baseline;gap:.6rem}
+h1{margin:0;font-size:1.05rem;font-weight:660;letter-spacing:-.015em}
+.top .sub{color:var(--stone);font-size:.74rem}
+.sp{flex:1}
+.gh{background:none;border:1px solid var(--line);color:var(--stone);border-radius:99px;
+  padding:.3rem .7rem;font-size:.74rem;min-height:32px}
+
+.wrap{padding:.9rem .9rem calc(2rem + env(safe-area-inset-bottom));max-width:44rem;margin:0 auto}
+
+.pick{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem}
+.pick button{flex:1 1 auto;min-height:42px;background:var(--panel);border:1px solid var(--edge);
+  border-radius:11px;padding:.45rem .7rem;font-size:.82rem}
+.pick button[aria-pressed=true]{border-color:var(--sole);background:var(--sole-soft);color:var(--ink)}
+
+.head{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:.8rem .85rem;margin-bottom:.8rem}
+.head .big{font-size:1.5rem;font-weight:680;line-height:1.15;letter-spacing:-.02em}
+.head .big em{font-style:normal;color:var(--sole)}
+.head p{margin:.4rem 0 0;color:var(--ink-2);font-size:.86rem}
+
+.rows{display:flex;flex-direction:column;gap:.4rem}
+.row{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:.6rem .7rem;display:block;width:100%;text-align:left}
+.row:active{border-color:var(--edge)}
+.row .nm{display:flex;gap:.5rem;align-items:baseline;font-size:.88rem}
+.row .nm b{font-weight:600}
+.row .nm .to{color:var(--stone)}
+.row .pct{margin-left:auto;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:.94rem;font-weight:640}
+.bar{height:7px;border-radius:99px;background:var(--panel-2);margin-top:.42rem;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.row .say{font-size:.74rem;color:var(--stone);margin-top:.32rem}
+.row[data-k=sole] .pct{color:var(--sole)}   .row[data-k=sole] .bar i{background:var(--sole)}
+.row[data-k=shared] .pct{color:var(--shared)} .row[data-k=shared] .bar i{background:var(--shared)}
+.row[data-k=spare] .pct{color:var(--spare)} .row[data-k=spare] .bar i{background:var(--spare)}
+.row[data-off=1]{opacity:.42}
+.row[data-off=1] .say{color:var(--sole)}
+
+.tot{margin-top:.85rem;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:.65rem .8rem;display:flex;gap:.9rem;align-items:baseline;flex-wrap:wrap}
+.tot b{font-family:var(--mono);font-size:1.15rem;font-variant-numeric:tabular-nums}
+.tot span{color:var(--stone);font-size:.76rem}
+.tot .delta{color:var(--sole);font-weight:600;font-size:.8rem}
+
+.acts{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:44px;background:var(--panel);border:1px solid var(--edge);
+  border-radius:11px;padding:.5rem .7rem;font-size:.84rem}
+
+.note{margin-top:1.1rem;background:var(--panel);border:1px solid var(--line);
+  border-left:3px solid var(--shared);border-radius:0 12px 12px 0;padding:.7rem .8rem;
+  font-size:.8rem;line-height:1.6;color:var(--ink-2)}
+.note b{display:block;color:var(--shared);font-size:.66rem;letter-spacing:.09em;
+  text-transform:uppercase;margin:.6rem 0 .2rem}
+.note b:first-child{margin-top:0}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>SPAR</h1><span class="sub">what is holding this up</span>
+  <span class="sp"></span>
+  <button class="gh" id="theme" type="button">Light</button>
+</div>
+
+<div class="wrap">
+  <div class="pick" id="pick"></div>
+  <div class="head" id="head"></div>
+  <div class="rows" id="rows"></div>
+  <div class="tot" id="tot"></div>
+  <div class="acts">
+    <button id="reset" type="button">Put everything back</button>
+  </div>
+
+  <div class="note">
+    <b>What the number is</b>
+    How often this step is the one carrying the process — counted over every way
+    the process could hold together. <b style="display:inline;text-transform:none;letter-spacing:0;font-size:inherit;color:var(--sole)">100%</b>
+    means there is no other route: remove it and the process breaks in two.
+    <b>Nothing here was scored</b>
+    There are no weightings to argue with and nothing to tune. The percentages
+    add up to the number of steps minus the number of separate pieces, always,
+    as a matter of arithmetic — so no step can be made to look more important
+    without another looking less.
+    <b>Turning everything up does nothing</b>
+    Multiply the strength of every link by any number you like and not one
+    percentage moves.
+    <b>What it does not tell you</b>
+    Whether a step is <em>useful</em>. A required form that changes no outcome
+    still reads 100%, because removing it does break the chain. That is a true
+    statement about the structure and about nothing else.
+  </div>
+</div>
+
+<script>{{LMD}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+
+  /* ------------------------------------------------------- the examples -- */
+  var EXAMPLES = [
+    { name: "A utility bill",
+      steps: ["Meter reading", "Unit rate", "Standing charge", "Subtotal",
+              "VAT", "Late fee", "Amount due"],
+      links: [["Meter reading", "Subtotal", 8], ["Unit rate", "Subtotal", 8],
+              ["Standing charge", "Subtotal", 3], ["Subtotal", "VAT", 6],
+              ["Subtotal", "Amount due", 6], ["VAT", "Amount due", 6],
+              ["Late fee", "Amount due", 0.4]] },
+    { name: "A complaint",
+      steps: ["Complaint filed", "Acknowledgement", "Triage", "Team A review",
+              "Team B review", "Manager sign-off", "Outcome letter"],
+      links: [["Complaint filed", "Acknowledgement", 5], ["Acknowledgement", "Triage", 5],
+              ["Triage", "Team A review", 4], ["Triage", "Team B review", 4],
+              ["Team A review", "Manager sign-off", 4],
+              ["Team B review", "Manager sign-off", 4],
+              ["Manager sign-off", "Outcome letter", 5]] },
+    /* Route redundancy, which is what this measures, and nothing more. An
+       earlier third example here was labelled "is it corroborated?" and had to
+       be removed: the measure gets evidential independence BACKWARDS, because
+       independent sources form a tree and a shared origin closes a cycle. */
+    { name: "One supplier or three",
+      steps: ["Order", "Supplier A", "Supplier B", "Supplier C",
+              "Warehouse", "Sole courier", "Your door"],
+      links: [["Order", "Supplier A", 2], ["Order", "Supplier B", 2],
+              ["Order", "Supplier C", 2], ["Supplier A", "Warehouse", 2],
+              ["Supplier B", "Warehouse", 2], ["Supplier C", "Warehouse", 2],
+              ["Warehouse", "Sole courier", 3], ["Sole courier", "Your door", 3]] }
+  ];
+
+  var pick = 0, off = {};
+
+  function live(ex) {
+    return ex.links.filter(function (l, i) { return !off[i]; });
+  }
+
+  /* bearing = weight x resistance = how often this link is the one carrying it */
+  function measure(ex) {
+    var steps = ex.steps, idx = function (n) { return steps.indexOf(n); };
+    var ls = live(ex);
+    if (!ls.length) return { rows: [], total: 0, pieces: steps.length, steps: steps.length };
+    var L = LMD.laplacianFromEdges(steps.length,
+      ls.map(function (l) { return [idx(l[0]), idx(l[1]), l[2]]; }));
+    var r = LMD.meshMetric(L);
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rows = [], total = 0;
+    ex.links.forEach(function (l, i) {
+      if (off[i]) { rows.push({ i: i, from: l[0], to: l[1], off: true }); return; }
+      var d = r.D[idx(l[0])][idx(l[1])];
+      var b = l[2] * d * d;
+      total += b;
+      rows.push({ i: i, from: l[0], to: l[1], bearing: b, off: false });
+    });
+    return { rows: rows, total: total, pieces: pieces, steps: steps.length };
+  }
+
+  function kind(b) { return b >= 0.999 ? "sole" : b < 0.25 ? "spare" : "shared"; }
+
+  function says(b, m) {
+    if (b >= 0.999) return "Nothing else does this. Remove it and the process breaks in two.";
+    var others = Math.max(1, Math.round(1 / b) - 1);
+    return "There " + (others === 1 ? "is 1 other route" : "are about " + others +
+           " other routes") + " around this step.";
+  }
+
+  function draw() {
+    var ex = EXAMPLES[pick], m = measure(ex);
+
+    $("#pick").innerHTML = EXAMPLES.map(function (e, i) {
+      return '<button type="button" data-i="' + i + '" aria-pressed="' +
+             (i === pick) + '">' + e.text0 + e.name + "</button>";
+    }).join("").replace(/undefined/g, "");
+
+    var solo = m.rows.filter(function (r) { return !r.off && r.bearing >= 0.999; }).length;
+    var on = m.rows.filter(function (r) { return !r.off; }).length;
+    var headline, sub;
+    if (!on) {
+      headline = "<em>Nothing left</em>";
+      sub = "Every step has been removed.";
+    } else if (solo === on) {
+      headline = "<em>Every one</em> of the " + on + " steps is a single point of failure.";
+      sub = "Nothing in this process is checked against anything else. " +
+            "There is no second route to any part of it.";
+    } else {
+      headline = "<em>" + solo + " of " + on + "</em> steps have no way around them.";
+      sub = "The rest share the load with another way through, so losing any one " +
+            "of them would not break the process.";
+    }
+    if (m.pieces > 1) {
+      sub = "This is now in " + m.pieces + " separate pieces. Parts of it can no " +
+            "longer reach the rest, so the process no longer completes — " +
+            "and the total below has dropped by exactly one for each break.";
+    }
+    $("#head").innerHTML = '<div class="big">' + headline + "</div><p>" + sub + "</p>";
+
+    $("#rows").innerHTML = m.rows.map(function (r) {
+      if (r.off) {
+        return '<button class="row" data-i="' + r.i + '" data-off="1" type="button">' +
+          '<div class="nm"><b>' + r.from + '</b><span class="to">→ ' + r.to +
+          '</span><span class="pct">—</span></div>' +
+          '<div class="say">Removed. Tap to put it back.</div></button>';
+      }
+      var k = kind(r.bearing);
+      return '<button class="row" data-i="' + r.i + '" data-k="' + k + '" type="button">' +
+        '<div class="nm"><b>' + r.from + '</b><span class="to">→ ' + r.to +
+        '</span><span class="pct">' + Math.round(r.bearing * 100) + '%</span></div>' +
+        '<div class="bar"><i style="width:' + (r.bearing * 100).toFixed(1) + '%"></i></div>' +
+        '<div class="say">' + says(r.bearing, m) + '</div></button>';
+    }).join("");
+
+    var expect = m.steps - m.pieces;
+    var full = EXAMPLES[pick].links.length ? null : null;
+    $("#tot").innerHTML =
+      "<b>" + m.total.toFixed(2) + "</b><span>total carried<br>" +
+      m.steps + " parts − " + m.pieces + " piece" + (m.pieces === 1 ? "" : "s") +
+      " = " + expect.toFixed(0) + ", always</span>" +
+      (Math.abs(m.total - expect) > 1e-6
+        ? '<span class="delta">arithmetic broken</span>' : "");
+  }
+
+  $("#pick").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-i]");
+    if (!b) return;
+    pick = +b.dataset.i; off = {}; draw();
+  });
+  $("#rows").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-i]");
+    if (!b) return;
+    var i = +b.dataset.i;
+    off[i] = !off[i];
+    draw();
+  });
+  $("#reset").onclick = function () { off = {}; draw(); };
+  $("#theme").onclick = function () {
+    var d = document.documentElement;
+    var light = d.getAttribute("data-theme") === "light";
+    d.setAttribute("data-theme", light ? "dark" : "light");
+    $("#theme").textContent = light ? "Light" : "Dark";
+  };
+
+  draw();
+  window.__spar = { measure: measure, EXAMPLES: EXAMPLES,
+                    get pick() { return pick; }, set pick(v) { pick = v; draw(); },
+                    get off() { return off; },
+                    toggle: function (i) { off[i] = !off[i]; draw(); },
+                    draw: draw, LMD: LMD };
+})();
+</script>
+</body>
+</html>
