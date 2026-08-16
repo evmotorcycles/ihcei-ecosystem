@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0F1418">
-<title>Plexus &middot; Topology</title>
-<meta name="description" content="A spatial view of what a structure is made of. Space closes as couplings tighten, because that is what the metric does.">
+<title>Plexus &middot; Manifold</title>
+<meta name="description" content="Install apps, AI and data as nodes and let the tested metric decide how far apart they are. Intent raises coupling; measured distance falls.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Topology">
+<meta name="apple-mobile-web-app-title" content="Manifold">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="color-scheme" content="dark light">
 <style>
@@ -61,7 +61,7 @@ a{color:var(--hud)}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
-.top{display:flex;align-items:center;gap:.55rem;padding:.6rem .8rem;
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
   padding-top:max(.6rem,env(safe-area-inset-top));
   border-bottom:1px solid var(--line);background:var(--card-2);
   position:sticky;top:0;z-index:5}
@@ -71,58 +71,75 @@ a{color:var(--hud)}
 .chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
   font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
   align-items:center;text-decoration:none}
-.chip:active,.chip[aria-pressed=true]{background:var(--card);border-color:var(--edge)}
+.chip:active{background:var(--card);border-color:var(--edge)}
 
 .wrap{max-width:52rem;margin:0 auto;
   padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
-.pick{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem}
-.pick button{flex:1 1 auto;min-height:46px;min-width:7.5rem;background:var(--card);
-  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.86rem}
-.pick button[aria-pressed=true]{border-color:var(--hud);background:var(--card-2);
-  font-weight:600}
-
-/* ------------------------------------------------------------------ hud -- */
-.hud{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-  padding:.85rem .9rem;margin-bottom:.7rem;
-  display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center}
-.ring{position:relative;width:118px;height:118px;flex:none}
-.ring svg{display:block;width:118px;height:118px;transform:rotate(-90deg)}
-.ring .val{position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:.05rem}
-.ring .val b{font:650 1.5rem/1 var(--mono);font-variant-numeric:tabular-nums;
-  letter-spacing:-.03em}
-.ring .val span{font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--mute)}
-.read{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
-.cell{background:var(--card-2);border:1px solid var(--line);border-radius:10px;
-  padding:.42rem .55rem}
-.cell span{display:block;font-size:.57rem;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--mute)}
-.cell b{font:650 1.05rem/1.25 var(--mono);font-variant-numeric:tabular-nums}
-.cell[data-warn=true]{border-color:var(--hold)}
-.cell[data-warn=true] b{color:var(--hold)}
-@media (max-width:29rem){
-  .hud{grid-template-columns:1fr;justify-items:center}
-  .read{width:100%}
-}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+.fl .hint{display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
+  font-weight:400;color:var(--mute);margin-top:.2rem;line-height:1.45}
+input,select{width:100%;min-height:46px;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.5rem .6rem;
+  font:inherit;font-size:.9rem}
+.row2{display:flex;gap:.4rem;flex-wrap:wrap}
+.row2 input{flex:2 1 9rem}
+.row2 select{flex:1 1 6.5rem;width:auto}
+.row2 button{min-height:46px;padding:0 1rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:10px;font-size:.86rem;font-weight:600;
+  white-space:nowrap}
+.row2 button:active{border-color:var(--focus)}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+.chips:empty{display:none}
+.tag{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;
+  padding:.3rem .6rem;border-radius:99px;font-size:.8rem;color:var(--ink-2);
+  background:var(--card-2);border:1px solid var(--edge)}
+.tag[aria-pressed=true]{border-color:var(--hud);background:var(--card);
+  color:var(--ink);font-weight:600}
+.kind{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.1rem .32rem;border-radius:5px;font-weight:700}
+.kind[data-k=app]{background:var(--share-soft);color:var(--share)}
+.kind[data-k=ai]{background:var(--spare-soft);color:var(--spare)}
+.kind[data-k=data]{background:var(--hold-soft);color:var(--hold)}
+.x{min-width:30px;min-height:30px;font-size:1.15rem;line-height:1;color:var(--mute);
+  border-radius:99px}
 
 .stage{position:relative;background:var(--card);border:1px solid var(--line);
-  border-radius:var(--r);height:min(48dvh,360px);overflow:hidden}
+  border-radius:var(--r);height:min(46dvh,340px);overflow:hidden}
 .stage svg{display:block;width:100%;height:100%}
 .stage .grid{position:absolute;inset:0;pointer-events:none;opacity:.5;
   background-image:linear-gradient(var(--line) 1px,transparent 1px),
                    linear-gradient(90deg,var(--line) 1px,transparent 1px);
   background-size:28px 28px}
+.void{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:var(--mute);font-size:.86rem;text-align:center;padding:1.5rem}
+/* An author display: rule beats the user-agent [hidden]{display:none}, so
+   setting .hidden on this overlay did nothing and the "nothing is installed"
+   message stayed painted across a graph with seven things in it. Caught by
+   looking at the render; invisible in the source. */
+.void[hidden]{display:none}
 
 .say{margin:.6rem 0 0;padding:.55rem .72rem;border-radius:10px;font-size:.86rem;
   font-weight:600;background:var(--card-2);border:1px solid var(--edge);color:var(--ink-2)}
-.say[data-k=broke]{background:var(--hold-soft);border-color:var(--hold);color:var(--hold)}
-.say[data-k=held]{background:var(--spare-soft);border-color:var(--spare);color:var(--spare)}
-
 .acts{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}
 .acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card);
   border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem}
 .acts button:active{border-color:var(--focus)}
+
+table{width:100%;border-collapse:collapse;font-size:.82rem}
+th{text-align:left;font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--mute);font-weight:700;padding:.3rem .35rem;border-bottom:1px solid var(--line)}
+td{padding:.42rem .35rem;border-bottom:1px solid var(--line);
+  font-variant-numeric:tabular-nums}
+td.n{font-family:var(--mono)}
+tr[data-sole=true] td.e{color:var(--hold);font-weight:700}
+tr[data-on=true] td{color:var(--ink)}
+.scroll{overflow-x:auto}
+.err{margin:.7rem 0 0;padding:.55rem .72rem;border-radius:10px;font-size:.84rem;
+  background:var(--hold-soft);border:1px solid var(--hold);color:var(--hold);font-weight:600}
 
 .note{margin-top:1rem;background:var(--card);border:1px solid var(--line);
   border-left:3px solid var(--hud);border-radius:0 var(--r) var(--r) 0;
@@ -138,73 +155,101 @@ a{color:var(--hud)}
 <body>
 
 <div class="top">
-  <div class="brand">Plexus<span>topology</span></div>
+  <div class="brand">Plexus<span>manifold</span></div>
   <span class="sp"></span>
   <a class="chip" href="index.html">Simple view</a>
-  <a class="chip" href="manifold.html">Manifold</a>
+  <a class="chip" href="topology.html">Topology</a>
   <button class="chip" id="theme" type="button">Light</button>
 </div>
 
 <div class="wrap">
-  <div class="pick" id="pick" role="group" aria-label="Choose something to look at"></div>
 
-  <div class="hud">
-    <div class="ring">
-      <svg viewBox="0 0 118 118" aria-hidden="true">
-        <circle cx="59" cy="59" r="50" fill="none" stroke="var(--hud-dim)" stroke-width="9"/>
-        <circle id="arc" cx="59" cy="59" r="50" fill="none" stroke="var(--hud)"
-                stroke-width="9" stroke-linecap="round"/>
-      </svg>
-      <div class="val"><b id="pct">100%</b><span>integrity</span></div>
+  <div class="panel">
+    <label class="fl" for="nm">Install something
+      <span class="hint">A name and what kind of thing it is. Nothing is downloaded
+      or run &mdash; this registers a node on this device so the metric has
+      something to measure.</span></label>
+    <div class="row2">
+      <input id="nm" type="text" autocomplete="off" placeholder="Summariser">
+      <select id="kd" aria-label="What kind">
+        <option value="app">App</option>
+        <option value="ai">AI</option>
+        <option value="data">Data</option>
+      </select>
+      <button id="add" type="button">Install</button>
     </div>
-    <div class="read">
-      <div class="cell"><span>Parts</span><b id="r-parts">0</b></div>
-      <div class="cell" id="c-pieces"><span>Pieces</span><b id="r-pieces">1</b></div>
-      <div class="cell"><span>Carried</span><b id="r-total">0.00</b></div>
-      <div class="cell" id="c-sole"><span>Sole routes</span><b id="r-sole">0</b></div>
+
+    <label class="fl">What is installed
+      <span class="hint">Tap to name it in your intent. Tapped things are what
+      you are working with right now.</span></label>
+    <div class="chips" id="list"></div>
+
+    <label class="fl">Couple two of them
+      <span class="hint">An AI that reads a dataset, an app that owns a file.
+      This is what gives a thing a second way in &mdash; and the exponent below
+      is how you can tell.</span></label>
+    <div class="row2">
+      <select id="ca" aria-label="Couple this"></select>
+      <select id="cb" aria-label="To this"></select>
+      <button id="cpl" type="button">Couple</button>
     </div>
+    <div class="chips" id="couples"></div>
+    <p class="err" id="err" hidden role="alert"></p>
   </div>
 
-  <div class="stage">
+  <div class="acts">
+    <button id="run" type="button">Run intent</button>
+    <button id="clear" type="button">Clear to void</button>
+  </div>
+
+  <div class="stage" style="margin-top:.7rem">
     <div class="grid"></div>
     <svg id="canvas" viewBox="0 0 360 320" preserveAspectRatio="xMidYMid meet"
          role="img" aria-labelledby="desc"></svg>
+    <div class="void" id="void" hidden>Nothing is installed, so there is no space.
+      Space here is only made by coupling.</div>
   </div>
   <p id="desc" class="sr"></p>
-  <p class="say" id="say" role="status">Pick something above.</p>
+  <p class="say" id="say" role="status"></p>
 
-  <div class="acts">
-    <button id="weak" type="button">Remove the weakest link</button>
-    <button id="sole" type="button">Remove one that is holding it up</button>
-    <button id="reset" type="button">Put everything back</button>
+  <div class="panel" style="margin-top:.7rem">
+    <label class="fl">Measured, not animated
+      <span class="hint">Distance from you to each thing, and the exponent of how
+      that distance answers to coupling.</span></label>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Thing</th><th>Kind</th><th>Coupling J</th>
+          <th>Distance d</th><th>Exponent</th><th>Ways in</th></tr></thead>
+        <tbody id="tel"></tbody>
+      </table>
+    </div>
   </div>
 
   <div class="note">
-    <b>What the ring is</b>
-    Integrity is <code>(parts &minus; pieces) / (parts &minus; 1)</code>. The top of
-    that fraction is the total every link carries, which Foster's theorem fixes
-    exactly; the bottom is the most it could ever be. No pass mark was chosen.
-    100% means in one piece, not correct.
-    <b>Why the picture tightens</b>
-    Distance here is <code>&radic;(bearing / strength)</code>, which is the same
-    metric the map uses. Raising a strength cannot raise any distance, so turning
-    a coupling up must pull its ends together. The space closing is the
-    arithmetic, not an animation.
-    <b>Try the two buttons</b>
-    Weakest and load-bearing are different questions, and sometimes one link
-    answers both. On <em>An energy bill</em> the weakest link is also the only
-    route to the late fee, so removing it drops the ring to 83%. On
-    <em>Getting to work</em> the weakest link is one of two ways to the station,
-    so removing it costs nothing and the ring stays at 100%. The line under the
-    picture reports integrity measured before and after, so it tells you which
-    of those actually happened instead of a sentence fixed in advance.
-    <b>What it cannot tell you</b>
-    Whether a step is <em>useful</em>, or whether a source is <em>true</em>. It
-    only knows the parts you entered. Parts with no route to the rest are set
-    along the bottom rather than placed somewhere plausible.
+    <b>What the exponent tells you</b>
+    With one route between you and a thing, its resistance is <code>1/J</code> and
+    the metric is <code>d = J<sup>&minus;1/2</sup></code> &mdash; exactly, at every
+    J. So an exponent of <code>&minus;0.500</code> means there is exactly one way
+    in, and losing it strands the thing entirely.
+    <b>Why that is not a general law</b>
+    Add a second route and raising the direct coupling buys far less collapse,
+    because the other route was already holding the two ends close. Measured
+    here: <code>&minus;0.019</code> at J&nbsp;=&nbsp;0.02 with a second route,
+    against <code>&minus;0.500</code> without one. The exponent climbs back toward
+    &minus;&frac12; only once the direct link dominates everything else. It is a
+    reading of redundancy, not a constant.
+    <b>Idle is not gone</b>
+    Something you are not using keeps a small coupling rather than none. At zero
+    it would have no route at all, the metric would rightly refuse to place it,
+    and it would vanish instead of drifting to the edge.
+    <b>What this is not</b>
+    It is not an operating system. Nothing here installs a real program, runs a
+    real model, reads your files, or leaves the browser. It is a sandbox in which
+    the same tested arithmetic that reads a bill also arranges a workspace, so
+    the idea can be measured instead of described.
     <b>Nothing leaves this device</b>
-    No account, no network, no server. Structures you built in
-    <a href="index.html">the simple view</a> appear here too.
+    No account, no network, no server. What you register is kept in this
+    browser only.
   </div>
 </div>
 
@@ -895,119 +940,287 @@ a{color:var(--hud)}
   else root.ETI = API;
 })(typeof globalThis !== "undefined" ? globalThis : this);
 </script>
+<script>/* manifold.js -- apps, AI and data as nodes, with LMD managing the space.
+ * ===========================================================================
+ * A SANDBOX, not an operating system. Nothing here installs a real program,
+ * runs a real model, or leaves the browser. What it does do is real: it holds a
+ * graph of things you registered, raises the coupling between you and the ones
+ * your intent names, and lets the tested metric decide how far apart everything
+ * then is. The distances are measured, not animated.
+ *
+ * THE LAW, AND WHERE IT ACTUALLY HOLDS
+ * For two nodes joined by ONE route of strength J, the effective resistance is
+ * 1/J and the metric is d = sqrt(R), so
+ *
+ *     d = J^(-1/2)
+ *
+ * exactly. That is the whole of the "space collapses as coupling rises" claim,
+ * and it is worth being precise about, because it is NOT a general law:
+ *
+ *     one route only          J: 0.02 -> 20    exponent -0.5000 throughout
+ *     a second route exists   J: 0.02 -> 20    exponent -0.0192 -> -0.4878
+ *
+ * Both measured. With another way in, raising the direct coupling buys far less
+ * collapse, because the other route was already holding the two ends close. The
+ * exponent only returns to -1/2 once the direct link dominates everything else.
+ *
+ * So exponent(node) is not decoration: it is a live reading of whether a thing
+ * is reachable one way or several. A node sitting at -0.500 has a single route
+ * to you, and losing that route strands it. That is the same question the rest
+ * of Plexus asks -- "is there another way round?" -- arriving here as a number
+ * that falls out of the metric rather than a badge someone assigned.
+ */
+(function (root) {
+  "use strict";
+
+  var LMD = root.LMD || (typeof require === "function" ? require("../smi/lmd.js") : null);
+  var ENG = root.PLEXUS || (typeof require === "function" ? require("./engines.js") : null);
+  var ETI = root.ETI || (typeof require === "function" ? require("./eti.js") : null);
+
+  var YOU = "You";
+  var KINDS = ["app", "ai", "data"];
+
+  /* Residual coupling is what remains when no intent names a thing. It is not
+     zero: at zero the node has NO route to you at all, the metric correctly
+     refuses to place it, and it would vanish from the picture rather than drift
+     to the edge of it. Small-but-present is the honest model of "installed and
+     idle". */
+  function defaults() {
+    return { nodes: [], affinities: [], intent: {}, residual: 0.02, boost: 12 };
+  }
+
+  function graph(state) {
+    var names = [YOU], links = [], seen = {};
+    state.nodes.forEach(function (n) {
+      if (seen[n.name] || n.name === YOU) return;
+      seen[n.name] = true;
+      names.push(n.name);
+      links.push([YOU, n.name, state.residual + (state.intent[n.name] ? state.boost : 0)]);
+    });
+    /* Affinities are couplings BETWEEN registered things -- an AI that reads a
+       dataset, an app that owns a file. They are what create a second route,
+       and therefore what makes the exponent readable. */
+    state.affinities.forEach(function (a) {
+      if (seen[a[0]] && seen[a[1]] && a[0] !== a[1]) links.push([a[0], a[1], a[2]]);
+    });
+    return { names: names, links: links };
+  }
+
+  function metric(state) {
+    var g = graph(state), idx = {}, i;
+    for (i = 0; i < g.names.length; i++) idx[g.names[i]] = i;
+    if (!g.links.length) return { g: g, idx: idx, D: null, dead: true };
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.names.length,
+      g.links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    return { g: g, idx: idx, D: r.D, dead: r.dead };
+  }
+
+  function distance(state, name) {
+    var m = metric(state);
+    if (m.dead || !(name in m.idx)) return Infinity;
+    return m.D[m.idx[YOU]][m.idx[name]];
+  }
+
+  /* The measured exponent: d log d / d log J on the You-to-name coupling.
+     Computed by actually perturbing the coupling and re-running the metric,
+     rather than by assuming the -1/2 that only holds for a single route. */
+  function exponent(state, name, h) {
+    h = h || 1.0001;
+    var d0 = distance(state, name);
+    if (!isFinite(d0) || d0 <= 0) return NaN;
+    var bumped = {
+      nodes: state.nodes, affinities: state.affinities, intent: state.intent,
+      residual: state.residual, boost: state.boost, _bump: null
+    };
+    /* rebuild with just this one coupling multiplied */
+    var g = graph(state);
+    var links = g.links.map(function (l) {
+      var isThis = (l[0] === YOU && l[1] === name) || (l[1] === YOU && l[0] === name);
+      return [l[0], l[1], isThis ? l[2] * h : l[2]];
+    });
+    var idx = {}, i;
+    for (i = 0; i < g.names.length; i++) idx[g.names[i]] = i;
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.names.length,
+      links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var d1 = r.D[idx[YOU]][idx[name]];
+    void bumped;
+    if (!isFinite(d1) || d1 <= 0) return NaN;
+    return Math.log(d1 / d0) / Math.log(h);
+  }
+
+  /* Everything the readout needs, measured in one pass. */
+  function telemetry(state) {
+    var m = metric(state);
+    var rows = state.nodes.map(function (n) {
+      var d = (m.dead || !(n.name in m.idx)) ? Infinity : m.D[m.idx[YOU]][m.idx[n.name]];
+      return {
+        name: n.name, kind: n.kind, intent: !!state.intent[n.name],
+        distance: d, exponent: exponent(state, n.name),
+        coupling: state.residual + (state.intent[n.name] ? state.boost : 0)
+      };
+    });
+    rows.sort(function (a, b) { return a.distance - b.distance; });
+    var chosen = rows.filter(function (r) { return r.intent && isFinite(r.distance); });
+    var span = 0;
+    if (chosen.length && !m.dead) {
+      chosen.forEach(function (a) {
+        chosen.forEach(function (b) {
+          var dd = m.D[m.idx[a.name]][m.idx[b.name]];
+          if (isFinite(dd) && dd > span) span = dd;
+        });
+      });
+    }
+    var g = graph(state);
+    var gi = g.links.length ? ETI.integrity(g.names, g.links)
+                            : { integrity: 0, parts: g.names.length, pieces: g.names.length, total: 0 };
+    return { rows: rows, span: span, chosen: chosen.length, integrity: gi.integrity,
+             parts: gi.parts, pieces: gi.pieces, total: gi.total };
+  }
+
+  function frame(state, view, prev) {
+    var g = graph(state);
+    if (!g.links.length) {
+      return { nodes: [], edges: [], keep: [], xy: [], integrity: 0,
+               parts: g.names.length, pieces: g.names.length, total: 0,
+               stranded: g.names.length, dead: true, hiddenLabels: [] };
+    }
+    return ETI.frame(g.names, g.links, view, prev);
+  }
+
+  function install(state, name, kind) {
+    name = String(name || "").trim();
+    if (!name) return "Give it a name.";
+    if (name === YOU) return "That name is taken by you.";
+    if (KINDS.indexOf(kind) < 0) return "Pick app, AI or data.";
+    if (state.nodes.some(function (n) { return n.name === name; })) {
+      return "There is already something called " + name + ".";
+    }
+    state.nodes.push({ name: name, kind: kind });
+    return null;
+  }
+
+  function uninstall(state, name) {
+    state.nodes = state.nodes.filter(function (n) { return n.name !== name; });
+    state.affinities = state.affinities.filter(function (a) {
+      return a[0] !== name && a[1] !== name;
+    });
+    delete state.intent[name];
+  }
+
+  function couple(state, a, b, w) {
+    if (a === b) return "A thing cannot be coupled to itself.";
+    var has = state.nodes.some(function (n) { return n.name === a; }) &&
+              state.nodes.some(function (n) { return n.name === b; });
+    if (!has) return "Both have to be installed first.";
+    var dup = state.affinities.some(function (x) {
+      return (x[0] === a && x[1] === b) || (x[0] === b && x[1] === a);
+    });
+    if (dup) return a + " and " + b + " are already coupled.";
+    state.affinities.push([a, b, w || 1]);
+    return null;
+  }
+
+  var API = {
+    YOU: YOU, KINDS: KINDS, defaults: defaults, graph: graph, distance: distance,
+    exponent: exponent, telemetry: telemetry, frame: frame,
+    install: install, uninstall: uninstall, couple: couple
+  };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.MANIFOLD = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
 <script>
 (function () {
   "use strict";
   var $ = function (s) { return document.querySelector(s); };
   var VB = { w: 360, h: 320, pad: 30 };
-  var STORE = "plexus.own.v1";
+  var STORE = "plexus.manifold.v1";
+  var prev = null;
 
-  function builtins() {
-    return [
-      { name: "An energy bill",
-        parts: ["Meter reading", "Unit rate", "Standing charge", "Subtotal",
-                "VAT", "Late fee", "Amount due"],
-        links: [["Meter reading", "Subtotal", 8], ["Unit rate", "Subtotal", 8],
-                ["Standing charge", "Subtotal", 3], ["Subtotal", "VAT", 6],
-                ["Subtotal", "Amount due", 6], ["VAT", "Amount due", 6],
-                ["Late fee", "Amount due", 0.4]] },
-      { name: "A water bill",
-        parts: ["Previous reading", "Present reading", "Units used", "Water tariff",
-                "Water charge", "Sewerage charge", "Service fee", "Arrears",
-                "VAT", "Amount due"],
-        links: [["Previous reading", "Units used", 8], ["Present reading", "Units used", 8],
-                ["Units used", "Water charge", 9], ["Water tariff", "Water charge", 9],
-                ["Water charge", "Sewerage charge", 5], ["Water charge", "VAT", 6],
-                ["Sewerage charge", "VAT", 4], ["Water charge", "Amount due", 7],
-                ["Sewerage charge", "Amount due", 5], ["Service fee", "Amount due", 3],
-                ["Arrears", "Amount due", 2], ["VAT", "Amount due", 6]] },
-      { name: "A complaint",
-        parts: ["Complaint filed", "Acknowledgement", "Triage", "Team A review",
-                "Team B review", "Manager sign-off", "Outcome letter"],
-        links: [["Complaint filed", "Acknowledgement", 5],
-                ["Acknowledgement", "Triage", 5], ["Triage", "Team A review", 4],
-                ["Triage", "Team B review", 4], ["Team A review", "Manager sign-off", 4],
-                ["Team B review", "Manager sign-off", 4],
-                ["Manager sign-off", "Outcome letter", 5]] },
-      { name: "Getting to work",
-        parts: ["Home", "Bus", "Train", "Cycle", "Station", "At the desk"],
-        links: [["Home", "Bus", 3], ["Home", "Cycle", 2], ["Bus", "Station", 3],
-                ["Cycle", "Station", 2], ["Station", "Train", 5],
-                ["Train", "At the desk", 5]] }
-    ];
+  function seed() {
+    var s = MANIFOLD.defaults();
+    MANIFOLD.install(s, "Files", "app");
+    MANIFOLD.install(s, "Notes", "app");
+    MANIFOLD.install(s, "Summariser", "ai");
+    MANIFOLD.install(s, "Plexus engine", "app");
+    MANIFOLD.install(s, "Water bill", "data");
+    MANIFOLD.install(s, "Essay draft", "data");
+    MANIFOLD.couple(s, "Summariser", "Essay draft", 1);
+    MANIFOLD.couple(s, "Plexus engine", "Water bill", 1);
+    return s;
   }
 
-  /* The same store the simple view writes to, read the same guarded way: a
-     private-mode browser throws rather than returning null. */
-  function saved() {
+  function load() {
     try {
       var raw = window.localStorage.getItem(STORE);
-      if (!raw) return [];
-      return JSON.parse(raw).filter(function (x) {
-        return x && Array.isArray(x.parts) && Array.isArray(x.links) &&
-               x.parts.length >= 2 && x.links.length > 0;
+      if (!raw) return seed();
+      var v = JSON.parse(raw);
+      var s = MANIFOLD.defaults();
+      if (Array.isArray(v.nodes)) s.nodes = v.nodes.filter(function (n) {
+        return n && typeof n.name === "string" && MANIFOLD.KINDS.indexOf(n.kind) >= 0;
       });
-    } catch (err) { return []; }
+      if (Array.isArray(v.affinities)) s.affinities = v.affinities;
+      if (v.intent && typeof v.intent === "object") s.intent = v.intent;
+      return s.nodes.length ? s : seed();
+    } catch (err) { return seed(); }
   }
-  function library() { return builtins().concat(saved()); }
-
-  var LIB = library(), pick = 0, off = {}, prev = null;
-
-  function live() {
-    return LIB[pick].links.filter(function (l, i) { return !off[i]; });
+  function save() {
+    try {
+      window.localStorage.setItem(STORE, JSON.stringify(
+        { nodes: st.nodes, affinities: st.affinities, intent: st.intent }));
+      return true;
+    } catch (err) { return false; }
   }
+
+  var st = load();
 
   function esc(s) {
     return String(s).replace(/[&<>"]/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
     });
   }
+  function err(msg) {
+    var el = $("#err");
+    if (!msg) { el.hidden = true; return; }
+    el.textContent = msg; el.hidden = false;
+  }
+  function num(x, p) { return isFinite(x) ? x.toFixed(p) : "∞"; }
 
-  var C = 2 * Math.PI * 50;
-
-  function draw(msg, kind) {
-    var e = LIB[pick];
-    var f = ETI.frame(e.parts, live(), VB, prev);
+  function draw(msg) {
+    var t = MANIFOLD.telemetry(st);
+    var f = MANIFOLD.frame(st, VB, prev);
     prev = { keep: f.keep, xy: f.xy };
 
-    $("#arc").setAttribute("stroke-dasharray", (f.integrity * C).toFixed(2) + " " + C.toFixed(2));
-    $("#arc").setAttribute("stroke", f.pieces > 1 ? "var(--hold)" : "var(--hud)");
-    $("#pct").textContent = Math.round(f.integrity * 100) + "%";
-    $("#r-parts").textContent = f.parts;
-    $("#r-pieces").textContent = f.pieces;
-    $("#r-total").textContent = f.total.toFixed(2);
-    var soles = f.edges.filter(function (x) { return x.sole; }).length;
-    $("#r-sole").textContent = soles;
-    $("#c-pieces").setAttribute("data-warn", String(f.pieces > 1));
-    $("#c-sole").setAttribute("data-warn", String(soles > 0 && soles === f.edges.length));
+    $("#void").hidden = st.nodes.length > 0;
 
     var out = [];
     f.edges.forEach(function (x) {
-      var col = x.cut ? "var(--mute)"
-        : x.sole ? "var(--hold)"
+      var col = x.cut ? "var(--mute)" : x.sole ? "var(--hold)"
         : x.bearing < 0.25 ? "var(--spare)" : "var(--share)";
       out.push('<line x1="' + x.x1.toFixed(1) + '" y1="' + x.y1.toFixed(1) +
-        '" x2="' + x.x2.toFixed(1) + '" y2="' + x.y2.toFixed(1) +
-        '" stroke="' + col + '" stroke-width="' +
-        (x.cut ? 1 : 1 + 3.4 * x.bearing).toFixed(2) +
-        '" stroke-opacity="' + (x.cut ? ".35" : ".9") +
-        (x.cut ? '" stroke-dasharray="4 5' : "") + '"/>');
+        '" x2="' + x.x2.toFixed(1) + '" y2="' + x.y2.toFixed(1) + '" stroke="' + col +
+        '" stroke-width="' + (x.cut ? 1 : 1 + 3.2 * x.bearing).toFixed(2) +
+        '" stroke-opacity="' + (x.cut ? ".35" : ".9") + '"/>');
     });
+    var kindOf = {};
+    st.nodes.forEach(function (n) { kindOf[n.name] = n.kind; });
     f.nodes.forEach(function (n) {
-      var col = n.stranded ? "var(--mute)" : "var(--hud)", lab = n.label;
+      var isYou = n.name === MANIFOLD.YOU;
+      var col = isYou ? "var(--hud)"
+        : kindOf[n.name] === "ai" ? "var(--spare)"
+        : kindOf[n.name] === "data" ? "var(--hold)" : "var(--share)";
+      var lab = n.label;
       out.push('<g class="node" data-name="' + esc(n.name) + '" tabindex="0" ' +
-        'role="button" aria-label="' + esc(n.name) + '" opacity="' +
-        (n.stranded ? ".55" : "1") + '"><title>' + esc(n.name) + "</title>" +
-        '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
-        '" r="9.5" fill="' + col + '" opacity=".18"/>' +
-        '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
-        '" r="4.6" fill="' + col + '"/>' +
+        'role="button" aria-label="' + esc(n.name) + '"><title>' + esc(n.name) +
+        "</title>" +
+        '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) + '" r="' +
+        (isYou ? 13 : 9.5) + '" fill="' + col + '" opacity=".18"/>' +
+        '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) + '" r="' +
+        (isYou ? 6.4 : 4.6) + '" fill="' + col + '"/>' +
         (lab.shown
           ? '<text x="' + lab.x.toFixed(1) + '" y="' + lab.y.toFixed(1) +
             '" fill="var(--ink-2)" font-size="8.6" text-anchor="' + lab.anchor +
             '" font-weight="600">' + esc(n.name) + "</text>"
-          /* No room for the name. Ringed rather than left bare, so a dot whose
-             label is missing is visibly a dot with a name to ask for. */
           : '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
             '" r="8.2" fill="none" stroke="' + col +
             '" stroke-width="1" stroke-dasharray="2 2"/>') +
@@ -1015,99 +1228,126 @@ a{color:var(--hud)}
         '" r="16" fill="transparent"/></g>');
     });
     $("#canvas").innerHTML = out.join("");
-    $("#desc").textContent = f.parts + " parts in " + f.pieces + " piece" +
-      (f.pieces === 1 ? "" : "s") + ", integrity " + Math.round(f.integrity * 100) +
-      "%, " + soles + " links with no way around them.";
 
-    /* The status line is written here, on every redraw, from the frame that was
-       just drawn. Setting it at the call sites let it drift: the readouts said
-       10 parts of a water bill while the line underneath still said 7 parts of
-       an energy bill. */
-    var line = msg || (LIB[pick].name + ": " + f.parts + " part" +
-      (f.parts === 1 ? "" : "s") + ", " + Math.round(f.integrity * 100) +
-      "% integrity.");
-    var hid = f.hiddenLabels.length;
-    if (hid) {
-      line += " " + hid + " name" + (hid === 1 ? " is" : "s are") +
-        " too crowded to print — tap a ringed dot to read it.";
+    $("#tel").innerHTML = t.rows.map(function (r) {
+      var sole = isFinite(r.exponent) && r.exponent < -0.49;
+      return '<tr data-sole="' + sole + '" data-on="' + r.intent + '">' +
+        "<td>" + esc(r.name) + "</td>" +
+        '<td><span class="kind" data-k="' + r.kind + '">' + r.kind + "</span></td>" +
+        '<td class="n">' + num(r.coupling, 2) + "</td>" +
+        '<td class="n">' + num(r.distance, 3) + "</td>" +
+        '<td class="n e">' + (isFinite(r.exponent) ? r.exponent.toFixed(3) : "—") + "</td>" +
+        "<td>" + (sole ? "one only" : "more than one") + "</td></tr>";
+    }).join("") || '<tr><td colspan="6">Nothing installed.</td></tr>';
+
+    $("#desc").textContent = t.rows.length + " things registered, " +
+      t.chosen + " named by the intent, integrity " +
+      Math.round(t.integrity * 100) + "%.";
+
+    var line = msg;
+    if (!line) {
+      line = t.chosen
+        ? (t.chosen === 1
+            ? "One thing in the intent. A span needs two."
+            : t.chosen + " things in the intent. Cluster span " + num(t.span, 3) + ".")
+        : st.nodes.length
+          ? "No intent. Everything is idle at its residual coupling."
+          : "Nothing installed yet.";
     }
-    say(line, kind);
-    return f;
+    var hid = f.hiddenLabels.length;
+    if (hid) line += " " + hid + " name" + (hid === 1 ? " is" : "s are") +
+      " too crowded to print — tap a ringed dot.";
+    $("#say").textContent = line;
+    return t;
   }
 
-  function say(msg, kind) {
-    var el = $("#say");
-    el.textContent = msg;
-    if (kind) el.setAttribute("data-k", kind); else el.removeAttribute("data-k");
-  }
+  function drawList() {
+    $("#list").innerHTML = st.nodes.map(function (n) {
+      return '<span class="tag" aria-pressed="' + !!st.intent[n.name] + '">' +
+        '<button type="button" data-pick="' + esc(n.name) + '" ' +
+        'style="min-height:0;display:inline-flex;align-items:center;gap:.4rem">' +
+        '<span class="kind" data-k="' + n.kind + '">' + n.kind + "</span>" +
+        esc(n.name) + "</button>" +
+        '<button class="x" type="button" data-drop="' + esc(n.name) +
+        '" aria-label="Uninstall ' + esc(n.name) + '">&times;</button></span>';
+    }).join("");
 
-  function drawPick() {
-    $("#pick").innerHTML = LIB.map(function (x, i) {
-      return '<button type="button" data-i="' + i + '" aria-pressed="' + (i === pick) +
-        '">' + esc(x.name) + "</button>";
+    var opts = st.nodes.map(function (n) {
+      return '<option value="' + esc(n.name) + '">' + esc(n.name) + "</option>";
+    }).join("");
+    $("#ca").innerHTML = opts;
+    $("#cb").innerHTML = opts;
+
+    $("#couples").innerHTML = st.affinities.map(function (a, i) {
+      return '<span class="tag"><b>' + esc(a[0]) + "</b> &harr; <b>" + esc(a[1]) +
+        '</b><button class="x" type="button" data-uncouple="' + i +
+        '" aria-label="Uncouple">&times;</button></span>';
     }).join("");
   }
 
-  $("#pick").addEventListener("click", function (ev) {
-    var b = ev.target.closest("button[data-i]");
-    if (!b) return;
-    pick = +b.dataset.i; off = {}; prev = null;
-    drawPick();
-    draw();
-  });
+  function all() { drawList(); return draw(); }
 
-  /* A name that could not be printed is still reachable: tap the dot. */
+  $("#add").onclick = function () {
+    var e = MANIFOLD.install(st, $("#nm").value, $("#kd").value);
+    if (e) { err(e); return; }
+    $("#nm").value = ""; $("#nm").focus();
+    err(""); save(); all();
+  };
+  $("#nm").addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter") { ev.preventDefault(); $("#add").click(); }
+  });
+  $("#cpl").onclick = function () {
+    var e = MANIFOLD.couple(st, $("#ca").value, $("#cb").value, 1);
+    if (e) { err(e); return; }
+    err(""); save(); all();
+  };
+  $("#list").addEventListener("click", function (ev) {
+    var p = ev.target.closest("button[data-pick]");
+    if (p) {
+      var n = p.getAttribute("data-pick");
+      if (st.intent[n]) delete st.intent[n]; else st.intent[n] = true;
+      /* Flipped in place. Rebuilding the list here replaces the chip that was
+         just pressed: keyboard focus falls back to the top of the page, and a
+         run of taps only registers the first because the rest of the list has
+         been detached mid-gesture. Fixed once in the "Your own" editor and
+         written again here -- hence the test. */
+      p.closest(".tag").setAttribute("aria-pressed", String(!!st.intent[n]));
+      err(""); save(); draw();
+      return;
+    }
+    var d = ev.target.closest("button[data-drop]");
+    if (!d) return;
+    MANIFOLD.uninstall(st, d.getAttribute("data-drop"));
+    prev = null; err(""); save(); all();
+  });
+  $("#couples").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-uncouple]");
+    if (!b) return;
+    st.affinities.splice(+b.dataset.uncouple, 1);
+    err(""); save(); all();
+  });
   $("#canvas").addEventListener("click", function (ev) {
     var g = ev.target.closest(".node");
     if (!g) return;
-    say("That one is " + g.getAttribute("data-name") + ".");
+    $("#say").textContent = "That one is " + g.getAttribute("data-name") + ".";
   });
 
-  /* The two buttons exist to show that "weak" and "load-bearing" are different
-     questions. Removing the weakest link usually costs nothing; removing a sole
-     route breaks the structure. Reporting the measured before/after rather than
-     a fixed sentence, because sometimes the weakest link IS the sole route. */
-  function cut(which) {
-    var e = LIB[pick];
-    var before = ETI.integrity(e.parts, live()).integrity;
-    var f = ETI.frame(e.parts, live(), VB, prev);
-    var target = -1;
-
-    if (which === "sole") {
-      var soleEdge = f.edges.filter(function (x) { return x.sole; })[0];
-      if (!soleEdge) {
-        draw("Nothing here is holding it up on its own — every link has another way round.", "held");
-        return;
-      }
-      e.links.forEach(function (l, i) {
-        if (target < 0 && !off[i] && l[0] === soleEdge.from && l[1] === soleEdge.to) target = i;
-      });
-    } else {
-      var best = Infinity;
-      e.links.forEach(function (l, i) {
-        if (!off[i] && l[2] < best) { best = l[2]; target = i; }
-      });
+  $("#run").onclick = function () {
+    if (!Object.keys(st.intent).length) {
+      draw("Tap what you are working with first, then run the intent.");
+      return;
     }
-    if (target < 0) { draw("There is nothing left to remove.", "broke"); return; }
-
-    off[target] = true;
-    var after = ETI.integrity(e.parts, live()).integrity;
-    var gone = e.links[target];
-    var moved = Math.round(before * 100) - Math.round(after * 100);
-    if (moved <= 0) {
-      draw("Removed " + gone[0] + " to " + gone[1] + ". Integrity did not move: " +
-           "there was another way round it.", "held");
-    } else {
-      draw("Removed " + gone[0] + " to " + gone[1] + ". Integrity fell " + moved +
-           " points — that one was holding it up.", "broke");
-    }
-  }
-
-  $("#weak").onclick = function () { cut("weak"); };
-  $("#sole").onclick = function () { cut("sole"); };
-  $("#reset").onclick = function () {
-    off = {}; prev = null; LIB = library(); drawPick();
-    draw();
+    save();
+    var t = draw();
+    var pulled = t.rows.filter(function (r) { return r.intent; })
+      .map(function (r) { return r.name; }).join(", ");
+    draw("Coupling raised to " + pulled + "." +
+         (t.chosen > 1 ? " Cluster span " + num(t.span, 3) + "." : ""));
+  };
+  $("#clear").onclick = function () {
+    st.intent = {};
+    save();
+    draw("Intent cleared. Couplings fall back to residual and the space opens.");
   };
   $("#theme").onclick = function () {
     var d = document.documentElement;
@@ -1116,16 +1356,11 @@ a{color:var(--hud)}
     $("#theme").textContent = light ? "Light" : "Dark";
   };
 
-  drawPick();
-  draw();
+  all();
 
-  window.__topology = {
-    ETI: ETI, draw: draw,
-    get LIB() { return LIB; },
-    get pick() { return pick; },
-    set pick(v) { pick = v; off = {}; prev = null; drawPick(); draw(); },
-    get off() { return off; },
-    cut: cut
+  window.__manifold = {
+    MANIFOLD: MANIFOLD, draw: draw, all: all, STORE: STORE,
+    get state() { return st; }
   };
 })();
 </script>

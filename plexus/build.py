@@ -147,9 +147,10 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v4";
-var FILES = ["./", "./index.html", "./topology.html", "./manifest.webmanifest",
-             "./icon.svg", "./icon-192.png", "./icon-512.png", "./icon-180.png"];
+var CACHE = "plexus-v5";
+var FILES = ["./", "./index.html", "./topology.html", "./manifold.html",
+             "./manifest.webmanifest", "./icon.svg",
+             "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); })
@@ -225,6 +226,19 @@ def main():
                .replace("</body>", REGISTER + "</body>"))
     assert "{{" not in topo, "unfilled placeholder left in topology.html"
     open(os.path.join(HERE, "topology.html"), "w", encoding="utf-8").write(topo)
+
+    # The manifold inlines a fourth script on top of the same stack. Apps, AI and
+    # data are nodes; intent raises coupling; the tested metric decides the space.
+    man = open(os.path.join(HERE, "manifold.js"), encoding="utf-8").read()
+    mtpl = open(os.path.join(HERE, "manifold_template.html"), encoding="utf-8").read()
+    mani = (mtpl.replace("{{LMD}}", lmd)
+                .replace("{{ENGINES}}", eng)
+                .replace("{{ETI}}", eti)
+                .replace("{{MANIFOLD}}", man)
+                .replace("{{ICON}}", icon_uri)
+                .replace("</body>", REGISTER + "</body>"))
+    assert "{{" not in mani, "unfilled placeholder left in manifold.html"
+    open(os.path.join(HERE, "manifold.html"), "w", encoding="utf-8").write(mani)
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
     open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
@@ -233,6 +247,7 @@ def main():
     print("wrote plexus/index.html and app.html  (%.1f KB each, identical bytes)"
           % (len(out) / 1024))
     print("wrote topology.html                    (%.1f KB)" % (len(topo) / 1024))
+    print("wrote manifold.html                    (%.1f KB)" % (len(mani) / 1024))
     print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
     missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
                if not os.path.exists(os.path.join(HERE, f))]
