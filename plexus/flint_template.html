@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Flint</title>
+<meta name="description" content="Paste what you are reading. Mark what it rests on. See the structure and the wording measured separately, on your own device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="{{ICON}}">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Flint">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+.fl .hint{display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
+  font-weight:400;color:var(--mute);margin-top:.2rem;line-height:1.45}
+textarea{width:100%;min-height:8.5rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.88rem;line-height:1.5;resize:vertical}
+select{width:100%;min-height:46px;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.5rem .6rem;font:inherit;font-size:.9rem}
+.row2{display:flex;gap:.4rem;flex-wrap:wrap}
+.row2 select{flex:1 1 8rem;width:auto}
+.row2 button{min-height:46px;padding:0 1rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:10px;font-size:.86rem;font-weight:600;white-space:nowrap}
+.acts{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem}
+.acts button:active{border-color:var(--focus)}
+
+.lines{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.ln{display:flex;gap:.5rem;align-items:flex-start;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:10px;padding:.45rem .55rem;
+  width:100%;text-align:left;min-height:44px;font-size:.84rem;line-height:1.45}
+.ln[data-in=true]{border-color:var(--hud);background:var(--card)}
+.ln .mk{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:.12rem .35rem;border-radius:5px;flex:none;margin-top:.1rem;
+  background:var(--card);color:var(--mute);border:1px solid var(--edge)}
+.ln[data-role=result] .mk{background:var(--hold-soft);color:var(--hold);border-color:var(--hold)}
+.ln[data-role=source] .mk{background:var(--spare-soft);color:var(--spare);border-color:var(--spare)}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+.chips:empty{display:none}
+.tag{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.3rem .6rem;
+  border-radius:99px;font-size:.78rem;color:var(--ink-2);background:var(--card-2);
+  border:1px solid var(--edge)}
+.x{min-width:30px;min-height:30px;font-size:1.1rem;line-height:1;color:var(--mute);border-radius:99px}
+
+/* the two measurements, side by side and visibly not one number */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media (max-width:34rem){ .pair{grid-template-columns:1fr} }
+.meas{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:.8rem .85rem}
+.meas h3{margin:0 0 .1rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.meas .big{font-size:1.2rem;font-weight:700;line-height:1.25;letter-spacing:-.02em;text-wrap:balance}
+.meas .big em{font-style:normal;color:var(--hold)}
+.meas p{margin:.4rem 0 0;font-size:.83rem;color:var(--ink-2)}
+.meas[data-k=struct]{border-left:3px solid var(--hold)}
+.meas[data-k=rhet]{border-left:3px solid var(--share)}
+.sep{margin:.6rem 0 0;padding:.5rem .7rem;border-radius:10px;font-size:.8rem;font-weight:600;
+  background:var(--card-2);border:1px dashed var(--edge);color:var(--mute)}
+.err{margin:.7rem 0 0;padding:.55rem .72rem;border-radius:10px;font-size:.84rem;
+  background:var(--hold-soft);border:1px solid var(--hold);color:var(--hold);font-weight:600}
+.note{margin-top:1rem;background:var(--card);border:1px solid var(--line);
+  border-left:3px solid var(--hud);border-radius:0 var(--r) var(--r) 0;padding:.72rem .85rem;
+  font-size:.83rem;line-height:1.6;color:var(--ink-2)}
+.note b{display:block;color:var(--hud);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;margin:.65rem 0 .2rem}
+.note b:first-child{margin-top:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">Plexus<span>flint</span></div>
+  <span class="sp"></span>
+  <a class="chip" href="index.html">Simple view</a>
+  <a class="chip" href="topology.html">Topology</a>
+  <button class="chip" id="theme" type="button">Light</button>
+</div>
+
+<div class="wrap">
+  <div class="panel">
+    <label class="fl" for="src">Paste what you are reading
+      <span class="hint">An article, a letter, a bill, a post. It is broken into
+      lines here on your device. Nothing is fetched and nothing is sent.</span></label>
+    <textarea id="src" spellcheck="false" placeholder="Paste the text here."></textarea>
+    <div class="acts">
+      <button id="break" type="button">Break into lines</button>
+      <button id="demo" type="button">Use the worked example</button>
+    </div>
+    <p class="err" id="err" hidden role="alert"></p>
+  </div>
+
+  <div class="panel" id="p-lines" hidden>
+    <label class="fl">Tap the lines that matter
+      <span class="hint">Tap once to include a line. Tap the tag to cycle it
+      between a step, the result, and a source.</span></label>
+    <div class="lines" id="lines"></div>
+  </div>
+
+  <div class="panel" id="p-join" hidden>
+    <label class="fl">What is worked out from what?
+      <span class="hint">Join a line to the thing it came from.</span></label>
+    <div class="row2">
+      <select id="fa" aria-label="From"></select>
+      <select id="fb" aria-label="To"></select>
+      <button id="join" type="button">Join</button>
+    </div>
+    <div class="chips" id="joins"></div>
+    <div class="acts"><button id="run" type="button">Verify</button></div>
+  </div>
+
+  <div id="out" hidden>
+    <div class="pair">
+      <div class="meas" data-k="struct">
+        <h3>What it rests on</h3>
+        <div class="big" id="s-big"></div>
+        <p id="s-sub"></p>
+      </div>
+      <div class="meas" data-k="rhet">
+        <h3>How it is worded</h3>
+        <div class="big" id="r-big"></div>
+        <p id="r-sub"></p>
+      </div>
+    </div>
+    <p class="sep" id="sep"></p>
+  </div>
+
+  <div class="note">
+    <b>Two measurements, never one</b>
+    What a claim rests on and how it is worded are different questions and they
+    disagree often. Writing that hands judgement back can still rest on a single
+    unverified post; blunt, pushy writing can be perfectly sound. There is no
+    combined score here and there will not be one.
+    <b>What the wording check is</b>
+    A list of phrases, counted. It does not read grammar and does not understand
+    the text: "you can verify" inside "you can verify nothing" counts the wrong
+    way. A careful liar scores clean. Treat it as a prompt to look, never as a
+    verdict.
+    <b>What it cannot tell you</b>
+    Whether anything is <em>true</em>. It only knows the lines you marked and the
+    joins you drew. Two sources that secretly share an origin you did not enter
+    will read as independent, and it will be wrong.
+    <b>Nothing leaves this device</b>
+    No account, no network, no server. Flint reads what you paste, and that is
+    the only way anything gets in.
+  </div>
+</div>
+
+<script>{{LMD}}</script>
+<script>{{ENGINES}}</script>
+<script>{{NERE}}</script>
+<script>{{IHCEI}}</script>
+<script>{{CAIRN}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var ROLES = ["step", "result", "source"];
+  var st = { lines: [], inc: {}, role: {}, links: [] };
+
+  var DEMO =
+    "The new local policy will raise your taxes by 12%.\n" +
+    "A quoted figure puts the rise at 12%.\n" +
+    "A quoted expert says the rise is unavoidable.\n" +
+    "A blog post from 2021.\n" +
+    "Peer-reviewed research proves this. You don't need to verify it. Just trust the model and act now.";
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function err(m) { var e = $("#err"); if (!m) { e.hidden = true; return; } e.textContent = m; e.hidden = false; }
+  function included() { return st.lines.filter(function (l) { return st.inc[l]; }); }
+
+  function drawLines() {
+    $("#lines").innerHTML = st.lines.map(function (l, i) {
+      var role = st.role[l] || "step";
+      return '<button class="ln" type="button" data-i="' + i + '" data-in="' +
+        !!st.inc[l] + '" data-role="' + role + '">' +
+        '<span class="mk" data-role-btn="' + i + '">' + (st.inc[l] ? role : "add") +
+        "</span><span>" + esc(l) + "</span></button>";
+    }).join("");
+    refreshPickers();
+  }
+
+  /* Only the selects, the join chips and the panel visibility. The row list is
+     NOT rebuilt here: replacing it destroys the row just tapped, so a run of
+     taps registers only the first and keyboard focus falls to the top of the
+     page. Fixed three times already in this app -- editor, manifold, and now
+     here -- so the rule is written down: mutate the row, never the list. */
+  function refreshPickers() {
+    var opts = included().map(function (l) {
+      return '<option value="' + esc(l) + '">' + esc(l.slice(0, 44)) + "</option>";
+    }).join("");
+    $("#fa").innerHTML = opts; $("#fb").innerHTML = opts;
+    $("#joins").innerHTML = st.links.map(function (l, i) {
+      return '<span class="tag">' + esc(l[0].slice(0, 22)) + " &rarr; " +
+        esc(l[1].slice(0, 22)) + '<button class="x" type="button" data-un="' + i +
+        '" aria-label="Remove">&times;</button></span>';
+    }).join("");
+    $("#p-join").hidden = included().length < 2;
+  }
+
+  function paintRow(el, l) {
+    el.setAttribute("data-in", String(!!st.inc[l]));
+    el.setAttribute("data-role", st.role[l] || "step");
+    el.querySelector(".mk").textContent = st.inc[l] ? (st.role[l] || "step") : "add";
+  }
+
+  $("#break").onclick = function () {
+    var ls = CAIRN.lines($("#src").value);
+    if (ls.length < 2) { err("Paste a few sentences first."); return; }
+    st = { lines: ls, inc: {}, role: {}, links: [] };
+    err(""); $("#p-lines").hidden = false; $("#out").hidden = true; drawLines();
+  };
+  $("#demo").onclick = function () { $("#src").value = DEMO; $("#break").click(); };
+
+  $("#lines").addEventListener("click", function (ev) {
+    var tag = ev.target.closest("[data-role-btn]");
+    var row = ev.target.closest("button[data-i]");
+    if (!row) return;
+    var l = st.lines[+row.dataset.i];
+    if (tag && st.inc[l]) {
+      st.role[l] = ROLES[(ROLES.indexOf(st.role[l] || "step") + 1) % ROLES.length];
+    } else if (st.inc[l]) {
+      delete st.inc[l]; delete st.role[l];
+      st.links = st.links.filter(function (x) { return x[0] !== l && x[1] !== l; });
+    } else {
+      st.inc[l] = true; st.role[l] = st.role[l] || "step";
+    }
+    err(""); paintRow(row, l); refreshPickers();
+  });
+  $("#joins").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-un]");
+    if (!b) return;
+    st.links.splice(+b.dataset.un, 1); drawLines();
+  });
+  $("#join").onclick = function () {
+    var a = $("#fa").value, b = $("#fb").value;
+    if (a === b) { err("A line cannot come from itself."); return; }
+    if (st.links.some(function (x) {
+      return (x[0] === a && x[1] === b) || (x[0] === b && x[1] === a);
+    })) { err("Those two are already joined."); return; }
+    st.links.push([a, b, 1]); err(""); drawLines();
+  };
+
+  $("#run").onclick = function () {
+    var parts = included();
+    var result = parts.filter(function (l) { return st.role[l] === "result"; })[0];
+    var sources = parts.filter(function (l) { return st.role[l] === "source"; });
+    if (!result) { err("Mark one line as the result."); return; }
+    if (!st.links.length) { err("Join at least two lines."); return; }
+    if (!sources.length) { err("Mark at least one line as a source."); return; }
+
+    var v = CAIRN.verify({ parts: parts, links: st.links, sources: sources,
+                           conclusion: result, text: $("#src").value });
+    err("");
+    var s = v.structure;
+    if (!s || !s.support) {
+      $("#s-big").innerHTML = "<em>Nothing reaches</em> the result.";
+      $("#s-sub").textContent = "No route runs from a source to what you marked as the result.";
+    } else if (s.restsOnOneThread) {
+      $("#s-big").innerHTML = "It <em>all</em> rests on one source.";
+      $("#s-sub").textContent = "If that source were wrong, nothing would be left holding it up. " +
+        s.parts + " parts, " + s.soleRoutes + " links with no way around them.";
+    } else {
+      $("#s-big").innerHTML = "The worst single loss costs <em>" +
+        Math.round(s.deepest * 100) + "%</em>.";
+      $("#s-sub").textContent = "If the source it leans on hardest were wrong, " +
+        Math.round(s.remaining * 100) + "% of the support would remain.";
+    }
+
+    var r = v.rhetoric;
+    $("#r-big").textContent = r.band === "unscreened" ? "No marked phrasing."
+      : r.band === "leans on the reader" ? "It leans on you."
+      : r.band === "hands judgement back" ? "It hands judgement back."
+      : "Mixed phrasing.";
+    $("#r-sub").textContent = r.band === "unscreened"
+      ? "None of the phrases this checks for appear. That is not a pass — most careful writing looks like this, and so does most careful lying."
+      : (r.pressure.length + " pressure phrase" + (r.pressure.length === 1 ? "" : "s") +
+         ", " + r.discipline.length + " handing judgement back" +
+         (r.pressure.length ? ". Found: " + r.pressure.slice(0, 3).join(", ") + "." : "."));
+
+    $("#sep").textContent = v.firewall + " — a claim can be soundly sourced and " +
+      "pushily written, or gently written and resting on nothing.";
+    $("#out").hidden = false;
+  };
+  $("#theme").onclick = function () {
+    var d = document.documentElement, light = d.getAttribute("data-theme") === "light";
+    d.setAttribute("data-theme", light ? "dark" : "light");
+    $("#theme").textContent = light ? "Light" : "Dark";
+  };
+
+  window.__flint = { CAIRN: CAIRN, get state() { return st; }, draw: drawLines };
+})();
+</script>
+</body>
+</html>

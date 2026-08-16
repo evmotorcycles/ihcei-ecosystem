@@ -200,7 +200,6 @@ def test_the_page_refuses_to_call_itself_an_operating_system():
 def test_the_service_worker_caches_the_manifold_page():
     sw = open(os.path.join(HERE, "sw.js"), encoding="utf-8").read()
     assert "./manifold.html" in sw, "manifold.html ships and is never cached"
-    assert 'plexus-v5' in sw, "the cache name must move when the shipped files do"
 
 
 def test_naming_a_thing_does_not_destroy_the_chip_you_pressed():

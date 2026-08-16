@@ -207,3 +207,73 @@ def test_the_line_splitter_is_dumb_on_purpose(c):
     cleverer would be choosing what counts as a claim on the person's behalf."""
     assert c["lines"] == ["One claim here.", "Another there!",
                           "A third on its own line."]
+
+
+# ------------------------------------------------------------ the Flint page --
+def test_the_flint_page_obeys_the_same_rules():
+    import re
+    page = os.path.join(HERE, "flint.html")
+    assert os.path.exists(page), "flint.html was never rendered"
+    raw = open(page, "rb").read()
+    src = raw.decode("utf-8")
+    assert b"\x00" not in raw
+    assert not re.search(r"<script[^>]+\bsrc\s*=", src), \
+        "an external script cannot load under this CSP"
+    assert "{{" not in src
+    for banned in ("fetch(", "XMLHttpRequest", "WebSocket", "//cdn.", "https://"):
+        assert banned not in src, f"Flint reaches out: {banned}"
+    assert "min-height:44px" in src and "min-height:48px" in src
+
+
+def test_flint_shows_the_two_measurements_apart_and_never_fuses_them():
+    """Flint is where a combined score would be most tempting: two panels, side
+    by side, one number each. The page must keep them apart in what it says as
+    well as in what it computes."""
+    src = open(os.path.join(HERE, "flint.html"), encoding="utf-8").read()
+    assert 'data-k="struct"' in src and 'data-k="rhet"' in src
+    assert "Two measurements, never one" in src
+    flat = " ".join(src.split())
+    assert "There is no combined score here and there will not be one." in flat
+    assert "A careful liar scores clean" in flat
+
+
+def test_flint_says_that_no_marked_phrasing_is_not_a_pass():
+    """Silence from a word list is not endorsement, and the page has to say so
+    where a person will actually read it."""
+    src = open(os.path.join(HERE, "flint.html"), encoding="utf-8").read()
+    assert "That is not a pass" in src
+    assert "most careful writing looks like this" in src
+
+
+def test_flint_mutates_the_row_and_never_rebuilds_the_list():
+    """The fourth appearance of one defect in this app.
+
+    Rebuilding a list inside its own click handler replaces the element that was
+    just tapped: keyboard focus drops to the top of the page and a run of taps
+    registers only the first. Driven here, seven taps produced one included line.
+    Fixed in the editor, the manifold, the topology sources, and now here.
+    """
+    src = open(os.path.join(HERE, "flint_template.html"), encoding="utf-8").read()
+    i = src.index('$("#lines").addEventListener')
+    body = src[i:src.index('$("#joins").addEventListener', i)]
+    assert "paintRow(" in body, "the row is not updated in place"
+    assert "drawLines()" not in body, "rebuilding the list destroys the tapped row"
+
+
+def test_every_shipped_page_is_in_the_service_worker_cache_list():
+    """caches.addAll is atomic. A page that ships and is not cached vanishes
+    offline; a page cached and not shipped rejects the install and takes offline
+    down with it. Checked as an invariant over whatever pages exist, rather than
+    as a hardcoded version string that has to be edited in two places and was
+    already stale once."""
+    import re
+    sw = open(os.path.join(HERE, "sw.js"), encoding="utf-8").read()
+    assert re.search(r'var CACHE = "plexus-v\d+"', sw), "no versioned cache name"
+    listed = set(re.findall(r'"\./([a-z0-9_-]+\.html)"', sw))
+    built = {f for f in os.listdir(HERE)
+             if f.endswith(".html") and not f.endswith("_template.html")
+             and f not in ("app.html",)}
+    assert built <= listed, f"shipped but never cached: {sorted(built - listed)}"
+    for f in listed:
+        assert os.path.exists(os.path.join(HERE, f)), \
+            f"{f} is cached and does not exist -- caches.addAll would reject"

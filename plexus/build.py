@@ -147,9 +147,9 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v5";
+var CACHE = "plexus-v6";
 var FILES = ["./", "./index.html", "./topology.html", "./manifold.html",
-             "./manifest.webmanifest", "./icon.svg",
+             "./flint.html", "./manifest.webmanifest", "./icon.svg",
              "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
 self.addEventListener("install", function (e) {
@@ -239,6 +239,23 @@ def main():
                 .replace("</body>", REGISTER + "</body>"))
     assert "{{" not in mani, "unfilled placeholder left in manifold.html"
     open(os.path.join(HERE, "manifold.html"), "w", encoding="utf-8").write(mani)
+
+    # Flint: the panel that feeds Cairn. The three layers under it -- nere.js,
+    # ihcei.js, cairn.js -- have no interface of their own and are inlined here
+    # exactly as the engines are, because the CSP forbids an external script.
+    nere = open(os.path.join(HERE, "nere.js"), encoding="utf-8").read()
+    ihc = open(os.path.join(HERE, "ihcei.js"), encoding="utf-8").read()
+    crn = open(os.path.join(HERE, "cairn.js"), encoding="utf-8").read()
+    ftpl = open(os.path.join(HERE, "flint_template.html"), encoding="utf-8").read()
+    flint = (ftpl.replace("{{LMD}}", lmd)
+                 .replace("{{ENGINES}}", eng)
+                 .replace("{{NERE}}", nere)
+                 .replace("{{IHCEI}}", ihc)
+                 .replace("{{CAIRN}}", crn)
+                 .replace("{{ICON}}", icon_uri)
+                 .replace("</body>", REGISTER + "</body>"))
+    assert "{{" not in flint, "unfilled placeholder left in flint.html"
+    open(os.path.join(HERE, "flint.html"), "w", encoding="utf-8").write(flint)
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
     open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
@@ -248,6 +265,7 @@ def main():
           % (len(out) / 1024))
     print("wrote topology.html                    (%.1f KB)" % (len(topo) / 1024))
     print("wrote manifold.html                    (%.1f KB)" % (len(mani) / 1024))
+    print("wrote flint.html                       (%.1f KB)" % (len(flint) / 1024))
     print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
     missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
                if not os.path.exists(os.path.join(HERE, f))]

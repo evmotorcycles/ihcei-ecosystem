@@ -1,0 +1,1119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Flint</title>
+<meta name="description" content="Paste what you are reading. Mark what it rests on. See the structure and the wording measured separately, on your own device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Flint">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+.fl .hint{display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
+  font-weight:400;color:var(--mute);margin-top:.2rem;line-height:1.45}
+textarea{width:100%;min-height:8.5rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.88rem;line-height:1.5;resize:vertical}
+select{width:100%;min-height:46px;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.5rem .6rem;font:inherit;font-size:.9rem}
+.row2{display:flex;gap:.4rem;flex-wrap:wrap}
+.row2 select{flex:1 1 8rem;width:auto}
+.row2 button{min-height:46px;padding:0 1rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:10px;font-size:.86rem;font-weight:600;white-space:nowrap}
+.acts{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem}
+.acts button:active{border-color:var(--focus)}
+
+.lines{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.ln{display:flex;gap:.5rem;align-items:flex-start;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:10px;padding:.45rem .55rem;
+  width:100%;text-align:left;min-height:44px;font-size:.84rem;line-height:1.45}
+.ln[data-in=true]{border-color:var(--hud);background:var(--card)}
+.ln .mk{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:.12rem .35rem;border-radius:5px;flex:none;margin-top:.1rem;
+  background:var(--card);color:var(--mute);border:1px solid var(--edge)}
+.ln[data-role=result] .mk{background:var(--hold-soft);color:var(--hold);border-color:var(--hold)}
+.ln[data-role=source] .mk{background:var(--spare-soft);color:var(--spare);border-color:var(--spare)}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+.chips:empty{display:none}
+.tag{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.3rem .6rem;
+  border-radius:99px;font-size:.78rem;color:var(--ink-2);background:var(--card-2);
+  border:1px solid var(--edge)}
+.x{min-width:30px;min-height:30px;font-size:1.1rem;line-height:1;color:var(--mute);border-radius:99px}
+
+/* the two measurements, side by side and visibly not one number */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media (max-width:34rem){ .pair{grid-template-columns:1fr} }
+.meas{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:.8rem .85rem}
+.meas h3{margin:0 0 .1rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.meas .big{font-size:1.2rem;font-weight:700;line-height:1.25;letter-spacing:-.02em;text-wrap:balance}
+.meas .big em{font-style:normal;color:var(--hold)}
+.meas p{margin:.4rem 0 0;font-size:.83rem;color:var(--ink-2)}
+.meas[data-k=struct]{border-left:3px solid var(--hold)}
+.meas[data-k=rhet]{border-left:3px solid var(--share)}
+.sep{margin:.6rem 0 0;padding:.5rem .7rem;border-radius:10px;font-size:.8rem;font-weight:600;
+  background:var(--card-2);border:1px dashed var(--edge);color:var(--mute)}
+.err{margin:.7rem 0 0;padding:.55rem .72rem;border-radius:10px;font-size:.84rem;
+  background:var(--hold-soft);border:1px solid var(--hold);color:var(--hold);font-weight:600}
+.note{margin-top:1rem;background:var(--card);border:1px solid var(--line);
+  border-left:3px solid var(--hud);border-radius:0 var(--r) var(--r) 0;padding:.72rem .85rem;
+  font-size:.83rem;line-height:1.6;color:var(--ink-2)}
+.note b{display:block;color:var(--hud);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;margin:.65rem 0 .2rem}
+.note b:first-child{margin-top:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">Plexus<span>flint</span></div>
+  <span class="sp"></span>
+  <a class="chip" href="index.html">Simple view</a>
+  <a class="chip" href="topology.html">Topology</a>
+  <button class="chip" id="theme" type="button">Light</button>
+</div>
+
+<div class="wrap">
+  <div class="panel">
+    <label class="fl" for="src">Paste what you are reading
+      <span class="hint">An article, a letter, a bill, a post. It is broken into
+      lines here on your device. Nothing is fetched and nothing is sent.</span></label>
+    <textarea id="src" spellcheck="false" placeholder="Paste the text here."></textarea>
+    <div class="acts">
+      <button id="break" type="button">Break into lines</button>
+      <button id="demo" type="button">Use the worked example</button>
+    </div>
+    <p class="err" id="err" hidden role="alert"></p>
+  </div>
+
+  <div class="panel" id="p-lines" hidden>
+    <label class="fl">Tap the lines that matter
+      <span class="hint">Tap once to include a line. Tap the tag to cycle it
+      between a step, the result, and a source.</span></label>
+    <div class="lines" id="lines"></div>
+  </div>
+
+  <div class="panel" id="p-join" hidden>
+    <label class="fl">What is worked out from what?
+      <span class="hint">Join a line to the thing it came from.</span></label>
+    <div class="row2">
+      <select id="fa" aria-label="From"></select>
+      <select id="fb" aria-label="To"></select>
+      <button id="join" type="button">Join</button>
+    </div>
+    <div class="chips" id="joins"></div>
+    <div class="acts"><button id="run" type="button">Verify</button></div>
+  </div>
+
+  <div id="out" hidden>
+    <div class="pair">
+      <div class="meas" data-k="struct">
+        <h3>What it rests on</h3>
+        <div class="big" id="s-big"></div>
+        <p id="s-sub"></p>
+      </div>
+      <div class="meas" data-k="rhet">
+        <h3>How it is worded</h3>
+        <div class="big" id="r-big"></div>
+        <p id="r-sub"></p>
+      </div>
+    </div>
+    <p class="sep" id="sep"></p>
+  </div>
+
+  <div class="note">
+    <b>Two measurements, never one</b>
+    What a claim rests on and how it is worded are different questions and they
+    disagree often. Writing that hands judgement back can still rest on a single
+    unverified post; blunt, pushy writing can be perfectly sound. There is no
+    combined score here and there will not be one.
+    <b>What the wording check is</b>
+    A list of phrases, counted. It does not read grammar and does not understand
+    the text: "you can verify" inside "you can verify nothing" counts the wrong
+    way. A careful liar scores clean. Treat it as a prompt to look, never as a
+    verdict.
+    <b>What it cannot tell you</b>
+    Whether anything is <em>true</em>. It only knows the lines you marked and the
+    joins you drew. Two sources that secretly share an origin you did not enter
+    will read as independent, and it will be wrong.
+    <b>Nothing leaves this device</b>
+    No account, no network, no server. Flint reads what you paste, and that is
+    the only way anything gets in.
+  </div>
+</div>
+
+<script>/* lmd.js -- the LMD metric engine, in the browser.
+ * ===========================================================================
+ * A faithful port of smi/lmd.py so SMI runs on a phone with no server. A port
+ * is a liability unless it is checked: smi/test_parity.py runs both engines
+ * over a shared list of graphs and fails if any distance differs by more than
+ * 1e-9. The port is not trusted; it is tested.
+ *
+ * There is no linear-algebra library here on purpose. The Laplacian is real and
+ * symmetric, so the cyclic Jacobi eigenvalue algorithm gives an exact
+ * eigendecomposition in about forty lines, and the pseudo-inverse is then
+ *
+ *     pinv(L) = V · diag(1/λ for λ above tolerance, else 0) · Vᵀ
+ *
+ * which is all this needs. Fifty nodes is well under a millisecond.
+ *
+ * WHAT IS BEING MEASURED
+ * A dependency graph inside running software: which live elements determine
+ * which others, and how strongly. J is the strength of a dependency; d is how
+ * far apart two elements should sit given all of them. Information layer. Not
+ * a claim about matter or physical distance.
+ */
+(function (root) {
+  "use strict";
+
+  var DEAD_MESH_EPS = 1e-12;
+
+  /* A coupling below this is DECLARED FADING: still connected, but too weak to
+   * show at display precision. Without a name for it, a wire reading 0.00 in
+   * the readout while the legend insists "live" is a fourth, unnamed state --
+   * the interface saying connected and the arithmetic saying I move nothing. */
+  var FADE_BELOW = 0.01;
+
+  /* Cyclic Jacobi for a real symmetric matrix. Returns { values, vectors }
+   * where vectors[i][k] is component i of eigenvector k. */
+  function eigSymmetric(Ain, sweeps) {
+    var n = Ain.length, i, j, k, p, q, s;
+    var A = Ain.map(function (r) { return r.slice(); });
+    var V = [];
+    for (i = 0; i < n; i++) {
+      V.push(new Array(n).fill(0));
+      V[i][i] = 1;
+    }
+    sweeps = sweeps || 60;
+    for (s = 0; s < sweeps; s++) {
+      var off = 0;
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) off += A[i][j] * A[i][j];
+      if (off < 1e-30) break;
+      for (p = 0; p < n - 1; p++) {
+        for (q = p + 1; q < n; q++) {
+          if (Math.abs(A[p][q]) < 1e-300) continue;
+          var theta = (A[q][q] - A[p][p]) / (2 * A[p][q]);
+          var t = Math.sign(theta || 1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+          var c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+          for (k = 0; k < n; k++) {
+            var akp = A[k][p], akq = A[k][q];
+            A[k][p] = c * akp - sn * akq;
+            A[k][q] = sn * akp + c * akq;
+          }
+          for (k = 0; k < n; k++) {
+            var apk = A[p][k], aqk = A[q][k];
+            A[p][k] = c * apk - sn * aqk;
+            A[q][k] = sn * apk + c * aqk;
+          }
+          for (k = 0; k < n; k++) {
+            var vkp = V[k][p], vkq = V[k][q];
+            V[k][p] = c * vkp - sn * vkq;
+            V[k][q] = sn * vkp + c * vkq;
+          }
+        }
+      }
+    }
+    var vals = [];
+    for (i = 0; i < n; i++) vals.push(A[i][i]);
+    return { values: vals, vectors: V };
+  }
+
+  /* d_ij = sqrt(R_ij), R_ij = L⁺_ii + L⁺_jj − 2·L⁺_ij. Same as the Python. */
+  function metricFromLaplacian(L) {
+    var n = L.length, i, j, k;
+    var e = eigSymmetric(L);
+    var maxAbs = 0;
+    for (i = 0; i < n; i++) maxAbs = Math.max(maxAbs, Math.abs(e.values[i]));
+    // the same rank tolerance numpy/jax use for pinv on a symmetric matrix
+    var tol = maxAbs * n * 2.220446049250313e-16;
+
+    var P = [];
+    for (i = 0; i < n; i++) P.push(new Array(n).fill(0));
+    for (k = 0; k < n; k++) {
+      if (Math.abs(e.values[k]) <= tol) continue;
+      var inv = 1 / e.values[k];
+      for (i = 0; i < n; i++) {
+        var vik = e.vectors[i][k];
+        if (vik === 0) continue;
+        for (j = 0; j < n; j++) P[i][j] += inv * vik * e.vectors[j][k];
+      }
+    }
+    var D = [];
+    for (i = 0; i < n; i++) {
+      D.push(new Array(n).fill(0));
+      for (j = 0; j < n; j++) {
+        var R = P[i][i] + P[j][j] - 2 * P[i][j];
+        D[i][j] = Math.sqrt(R > 0 ? R : 0);
+      }
+    }
+    return D;
+  }
+
+  /* Which nodes can actually reach which. pinv neither knows nor cares that a
+   * graph is in pieces; this does. */
+  function componentsOf(L, tol) {
+    tol = tol || 1e-12;
+    var n = L.length, label = new Array(n).fill(-1), next = 0, i, u, v;
+    for (i = 0; i < n; i++) {
+      if (label[i] !== -1) continue;
+      var stack = [i];
+      label[i] = next;
+      while (stack.length) {
+        u = stack.pop();
+        for (v = 0; v < n; v++) {
+          if (v !== u && Math.abs(L[u][v]) > tol && label[v] === -1) {
+            label[v] = next;
+            stack.push(v);
+          }
+        }
+      }
+      next++;
+    }
+    return label;
+  }
+
+  /* The distance matrix an interface may actually trust: the raw metric with
+   * the two places pinv lies removed.
+   *   - pairs in different pieces come back Infinity, not a small number
+   *   - a mesh with no coupling left comes back all-Infinity, not all-zero */
+  function meshMetric(L) {
+    var n = L.length, i, j, off = 0, D;
+    for (i = 0; i < n; i++) for (j = 0; j < n; j++) if (i !== j) off += Math.abs(L[i][j]);
+    if (off < DEAD_MESH_EPS) {
+      D = [];
+      for (i = 0; i < n; i++) {
+        D.push(new Array(n).fill(Infinity));
+        D[i][i] = 0;
+      }
+      return { D: D, labels: Array.from({ length: n }, function (_, k) { return k; }), dead: true };
+    }
+    D = metricFromLaplacian(L);
+    var lab = componentsOf(L);
+    var pieces = Math.max.apply(null, lab);
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        if (i === j) D[i][j] = 0;
+        else if (pieces > 0 && lab[i] !== lab[j]) D[i][j] = Infinity;
+      }
+    }
+    return { D: D, labels: lab, dead: false };
+  }
+
+  function laplacianFromEdges(n, edges) {
+    var W = [], i;
+    for (i = 0; i < n; i++) W.push(new Array(n).fill(0));
+    edges.forEach(function (e) {
+      if (e[0] === e[1]) throw new Error("a node cannot depend on itself: " + e[0]);
+      W[e[0]][e[1]] = W[e[1]][e[0]] = e[2];
+    });
+    var L = [];
+    for (i = 0; i < n; i++) {
+      L.push(W[i].map(function (w) { return -w; }));
+      L[i][i] = W[i].reduce(function (a, b) { return a + b; }, 0);
+    }
+    return L;
+  }
+
+  function ringLaplacian(n, J) {
+    var edges = [], i;
+    for (i = 0; i < n; i++) edges.push([i, (i + 1) % n, J]);
+    return laplacianFromEdges(n, edges);
+  }
+
+  /* Classical MDS: double-centre the squared distances, take the top two
+   * eigenvectors. The flat picture that best preserves the metric. */
+  /* `axes` selects WHICH two eigenvectors, by rank. (0,1) is the classical
+   * choice and keeps the most total structure. It is not always the one that
+   * keeps the most useful structure -- see bestAxes. */
+  function layout2d(D, keep, axes) {
+    axes = axes || [0, 1];
+    var m = keep.length, i, j;
+    var B = [];
+    for (i = 0; i < m; i++) B.push(new Array(m).fill(0));
+    var sq = [];
+    for (i = 0; i < m; i++) {
+      sq.push(new Array(m).fill(0));
+      for (j = 0; j < m; j++) {
+        var d = D[keep[i]][keep[j]];
+        sq[i][j] = d * d;
+      }
+    }
+    var rowMean = sq.map(function (r) { return r.reduce(function (a, b) { return a + b; }, 0) / m; });
+    var grand = rowMean.reduce(function (a, b) { return a + b; }, 0) / m;
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < m; j++) B[i][j] = -0.5 * (sq[i][j] - rowMean[i] - rowMean[j] + grand);
+    }
+    var e = eigSymmetric(B);
+    var order = e.values.map(function (v, k) { return [v, k]; })
+      .sort(function (a, b) { return b[0] - a[0]; });
+    var p1 = order[Math.min(axes[0], m - 1)], p2 = order[Math.min(axes[1], m - 1)];
+    var out = [];
+    for (i = 0; i < m; i++) {
+      out.push([
+        e.vectors[i][p1[1]] * Math.sqrt(Math.max(p1[0], 0)),
+        e.vectors[i][p2[1]] * Math.sqrt(Math.max(p2[0], 0)),
+      ]);
+    }
+    return out;
+  }
+
+  /* The worst pair in a layout, as a fraction of its true distance. 1.0 means
+   * every distance on screen is the real one. */
+  function flatness(D, keep, xy) {
+    var worst = 1.0, a = -1, b = -1, i, j;
+    for (i = 0; i < keep.length; i++) {
+      for (j = i + 1; j < keep.length; j++) {
+        var trueD = D[keep[i]][keep[j]];
+        if (!isFinite(trueD) || trueD <= 0) continue;
+        var ratio = Math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]) / trueD;
+        if (ratio < worst) { worst = ratio; a = keep[i]; b = keep[j]; }
+      }
+    }
+    return { ratio: worst, a: a, b: b };
+  }
+
+  /* The plane that leaves NO pair collapsed, if there is one.
+   *
+   * Classical MDS minimises strain, which is a TOTAL -- and a total can be
+   * excellent while one pair is destroyed. On the mesh SMI ships, the
+   * strain-best plane draws two elements on top of each other (0% of their true
+   * distance) while a different plane draws every pair at 71% or better.
+   * Neither view is wrong; they answer different questions. */
+  function bestAxes(D, keep, limit) {
+    limit = Math.min(limit || 4, keep.length);
+    var best = [0, 1], bestRatio = -1, i, j;
+    for (i = 0; i < limit; i++) {
+      for (j = i + 1; j < limit; j++) {
+        var r = flatness(D, keep, layout2d(D, keep, [i, j])).ratio;
+        if (r > bestRatio) { bestRatio = r; best = [i, j]; }
+      }
+    }
+    return { axes: best, ratio: bestRatio };
+  }
+
+  /* ------------------------------------------------------- frame alignment --
+   * Classical MDS fixes an embedding only up to rotation and reflection: the
+   * eigenvectors are defined up to sign, so a small change in the graph can
+   * hand back the same picture upside down. Deterministic per input, and to a
+   * person dragging it, the map flipping under their finger reads as the
+   * positions being arbitrary -- which is exactly the claim SMI makes against.
+   *
+   * So each new embedding is rotated/reflected onto the previous one, choosing
+   * whichever orthogonal transform moves the shared nodes least. Real change
+   * still shows; the cosmetic flips stop. This is the orthogonal Procrustes
+   * problem, solved in closed form because 2-D needs no SVD.
+   */
+  function procrustes2d(Q, P) {
+    var n = Math.min(Q.length, P.length), i;
+    if (n < 2) return Q.slice();
+    var qc = [0, 0], pc = [0, 0];
+    for (i = 0; i < n; i++) {
+      qc[0] += Q[i][0]; qc[1] += Q[i][1];
+      pc[0] += P[i][0]; pc[1] += P[i][1];
+    }
+    qc = [qc[0] / n, qc[1] / n];
+    pc = [pc[0] / n, pc[1] / n];
+
+    function residual(theta, flip) {
+      var c = Math.cos(theta), s2 = Math.sin(theta), tot = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var x = c * qx - s2 * qy, y = s2 * qx + c * qy;
+        tot += (x - (P[k][0] - pc[0])) * (x - (P[k][0] - pc[0])) +
+               (y - (P[k][1] - pc[1])) * (y - (P[k][1] - pc[1]));
+      }
+      return tot;
+    }
+    function bestAngle(flip) {
+      var num = 0, den = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var px = P[k][0] - pc[0], py = P[k][1] - pc[1];
+        num += qx * py - qy * px;
+        den += qx * px + qy * py;
+      }
+      return Math.atan2(num, den);
+    }
+    var best = null;
+    [false, true].forEach(function (flip) {
+      var th = bestAngle(flip), r = residual(th, flip);
+      if (best === null || r < best.r) best = { r: r, th: th, flip: flip };
+    });
+    var c = Math.cos(best.th), sn = Math.sin(best.th), out = [];
+    for (i = 0; i < Q.length; i++) {
+      var qx = (Q[i][0] - qc[0]) * (best.flip ? -1 : 1), qy = Q[i][1] - qc[1];
+      out.push([c * qx - sn * qy + pc[0], sn * qx + c * qy + pc[1]]);
+    }
+    return out;
+  }
+
+  var API = {
+    procrustes2d: procrustes2d,
+    FADE_BELOW: FADE_BELOW,
+    metricFromLaplacian: metricFromLaplacian,
+    meshMetric: meshMetric,
+    componentsOf: componentsOf,
+    laplacianFromEdges: laplacianFromEdges,
+    ringLaplacian: ringLaplacian,
+    eigSymmetric: eigSymmetric,
+    layout2d: layout2d,
+    flatness: flatness,
+    bestAxes: bestAxes,
+    DEAD_MESH_EPS: DEAD_MESH_EPS,
+  };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LMD = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* engines.js -- SPAR and FATHOM in the browser, on top of the tested LMD engine.
+ * ===========================================================================
+ * Loaded after smi/lmd.js, which supplies meshMetric, laplacianFromEdges,
+ * layout2d, procrustes2d and the two guards. That engine is parity-checked
+ * against the JAX engine over fourteen graphs; nothing here re-implements it.
+ *
+ * These two are checked the same way, by plexus/test_plexus.py, against the
+ * Python in spar/spar.py and fathom/fathom.py.
+ */
+(function (root) {
+  "use strict";
+
+  var LMD = root.LMD || (typeof require === "function" ? require("../smi/lmd.js") : null);
+
+  /* ------------------------------------------------------------- SPAR ---- */
+  /* bearing = w * R = P(this link is in a random spanning tree) = how often the
+   * link is the thing holding the structure together. The bearings sum to
+   * exactly parts - pieces, by Foster's theorem, which is why nothing here is a
+   * score somebody chose. */
+  function bearings(names, links) {
+    var idx = {}, i;
+    for (i = 0; i < names.length; i++) idx[names[i]] = i;
+    if (!links.length) {
+      return { links: [], total: 0, pieces: names.length, parts: names.length,
+               expected: 0, conserved: true, dead: true };
+    }
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rows = [], total = 0;
+    links.forEach(function (l, k) {
+      var d = r.D[idx[l[0]]][idx[l[1]]];
+      var b = l[2] * d * d;
+      total += b;
+      rows.push({ i: k, from: l[0], to: l[1], weight: l[2], bearing: b,
+                  soleRoute: b >= 0.999 });
+    });
+    var expected = names.length - pieces;
+    return { links: rows, total: total, pieces: pieces, parts: names.length,
+             expected: expected, conserved: Math.abs(total - expected) < 1e-9,
+             dead: false };
+  }
+
+  /* Which PARTS everything passes through. A link's bearing cannot answer this,
+   * and it is computed by removal rather than by a formula. */
+  function singlePoints(names, links) {
+    if (names.length < 3 || !links.length) return [];
+    var base = bearings(names, links).pieces, out = [];
+    names.forEach(function (n) {
+      var rest = names.filter(function (x) { return x !== n; });
+      var kept = links.filter(function (l) { return l[0] !== n && l[1] !== n; });
+      // NOT skipped when kept is empty: a part whose removal leaves no links at
+      // all is the most complete break there is.
+      var after = kept.length ? bearings(rest, kept).pieces : rest.length;
+      if (after > base) out.push({ part: n, piecesAfter: after });
+    });
+    return out;
+  }
+
+  /* ----------------------------------------------------------- FATHOM ---- */
+  var GROUND = "\u0000ground";   // cannot collide with a real name
+
+  function support(names, links, sources, drop) {
+    var keep = sources.filter(function (s) { return s !== drop; });
+    if (!keep.length) return null;
+    var live = links.filter(function (l) { return l[0] !== drop && l[1] !== drop; });
+    var isSrc = {};
+    keep.forEach(function (s) { isSrc[s] = true; });
+
+    /* pairs are kept as ARRAYS. An earlier version joined the two names into a
+       string key and split it back with split(""), which splits into single
+       characters -- it worked only for one-character names and silently built
+       nonsense graphs for everything else. */
+    var pairs = [], seen = {};
+    live.forEach(function (l) {
+      var a = isSrc[l[0]] ? GROUND : l[0], b = isSrc[l[1]] ? GROUND : l[1];
+      if (a === b) return;                        // inside the contracted ground
+      var lo = a < b ? a : b, hi = a < b ? b : a;
+      var key = lo + "\u0000" + hi;
+      if (key in seen) { pairs[seen[key]][2] += l[2]; return; }
+      seen[key] = pairs.length;
+      pairs.push([lo, hi, l[2]]);
+    });
+    if (!pairs.length) return null;
+
+    var nm = [], set = {};
+    pairs.forEach(function (p) {
+      [p[0], p[1]].forEach(function (n) {
+        if (!(n in set)) { set[n] = true; nm.push(n); }
+      });
+    });
+    nm.sort();
+    var idx = {}, i;
+    for (i = 0; i < nm.length; i++) idx[nm[i]] = i;
+    return { nm: nm, idx: idx, pairs: pairs };
+  }
+
+  function conductance(names, links, sources, conclusion, drop) {
+    var g = support(names, links, sources, drop);
+    if (!g || !(conclusion in g.idx) || !(GROUND in g.idx)) return 0;
+    var edges = g.pairs.map(function (p) { return [g.idx[p[0]], g.idx[p[1]], p[2]]; });
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.nm.length, edges));
+    if (r.dead) return 0;
+    var d = r.D[g.idx[conclusion]][g.idx[GROUND]];
+    if (!isFinite(d) || d <= 0) return 0;
+    return 1 / (d * d);
+  }
+
+  /* dependence(s) = 1 - support without s / support with all.
+   * Contraction is the move: it stops asking "is there another way round this
+   * link" and starts asking "is there another way IN". */
+  function sound(names, links, sources, conclusion) {
+    var base = conductance(names, links, sources, conclusion, null);
+    var rows = sources.map(function (s) {
+      var without = conductance(names, links, sources, conclusion, s);
+      var dep = base > 0 ? 1 - without / base : 1;
+      return { source: s, dependence: dep, carriesItAlone: dep >= 0.999 };
+    });
+    rows.sort(function (a, b) { return b.dependence - a.dependence; });
+    var deepest = rows.length ? rows[0] : null;
+    return {
+      conclusion: conclusion, support: base, bySource: rows,
+      deepest: deepest ? deepest.dependence : 1,
+      restsOnOneThread: !!(deepest && deepest.carriesItAlone),
+      remaining: deepest ? 1 - deepest.dependence : 0,
+    };
+  }
+
+  /* ------------------------------------------------- suggested links ----- */
+  /* Shared labels only. This is a SUGGESTION and never a measurement: two
+   * things sharing a word are not thereby dependent on one another, and
+   * nothing computed here is fed into a bearing or a sounding unless a person
+   * confirms the link first. */
+  function suggest(items) {
+    var out = [], i, j;
+    for (i = 0; i < items.length; i++) {
+      for (j = i + 1; j < items.length; j++) {
+        var a = items[i].tags || [], b = items[j].tags || [];
+        if (!a.length || !b.length) continue;
+        var inter = a.filter(function (t) { return b.indexOf(t) >= 0; });
+        if (!inter.length) continue;
+        var union = a.concat(b.filter(function (t) { return a.indexOf(t) < 0; }));
+        out.push({ a: items[i].name, b: items[j].name,
+                   shared: inter, score: inter.length / union.length });
+      }
+    }
+    out.sort(function (x, y) { return y.score - x.score; });
+    return out;
+  }
+
+  var API = { bearings: bearings, singlePoints: singlePoints, sound: sound,
+              conductance: conductance, suggest: suggest, GROUND: GROUND };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PLEXUS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* nere.js -- agency screen. INFRASTRUCTURE: no interface, no page of its own.
+ * ===========================================================================
+ * NOT A PORT. The shipped engine (nere_engine_v3) lives in an ihcei_stack that
+ * is not in this repository, so nothing here was copied from it and nothing
+ * here is parity-checked against it. This is a new, deterministic
+ * implementation of the BEHAVIOUR described in nere_experiment/: catching the
+ * rhetorical signature of writing that pressures a reader into surrendering
+ * their own judgement. Its numbers will not match nere_engine_v3's, and no
+ * claim is made that they should.
+ *
+ * WHAT IT DOES AND DOES NOT DETECT
+ * It is a lexical screen. It counts phrases that demand trust and phrases that
+ * hand judgement back, and reports the balance. That is all.
+ *
+ *   It does NOT detect whether a claim is TRUE.
+ *   It does NOT understand the text.
+ *   A careful liar scores clean. An honest, blunt writer can score badly.
+ *
+ * Those limits are not caveats bolted on afterwards; they are the reason this
+ * is infrastructure rather than a verdict shown to a person. Cairn uses it to
+ * annotate, never to decide, and the number is reported beside the structural
+ * measurement rather than in place of it.
+ */
+(function (root) {
+  "use strict";
+
+  /* Phrases that ask the reader to stop checking. Kept as a visible list rather
+     than a trained weight so anyone can audit, argue with, or extend it. */
+  var PRESSURE = [
+    "just trust", "trust me", "you don't need to verify", "no need to verify",
+    "don't verify", "no need to check", "don't question", "proves",
+    "proven fact", "undeniable", "experts confirm", "experts agree",
+    "everyone knows", "settled science", "the science is settled",
+    "act now", "before it's too late", "obviously", "clearly false",
+    "wake up", "do your own research"
+  ];
+
+  /* Phrases that hand judgement back. */
+  var DISCIPLINE = [
+    "pre-registered", "preregistered", "you can verify", "you can check",
+    "we report", "the null", "reported the null", "primary test failed",
+    "decision authority remains with you",
+    /* bare topic nouns like "methodology" and "hash" were here and had to go:
+       they appear just as readily inside "you don't need to verify the
+       methodology", where they scored as discipline in a sentence doing the
+       opposite. Only phrases that DO the handing-back survive. */
+    "confidence interval", "credible interval", "limitations",
+    "we do not know", "inconclusive", "may be wrong", "raw data"
+  ];
+
+  function count(hay, list) {
+    var hits = [], i;
+    for (i = 0; i < list.length; i++) {
+      var at = hay.indexOf(list[i]);
+      if (at >= 0) hits.push(list[i]);
+    }
+    return hits;
+  }
+
+  /* balance in [-1, 1]:  -1 all pressure, +1 all discipline, 0 neither or even.
+     Deliberately a ratio and not a total, so a long article is not condemned
+     for being long. */
+  function screen(text) {
+    var hay = String(text || "").toLowerCase();
+    var p = count(hay, PRESSURE), d = count(hay, DISCIPLINE);
+    var n = p.length + d.length;
+    var balance = n ? (d.length - p.length) / n : 0;
+    return {
+      pressure: p, discipline: d,
+      balance: balance,
+      /* A band, not a verdict. "unscreened" is the honest answer when the text
+         carries none of these markers at all -- which is most careful writing,
+         and must not be reported as though it had passed a test. */
+      band: !n ? "unscreened"
+        : balance <= -0.5 ? "leans on the reader"
+        : balance >= 0.5 ? "hands judgement back"
+        : "mixed",
+      screened: n > 0
+    };
+  }
+
+  var API = { screen: screen, PRESSURE: PRESSURE, DISCIPLINE: DISCIPLINE };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.NERE = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* ihcei.js -- probabilistic governance floor. INFRASTRUCTURE: no interface.
+ * ===========================================================================
+ * NOT A PORT. ihcei_kernel_v3 and gt_probabilistic live in an ihcei_stack that
+ * is not in this repository. Nothing here was copied from them and nothing is
+ * parity-checked against them. This is a new deterministic implementation of
+ * the BEHAVIOUR documented in nere_experiment/lism_ihcei_integration.py. Its
+ * numbers will not match the shipped kernel and no claim is made that they do.
+ *
+ * WHAT IS IMPLEMENTED
+ *
+ * 1. LINEAR COUPLING.  E = U * D.  The quadratic form E = U * D^2 is RETIRED:
+ *    a test asserts this file cannot be made to square D, because reinstating a
+ *    retired law quietly is exactly how a disconfirmed result comes back.
+ *
+ * 2. BETA POSTERIOR from a channel prior plus observed evidence.
+ *
+ * 3. THE FLOOR, which is the whole point. Extreme evidence WIDENS the interval
+ *    instead of flipping the verdict. A single startling observation should
+ *    make a system less certain, not confidently opposite -- so surprise is
+ *    spent on width, not on the mean.
+ *
+ * HONEST ABOUT THE ARITHMETIC
+ * The interval is a normal approximation to the Beta, not an exact quantile.
+ * That is a real approximation and it is stated rather than hidden: it is poor
+ * for very small counts near 0 or 1, where it is clipped to [0, 1]. It is
+ * adequate here because the floor deliberately widens the interval anyway, and
+ * because nothing downstream is allowed to treat the band as a decision.
+ */
+(function (root) {
+  "use strict";
+
+  var Z95 = 1.959963984540054;
+
+  /* E = U * D. Linear. Not squared. */
+  function essence(U, D) { return U * D; }
+
+  function betaStats(a, b) {
+    var n = a + b;
+    return { mean: a / n, sd: Math.sqrt((a * b) / (n * n * (n + 1))) };
+  }
+
+  /* prior: {a, b} channel prior. evidence: {kept, eroded} counts.
+   *
+   * surprise is how far the observed rate sits from the prior mean, in prior
+   * standard deviations. Beyond `tol` the interval is widened in proportion,
+   * so strong disagreement between prior and evidence is reported as "we are
+   * less sure" rather than as a confident reversal.
+   */
+  function assess(prior, evidence, tol) {
+    tol = tol === undefined ? 2 : tol;
+    var a0 = prior.a, b0 = prior.b;
+    var kept = evidence.kept, eroded = evidence.eroded;
+    var n = kept + eroded;
+
+    var pri = betaStats(a0, b0);
+    var post = betaStats(a0 + kept, b0 + eroded);
+
+    var surprise = 0;
+    if (n > 0 && pri.sd > 0) {
+      surprise = Math.abs(kept / n - pri.mean) / pri.sd;
+    }
+    var excess = Math.max(0, surprise - tol);
+    var widen = 1 + excess;
+
+    var half = Z95 * post.sd * widen;
+    var lo = Math.max(0, post.mean - half);
+    var hi = Math.min(1, post.mean + half);
+
+    return {
+      mean: post.mean, lo: lo, hi: hi, width: hi - lo,
+      surprise: surprise, widened: excess > 0, widenFactor: widen,
+      n: n,
+      /* A band that refuses to commit while the interval straddles the middle.
+         This is the floor doing its job: an interval wide enough to contain
+         both answers is reported as inconclusive, not rounded to the nearer. */
+      band: (lo <= 0.5 && hi >= 0.5) ? "inconclusive"
+        : hi < 0.5 ? "erodes agency"
+        : "preserves agency"
+    };
+  }
+
+  var API = { essence: essence, assess: assess, betaStats: betaStats, Z95: Z95 };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.IHCEI = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* cairn.js -- the verification engine. INFRASTRUCTURE: no interface.
+ * ===========================================================================
+ * Cairn answers "what does this rest on?" with a structure, never with a
+ * paragraph. It runs the already-tested engines -- bearings and sound from
+ * plexus/engines.js, parity-checked against spar/ and fathom/ -- and returns
+ * their numbers. It generates no text about the world and has no model in it.
+ *
+ * THE FIREWALL, WHICH IS THE WHOLE DESIGN
+ * Two different measurements are made here and they are NEVER combined:
+ *
+ *   STRUCTURE  (Layer 1)  what the claim rests on, from the graph a person
+ *                         entered. Measured. Reproducible. Says nothing about
+ *                         whether any source is true.
+ *   RHETORIC   (screen)   whether the wording leans on the reader. Lexical.
+ *                         Says nothing about whether the claim is true either.
+ *
+ * A single "credibility score" fusing the two would be the most saleable thing
+ * this file could produce and the most dishonest. Text that hands judgement
+ * back can still rest on one unverified blog post; text full of pressure can be
+ * perfectly sound. They are reported side by side, and `combined` is absent on
+ * purpose -- a test asserts no such field is ever added.
+ *
+ * WHAT CAIRN CANNOT DO
+ * It cannot tell you a claim is true. It knows only the sources you listed and
+ * the links you drew. If two sources secretly share an origin you did not
+ * enter, it will report them as independent, and it will be wrong.
+ */
+(function (root) {
+  "use strict";
+
+  var ENG = root.PLEXUS || (typeof require === "function" ? require("./engines.js") : null);
+  var NERE = root.NERE || (typeof require === "function" ? require("./nere.js") : null);
+  var IHCEI = root.IHCEI || (typeof require === "function" ? require("./ihcei.js") : null);
+
+  /* A weak, deliberately uninformative channel prior. Beta(1,1) is uniform: it
+     asserts nothing about the channel before evidence arrives, which is the
+     right default when the "channel" is an arbitrary page someone pasted. */
+  function defaultPrior() { return { a: 1, b: 1 }; }
+
+  /* Split pasted text into candidate lines a person can mark up. Deterministic
+     and dumb on purpose: it does not decide what a claim IS, it only breaks the
+     text where a reader would. Nothing is measured until a person says which
+     lines are sources and how they connect. */
+  function lines(text) {
+    return String(text || "")
+      .split(/[\n\r]+|(?<=[.!?])\s+/)
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length > 0; });
+  }
+
+  function verify(spec) {
+    var parts = spec.parts || [];
+    var links = spec.links || [];
+    var sources = spec.sources || [];
+    var conclusion = spec.conclusion;
+
+    var structure = null;
+    if (parts.length >= 2 && links.length) {
+      var bear = ENG.bearings(parts, links);
+      var sound = ENG.sound(parts, links, sources, conclusion);
+      structure = {
+        parts: bear.parts, pieces: bear.pieces, total: bear.total,
+        conserved: bear.conserved,
+        soleRoutes: bear.links.filter(function (b) { return b.soleRoute; }).length,
+        support: sound.support,
+        deepest: sound.deepest,
+        restsOnOneThread: sound.restsOnOneThread,
+        remaining: sound.remaining,
+        bySource: sound.bySource
+      };
+    }
+
+    /* The screen runs on the words. Its counts ARE the evidence handed to the
+       governance floor -- literal observed markers, not a threshold anyone
+       picked. */
+    var rhetoric = NERE.screen(spec.text || "");
+    var agency = IHCEI.assess(
+      spec.prior || defaultPrior(),
+      { kept: rhetoric.discipline.length, eroded: rhetoric.pressure.length }
+    );
+
+    return {
+      conclusion: conclusion,
+      structure: structure,
+      rhetoric: rhetoric,
+      agency: agency,
+      /* Said out loud in the payload, so anything rendering this cannot claim
+         it was not told. */
+      firewall: "structure and rhetoric are measured separately and never combined"
+    };
+  }
+
+  var API = { verify: verify, lines: lines, defaultPrior: defaultPrior };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.CAIRN = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var ROLES = ["step", "result", "source"];
+  var st = { lines: [], inc: {}, role: {}, links: [] };
+
+  var DEMO =
+    "The new local policy will raise your taxes by 12%.\n" +
+    "A quoted figure puts the rise at 12%.\n" +
+    "A quoted expert says the rise is unavoidable.\n" +
+    "A blog post from 2021.\n" +
+    "Peer-reviewed research proves this. You don't need to verify it. Just trust the model and act now.";
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+  function err(m) { var e = $("#err"); if (!m) { e.hidden = true; return; } e.textContent = m; e.hidden = false; }
+  function included() { return st.lines.filter(function (l) { return st.inc[l]; }); }
+
+  function drawLines() {
+    $("#lines").innerHTML = st.lines.map(function (l, i) {
+      var role = st.role[l] || "step";
+      return '<button class="ln" type="button" data-i="' + i + '" data-in="' +
+        !!st.inc[l] + '" data-role="' + role + '">' +
+        '<span class="mk" data-role-btn="' + i + '">' + (st.inc[l] ? role : "add") +
+        "</span><span>" + esc(l) + "</span></button>";
+    }).join("");
+    refreshPickers();
+  }
+
+  /* Only the selects, the join chips and the panel visibility. The row list is
+     NOT rebuilt here: replacing it destroys the row just tapped, so a run of
+     taps registers only the first and keyboard focus falls to the top of the
+     page. Fixed three times already in this app -- editor, manifold, and now
+     here -- so the rule is written down: mutate the row, never the list. */
+  function refreshPickers() {
+    var opts = included().map(function (l) {
+      return '<option value="' + esc(l) + '">' + esc(l.slice(0, 44)) + "</option>";
+    }).join("");
+    $("#fa").innerHTML = opts; $("#fb").innerHTML = opts;
+    $("#joins").innerHTML = st.links.map(function (l, i) {
+      return '<span class="tag">' + esc(l[0].slice(0, 22)) + " &rarr; " +
+        esc(l[1].slice(0, 22)) + '<button class="x" type="button" data-un="' + i +
+        '" aria-label="Remove">&times;</button></span>';
+    }).join("");
+    $("#p-join").hidden = included().length < 2;
+  }
+
+  function paintRow(el, l) {
+    el.setAttribute("data-in", String(!!st.inc[l]));
+    el.setAttribute("data-role", st.role[l] || "step");
+    el.querySelector(".mk").textContent = st.inc[l] ? (st.role[l] || "step") : "add";
+  }
+
+  $("#break").onclick = function () {
+    var ls = CAIRN.lines($("#src").value);
+    if (ls.length < 2) { err("Paste a few sentences first."); return; }
+    st = { lines: ls, inc: {}, role: {}, links: [] };
+    err(""); $("#p-lines").hidden = false; $("#out").hidden = true; drawLines();
+  };
+  $("#demo").onclick = function () { $("#src").value = DEMO; $("#break").click(); };
+
+  $("#lines").addEventListener("click", function (ev) {
+    var tag = ev.target.closest("[data-role-btn]");
+    var row = ev.target.closest("button[data-i]");
+    if (!row) return;
+    var l = st.lines[+row.dataset.i];
+    if (tag && st.inc[l]) {
+      st.role[l] = ROLES[(ROLES.indexOf(st.role[l] || "step") + 1) % ROLES.length];
+    } else if (st.inc[l]) {
+      delete st.inc[l]; delete st.role[l];
+      st.links = st.links.filter(function (x) { return x[0] !== l && x[1] !== l; });
+    } else {
+      st.inc[l] = true; st.role[l] = st.role[l] || "step";
+    }
+    err(""); paintRow(row, l); refreshPickers();
+  });
+  $("#joins").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-un]");
+    if (!b) return;
+    st.links.splice(+b.dataset.un, 1); drawLines();
+  });
+  $("#join").onclick = function () {
+    var a = $("#fa").value, b = $("#fb").value;
+    if (a === b) { err("A line cannot come from itself."); return; }
+    if (st.links.some(function (x) {
+      return (x[0] === a && x[1] === b) || (x[0] === b && x[1] === a);
+    })) { err("Those two are already joined."); return; }
+    st.links.push([a, b, 1]); err(""); drawLines();
+  };
+
+  $("#run").onclick = function () {
+    var parts = included();
+    var result = parts.filter(function (l) { return st.role[l] === "result"; })[0];
+    var sources = parts.filter(function (l) { return st.role[l] === "source"; });
+    if (!result) { err("Mark one line as the result."); return; }
+    if (!st.links.length) { err("Join at least two lines."); return; }
+    if (!sources.length) { err("Mark at least one line as a source."); return; }
+
+    var v = CAIRN.verify({ parts: parts, links: st.links, sources: sources,
+                           conclusion: result, text: $("#src").value });
+    err("");
+    var s = v.structure;
+    if (!s || !s.support) {
+      $("#s-big").innerHTML = "<em>Nothing reaches</em> the result.";
+      $("#s-sub").textContent = "No route runs from a source to what you marked as the result.";
+    } else if (s.restsOnOneThread) {
+      $("#s-big").innerHTML = "It <em>all</em> rests on one source.";
+      $("#s-sub").textContent = "If that source were wrong, nothing would be left holding it up. " +
+        s.parts + " parts, " + s.soleRoutes + " links with no way around them.";
+    } else {
+      $("#s-big").innerHTML = "The worst single loss costs <em>" +
+        Math.round(s.deepest * 100) + "%</em>.";
+      $("#s-sub").textContent = "If the source it leans on hardest were wrong, " +
+        Math.round(s.remaining * 100) + "% of the support would remain.";
+    }
+
+    var r = v.rhetoric;
+    $("#r-big").textContent = r.band === "unscreened" ? "No marked phrasing."
+      : r.band === "leans on the reader" ? "It leans on you."
+      : r.band === "hands judgement back" ? "It hands judgement back."
+      : "Mixed phrasing.";
+    $("#r-sub").textContent = r.band === "unscreened"
+      ? "None of the phrases this checks for appear. That is not a pass — most careful writing looks like this, and so does most careful lying."
+      : (r.pressure.length + " pressure phrase" + (r.pressure.length === 1 ? "" : "s") +
+         ", " + r.discipline.length + " handing judgement back" +
+         (r.pressure.length ? ". Found: " + r.pressure.slice(0, 3).join(", ") + "." : "."));
+
+    $("#sep").textContent = v.firewall + " — a claim can be soundly sourced and " +
+      "pushily written, or gently written and resting on nothing.";
+    $("#out").hidden = false;
+  };
+  $("#theme").onclick = function () {
+    var d = document.documentElement, light = d.getAttribute("data-theme") === "light";
+    d.setAttribute("data-theme", light ? "dark" : "light");
+    $("#theme").textContent = light ? "Light" : "Dark";
+  };
+
+  window.__flint = { CAIRN: CAIRN, get state() { return st; }, draw: drawLines };
+})();
+</script>
+
+<script>
+/* Registers only when the page is served (https or localhost). Opened straight
+   from a file there is no service worker, and the app works anyway -- it is one
+   file with everything already in it. */
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>
