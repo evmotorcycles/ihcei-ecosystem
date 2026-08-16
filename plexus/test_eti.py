@@ -151,6 +151,86 @@ def test_the_same_structure_draws_the_same_picture_twice(eti):
     assert eti["deterministic"] is True
 
 
+def _boxes(case):
+    """Rebuild the label boxes with the same constants eti.js uses."""
+    out = []
+    for n in case["nodes"]:
+        if not n["shown"]:
+            continue
+        w = max(len(n["name"]) * 4.5, 10)
+        lx, a = n["lx"], n["anchor"]
+        x0 = lx - w / 2 if a == "middle" else lx if a == "start" else lx - w
+        out.append((n["name"], x0, x0 + w, n["ly"] - 9, n["ly"] + 3))
+    return out
+
+
+def test_the_names_do_not_print_on_top_of_each_other(eti):
+    """The defect that was reported on the shipped page.
+
+    Ten parts of a water bill, tightly coupled, collapsed to nearly the same
+    place -- which is the correct answer -- and their names were drawn over each
+    other into unreadable mush, with one clipped off the right edge. Labels are
+    now placed around the dots, and this fails if any two overlap or any leaves
+    the frame.
+    """
+    case = [c for c in eti["labels"] if c["name"] == "water bill"][0]
+    boxes = _boxes(case)
+    assert len(boxes) == len(case["nodes"]) == 10, "a name went unplaced"
+    v = case["view"]
+    for name, x0, x1, y0, y1 in boxes:
+        assert 0 <= x0 and x1 <= v["w"], f"{name}: label runs off the frame in x"
+        assert 0 <= y0 and y1 <= v["h"], f"{name}: label runs off the frame in y"
+    for i in range(len(boxes)):
+        for j in range(i + 1, len(boxes)):
+            a, b = boxes[i], boxes[j]
+            apart = a[2] < b[1] or a[1] > b[2] or a[4] < b[3] or a[3] > b[4]
+            assert apart, f"{a[0]!r} and {b[0]!r} print on top of each other"
+
+
+def test_placing_the_labels_does_not_move_the_nodes(eti):
+    """The nodes ARE the measurement.
+
+    This view claims screen distance is sqrt(bearing/strength). Nudging a dot to
+    make room for text would quietly falsify that claim while making the picture
+    look better -- the most tempting kind of lie available here. So the text
+    moves and the dots do not, and that is checked rather than trusted: the
+    drawn positions must be one uniform scale-and-shift of the embedding, which
+    means every pair keeps the same ratio.
+    """
+    import math
+    case = [c for c in eti["labels"] if c["name"] == "water bill"][0]
+    by_name = {n["name"]: n for n in case["nodes"] if not n["stranded"]}
+    keep, xy = case["keep"], case["xy"]
+    assert len(keep) == len(xy) >= 3
+    pts = [n for n in case["nodes"] if not n["stranded"]]
+    assert len(pts) == len(xy)
+
+    ratios = []
+    for i in range(len(xy)):
+        for j in range(i + 1, len(xy)):
+            emb = math.dist(xy[i], xy[j])
+            scr = math.dist((pts[i]["x"], pts[i]["y"]), (pts[j]["x"], pts[j]["y"]))
+            if emb > 1e-9:
+                ratios.append(scr / emb)
+    assert ratios
+    assert max(ratios) - min(ratios) < 1e-6, \
+        "a node was displaced: the drawing is no longer the metric"
+    assert by_name  # names round-tripped
+
+
+def test_a_name_with_nowhere_to_go_is_reported_not_dropped(eti):
+    """A part that silently vanishes from the picture is the same lie as a part
+    drawn where it is not. Crushed into a frame far too small, some names cannot
+    be placed -- every node must still be drawn, and the ones without a name
+    must be named out loud so a person can ask for them."""
+    tiny = [c for c in eti["labels"] if c["name"].endswith("tiny frame")][0]
+    assert len(tiny["nodes"]) == 10, "nodes disappeared when labels did not fit"
+    assert tiny["hidden"], "the tiny frame fitted every label, so this proves nothing"
+    unshown = {n["name"] for n in tiny["nodes"] if not n["shown"]}
+    assert unshown == set(tiny["hidden"]), \
+        "the hidden list does not match the labels actually withheld"
+
+
 def test_the_shipped_topology_page_obeys_the_same_rules_as_the_app():
     """A second page is a second chance to break the invariants that were paid
     for once. The CSP has no script-src 'self', so an external script would not

@@ -38,7 +38,38 @@ const KITE = [["a", "b", 1], ["b", "c", 1], ["a", "c", 1], ["c", "d", 1]];
 const f1 = ETI.frame(["a", "b", "c", "d"], KITE, VIEW);
 const f2 = ETI.frame(["a", "b", "c", "d"], KITE, VIEW);
 
+/* The dense real example, plus the same one crushed into a frame far too small
+   for its names, so the "no room" path is exercised rather than assumed. */
+const WATER = [
+  ["Previous reading", "Present reading", "Units used", "Water tariff",
+   "Water charge", "Sewerage charge", "Service fee", "Arrears", "VAT", "Amount due"],
+  [["Previous reading", "Units used", 8], ["Present reading", "Units used", 8],
+   ["Units used", "Water charge", 9], ["Water tariff", "Water charge", 9],
+   ["Water charge", "Sewerage charge", 5], ["Water charge", "VAT", 6],
+   ["Sewerage charge", "VAT", 4], ["Water charge", "Amount due", 7],
+   ["Sewerage charge", "Amount due", 5], ["Service fee", "Amount due", 3],
+   ["Arrears", "Amount due", 2], ["VAT", "Amount due", 6]],
+];
+
+function labelCase(name, parts, links, view) {
+  const f = ETI.frame(parts, links, view);
+  return {
+    name, view,
+    hidden: f.hiddenLabels,
+    nodes: f.nodes.map((n) => ({
+      name: n.name, x: n.x, y: n.y, stranded: n.stranded,
+      lx: n.label.x, ly: n.label.y, anchor: n.label.anchor, shown: n.label.shown,
+    })),
+    keep: f.keep, xy: f.xy,
+  };
+}
+
 process.stdout.write(JSON.stringify({
+  labels: [
+    labelCase("water bill", WATER[0], WATER[1], VIEW),
+    labelCase("water bill in a tiny frame", WATER[0], WATER[1],
+              { w: 130, h: 110, pad: 8 }),
+  ],
   cases: CASES.map(([name, parts, links]) => {
     const g = ETI.integrity(parts, links);
     const f = ETI.frame(parts, links, VIEW);

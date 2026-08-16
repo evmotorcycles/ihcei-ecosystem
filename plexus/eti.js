@@ -45,6 +45,56 @@
     };
   }
 
+  /* --------------------------------------------------------- label layout --
+   * THE NODES ARE NOT MOVED. Their positions are the measurement: the whole
+   * claim of this view is that distance on screen is sqrt(bearing/strength), and
+   * nudging a dot apart to make room for text would quietly falsify it. So the
+   * text moves and the dots do not.
+   *
+   * Tightly coupled parts genuinely land on top of each other -- that IS the
+   * result -- and the first build drew their names overprinted into mush. Each
+   * label now takes the first offset that collides with nothing already placed
+   * and stays inside the frame. A name that fits nowhere is reported as hidden
+   * rather than dropped silently, because a part that vanishes from the picture
+   * is the same lie as a part drawn in a place it is not.
+   */
+  function placeLabels(nodes, W, H) {
+    var LH = 9, CW = 4.5, hidden = [];
+    var CAND = [[0, -13, "middle"], [0, 16, "middle"],
+                [13, 3, "start"], [-13, 3, "end"],
+                [0, -25, "middle"], [0, 28, "middle"],
+                [16, -11, "start"], [-16, -11, "end"],
+                [16, 17, "start"], [-16, 17, "end"],
+                [0, -37, "middle"], [0, 40, "middle"]];
+    /* The dots are obstacles too. Avoiding only other labels still let text sit
+       across a neighbouring node marker, which reads as though the name belongs
+       to that dot rather than its own. */
+    var placed = nodes.map(function (n) {
+      return { x0: n.x - 7, x1: n.x + 7, y0: n.y - 7, y1: n.y + 7 };
+    });
+    nodes.forEach(function (n) {
+      var w = Math.max(n.name.length * CW, 10), best = null, c;
+      for (c = 0; c < CAND.length; c++) {
+        var lx = n.x + CAND[c][0], ly = n.y + CAND[c][1], an = CAND[c][2];
+        var x0 = an === "middle" ? lx - w / 2 : an === "start" ? lx : lx - w;
+        var box = { x0: x0, x1: x0 + w, y0: ly - LH, y1: ly + 3 };
+        if (box.x0 < 1 || box.x1 > W - 1 || box.y0 < 1 || box.y1 > H - 1) continue;
+        var clash = placed.some(function (p) {
+          return !(box.x1 < p.x0 || box.x0 > p.x1 || box.y1 < p.y0 || box.y0 > p.y1);
+        });
+        if (!clash) { best = { x: lx, y: ly, anchor: an, box: box }; break; }
+      }
+      if (best) {
+        placed.push(best.box);
+        n.label = { x: best.x, y: best.y, anchor: best.anchor, shown: true };
+      } else {
+        n.label = { x: n.x, y: n.y - 13, anchor: "middle", shown: false };
+        hidden.push(n.name);
+      }
+    });
+    return hidden;
+  }
+
   /* One frame of the view. `prev` is the previous frame; passing it keeps the
      picture from turning over between redraws, because classical MDS fixes an
      embedding only up to rotation and reflection. */
@@ -140,11 +190,13 @@
       };
     });
 
+    var hidden = placeLabels(nodes, W, H);
+
     var g = integrity(names, links);
     return {
       nodes: nodes, edges: edges, keep: keep, xy: xy,
       integrity: g.integrity, parts: g.parts, pieces: g.pieces, total: g.total,
-      stranded: stranded.length, dead: r.dead
+      stranded: stranded.length, dead: r.dead, hiddenLabels: hidden
     };
   }
 

@@ -280,7 +280,7 @@ a{color:var(--hud)}
 
   var C = 2 * Math.PI * 50;
 
-  function draw() {
+  function draw(msg, kind) {
     var e = LIB[pick];
     var f = ETI.frame(e.parts, live(), VB, prev);
     prev = { keep: f.keep, xy: f.xy };
@@ -309,20 +309,44 @@ a{color:var(--hud)}
         (x.cut ? '" stroke-dasharray="4 5' : "") + '"/>');
     });
     f.nodes.forEach(function (n) {
-      var col = n.stranded ? "var(--mute)" : "var(--hud)";
-      out.push('<g opacity="' + (n.stranded ? ".55" : "1") + '">' +
+      var col = n.stranded ? "var(--mute)" : "var(--hud)", lab = n.label;
+      out.push('<g class="node" data-name="' + esc(n.name) + '" tabindex="0" ' +
+        'role="button" aria-label="' + esc(n.name) + '" opacity="' +
+        (n.stranded ? ".55" : "1") + '"><title>' + esc(n.name) + "</title>" +
         '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
         '" r="9.5" fill="' + col + '" opacity=".18"/>' +
         '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
         '" r="4.6" fill="' + col + '"/>' +
-        '<text x="' + n.x.toFixed(1) + '" y="' + (n.y - 13).toFixed(1) +
-        '" fill="var(--ink-2)" font-size="8.6" text-anchor="middle" ' +
-        'font-weight="600">' + esc(n.name) + "</text></g>");
+        (lab.shown
+          ? '<text x="' + lab.x.toFixed(1) + '" y="' + lab.y.toFixed(1) +
+            '" fill="var(--ink-2)" font-size="8.6" text-anchor="' + lab.anchor +
+            '" font-weight="600">' + esc(n.name) + "</text>"
+          /* No room for the name. Ringed rather than left bare, so a dot whose
+             label is missing is visibly a dot with a name to ask for. */
+          : '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
+            '" r="8.2" fill="none" stroke="' + col +
+            '" stroke-width="1" stroke-dasharray="2 2"/>') +
+        '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
+        '" r="16" fill="transparent"/></g>');
     });
     $("#canvas").innerHTML = out.join("");
     $("#desc").textContent = f.parts + " parts in " + f.pieces + " piece" +
       (f.pieces === 1 ? "" : "s") + ", integrity " + Math.round(f.integrity * 100) +
       "%, " + soles + " links with no way around them.";
+
+    /* The status line is written here, on every redraw, from the frame that was
+       just drawn. Setting it at the call sites let it drift: the readouts said
+       10 parts of a water bill while the line underneath still said 7 parts of
+       an energy bill. */
+    var line = msg || (LIB[pick].name + ": " + f.parts + " part" +
+      (f.parts === 1 ? "" : "s") + ", " + Math.round(f.integrity * 100) +
+      "% integrity.");
+    var hid = f.hiddenLabels.length;
+    if (hid) {
+      line += " " + hid + " name" + (hid === 1 ? " is" : "s are") +
+        " too crowded to print — tap a ringed dot to read it.";
+    }
+    say(line, kind);
     return f;
   }
 
@@ -344,9 +368,14 @@ a{color:var(--hud)}
     if (!b) return;
     pick = +b.dataset.i; off = {}; prev = null;
     drawPick();
-    var f = draw();
-    say(LIB[pick].name + ": " + f.parts + " parts, " + Math.round(f.integrity * 100) +
-        "% integrity.");
+    draw();
+  });
+
+  /* A name that could not be printed is still reachable: tap the dot. */
+  $("#canvas").addEventListener("click", function (ev) {
+    var g = ev.target.closest(".node");
+    if (!g) return;
+    say("That one is " + g.getAttribute("data-name") + ".");
   });
 
   /* The two buttons exist to show that "weak" and "load-bearing" are different
@@ -361,7 +390,10 @@ a{color:var(--hud)}
 
     if (which === "sole") {
       var soleEdge = f.edges.filter(function (x) { return x.sole; })[0];
-      if (!soleEdge) { say("Nothing here is holding it up on its own — every link has another way round.", "held"); return; }
+      if (!soleEdge) {
+        draw("Nothing here is holding it up on its own — every link has another way round.", "held");
+        return;
+      }
       e.links.forEach(function (l, i) {
         if (target < 0 && !off[i] && l[0] === soleEdge.from && l[1] === soleEdge.to) target = i;
       });
@@ -371,19 +403,18 @@ a{color:var(--hud)}
         if (!off[i] && l[2] < best) { best = l[2]; target = i; }
       });
     }
-    if (target < 0) { say("There is nothing left to remove.", "broke"); return; }
+    if (target < 0) { draw("There is nothing left to remove.", "broke"); return; }
 
     off[target] = true;
     var after = ETI.integrity(e.parts, live()).integrity;
-    draw();
     var gone = e.links[target];
     var moved = Math.round(before * 100) - Math.round(after * 100);
     if (moved <= 0) {
-      say("Removed " + gone[0] + " to " + gone[1] + ". Integrity did not move: " +
-          "there was another way round it.", "held");
+      draw("Removed " + gone[0] + " to " + gone[1] + ". Integrity did not move: " +
+           "there was another way round it.", "held");
     } else {
-      say("Removed " + gone[0] + " to " + gone[1] + ". Integrity fell " + moved +
-          " points — that one was holding it up.", "broke");
+      draw("Removed " + gone[0] + " to " + gone[1] + ". Integrity fell " + moved +
+           " points — that one was holding it up.", "broke");
     }
   }
 
@@ -391,8 +422,7 @@ a{color:var(--hud)}
   $("#sole").onclick = function () { cut("sole"); };
   $("#reset").onclick = function () {
     off = {}; prev = null; LIB = library(); drawPick();
-    var f = draw();
-    say("Everything is back. " + Math.round(f.integrity * 100) + "% integrity.");
+    draw();
   };
   $("#theme").onclick = function () {
     var d = document.documentElement;
@@ -402,9 +432,7 @@ a{color:var(--hud)}
   };
 
   drawPick();
-  var f0 = draw();
-  say(LIB[pick].name + ": " + f0.parts + " parts, " +
-      Math.round(f0.integrity * 100) + "% integrity.");
+  draw();
 
   window.__topology = {
     ETI: ETI, draw: draw,

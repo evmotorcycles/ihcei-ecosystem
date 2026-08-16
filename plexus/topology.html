@@ -734,6 +734,56 @@ a{color:var(--hud)}
     };
   }
 
+  /* --------------------------------------------------------- label layout --
+   * THE NODES ARE NOT MOVED. Their positions are the measurement: the whole
+   * claim of this view is that distance on screen is sqrt(bearing/strength), and
+   * nudging a dot apart to make room for text would quietly falsify it. So the
+   * text moves and the dots do not.
+   *
+   * Tightly coupled parts genuinely land on top of each other -- that IS the
+   * result -- and the first build drew their names overprinted into mush. Each
+   * label now takes the first offset that collides with nothing already placed
+   * and stays inside the frame. A name that fits nowhere is reported as hidden
+   * rather than dropped silently, because a part that vanishes from the picture
+   * is the same lie as a part drawn in a place it is not.
+   */
+  function placeLabels(nodes, W, H) {
+    var LH = 9, CW = 4.5, hidden = [];
+    var CAND = [[0, -13, "middle"], [0, 16, "middle"],
+                [13, 3, "start"], [-13, 3, "end"],
+                [0, -25, "middle"], [0, 28, "middle"],
+                [16, -11, "start"], [-16, -11, "end"],
+                [16, 17, "start"], [-16, 17, "end"],
+                [0, -37, "middle"], [0, 40, "middle"]];
+    /* The dots are obstacles too. Avoiding only other labels still let text sit
+       across a neighbouring node marker, which reads as though the name belongs
+       to that dot rather than its own. */
+    var placed = nodes.map(function (n) {
+      return { x0: n.x - 7, x1: n.x + 7, y0: n.y - 7, y1: n.y + 7 };
+    });
+    nodes.forEach(function (n) {
+      var w = Math.max(n.name.length * CW, 10), best = null, c;
+      for (c = 0; c < CAND.length; c++) {
+        var lx = n.x + CAND[c][0], ly = n.y + CAND[c][1], an = CAND[c][2];
+        var x0 = an === "middle" ? lx - w / 2 : an === "start" ? lx : lx - w;
+        var box = { x0: x0, x1: x0 + w, y0: ly - LH, y1: ly + 3 };
+        if (box.x0 < 1 || box.x1 > W - 1 || box.y0 < 1 || box.y1 > H - 1) continue;
+        var clash = placed.some(function (p) {
+          return !(box.x1 < p.x0 || box.x0 > p.x1 || box.y1 < p.y0 || box.y0 > p.y1);
+        });
+        if (!clash) { best = { x: lx, y: ly, anchor: an, box: box }; break; }
+      }
+      if (best) {
+        placed.push(best.box);
+        n.label = { x: best.x, y: best.y, anchor: best.anchor, shown: true };
+      } else {
+        n.label = { x: n.x, y: n.y - 13, anchor: "middle", shown: false };
+        hidden.push(n.name);
+      }
+    });
+    return hidden;
+  }
+
   /* One frame of the view. `prev` is the previous frame; passing it keeps the
      picture from turning over between redraws, because classical MDS fixes an
      embedding only up to rotation and reflection. */
@@ -829,11 +879,13 @@ a{color:var(--hud)}
       };
     });
 
+    var hidden = placeLabels(nodes, W, H);
+
     var g = integrity(names, links);
     return {
       nodes: nodes, edges: edges, keep: keep, xy: xy,
       integrity: g.integrity, parts: g.parts, pieces: g.pieces, total: g.total,
-      stranded: stranded.length, dead: r.dead
+      stranded: stranded.length, dead: r.dead, hiddenLabels: hidden
     };
   }
 
@@ -912,7 +964,7 @@ a{color:var(--hud)}
 
   var C = 2 * Math.PI * 50;
 
-  function draw() {
+  function draw(msg, kind) {
     var e = LIB[pick];
     var f = ETI.frame(e.parts, live(), VB, prev);
     prev = { keep: f.keep, xy: f.xy };
@@ -941,20 +993,44 @@ a{color:var(--hud)}
         (x.cut ? '" stroke-dasharray="4 5' : "") + '"/>');
     });
     f.nodes.forEach(function (n) {
-      var col = n.stranded ? "var(--mute)" : "var(--hud)";
-      out.push('<g opacity="' + (n.stranded ? ".55" : "1") + '">' +
+      var col = n.stranded ? "var(--mute)" : "var(--hud)", lab = n.label;
+      out.push('<g class="node" data-name="' + esc(n.name) + '" tabindex="0" ' +
+        'role="button" aria-label="' + esc(n.name) + '" opacity="' +
+        (n.stranded ? ".55" : "1") + '"><title>' + esc(n.name) + "</title>" +
         '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
         '" r="9.5" fill="' + col + '" opacity=".18"/>' +
         '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
         '" r="4.6" fill="' + col + '"/>' +
-        '<text x="' + n.x.toFixed(1) + '" y="' + (n.y - 13).toFixed(1) +
-        '" fill="var(--ink-2)" font-size="8.6" text-anchor="middle" ' +
-        'font-weight="600">' + esc(n.name) + "</text></g>");
+        (lab.shown
+          ? '<text x="' + lab.x.toFixed(1) + '" y="' + lab.y.toFixed(1) +
+            '" fill="var(--ink-2)" font-size="8.6" text-anchor="' + lab.anchor +
+            '" font-weight="600">' + esc(n.name) + "</text>"
+          /* No room for the name. Ringed rather than left bare, so a dot whose
+             label is missing is visibly a dot with a name to ask for. */
+          : '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
+            '" r="8.2" fill="none" stroke="' + col +
+            '" stroke-width="1" stroke-dasharray="2 2"/>') +
+        '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
+        '" r="16" fill="transparent"/></g>');
     });
     $("#canvas").innerHTML = out.join("");
     $("#desc").textContent = f.parts + " parts in " + f.pieces + " piece" +
       (f.pieces === 1 ? "" : "s") + ", integrity " + Math.round(f.integrity * 100) +
       "%, " + soles + " links with no way around them.";
+
+    /* The status line is written here, on every redraw, from the frame that was
+       just drawn. Setting it at the call sites let it drift: the readouts said
+       10 parts of a water bill while the line underneath still said 7 parts of
+       an energy bill. */
+    var line = msg || (LIB[pick].name + ": " + f.parts + " part" +
+      (f.parts === 1 ? "" : "s") + ", " + Math.round(f.integrity * 100) +
+      "% integrity.");
+    var hid = f.hiddenLabels.length;
+    if (hid) {
+      line += " " + hid + " name" + (hid === 1 ? " is" : "s are") +
+        " too crowded to print — tap a ringed dot to read it.";
+    }
+    say(line, kind);
     return f;
   }
 
@@ -976,9 +1052,14 @@ a{color:var(--hud)}
     if (!b) return;
     pick = +b.dataset.i; off = {}; prev = null;
     drawPick();
-    var f = draw();
-    say(LIB[pick].name + ": " + f.parts + " parts, " + Math.round(f.integrity * 100) +
-        "% integrity.");
+    draw();
+  });
+
+  /* A name that could not be printed is still reachable: tap the dot. */
+  $("#canvas").addEventListener("click", function (ev) {
+    var g = ev.target.closest(".node");
+    if (!g) return;
+    say("That one is " + g.getAttribute("data-name") + ".");
   });
 
   /* The two buttons exist to show that "weak" and "load-bearing" are different
@@ -993,7 +1074,10 @@ a{color:var(--hud)}
 
     if (which === "sole") {
       var soleEdge = f.edges.filter(function (x) { return x.sole; })[0];
-      if (!soleEdge) { say("Nothing here is holding it up on its own — every link has another way round.", "held"); return; }
+      if (!soleEdge) {
+        draw("Nothing here is holding it up on its own — every link has another way round.", "held");
+        return;
+      }
       e.links.forEach(function (l, i) {
         if (target < 0 && !off[i] && l[0] === soleEdge.from && l[1] === soleEdge.to) target = i;
       });
@@ -1003,19 +1087,18 @@ a{color:var(--hud)}
         if (!off[i] && l[2] < best) { best = l[2]; target = i; }
       });
     }
-    if (target < 0) { say("There is nothing left to remove.", "broke"); return; }
+    if (target < 0) { draw("There is nothing left to remove.", "broke"); return; }
 
     off[target] = true;
     var after = ETI.integrity(e.parts, live()).integrity;
-    draw();
     var gone = e.links[target];
     var moved = Math.round(before * 100) - Math.round(after * 100);
     if (moved <= 0) {
-      say("Removed " + gone[0] + " to " + gone[1] + ". Integrity did not move: " +
-          "there was another way round it.", "held");
+      draw("Removed " + gone[0] + " to " + gone[1] + ". Integrity did not move: " +
+           "there was another way round it.", "held");
     } else {
-      say("Removed " + gone[0] + " to " + gone[1] + ". Integrity fell " + moved +
-          " points — that one was holding it up.", "broke");
+      draw("Removed " + gone[0] + " to " + gone[1] + ". Integrity fell " + moved +
+           " points — that one was holding it up.", "broke");
     }
   }
 
@@ -1023,8 +1106,7 @@ a{color:var(--hud)}
   $("#sole").onclick = function () { cut("sole"); };
   $("#reset").onclick = function () {
     off = {}; prev = null; LIB = library(); drawPick();
-    var f = draw();
-    say("Everything is back. " + Math.round(f.integrity * 100) + "% integrity.");
+    draw();
   };
   $("#theme").onclick = function () {
     var d = document.documentElement;
@@ -1034,9 +1116,7 @@ a{color:var(--hud)}
   };
 
   drawPick();
-  var f0 = draw();
-  say(LIB[pick].name + ": " + f0.parts + " parts, " +
-      Math.round(f0.integrity * 100) + "% integrity.");
+  draw();
 
   window.__topology = {
     ETI: ETI, draw: draw,
