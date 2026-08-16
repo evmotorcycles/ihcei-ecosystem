@@ -144,7 +144,8 @@ def test_the_shipped_page_carries_no_control_characters():
     """A literal NUL in the source works and is a hazard: grep calls the file
     binary, formatters strip it, and the separator silently becomes the empty
     string -- which merges different pairs onto one key."""
-    for rel in ("app.html", "engines.js", "app_template.html"):
+    for rel in ("app.html", "index.html", "engines.js", "app_template.html",
+                "eti.js", "topology.html", "topology_template.html"):
         raw = open(os.path.join(HERE, rel), "rb").read()
         assert b"\x00" not in raw, f"{rel} contains a literal NUL"
 

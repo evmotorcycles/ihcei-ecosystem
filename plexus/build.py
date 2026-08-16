@@ -13,6 +13,10 @@ Writes:
     plexus/vercel.json            static routing and the cache headers a PWA
                                   needs -- notably SHORT ones on the page, the
                                   worker and the manifest
+    plexus/topology.html          the Elastic Topology Interface: the same
+                                  structures drawn as space, where distance IS
+                                  sqrt(bearing/strength). A skin over the same
+                                  engines, checked by plexus/test_eti.py.
     plexus/icon.svg               the favicon
     plexus/icon-{192,512,180}.png real icons, because SVG is not enough
 
@@ -143,9 +147,9 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v3";
-var FILES = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg",
-             "./icon-192.png", "./icon-512.png", "./icon-180.png"];
+var CACHE = "plexus-v4";
+var FILES = ["./", "./index.html", "./topology.html", "./manifest.webmanifest",
+             "./icon.svg", "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(FILES); })
@@ -208,6 +212,19 @@ def main():
 
     for name in ("app.html", "index.html"):
         open(os.path.join(HERE, name), "w", encoding="utf-8").write(out)
+
+    # The topology view inlines a THIRD script, eti.js, on top of the same two
+    # engines. It is a skin: every number it draws comes from those engines, and
+    # test_eti.py checks them against the Python rather than trusting the view.
+    eti = open(os.path.join(HERE, "eti.js"), encoding="utf-8").read()
+    top = open(os.path.join(HERE, "topology_template.html"), encoding="utf-8").read()
+    topo = (top.replace("{{LMD}}", lmd)
+               .replace("{{ENGINES}}", eng)
+               .replace("{{ETI}}", eti)
+               .replace("{{ICON}}", icon_uri)
+               .replace("</body>", REGISTER + "</body>"))
+    assert "{{" not in topo, "unfilled placeholder left in topology.html"
+    open(os.path.join(HERE, "topology.html"), "w", encoding="utf-8").write(topo)
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
     open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
@@ -215,6 +232,7 @@ def main():
 
     print("wrote plexus/index.html and app.html  (%.1f KB each, identical bytes)"
           % (len(out) / 1024))
+    print("wrote topology.html                    (%.1f KB)" % (len(topo) / 1024))
     print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
     missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
                if not os.path.exists(os.path.join(HERE, f))]

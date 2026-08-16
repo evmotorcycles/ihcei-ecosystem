@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Topology</title>
+<meta name="description" content="A spatial view of what a structure is made of. Space closes as couplings tighten, because that is what the metric does.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="{{ICON}}">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Topology">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6; --hud-dim:#25505F;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C; --hud-dim:#AFC6D0;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C; --hud-dim:#AFC6D0;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --focus:#5AB4D6; --hud:#5AB4D6; --hud-dim:#25505F;
+}
+:root[data-big]{ font-size:19px }
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));
+  border-bottom:1px solid var(--line);background:var(--card-2);
+  position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active,.chip[aria-pressed=true]{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;
+  padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.pick{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.85rem}
+.pick button{flex:1 1 auto;min-height:46px;min-width:7.5rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.86rem}
+.pick button[aria-pressed=true]{border-color:var(--hud);background:var(--card-2);
+  font-weight:600}
+
+/* ------------------------------------------------------------------ hud -- */
+.hud{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem;
+  display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center}
+.ring{position:relative;width:118px;height:118px;flex:none}
+.ring svg{display:block;width:118px;height:118px;transform:rotate(-90deg)}
+.ring .val{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.05rem}
+.ring .val b{font:650 1.5rem/1 var(--mono);font-variant-numeric:tabular-nums;
+  letter-spacing:-.03em}
+.ring .val span{font-size:.58rem;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--mute)}
+.read{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+.cell{background:var(--card-2);border:1px solid var(--line);border-radius:10px;
+  padding:.42rem .55rem}
+.cell span{display:block;font-size:.57rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mute)}
+.cell b{font:650 1.05rem/1.25 var(--mono);font-variant-numeric:tabular-nums}
+.cell[data-warn=true]{border-color:var(--hold)}
+.cell[data-warn=true] b{color:var(--hold)}
+@media (max-width:29rem){
+  .hud{grid-template-columns:1fr;justify-items:center}
+  .read{width:100%}
+}
+
+.stage{position:relative;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);height:min(48dvh,360px);overflow:hidden}
+.stage svg{display:block;width:100%;height:100%}
+.stage .grid{position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:28px 28px}
+
+.say{margin:.6rem 0 0;padding:.55rem .72rem;border-radius:10px;font-size:.86rem;
+  font-weight:600;background:var(--card-2);border:1px solid var(--edge);color:var(--ink-2)}
+.say[data-k=broke]{background:var(--hold-soft);border-color:var(--hold);color:var(--hold)}
+.say[data-k=held]{background:var(--spare-soft);border-color:var(--spare);color:var(--spare)}
+
+.acts{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem}
+.acts button:active{border-color:var(--focus)}
+
+.note{margin-top:1rem;background:var(--card);border:1px solid var(--line);
+  border-left:3px solid var(--hud);border-radius:0 var(--r) var(--r) 0;
+  padding:.72rem .85rem;font-size:.83rem;line-height:1.6;color:var(--ink-2)}
+.note b{display:block;color:var(--hud);font-size:.66rem;letter-spacing:.1em;
+  text-transform:uppercase;margin:.65rem 0 .2rem}
+.note b:first-child{margin-top:0}
+.note code{font-family:var(--mono);font-size:.85em;color:var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);
+  white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">Plexus<span>topology</span></div>
+  <span class="sp"></span>
+  <a class="chip" href="index.html">Simple view</a>
+  <button class="chip" id="theme" type="button">Light</button>
+</div>
+
+<div class="wrap">
+  <div class="pick" id="pick" role="group" aria-label="Choose something to look at"></div>
+
+  <div class="hud">
+    <div class="ring">
+      <svg viewBox="0 0 118 118" aria-hidden="true">
+        <circle cx="59" cy="59" r="50" fill="none" stroke="var(--hud-dim)" stroke-width="9"/>
+        <circle id="arc" cx="59" cy="59" r="50" fill="none" stroke="var(--hud)"
+                stroke-width="9" stroke-linecap="round"/>
+      </svg>
+      <div class="val"><b id="pct">100%</b><span>integrity</span></div>
+    </div>
+    <div class="read">
+      <div class="cell"><span>Parts</span><b id="r-parts">0</b></div>
+      <div class="cell" id="c-pieces"><span>Pieces</span><b id="r-pieces">1</b></div>
+      <div class="cell"><span>Carried</span><b id="r-total">0.00</b></div>
+      <div class="cell" id="c-sole"><span>Sole routes</span><b id="r-sole">0</b></div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="grid"></div>
+    <svg id="canvas" viewBox="0 0 360 320" preserveAspectRatio="xMidYMid meet"
+         role="img" aria-labelledby="desc"></svg>
+  </div>
+  <p id="desc" class="sr"></p>
+  <p class="say" id="say" role="status">Pick something above.</p>
+
+  <div class="acts">
+    <button id="weak" type="button">Remove the weakest link</button>
+    <button id="sole" type="button">Remove one that is holding it up</button>
+    <button id="reset" type="button">Put everything back</button>
+  </div>
+
+  <div class="note">
+    <b>What the ring is</b>
+    Integrity is <code>(parts &minus; pieces) / (parts &minus; 1)</code>. The top of
+    that fraction is the total every link carries, which Foster's theorem fixes
+    exactly; the bottom is the most it could ever be. No pass mark was chosen.
+    100% means in one piece, not correct.
+    <b>Why the picture tightens</b>
+    Distance here is <code>&radic;(bearing / strength)</code>, which is the same
+    metric the map uses. Raising a strength cannot raise any distance, so turning
+    a coupling up must pull its ends together. The space closing is the
+    arithmetic, not an animation.
+    <b>Try the two buttons</b>
+    Weakest and load-bearing are different questions, and sometimes one link
+    answers both. On <em>An energy bill</em> the weakest link is also the only
+    route to the late fee, so removing it drops the ring to 83%. On
+    <em>Getting to work</em> the weakest link is one of two ways to the station,
+    so removing it costs nothing and the ring stays at 100%. The line under the
+    picture reports integrity measured before and after, so it tells you which
+    of those actually happened instead of a sentence fixed in advance.
+    <b>What it cannot tell you</b>
+    Whether a step is <em>useful</em>, or whether a source is <em>true</em>. It
+    only knows the parts you entered. Parts with no route to the rest are set
+    along the bottom rather than placed somewhere plausible.
+    <b>Nothing leaves this device</b>
+    No account, no network, no server. Structures you built in
+    <a href="index.html">the simple view</a> appear here too.
+  </div>
+</div>
+
+<script>{{LMD}}</script>
+<script>{{ENGINES}}</script>
+<script>{{ETI}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var VB = { w: 360, h: 320, pad: 30 };
+  var STORE = "plexus.own.v1";
+
+  function builtins() {
+    return [
+      { name: "An energy bill",
+        parts: ["Meter reading", "Unit rate", "Standing charge", "Subtotal",
+                "VAT", "Late fee", "Amount due"],
+        links: [["Meter reading", "Subtotal", 8], ["Unit rate", "Subtotal", 8],
+                ["Standing charge", "Subtotal", 3], ["Subtotal", "VAT", 6],
+                ["Subtotal", "Amount due", 6], ["VAT", "Amount due", 6],
+                ["Late fee", "Amount due", 0.4]] },
+      { name: "A water bill",
+        parts: ["Previous reading", "Present reading", "Units used", "Water tariff",
+                "Water charge", "Sewerage charge", "Service fee", "Arrears",
+                "VAT", "Amount due"],
+        links: [["Previous reading", "Units used", 8], ["Present reading", "Units used", 8],
+                ["Units used", "Water charge", 9], ["Water tariff", "Water charge", 9],
+                ["Water charge", "Sewerage charge", 5], ["Water charge", "VAT", 6],
+                ["Sewerage charge", "VAT", 4], ["Water charge", "Amount due", 7],
+                ["Sewerage charge", "Amount due", 5], ["Service fee", "Amount due", 3],
+                ["Arrears", "Amount due", 2], ["VAT", "Amount due", 6]] },
+      { name: "A complaint",
+        parts: ["Complaint filed", "Acknowledgement", "Triage", "Team A review",
+                "Team B review", "Manager sign-off", "Outcome letter"],
+        links: [["Complaint filed", "Acknowledgement", 5],
+                ["Acknowledgement", "Triage", 5], ["Triage", "Team A review", 4],
+                ["Triage", "Team B review", 4], ["Team A review", "Manager sign-off", 4],
+                ["Team B review", "Manager sign-off", 4],
+                ["Manager sign-off", "Outcome letter", 5]] },
+      { name: "Getting to work",
+        parts: ["Home", "Bus", "Train", "Cycle", "Station", "At the desk"],
+        links: [["Home", "Bus", 3], ["Home", "Cycle", 2], ["Bus", "Station", 3],
+                ["Cycle", "Station", 2], ["Station", "Train", 5],
+                ["Train", "At the desk", 5]] }
+    ];
+  }
+
+  /* The same store the simple view writes to, read the same guarded way: a
+     private-mode browser throws rather than returning null. */
+  function saved() {
+    try {
+      var raw = window.localStorage.getItem(STORE);
+      if (!raw) return [];
+      return JSON.parse(raw).filter(function (x) {
+        return x && Array.isArray(x.parts) && Array.isArray(x.links) &&
+               x.parts.length >= 2 && x.links.length > 0;
+      });
+    } catch (err) { return []; }
+  }
+  function library() { return builtins().concat(saved()); }
+
+  var LIB = library(), pick = 0, off = {}, prev = null;
+
+  function live() {
+    return LIB[pick].links.filter(function (l, i) { return !off[i]; });
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  var C = 2 * Math.PI * 50;
+
+  function draw() {
+    var e = LIB[pick];
+    var f = ETI.frame(e.parts, live(), VB, prev);
+    prev = { keep: f.keep, xy: f.xy };
+
+    $("#arc").setAttribute("stroke-dasharray", (f.integrity * C).toFixed(2) + " " + C.toFixed(2));
+    $("#arc").setAttribute("stroke", f.pieces > 1 ? "var(--hold)" : "var(--hud)");
+    $("#pct").textContent = Math.round(f.integrity * 100) + "%";
+    $("#r-parts").textContent = f.parts;
+    $("#r-pieces").textContent = f.pieces;
+    $("#r-total").textContent = f.total.toFixed(2);
+    var soles = f.edges.filter(function (x) { return x.sole; }).length;
+    $("#r-sole").textContent = soles;
+    $("#c-pieces").setAttribute("data-warn", String(f.pieces > 1));
+    $("#c-sole").setAttribute("data-warn", String(soles > 0 && soles === f.edges.length));
+
+    var out = [];
+    f.edges.forEach(function (x) {
+      var col = x.cut ? "var(--mute)"
+        : x.sole ? "var(--hold)"
+        : x.bearing < 0.25 ? "var(--spare)" : "var(--share)";
+      out.push('<line x1="' + x.x1.toFixed(1) + '" y1="' + x.y1.toFixed(1) +
+        '" x2="' + x.x2.toFixed(1) + '" y2="' + x.y2.toFixed(1) +
+        '" stroke="' + col + '" stroke-width="' +
+        (x.cut ? 1 : 1 + 3.4 * x.bearing).toFixed(2) +
+        '" stroke-opacity="' + (x.cut ? ".35" : ".9") +
+        (x.cut ? '" stroke-dasharray="4 5' : "") + '"/>');
+    });
+    f.nodes.forEach(function (n) {
+      var col = n.stranded ? "var(--mute)" : "var(--hud)";
+      out.push('<g opacity="' + (n.stranded ? ".55" : "1") + '">' +
+        '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
+        '" r="9.5" fill="' + col + '" opacity=".18"/>' +
+        '<circle cx="' + n.x.toFixed(1) + '" cy="' + n.y.toFixed(1) +
+        '" r="4.6" fill="' + col + '"/>' +
+        '<text x="' + n.x.toFixed(1) + '" y="' + (n.y - 13).toFixed(1) +
+        '" fill="var(--ink-2)" font-size="8.6" text-anchor="middle" ' +
+        'font-weight="600">' + esc(n.name) + "</text></g>");
+    });
+    $("#canvas").innerHTML = out.join("");
+    $("#desc").textContent = f.parts + " parts in " + f.pieces + " piece" +
+      (f.pieces === 1 ? "" : "s") + ", integrity " + Math.round(f.integrity * 100) +
+      "%, " + soles + " links with no way around them.";
+    return f;
+  }
+
+  function say(msg, kind) {
+    var el = $("#say");
+    el.textContent = msg;
+    if (kind) el.setAttribute("data-k", kind); else el.removeAttribute("data-k");
+  }
+
+  function drawPick() {
+    $("#pick").innerHTML = LIB.map(function (x, i) {
+      return '<button type="button" data-i="' + i + '" aria-pressed="' + (i === pick) +
+        '">' + esc(x.name) + "</button>";
+    }).join("");
+  }
+
+  $("#pick").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-i]");
+    if (!b) return;
+    pick = +b.dataset.i; off = {}; prev = null;
+    drawPick();
+    var f = draw();
+    say(LIB[pick].name + ": " + f.parts + " parts, " + Math.round(f.integrity * 100) +
+        "% integrity.");
+  });
+
+  /* The two buttons exist to show that "weak" and "load-bearing" are different
+     questions. Removing the weakest link usually costs nothing; removing a sole
+     route breaks the structure. Reporting the measured before/after rather than
+     a fixed sentence, because sometimes the weakest link IS the sole route. */
+  function cut(which) {
+    var e = LIB[pick];
+    var before = ETI.integrity(e.parts, live()).integrity;
+    var f = ETI.frame(e.parts, live(), VB, prev);
+    var target = -1;
+
+    if (which === "sole") {
+      var soleEdge = f.edges.filter(function (x) { return x.sole; })[0];
+      if (!soleEdge) { say("Nothing here is holding it up on its own — every link has another way round.", "held"); return; }
+      e.links.forEach(function (l, i) {
+        if (target < 0 && !off[i] && l[0] === soleEdge.from && l[1] === soleEdge.to) target = i;
+      });
+    } else {
+      var best = Infinity;
+      e.links.forEach(function (l, i) {
+        if (!off[i] && l[2] < best) { best = l[2]; target = i; }
+      });
+    }
+    if (target < 0) { say("There is nothing left to remove.", "broke"); return; }
+
+    off[target] = true;
+    var after = ETI.integrity(e.parts, live()).integrity;
+    draw();
+    var gone = e.links[target];
+    var moved = Math.round(before * 100) - Math.round(after * 100);
+    if (moved <= 0) {
+      say("Removed " + gone[0] + " to " + gone[1] + ". Integrity did not move: " +
+          "there was another way round it.", "held");
+    } else {
+      say("Removed " + gone[0] + " to " + gone[1] + ". Integrity fell " + moved +
+          " points — that one was holding it up.", "broke");
+    }
+  }
+
+  $("#weak").onclick = function () { cut("weak"); };
+  $("#sole").onclick = function () { cut("sole"); };
+  $("#reset").onclick = function () {
+    off = {}; prev = null; LIB = library(); drawPick();
+    var f = draw();
+    say("Everything is back. " + Math.round(f.integrity * 100) + "% integrity.");
+  };
+  $("#theme").onclick = function () {
+    var d = document.documentElement;
+    var light = d.getAttribute("data-theme") === "light";
+    d.setAttribute("data-theme", light ? "dark" : "light");
+    $("#theme").textContent = light ? "Light" : "Dark";
+  };
+
+  drawPick();
+  var f0 = draw();
+  say(LIB[pick].name + ": " + f0.parts + " parts, " +
+      Math.round(f0.integrity * 100) + "% integrity.");
+
+  window.__topology = {
+    ETI: ETI, draw: draw,
+    get LIB() { return LIB; },
+    get pick() { return pick; },
+    set pick(v) { pick = v; off = {}; prev = null; drawPick(); draw(); },
+    get off() { return off; },
+    cut: cut
+  };
+})();
+</script>
+</body>
+</html>
