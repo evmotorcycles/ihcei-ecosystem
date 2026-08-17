@@ -147,9 +147,9 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v6";
+var CACHE = "plexus-v7";
 var FILES = ["./", "./index.html", "./topology.html", "./manifold.html",
-             "./flint.html", "./manifest.webmanifest", "./icon.svg",
+             "./flint.html", "./commons.html", "./manifest.webmanifest", "./icon.svg",
              "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
 self.addEventListener("install", function (e) {
@@ -256,6 +256,25 @@ def main():
                  .replace("</body>", REGISTER + "</body>"))
     assert "{{" not in flint, "unfilled placeholder left in flint.html"
     open(os.path.join(HERE, "flint.html"), "w", encoding="utf-8").write(flint)
+
+    # Shapes: the contributed-structure commons. commons.js is the machinery and
+    # library.js is data with no arithmetic in it, kept apart so a contributed
+    # shape can never carry code. Both are inlined for the same reason as
+    # everything else here -- script-src forbids an external source, and a page
+    # that loads one goes blank with nothing in the console naming the cause,
+    # which is itself one of the eight shapes in the library.
+    cmn = open(os.path.join(HERE, "commons.js"), encoding="utf-8").read()
+    lib = open(os.path.join(HERE, "library.js"), encoding="utf-8").read()
+    ctpl = open(os.path.join(HERE, "commons_template.html"), encoding="utf-8").read()
+    shapes = (ctpl.replace("{{LMD}}", lmd)
+                  .replace("{{ENGINES}}", eng)
+                  .replace("{{COMMONS}}", cmn)
+                  .replace("{{LIBRARY}}", lib)
+                  .replace("{{ICON}}", icon_uri)
+                  .replace("</body>", REGISTER + "</body>"))
+    assert "{{" not in shapes, "unfilled placeholder left in commons.html"
+    open(os.path.join(HERE, "commons.html"), "w", encoding="utf-8").write(shapes)
+
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
     open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
@@ -266,6 +285,7 @@ def main():
     print("wrote topology.html                    (%.1f KB)" % (len(topo) / 1024))
     print("wrote manifold.html                    (%.1f KB)" % (len(mani) / 1024))
     print("wrote flint.html                       (%.1f KB)" % (len(flint) / 1024))
+    print("wrote commons.html                     (%.1f KB)" % (len(shapes) / 1024))
     print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
     missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
                if not os.path.exists(os.path.join(HERE, f))]

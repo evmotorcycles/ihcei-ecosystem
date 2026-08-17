@@ -145,7 +145,9 @@ def test_the_shipped_page_carries_no_control_characters():
     binary, formatters strip it, and the separator silently becomes the empty
     string -- which merges different pairs onto one key."""
     for rel in ("app.html", "index.html", "engines.js", "app_template.html",
-                "eti.js", "topology.html", "topology_template.html"):
+                "eti.js", "topology.html", "topology_template.html",
+                "commons.js", "library.js", "commons.html",
+                "commons_template.html", "commons_dump.mjs"):
         raw = open(os.path.join(HERE, rel), "rb").read()
         assert b"\x00" not in raw, f"{rel} contains a literal NUL"
 
@@ -172,7 +174,7 @@ def test_the_shipped_page_carries_no_control_characters():
 # ---------------------------------------------------------------------------
 
 KERNEL = ("engines.js", "eti.js", "manifold.js", "nere.js", "ihcei.js",
-          "cairn.js", "game.js")
+          "cairn.js", "game.js", "vault.js", "commons.js", "library.js")
 
 
 def test_the_measuring_kernel_can_never_reach_the_network():

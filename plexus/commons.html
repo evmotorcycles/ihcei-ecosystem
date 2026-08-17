@@ -1,0 +1,1429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Shapes</title>
+<meta name="description" content="Shapes other people have already run into: how a thing is usually described, what is really holding it up, and how far apart those two are. Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Shapes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+textarea{width:100%;min-height:5.5rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.88rem;line-height:1.5;resize:vertical}
+.acts{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem;font-weight:600}
+.acts button:active{border-color:var(--focus)}
+
+/* one card per shape. The whole card is the button, so nothing small has to be
+   hit accurately on a phone. */
+.shape{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  margin-bottom:.6rem;overflow:hidden}
+.shape > .head{display:block;width:100%;text-align:left;padding:.8rem .85rem;min-height:48px}
+.shape > .head:active{background:var(--card-2)}
+.shape h3{margin:0;font-size:.98rem;letter-spacing:-.01em;text-wrap:balance}
+.src{display:inline-flex;align-items:center;margin-top:.35rem;font-size:.6rem;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.15rem .4rem;
+  border-radius:5px;border:1px solid var(--edge);color:var(--mute);background:var(--card-2)}
+.src[data-kind="measured-here"]{color:var(--spare);border-color:var(--spare);background:var(--spare-soft)}
+.gap{display:flex;align-items:baseline;gap:.5rem;margin-top:.55rem}
+.gap b{font-size:1.45rem;font-weight:700;letter-spacing:-.03em;color:var(--hold);
+  font-variant-numeric:tabular-nums}
+.gap span{font-size:.78rem;color:var(--mute)}
+.body{padding:0 .85rem .85rem}
+.body p{margin:0 0 .6rem;font-size:.86rem;color:var(--ink-2)}
+.body p.note{color:var(--mute);font-size:.81rem}
+
+/* three readings, and it must be visible that they are three and not one */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin:.1rem 0 .7rem}
+@media (max-width:30rem){ .three{grid-template-columns:1fr} }
+.rd{background:var(--card-2);border:1px solid var(--edge);border-radius:10px;padding:.55rem .6rem}
+.rd h4{margin:0 0 .15rem;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.rd b{font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rd small{display:block;font-size:.72rem;color:var(--mute);margin-top:.1rem;line-height:1.4}
+.rd[data-k=drawn] b{color:var(--spare)}
+.rd[data-k=actual] b{color:var(--hold)}
+.rd[data-k=remedy] b{color:var(--share)}
+
+table.parts{width:100%;border-collapse:collapse;font-size:.79rem;margin-top:.2rem}
+table.parts th,table.parts td{text-align:left;padding:.28rem .4rem;border-bottom:1px solid var(--line)}
+table.parts th{color:var(--mute);font-weight:650;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}
+table.parts td.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.scroll{overflow-x:auto}
+
+.hits{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.hits:empty{display:none}
+.hit{background:var(--card-2);border:1px solid var(--edge);border-radius:10px;
+  padding:.45rem .55rem;font-size:.83rem;min-height:44px;display:flex;
+  align-items:center;gap:.5rem;flex-wrap:wrap}
+.hit{text-decoration:none;color:var(--ink)}
+.hit b{font-weight:650}
+.hit .sc{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mute);font-size:.76rem}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}, so
+   without this line the empty message stays painted over real content. That
+   defect shipped once on the manifold page and was found by rendering it. */
+.void[hidden]{display:none}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Shapes other people already ran into</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>How a thing is described, and what is actually holding it up</h2>
+    <p>Every shape below is stored twice. Once the way people usually describe
+      it, and once with the dependencies that are really there. The number in
+      orange is the distance between those two: <b>how much worse than you
+      thought</b>.</p>
+    <p>A shape is parts and links. Nothing else — there is no field for a name,
+      an address or an amount, because a shape with a free-text box in it would
+      end up holding one. That is why these can be shared and your own work
+      cannot leak with them. <b>Nothing leaves this device.</b></p>
+    <p class="small">Eight shapes, written by one person in one sitting. That is
+      a worked example, not yet a commons. It becomes a commons when a shape
+      arrives from somebody who never read this page.</p>
+  </section>
+
+  <section class="panel">
+    <span class="fl">Does one of these describe yours?</span>
+    <p class="small" style="margin:0 0 .5rem">List the parts of your own
+      situation, one per line — whatever you would name if you were explaining
+      it to someone. This only compares words, so treat what comes back as a
+      place to start looking, never as a measurement.</p>
+    <textarea id="mine" aria-label="The parts of your situation, one per line"
+      placeholder="the registry&#10;package 3&#10;the build succeeds"></textarea>
+    <div class="acts">
+      <button id="look">Look for a shape</button>
+      <button id="clear">Clear</button>
+    </div>
+    <div class="hits" id="hits"></div>
+    <div class="void" id="nohits" hidden>No shape here uses those words. That
+      does not mean none of them fits.</div>
+  </section>
+
+  <span class="fl">The library</span>
+  <div id="list"></div>
+
+  <div class="foot">
+    <p id="summary"></p>
+    <p><b>What none of this shows.</b> Nothing on this page is evidence that a
+      shared library of shapes is worth anything commercially. That would be a
+      contribution rate — the share of people who, having used this, give a
+      shape back — and it is <b id="rate">not measurable yet</b>. The gate set in
+      advance is <b>5% within 60 days of shipping</b>. Below that, the idea was
+      imaginary and this page is a nice diagram.</p>
+    <p>Every shape is given under CC0-1.0, so anyone may copy, change and
+      redistribute it, including commercially, without asking.</p>
+  </div>
+
+</main>
+
+<script>/* lmd.js -- the LMD metric engine, in the browser.
+ * ===========================================================================
+ * A faithful port of smi/lmd.py so SMI runs on a phone with no server. A port
+ * is a liability unless it is checked: smi/test_parity.py runs both engines
+ * over a shared list of graphs and fails if any distance differs by more than
+ * 1e-9. The port is not trusted; it is tested.
+ *
+ * There is no linear-algebra library here on purpose. The Laplacian is real and
+ * symmetric, so the cyclic Jacobi eigenvalue algorithm gives an exact
+ * eigendecomposition in about forty lines, and the pseudo-inverse is then
+ *
+ *     pinv(L) = V · diag(1/λ for λ above tolerance, else 0) · Vᵀ
+ *
+ * which is all this needs. Fifty nodes is well under a millisecond.
+ *
+ * WHAT IS BEING MEASURED
+ * A dependency graph inside running software: which live elements determine
+ * which others, and how strongly. J is the strength of a dependency; d is how
+ * far apart two elements should sit given all of them. Information layer. Not
+ * a claim about matter or physical distance.
+ */
+(function (root) {
+  "use strict";
+
+  var DEAD_MESH_EPS = 1e-12;
+
+  /* A coupling below this is DECLARED FADING: still connected, but too weak to
+   * show at display precision. Without a name for it, a wire reading 0.00 in
+   * the readout while the legend insists "live" is a fourth, unnamed state --
+   * the interface saying connected and the arithmetic saying I move nothing. */
+  var FADE_BELOW = 0.01;
+
+  /* Cyclic Jacobi for a real symmetric matrix. Returns { values, vectors }
+   * where vectors[i][k] is component i of eigenvector k. */
+  function eigSymmetric(Ain, sweeps) {
+    var n = Ain.length, i, j, k, p, q, s;
+    var A = Ain.map(function (r) { return r.slice(); });
+    var V = [];
+    for (i = 0; i < n; i++) {
+      V.push(new Array(n).fill(0));
+      V[i][i] = 1;
+    }
+    sweeps = sweeps || 60;
+    for (s = 0; s < sweeps; s++) {
+      var off = 0;
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) off += A[i][j] * A[i][j];
+      if (off < 1e-30) break;
+      for (p = 0; p < n - 1; p++) {
+        for (q = p + 1; q < n; q++) {
+          if (Math.abs(A[p][q]) < 1e-300) continue;
+          var theta = (A[q][q] - A[p][p]) / (2 * A[p][q]);
+          var t = Math.sign(theta || 1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+          var c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+          for (k = 0; k < n; k++) {
+            var akp = A[k][p], akq = A[k][q];
+            A[k][p] = c * akp - sn * akq;
+            A[k][q] = sn * akp + c * akq;
+          }
+          for (k = 0; k < n; k++) {
+            var apk = A[p][k], aqk = A[q][k];
+            A[p][k] = c * apk - sn * aqk;
+            A[q][k] = sn * apk + c * aqk;
+          }
+          for (k = 0; k < n; k++) {
+            var vkp = V[k][p], vkq = V[k][q];
+            V[k][p] = c * vkp - sn * vkq;
+            V[k][q] = sn * vkp + c * vkq;
+          }
+        }
+      }
+    }
+    var vals = [];
+    for (i = 0; i < n; i++) vals.push(A[i][i]);
+    return { values: vals, vectors: V };
+  }
+
+  /* d_ij = sqrt(R_ij), R_ij = L⁺_ii + L⁺_jj − 2·L⁺_ij. Same as the Python. */
+  function metricFromLaplacian(L) {
+    var n = L.length, i, j, k;
+    var e = eigSymmetric(L);
+    var maxAbs = 0;
+    for (i = 0; i < n; i++) maxAbs = Math.max(maxAbs, Math.abs(e.values[i]));
+    // the same rank tolerance numpy/jax use for pinv on a symmetric matrix
+    var tol = maxAbs * n * 2.220446049250313e-16;
+
+    var P = [];
+    for (i = 0; i < n; i++) P.push(new Array(n).fill(0));
+    for (k = 0; k < n; k++) {
+      if (Math.abs(e.values[k]) <= tol) continue;
+      var inv = 1 / e.values[k];
+      for (i = 0; i < n; i++) {
+        var vik = e.vectors[i][k];
+        if (vik === 0) continue;
+        for (j = 0; j < n; j++) P[i][j] += inv * vik * e.vectors[j][k];
+      }
+    }
+    var D = [];
+    for (i = 0; i < n; i++) {
+      D.push(new Array(n).fill(0));
+      for (j = 0; j < n; j++) {
+        var R = P[i][i] + P[j][j] - 2 * P[i][j];
+        D[i][j] = Math.sqrt(R > 0 ? R : 0);
+      }
+    }
+    return D;
+  }
+
+  /* Which nodes can actually reach which. pinv neither knows nor cares that a
+   * graph is in pieces; this does. */
+  function componentsOf(L, tol) {
+    tol = tol || 1e-12;
+    var n = L.length, label = new Array(n).fill(-1), next = 0, i, u, v;
+    for (i = 0; i < n; i++) {
+      if (label[i] !== -1) continue;
+      var stack = [i];
+      label[i] = next;
+      while (stack.length) {
+        u = stack.pop();
+        for (v = 0; v < n; v++) {
+          if (v !== u && Math.abs(L[u][v]) > tol && label[v] === -1) {
+            label[v] = next;
+            stack.push(v);
+          }
+        }
+      }
+      next++;
+    }
+    return label;
+  }
+
+  /* The distance matrix an interface may actually trust: the raw metric with
+   * the two places pinv lies removed.
+   *   - pairs in different pieces come back Infinity, not a small number
+   *   - a mesh with no coupling left comes back all-Infinity, not all-zero */
+  function meshMetric(L) {
+    var n = L.length, i, j, off = 0, D;
+    for (i = 0; i < n; i++) for (j = 0; j < n; j++) if (i !== j) off += Math.abs(L[i][j]);
+    if (off < DEAD_MESH_EPS) {
+      D = [];
+      for (i = 0; i < n; i++) {
+        D.push(new Array(n).fill(Infinity));
+        D[i][i] = 0;
+      }
+      return { D: D, labels: Array.from({ length: n }, function (_, k) { return k; }), dead: true };
+    }
+    D = metricFromLaplacian(L);
+    var lab = componentsOf(L);
+    var pieces = Math.max.apply(null, lab);
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        if (i === j) D[i][j] = 0;
+        else if (pieces > 0 && lab[i] !== lab[j]) D[i][j] = Infinity;
+      }
+    }
+    return { D: D, labels: lab, dead: false };
+  }
+
+  function laplacianFromEdges(n, edges) {
+    var W = [], i;
+    for (i = 0; i < n; i++) W.push(new Array(n).fill(0));
+    edges.forEach(function (e) {
+      if (e[0] === e[1]) throw new Error("a node cannot depend on itself: " + e[0]);
+      W[e[0]][e[1]] = W[e[1]][e[0]] = e[2];
+    });
+    var L = [];
+    for (i = 0; i < n; i++) {
+      L.push(W[i].map(function (w) { return -w; }));
+      L[i][i] = W[i].reduce(function (a, b) { return a + b; }, 0);
+    }
+    return L;
+  }
+
+  function ringLaplacian(n, J) {
+    var edges = [], i;
+    for (i = 0; i < n; i++) edges.push([i, (i + 1) % n, J]);
+    return laplacianFromEdges(n, edges);
+  }
+
+  /* Classical MDS: double-centre the squared distances, take the top two
+   * eigenvectors. The flat picture that best preserves the metric. */
+  /* `axes` selects WHICH two eigenvectors, by rank. (0,1) is the classical
+   * choice and keeps the most total structure. It is not always the one that
+   * keeps the most useful structure -- see bestAxes. */
+  function layout2d(D, keep, axes) {
+    axes = axes || [0, 1];
+    var m = keep.length, i, j;
+    var B = [];
+    for (i = 0; i < m; i++) B.push(new Array(m).fill(0));
+    var sq = [];
+    for (i = 0; i < m; i++) {
+      sq.push(new Array(m).fill(0));
+      for (j = 0; j < m; j++) {
+        var d = D[keep[i]][keep[j]];
+        sq[i][j] = d * d;
+      }
+    }
+    var rowMean = sq.map(function (r) { return r.reduce(function (a, b) { return a + b; }, 0) / m; });
+    var grand = rowMean.reduce(function (a, b) { return a + b; }, 0) / m;
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < m; j++) B[i][j] = -0.5 * (sq[i][j] - rowMean[i] - rowMean[j] + grand);
+    }
+    var e = eigSymmetric(B);
+    var order = e.values.map(function (v, k) { return [v, k]; })
+      .sort(function (a, b) { return b[0] - a[0]; });
+    var p1 = order[Math.min(axes[0], m - 1)], p2 = order[Math.min(axes[1], m - 1)];
+    var out = [];
+    for (i = 0; i < m; i++) {
+      out.push([
+        e.vectors[i][p1[1]] * Math.sqrt(Math.max(p1[0], 0)),
+        e.vectors[i][p2[1]] * Math.sqrt(Math.max(p2[0], 0)),
+      ]);
+    }
+    return out;
+  }
+
+  /* The worst pair in a layout, as a fraction of its true distance. 1.0 means
+   * every distance on screen is the real one. */
+  function flatness(D, keep, xy) {
+    var worst = 1.0, a = -1, b = -1, i, j;
+    for (i = 0; i < keep.length; i++) {
+      for (j = i + 1; j < keep.length; j++) {
+        var trueD = D[keep[i]][keep[j]];
+        if (!isFinite(trueD) || trueD <= 0) continue;
+        var ratio = Math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]) / trueD;
+        if (ratio < worst) { worst = ratio; a = keep[i]; b = keep[j]; }
+      }
+    }
+    return { ratio: worst, a: a, b: b };
+  }
+
+  /* The plane that leaves NO pair collapsed, if there is one.
+   *
+   * Classical MDS minimises strain, which is a TOTAL -- and a total can be
+   * excellent while one pair is destroyed. On the mesh SMI ships, the
+   * strain-best plane draws two elements on top of each other (0% of their true
+   * distance) while a different plane draws every pair at 71% or better.
+   * Neither view is wrong; they answer different questions. */
+  function bestAxes(D, keep, limit) {
+    limit = Math.min(limit || 4, keep.length);
+    var best = [0, 1], bestRatio = -1, i, j;
+    for (i = 0; i < limit; i++) {
+      for (j = i + 1; j < limit; j++) {
+        var r = flatness(D, keep, layout2d(D, keep, [i, j])).ratio;
+        if (r > bestRatio) { bestRatio = r; best = [i, j]; }
+      }
+    }
+    return { axes: best, ratio: bestRatio };
+  }
+
+  /* ------------------------------------------------------- frame alignment --
+   * Classical MDS fixes an embedding only up to rotation and reflection: the
+   * eigenvectors are defined up to sign, so a small change in the graph can
+   * hand back the same picture upside down. Deterministic per input, and to a
+   * person dragging it, the map flipping under their finger reads as the
+   * positions being arbitrary -- which is exactly the claim SMI makes against.
+   *
+   * So each new embedding is rotated/reflected onto the previous one, choosing
+   * whichever orthogonal transform moves the shared nodes least. Real change
+   * still shows; the cosmetic flips stop. This is the orthogonal Procrustes
+   * problem, solved in closed form because 2-D needs no SVD.
+   */
+  function procrustes2d(Q, P) {
+    var n = Math.min(Q.length, P.length), i;
+    if (n < 2) return Q.slice();
+    var qc = [0, 0], pc = [0, 0];
+    for (i = 0; i < n; i++) {
+      qc[0] += Q[i][0]; qc[1] += Q[i][1];
+      pc[0] += P[i][0]; pc[1] += P[i][1];
+    }
+    qc = [qc[0] / n, qc[1] / n];
+    pc = [pc[0] / n, pc[1] / n];
+
+    function residual(theta, flip) {
+      var c = Math.cos(theta), s2 = Math.sin(theta), tot = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var x = c * qx - s2 * qy, y = s2 * qx + c * qy;
+        tot += (x - (P[k][0] - pc[0])) * (x - (P[k][0] - pc[0])) +
+               (y - (P[k][1] - pc[1])) * (y - (P[k][1] - pc[1]));
+      }
+      return tot;
+    }
+    function bestAngle(flip) {
+      var num = 0, den = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var px = P[k][0] - pc[0], py = P[k][1] - pc[1];
+        num += qx * py - qy * px;
+        den += qx * px + qy * py;
+      }
+      return Math.atan2(num, den);
+    }
+    var best = null;
+    [false, true].forEach(function (flip) {
+      var th = bestAngle(flip), r = residual(th, flip);
+      if (best === null || r < best.r) best = { r: r, th: th, flip: flip };
+    });
+    var c = Math.cos(best.th), sn = Math.sin(best.th), out = [];
+    for (i = 0; i < Q.length; i++) {
+      var qx = (Q[i][0] - qc[0]) * (best.flip ? -1 : 1), qy = Q[i][1] - qc[1];
+      out.push([c * qx - sn * qy + pc[0], sn * qx + c * qy + pc[1]]);
+    }
+    return out;
+  }
+
+  var API = {
+    procrustes2d: procrustes2d,
+    FADE_BELOW: FADE_BELOW,
+    metricFromLaplacian: metricFromLaplacian,
+    meshMetric: meshMetric,
+    componentsOf: componentsOf,
+    laplacianFromEdges: laplacianFromEdges,
+    ringLaplacian: ringLaplacian,
+    eigSymmetric: eigSymmetric,
+    layout2d: layout2d,
+    flatness: flatness,
+    bestAxes: bestAxes,
+    DEAD_MESH_EPS: DEAD_MESH_EPS,
+  };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LMD = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* engines.js -- SPAR and FATHOM in the browser, on top of the tested LMD engine.
+ * ===========================================================================
+ * Loaded after smi/lmd.js, which supplies meshMetric, laplacianFromEdges,
+ * layout2d, procrustes2d and the two guards. That engine is parity-checked
+ * against the JAX engine over fourteen graphs; nothing here re-implements it.
+ *
+ * These two are checked the same way, by plexus/test_plexus.py, against the
+ * Python in spar/spar.py and fathom/fathom.py.
+ */
+(function (root) {
+  "use strict";
+
+  var LMD = root.LMD || (typeof require === "function" ? require("../smi/lmd.js") : null);
+
+  /* ------------------------------------------------------------- SPAR ---- */
+  /* bearing = w * R = P(this link is in a random spanning tree) = how often the
+   * link is the thing holding the structure together. The bearings sum to
+   * exactly parts - pieces, by Foster's theorem, which is why nothing here is a
+   * score somebody chose. */
+  function bearings(names, links) {
+    var idx = {}, i;
+    for (i = 0; i < names.length; i++) idx[names[i]] = i;
+    if (!links.length) {
+      return { links: [], total: 0, pieces: names.length, parts: names.length,
+               expected: 0, conserved: true, dead: true };
+    }
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rows = [], total = 0;
+    links.forEach(function (l, k) {
+      var d = r.D[idx[l[0]]][idx[l[1]]];
+      var b = l[2] * d * d;
+      total += b;
+      rows.push({ i: k, from: l[0], to: l[1], weight: l[2], bearing: b,
+                  soleRoute: b >= 0.999 });
+    });
+    var expected = names.length - pieces;
+    return { links: rows, total: total, pieces: pieces, parts: names.length,
+             expected: expected, conserved: Math.abs(total - expected) < 1e-9,
+             dead: false };
+  }
+
+  /* Which PARTS everything passes through. A link's bearing cannot answer this,
+   * and it is computed by removal rather than by a formula. */
+  function singlePoints(names, links) {
+    if (names.length < 3 || !links.length) return [];
+    var base = bearings(names, links).pieces, out = [];
+    names.forEach(function (n) {
+      var rest = names.filter(function (x) { return x !== n; });
+      var kept = links.filter(function (l) { return l[0] !== n && l[1] !== n; });
+      // NOT skipped when kept is empty: a part whose removal leaves no links at
+      // all is the most complete break there is.
+      var after = kept.length ? bearings(rest, kept).pieces : rest.length;
+      if (after > base) out.push({ part: n, piecesAfter: after });
+    });
+    return out;
+  }
+
+  /* ----------------------------------------------------------- FATHOM ---- */
+  var GROUND = "\u0000ground";   // cannot collide with a real name
+
+  function support(names, links, sources, drop) {
+    var keep = sources.filter(function (s) { return s !== drop; });
+    if (!keep.length) return null;
+    var live = links.filter(function (l) { return l[0] !== drop && l[1] !== drop; });
+    var isSrc = {};
+    keep.forEach(function (s) { isSrc[s] = true; });
+
+    /* pairs are kept as ARRAYS. An earlier version joined the two names into a
+       string key and split it back with split(""), which splits into single
+       characters -- it worked only for one-character names and silently built
+       nonsense graphs for everything else. */
+    var pairs = [], seen = {};
+    live.forEach(function (l) {
+      var a = isSrc[l[0]] ? GROUND : l[0], b = isSrc[l[1]] ? GROUND : l[1];
+      if (a === b) return;                        // inside the contracted ground
+      var lo = a < b ? a : b, hi = a < b ? b : a;
+      var key = lo + "\u0000" + hi;
+      if (key in seen) { pairs[seen[key]][2] += l[2]; return; }
+      seen[key] = pairs.length;
+      pairs.push([lo, hi, l[2]]);
+    });
+    if (!pairs.length) return null;
+
+    var nm = [], set = {};
+    pairs.forEach(function (p) {
+      [p[0], p[1]].forEach(function (n) {
+        if (!(n in set)) { set[n] = true; nm.push(n); }
+      });
+    });
+    nm.sort();
+    var idx = {}, i;
+    for (i = 0; i < nm.length; i++) idx[nm[i]] = i;
+    return { nm: nm, idx: idx, pairs: pairs };
+  }
+
+  function conductance(names, links, sources, conclusion, drop) {
+    var g = support(names, links, sources, drop);
+    if (!g || !(conclusion in g.idx) || !(GROUND in g.idx)) return 0;
+    var edges = g.pairs.map(function (p) { return [g.idx[p[0]], g.idx[p[1]], p[2]]; });
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.nm.length, edges));
+    if (r.dead) return 0;
+    var d = r.D[g.idx[conclusion]][g.idx[GROUND]];
+    if (!isFinite(d) || d <= 0) return 0;
+    return 1 / (d * d);
+  }
+
+  /* dependence(s) = 1 - support without s / support with all.
+   * Contraction is the move: it stops asking "is there another way round this
+   * link" and starts asking "is there another way IN". */
+  function sound(names, links, sources, conclusion) {
+    var base = conductance(names, links, sources, conclusion, null);
+    var rows = sources.map(function (s) {
+      var without = conductance(names, links, sources, conclusion, s);
+      var dep = base > 0 ? 1 - without / base : 1;
+      return { source: s, dependence: dep, carriesItAlone: dep >= 0.999 };
+    });
+    rows.sort(function (a, b) { return b.dependence - a.dependence; });
+    var deepest = rows.length ? rows[0] : null;
+    return {
+      conclusion: conclusion, support: base, bySource: rows,
+      deepest: deepest ? deepest.dependence : 1,
+      restsOnOneThread: !!(deepest && deepest.carriesItAlone),
+      remaining: deepest ? 1 - deepest.dependence : 0,
+    };
+  }
+
+  /* ------------------------------------------------- suggested links ----- */
+  /* Shared labels only. This is a SUGGESTION and never a measurement: two
+   * things sharing a word are not thereby dependent on one another, and
+   * nothing computed here is fed into a bearing or a sounding unless a person
+   * confirms the link first. */
+  function suggest(items) {
+    var out = [], i, j;
+    for (i = 0; i < items.length; i++) {
+      for (j = i + 1; j < items.length; j++) {
+        var a = items[i].tags || [], b = items[j].tags || [];
+        if (!a.length || !b.length) continue;
+        var inter = a.filter(function (t) { return b.indexOf(t) >= 0; });
+        if (!inter.length) continue;
+        var union = a.concat(b.filter(function (t) { return a.indexOf(t) < 0; }));
+        out.push({ a: items[i].name, b: items[j].name,
+                   shared: inter, score: inter.length / union.length });
+      }
+    }
+    out.sort(function (x, y) { return y.score - x.score; });
+    return out;
+  }
+
+  var API = { bearings: bearings, singlePoints: singlePoints, sound: sound,
+              conductance: conductance, suggest: suggest, GROUND: GROUND };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PLEXUS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* commons.js -- the structure commons. KERNEL: no interface, no network, ever.
+ * ===========================================================================
+ * WHAT A CONTRIBUTED STRUCTURE IS, AND WHAT IT IS NOT
+ * A structure is parts and links. Nothing else. Not the water bill -- the
+ * SHAPE of a water bill. Not somebody's dependency tree -- the shape "many
+ * things, one registry". That distinction is the reason a commons can exist at
+ * all without breaking the promise the vault makes: you can give a shape away
+ * without giving anything away.
+ *
+ * So the schema is enforced by SUBTRACTION. A structure may carry exactly four
+ * keys -- parts, links, sources, conclusion -- and validate() refuses any
+ * fifth. Not because a fifth key is necessarily personal data, but because the
+ * moment the shape has a free-text field somebody will put a name in it, and
+ * then the commons is a database and the promise is gone. There is no
+ * allow-list to argue about and no field to sanitise: there is nowhere to put
+ * it.
+ *
+ * THREE SLOTS, AND THE TWO NUMBERS BETWEEN THEM
+ * An entry is not one graph, it is up to three:
+ *
+ *   drawn    how the thing is usually described
+ *   actual   what the dependencies really are
+ *   remedy   the structure after the fix   (optional)
+ *
+ * and the numbers worth having are the GAPS:
+ *
+ *   blind spot = deepest(actual) - deepest(drawn)   how much worse than you thought
+ *   relief     = deepest(actual) - deepest(remedy)  how much the fix actually buys
+ *
+ * A single graph tells you your situation. Two graphs tell you how wrong your
+ * account of it was, and that is the part nobody can get from their own data,
+ * because the wrong drawing is the one they already have.
+ *
+ * WHY THIS TRANSFERS
+ * sound() never reads a label. Two graphs with the same shape and no word in
+ * common return the same numbers, bit for bit. That is not a nice property, it
+ * is the entire asset: it means "many things, one registry" measured once in a
+ * package manager is already measured for a model hub, an audit programme and
+ * a maintainer. test_commons.py checks it at 1e-12 across three domains, and if
+ * it ever fails the library is worthless and should be deleted.
+ *
+ * A LIMIT, IN THE OPEN
+ * FATHOM's sources are DISJUNCTIVE -- more sources always means less depends on
+ * each one. Plenty of real structures are conjunctive: caches.addAll needs all
+ * twelve assets or none. There is no conjunction operator here. A conjunction
+ * has to be drawn as a chain, and the star somebody draws instead is wrong by
+ * 0.917. The engine cannot warn you; only an entry in the library can, which is
+ * roughly the whole argument for having one.
+ */
+(function (root) {
+  "use strict";
+
+  var ENG = root.PLEXUS || (typeof require === "function" ? require("./engines.js") : null);
+
+  var SLOTS = ["drawn", "actual", "remedy"];
+  var STRUCTURE_KEYS = ["parts", "links", "sources", "conclusion"];
+  var ENTRY_KEYS = ["id", "title", "problem", "provenance", "drawn", "actual", "remedy", "note"];
+  var PROVENANCE_KINDS = ["measured-here", "cited"];
+  var LICENCE = "CC0-1.0";
+
+  function keysOutside(obj, allowed) {
+    return Object.keys(obj).filter(function (k) { return allowed.indexOf(k) < 0; });
+  }
+
+  /* Refusals come back as reasons, in the order a person would want to fix
+     them, and never as exceptions -- a bad contribution must not be able to
+     take the page down with it. */
+  function checkStructure(s, where) {
+    var why = [], seen = {}, i;
+    if (!s || typeof s !== "object") return [where + " is not a structure"];
+
+    var extra = keysOutside(s, STRUCTURE_KEYS);
+    if (extra.length) {
+      why.push(where + " carries " + extra.join(", ") +
+               ": a structure is parts and links, and there is nowhere to put anything else");
+    }
+    if (!Array.isArray(s.parts) || s.parts.length < 2) {
+      return why.concat([where + " needs at least two parts"]);
+    }
+    for (i = 0; i < s.parts.length; i++) {
+      if (typeof s.parts[i] !== "string" || !s.parts[i].trim()) {
+        why.push(where + " has a part with no name");
+      } else if (s.parts[i].indexOf("\u0000") >= 0) {
+        /* NUL is FATHOM's contracted ground. A part carrying one could be
+           silently absorbed into the ground it is meant to be measured
+           against. Written as an ESCAPE: a literal NUL has now been put into
+           this codebase three times and caught by a test every time. */
+        why.push(where + " has a part containing a NUL, which is the reserved ground");
+      } else if (seen[s.parts[i]]) {
+        why.push(where + " names " + s.parts[i] + " twice");
+      }
+      seen[s.parts[i]] = true;
+    }
+    if (!Array.isArray(s.links) || !s.links.length) {
+      why.push(where + " has no links, so there is no structure to measure");
+    } else {
+      s.links.forEach(function (l, k) {
+        var at = where + " link " + (k + 1);
+        if (!Array.isArray(l) || l.length !== 3) { why.push(at + " is not [from, to, weight]"); return; }
+        if (!seen[l[0]]) why.push(at + " starts at " + l[0] + ", which is not a part");
+        if (!seen[l[1]]) why.push(at + " ends at " + l[1] + ", which is not a part");
+        if (l[0] === l[1]) why.push(at + " joins " + l[0] + " to itself");
+        if (typeof l[2] !== "number" || !(l[2] > 0) || !isFinite(l[2])) {
+          why.push(at + " has a weight that is not a positive number");
+        }
+      });
+    }
+    if (!Array.isArray(s.sources) || !s.sources.length) {
+      why.push(where + " has no sources, so there is nothing to remove");
+    } else {
+      s.sources.forEach(function (n) {
+        if (!seen[n]) why.push(where + " lists a source, " + n + ", that is not a part");
+      });
+    }
+    if (typeof s.conclusion !== "string" || !seen[s.conclusion]) {
+      why.push(where + " has no conclusion among its parts");
+    } else if (Array.isArray(s.sources) && s.sources.indexOf(s.conclusion) >= 0) {
+      why.push(where + " makes " + s.conclusion + " support itself");
+    }
+    return why;
+  }
+
+  function validate(entry) {
+    var why = [];
+    if (!entry || typeof entry !== "object") return ["that is not an entry"];
+
+    var extra = keysOutside(entry, ENTRY_KEYS);
+    if (extra.length) why.push("an entry cannot carry " + extra.join(", "));
+
+    if (typeof entry.id !== "string" || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(entry.id)) {
+      why.push("id must be lowercase words joined by hyphens");
+    }
+    ["title", "problem"].forEach(function (k) {
+      if (typeof entry[k] !== "string" || !entry[k].trim()) why.push(k + " is missing");
+    });
+
+    var p = entry.provenance;
+    if (!p || typeof p !== "object") {
+      why.push("provenance is missing: a structure from a real problem and one somebody imagined must not be stored the same way");
+    } else {
+      if (PROVENANCE_KINDS.indexOf(p.kind) < 0) {
+        why.push("provenance.kind must be one of " + PROVENANCE_KINDS.join(", "));
+      }
+      if (typeof p.where !== "string" || !p.where.trim()) {
+        why.push("provenance.where must say where the problem came from, checkably");
+      }
+      if (p.licence !== LICENCE) {
+        why.push("a contributed structure is given under " + LICENCE + " or it cannot be redistributed");
+      }
+    }
+
+    if (!entry.drawn) why.push("drawn is missing: an entry has to say how the thing is usually described");
+    if (!entry.actual) why.push("actual is missing: an entry has to say what is really there");
+    SLOTS.forEach(function (slot) {
+      if (entry[slot]) why = why.concat(checkStructure(entry[slot], slot));
+    });
+    return why;
+  }
+
+  /* ------------------------------------------------------- measurement ---- */
+  function measureStructure(s) {
+    var b = ENG.bearings(s.parts, s.links);
+    var f = ENG.sound(s.parts, s.links, s.sources, s.conclusion);
+    return {
+      parts: s.parts.length,
+      pieces: b.pieces,
+      totalBearing: b.total,
+      expected: b.expected,
+      conserved: b.conserved,
+      links: b.links,
+      singlePoints: ENG.singlePoints(s.parts, s.links),
+      support: f.support,
+      bySource: f.bySource,
+      deepest: f.deepest,
+      restsOnOneThread: f.restsOnOneThread,
+    };
+  }
+
+  function measure(entry) {
+    var why = validate(entry);
+    if (why.length) return { id: entry && entry.id, ok: false, why: why };
+    var out = { id: entry.id, title: entry.title, problem: entry.problem,
+                provenance: entry.provenance, note: entry.note || null, ok: true, why: [] };
+    SLOTS.forEach(function (slot) {
+      out[slot] = entry[slot] ? measureStructure(entry[slot]) : null;
+    });
+    out.blindSpot = out.actual.deepest - out.drawn.deepest;
+    out.relief = out.remedy ? out.actual.deepest - out.remedy.deepest : null;
+    return out;
+  }
+
+  /* Two entries have the same SHAPE if there is a relabelling of one onto the
+     other that carries links to links, sources to sources and conclusion to
+     conclusion. Full graph isomorphism is expensive and unnecessary here: the
+     library is small and structured, so the honest cheap test is to compare
+     the multiset of measurements. If two entries return the same sorted
+     dependences and the same sorted bearings, they measure the same, which is
+     the only sense in which transfer is being claimed. */
+  function signature(m) {
+    return {
+      deps: m.bySource.map(function (r) { return r.dependence; })
+              .slice().sort(function (a, b) { return a - b; }),
+      bearings: m.links.map(function (r) { return r.bearing; })
+              .slice().sort(function (a, b) { return a - b; }),
+      parts: m.parts, pieces: m.pieces,
+    };
+  }
+
+  function sameShape(a, b, tol) {
+    var t = tol === undefined ? 1e-12 : tol;
+    if (a.parts !== b.parts || a.pieces !== b.pieces) return false;
+    if (a.deps.length !== b.deps.length || a.bearings.length !== b.bearings.length) return false;
+    var i;
+    for (i = 0; i < a.deps.length; i++) if (Math.abs(a.deps[i] - b.deps[i]) > t) return false;
+    for (i = 0; i < a.bearings.length; i++) if (Math.abs(a.bearings[i] - b.bearings[i]) > t) return false;
+    return true;
+  }
+
+  /* Which library entries share a shape, across domains. This is the readout
+     that says whether there is a commons here or just a list. */
+  function families(entries, tol) {
+    var ms = entries.map(measure).filter(function (m) { return m.ok; });
+    var sigs = ms.map(function (m) { return { id: m.id, sig: signature(m.actual) }; });
+    var groups = [], i, j, placed;
+    for (i = 0; i < sigs.length; i++) {
+      placed = false;
+      for (j = 0; j < groups.length; j++) {
+        if (sameShape(groups[j].sig, sigs[i].sig, tol)) {
+          groups[j].ids.push(sigs[i].id); placed = true; break;
+        }
+      }
+      if (!placed) groups.push({ sig: sigs[i].sig, ids: [sigs[i].id] });
+    }
+    return groups.map(function (g) { return { ids: g.ids, size: g.ids.length }; })
+                 .sort(function (a, b) { return b.size - a.size; });
+  }
+
+  /* Does a shape in the library describe what somebody is looking at? Shared
+     labels only, and it is a SUGGESTION -- the same rule engines.js already
+     applies to suggested links. Nothing is measured on the strength of a word
+     matching a word. */
+  /* Labels are compared for EQUALITY after stripping a leading article, not by
+     substring. Substring matching was written here first and found by running
+     it: "package 3" matched "Package 30" through "Package 39", so a three-word
+     query scored 0.406 against a forty-package entry instead of 0.071. A
+     suggestion that flatters itself is worse than no suggestion, because the
+     ordering is the only thing it is for. */
+  function label(s) {
+    return String(s).toLowerCase().trim().replace(/^(the|a|an)\s+/, "");
+  }
+
+  function match(entries, parts) {
+    var mine = (parts || []).map(label);
+    if (!mine.length) return [];
+    return entries.map(function (e) {
+      var theirs = (e.actual.parts || []).map(label);
+      var hits = theirs.filter(function (t) { return mine.indexOf(t) >= 0; });
+      return { id: e.id, title: e.title, shared: hits,
+               score: hits.length / (theirs.length + mine.length - hits.length) };
+    }).filter(function (r) { return r.score > 0; })
+      .sort(function (a, b) { return b.score - a.score; });
+  }
+
+  /* The one number that would show the commons is real -- and it is not
+     measurable in here. Stated as a function so that nothing can quietly
+     substitute a measurement for it later. */
+  function contributionRate(state) {
+    var s = state || {};
+    var buyers = s.buyers || 0, contributed = s.contributed || 0;
+    if (!buyers) {
+      return { measurable: false, rate: null,
+               why: "nothing has shipped, so nobody has bought and nobody has contributed. " +
+                    "No measurement in this file can stand in for this number." };
+    }
+    return { measurable: true, rate: contributed / buyers, buyers: buyers,
+             contributed: contributed,
+             passesGate: contributed / buyers >= 0.05 };
+  }
+
+  var API = { validate: validate, measure: measure, measureStructure: measureStructure,
+              signature: signature, sameShape: sameShape, families: families,
+              match: match, contributionRate: contributionRate,
+              SLOTS: SLOTS, STRUCTURE_KEYS: STRUCTURE_KEYS, ENTRY_KEYS: ENTRY_KEYS,
+              PROVENANCE_KINDS: PROVENANCE_KINDS, LICENCE: LICENCE };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.COMMONS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* library.js -- the seed structures. DATA ONLY: no arithmetic lives in here.
+ * ===========================================================================
+ * WHERE THESE CAME FROM, AND WHERE THEY DID NOT
+ * The task was to find real problems in open-source projects and turn them into
+ * a library of shapes. Two limits applied and neither was worked around:
+ *
+ *   - this session's GitHub access is scoped to two repositories, so
+ *     repository-wide and global code search were out of scope and unused;
+ *   - no paid API, no keys, no scraping.
+ *
+ * So nothing here was mined. Every entry is one of two things and says which:
+ *
+ *   measured-here  a defect found and measured inside this repository, with
+ *                  the file named, so the claim can be checked by reading it
+ *   cited          a documented, independently checkable property of a
+ *                  well-known open-source mechanism -- caches.addAll being
+ *                  atomic, script-src forbidding external sources, a package
+ *                  registry being one host
+ *
+ * validate() refuses an entry with neither label. That rule is the epistemic
+ * firewall applied to the commons itself: a structure taken from a real problem
+ * and a structure somebody imagined must never sit in the same shape without a
+ * word separating them, because after a hundred entries nobody will remember
+ * which was which.
+ *
+ * WHAT A GOOD ENTRY LOOKS LIKE
+ * Not a fragile thing with a bad number. A gap: the drawing people already
+ * carry, next to the dependencies actually there. If drawn and actual measure
+ * the same, the entry teaches nothing and should not be in the library -- there
+ * is no blind spot to hand anybody.
+ *
+ * THE ONE ENTRY THAT MEASURES ZERO, AND WHY IT STAYS
+ * two-ways-into-the-vault has a blind spot of exactly 0.000: everybody already
+ * knows a password is a single point. It is kept because its RELIEF is 0.750,
+ * and an entry whose value is entirely in the remedy is a different and
+ * perfectly good kind of entry. Deleting it to make the average look better
+ * would be tuning the library after seeing the numbers.
+ */
+(function (root) {
+  "use strict";
+
+  var CC0 = "CC0-1.0";
+
+  /* Many things, one hub: n workers, each doing part of the job, all of them
+     the same one thing underneath. The shape that appeared four separate times
+     while this repository was being built, which is why it is parameterised
+     rather than typed out three times. */
+  function hub(hubName, workers, conclusion, secondHub) {
+    var parts = [hubName].concat(workers, [conclusion]);
+    var links = [];
+    workers.forEach(function (w) { links.push([hubName, w, 1.0]); });
+    workers.forEach(function (w) { links.push([w, conclusion, 1.0]); });
+    var out = {
+      drawn: { parts: parts, links: links, sources: workers.slice(), conclusion: conclusion },
+      actual: { parts: parts, links: links, sources: [hubName], conclusion: conclusion },
+    };
+    if (secondHub) {
+      var p2 = parts.concat([secondHub]);
+      var l2 = links.slice();
+      workers.forEach(function (w) { l2.push([secondHub, w, 1.0]); });
+      out.remedy = { parts: p2, links: l2, sources: [hubName, secondHub], conclusion: conclusion };
+    }
+    return out;
+  }
+
+  function numbered(prefix, n) {
+    var out = [], i;
+    for (i = 1; i <= n; i++) out.push(prefix + " " + i);
+    return out;
+  }
+
+  /* ------------------------------------------------------- the entries ---- */
+  var ENTRIES = [];
+
+  ENTRIES.push(Object.assign({
+    id: "sole-maintainer",
+    title: "One person, three jobs",
+    problem:
+      "A widely used package lists review, release signing and security response as three " +
+      "separate processes. Three processes sounds like three ways the project keeps working. " +
+      "One person does all three, and when they stop, all three stop at once.",
+    provenance: {
+      kind: "cited",
+      where: "the standard single-maintainer failure in open-source projects; the shape is " +
+             "checkable against any repository by asking who can merge, who holds the signing " +
+             "key and who answers a security report",
+      licence: CC0,
+    },
+    note: "The remedy is not more process. It is a second person attached to the same three jobs.",
+  }, hub("The maintainer",
+         ["Review", "Release signing", "Security response"],
+         "The project ships",
+         "A second maintainer")));
+
+  ENTRIES.push(Object.assign({
+    id: "three-audits-one-threat-model",
+    title: "Three audits, one threat model",
+    problem:
+      "A system is signed off by three independent auditors. All three worked from the same " +
+      "threat model, so all three are blind to the same thing, and three signatures read as " +
+      "three chances to catch it when they are one.",
+    provenance: {
+      kind: "cited",
+      where: "the standard correlated-assurance failure in security review; the shape is " +
+             "checkable by asking each auditor which document scoped their work",
+      licence: CC0,
+    },
+    note: "Identical arithmetic to sole-maintainer with no word in common. That is the test.",
+  }, hub("The threat model",
+         ["Audit A", "Audit B", "Audit C"],
+         "The system is secure",
+         "A second threat model")));
+
+  ENTRIES.push(Object.assign({
+    id: "inline-only-under-csp",
+    title: "Three script files, one policy directive",
+    problem:
+      "A page loads three scripts and works. Its Content-Security-Policy has script-src " +
+      "'unsafe-inline' and no 'self'. That permits inline script and FORBIDS <script src>, so " +
+      "all three fail together and the page renders blank with nothing in the console that " +
+      "names the cause. Three files, one directive.",
+    provenance: {
+      kind: "measured-here",
+      where: "plexus/build.py and plexus/test_manifold.py, which asserts no shipped page " +
+             "carries a script with a src attribute; this repository shipped a blank page " +
+             "for exactly this reason",
+      licence: CC0,
+    },
+    note: "The remedy shown is the one this repository took: inline the code, so its presence " +
+          "no longer routes through the policy at all.",
+  }, hub("The policy directive",
+         ["engines.js", "eti.js", "vault.js"],
+         "The app runs",
+         "The code is inlined into the page")));
+
+  ENTRIES.push({
+    id: "atomic-install-list",
+    title: "Twelve assets, all or nothing",
+    problem:
+      "A service worker calls caches.addAll with twelve URLs. addAll is atomic: one 404 " +
+      "rejects the whole promise, install fails, the worker never activates and the app is " +
+      "not installable -- with no error at the asset that was missing. The list looks like " +
+      "twelve independent fetches and behaves like a chain of twelve.",
+    provenance: {
+      kind: "cited",
+      where: "the Service Worker specification: caches.addAll rejects if any request fails. " +
+             "Checkable by removing one file from any addAll list and watching install fail",
+      licence: CC0,
+    },
+    note:
+      "This is the entry that shows a limit of the engine rather than of the world. FATHOM's " +
+      "sources are disjunctive -- more of them always means less rests on each. A conjunction " +
+      "has no operator here and has to be drawn as a chain. The star anybody would draw is " +
+      "wrong, and the engine cannot tell them so.",
+    drawn: {
+      parts: ["The app installs"].concat(numbered("Asset", 12)),
+      links: numbered("Asset", 12).map(function (a) { return [a, "The app installs", 1.0]; }),
+      sources: numbered("Asset", 12),
+      conclusion: "The app installs",
+    },
+    actual: (function () {
+      var a = numbered("Asset", 12);
+      var links = [["The app installs", a[11], 1.0]], i;
+      for (i = 11; i > 0; i--) links.push([a[i], a[i - 1], 1.0]);
+      return { parts: ["The app installs"].concat(a), links: links,
+               sources: [a[0]], conclusion: "The app installs" };
+    })(),
+    remedy: {
+      parts: ["The app installs"].concat(numbered("Asset", 12)),
+      links: numbered("Asset", 12).map(function (a) { return [a, "The app installs", 1.0]; }),
+      sources: numbered("Asset", 12),
+      conclusion: "The app installs",
+    },
+  });
+
+  ENTRIES.push({
+    id: "two-ways-into-the-vault",
+    title: "A password is one way in",
+    problem:
+      "Encrypting records under a key derived from a master password gives exactly one way in. " +
+      "Forgetting the password destroys the data, and changing it means re-encrypting every " +
+      "record. Both faults are the same fault.",
+    provenance: {
+      kind: "measured-here",
+      where: "plexus/vault.js and plexus/test_vault.py, where 1.000 and 0.250 are asserted " +
+             "against the shipped implementation",
+      licence: CC0,
+    },
+    note:
+      "Blind spot 0.000 on purpose: nobody is surprised that a password is a single point. " +
+      "The value of this entry is the remedy, and 0.250 rather than 0.500 because contracting " +
+      "two ways in puts two conductances in parallel.",
+    drawn: {
+      parts: ["The data", "The key", "The password"],
+      links: [["The key", "The data", 1.0], ["The password", "The key", 1.0]],
+      sources: ["The password"], conclusion: "The data",
+    },
+    actual: {
+      parts: ["The data", "The key", "The password"],
+      links: [["The key", "The data", 1.0], ["The password", "The key", 1.0]],
+      sources: ["The password"], conclusion: "The data",
+    },
+    remedy: {
+      parts: ["The data", "The key", "The password", "The recovery code"],
+      links: [["The key", "The data", 1.0], ["The password", "The key", 1.0],
+              ["The recovery code", "The key", 1.0]],
+      sources: ["The password", "The recovery code"], conclusion: "The data",
+    },
+  });
+
+  ENTRIES.push({
+    id: "benchmark-contamination",
+    title: "Two evaluations, one corpus",
+    problem:
+      "A model scores well on two benchmarks and the two results are reported as independent " +
+      "evidence that it generalises. Both benchmarks were built from the same public crawl the " +
+      "model was trained on. Two results, one origin, and the second one adds almost nothing.",
+    provenance: {
+      kind: "cited",
+      where: "benchmark contamination in publicly released models; checkable from a model " +
+             "card by comparing the training corpus against the provenance of each eval set",
+      licence: CC0,
+    },
+    note: "The same shape as three-audits-one-threat-model at n = 2 rather than n = 3.",
+    drawn: {
+      parts: ["Eval A", "Eval B", "The model generalises"],
+      links: [["Eval A", "The model generalises", 1.0], ["Eval B", "The model generalises", 1.0]],
+      sources: ["Eval A", "Eval B"], conclusion: "The model generalises",
+    },
+    actual: {
+      parts: ["The shared corpus", "Eval A", "Eval B", "The model generalises"],
+      links: [["The shared corpus", "Eval A", 1.0], ["The shared corpus", "Eval B", 1.0],
+              ["Eval A", "The model generalises", 1.0], ["Eval B", "The model generalises", 1.0]],
+      sources: ["The shared corpus"], conclusion: "The model generalises",
+    },
+    remedy: {
+      parts: ["Corpus A", "Corpus B", "Eval A", "Eval B", "The model generalises"],
+      links: [["Corpus A", "Eval A", 1.0], ["Corpus B", "Eval B", 1.0],
+              ["Eval A", "The model generalises", 1.0], ["Eval B", "The model generalises", 1.0]],
+      sources: ["Corpus A", "Corpus B"], conclusion: "The model generalises",
+    },
+  });
+
+  ENTRIES.push(Object.assign({
+    id: "one-mirror-many-packages",
+    title: "Forty packages, one registry",
+    problem:
+      "A build pulls forty packages from forty different projects with forty different " +
+      "maintainers. Every one of them arrives from a single registry. Forty independent " +
+      "dependencies read as very little resting on any one of them, and the number is right " +
+      "about the packages and silent about the registry.",
+    provenance: {
+      kind: "cited",
+      where: "the single-registry dependency of ordinary package installs; checkable from any " +
+             "lockfile by reading the resolved host of every entry",
+      licence: CC0,
+    },
+    note: "The largest blind spot in the library, and it grows with the number of dependencies: " +
+          "the more independent things you list, the more reassuring the number and the wider " +
+          "the gap.",
+  }, hub("The registry", numbered("Package", 40), "The build succeeds", "A second registry")));
+
+  ENTRIES.push(Object.assign({
+    id: "model-weights-one-host",
+    title: "Six models, one hub",
+    problem:
+      "An application loads six models from six different authors under six different licences " +
+      "and treats that as six independent components. All six are fetched from one hub at " +
+      "start-up, so the hub being unreachable, rate-limiting, or removing a repository takes " +
+      "all six at once.",
+    provenance: {
+      kind: "cited",
+      where: "the single-host dependency of model downloads at run time; checkable by reading " +
+             "the resolved host of every weights fetch in an application's start-up path",
+      licence: CC0,
+    },
+    note: "Same shape as sole-maintainer at n = 6. Caching the weights on device is the remedy " +
+          "the shape actually points at: a second route to each model, not a second hub.",
+  }, hub("The hub", numbered("Model", 6), "The app answers", "A local cache of the weights")));
+
+  var API = { entries: ENTRIES, hub: hub, numbered: numbered, LICENCE: CC0 };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LIBRARY = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var C = window.COMMONS, L = window.LIBRARY;
+
+  function pct(x) { return (x * 100).toFixed(1) + "%"; }
+  function num(x) { return x.toFixed(3); }
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+
+  /* Everything drawn here is measured at load from library.js by commons.js.
+     No number on this page is typed into the markup, so a shape cannot be
+     shown next to a figure that stopped being true. */
+  var measured = L.entries.map(function (e) { return C.measure(e); });
+
+  function reading(m, k, label, hint) {
+    var wrap = text("div", "rd");
+    wrap.setAttribute("data-k", k);
+    wrap.appendChild(text("h4", null, label));
+    wrap.appendChild(text("b", null, m ? num(m.deepest) : "—"));
+    wrap.appendChild(text("small", null, hint));
+    return wrap;
+  }
+
+  function card(m) {
+    var e = document.createElement("section");
+    e.className = "shape";
+    e.id = "shape-" + m.id;
+
+    var head = text("button", "head");
+    head.type = "button";
+    head.setAttribute("aria-expanded", "false");
+    head.setAttribute("aria-controls", "body-" + m.id);
+    head.appendChild(text("h3", null, m.title));
+    var src = text("span", "src", m.provenance.kind === "measured-here"
+      ? "measured here" : "cited, checkable");
+    src.setAttribute("data-kind", m.provenance.kind);
+    head.appendChild(src);
+    var gap = text("div", "gap");
+    gap.appendChild(text("b", null, pct(m.blindSpot)));
+    gap.appendChild(text("span", null, m.blindSpot > 0
+      ? "worse than the usual description says"
+      : "the usual description is already right; the value here is the fix"));
+    head.appendChild(gap);
+    e.appendChild(head);
+
+    var body = text("div", "body");
+    body.id = "body-" + m.id;
+    body.hidden = true;
+    body.appendChild(text("p", null, m.problem));
+
+    var three = text("div", "three");
+    three.appendChild(reading(m.drawn, "drawn", "As described",
+      "what the usual account says rests on one thing"));
+    three.appendChild(reading(m.actual, "actual", "As it is",
+      "what really does"));
+    three.appendChild(reading(m.remedy, "remedy", "After the fix",
+      m.remedy ? "what is left once a second way exists" : "no fix recorded"));
+    body.appendChild(three);
+
+    if (m.note) body.appendChild(text("p", "note", m.note));
+    body.appendChild(text("p", "note", "Where this came from: " + m.provenance.where + "."));
+
+    var sc = text("div", "scroll");
+    var t = document.createElement("table");
+    t.className = "parts";
+    var hr = t.insertRow();
+    ["What it rests on, as it is", "How much"].forEach(function (h) {
+      var th = document.createElement("th"); th.textContent = h; hr.appendChild(th);
+    });
+    m.actual.bySource.forEach(function (r) {
+      var row = t.insertRow();
+      row.insertCell().textContent = r.source;
+      var c = row.insertCell(); c.className = "n"; c.textContent = num(r.dependence);
+    });
+    sc.appendChild(t);
+    body.appendChild(sc);
+    e.appendChild(body);
+
+    /* The flag is flipped ON THE ROW and the list is never rebuilt. Rebuilding
+       a list inside a handler attached to one of its children destroys the
+       element that was just pressed: focus drops to the top of the page and a
+       second press lands on nothing. That defect has appeared four times in
+       this codebase. Mutate the row, never the list. */
+    head.addEventListener("click", function () {
+      var open = head.getAttribute("aria-expanded") === "true";
+      head.setAttribute("aria-expanded", open ? "false" : "true");
+      body.hidden = open;
+    });
+    return e;
+  }
+
+  var list = $("#list");
+  measured.forEach(function (m) { list.appendChild(card(m)); });
+
+  var spots = measured.map(function (m) { return m.blindSpot; });
+  var mean = spots.reduce(function (a, b) { return a + b; }, 0) / spots.length;
+  var fam = C.families(L.entries);
+  $("#summary").textContent =
+    measured.length + " shapes. The average gap between how a thing is described "
+    + "and what is holding it up is " + pct(mean) + ". "
+    + fam[0].size + " of the " + measured.length
+    + " measure identically to one another despite sharing no word, which is the "
+    + "only reason a shape from someone else's field is worth anything in yours.";
+
+  var r = C.contributionRate(null);
+  if (!r.measurable) $("#rate").textContent = "not measurable yet";
+
+  /* Matching is a SUGGESTION. It compares words and nothing else, and it is
+     kept well away from anything that produces a number above. */
+  function look() {
+    var parts = $("#mine").value.split("\n")
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length > 0; });
+    var hits = C.match(L.entries, parts);
+    var box = $("#hits");
+    while (box.firstChild) box.removeChild(box.firstChild);
+    hits.slice(0, 5).forEach(function (h) {
+      var row = text("a", "hit");
+      row.href = "#shape-" + h.id;
+      row.appendChild(text("b", null, h.title));
+      row.appendChild(text("span", null, "shares " + h.shared.join(", ")));
+      row.appendChild(text("span", "sc", h.shared.length + " of your words"));
+      box.appendChild(row);
+    });
+    $("#nohits").hidden = hits.length > 0 || parts.length === 0;
+  }
+  $("#look").addEventListener("click", look);
+  $("#clear").addEventListener("click", function () {
+    $("#mine").value = "";
+    var box = $("#hits");
+    while (box.firstChild) box.removeChild(box.firstChild);
+    $("#nohits").hidden = true;
+  });
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+
+<script>
+/* Registers only when the page is served (https or localhost). Opened straight
+   from a file there is no service worker, and the app works anyway -- it is one
+   file with everything already in it. */
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>

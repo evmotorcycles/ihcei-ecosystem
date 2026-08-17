@@ -108,6 +108,77 @@ Files: `app_template.html` + `engines.js` + `build.py` → `app.html`,
 
 ---
 
+## Shapes — the contributed-structure commons
+
+`commons.html`. Eight shapes people have already run into, each stored twice:
+the way it is usually described, and the dependencies actually there. The number
+on each card is the distance between those two.
+
+| Shape | As described | As it is | After the fix | Gap |
+|---|---|---|---|---|
+| One person, three jobs | 0.333 | 1.000 | 0.250 | **66.7%** |
+| Three audits, one threat model | 0.333 | 1.000 | 0.250 | **66.7%** |
+| Three script files, one policy directive | 0.333 | 1.000 | 0.250 | **66.7%** |
+| Twelve assets, all or nothing | 0.083 | 1.000 | 0.083 | **91.7%** |
+| A password is one way in | 1.000 | 1.000 | 0.250 | 0.0% |
+| Two evaluations, one corpus | 0.500 | 1.000 | 0.500 | **50.0%** |
+| Forty packages, one registry | 0.025 | 1.000 | 0.250 | **97.5%** |
+| Six models, one hub | 0.167 | 1.000 | 0.250 | **83.3%** |
+
+Every number is computed at load by `commons.js` from `library.js`; none is
+typed into the page, and a test asserts the markup contains no figure at all.
+
+**The first three rows share no word and measure identically, to 1e-12.** That
+is the only reason a shape from someone else's field is worth anything in
+yours, and it is the one test in `test_commons.py` marked THESIS: if it ever
+fails, the library is a list of opinions and should be deleted.
+
+**The pattern that fell out of it.** In the drawn slot, dependence is exactly
+`1/n` for `n` supports contracted onto one conclusion, while the actual slot
+reads 1.000 whenever there is a single hidden origin. So the gap is `1 − 1/n`:
+*the more independent-looking things you list, the more reassuring the number
+and the wider the error.* Noticed after the results arrived, not predicted, and
+recorded as such.
+
+### A structure is parts and links, and there is nowhere to put anything else
+
+`validate()` refuses any key beyond `parts`, `links`, `sources`, `conclusion`.
+Not because a fifth key must be personal data, but because a free-text box on a
+shared record is where a name ends up — and then the commons is a database and
+non-possession is a slogan. There is nothing to sanitise because there is
+nowhere to put it. Every entry also carries `provenance.kind`, either
+`measured-here` (a defect found in this repository, file named) or `cited` (a
+documented mechanism anyone can check), and `licence: CC0-1.0`.
+
+### Where these came from, and where they did not
+
+The task named GitHub and HuggingFace as places to mine problems. Neither was
+mined. This session's GitHub access is scoped to two repositories, so
+repository-wide and global search were out of scope and unused, and there is no
+paid API, no key and no scraping. Two entries were measured here; six cite
+mechanisms whose behaviour anybody can verify from a specification or a lockfile.
+Nothing claims a provenance it does not have.
+
+### What none of it shows
+
+That a commons raises a valuation ceiling. That claim rests on a contribution
+rate, and `contributionRate()` is written so it **cannot return a number** while
+there are no buyers — precisely so no later version can substitute a measurement
+from this file for the one that matters. The gate, set before any of this ran:
+**5% of buyers contribute a shape within 60 days of shipping.** Below that, the
+fourth pillar was imaginary.
+
+Eight shapes written by one person in one sitting is a worked example, not a
+commons. Three of them share a shape; I wrote all three, so the recurrence is
+evidence about me until a shape arrives from someone who never read this file.
+
+Predictions were locked before anything ran:
+`plexus/commons_preregistration.md`, sha256
+`25e2df1112521cb353c5017429d51686dfeef53a48c74ab00ff1007f0d5885be`, asserted by
+the suite so they cannot be edited after the fact.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:

@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Shapes</title>
+<meta name="description" content="Shapes other people have already run into: how a thing is usually described, what is really holding it up, and how far apart those two are. Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="{{ICON}}">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Shapes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+textarea{width:100%;min-height:5.5rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.88rem;line-height:1.5;resize:vertical}
+.acts{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem;font-weight:600}
+.acts button:active{border-color:var(--focus)}
+
+/* one card per shape. The whole card is the button, so nothing small has to be
+   hit accurately on a phone. */
+.shape{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  margin-bottom:.6rem;overflow:hidden}
+.shape > .head{display:block;width:100%;text-align:left;padding:.8rem .85rem;min-height:48px}
+.shape > .head:active{background:var(--card-2)}
+.shape h3{margin:0;font-size:.98rem;letter-spacing:-.01em;text-wrap:balance}
+.src{display:inline-flex;align-items:center;margin-top:.35rem;font-size:.6rem;
+  letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.15rem .4rem;
+  border-radius:5px;border:1px solid var(--edge);color:var(--mute);background:var(--card-2)}
+.src[data-kind="measured-here"]{color:var(--spare);border-color:var(--spare);background:var(--spare-soft)}
+.gap{display:flex;align-items:baseline;gap:.5rem;margin-top:.55rem}
+.gap b{font-size:1.45rem;font-weight:700;letter-spacing:-.03em;color:var(--hold);
+  font-variant-numeric:tabular-nums}
+.gap span{font-size:.78rem;color:var(--mute)}
+.body{padding:0 .85rem .85rem}
+.body p{margin:0 0 .6rem;font-size:.86rem;color:var(--ink-2)}
+.body p.note{color:var(--mute);font-size:.81rem}
+
+/* three readings, and it must be visible that they are three and not one */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin:.1rem 0 .7rem}
+@media (max-width:30rem){ .three{grid-template-columns:1fr} }
+.rd{background:var(--card-2);border:1px solid var(--edge);border-radius:10px;padding:.55rem .6rem}
+.rd h4{margin:0 0 .15rem;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.rd b{font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.rd small{display:block;font-size:.72rem;color:var(--mute);margin-top:.1rem;line-height:1.4}
+.rd[data-k=drawn] b{color:var(--spare)}
+.rd[data-k=actual] b{color:var(--hold)}
+.rd[data-k=remedy] b{color:var(--share)}
+
+table.parts{width:100%;border-collapse:collapse;font-size:.79rem;margin-top:.2rem}
+table.parts th,table.parts td{text-align:left;padding:.28rem .4rem;border-bottom:1px solid var(--line)}
+table.parts th{color:var(--mute);font-weight:650;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}
+table.parts td.n{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.scroll{overflow-x:auto}
+
+.hits{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.hits:empty{display:none}
+.hit{background:var(--card-2);border:1px solid var(--edge);border-radius:10px;
+  padding:.45rem .55rem;font-size:.83rem;min-height:44px;display:flex;
+  align-items:center;gap:.5rem;flex-wrap:wrap}
+.hit{text-decoration:none;color:var(--ink)}
+.hit b{font-weight:650}
+.hit .sc{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mute);font-size:.76rem}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}, so
+   without this line the empty message stays painted over real content. That
+   defect shipped once on the manifold page and was found by rendering it. */
+.void[hidden]{display:none}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Shapes other people already ran into</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>How a thing is described, and what is actually holding it up</h2>
+    <p>Every shape below is stored twice. Once the way people usually describe
+      it, and once with the dependencies that are really there. The number in
+      orange is the distance between those two: <b>how much worse than you
+      thought</b>.</p>
+    <p>A shape is parts and links. Nothing else — there is no field for a name,
+      an address or an amount, because a shape with a free-text box in it would
+      end up holding one. That is why these can be shared and your own work
+      cannot leak with them. <b>Nothing leaves this device.</b></p>
+    <p class="small">Eight shapes, written by one person in one sitting. That is
+      a worked example, not yet a commons. It becomes a commons when a shape
+      arrives from somebody who never read this page.</p>
+  </section>
+
+  <section class="panel">
+    <span class="fl">Does one of these describe yours?</span>
+    <p class="small" style="margin:0 0 .5rem">List the parts of your own
+      situation, one per line — whatever you would name if you were explaining
+      it to someone. This only compares words, so treat what comes back as a
+      place to start looking, never as a measurement.</p>
+    <textarea id="mine" aria-label="The parts of your situation, one per line"
+      placeholder="the registry&#10;package 3&#10;the build succeeds"></textarea>
+    <div class="acts">
+      <button id="look">Look for a shape</button>
+      <button id="clear">Clear</button>
+    </div>
+    <div class="hits" id="hits"></div>
+    <div class="void" id="nohits" hidden>No shape here uses those words. That
+      does not mean none of them fits.</div>
+  </section>
+
+  <span class="fl">The library</span>
+  <div id="list"></div>
+
+  <div class="foot">
+    <p id="summary"></p>
+    <p><b>What none of this shows.</b> Nothing on this page is evidence that a
+      shared library of shapes is worth anything commercially. That would be a
+      contribution rate — the share of people who, having used this, give a
+      shape back — and it is <b id="rate">not measurable yet</b>. The gate set in
+      advance is <b>5% within 60 days of shipping</b>. Below that, the idea was
+      imaginary and this page is a nice diagram.</p>
+    <p>Every shape is given under CC0-1.0, so anyone may copy, change and
+      redistribute it, including commercially, without asking.</p>
+  </div>
+
+</main>
+
+<script>{{LMD}}</script>
+<script>{{ENGINES}}</script>
+<script>{{COMMONS}}</script>
+<script>{{LIBRARY}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var C = window.COMMONS, L = window.LIBRARY;
+
+  function pct(x) { return (x * 100).toFixed(1) + "%"; }
+  function num(x) { return x.toFixed(3); }
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+
+  /* Everything drawn here is measured at load from library.js by commons.js.
+     No number on this page is typed into the markup, so a shape cannot be
+     shown next to a figure that stopped being true. */
+  var measured = L.entries.map(function (e) { return C.measure(e); });
+
+  function reading(m, k, label, hint) {
+    var wrap = text("div", "rd");
+    wrap.setAttribute("data-k", k);
+    wrap.appendChild(text("h4", null, label));
+    wrap.appendChild(text("b", null, m ? num(m.deepest) : "—"));
+    wrap.appendChild(text("small", null, hint));
+    return wrap;
+  }
+
+  function card(m) {
+    var e = document.createElement("section");
+    e.className = "shape";
+    e.id = "shape-" + m.id;
+
+    var head = text("button", "head");
+    head.type = "button";
+    head.setAttribute("aria-expanded", "false");
+    head.setAttribute("aria-controls", "body-" + m.id);
+    head.appendChild(text("h3", null, m.title));
+    var src = text("span", "src", m.provenance.kind === "measured-here"
+      ? "measured here" : "cited, checkable");
+    src.setAttribute("data-kind", m.provenance.kind);
+    head.appendChild(src);
+    var gap = text("div", "gap");
+    gap.appendChild(text("b", null, pct(m.blindSpot)));
+    gap.appendChild(text("span", null, m.blindSpot > 0
+      ? "worse than the usual description says"
+      : "the usual description is already right; the value here is the fix"));
+    head.appendChild(gap);
+    e.appendChild(head);
+
+    var body = text("div", "body");
+    body.id = "body-" + m.id;
+    body.hidden = true;
+    body.appendChild(text("p", null, m.problem));
+
+    var three = text("div", "three");
+    three.appendChild(reading(m.drawn, "drawn", "As described",
+      "what the usual account says rests on one thing"));
+    three.appendChild(reading(m.actual, "actual", "As it is",
+      "what really does"));
+    three.appendChild(reading(m.remedy, "remedy", "After the fix",
+      m.remedy ? "what is left once a second way exists" : "no fix recorded"));
+    body.appendChild(three);
+
+    if (m.note) body.appendChild(text("p", "note", m.note));
+    body.appendChild(text("p", "note", "Where this came from: " + m.provenance.where + "."));
+
+    var sc = text("div", "scroll");
+    var t = document.createElement("table");
+    t.className = "parts";
+    var hr = t.insertRow();
+    ["What it rests on, as it is", "How much"].forEach(function (h) {
+      var th = document.createElement("th"); th.textContent = h; hr.appendChild(th);
+    });
+    m.actual.bySource.forEach(function (r) {
+      var row = t.insertRow();
+      row.insertCell().textContent = r.source;
+      var c = row.insertCell(); c.className = "n"; c.textContent = num(r.dependence);
+    });
+    sc.appendChild(t);
+    body.appendChild(sc);
+    e.appendChild(body);
+
+    /* The flag is flipped ON THE ROW and the list is never rebuilt. Rebuilding
+       a list inside a handler attached to one of its children destroys the
+       element that was just pressed: focus drops to the top of the page and a
+       second press lands on nothing. That defect has appeared four times in
+       this codebase. Mutate the row, never the list. */
+    head.addEventListener("click", function () {
+      var open = head.getAttribute("aria-expanded") === "true";
+      head.setAttribute("aria-expanded", open ? "false" : "true");
+      body.hidden = open;
+    });
+    return e;
+  }
+
+  var list = $("#list");
+  measured.forEach(function (m) { list.appendChild(card(m)); });
+
+  var spots = measured.map(function (m) { return m.blindSpot; });
+  var mean = spots.reduce(function (a, b) { return a + b; }, 0) / spots.length;
+  var fam = C.families(L.entries);
+  $("#summary").textContent =
+    measured.length + " shapes. The average gap between how a thing is described "
+    + "and what is holding it up is " + pct(mean) + ". "
+    + fam[0].size + " of the " + measured.length
+    + " measure identically to one another despite sharing no word, which is the "
+    + "only reason a shape from someone else's field is worth anything in yours.";
+
+  var r = C.contributionRate(null);
+  if (!r.measurable) $("#rate").textContent = "not measurable yet";
+
+  /* Matching is a SUGGESTION. It compares words and nothing else, and it is
+     kept well away from anything that produces a number above. */
+  function look() {
+    var parts = $("#mine").value.split("\n")
+      .map(function (s) { return s.trim(); })
+      .filter(function (s) { return s.length > 0; });
+    var hits = C.match(L.entries, parts);
+    var box = $("#hits");
+    while (box.firstChild) box.removeChild(box.firstChild);
+    hits.slice(0, 5).forEach(function (h) {
+      var row = text("a", "hit");
+      row.href = "#shape-" + h.id;
+      row.appendChild(text("b", null, h.title));
+      row.appendChild(text("span", null, "shares " + h.shared.join(", ")));
+      row.appendChild(text("span", "sc", h.shared.length + " of your words"));
+      box.appendChild(row);
+    });
+    $("#nohits").hidden = hits.length > 0 || parts.length === 0;
+  }
+  $("#look").addEventListener("click", look);
+  $("#clear").addEventListener("click", function () {
+    $("#mine").value = "";
+    var box = $("#hits");
+    while (box.firstChild) box.removeChild(box.firstChild);
+    $("#nohits").hidden = true;
+  });
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+</body>
+</html>
