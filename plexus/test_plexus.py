@@ -150,12 +150,86 @@ def test_the_shipped_page_carries_no_control_characters():
         assert b"\x00" not in raw, f"{rel} contains a literal NUL"
 
 
-def test_the_page_reaches_no_network():
+# ---------------------------------------------------------------------------
+# RETIRED: test_the_page_reaches_no_network
+#
+# It banned fetch(, XMLHttpRequest, WebSocket and https:// anywhere in the
+# shipped page. That made the app offline by CONSTRUCTION, which was correct
+# while the app was offline by intent. The decision has been taken to make
+# these tools hybrid -- offline first, sync as an addition -- and a blanket ban
+# cannot express that. Retired deliberately, in the open, rather than deleted
+# quietly when it first got in the way.
+#
+# It is replaced by two invariants that are STRICTER where it matters:
+#
+#   1. the measuring kernel can never reach the network, at all, forever;
+#   2. the promise printed on a page must match what that page's code does,
+#      so the copy cannot keep saying "nothing leaves this device" one commit
+#      after something starts leaving.
+#
+# Third-party origins remain blocked by connect-src 'self', which has its own
+# test and is not affected by this retirement.
+# ---------------------------------------------------------------------------
+
+KERNEL = ("engines.js", "eti.js", "manifold.js", "nere.js", "ihcei.js",
+          "cairn.js", "game.js")
+
+
+def test_the_measuring_kernel_can_never_reach_the_network():
+    """The arithmetic stays on the device even after the apps go hybrid.
+
+    Sync may come and go; a measurement must never depend on a server being
+    reachable, or the answer a person gets about their own bill becomes
+    something someone else can withhold. This is the line the hybrid work is
+    not allowed to cross, so it is asserted over the engines themselves rather
+    than over the pages that host them.
+    """
+    import re
+    for name in KERNEL:
+        path = os.path.join(HERE, name)
+        if not os.path.exists(path):
+            continue
+        src = open(path, encoding="utf-8").read()
+        hit = re.search(r"\bfetch\s*\(|XMLHttpRequest|new\s+WebSocket|"
+                        r"navigator\.sendBeacon|EventSource", src)
+        assert not hit, f"{name} reaches the network: {hit.group(0)}"
+    lmd = open(os.path.join(ROOT, "smi", "lmd.js"), encoding="utf-8").read()
+    assert "fetch(" not in lmd and "XMLHttpRequest" not in lmd
+
+
+def test_the_promise_on_a_page_matches_what_that_page_does():
+    """Truthfulness as an invariant rather than a fixed string.
+
+    The old test kept the page honest by forbidding the network. This keeps it
+    honest by forbidding the CONTRADICTION: a page may reach out, or it may
+    promise that nothing leaves this device, and it may not do both. When sync
+    lands, this fails until the copy is rewritten in the same commit.
+    """
+    import re
+    pages = [f for f in os.listdir(HERE)
+             if f.endswith(".html") and not f.endswith("_template.html")]
+    assert pages, "no built pages found"
+    for f in pages:
+        src = open(os.path.join(HERE, f), encoding="utf-8").read()
+        reaches = re.search(r"\bfetch\s*\(|XMLHttpRequest|new\s+WebSocket|"
+                            r"navigator\.sendBeacon", src)
+        promises = ("Nothing leaves this device" in src
+                    or "aeroplane mode" in src
+                    or "no network, no server" in src)
+        assert not (reaches and promises), (
+            f"{f} reaches the network ({reaches.group(0)}) while still promising "
+            "that nothing leaves this device -- change the copy in the same commit")
+
+
+def test_the_page_still_works_with_the_network_gone():
+    """Offline first is the default, not a fallback. The service worker must be
+    registered and the page must be cached, or 'hybrid' quietly becomes
+    'online, degrading badly'."""
     src = open(os.path.join(HERE, "app.html"), encoding="utf-8").read()
-    for banned in ("fetch(", "XMLHttpRequest", "WebSocket", "//cdn.", "https://"):
-        assert banned not in src, f"the page reaches out: {banned}"
     assert "navigator.serviceWorker.register" in src, \
-        "without this it cannot be installed to a home screen"
+        "without this it cannot be installed or opened without a network"
+    sw = open(os.path.join(HERE, "sw.js"), encoding="utf-8").read()
+    assert "./index.html" in sw and 'caches.match("./index.html")' in sw
 
 
 def test_the_page_states_what_it_cannot_tell_you():

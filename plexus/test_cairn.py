@@ -220,8 +220,11 @@ def test_the_flint_page_obeys_the_same_rules():
     assert not re.search(r"<script[^>]+\bsrc\s*=", src), \
         "an external script cannot load under this CSP"
     assert "{{" not in src
-    for banned in ("fetch(", "XMLHttpRequest", "WebSocket", "//cdn.", "https://"):
-        assert banned not in src, f"Flint reaches out: {banned}"
+    # The blanket network ban that stood here is RETIRED with
+    # test_the_page_reaches_no_network (see test_plexus.py for why).
+    # Replaced by two stronger rules: the measuring kernel can never reach
+    # the network, and a page may not promise that nothing leaves the device
+    # while reaching out. Third-party origins stay blocked by connect-src.
     assert "min-height:44px" in src and "min-height:48px" in src
 
 
