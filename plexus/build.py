@@ -147,9 +147,10 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v7";
+var CACHE = "plexus-v8";
 var FILES = ["./", "./index.html", "./topology.html", "./manifold.html",
-             "./flint.html", "./commons.html", "./manifest.webmanifest", "./icon.svg",
+             "./flint.html", "./commons.html", "./gate.html",
+             "./manifest.webmanifest", "./icon.svg",
              "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
 self.addEventListener("install", function (e) {
@@ -275,6 +276,21 @@ def main():
     assert "{{" not in shapes, "unfilled placeholder left in commons.html"
     open(os.path.join(HERE, "commons.html"), "w", encoding="utf-8").write(shapes)
 
+    # Agent Gate. lens.js goes in beside it because the page prints its own
+    # limits and test_gate.py checks those sentences against the register --
+    # a page whose promise drifts from its tool's declaration fails the build.
+    lns = open(os.path.join(HERE, "lens.js"), encoding="utf-8").read()
+    gt = open(os.path.join(HERE, "gate.js"), encoding="utf-8").read()
+    gtpl = open(os.path.join(HERE, "gate_template.html"), encoding="utf-8").read()
+    gate = (gtpl.replace("{{LMD}}", lmd)
+                .replace("{{ENGINES}}", eng)
+                .replace("{{LENS}}", lns)
+                .replace("{{GATE}}", gt)
+                .replace("{{ICON}}", icon_uri)
+                .replace("</body>", REGISTER + "</body>"))
+    assert "{{" not in gate, "unfilled placeholder left in gate.html"
+    open(os.path.join(HERE, "gate.html"), "w", encoding="utf-8").write(gate)
+
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
     open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
@@ -286,6 +302,7 @@ def main():
     print("wrote manifold.html                    (%.1f KB)" % (len(mani) / 1024))
     print("wrote flint.html                       (%.1f KB)" % (len(flint) / 1024))
     print("wrote commons.html                     (%.1f KB)" % (len(shapes) / 1024))
+    print("wrote gate.html                        (%.1f KB)" % (len(gate) / 1024))
     print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
     missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
                if not os.path.exists(os.path.join(HERE, f))]

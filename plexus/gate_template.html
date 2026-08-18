@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Gate</title>
+<meta name="description" content="Say where an assistant may work in your plan, and where there is no second way round. Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="{{ICON}}">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gate">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+.fl .hint{display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
+  font-weight:400;color:var(--mute);margin-top:.2rem;line-height:1.45}
+textarea{width:100%;min-height:6.5rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.88rem;line-height:1.5;resize:vertical}
+.acts{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;
+  font-size:.87rem;font-weight:600}
+.acts button:active{border-color:var(--focus)}
+
+/* the parts, each a switch: may the assistant touch this or not */
+.parts{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.pt{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;
+  background:var(--card-2);border:1px solid var(--edge);border-radius:10px;
+  padding:.5rem .6rem;min-height:48px;font-size:.86rem}
+.pt[aria-pressed=true]{border-color:var(--spare);background:var(--spare-soft)}
+.pt .mk{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:.14rem .38rem;border-radius:5px;flex:none;margin-left:auto;
+  border:1px solid var(--edge);color:var(--mute);background:var(--card)}
+.pt[aria-pressed=true] .mk{color:var(--spare);border-color:var(--spare);background:var(--card)}
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.6rem 0}
+@media (max-width:38rem){ .three{grid-template-columns:1fr} }
+.rd{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:.8rem .85rem}
+.rd h3{margin:0 0 .1rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.rd .big{font-size:1.35rem;font-weight:700;line-height:1.2;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.rd p{margin:.35rem 0 0;font-size:.82rem;color:var(--ink-2)}
+.rd[data-k=perimeter]{border-left:3px solid var(--spare)}
+.rd[data-k=sole]{border-left:3px solid var(--hold)}
+.rd[data-k=hazard]{border-left:3px solid var(--share)}
+.rd[data-k=perimeter] .big{color:var(--spare)}
+.rd[data-k=sole] .big{color:var(--hold)}
+.rd[data-k=hazard] .big{color:var(--share);font-size:1.05rem}
+
+.rows{display:flex;flex-direction:column;gap:.3rem;margin-top:.45rem}
+.rows:empty{display:none}
+.rw{background:var(--card-2);border:1px solid var(--edge);border-radius:9px;
+  padding:.42rem .55rem;font-size:.82rem;line-height:1.45;min-height:44px;
+  display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.rw b{font-weight:650}
+.rw .n{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mute);font-size:.78rem}
+.rw[data-k=crossing]{border-color:var(--hold)}
+.rw[data-k=sole]{border-color:var(--hold)}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}. */
+.void[hidden]{display:none}
+
+.limits{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--hold);
+  border-radius:var(--r);padding:.85rem .9rem;margin:.7rem 0}
+.limits h2{margin:0 0 .4rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold)}
+.limits ul{margin:0;padding-left:1.1rem}
+.limits li{font-size:.86rem;color:var(--ink-2);margin-bottom:.3rem}
+.limits h3{margin:.9rem 0 .35rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute)}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Where an assistant may work</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>Draw a boundary before you hand over the work</h2>
+    <p>Write out the steps of your plan and which ones depend on which. Then tap
+      the steps an assistant is allowed to touch. Three things come back, and
+      they are deliberately kept apart because they are three different kinds of
+      answer.</p>
+    <p class="small"><b>Nothing leaves this device.</b> The plan you type is not
+      sent anywhere, and there is nothing here that could send it.</p>
+  </section>
+
+  <section class="panel">
+    <span class="fl">Your plan
+      <span class="hint">One step per line. To say a step depends on another,
+        write <em>step &gt; step</em> — for example
+        <em>the supplier's price &gt; the quote</em>.</span></span>
+    <textarea id="plan" aria-label="Your plan, one step or dependency per line"></textarea>
+    <div class="acts">
+      <button id="read">Read the plan</button>
+      <button id="example">Use the example</button>
+    </div>
+
+    <span class="fl">What may the assistant touch?
+      <span class="hint">Tap a step to allow it. Anything not lit is outside the
+        boundary.</span></span>
+    <div class="parts" id="parts"></div>
+    <div class="void" id="noparts">Write a plan above and press “Read the plan”.</div>
+  </section>
+
+  <div class="three">
+    <div class="rd" data-k="perimeter">
+      <h3>Would step outside</h3>
+      <div class="big" id="crossN">—</div>
+      <p id="crossWhat">Nothing read yet.</p>
+    </div>
+    <div class="rd" data-k="sole">
+      <h3>No way round</h3>
+      <div class="big" id="soleN">—</div>
+      <p id="soleWhat">Nothing read yet.</p>
+    </div>
+    <div class="rd" data-k="hazard">
+      <h3>Your own backlog</h3>
+      <div class="big" id="hazS">Not enough history</div>
+      <p id="hazWhy">This needs a record of problems you flagged and when you
+        closed them. With none, it says so rather than guessing.</p>
+    </div>
+  </div>
+
+  <div class="rows" id="detail"></div>
+
+  <section class="limits">
+    <h2>What this will not do</h2>
+    <ul>
+      <li>It does not read what the assistant writes.</li>
+      <li>It cannot tell you an assistant is safe.</li>
+      <li>With no history it will say so rather than guess.</li>
+    </ul>
+    <h3>Then go and check</h3>
+    <ul>
+      <li>Take one step it marked as having no alternative and write down, on paper, what you would do if it failed.</li>
+      <li>Open your own issue tracker and read the three oldest things still open.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <span class="fl">Why there is no confidence score here</span>
+    <p>The obvious design asks each step how faithfully it carried the meaning,
+      multiplies those numbers together, and stops the assistant when the
+      product drops below a line. That gate was built and then <b>retired in
+      this project, on its own data</b>: the sensor that would supply the number
+      reads nothing at all on about three quarters of records, and a
+      pre-registered test on a fresh, unseen set of nearly five thousand cases
+      came back with a flat null.</p>
+    <p class="small">So what is measured instead is something every organisation
+      already records without any new instrument: <b>how long problems you have
+      already flagged stay open.</b> Rising time-to-fix separated the projects
+      that survived from the ones that died — twenty days against fifty. It is
+      compared only against your own past, never against somebody else's number.</p>
+  </section>
+
+  <div class="foot">
+    <p id="disclaimer"></p>
+    <p><b>The three readings are never added together.</b> A boundary, a
+      spanning-tree measurement and a latency trend are different kinds of
+      quantity, and there is no arithmetic that combines them honestly. A single
+      “assistant safety score” would be the most saleable thing this page could
+      show and the least true.</p>
+  </div>
+
+</main>
+
+<script>{{LMD}}</script>
+<script>{{ENGINES}}</script>
+<script>{{LENS}}</script>
+<script>{{GATE}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var G = window.GATE;
+
+  var EXAMPLE = [
+    "the supplier's price > the quote",
+    "the delivery date > the quote",
+    "the quote > the deposit",
+    "the deposit > the order ships",
+    "the delivery date > the order ships",
+  ].join("\n");
+
+  var plan = { parts: [], links: [] };
+  var allowed = {};
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+
+  /* Deterministic and dumb on purpose: it splits where a person would and
+     decides nothing about what a step MEANS. */
+  function parse(src) {
+    var parts = [], links = [], seen = {};
+    function part(name) {
+      var n = name.trim();
+      if (!n) return null;
+      if (!seen[n]) { seen[n] = true; parts.push(n); }
+      return n;
+    }
+    String(src || "").split(/[\n\r]+/).forEach(function (line) {
+      var s = line.trim();
+      if (!s) return;
+      var bits = s.split(">");
+      if (bits.length >= 2) {
+        var a = part(bits[0]), b = part(bits[1]);
+        if (a && b && a !== b) links.push([a, b, 1.0]);
+      } else {
+        part(s);
+      }
+    });
+    return { parts: parts, links: links };
+  }
+
+  function row(kind, label, right) {
+    var r = text("div", "rw");
+    r.setAttribute("data-k", kind);
+    r.appendChild(text("b", null, label));
+    if (right !== undefined) r.appendChild(text("span", "n", right));
+    return r;
+  }
+
+  function measure() {
+    var chosen = plan.parts.filter(function (p) { return allowed[p]; });
+    var detail = $("#detail");
+    while (detail.firstChild) detail.removeChild(detail.firstChild);
+
+    if (plan.parts.length < 2 || !plan.links.length) {
+      $("#crossN").textContent = "—";
+      $("#soleN").textContent = "—";
+      $("#crossWhat").textContent = "A plan needs at least two steps and one dependency.";
+      $("#soleWhat").textContent = "Nothing to measure yet.";
+      return;
+    }
+
+    var p = G.perimeter(plan, chosen);
+    var s = G.soleRoutes(plan);
+
+    $("#crossN").textContent = String(p.crossing.length);
+    $("#crossWhat").textContent = p.crossing.length
+      ? "It would reach " + p.wouldReach.join(", ") + "."
+      : (chosen.length ? "Nothing crosses the boundary you set."
+                       : "Nothing is allowed yet, so nothing can cross.");
+
+    $("#soleN").textContent = String(s.count);
+    $("#soleWhat").textContent = s.count
+      ? "If one of these fails there is no other path."
+      : "Every step has an alternative route.";
+
+    p.crossing.forEach(function (c) {
+      detail.appendChild(row("crossing",
+        c.from + " → " + c.to, "would reach " + c.reaches));
+    });
+    s.routes.forEach(function (r) {
+      detail.appendChild(row("sole", r.from + " → " + r.to, "no way round"));
+    });
+    p.within.forEach(function (w) {
+      detail.appendChild(row("within", w.from + " → " + w.to, "inside"));
+    });
+  }
+
+  /* The flag is flipped ON THE ROW. Rebuilding this list inside its own click
+     handler would destroy the button that was just pressed -- five occurrences
+     of that defect in this codebase and counting. Mutate the row, never the
+     list. */
+  function drawParts() {
+    var box = $("#parts");
+    while (box.firstChild) box.removeChild(box.firstChild);
+    plan.parts.forEach(function (name) {
+      var b = text("button", "pt");
+      b.type = "button";
+      b.setAttribute("aria-pressed", allowed[name] ? "true" : "false");
+      b.appendChild(text("span", null, name));
+      var mk = text("span", "mk", allowed[name] ? "allowed" : "outside");
+      b.appendChild(mk);
+      b.addEventListener("click", function () {
+        allowed[name] = !allowed[name];
+        b.setAttribute("aria-pressed", allowed[name] ? "true" : "false");
+        mk.textContent = allowed[name] ? "allowed" : "outside";
+        measure();
+      });
+      box.appendChild(b);
+    });
+    $("#noparts").hidden = plan.parts.length > 0;
+  }
+
+  function read() {
+    plan = parse($("#plan").value);
+    allowed = {};
+    drawParts();
+    measure();
+  }
+
+  $("#read").addEventListener("click", read);
+  $("#example").addEventListener("click", function () {
+    $("#plan").value = EXAMPLE;
+    read();
+  });
+
+  /* No history is kept anywhere, so this reads INSUFFICIENT_DATA and says so in
+     ordinary words. When a person connects their own record of flagged problems
+     it will have something to compare against -- their own past, nobody else's. */
+  var h = G.hazard([], { now: 0 });
+  $("#hazS").textContent = h.status === "INSUFFICIENT_DATA"
+    ? "Not enough history" : h.status;
+  $("#disclaimer").textContent = h.disclaimer;
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+</body>
+</html>

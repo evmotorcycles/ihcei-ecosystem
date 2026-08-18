@@ -179,6 +179,92 @@ the suite so they cannot be edited after the fact.
 
 ---
 
+## Mask and lens — the paradigm, as something that fails CI
+
+Both are abstractions. The difference is what they do next.
+
+| | **Mask** | **Lens** |
+|---|---|---|
+| The picture is | the destination | a handle |
+| After it you | stay inside the product | leave and check something |
+| Hidden | what is being collected, ranked, kept | little; the limits are printed |
+| Example | "cloud", "folder", "For you" | "sole route", "no source named" |
+
+Newton's cannonball and Einstein's falling lift were lenses: pictures that
+existed to reach a measurement, and the measurement was allowed to kill them.
+A manifesto saying so would cost nothing, so it is a file instead. `lens.js`
+makes every tool register three things:
+
+- **measures** — what it actually computes
+- **cannot** — what it will not tell you, in the exact words its page must print
+- **goCheck** — what a person does *next*, outside this software, with their own eyes
+
+`register()` refuses a tool with no `cannot` ("what an oracle looks like") and a
+tool with no `goCheck` ("nowhere to go, so its picture is a destination"). Then
+`test_gate.py` asserts every shipped page prints its own limits and at least one
+of its checks, compared on collapsed whitespace because that is what a reader
+sees. Edit a limit in `lens.js` without editing the page and the build fails in
+the same commit.
+
+**Its own limit, which is registered too:** this checks that a refusal is
+*printed*. It cannot check that a refusal is *true*, and no test here can.
+
+---
+
+## Agent Gate
+
+`gate.html`. Say where an assistant may work in your plan, and where there is no
+second way round. Three readouts, never added together.
+
+| Readout | What it is | Measurable when |
+|---|---|---|
+| **Perimeter** | which links lie inside the boundary you drew, which cross out, and what they would reach | now — set arithmetic, nothing to tune |
+| **No way round** | links with bearing 1.000: in every spanning tree, so there is no other path | now — Foster arithmetic |
+| **Your own backlog** | is your time-to-close on flagged problems rising, against your own history | only with a history; otherwise it says so |
+
+On the worked example: 2 links cross the boundary (reaching *the deposit* and
+*the order ships*), exactly 1 step has no alternative, and the backlog reads
+**not enough history** — which is what every fresh install reads, and is the
+honest answer rather than a defect.
+
+### What it is deliberately not built on
+
+The design asked for was `∏Dᵢ < D_min`: each hop reports a fidelity, multiply
+them, stop when the product drops below a floor. **This repository already
+retired that gate, on its own data** (`FLOOR_RETIREMENT.md`):
+
+- the sensor that would supply `D` reads zero on 89.8% and 83.7% of 3,685 pull
+  requests — it fires on 23.4%, so the gate would be blind three times in four;
+- the pre-registered confirmatory run on an unseen cohort of ~4,979 pull
+  requests returned a **fully-powered null, p = 0.735**;
+- the replacement — a hazard on enforcement latency — scored **AUC 0.898**
+  against 0.828 for the deterministic floor.
+
+So `gate.js` contains no `D_min` and no fidelity product. `retiredFloor()`
+returns the record with those numbers in it, and a test asserts the name appears
+exactly once in the file, on the line that says it is retired. Putting a
+falsified floor back inside the one tool whose whole claim is that it prints its
+limits would be the most complete way to disprove the claim.
+
+The hazard is a JS port of `tau_v_monitor/core.py`, run against the Python over
+eight synthetic histories — flat, rising, falling, noisy, a jump, a thin
+history, a short one, and one with an open backlog — agreeing on status and
+trend direction exactly and on every statistic to 1e-9. The port includes a
+Taylor-series `erf` below |x| = 3, because the usual rational approximation has
+a fractional error of 1.2e-7 and the Mann–Kendall *p* is an erfc: parity at
+1e-9 would otherwise be measuring the approximation.
+
+Predictions locked before anything ran: `plexus/gate_preregistration.md`, sha256
+`543c29ee1050d354e63f7a2de02cc04dc1c1dcc5973e1af7b5bf35f25cfcb98a`.
+
+### What it does not show
+
+Nothing here shows an assistant gated this way is safer, cheaper or better.
+Perimeter and sole routes are structure; the backlog is latency; whether anyone
+acts on either is unmeasured and unmeasurable from inside the tool.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:

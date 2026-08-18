@@ -1,0 +1,1512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Gate</title>
+<meta name="description" content="Say where an assistant may work in your plan, and where there is no second way round. Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Gate">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+.fl .hint{display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
+  font-weight:400;color:var(--mute);margin-top:.2rem;line-height:1.45}
+textarea{width:100%;min-height:6.5rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.88rem;line-height:1.5;resize:vertical}
+.acts{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;
+  font-size:.87rem;font-weight:600}
+.acts button:active{border-color:var(--focus)}
+
+/* the parts, each a switch: may the assistant touch this or not */
+.parts{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.pt{display:flex;align-items:center;gap:.6rem;width:100%;text-align:left;
+  background:var(--card-2);border:1px solid var(--edge);border-radius:10px;
+  padding:.5rem .6rem;min-height:48px;font-size:.86rem}
+.pt[aria-pressed=true]{border-color:var(--spare);background:var(--spare-soft)}
+.pt .mk{font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  padding:.14rem .38rem;border-radius:5px;flex:none;margin-left:auto;
+  border:1px solid var(--edge);color:var(--mute);background:var(--card)}
+.pt[aria-pressed=true] .mk{color:var(--spare);border-color:var(--spare);background:var(--card)}
+
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.6rem 0}
+@media (max-width:38rem){ .three{grid-template-columns:1fr} }
+.rd{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:.8rem .85rem}
+.rd h3{margin:0 0 .1rem;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.rd .big{font-size:1.35rem;font-weight:700;line-height:1.2;letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.rd p{margin:.35rem 0 0;font-size:.82rem;color:var(--ink-2)}
+.rd[data-k=perimeter]{border-left:3px solid var(--spare)}
+.rd[data-k=sole]{border-left:3px solid var(--hold)}
+.rd[data-k=hazard]{border-left:3px solid var(--share)}
+.rd[data-k=perimeter] .big{color:var(--spare)}
+.rd[data-k=sole] .big{color:var(--hold)}
+.rd[data-k=hazard] .big{color:var(--share);font-size:1.05rem}
+
+.rows{display:flex;flex-direction:column;gap:.3rem;margin-top:.45rem}
+.rows:empty{display:none}
+.rw{background:var(--card-2);border:1px solid var(--edge);border-radius:9px;
+  padding:.42rem .55rem;font-size:.82rem;line-height:1.45;min-height:44px;
+  display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.rw b{font-weight:650}
+.rw .n{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--mute);font-size:.78rem}
+.rw[data-k=crossing]{border-color:var(--hold)}
+.rw[data-k=sole]{border-color:var(--hold)}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}. */
+.void[hidden]{display:none}
+
+.limits{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--hold);
+  border-radius:var(--r);padding:.85rem .9rem;margin:.7rem 0}
+.limits h2{margin:0 0 .4rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold)}
+.limits ul{margin:0;padding-left:1.1rem}
+.limits li{font-size:.86rem;color:var(--ink-2);margin-bottom:.3rem}
+.limits h3{margin:.9rem 0 .35rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute)}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Where an assistant may work</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>Draw a boundary before you hand over the work</h2>
+    <p>Write out the steps of your plan and which ones depend on which. Then tap
+      the steps an assistant is allowed to touch. Three things come back, and
+      they are deliberately kept apart because they are three different kinds of
+      answer.</p>
+    <p class="small"><b>Nothing leaves this device.</b> The plan you type is not
+      sent anywhere, and there is nothing here that could send it.</p>
+  </section>
+
+  <section class="panel">
+    <span class="fl">Your plan
+      <span class="hint">One step per line. To say a step depends on another,
+        write <em>step &gt; step</em> — for example
+        <em>the supplier's price &gt; the quote</em>.</span></span>
+    <textarea id="plan" aria-label="Your plan, one step or dependency per line"></textarea>
+    <div class="acts">
+      <button id="read">Read the plan</button>
+      <button id="example">Use the example</button>
+    </div>
+
+    <span class="fl">What may the assistant touch?
+      <span class="hint">Tap a step to allow it. Anything not lit is outside the
+        boundary.</span></span>
+    <div class="parts" id="parts"></div>
+    <div class="void" id="noparts">Write a plan above and press “Read the plan”.</div>
+  </section>
+
+  <div class="three">
+    <div class="rd" data-k="perimeter">
+      <h3>Would step outside</h3>
+      <div class="big" id="crossN">—</div>
+      <p id="crossWhat">Nothing read yet.</p>
+    </div>
+    <div class="rd" data-k="sole">
+      <h3>No way round</h3>
+      <div class="big" id="soleN">—</div>
+      <p id="soleWhat">Nothing read yet.</p>
+    </div>
+    <div class="rd" data-k="hazard">
+      <h3>Your own backlog</h3>
+      <div class="big" id="hazS">Not enough history</div>
+      <p id="hazWhy">This needs a record of problems you flagged and when you
+        closed them. With none, it says so rather than guessing.</p>
+    </div>
+  </div>
+
+  <div class="rows" id="detail"></div>
+
+  <section class="limits">
+    <h2>What this will not do</h2>
+    <ul>
+      <li>It does not read what the assistant writes.</li>
+      <li>It cannot tell you an assistant is safe.</li>
+      <li>With no history it will say so rather than guess.</li>
+    </ul>
+    <h3>Then go and check</h3>
+    <ul>
+      <li>Take one step it marked as having no alternative and write down, on paper, what you would do if it failed.</li>
+      <li>Open your own issue tracker and read the three oldest things still open.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <span class="fl">Why there is no confidence score here</span>
+    <p>The obvious design asks each step how faithfully it carried the meaning,
+      multiplies those numbers together, and stops the assistant when the
+      product drops below a line. That gate was built and then <b>retired in
+      this project, on its own data</b>: the sensor that would supply the number
+      reads nothing at all on about three quarters of records, and a
+      pre-registered test on a fresh, unseen set of nearly five thousand cases
+      came back with a flat null.</p>
+    <p class="small">So what is measured instead is something every organisation
+      already records without any new instrument: <b>how long problems you have
+      already flagged stay open.</b> Rising time-to-fix separated the projects
+      that survived from the ones that died — twenty days against fifty. It is
+      compared only against your own past, never against somebody else's number.</p>
+  </section>
+
+  <div class="foot">
+    <p id="disclaimer"></p>
+    <p><b>The three readings are never added together.</b> A boundary, a
+      spanning-tree measurement and a latency trend are different kinds of
+      quantity, and there is no arithmetic that combines them honestly. A single
+      “assistant safety score” would be the most saleable thing this page could
+      show and the least true.</p>
+  </div>
+
+</main>
+
+<script>/* lmd.js -- the LMD metric engine, in the browser.
+ * ===========================================================================
+ * A faithful port of smi/lmd.py so SMI runs on a phone with no server. A port
+ * is a liability unless it is checked: smi/test_parity.py runs both engines
+ * over a shared list of graphs and fails if any distance differs by more than
+ * 1e-9. The port is not trusted; it is tested.
+ *
+ * There is no linear-algebra library here on purpose. The Laplacian is real and
+ * symmetric, so the cyclic Jacobi eigenvalue algorithm gives an exact
+ * eigendecomposition in about forty lines, and the pseudo-inverse is then
+ *
+ *     pinv(L) = V · diag(1/λ for λ above tolerance, else 0) · Vᵀ
+ *
+ * which is all this needs. Fifty nodes is well under a millisecond.
+ *
+ * WHAT IS BEING MEASURED
+ * A dependency graph inside running software: which live elements determine
+ * which others, and how strongly. J is the strength of a dependency; d is how
+ * far apart two elements should sit given all of them. Information layer. Not
+ * a claim about matter or physical distance.
+ */
+(function (root) {
+  "use strict";
+
+  var DEAD_MESH_EPS = 1e-12;
+
+  /* A coupling below this is DECLARED FADING: still connected, but too weak to
+   * show at display precision. Without a name for it, a wire reading 0.00 in
+   * the readout while the legend insists "live" is a fourth, unnamed state --
+   * the interface saying connected and the arithmetic saying I move nothing. */
+  var FADE_BELOW = 0.01;
+
+  /* Cyclic Jacobi for a real symmetric matrix. Returns { values, vectors }
+   * where vectors[i][k] is component i of eigenvector k. */
+  function eigSymmetric(Ain, sweeps) {
+    var n = Ain.length, i, j, k, p, q, s;
+    var A = Ain.map(function (r) { return r.slice(); });
+    var V = [];
+    for (i = 0; i < n; i++) {
+      V.push(new Array(n).fill(0));
+      V[i][i] = 1;
+    }
+    sweeps = sweeps || 60;
+    for (s = 0; s < sweeps; s++) {
+      var off = 0;
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) off += A[i][j] * A[i][j];
+      if (off < 1e-30) break;
+      for (p = 0; p < n - 1; p++) {
+        for (q = p + 1; q < n; q++) {
+          if (Math.abs(A[p][q]) < 1e-300) continue;
+          var theta = (A[q][q] - A[p][p]) / (2 * A[p][q]);
+          var t = Math.sign(theta || 1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+          var c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+          for (k = 0; k < n; k++) {
+            var akp = A[k][p], akq = A[k][q];
+            A[k][p] = c * akp - sn * akq;
+            A[k][q] = sn * akp + c * akq;
+          }
+          for (k = 0; k < n; k++) {
+            var apk = A[p][k], aqk = A[q][k];
+            A[p][k] = c * apk - sn * aqk;
+            A[q][k] = sn * apk + c * aqk;
+          }
+          for (k = 0; k < n; k++) {
+            var vkp = V[k][p], vkq = V[k][q];
+            V[k][p] = c * vkp - sn * vkq;
+            V[k][q] = sn * vkp + c * vkq;
+          }
+        }
+      }
+    }
+    var vals = [];
+    for (i = 0; i < n; i++) vals.push(A[i][i]);
+    return { values: vals, vectors: V };
+  }
+
+  /* d_ij = sqrt(R_ij), R_ij = L⁺_ii + L⁺_jj − 2·L⁺_ij. Same as the Python. */
+  function metricFromLaplacian(L) {
+    var n = L.length, i, j, k;
+    var e = eigSymmetric(L);
+    var maxAbs = 0;
+    for (i = 0; i < n; i++) maxAbs = Math.max(maxAbs, Math.abs(e.values[i]));
+    // the same rank tolerance numpy/jax use for pinv on a symmetric matrix
+    var tol = maxAbs * n * 2.220446049250313e-16;
+
+    var P = [];
+    for (i = 0; i < n; i++) P.push(new Array(n).fill(0));
+    for (k = 0; k < n; k++) {
+      if (Math.abs(e.values[k]) <= tol) continue;
+      var inv = 1 / e.values[k];
+      for (i = 0; i < n; i++) {
+        var vik = e.vectors[i][k];
+        if (vik === 0) continue;
+        for (j = 0; j < n; j++) P[i][j] += inv * vik * e.vectors[j][k];
+      }
+    }
+    var D = [];
+    for (i = 0; i < n; i++) {
+      D.push(new Array(n).fill(0));
+      for (j = 0; j < n; j++) {
+        var R = P[i][i] + P[j][j] - 2 * P[i][j];
+        D[i][j] = Math.sqrt(R > 0 ? R : 0);
+      }
+    }
+    return D;
+  }
+
+  /* Which nodes can actually reach which. pinv neither knows nor cares that a
+   * graph is in pieces; this does. */
+  function componentsOf(L, tol) {
+    tol = tol || 1e-12;
+    var n = L.length, label = new Array(n).fill(-1), next = 0, i, u, v;
+    for (i = 0; i < n; i++) {
+      if (label[i] !== -1) continue;
+      var stack = [i];
+      label[i] = next;
+      while (stack.length) {
+        u = stack.pop();
+        for (v = 0; v < n; v++) {
+          if (v !== u && Math.abs(L[u][v]) > tol && label[v] === -1) {
+            label[v] = next;
+            stack.push(v);
+          }
+        }
+      }
+      next++;
+    }
+    return label;
+  }
+
+  /* The distance matrix an interface may actually trust: the raw metric with
+   * the two places pinv lies removed.
+   *   - pairs in different pieces come back Infinity, not a small number
+   *   - a mesh with no coupling left comes back all-Infinity, not all-zero */
+  function meshMetric(L) {
+    var n = L.length, i, j, off = 0, D;
+    for (i = 0; i < n; i++) for (j = 0; j < n; j++) if (i !== j) off += Math.abs(L[i][j]);
+    if (off < DEAD_MESH_EPS) {
+      D = [];
+      for (i = 0; i < n; i++) {
+        D.push(new Array(n).fill(Infinity));
+        D[i][i] = 0;
+      }
+      return { D: D, labels: Array.from({ length: n }, function (_, k) { return k; }), dead: true };
+    }
+    D = metricFromLaplacian(L);
+    var lab = componentsOf(L);
+    var pieces = Math.max.apply(null, lab);
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        if (i === j) D[i][j] = 0;
+        else if (pieces > 0 && lab[i] !== lab[j]) D[i][j] = Infinity;
+      }
+    }
+    return { D: D, labels: lab, dead: false };
+  }
+
+  function laplacianFromEdges(n, edges) {
+    var W = [], i;
+    for (i = 0; i < n; i++) W.push(new Array(n).fill(0));
+    edges.forEach(function (e) {
+      if (e[0] === e[1]) throw new Error("a node cannot depend on itself: " + e[0]);
+      W[e[0]][e[1]] = W[e[1]][e[0]] = e[2];
+    });
+    var L = [];
+    for (i = 0; i < n; i++) {
+      L.push(W[i].map(function (w) { return -w; }));
+      L[i][i] = W[i].reduce(function (a, b) { return a + b; }, 0);
+    }
+    return L;
+  }
+
+  function ringLaplacian(n, J) {
+    var edges = [], i;
+    for (i = 0; i < n; i++) edges.push([i, (i + 1) % n, J]);
+    return laplacianFromEdges(n, edges);
+  }
+
+  /* Classical MDS: double-centre the squared distances, take the top two
+   * eigenvectors. The flat picture that best preserves the metric. */
+  /* `axes` selects WHICH two eigenvectors, by rank. (0,1) is the classical
+   * choice and keeps the most total structure. It is not always the one that
+   * keeps the most useful structure -- see bestAxes. */
+  function layout2d(D, keep, axes) {
+    axes = axes || [0, 1];
+    var m = keep.length, i, j;
+    var B = [];
+    for (i = 0; i < m; i++) B.push(new Array(m).fill(0));
+    var sq = [];
+    for (i = 0; i < m; i++) {
+      sq.push(new Array(m).fill(0));
+      for (j = 0; j < m; j++) {
+        var d = D[keep[i]][keep[j]];
+        sq[i][j] = d * d;
+      }
+    }
+    var rowMean = sq.map(function (r) { return r.reduce(function (a, b) { return a + b; }, 0) / m; });
+    var grand = rowMean.reduce(function (a, b) { return a + b; }, 0) / m;
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < m; j++) B[i][j] = -0.5 * (sq[i][j] - rowMean[i] - rowMean[j] + grand);
+    }
+    var e = eigSymmetric(B);
+    var order = e.values.map(function (v, k) { return [v, k]; })
+      .sort(function (a, b) { return b[0] - a[0]; });
+    var p1 = order[Math.min(axes[0], m - 1)], p2 = order[Math.min(axes[1], m - 1)];
+    var out = [];
+    for (i = 0; i < m; i++) {
+      out.push([
+        e.vectors[i][p1[1]] * Math.sqrt(Math.max(p1[0], 0)),
+        e.vectors[i][p2[1]] * Math.sqrt(Math.max(p2[0], 0)),
+      ]);
+    }
+    return out;
+  }
+
+  /* The worst pair in a layout, as a fraction of its true distance. 1.0 means
+   * every distance on screen is the real one. */
+  function flatness(D, keep, xy) {
+    var worst = 1.0, a = -1, b = -1, i, j;
+    for (i = 0; i < keep.length; i++) {
+      for (j = i + 1; j < keep.length; j++) {
+        var trueD = D[keep[i]][keep[j]];
+        if (!isFinite(trueD) || trueD <= 0) continue;
+        var ratio = Math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]) / trueD;
+        if (ratio < worst) { worst = ratio; a = keep[i]; b = keep[j]; }
+      }
+    }
+    return { ratio: worst, a: a, b: b };
+  }
+
+  /* The plane that leaves NO pair collapsed, if there is one.
+   *
+   * Classical MDS minimises strain, which is a TOTAL -- and a total can be
+   * excellent while one pair is destroyed. On the mesh SMI ships, the
+   * strain-best plane draws two elements on top of each other (0% of their true
+   * distance) while a different plane draws every pair at 71% or better.
+   * Neither view is wrong; they answer different questions. */
+  function bestAxes(D, keep, limit) {
+    limit = Math.min(limit || 4, keep.length);
+    var best = [0, 1], bestRatio = -1, i, j;
+    for (i = 0; i < limit; i++) {
+      for (j = i + 1; j < limit; j++) {
+        var r = flatness(D, keep, layout2d(D, keep, [i, j])).ratio;
+        if (r > bestRatio) { bestRatio = r; best = [i, j]; }
+      }
+    }
+    return { axes: best, ratio: bestRatio };
+  }
+
+  /* ------------------------------------------------------- frame alignment --
+   * Classical MDS fixes an embedding only up to rotation and reflection: the
+   * eigenvectors are defined up to sign, so a small change in the graph can
+   * hand back the same picture upside down. Deterministic per input, and to a
+   * person dragging it, the map flipping under their finger reads as the
+   * positions being arbitrary -- which is exactly the claim SMI makes against.
+   *
+   * So each new embedding is rotated/reflected onto the previous one, choosing
+   * whichever orthogonal transform moves the shared nodes least. Real change
+   * still shows; the cosmetic flips stop. This is the orthogonal Procrustes
+   * problem, solved in closed form because 2-D needs no SVD.
+   */
+  function procrustes2d(Q, P) {
+    var n = Math.min(Q.length, P.length), i;
+    if (n < 2) return Q.slice();
+    var qc = [0, 0], pc = [0, 0];
+    for (i = 0; i < n; i++) {
+      qc[0] += Q[i][0]; qc[1] += Q[i][1];
+      pc[0] += P[i][0]; pc[1] += P[i][1];
+    }
+    qc = [qc[0] / n, qc[1] / n];
+    pc = [pc[0] / n, pc[1] / n];
+
+    function residual(theta, flip) {
+      var c = Math.cos(theta), s2 = Math.sin(theta), tot = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var x = c * qx - s2 * qy, y = s2 * qx + c * qy;
+        tot += (x - (P[k][0] - pc[0])) * (x - (P[k][0] - pc[0])) +
+               (y - (P[k][1] - pc[1])) * (y - (P[k][1] - pc[1]));
+      }
+      return tot;
+    }
+    function bestAngle(flip) {
+      var num = 0, den = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var px = P[k][0] - pc[0], py = P[k][1] - pc[1];
+        num += qx * py - qy * px;
+        den += qx * px + qy * py;
+      }
+      return Math.atan2(num, den);
+    }
+    var best = null;
+    [false, true].forEach(function (flip) {
+      var th = bestAngle(flip), r = residual(th, flip);
+      if (best === null || r < best.r) best = { r: r, th: th, flip: flip };
+    });
+    var c = Math.cos(best.th), sn = Math.sin(best.th), out = [];
+    for (i = 0; i < Q.length; i++) {
+      var qx = (Q[i][0] - qc[0]) * (best.flip ? -1 : 1), qy = Q[i][1] - qc[1];
+      out.push([c * qx - sn * qy + pc[0], sn * qx + c * qy + pc[1]]);
+    }
+    return out;
+  }
+
+  var API = {
+    procrustes2d: procrustes2d,
+    FADE_BELOW: FADE_BELOW,
+    metricFromLaplacian: metricFromLaplacian,
+    meshMetric: meshMetric,
+    componentsOf: componentsOf,
+    laplacianFromEdges: laplacianFromEdges,
+    ringLaplacian: ringLaplacian,
+    eigSymmetric: eigSymmetric,
+    layout2d: layout2d,
+    flatness: flatness,
+    bestAxes: bestAxes,
+    DEAD_MESH_EPS: DEAD_MESH_EPS,
+  };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LMD = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* engines.js -- SPAR and FATHOM in the browser, on top of the tested LMD engine.
+ * ===========================================================================
+ * Loaded after smi/lmd.js, which supplies meshMetric, laplacianFromEdges,
+ * layout2d, procrustes2d and the two guards. That engine is parity-checked
+ * against the JAX engine over fourteen graphs; nothing here re-implements it.
+ *
+ * These two are checked the same way, by plexus/test_plexus.py, against the
+ * Python in spar/spar.py and fathom/fathom.py.
+ */
+(function (root) {
+  "use strict";
+
+  var LMD = root.LMD || (typeof require === "function" ? require("../smi/lmd.js") : null);
+
+  /* ------------------------------------------------------------- SPAR ---- */
+  /* bearing = w * R = P(this link is in a random spanning tree) = how often the
+   * link is the thing holding the structure together. The bearings sum to
+   * exactly parts - pieces, by Foster's theorem, which is why nothing here is a
+   * score somebody chose. */
+  function bearings(names, links) {
+    var idx = {}, i;
+    for (i = 0; i < names.length; i++) idx[names[i]] = i;
+    if (!links.length) {
+      return { links: [], total: 0, pieces: names.length, parts: names.length,
+               expected: 0, conserved: true, dead: true };
+    }
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rows = [], total = 0;
+    links.forEach(function (l, k) {
+      var d = r.D[idx[l[0]]][idx[l[1]]];
+      var b = l[2] * d * d;
+      total += b;
+      rows.push({ i: k, from: l[0], to: l[1], weight: l[2], bearing: b,
+                  soleRoute: b >= 0.999 });
+    });
+    var expected = names.length - pieces;
+    return { links: rows, total: total, pieces: pieces, parts: names.length,
+             expected: expected, conserved: Math.abs(total - expected) < 1e-9,
+             dead: false };
+  }
+
+  /* Which PARTS everything passes through. A link's bearing cannot answer this,
+   * and it is computed by removal rather than by a formula. */
+  function singlePoints(names, links) {
+    if (names.length < 3 || !links.length) return [];
+    var base = bearings(names, links).pieces, out = [];
+    names.forEach(function (n) {
+      var rest = names.filter(function (x) { return x !== n; });
+      var kept = links.filter(function (l) { return l[0] !== n && l[1] !== n; });
+      // NOT skipped when kept is empty: a part whose removal leaves no links at
+      // all is the most complete break there is.
+      var after = kept.length ? bearings(rest, kept).pieces : rest.length;
+      if (after > base) out.push({ part: n, piecesAfter: after });
+    });
+    return out;
+  }
+
+  /* ----------------------------------------------------------- FATHOM ---- */
+  var GROUND = "\u0000ground";   // cannot collide with a real name
+
+  function support(names, links, sources, drop) {
+    var keep = sources.filter(function (s) { return s !== drop; });
+    if (!keep.length) return null;
+    var live = links.filter(function (l) { return l[0] !== drop && l[1] !== drop; });
+    var isSrc = {};
+    keep.forEach(function (s) { isSrc[s] = true; });
+
+    /* pairs are kept as ARRAYS. An earlier version joined the two names into a
+       string key and split it back with split(""), which splits into single
+       characters -- it worked only for one-character names and silently built
+       nonsense graphs for everything else. */
+    var pairs = [], seen = {};
+    live.forEach(function (l) {
+      var a = isSrc[l[0]] ? GROUND : l[0], b = isSrc[l[1]] ? GROUND : l[1];
+      if (a === b) return;                        // inside the contracted ground
+      var lo = a < b ? a : b, hi = a < b ? b : a;
+      var key = lo + "\u0000" + hi;
+      if (key in seen) { pairs[seen[key]][2] += l[2]; return; }
+      seen[key] = pairs.length;
+      pairs.push([lo, hi, l[2]]);
+    });
+    if (!pairs.length) return null;
+
+    var nm = [], set = {};
+    pairs.forEach(function (p) {
+      [p[0], p[1]].forEach(function (n) {
+        if (!(n in set)) { set[n] = true; nm.push(n); }
+      });
+    });
+    nm.sort();
+    var idx = {}, i;
+    for (i = 0; i < nm.length; i++) idx[nm[i]] = i;
+    return { nm: nm, idx: idx, pairs: pairs };
+  }
+
+  function conductance(names, links, sources, conclusion, drop) {
+    var g = support(names, links, sources, drop);
+    if (!g || !(conclusion in g.idx) || !(GROUND in g.idx)) return 0;
+    var edges = g.pairs.map(function (p) { return [g.idx[p[0]], g.idx[p[1]], p[2]]; });
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.nm.length, edges));
+    if (r.dead) return 0;
+    var d = r.D[g.idx[conclusion]][g.idx[GROUND]];
+    if (!isFinite(d) || d <= 0) return 0;
+    return 1 / (d * d);
+  }
+
+  /* dependence(s) = 1 - support without s / support with all.
+   * Contraction is the move: it stops asking "is there another way round this
+   * link" and starts asking "is there another way IN". */
+  function sound(names, links, sources, conclusion) {
+    var base = conductance(names, links, sources, conclusion, null);
+    var rows = sources.map(function (s) {
+      var without = conductance(names, links, sources, conclusion, s);
+      var dep = base > 0 ? 1 - without / base : 1;
+      return { source: s, dependence: dep, carriesItAlone: dep >= 0.999 };
+    });
+    rows.sort(function (a, b) { return b.dependence - a.dependence; });
+    var deepest = rows.length ? rows[0] : null;
+    return {
+      conclusion: conclusion, support: base, bySource: rows,
+      deepest: deepest ? deepest.dependence : 1,
+      restsOnOneThread: !!(deepest && deepest.carriesItAlone),
+      remaining: deepest ? 1 - deepest.dependence : 0,
+    };
+  }
+
+  /* ------------------------------------------------- suggested links ----- */
+  /* Shared labels only. This is a SUGGESTION and never a measurement: two
+   * things sharing a word are not thereby dependent on one another, and
+   * nothing computed here is fed into a bearing or a sounding unless a person
+   * confirms the link first. */
+  function suggest(items) {
+    var out = [], i, j;
+    for (i = 0; i < items.length; i++) {
+      for (j = i + 1; j < items.length; j++) {
+        var a = items[i].tags || [], b = items[j].tags || [];
+        if (!a.length || !b.length) continue;
+        var inter = a.filter(function (t) { return b.indexOf(t) >= 0; });
+        if (!inter.length) continue;
+        var union = a.concat(b.filter(function (t) { return a.indexOf(t) < 0; }));
+        out.push({ a: items[i].name, b: items[j].name,
+                   shared: inter, score: inter.length / union.length });
+      }
+    }
+    out.sort(function (x, y) { return y.score - x.score; });
+    return out;
+  }
+
+  var API = { bearings: bearings, singlePoints: singlePoints, sound: sound,
+              conductance: conductance, suggest: suggest, GROUND: GROUND };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PLEXUS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* lens.js -- the paradigm, as a thing that fails CI. KERNEL: no interface.
+ * ===========================================================================
+ * A MASK AND A LENS ARE BOTH ABSTRACTIONS. THE DIFFERENCE IS WHAT THEY DO NEXT.
+ *
+ * "Cloud", "desktop", "folder", "For you" are abstractions that end the enquiry.
+ * You are not meant to ask where the file physically is, who ranked the feed, or
+ * what was kept. The picture is the destination.
+ *
+ * "Sole route", "rests on one thread", "no source named" are abstractions that
+ * START one. They are deliberately incomplete: each names something a person can
+ * then go and check in the world, with their own eyes, outside this software.
+ * The picture is a handle.
+ *
+ * That is the same move Newton made with the cannonball and Einstein with the
+ * falling lift. Neither stopped at the picture. The picture existed to get to a
+ * measurement, and the measurement was allowed to kill it.
+ *
+ * WHY THIS FILE IS CODE AND NOT A MANIFESTO
+ * A manifesto cannot fail. Every tool in this stack registers three things here:
+ *
+ *   measures     what it actually computes -- the arithmetic, not the promise
+ *   cannot       what it will not tell you, in the words the page must print
+ *   goCheck      what a person does NEXT, outside this software, with their own
+ *                eyes -- the step that makes the abstraction a lens
+ *
+ * A tool with no `cannot` is a tool claiming to be an oracle. A tool with no
+ * `goCheck` is a tool that expects you to stop at its picture. register()
+ * refuses both, with a reason, and test_lens.py asserts every shipped page
+ * actually prints its own `cannot`. If a page's promise and its tool's
+ * declaration ever drift apart, the build fails in the same commit that did it.
+ *
+ * WHAT THIS CANNOT DO, WHICH IS THE POINT AND ALSO THE LIMIT
+ * It checks that a refusal is PRINTED. It cannot check that a refusal is TRUE,
+ * and no test in this repository can. "Lens, not mask" is enforced here at the
+ * level of what the software says about itself, which is strictly weaker than a
+ * claim about honesty, and should be held at that strength.
+ */
+(function (root) {
+  "use strict";
+
+  var TOOLS = [];
+  var byName = {};
+
+  function problems(t) {
+    var why = [];
+    if (!t || typeof t !== "object") return ["that is not a tool"];
+    if (typeof t.name !== "string" || !t.name.trim()) why.push("a tool needs a name");
+    if (typeof t.does !== "string" || !t.does.trim()) {
+      why.push("a tool must say in one line what it is for");
+    }
+    if (!Array.isArray(t.measures) || !t.measures.length) {
+      why.push(t.name + " does not say what it computes, so nobody can check it");
+    }
+    if (!Array.isArray(t.cannot) || !t.cannot.length) {
+      why.push(t.name + " declares nothing it cannot do, which is what an oracle looks like");
+    }
+    if (!Array.isArray(t.goCheck) || !t.goCheck.length) {
+      why.push(t.name + " gives the reader nowhere to go afterwards, so its picture " +
+               "is a destination rather than a handle");
+    }
+    (t.goCheck || []).forEach(function (g) {
+      if (typeof g !== "string" || !g.trim()) why.push(t.name + " has an empty check");
+    });
+    return why;
+  }
+
+  function register(t) {
+    var why = problems(t);
+    if (why.length) return { ok: false, why: why };
+    TOOLS.push(t);
+    byName[t.name] = t;
+    return { ok: true, why: [] };
+  }
+
+  /* ------------------------------------------------------- the register ---- */
+  /* Every sentence in `cannot` is load-bearing: test_lens.py requires the
+     shipped page for each tool to contain it verbatim. Editing one here without
+     editing the page fails the build, which is the only reason any of this is
+     worth more than a paragraph in a README. */
+
+  register({
+    name: "Plexus",
+    page: "index.html",
+    does: "Show what a thing is made of and what is holding it up.",
+    measures: [
+      "effective resistance on the graph you entered, as distance",
+      "w x R -- the chance a link is in a random spanning tree",
+      "which parts, when removed, break the graph into more pieces",
+    ],
+    cannot: [
+      "It only knows the parts you entered.",
+    ],
+    goCheck: [
+      "Look at the step it called a sole route and ask the person responsible for it what happens when they are away.",
+      "Find one part you did not enter and add it, then see whether the answer moves.",
+    ],
+  });
+
+  register({
+    name: "Cairn",
+    page: "flint.html",
+    does: "Ask what a claim rests on, and separately whether its wording leans on you.",
+    measures: [
+      "what the claim rests on, from the sources you marked and the joins you drew",
+      "separately, lexical marks of pressure in the wording",
+    ],
+    cannot: [
+      "It does not understand what you pasted.",
+      "It cannot tell you whether anything is true.",
+      "Two sources that secretly share an origin you did not enter will read as independent, and it will be wrong.",
+    ],
+    goCheck: [
+      "Open the source you marked and read the part the claim actually came from.",
+      "Check the figure against the original, not against the summary of it.",
+      "Ask who the claim is about, and whether that includes you.",
+    ],
+  });
+
+  register({
+    name: "Shapes",
+    page: "commons.html",
+    does: "Show shapes other people ran into, described two ways.",
+    measures: [
+      "the same dependence arithmetic, on a contributed structure",
+      "the gap between how a thing is usually described and what it rests on",
+    ],
+    cannot: [
+      "A shape that matches your words may not match your situation.",
+    ],
+    goCheck: [
+      "Take the part the shape says everything routes through and confirm, in your own case, that it really does.",
+      "Ask who else could do that job if the one thing named stopped.",
+    ],
+  });
+
+  register({
+    name: "Agent Gate",
+    page: "gate.html",
+    does: "Say where an assistant may work in your plan, and where there is no second way round.",
+    measures: [
+      "which links lie wholly inside the perimeter you set",
+      "which links would cross out of it, and what they would reach",
+      "which steps have no alternative route, from the same spanning-tree arithmetic",
+      "whether your own time-to-fix on flagged problems is rising, against your own history",
+    ],
+    cannot: [
+      "It does not read what the assistant writes.",
+      "It cannot tell you an assistant is safe.",
+      "With no history it will say so rather than guess.",
+    ],
+    goCheck: [
+      "Take one step it marked as having no alternative and write down, on paper, what you would do if it failed.",
+      "Open your own issue tracker and read the three oldest things still open.",
+    ],
+  });
+
+  /* page: null -- the vault has no interface yet. Naming a page here would
+     force that page to print the limits of something nobody can reach from it,
+     which is a different kind of dishonesty from the one this file is for. Its
+     limits are asserted against vault.js by test_vault.py until it has a
+     surface of its own. */
+  register({
+    name: "The vault",
+    page: null,
+    does: "Keep what you put in it on this device, under a key nobody else holds.",
+    measures: [
+      "how many ways in exist, and how much rests on the deepest one",
+    ],
+    cannot: [
+      "Lose both the password and the recovery code and the data is gone permanently.",
+      "It does not protect a device somebody else is already inside.",
+    ],
+    goCheck: [
+      "Write the recovery code down somewhere that is not this device, and check tomorrow that you can still read it.",
+    ],
+  });
+
+  /* --------------------------------------------------------- the readout --- */
+  function tools() { return TOOLS.slice(); }
+  function get(name) { return byName[name] || null; }
+
+  /* Which sentences a given page is required to print. Used by the suite, and
+     by the pages themselves so the wording has exactly one source. */
+  function refusalsFor(page) {
+    var out = [];
+    if (!page) return out;
+    TOOLS.forEach(function (t) {
+      if (t.page === page) out = out.concat(t.cannot);
+    });
+    return out;
+  }
+
+  function checksFor(page) {
+    var out = [];
+    TOOLS.forEach(function (t) {
+      if (t.page === page) out = out.concat(t.goCheck);
+    });
+    return out;
+  }
+
+  /* The distinction, stated once, where the tests can see it. Not a score and
+     not a claim about anybody else's software -- a description of the two ways
+     an abstraction can be used, which is what the register is arranged around. */
+  var PARADIGM = {
+    mask: "An abstraction that ends the enquiry. You are not meant to ask what is underneath.",
+    lens: "An abstraction that starts one. It names something you can go and check yourself.",
+    test: "After the picture, is there somewhere to go? If not, it was a mask.",
+    limit: "This file checks that a refusal is printed. It cannot check that a refusal is true.",
+  };
+
+  var API = { register: register, problems: problems, tools: tools, get: get,
+              refusalsFor: refusalsFor, checksFor: checksFor, PARADIGM: PARADIGM };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LENS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* gate.js -- Agent Gate. KERNEL: no interface, no network, ever.
+ * ===========================================================================
+ * WHAT THIS IS NOT BUILT ON, AND WHY THAT IS THE FIRST THING IN THE FILE
+ * The obvious design gates an assistant's chain of steps on a FIDELITY PRODUCT:
+ * each hop reports how faithfully it carried the meaning, the gate multiplies
+ * them, and the chain stops when the product falls below a floor D_min.
+ *
+ * This project already retired that gate, with its own data. FLOOR_RETIREMENT.md:
+ *
+ *   - the sensor that would supply D is blind most of the time. D_enc_raw = 0
+ *     for 89.8% of pull requests and D_dec_raw = 0 for 83.7% (VS Code cohort,
+ *     N = 3,685); it fires on 23.4%. A hard gate on a quantity you cannot
+ *     measure three times in four is not operable;
+ *   - the pre-registered confirmatory run on an unseen cohort (Kubernetes,
+ *     ~4,979 PRs) returned a fully-powered NULL, p = 0.735;
+ *   - the replacement -- a probabilistic hazard on enforcement latency -- scored
+ *     AUC 0.898 against 0.828 for the deterministic floor.
+ *
+ * So there is no D_min in this file and no product of per-hop fidelities. A test
+ * asserts it stays that way. Putting a retired floor back inside the one tool
+ * whose whole claim is that it prints its limits would be the most complete way
+ * to falsify the claim.
+ *
+ * THREE READOUTS, KEPT APART BECAUSE THEY ARE NOT THE SAME KIND OF THING
+ *
+ *   perimeter    set arithmetic. Which links lie inside the boundary a person
+ *                drew, which cross out, and what they would have reached.
+ *                Deterministic. No threshold. Measurable right now.
+ *
+ *   soleRoutes   Foster arithmetic. bearing = w x R = 1.000 means the link is
+ *                in EVERY spanning tree: there is no way round it. Not a
+ *                tunable, not a score. Measurable right now.
+ *
+ *   hazard       a port of tau_v_monitor/core.py: is your own time-to-close on
+ *                flagged problems rising, against your OWN history. Correlational,
+ *                calibrated locally, and on a fresh install it returns
+ *                INSUFFICIENT_DATA -- which is every install on day one, and is
+ *                the honest answer rather than a defect.
+ *
+ * The first two are structure and the third is latency. Fusing them into one
+ * "agent safety score" would be the most saleable thing this file could produce
+ * and the least honest, for the same reason cairn.js refuses to fuse structure
+ * with rhetoric. There is no combined field and a test asserts none appears.
+ */
+(function (root) {
+  "use strict";
+
+  var ENG = root.PLEXUS || (typeof require === "function" ? require("./engines.js") : null);
+
+  var DAY = 86400.0;
+
+  /* Carried across verbatim from tau_v_monitor/core.py. It is part of the
+     result, not a footnote, because a number without it invites exactly the
+     transplantation the retirement was about. */
+  var DISCLAIMER =
+    "tau_v is a correlational, probabilistic early-warning signal, not a " +
+    "deterministic oracle. Use as one input to human review; calibrate to your " +
+    "own history. Absolute day-counts are not transplantable thresholds.";
+
+  /* The retirement, as a function rather than a document. A person can ask the
+     tool why it does not do the obvious thing and get the answer with the
+     numbers in it. */
+  function retiredFloor() {
+    return {
+      retired: "D >= D_min, a hard gate on measured two-hop fidelity",
+      because: [
+        "the semantic sensor is blind most of the time: D_enc_raw = 0 for 89.8% " +
+        "and D_dec_raw = 0 for 83.7% of 3,685 pull requests; it fires on 23.4%",
+        "the pre-registered confirmatory test on an unseen cohort of ~4,979 pull " +
+        "requests returned a fully-powered null, p = 0.735",
+      ],
+      replacedBy: "a probabilistic hazard on enforcement latency, AUC 0.898 against 0.828",
+      record: "FLOOR_RETIREMENT.md",
+    };
+  }
+
+  /* ------------------------------------------------------- 1 · perimeter --- */
+  /* The person says which parts an assistant may touch. Everything else follows
+     by set membership -- there is nothing here to tune, and nothing that could
+     be quietly loosened to make more chains pass. */
+  function perimeter(plan, allowed) {
+    var inside = {}, i;
+    (allowed || []).forEach(function (p) { inside[p] = true; });
+
+    var within = [], crossing = [], beyond = [];
+    (plan.links || []).forEach(function (l) {
+      var a = !!inside[l[0]], b = !!inside[l[1]];
+      if (a && b) {
+        within.push({ from: l[0], to: l[1], weight: l[2] });
+      } else if (a || b) {
+        crossing.push({ from: l[0], to: l[1], weight: l[2],
+                        reaches: a ? l[1] : l[0] });
+      } else {
+        beyond.push({ from: l[0], to: l[1], weight: l[2] });
+      }
+    });
+
+    var unknown = (allowed || []).filter(function (p) {
+      return (plan.parts || []).indexOf(p) < 0;
+    });
+
+    return {
+      allowed: (allowed || []).slice(),
+      within: within, crossing: crossing, beyond: beyond,
+      /* the parts an assistant would have reached by stepping over the edge,
+         named, because "denied" without a name is not a reason */
+      wouldReach: crossing.map(function (c) { return c.reaches; })
+        .filter(function (v, k, arr) { return arr.indexOf(v) === k; }),
+      unknown: unknown,
+      sealed: crossing.length === 0,
+    };
+  }
+
+  /* -------------------------------------------------------- 2 · sole routes */
+  /* A hop with no alternative. bearing 1.000 means the link is in every spanning
+     tree, so if it fails there is no other path -- which is a different question
+     from whether the step is important, and the arithmetic answers only the one
+     it was asked. */
+  function soleRoutes(plan) {
+    var b = ENG.bearings(plan.parts, plan.links);
+    var rows = b.links.filter(function (r) { return r.soleRoute; })
+      .map(function (r) { return { from: r.from, to: r.to, bearing: r.bearing }; });
+    return {
+      routes: rows,
+      count: rows.length,
+      totalBearing: b.total,
+      expected: b.expected,
+      conserved: b.conserved,
+      pieces: b.pieces,
+      all: b.links.map(function (r) {
+        return { from: r.from, to: r.to, bearing: r.bearing, soleRoute: r.soleRoute };
+      }),
+    };
+  }
+
+  /* ------------------------------------------------------------ 3 · hazard --
+   * A port of tau_v_monitor/core.py. test_gate.py runs both over the same
+   * histories and fails on any disagreement past 1e-9: a port nobody checks
+   * drifts, and then the thing that was tested and the thing on the phone stop
+   * being the same thing.
+   */
+  function median(xs) {
+    if (!xs.length) return null;
+    var s = xs.slice().sort(function (a, b) { return a - b; });
+    var m = Math.floor(s.length / 2);
+    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+  }
+
+  function percentile(xs, q) {
+    if (!xs.length) return null;
+    var s = xs.slice().sort(function (a, b) { return a - b; });
+    if (s.length === 1) return s[0];
+    var rank = (q / 100) * (s.length - 1);
+    var lo = Math.floor(rank), hi = Math.ceil(rank);
+    if (lo === hi) return s[lo];
+    var frac = rank - lo;
+    return s[lo] * (1 - frac) + s[hi] * frac;
+  }
+
+  function theilSen(ys) {
+    var n = ys.length, slopes = [], i, j;
+    if (n < 2) return null;
+    for (i = 0; i < n; i++) {
+      for (j = i + 1; j < n; j++) slopes.push((ys[j] - ys[i]) / (j - i));
+    }
+    return slopes.length ? median(slopes) : null;
+  }
+
+  function sign(x) { return (x > 0 ? 1 : 0) - (x < 0 ? 1 : 0); }
+
+  /* erf is not in the language, and Python's math.erf is correct to about one
+     unit in the last place. The parity test asserts agreement to 1e-9, so the
+     usual Abramowitz & Stegun rational approximation (fractional error 1.2e-7)
+     is not good enough on its own and is used only where it cannot matter.
+
+       |x| < 3   Taylor series, which converges quickly here and lands at
+                 machine precision
+       |x| >= 3  the A&S form. erfc(3) is 2.2e-5, so a fractional error of
+                 1.2e-7 there is an ABSOLUTE error near 2.6e-12, and it shrinks
+                 from there. p is an erfc, so absolute error is what matters. */
+  var TWO_OVER_SQRT_PI = 2 / Math.sqrt(Math.PI);
+
+  function erf(x) {
+    if (Math.abs(x) < 3) {
+      /* erf(x) = 2/sqrt(pi) * sum_{n>=0} (-1)^n x^(2n+1) / (n! (2n+1)) */
+      var sum = 0, term = x, n = 0, add;
+      while (n < 200) {
+        add = term / (2 * n + 1);
+        sum += add;
+        if (Math.abs(add) <= 1e-18 * Math.abs(sum)) break;
+        n += 1;
+        term = -term * x * x / n;
+      }
+      return TWO_OVER_SQRT_PI * sum;
+    }
+    var z = Math.abs(x), t = 1 / (1 + z / 2);
+    var r = t * Math.exp(-z * z - 1.26551223 + t * (1.00002368 + t * (0.37409196 +
+      t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 +
+      t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+    return x >= 0 ? 1 - r : r - 1;
+  }
+
+  function normCdf(z) { return 0.5 * (1 + erf(z / Math.sqrt(2))); }
+
+  function mannKendall(ys) {
+    var n = ys.length, s = 0, i, j;
+    if (n < 3) return { s: 0, p: 1, direction: "no trend" };
+    for (i = 0; i < n - 1; i++) {
+      for (j = i + 1; j < n; j++) s += sign(ys[j] - ys[i]);
+    }
+    var counts = {}, k;
+    ys.forEach(function (y) { counts[y] = (counts[y] || 0) + 1; });
+    var v = n * (n - 1) * (2 * n + 5);
+    for (k in counts) {
+      if (counts[k] > 1) { var t = counts[k]; v -= t * (t - 1) * (2 * t + 5); }
+    }
+    v /= 18;
+    if (v <= 0) return { s: s, p: 1, direction: "no trend" };
+    var z = s > 0 ? (s - 1) / Math.sqrt(v) : (s < 0 ? (s + 1) / Math.sqrt(v) : 0);
+    var p = 2 * (1 - normCdf(Math.abs(z)));
+    p = Math.min(Math.max(p, 0), 1);
+    var direction = (p < 0.05 && s > 0) ? "increasing"
+      : (p < 0.05 && s < 0) ? "decreasing" : "no trend";
+    return { s: s, p: p, direction: direction };
+  }
+
+  /* An event is one flagged problem: opened when somebody said it was a problem,
+     closed when it stopped being one. Seconds since the epoch, so nothing in
+     here has to parse a date. */
+  function latencyDays(e, capDays) {
+    if (e.closedAt === null || e.closedAt === undefined) return null;
+    var d = Math.max((e.closedAt - e.openedAt) / DAY, 0);
+    return capDays ? Math.min(d, capDays) : d;
+  }
+
+  function buildWindows(events, opts) {
+    var o = opts || {};
+    var windowDays = o.windowDays === undefined ? 30 : o.windowDays;
+    var nWindows = o.nWindows === undefined ? 12 : o.nWindows;
+    var capDays = o.capDays === undefined ? 365 : o.capDays;
+    var now = o.now;
+    if (now === undefined || now === null) {
+      var stamps = [];
+      events.forEach(function (e) {
+        if (e.closedAt !== null && e.closedAt !== undefined) stamps.push(e.closedAt);
+        stamps.push(e.openedAt);
+      });
+      now = stamps.length ? Math.max.apply(null, stamps) : 0;
+    }
+    var win = windowDays * DAY, out = [], k;
+    for (k = 0; k < nWindows; k++) {
+      var end = now - k * win, start = end - win;
+      var closed = [], openAges = [];
+      events.forEach(function (e) {
+        if (e.closedAt !== null && e.closedAt !== undefined
+            && e.closedAt >= start && e.closedAt < end) {
+          var lat = latencyDays(e, capDays);
+          if (lat !== null) closed.push(lat);
+        }
+        if (e.openedAt < end
+            && (e.closedAt === null || e.closedAt === undefined || e.closedAt >= end)) {
+          var age = (end - e.openedAt) / DAY;
+          age = capDays ? Math.min(age, capDays) : age;
+          if (age >= 0) openAges.push(age);
+        }
+      });
+      var pool = closed.concat(openAges);
+      out.push({
+        start: start, end: end,
+        nClosed: closed.length, nOpenBacklog: openAges.length,
+        tauVMean: closed.length ? closed.reduce(function (a, b) { return a + b; }, 0) / closed.length : null,
+        tauVMedian: closed.length ? median(closed) : null,
+        tailP95: percentile(pool, 95),
+        backlogP95Age: percentile(openAges, 95),
+      });
+    }
+    out.reverse();
+    return out;
+  }
+
+  function hazard(events, opts) {
+    var o = opts || {};
+    var baselineWindows = o.baselineWindows === undefined ? 4 : o.baselineWindows;
+    var robustZWatch = o.robustZWatch === undefined ? 1.5 : o.robustZWatch;
+    var robustZAlert = o.robustZAlert === undefined ? 3.0 : o.robustZAlert;
+    var tailRatioAlert = o.tailRatioAlert === undefined ? 1.5 : o.tailRatioAlert;
+    var minClosed = o.minClosedPerWindow === undefined ? 3 : o.minClosedPerWindow;
+
+    var windows = buildWindows(events || [], o);
+    var series = windows.map(function (w) { return w.tauVMean; });
+    var tails = windows.map(function (w) { return w.tailP95; });
+
+    var populated = [];
+    windows.forEach(function (w, i) {
+      if (series[i] !== null && w.nClosed >= minClosed) populated.push(series[i]);
+    });
+    var need = Math.max(baselineWindows + 1, 3);
+    if (populated.length < need) {
+      return {
+        status: "INSUFFICIENT_DATA",
+        reasons: ["Only " + populated.length + " windows have >= " + minClosed +
+                  " closed items; need >= " + need + " to calibrate a local " +
+                  "baseline. Widen the window or extend the history."],
+        trendDirection: "no trend", trendP: 1, trendSlopePerWindow: null,
+        baselineTauV: null, currentTauV: null, robustZ: null, tailRatio: null,
+        windows: windows, disclaimer: DISCLAIMER,
+      };
+    }
+
+    var baseVals = populated.slice(0, baselineWindows);
+    var current = populated[populated.length - 1];
+    var baseMedian = median(baseVals);
+    var q75 = percentile(baseVals, 75), q25 = percentile(baseVals, 25);
+    var iqr = (q75 === null ? baseMedian : q75) - (q25 === null ? baseMedian : q25);
+    iqr = (iqr && iqr > 1e-9) ? iqr : Math.max(baseMedian * 0.5, 1e-6);
+    var robustZ = (current - baseMedian) / iqr;
+
+    var baseTails = [];
+    tails.forEach(function (t, i) {
+      if (i < baselineWindows && t !== null) baseTails.push(t);
+    });
+    baseTails = baseTails.slice(0, baselineWindows);
+    var curTail = null, i;
+    for (i = tails.length - 1; i >= 0; i--) { if (tails[i] !== null) { curTail = tails[i]; break; } }
+    var bt = baseTails.length ? median(baseTails) : null;
+    var tailRatio = (curTail && bt && bt > 0) ? curTail / bt : null;
+
+    var mk = mannKendall(populated);
+    var slope = theilSen(populated);
+
+    var rising = mk.direction === "increasing";
+    var elevatedZ = robustZ >= robustZAlert;
+    var elevatedTail = tailRatio !== null && tailRatio >= tailRatioAlert;
+    var elevated = elevatedZ || elevatedTail;
+    var watchLevel = robustZ >= robustZWatch;
+
+    var reasons = [];
+    if (rising) {
+      reasons.push("Time to close flagged problems is rising across windows " +
+                   "(Mann-Kendall p=" + mk.p.toFixed(3) + ", slope=" +
+                   (slope >= 0 ? "+" : "") + slope.toFixed(2) + " days per window).");
+    }
+    if (elevatedZ) {
+      reasons.push("Currently " + current.toFixed(1) + " days, which is " +
+                   robustZ.toFixed(1) + " robust-SD above your own baseline of " +
+                   baseMedian.toFixed(1) + " days.");
+    }
+    if (elevatedTail) {
+      reasons.push("The oldest unresolved items are " + tailRatio.toFixed(2) +
+                   "x as old as they were at baseline -- the pile is widening.");
+    }
+
+    var status;
+    if (rising && elevated) {
+      status = "ALERT";
+    } else if (rising || elevated || watchLevel) {
+      status = "WATCH";
+      if (!reasons.length) {
+        reasons.push("Currently " + current.toFixed(1) + " days, which is " +
+                     robustZ.toFixed(1) + " robust-SD above baseline (watch level).");
+      }
+    } else {
+      status = "OK";
+      reasons.push("Time to close is steady near your own baseline (currently " +
+                   current.toFixed(1) + " days against " + baseMedian.toFixed(1) +
+                   "; no significant trend, p=" + mk.p.toFixed(3) + ").");
+    }
+
+    return {
+      status: status, reasons: reasons,
+      trendDirection: mk.direction, trendP: mk.p, trendSlopePerWindow: slope,
+      baselineTauV: baseMedian, currentTauV: current,
+      robustZ: robustZ, tailRatio: tailRatio,
+      windows: windows, disclaimer: DISCLAIMER,
+    };
+  }
+
+  /* --------------------------------------------------------------- review -- */
+  /* All three, side by side, never added together. `combined` is absent on
+     purpose and a test asserts no such field appears -- the same rule cairn.js
+     applies to structure and rhetoric, for the same reason. */
+  function review(plan, allowed, events, opts) {
+    return {
+      perimeter: perimeter(plan, allowed),
+      soleRoutes: soleRoutes(plan),
+      hazard: hazard(events || [], opts),
+      retiredFloor: retiredFloor(),
+    };
+  }
+
+  var API = { perimeter: perimeter, soleRoutes: soleRoutes, hazard: hazard,
+              review: review, retiredFloor: retiredFloor,
+              buildWindows: buildWindows, theilSen: theilSen,
+              mannKendall: mannKendall, percentile: percentile, median: median,
+              DISCLAIMER: DISCLAIMER, DAY: DAY };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.GATE = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var G = window.GATE;
+
+  var EXAMPLE = [
+    "the supplier's price > the quote",
+    "the delivery date > the quote",
+    "the quote > the deposit",
+    "the deposit > the order ships",
+    "the delivery date > the order ships",
+  ].join("\n");
+
+  var plan = { parts: [], links: [] };
+  var allowed = {};
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+
+  /* Deterministic and dumb on purpose: it splits where a person would and
+     decides nothing about what a step MEANS. */
+  function parse(src) {
+    var parts = [], links = [], seen = {};
+    function part(name) {
+      var n = name.trim();
+      if (!n) return null;
+      if (!seen[n]) { seen[n] = true; parts.push(n); }
+      return n;
+    }
+    String(src || "").split(/[\n\r]+/).forEach(function (line) {
+      var s = line.trim();
+      if (!s) return;
+      var bits = s.split(">");
+      if (bits.length >= 2) {
+        var a = part(bits[0]), b = part(bits[1]);
+        if (a && b && a !== b) links.push([a, b, 1.0]);
+      } else {
+        part(s);
+      }
+    });
+    return { parts: parts, links: links };
+  }
+
+  function row(kind, label, right) {
+    var r = text("div", "rw");
+    r.setAttribute("data-k", kind);
+    r.appendChild(text("b", null, label));
+    if (right !== undefined) r.appendChild(text("span", "n", right));
+    return r;
+  }
+
+  function measure() {
+    var chosen = plan.parts.filter(function (p) { return allowed[p]; });
+    var detail = $("#detail");
+    while (detail.firstChild) detail.removeChild(detail.firstChild);
+
+    if (plan.parts.length < 2 || !plan.links.length) {
+      $("#crossN").textContent = "—";
+      $("#soleN").textContent = "—";
+      $("#crossWhat").textContent = "A plan needs at least two steps and one dependency.";
+      $("#soleWhat").textContent = "Nothing to measure yet.";
+      return;
+    }
+
+    var p = G.perimeter(plan, chosen);
+    var s = G.soleRoutes(plan);
+
+    $("#crossN").textContent = String(p.crossing.length);
+    $("#crossWhat").textContent = p.crossing.length
+      ? "It would reach " + p.wouldReach.join(", ") + "."
+      : (chosen.length ? "Nothing crosses the boundary you set."
+                       : "Nothing is allowed yet, so nothing can cross.");
+
+    $("#soleN").textContent = String(s.count);
+    $("#soleWhat").textContent = s.count
+      ? "If one of these fails there is no other path."
+      : "Every step has an alternative route.";
+
+    p.crossing.forEach(function (c) {
+      detail.appendChild(row("crossing",
+        c.from + " → " + c.to, "would reach " + c.reaches));
+    });
+    s.routes.forEach(function (r) {
+      detail.appendChild(row("sole", r.from + " → " + r.to, "no way round"));
+    });
+    p.within.forEach(function (w) {
+      detail.appendChild(row("within", w.from + " → " + w.to, "inside"));
+    });
+  }
+
+  /* The flag is flipped ON THE ROW. Rebuilding this list inside its own click
+     handler would destroy the button that was just pressed -- five occurrences
+     of that defect in this codebase and counting. Mutate the row, never the
+     list. */
+  function drawParts() {
+    var box = $("#parts");
+    while (box.firstChild) box.removeChild(box.firstChild);
+    plan.parts.forEach(function (name) {
+      var b = text("button", "pt");
+      b.type = "button";
+      b.setAttribute("aria-pressed", allowed[name] ? "true" : "false");
+      b.appendChild(text("span", null, name));
+      var mk = text("span", "mk", allowed[name] ? "allowed" : "outside");
+      b.appendChild(mk);
+      b.addEventListener("click", function () {
+        allowed[name] = !allowed[name];
+        b.setAttribute("aria-pressed", allowed[name] ? "true" : "false");
+        mk.textContent = allowed[name] ? "allowed" : "outside";
+        measure();
+      });
+      box.appendChild(b);
+    });
+    $("#noparts").hidden = plan.parts.length > 0;
+  }
+
+  function read() {
+    plan = parse($("#plan").value);
+    allowed = {};
+    drawParts();
+    measure();
+  }
+
+  $("#read").addEventListener("click", read);
+  $("#example").addEventListener("click", function () {
+    $("#plan").value = EXAMPLE;
+    read();
+  });
+
+  /* No history is kept anywhere, so this reads INSUFFICIENT_DATA and says so in
+     ordinary words. When a person connects their own record of flagged problems
+     it will have something to compare against -- their own past, nobody else's. */
+  var h = G.hazard([], { now: 0 });
+  $("#hazS").textContent = h.status === "INSUFFICIENT_DATA"
+    ? "Not enough history" : h.status;
+  $("#disclaimer").textContent = h.disclaimer;
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+
+<script>
+/* Registers only when the page is served (https or localhost). Opened straight
+   from a file there is no service worker, and the app works anyway -- it is one
+   file with everything already in it. */
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>
