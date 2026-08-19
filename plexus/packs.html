@@ -1,0 +1,1393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Packs</title>
+<meta name="description" content="Pick the kind of paper you are holding. The structure is already built. Type your numbers. Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Packs">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+
+/* choose the paper you are holding. Big targets, one tap. */
+.picks{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+@media (max-width:34rem){ .picks{grid-template-columns:1fr} }
+.pick{background:var(--card);border:1px solid var(--edge);border-radius:var(--r);
+  padding:.75rem .8rem;text-align:left;min-height:72px;width:100%}
+.pick[aria-pressed=true]{border-color:var(--hud);background:var(--card-2)}
+.pick b{display:block;font-size:.95rem;font-weight:650;letter-spacing:-.01em}
+.pick span{display:block;font-size:.78rem;color:var(--mute);margin-top:.2rem;line-height:1.4}
+.pick em{display:block;font-style:normal;font-size:.68rem;color:var(--mute);margin-top:.35rem}
+
+/* the numbers off the paper */
+.asks{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem}
+.ask label{display:block;font-size:.85rem;font-weight:600;margin-bottom:.2rem}
+.ask .hint{display:block;font-size:.76rem;color:var(--mute);font-weight:400;margin-bottom:.3rem}
+.ask .opt{font-weight:400;color:var(--mute);font-size:.76rem}
+.ask input{width:100%;min-height:48px;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.5rem .7rem;
+  font:inherit;font-size:1rem;font-variant-numeric:tabular-nums}
+.ask input:focus{border-color:var(--focus)}
+
+/* the answer */
+.verdict{border-radius:var(--r);padding:.9rem .95rem;margin:.7rem 0;
+  border:1px solid var(--line);background:var(--card)}
+.verdict[data-m=yes]{border-left:3px solid var(--spare)}
+.verdict[data-m=no]{border-left:3px solid var(--hold)}
+.verdict .big{font-size:1.1rem;font-weight:700;line-height:1.3;letter-spacing:-.01em;
+  text-wrap:balance}
+.verdict[data-m=yes] .big{color:var(--spare)}
+.verdict[data-m=no] .big{color:var(--hold)}
+.verdict p{margin:.45rem 0 0;font-size:.83rem;color:var(--ink-2)}
+
+.rows{display:flex;flex-direction:column;gap:.3rem;margin-top:.5rem}
+.rows:empty{display:none}
+.rw{background:var(--card-2);border:1px solid var(--edge);border-radius:9px;
+  padding:.45rem .6rem;font-size:.86rem;min-height:44px;display:flex;
+  align-items:center;gap:.6rem;flex-wrap:wrap}
+.rw b{font-weight:500;color:var(--ink-2)}
+.rw .n{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;font-size:1rem}
+.rw .note{flex-basis:100%;font-size:.78rem;color:var(--mute);line-height:1.4}
+
+.warn{background:var(--hold-soft);border:1px solid var(--hold);border-radius:10px;
+  padding:.6rem .7rem;margin-top:.5rem;font-size:.84rem;color:var(--ink)}
+.warn:empty{display:none}
+
+.limits{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--hold);
+  border-radius:var(--r);padding:.85rem .9rem;margin:.7rem 0}
+.limits h2{margin:0 0 .4rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold)}
+.limits h3{margin:.9rem 0 .35rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute)}
+.limits ul{margin:0;padding-left:1.1rem}
+.limits li{font-size:.85rem;color:var(--ink-2);margin-bottom:.3rem}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1.2rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}. */
+.void[hidden]{display:none}
+[hidden]{display:none}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Pick the paper you are holding</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>You should not have to draw it first</h2>
+    <p>Somebody already worked out how these fit together. Tap the one that
+      matches what is in front of you, type the numbers off the paper, and the
+      arithmetic is done for you — then you are told exactly what that does and
+      does not prove.</p>
+    <p class="small"><b>Nothing leaves this device.</b> The numbers you type are
+      not sent anywhere, and there is nothing here that could send them.</p>
+  </section>
+
+  <span class="fl">What are you holding?</span>
+  <div class="picks" id="packs"></div>
+
+  <section class="panel" id="form" hidden>
+    <span class="fl" id="formTitle"></span>
+    <p class="small" id="formAbout"></p>
+    <div class="asks" id="asks"></div>
+    <div class="warn" id="warn"></div>
+  </section>
+
+  <div id="answer" hidden>
+    <div class="verdict" id="verdict" data-m="yes">
+      <div class="big" id="verdictSays"></div>
+      <p id="verdictDetail"></p>
+    </div>
+    <span class="fl">How it was worked out</span>
+    <div class="rows" id="rows"></div>
+  </div>
+
+  <section class="limits" id="limits" hidden>
+    <h2>What a matching figure does not mean</h2>
+    <ul>
+      <li>It does not mean the price is fair.</li>
+      <li>It does not mean the reading is right.</li>
+      <li>It only means the figure they printed follows from the numbers you typed.</li>
+    </ul>
+    <h3>This pack takes for granted</h3>
+    <ul id="assumes"></ul>
+    <h3>Then go and check</h3>
+    <ul id="goCheck"></ul>
+  </section>
+
+  <section class="panel" id="structure" hidden>
+    <span class="fl">What it rests on</span>
+    <p class="small" id="structureSays"></p>
+    <p class="small" id="structureWhy"></p>
+  </section>
+
+  <div class="void" id="nothing">Tap one above to begin.</div>
+
+  <div class="foot">
+    <p><b>The two answers are never added together.</b> Whether the arithmetic
+      works and what the answer rests on are different questions. A single green
+      tick covering both would be the most reassuring thing this page could show
+      and the least true.</p>
+    <p>No pack here carries any real company's rates. Every one is a general
+      shape, because a confidently wrong “what it should be” would arrive at the
+      moment you are least able to notice it.</p>
+  </div>
+
+</main>
+
+<script>/* lmd.js -- the LMD metric engine, in the browser.
+ * ===========================================================================
+ * A faithful port of smi/lmd.py so SMI runs on a phone with no server. A port
+ * is a liability unless it is checked: smi/test_parity.py runs both engines
+ * over a shared list of graphs and fails if any distance differs by more than
+ * 1e-9. The port is not trusted; it is tested.
+ *
+ * There is no linear-algebra library here on purpose. The Laplacian is real and
+ * symmetric, so the cyclic Jacobi eigenvalue algorithm gives an exact
+ * eigendecomposition in about forty lines, and the pseudo-inverse is then
+ *
+ *     pinv(L) = V · diag(1/λ for λ above tolerance, else 0) · Vᵀ
+ *
+ * which is all this needs. Fifty nodes is well under a millisecond.
+ *
+ * WHAT IS BEING MEASURED
+ * A dependency graph inside running software: which live elements determine
+ * which others, and how strongly. J is the strength of a dependency; d is how
+ * far apart two elements should sit given all of them. Information layer. Not
+ * a claim about matter or physical distance.
+ */
+(function (root) {
+  "use strict";
+
+  var DEAD_MESH_EPS = 1e-12;
+
+  /* A coupling below this is DECLARED FADING: still connected, but too weak to
+   * show at display precision. Without a name for it, a wire reading 0.00 in
+   * the readout while the legend insists "live" is a fourth, unnamed state --
+   * the interface saying connected and the arithmetic saying I move nothing. */
+  var FADE_BELOW = 0.01;
+
+  /* Cyclic Jacobi for a real symmetric matrix. Returns { values, vectors }
+   * where vectors[i][k] is component i of eigenvector k. */
+  function eigSymmetric(Ain, sweeps) {
+    var n = Ain.length, i, j, k, p, q, s;
+    var A = Ain.map(function (r) { return r.slice(); });
+    var V = [];
+    for (i = 0; i < n; i++) {
+      V.push(new Array(n).fill(0));
+      V[i][i] = 1;
+    }
+    sweeps = sweeps || 60;
+    for (s = 0; s < sweeps; s++) {
+      var off = 0;
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) off += A[i][j] * A[i][j];
+      if (off < 1e-30) break;
+      for (p = 0; p < n - 1; p++) {
+        for (q = p + 1; q < n; q++) {
+          if (Math.abs(A[p][q]) < 1e-300) continue;
+          var theta = (A[q][q] - A[p][p]) / (2 * A[p][q]);
+          var t = Math.sign(theta || 1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+          var c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+          for (k = 0; k < n; k++) {
+            var akp = A[k][p], akq = A[k][q];
+            A[k][p] = c * akp - sn * akq;
+            A[k][q] = sn * akp + c * akq;
+          }
+          for (k = 0; k < n; k++) {
+            var apk = A[p][k], aqk = A[q][k];
+            A[p][k] = c * apk - sn * aqk;
+            A[q][k] = sn * apk + c * aqk;
+          }
+          for (k = 0; k < n; k++) {
+            var vkp = V[k][p], vkq = V[k][q];
+            V[k][p] = c * vkp - sn * vkq;
+            V[k][q] = sn * vkp + c * vkq;
+          }
+        }
+      }
+    }
+    var vals = [];
+    for (i = 0; i < n; i++) vals.push(A[i][i]);
+    return { values: vals, vectors: V };
+  }
+
+  /* d_ij = sqrt(R_ij), R_ij = L⁺_ii + L⁺_jj − 2·L⁺_ij. Same as the Python. */
+  function metricFromLaplacian(L) {
+    var n = L.length, i, j, k;
+    var e = eigSymmetric(L);
+    var maxAbs = 0;
+    for (i = 0; i < n; i++) maxAbs = Math.max(maxAbs, Math.abs(e.values[i]));
+    // the same rank tolerance numpy/jax use for pinv on a symmetric matrix
+    var tol = maxAbs * n * 2.220446049250313e-16;
+
+    var P = [];
+    for (i = 0; i < n; i++) P.push(new Array(n).fill(0));
+    for (k = 0; k < n; k++) {
+      if (Math.abs(e.values[k]) <= tol) continue;
+      var inv = 1 / e.values[k];
+      for (i = 0; i < n; i++) {
+        var vik = e.vectors[i][k];
+        if (vik === 0) continue;
+        for (j = 0; j < n; j++) P[i][j] += inv * vik * e.vectors[j][k];
+      }
+    }
+    var D = [];
+    for (i = 0; i < n; i++) {
+      D.push(new Array(n).fill(0));
+      for (j = 0; j < n; j++) {
+        var R = P[i][i] + P[j][j] - 2 * P[i][j];
+        D[i][j] = Math.sqrt(R > 0 ? R : 0);
+      }
+    }
+    return D;
+  }
+
+  /* Which nodes can actually reach which. pinv neither knows nor cares that a
+   * graph is in pieces; this does. */
+  function componentsOf(L, tol) {
+    tol = tol || 1e-12;
+    var n = L.length, label = new Array(n).fill(-1), next = 0, i, u, v;
+    for (i = 0; i < n; i++) {
+      if (label[i] !== -1) continue;
+      var stack = [i];
+      label[i] = next;
+      while (stack.length) {
+        u = stack.pop();
+        for (v = 0; v < n; v++) {
+          if (v !== u && Math.abs(L[u][v]) > tol && label[v] === -1) {
+            label[v] = next;
+            stack.push(v);
+          }
+        }
+      }
+      next++;
+    }
+    return label;
+  }
+
+  /* The distance matrix an interface may actually trust: the raw metric with
+   * the two places pinv lies removed.
+   *   - pairs in different pieces come back Infinity, not a small number
+   *   - a mesh with no coupling left comes back all-Infinity, not all-zero */
+  function meshMetric(L) {
+    var n = L.length, i, j, off = 0, D;
+    for (i = 0; i < n; i++) for (j = 0; j < n; j++) if (i !== j) off += Math.abs(L[i][j]);
+    if (off < DEAD_MESH_EPS) {
+      D = [];
+      for (i = 0; i < n; i++) {
+        D.push(new Array(n).fill(Infinity));
+        D[i][i] = 0;
+      }
+      return { D: D, labels: Array.from({ length: n }, function (_, k) { return k; }), dead: true };
+    }
+    D = metricFromLaplacian(L);
+    var lab = componentsOf(L);
+    var pieces = Math.max.apply(null, lab);
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        if (i === j) D[i][j] = 0;
+        else if (pieces > 0 && lab[i] !== lab[j]) D[i][j] = Infinity;
+      }
+    }
+    return { D: D, labels: lab, dead: false };
+  }
+
+  function laplacianFromEdges(n, edges) {
+    var W = [], i;
+    for (i = 0; i < n; i++) W.push(new Array(n).fill(0));
+    edges.forEach(function (e) {
+      if (e[0] === e[1]) throw new Error("a node cannot depend on itself: " + e[0]);
+      W[e[0]][e[1]] = W[e[1]][e[0]] = e[2];
+    });
+    var L = [];
+    for (i = 0; i < n; i++) {
+      L.push(W[i].map(function (w) { return -w; }));
+      L[i][i] = W[i].reduce(function (a, b) { return a + b; }, 0);
+    }
+    return L;
+  }
+
+  function ringLaplacian(n, J) {
+    var edges = [], i;
+    for (i = 0; i < n; i++) edges.push([i, (i + 1) % n, J]);
+    return laplacianFromEdges(n, edges);
+  }
+
+  /* Classical MDS: double-centre the squared distances, take the top two
+   * eigenvectors. The flat picture that best preserves the metric. */
+  /* `axes` selects WHICH two eigenvectors, by rank. (0,1) is the classical
+   * choice and keeps the most total structure. It is not always the one that
+   * keeps the most useful structure -- see bestAxes. */
+  function layout2d(D, keep, axes) {
+    axes = axes || [0, 1];
+    var m = keep.length, i, j;
+    var B = [];
+    for (i = 0; i < m; i++) B.push(new Array(m).fill(0));
+    var sq = [];
+    for (i = 0; i < m; i++) {
+      sq.push(new Array(m).fill(0));
+      for (j = 0; j < m; j++) {
+        var d = D[keep[i]][keep[j]];
+        sq[i][j] = d * d;
+      }
+    }
+    var rowMean = sq.map(function (r) { return r.reduce(function (a, b) { return a + b; }, 0) / m; });
+    var grand = rowMean.reduce(function (a, b) { return a + b; }, 0) / m;
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < m; j++) B[i][j] = -0.5 * (sq[i][j] - rowMean[i] - rowMean[j] + grand);
+    }
+    var e = eigSymmetric(B);
+    var order = e.values.map(function (v, k) { return [v, k]; })
+      .sort(function (a, b) { return b[0] - a[0]; });
+    var p1 = order[Math.min(axes[0], m - 1)], p2 = order[Math.min(axes[1], m - 1)];
+    var out = [];
+    for (i = 0; i < m; i++) {
+      out.push([
+        e.vectors[i][p1[1]] * Math.sqrt(Math.max(p1[0], 0)),
+        e.vectors[i][p2[1]] * Math.sqrt(Math.max(p2[0], 0)),
+      ]);
+    }
+    return out;
+  }
+
+  /* The worst pair in a layout, as a fraction of its true distance. 1.0 means
+   * every distance on screen is the real one. */
+  function flatness(D, keep, xy) {
+    var worst = 1.0, a = -1, b = -1, i, j;
+    for (i = 0; i < keep.length; i++) {
+      for (j = i + 1; j < keep.length; j++) {
+        var trueD = D[keep[i]][keep[j]];
+        if (!isFinite(trueD) || trueD <= 0) continue;
+        var ratio = Math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]) / trueD;
+        if (ratio < worst) { worst = ratio; a = keep[i]; b = keep[j]; }
+      }
+    }
+    return { ratio: worst, a: a, b: b };
+  }
+
+  /* The plane that leaves NO pair collapsed, if there is one.
+   *
+   * Classical MDS minimises strain, which is a TOTAL -- and a total can be
+   * excellent while one pair is destroyed. On the mesh SMI ships, the
+   * strain-best plane draws two elements on top of each other (0% of their true
+   * distance) while a different plane draws every pair at 71% or better.
+   * Neither view is wrong; they answer different questions. */
+  function bestAxes(D, keep, limit) {
+    limit = Math.min(limit || 4, keep.length);
+    var best = [0, 1], bestRatio = -1, i, j;
+    for (i = 0; i < limit; i++) {
+      for (j = i + 1; j < limit; j++) {
+        var r = flatness(D, keep, layout2d(D, keep, [i, j])).ratio;
+        if (r > bestRatio) { bestRatio = r; best = [i, j]; }
+      }
+    }
+    return { axes: best, ratio: bestRatio };
+  }
+
+  /* ------------------------------------------------------- frame alignment --
+   * Classical MDS fixes an embedding only up to rotation and reflection: the
+   * eigenvectors are defined up to sign, so a small change in the graph can
+   * hand back the same picture upside down. Deterministic per input, and to a
+   * person dragging it, the map flipping under their finger reads as the
+   * positions being arbitrary -- which is exactly the claim SMI makes against.
+   *
+   * So each new embedding is rotated/reflected onto the previous one, choosing
+   * whichever orthogonal transform moves the shared nodes least. Real change
+   * still shows; the cosmetic flips stop. This is the orthogonal Procrustes
+   * problem, solved in closed form because 2-D needs no SVD.
+   */
+  function procrustes2d(Q, P) {
+    var n = Math.min(Q.length, P.length), i;
+    if (n < 2) return Q.slice();
+    var qc = [0, 0], pc = [0, 0];
+    for (i = 0; i < n; i++) {
+      qc[0] += Q[i][0]; qc[1] += Q[i][1];
+      pc[0] += P[i][0]; pc[1] += P[i][1];
+    }
+    qc = [qc[0] / n, qc[1] / n];
+    pc = [pc[0] / n, pc[1] / n];
+
+    function residual(theta, flip) {
+      var c = Math.cos(theta), s2 = Math.sin(theta), tot = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var x = c * qx - s2 * qy, y = s2 * qx + c * qy;
+        tot += (x - (P[k][0] - pc[0])) * (x - (P[k][0] - pc[0])) +
+               (y - (P[k][1] - pc[1])) * (y - (P[k][1] - pc[1]));
+      }
+      return tot;
+    }
+    function bestAngle(flip) {
+      var num = 0, den = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var px = P[k][0] - pc[0], py = P[k][1] - pc[1];
+        num += qx * py - qy * px;
+        den += qx * px + qy * py;
+      }
+      return Math.atan2(num, den);
+    }
+    var best = null;
+    [false, true].forEach(function (flip) {
+      var th = bestAngle(flip), r = residual(th, flip);
+      if (best === null || r < best.r) best = { r: r, th: th, flip: flip };
+    });
+    var c = Math.cos(best.th), sn = Math.sin(best.th), out = [];
+    for (i = 0; i < Q.length; i++) {
+      var qx = (Q[i][0] - qc[0]) * (best.flip ? -1 : 1), qy = Q[i][1] - qc[1];
+      out.push([c * qx - sn * qy + pc[0], sn * qx + c * qy + pc[1]]);
+    }
+    return out;
+  }
+
+  var API = {
+    procrustes2d: procrustes2d,
+    FADE_BELOW: FADE_BELOW,
+    metricFromLaplacian: metricFromLaplacian,
+    meshMetric: meshMetric,
+    componentsOf: componentsOf,
+    laplacianFromEdges: laplacianFromEdges,
+    ringLaplacian: ringLaplacian,
+    eigSymmetric: eigSymmetric,
+    layout2d: layout2d,
+    flatness: flatness,
+    bestAxes: bestAxes,
+    DEAD_MESH_EPS: DEAD_MESH_EPS,
+  };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LMD = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* engines.js -- SPAR and FATHOM in the browser, on top of the tested LMD engine.
+ * ===========================================================================
+ * Loaded after smi/lmd.js, which supplies meshMetric, laplacianFromEdges,
+ * layout2d, procrustes2d and the two guards. That engine is parity-checked
+ * against the JAX engine over fourteen graphs; nothing here re-implements it.
+ *
+ * These two are checked the same way, by plexus/test_plexus.py, against the
+ * Python in spar/spar.py and fathom/fathom.py.
+ */
+(function (root) {
+  "use strict";
+
+  var LMD = root.LMD || (typeof require === "function" ? require("../smi/lmd.js") : null);
+
+  /* ------------------------------------------------------------- SPAR ---- */
+  /* bearing = w * R = P(this link is in a random spanning tree) = how often the
+   * link is the thing holding the structure together. The bearings sum to
+   * exactly parts - pieces, by Foster's theorem, which is why nothing here is a
+   * score somebody chose. */
+  function bearings(names, links) {
+    var idx = {}, i;
+    for (i = 0; i < names.length; i++) idx[names[i]] = i;
+    if (!links.length) {
+      return { links: [], total: 0, pieces: names.length, parts: names.length,
+               expected: 0, conserved: true, dead: true };
+    }
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rows = [], total = 0;
+    links.forEach(function (l, k) {
+      var d = r.D[idx[l[0]]][idx[l[1]]];
+      var b = l[2] * d * d;
+      total += b;
+      rows.push({ i: k, from: l[0], to: l[1], weight: l[2], bearing: b,
+                  soleRoute: b >= 0.999 });
+    });
+    var expected = names.length - pieces;
+    return { links: rows, total: total, pieces: pieces, parts: names.length,
+             expected: expected, conserved: Math.abs(total - expected) < 1e-9,
+             dead: false };
+  }
+
+  /* Which PARTS everything passes through. A link's bearing cannot answer this,
+   * and it is computed by removal rather than by a formula. */
+  function singlePoints(names, links) {
+    if (names.length < 3 || !links.length) return [];
+    var base = bearings(names, links).pieces, out = [];
+    names.forEach(function (n) {
+      var rest = names.filter(function (x) { return x !== n; });
+      var kept = links.filter(function (l) { return l[0] !== n && l[1] !== n; });
+      // NOT skipped when kept is empty: a part whose removal leaves no links at
+      // all is the most complete break there is.
+      var after = kept.length ? bearings(rest, kept).pieces : rest.length;
+      if (after > base) out.push({ part: n, piecesAfter: after });
+    });
+    return out;
+  }
+
+  /* ----------------------------------------------------------- FATHOM ---- */
+  var GROUND = "\u0000ground";   // cannot collide with a real name
+
+  function support(names, links, sources, drop) {
+    var keep = sources.filter(function (s) { return s !== drop; });
+    if (!keep.length) return null;
+    var live = links.filter(function (l) { return l[0] !== drop && l[1] !== drop; });
+    var isSrc = {};
+    keep.forEach(function (s) { isSrc[s] = true; });
+
+    /* pairs are kept as ARRAYS. An earlier version joined the two names into a
+       string key and split it back with split(""), which splits into single
+       characters -- it worked only for one-character names and silently built
+       nonsense graphs for everything else. */
+    var pairs = [], seen = {};
+    live.forEach(function (l) {
+      var a = isSrc[l[0]] ? GROUND : l[0], b = isSrc[l[1]] ? GROUND : l[1];
+      if (a === b) return;                        // inside the contracted ground
+      var lo = a < b ? a : b, hi = a < b ? b : a;
+      var key = lo + "\u0000" + hi;
+      if (key in seen) { pairs[seen[key]][2] += l[2]; return; }
+      seen[key] = pairs.length;
+      pairs.push([lo, hi, l[2]]);
+    });
+    if (!pairs.length) return null;
+
+    var nm = [], set = {};
+    pairs.forEach(function (p) {
+      [p[0], p[1]].forEach(function (n) {
+        if (!(n in set)) { set[n] = true; nm.push(n); }
+      });
+    });
+    nm.sort();
+    var idx = {}, i;
+    for (i = 0; i < nm.length; i++) idx[nm[i]] = i;
+    return { nm: nm, idx: idx, pairs: pairs };
+  }
+
+  function conductance(names, links, sources, conclusion, drop) {
+    var g = support(names, links, sources, drop);
+    if (!g || !(conclusion in g.idx) || !(GROUND in g.idx)) return 0;
+    var edges = g.pairs.map(function (p) { return [g.idx[p[0]], g.idx[p[1]], p[2]]; });
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.nm.length, edges));
+    if (r.dead) return 0;
+    var d = r.D[g.idx[conclusion]][g.idx[GROUND]];
+    if (!isFinite(d) || d <= 0) return 0;
+    return 1 / (d * d);
+  }
+
+  /* dependence(s) = 1 - support without s / support with all.
+   * Contraction is the move: it stops asking "is there another way round this
+   * link" and starts asking "is there another way IN". */
+  function sound(names, links, sources, conclusion) {
+    var base = conductance(names, links, sources, conclusion, null);
+    var rows = sources.map(function (s) {
+      var without = conductance(names, links, sources, conclusion, s);
+      var dep = base > 0 ? 1 - without / base : 1;
+      return { source: s, dependence: dep, carriesItAlone: dep >= 0.999 };
+    });
+    rows.sort(function (a, b) { return b.dependence - a.dependence; });
+    var deepest = rows.length ? rows[0] : null;
+    return {
+      conclusion: conclusion, support: base, bySource: rows,
+      deepest: deepest ? deepest.dependence : 1,
+      restsOnOneThread: !!(deepest && deepest.carriesItAlone),
+      remaining: deepest ? 1 - deepest.dependence : 0,
+    };
+  }
+
+  /* ------------------------------------------------- suggested links ----- */
+  /* Shared labels only. This is a SUGGESTION and never a measurement: two
+   * things sharing a word are not thereby dependent on one another, and
+   * nothing computed here is fed into a bearing or a sounding unless a person
+   * confirms the link first. */
+  function suggest(items) {
+    var out = [], i, j;
+    for (i = 0; i < items.length; i++) {
+      for (j = i + 1; j < items.length; j++) {
+        var a = items[i].tags || [], b = items[j].tags || [];
+        if (!a.length || !b.length) continue;
+        var inter = a.filter(function (t) { return b.indexOf(t) >= 0; });
+        if (!inter.length) continue;
+        var union = a.concat(b.filter(function (t) { return a.indexOf(t) < 0; }));
+        out.push({ a: items[i].name, b: items[j].name,
+                   shared: inter, score: inter.length / union.length });
+      }
+    }
+    out.sort(function (x, y) { return y.score - x.score; });
+    return out;
+  }
+
+  var API = { bearings: bearings, singlePoints: singlePoints, sound: sound,
+              conductance: conductance, suggest: suggest, GROUND: GROUND };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PLEXUS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* packs.js -- the structure arrives already built. KERNEL: no interface.
+ * ===========================================================================
+ * THE BLANK CANVAS IS THE DEFECT
+ * Asking a person holding a bill to name six parts and draw five links before
+ * the software says anything is homework. The mask asks for one tap. A tired
+ * person at the end of a long day takes the one tap, every time, and they are
+ * right to.
+ *
+ * A pack is a shape somebody already worked out with the numbers left empty.
+ * You type what is on your paper. Nothing else.
+ *
+ * TWO ANSWERS, AND THEY ARE NEVER FUSED
+ *
+ *   arithmetic  does the printed total follow from the numbers you typed?
+ *               Recomputed from scratch. Either it matches or the difference is
+ *               named. No model, no judgement, no score.
+ *
+ *   structure   what does it rest on, and is there a second way to any of it?
+ *               The same Foster arithmetic as everywhere else in this stack.
+ *
+ * One green light fusing the two would be the most saleable thing a pack could
+ * produce and the least honest. A bill can be arithmetically perfect and rest
+ * entirely on one meter reading nobody checked; a bill can come out exactly
+ * right on a tariff nobody agreed to. `difference == 0` means the printed total
+ * follows from what you typed, and it means nothing else at all.
+ *
+ * WHY THE STRUCTURE READOUT HERE IS SINGLE POINTS AND NOT REDUNDANCY
+ * Every input to an arithmetic identity is required: units needs BOTH meter
+ * readings, the total needs the rate AND the fee. That is a conjunction, and
+ * FATHOM's sources are disjunctive -- more sources always means less rests on
+ * each. It is the same limit the Shapes library records as atomic-install-list,
+ * where a twelve-way conjunction drawn as a star understates by 0.917. Run over
+ * a bill it would report each meter reading at 0.0625, which is not unhelpful,
+ * it is backwards. So packs run SPAR and deliberately do not run the
+ * source-dropping readout, and the page says why rather than this file alone.
+ *
+ * A MISSING NUMBER IS MISSING
+ * Anything derived from an input the person did not give is ABSENT from the
+ * result. Not zero. Software that turns a blank field into a 0 has invented a
+ * number, which is the exact thing a mask does, committed by the tool built to
+ * name it. A test asserts the row disappears rather than reading nought.
+ */
+(function (root) {
+  "use strict";
+
+  var ENG = root.PLEXUS || (typeof require === "function" ? require("./engines.js") : null);
+
+  var OPS = { "+": true, "-": true, "*": true, "/": true };
+
+  /* ---------------------------------------------------------- validation --- */
+  function checkPack(p) {
+    var why = [], keys = {}, i;
+    if (!p || typeof p !== "object") return ["that is not a pack"];
+    if (typeof p.id !== "string" || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(p.id)) {
+      why.push("id must be lowercase words joined by hyphens");
+    }
+    ["title", "about"].forEach(function (k) {
+      if (typeof p[k] !== "string" || !p[k].trim()) why.push(k + " is missing");
+    });
+
+    /* A pack that hides what it takes for granted is a mask with a form on it.
+       The flat-rate assumption is the whole reason a stepped tariff will not
+       match, and a person who is not told that will read the difference as an
+       accusation. */
+    if (!Array.isArray(p.assumes) || !p.assumes.length) {
+      why.push((p.id || "the pack") + " declares no assumptions, so nobody can " +
+               "tell when it does not apply to them");
+    }
+    if (!Array.isArray(p.goCheck) || !p.goCheck.length) {
+      why.push((p.id || "the pack") + " gives the reader nowhere to go afterwards");
+    }
+
+    if (!Array.isArray(p.asks) || !p.asks.length) {
+      why.push("a pack has to ask for something");
+    } else {
+      p.asks.forEach(function (a) {
+        if (!a || typeof a.key !== "string" || !a.key) { why.push("an ask has no key"); return; }
+        if (keys[a.key]) why.push("two things are called " + a.key);
+        keys[a.key] = "ask";
+        if (typeof a.label !== "string" || !a.label.trim()) {
+          why.push(a.key + " has no label, so nobody knows what to type in it");
+        }
+      });
+    }
+
+    if (!Array.isArray(p.derive) || !p.derive.length) {
+      why.push("a pack that derives nothing has nothing to tell anyone");
+    } else {
+      p.derive.forEach(function (d) {
+        if (!d || typeof d.key !== "string" || !d.key) { why.push("a derivation has no key"); return; }
+        if (keys[d.key]) why.push("two things are called " + d.key);
+        keys[d.key] = "derived";
+        if (typeof d.label !== "string" || !d.label.trim()) {
+          why.push(d.key + " has no label");
+        }
+        why = why.concat(checkExpr(d.expr, keys, d.key, p));
+      });
+    }
+
+    if (p.check) {
+      if (!keys[p.check.computed]) why.push("check names an unknown computed value");
+      if (!keys[p.check.printed]) why.push("check names an unknown printed value");
+    }
+
+    var s = p.structure;
+    if (!s || !Array.isArray(s.parts) || !Array.isArray(s.links)) {
+      why.push("a pack must carry the structure it fills in");
+    }
+    return why;
+  }
+
+  /* An expression is a prefix array: ["+", a, b, ...] or ["-", a, b].
+     + and * take two or more, - and / take exactly two. Everything else is a
+     key or a literal number. There is no eval and no parser: a pack is data,
+     and data that can run is not data. */
+  function checkExpr(e, keys, owner, pack) {
+    var why = [];
+    if (typeof e === "number") return isFinite(e) ? [] : [owner + " uses a number that is not finite"];
+    if (typeof e === "string") {
+      if (e === owner) return [owner + " is derived from itself"];
+      if (!keys[e]) return [owner + " uses " + e + ", which is not a value in this pack"];
+      return [];
+    }
+    if (!Array.isArray(e) || e.length < 3) {
+      return [owner + " has an expression that is not [operator, a, b, ...]"];
+    }
+    var op = e[0];
+    if (!OPS[op]) return [owner + " uses an operator that does not exist: " + op];
+    if ((op === "-" || op === "/") && e.length !== 3) {
+      why.push(owner + " gives " + op + " more than two things, and it takes two");
+    }
+    for (var i = 1; i < e.length; i++) why = why.concat(checkExpr(e[i], keys, owner, pack));
+    return why;
+  }
+
+  /* --------------------------------------------------------- evaluation --- */
+  /* Returns { value } or { missing: [keys] } or { refused: "reason" }.
+     Never a number it made up. */
+  function evaluate(e, values) {
+    if (typeof e === "number") return { value: e };
+    if (typeof e === "string") {
+      if (!(e in values) || values[e] === null || values[e] === undefined) {
+        return { missing: [e] };
+      }
+      return { value: values[e] };
+    }
+    var op = e[0], parts = [], missing = [], i, r;
+    for (i = 1; i < e.length; i++) {
+      r = evaluate(e[i], values);
+      if (r.refused) return r;
+      if (r.missing) { missing = missing.concat(r.missing); continue; }
+      parts.push(r.value);
+    }
+    if (missing.length) return { missing: missing };
+
+    var v;
+    if (op === "+") { v = 0; parts.forEach(function (x) { v += x; }); }
+    else if (op === "*") { v = 1; parts.forEach(function (x) { v *= x; }); }
+    else if (op === "-") { v = parts[0] - parts[1]; }
+    else if (op === "/") {
+      if (parts[1] === 0) {
+        return { refused: "that would divide by zero, and there is no answer to give" };
+      }
+      v = parts[0] / parts[1];
+    }
+    if (!isFinite(v)) return { refused: "that does not come out to a number" };
+    return { value: v };
+  }
+
+  /* ------------------------------------------------------------ the fill --- */
+  function fill(pack, given) {
+    var why = checkPack(pack);
+    if (why.length) return { ok: false, why: why };
+
+    var values = {}, rows = [], missing = [], refused = [];
+    (pack.asks || []).forEach(function (a) {
+      var v = given ? given[a.key] : undefined;
+      if (v === undefined || v === null || v === "") {
+        if (!a.optional) missing.push(a.label);
+        return;                       /* left OUT of values, never set to 0 */
+      }
+      var n = typeof v === "number" ? v : parseFloat(String(v).replace(/[\s,]/g, ""));
+      if (!isFinite(n)) { refused.push(a.label + " is not a number"); return; }
+      values[a.key] = n;
+    });
+
+    (pack.derive || []).forEach(function (d) {
+      var r = evaluate(d.expr, values);
+      if (r.refused) { refused.push(d.label + ": " + r.refused); return; }
+      if (r.missing) return;          /* the row simply does not appear */
+      values[d.key] = r.value;
+      rows.push({ key: d.key, label: d.label, value: r.value, note: d.note || null });
+    });
+
+    /* the headline: does the printed figure follow from what was typed */
+    var verdict = null;
+    if (pack.check && pack.check.computed in values && pack.check.printed in values) {
+      var diff = values[pack.check.printed] - values[pack.check.computed];
+      var near = Math.abs(diff) < 0.005;   /* half a hundredth: below any real currency unit */
+      verdict = {
+        computed: values[pack.check.computed],
+        printed: values[pack.check.printed],
+        difference: diff,
+        matches: near,
+        /* Deliberately not "they overcharged you". The arithmetic knows only
+           that two numbers differ; who is right about the tariff, the reading
+           or the law is not in here and cannot be. */
+        says: near
+          ? "The figure they printed follows from the numbers you typed."
+          : (diff > 0
+             ? "The figure they printed is " + fmt(Math.abs(diff)) + " more than these parts come to."
+             : "The figure they printed is " + fmt(Math.abs(diff)) + " less than these parts come to."),
+      };
+    }
+
+    return {
+      ok: true, why: [], id: pack.id, title: pack.title,
+      values: values, rows: rows,
+      missing: missing, refused: refused,
+      verdict: verdict,
+      assumes: pack.assumes.slice(),
+      goCheck: pack.goCheck.slice(),
+    };
+  }
+
+  function fmt(x) {
+    var r = Math.round(x * 100) / 100;
+    return (Math.abs(r - Math.round(r)) < 1e-9 ? String(Math.round(r)) : String(r));
+  }
+
+  /* ---------------------------------------------------------- structure --- */
+  /* SPAR only, for the reason set out at the top of this file. */
+  function structure(pack) {
+    var s = pack.structure;
+    var b = ENG.bearings(s.parts, s.links);
+    return {
+      parts: s.parts.length,
+      links: b.links.map(function (r) {
+        return { from: r.from, to: r.to, bearing: r.bearing, soleRoute: r.soleRoute };
+      }),
+      totalBearing: b.total, expected: b.expected, conserved: b.conserved,
+      pieces: b.pieces,
+      soleRoutes: b.links.filter(function (r) { return r.soleRoute; }).length,
+      singlePoints: ENG.singlePoints(s.parts, s.links).map(function (r) { return r.part; }),
+      /* stated as data so the page cannot quietly stop saying it */
+      whyNoRedundancyReading:
+        "Every number here is needed. A bill is a conjunction, and the " +
+        "rest-on reading assumes sources that stand in for one another, so it " +
+        "would understate what the readings carry rather than overstate it.",
+    };
+  }
+
+  /* --------------------------------------------------------- the friction -- */
+  /* The claim "a pack is less work than the blank canvas", as arithmetic
+     instead of as a promise. Numbers typed against parts and links placed. */
+  function effort(pack) {
+    var asks = (pack.asks || []).length;
+    var byHand = (pack.structure.parts || []).length + (pack.structure.links || []).length;
+    return {
+      id: pack.id, asks: asks, byHand: byHand,
+      saved: byHand - asks,
+      lessWork: asks < byHand,
+    };
+  }
+
+  var API = { checkPack: checkPack, checkExpr: checkExpr, evaluate: evaluate,
+              fill: fill, structure: structure, effort: effort, fmt: fmt };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PACKS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* packlib.js -- the packs themselves. DATA ONLY: no arithmetic lives in here.
+ * ===========================================================================
+ * NO PACK CARRIES A REAL COMPANY'S RATES, AND THAT IS DELIBERATE
+ * Every pack below is a general shape: a metered bill, a payslip, a deposit.
+ * None of them says what any named supplier charges.
+ *
+ * Shipping a specific tariff I cannot verify would be worse than the blank
+ * canvas it replaces. A blank canvas tells you nothing; a confidently wrong
+ * "what it should be" tells you something false at the exact moment you are
+ * least able to notice, which is the failure this whole stack is arranged
+ * against. Provider-specific packs belong in the commons, contributed by people
+ * holding the actual paper, with provenance attached.
+ *
+ * NO CURRENCY, ANYWHERE
+ * Numbers only. These are used in places with different money and the shape of
+ * a metered bill is the same in all of them.
+ *
+ * EVERY PACK DECLARES WHAT IT TAKES FOR GRANTED
+ * A pack with no `assumes` is refused. The flat-rate assumption is the whole
+ * reason a stepped tariff will not match, and a person who is not told that
+ * will read the difference as an accusation rather than as a fact about the
+ * shape of their tariff.
+ */
+(function (root) {
+  "use strict";
+
+  var PACKS = [
+
+    {
+      id: "metered-bill",
+      title: "A metered bill",
+      about: "Water, electricity, gas — anything charged by a reading on a meter " +
+             "plus a standing charge.",
+      assumes: [
+        "One price for every unit. If your tariff charges different prices in bands or steps, this will not match, and the difference is telling you about the shape of the tariff rather than accusing anybody.",
+        "The reading now is later than the reading before it.",
+        "Nothing else is on the bill — no arrears, no adjustment, no tax added afterwards.",
+      ],
+      goCheck: [
+        "Go and read the meter yourself, now, and see whether it is past the reading they used.",
+        "Find the price per unit printed on the bill and check it against the tariff on their website or your contract.",
+      ],
+      asks: [
+        { key: "now", label: "Meter reading now", hint: "The number on the meter this time." },
+        { key: "before", label: "Meter reading last time", hint: "Usually printed on the same bill." },
+        { key: "rate", label: "Price per unit", hint: "What one unit costs." },
+        { key: "fee", label: "Fixed charge", hint: "The standing or monthly charge, before any usage." },
+        { key: "printed", label: "The total they printed", hint: "The amount the bill says you owe." },
+        { key: "paid", label: "What you actually paid", optional: true,
+          hint: "Only if you have paid it. Leave empty otherwise." },
+      ],
+      derive: [
+        { key: "units", label: "Units used", expr: ["-", "now", "before"] },
+        { key: "usage", label: "Cost of the units", expr: ["*", "units", "rate"] },
+        { key: "total", label: "What the bill should be", expr: ["+", "usage", "fee"] },
+        /* TWO carried-forward figures, because there are two, and a single one
+           would be ambiguous exactly when it matters. If the printed total and
+           these parts disagree, what you are owed depends on which of the two
+           is right -- and the pack does not know. They read the same number
+           whenever the bill matches, and diverge by precisely the amount under
+           dispute when it does not. */
+        { key: "carried", label: "Carried to next time, taking their total as correct",
+          expr: ["-", "paid", "printed"],
+          note: "Positive means you paid more than they asked, so it should appear as credit next time." },
+        { key: "carriedIfParts", label: "Carried to next time, if these parts are right",
+          expr: ["-", "paid", "total"],
+          note: "The same figure as above whenever the bill matches. When it does not, the gap between the two lines is the amount in dispute." },
+      ],
+      check: { computed: "total", printed: "printed" },
+      structure: {
+        parts: ["Meter reading now", "Meter reading last time", "Units used",
+                "Price per unit", "Fixed charge", "What the bill should be"],
+        links: [
+          ["Meter reading now", "Units used", 1.0],
+          ["Meter reading last time", "Units used", 1.0],
+          ["Units used", "What the bill should be", 1.0],
+          ["Price per unit", "What the bill should be", 1.0],
+          ["Fixed charge", "What the bill should be", 1.0],
+        ],
+      },
+    },
+
+    {
+      id: "payslip",
+      title: "A payslip",
+      about: "What was earned, what was taken off, and whether the take-home follows.",
+      assumes: [
+        "Every deduction on the slip is one of the four asked for here. If there is a fifth line, put it under other deductions or the total will not match.",
+        "Nothing is added after the deductions — no expenses, no reimbursement.",
+      ],
+      goCheck: [
+        "Check the tax figure against a public tax calculator for your own income and allowances.",
+        "Ask what the pension line is being taken for, and whether you agreed the rate.",
+      ],
+      asks: [
+        { key: "gross", label: "Gross pay", hint: "Before anything is taken off." },
+        { key: "tax", label: "Tax", hint: "The income tax line." },
+        { key: "pension", label: "Pension or social contribution" },
+        { key: "other", label: "Other deductions", hint: "Everything else taken off. Type 0 if none." },
+        { key: "printed", label: "Take-home they printed" },
+      ],
+      derive: [
+        { key: "taken", label: "Taken off altogether", expr: ["+", "tax", "pension", "other"] },
+        { key: "net", label: "What the take-home should be", expr: ["-", "gross", "taken"] },
+      ],
+      check: { computed: "net", printed: "printed" },
+      structure: {
+        parts: ["Gross pay", "Tax", "Pension", "Other deductions",
+                "Taken off altogether", "What the take-home should be"],
+        links: [
+          ["Tax", "Taken off altogether", 1.0],
+          ["Pension", "Taken off altogether", 1.0],
+          ["Other deductions", "Taken off altogether", 1.0],
+          ["Gross pay", "What the take-home should be", 1.0],
+          ["Taken off altogether", "What the take-home should be", 1.0],
+        ],
+      },
+    },
+
+    {
+      id: "invoice-with-tax",
+      title: "An invoice with tax added",
+      about: "A subtotal, a percentage on top, and the total at the bottom.",
+      assumes: [
+        "The tax is a straight percentage of the subtotal, applied once.",
+        "Nothing is exempt. If some lines are taxed and others are not, this will not match.",
+      ],
+      goCheck: [
+        "Check the percentage against the current rate where the work was done, not where you live.",
+        "Look at whether any line on the invoice should have been exempt.",
+      ],
+      asks: [
+        { key: "subtotal", label: "Subtotal", hint: "Before tax." },
+        { key: "percent", label: "Tax percent", hint: "Just the number, so 18 for eighteen percent." },
+        { key: "printed", label: "The total they printed" },
+      ],
+      derive: [
+        { key: "tax", label: "Tax on that", expr: ["*", "subtotal", ["/", "percent", 100]] },
+        { key: "total", label: "What the total should be", expr: ["+", "subtotal", "tax"] },
+      ],
+      check: { computed: "total", printed: "printed" },
+      structure: {
+        parts: ["Subtotal", "Tax percent", "Tax on that", "What the total should be"],
+        links: [
+          ["Subtotal", "Tax on that", 1.0],
+          ["Tax percent", "Tax on that", 1.0],
+          ["Tax on that", "What the total should be", 1.0],
+          ["Subtotal", "What the total should be", 1.0],
+        ],
+      },
+    },
+
+    {
+      id: "deposit-returned",
+      title: "A deposit coming back",
+      about: "What was held, what was taken out of it, and what should come back.",
+      assumes: [
+        "Three deductions is enough. If there are more, add them together and put the sum in one line, and keep the itemised list yourself.",
+        "No interest was owed on the deposit while it was held.",
+      ],
+      goCheck: [
+        "Ask for the receipt or quote behind every deduction, in writing.",
+        "Compare each deduction against the condition report from when you moved in.",
+      ],
+      asks: [
+        { key: "held", label: "Deposit they held" },
+        { key: "d1", label: "First deduction", hint: "Type 0 if there is none." },
+        { key: "d2", label: "Second deduction", hint: "Type 0 if there is none." },
+        { key: "d3", label: "Third deduction", hint: "Type 0 if there is none." },
+        { key: "printed", label: "What they say they are returning" },
+      ],
+      derive: [
+        { key: "taken", label: "Taken out of it", expr: ["+", "d1", "d2", "d3"] },
+        { key: "back", label: "What should come back", expr: ["-", "held", "taken"] },
+      ],
+      check: { computed: "back", printed: "printed" },
+      structure: {
+        parts: ["Deposit they held", "First deduction", "Second deduction",
+                "Third deduction", "Taken out of it", "What should come back"],
+        links: [
+          ["First deduction", "Taken out of it", 1.0],
+          ["Second deduction", "Taken out of it", 1.0],
+          ["Third deduction", "Taken out of it", 1.0],
+          ["Deposit they held", "What should come back", 1.0],
+          ["Taken out of it", "What should come back", 1.0],
+        ],
+      },
+    },
+
+    {
+      id: "splitting-a-bill",
+      title: "Splitting something between people",
+      about: "One total, several people, and what each one owes.",
+      assumes: [
+        "Everybody pays the same share. If somebody had more, this is the wrong shape and you want the amounts listed separately.",
+      ],
+      goCheck: [
+        "Say the per-person figure out loud to everyone before anybody transfers anything.",
+      ],
+      asks: [
+        { key: "total", label: "The whole amount" },
+        { key: "people", label: "How many people" },
+      ],
+      derive: [
+        { key: "each", label: "Each person owes", expr: ["/", "total", "people"] },
+      ],
+      structure: {
+        parts: ["The whole amount", "How many people", "Each person owes"],
+        links: [
+          ["The whole amount", "Each person owes", 1.0],
+          ["How many people", "Each person owes", 1.0],
+        ],
+      },
+    },
+
+    {
+      id: "paying-in-instalments",
+      title: "Paying for something in instalments",
+      about: "What it costs in the end, next to what it costs today.",
+      assumes: [
+        "Every instalment is the same size, and there are no fees beyond them.",
+        "Nothing is added for paying late, because that has not happened yet.",
+      ],
+      goCheck: [
+        "Ask the seller for the cash price if you paid it all today, and put that in the first box.",
+        "Ask what happens to the figure if you miss one, and get the answer in writing.",
+      ],
+      asks: [
+        { key: "cash", label: "Price if you paid it all today" },
+        { key: "deposit", label: "Deposit up front", hint: "Type 0 if there is none." },
+        { key: "each", label: "Each instalment" },
+        { key: "howmany", label: "How many instalments" },
+      ],
+      derive: [
+        { key: "instalments", label: "All the instalments together", expr: ["*", "each", "howmany"] },
+        { key: "paid", label: "What you will have paid in the end", expr: ["+", "deposit", "instalments"] },
+        { key: "extra", label: "What the waiting costs you", expr: ["-", "paid", "cash"],
+          note: "This is the whole point of the pack. It is rarely the number on the advertisement." },
+      ],
+      structure: {
+        parts: ["Price if you paid it all today", "Deposit up front", "Each instalment",
+                "How many instalments", "All the instalments together",
+                "What you will have paid in the end", "What the waiting costs you"],
+        links: [
+          ["Each instalment", "All the instalments together", 1.0],
+          ["How many instalments", "All the instalments together", 1.0],
+          ["Deposit up front", "What you will have paid in the end", 1.0],
+          ["All the instalments together", "What you will have paid in the end", 1.0],
+          ["What you will have paid in the end", "What the waiting costs you", 1.0],
+          ["Price if you paid it all today", "What the waiting costs you", 1.0],
+        ],
+      },
+    },
+
+  ];
+
+  var API = { packs: PACKS };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PACKLIB = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var P = window.PACKS, LIB = window.PACKLIB;
+
+  var current = null;
+  var given = {};
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+  function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+
+  /* ------------------------------------------------------------- the list -- */
+  var buttons = [];
+  LIB.packs.forEach(function (p) {
+    var e = P.effort(p);
+    var b = text("button", "pick");
+    b.type = "button";
+    b.setAttribute("aria-pressed", "false");
+    b.appendChild(text("b", null, p.title));
+    b.appendChild(text("span", null, p.about));
+    b.appendChild(text("em", null, e.asks + " numbers to type"));
+    b.addEventListener("click", function () { choose(p, b); });
+    buttons.push(b);
+    $("#packs").appendChild(b);
+  });
+
+  /* The pressed flag is flipped on each ROW. The list is built once, above, and
+     never rebuilt inside a handler bound to one of its own children -- that
+     defect destroys the button just tapped and has appeared six times in this
+     codebase. Mutate the row, never the list. */
+  function choose(pack, button) {
+    buttons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    button.setAttribute("aria-pressed", "true");
+    current = pack;
+    given = {};
+    $("#formTitle").textContent = pack.title;
+    $("#formAbout").textContent = pack.about;
+    $("#nothing").hidden = true;
+    $("#form").hidden = false;
+    fillIn();
+    run();
+  }
+
+  function fillIn() {
+    var box = $("#asks");
+    clear(box);
+    current.asks.forEach(function (a) {
+      var wrap = text("div", "ask");
+      var id = "ask-" + a.key;
+      var lab = text("label");
+      lab.htmlFor = id;
+      lab.appendChild(document.createTextNode(a.label));
+      if (a.optional) lab.appendChild(text("span", "opt", "  — only if it applies"));
+      wrap.appendChild(lab);
+      if (a.hint) wrap.appendChild(text("span", "hint", a.hint));
+      var input = document.createElement("input");
+      input.id = id;
+      input.type = "text";
+      input.inputMode = "decimal";
+      input.autocomplete = "off";
+      input.setAttribute("aria-describedby", a.hint ? id + "-h" : null);
+      input.addEventListener("input", function () {
+        given[a.key] = input.value;
+        run();
+      });
+      wrap.appendChild(input);
+      box.appendChild(wrap);
+    });
+  }
+
+  function run() {
+    if (!current) return;
+    var res = P.fill(current, given);
+    if (!res.ok) return;
+
+    /* refusals and gaps, in the words a person can act on */
+    var warn = $("#warn");
+    clear(warn);
+    if (res.refused.length) {
+      res.refused.forEach(function (w) { warn.appendChild(text("div", null, w)); });
+    } else if (res.missing.length) {
+      warn.appendChild(text("div", null,
+        "Still needed: " + res.missing.join(", ") + "."));
+    }
+
+    var rows = $("#rows");
+    clear(rows);
+    res.rows.forEach(function (r) {
+      var e = text("div", "rw");
+      e.appendChild(text("b", null, r.label));
+      e.appendChild(text("span", "n", P.fmt(r.value)));
+      if (r.note) e.appendChild(text("span", "note", r.note));
+      rows.appendChild(e);
+    });
+
+    var v = res.verdict;
+    $("#answer").hidden = !res.rows.length;
+    if (v) {
+      $("#verdict").hidden = false;
+      $("#verdict").setAttribute("data-m", v.matches ? "yes" : "no");
+      $("#verdictSays").textContent = v.says;
+      $("#verdictDetail").textContent = v.matches
+        ? "These parts come to " + P.fmt(v.computed) + ", and that is what is printed."
+        : "These parts come to " + P.fmt(v.computed) + ". The paper says "
+          + P.fmt(v.printed) + ". Which of the two is right is not something this "
+          + "page can know — the assumptions below are where to look first.";
+    } else {
+      $("#verdict").hidden = true;
+    }
+
+    /* limits, assumptions and where to go next travel with the answer */
+    $("#limits").hidden = false;
+    var as = $("#assumes"); clear(as);
+    res.assumes.forEach(function (a) { as.appendChild(text("li", null, a)); });
+    var gc = $("#goCheck"); clear(gc);
+    res.goCheck.forEach(function (c) { gc.appendChild(text("li", null, c)); });
+
+    var s = P.structure(current);
+    $("#structure").hidden = false;
+    $("#structureSays").textContent =
+      s.soleRoutes + " of the " + s.links.length + " steps have no second way round, and "
+      + (s.singlePoints.length
+         ? "removing " + s.singlePoints.join(" or ") + " leaves the rest in pieces."
+         : "nothing breaks the rest when removed.");
+    $("#structureWhy").textContent = s.whyNoRedundancyReading;
+  }
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+
+<script>
+/* Registers only when the page is served (https or localhost). Opened straight
+   from a file there is no service worker, and the app works anyway -- it is one
+   file with everything already in it. */
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>

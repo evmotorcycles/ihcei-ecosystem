@@ -147,9 +147,9 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v8";
+var CACHE = "plexus-v9";
 var FILES = ["./", "./index.html", "./topology.html", "./manifold.html",
-             "./flint.html", "./commons.html", "./gate.html",
+             "./flint.html", "./commons.html", "./gate.html", "./packs.html",
              "./manifest.webmanifest", "./icon.svg",
              "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
@@ -291,6 +291,22 @@ def main():
     assert "{{" not in gate, "unfilled placeholder left in gate.html"
     open(os.path.join(HERE, "gate.html"), "w", encoding="utf-8").write(gate)
 
+    # Packs: the structure arrives already built. packlib.js is data with no
+    # arithmetic in it, kept apart from packs.js so a contributed pack can never
+    # carry code -- a pack that could run would make the library a way to ship
+    # code to strangers under the name of a shape.
+    pk = open(os.path.join(HERE, "packs.js"), encoding="utf-8").read()
+    pl = open(os.path.join(HERE, "packlib.js"), encoding="utf-8").read()
+    ptpl = open(os.path.join(HERE, "packs_template.html"), encoding="utf-8").read()
+    packs = (ptpl.replace("{{LMD}}", lmd)
+                 .replace("{{ENGINES}}", eng)
+                 .replace("{{PACKS}}", pk)
+                 .replace("{{PACKLIB}}", pl)
+                 .replace("{{ICON}}", icon_uri)
+                 .replace("</body>", REGISTER + "</body>"))
+    assert "{{" not in packs, "unfilled placeholder left in packs.html"
+    open(os.path.join(HERE, "packs.html"), "w", encoding="utf-8").write(packs)
+
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
     open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
@@ -303,6 +319,7 @@ def main():
     print("wrote flint.html                       (%.1f KB)" % (len(flint) / 1024))
     print("wrote commons.html                     (%.1f KB)" % (len(shapes) / 1024))
     print("wrote gate.html                        (%.1f KB)" % (len(gate) / 1024))
+    print("wrote packs.html                       (%.1f KB)" % (len(packs) / 1024))
     print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
     missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
                if not os.path.exists(os.path.join(HERE, f))]

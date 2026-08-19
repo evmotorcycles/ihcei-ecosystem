@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Packs</title>
+<meta name="description" content="Pick the kind of paper you are holding. The structure is already built. Type your numbers. Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="{{ICON}}">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Packs">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+
+/* choose the paper you are holding. Big targets, one tap. */
+.picks{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+@media (max-width:34rem){ .picks{grid-template-columns:1fr} }
+.pick{background:var(--card);border:1px solid var(--edge);border-radius:var(--r);
+  padding:.75rem .8rem;text-align:left;min-height:72px;width:100%}
+.pick[aria-pressed=true]{border-color:var(--hud);background:var(--card-2)}
+.pick b{display:block;font-size:.95rem;font-weight:650;letter-spacing:-.01em}
+.pick span{display:block;font-size:.78rem;color:var(--mute);margin-top:.2rem;line-height:1.4}
+.pick em{display:block;font-style:normal;font-size:.68rem;color:var(--mute);margin-top:.35rem}
+
+/* the numbers off the paper */
+.asks{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem}
+.ask label{display:block;font-size:.85rem;font-weight:600;margin-bottom:.2rem}
+.ask .hint{display:block;font-size:.76rem;color:var(--mute);font-weight:400;margin-bottom:.3rem}
+.ask .opt{font-weight:400;color:var(--mute);font-size:.76rem}
+.ask input{width:100%;min-height:48px;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.5rem .7rem;
+  font:inherit;font-size:1rem;font-variant-numeric:tabular-nums}
+.ask input:focus{border-color:var(--focus)}
+
+/* the answer */
+.verdict{border-radius:var(--r);padding:.9rem .95rem;margin:.7rem 0;
+  border:1px solid var(--line);background:var(--card)}
+.verdict[data-m=yes]{border-left:3px solid var(--spare)}
+.verdict[data-m=no]{border-left:3px solid var(--hold)}
+.verdict .big{font-size:1.1rem;font-weight:700;line-height:1.3;letter-spacing:-.01em;
+  text-wrap:balance}
+.verdict[data-m=yes] .big{color:var(--spare)}
+.verdict[data-m=no] .big{color:var(--hold)}
+.verdict p{margin:.45rem 0 0;font-size:.83rem;color:var(--ink-2)}
+
+.rows{display:flex;flex-direction:column;gap:.3rem;margin-top:.5rem}
+.rows:empty{display:none}
+.rw{background:var(--card-2);border:1px solid var(--edge);border-radius:9px;
+  padding:.45rem .6rem;font-size:.86rem;min-height:44px;display:flex;
+  align-items:center;gap:.6rem;flex-wrap:wrap}
+.rw b{font-weight:500;color:var(--ink-2)}
+.rw .n{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;font-size:1rem}
+.rw .note{flex-basis:100%;font-size:.78rem;color:var(--mute);line-height:1.4}
+
+.warn{background:var(--hold-soft);border:1px solid var(--hold);border-radius:10px;
+  padding:.6rem .7rem;margin-top:.5rem;font-size:.84rem;color:var(--ink)}
+.warn:empty{display:none}
+
+.limits{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--hold);
+  border-radius:var(--r);padding:.85rem .9rem;margin:.7rem 0}
+.limits h2{margin:0 0 .4rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold)}
+.limits h3{margin:.9rem 0 .35rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute)}
+.limits ul{margin:0;padding-left:1.1rem}
+.limits li{font-size:.85rem;color:var(--ink-2);margin-bottom:.3rem}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1.2rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}. */
+.void[hidden]{display:none}
+[hidden]{display:none}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Pick the paper you are holding</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>You should not have to draw it first</h2>
+    <p>Somebody already worked out how these fit together. Tap the one that
+      matches what is in front of you, type the numbers off the paper, and the
+      arithmetic is done for you — then you are told exactly what that does and
+      does not prove.</p>
+    <p class="small"><b>Nothing leaves this device.</b> The numbers you type are
+      not sent anywhere, and there is nothing here that could send them.</p>
+  </section>
+
+  <span class="fl">What are you holding?</span>
+  <div class="picks" id="packs"></div>
+
+  <section class="panel" id="form" hidden>
+    <span class="fl" id="formTitle"></span>
+    <p class="small" id="formAbout"></p>
+    <div class="asks" id="asks"></div>
+    <div class="warn" id="warn"></div>
+  </section>
+
+  <div id="answer" hidden>
+    <div class="verdict" id="verdict" data-m="yes">
+      <div class="big" id="verdictSays"></div>
+      <p id="verdictDetail"></p>
+    </div>
+    <span class="fl">How it was worked out</span>
+    <div class="rows" id="rows"></div>
+  </div>
+
+  <section class="limits" id="limits" hidden>
+    <h2>What a matching figure does not mean</h2>
+    <ul>
+      <li>It does not mean the price is fair.</li>
+      <li>It does not mean the reading is right.</li>
+      <li>It only means the figure they printed follows from the numbers you typed.</li>
+    </ul>
+    <h3>This pack takes for granted</h3>
+    <ul id="assumes"></ul>
+    <h3>Then go and check</h3>
+    <ul id="goCheck"></ul>
+  </section>
+
+  <section class="panel" id="structure" hidden>
+    <span class="fl">What it rests on</span>
+    <p class="small" id="structureSays"></p>
+    <p class="small" id="structureWhy"></p>
+  </section>
+
+  <div class="void" id="nothing">Tap one above to begin.</div>
+
+  <div class="foot">
+    <p><b>The two answers are never added together.</b> Whether the arithmetic
+      works and what the answer rests on are different questions. A single green
+      tick covering both would be the most reassuring thing this page could show
+      and the least true.</p>
+    <p>No pack here carries any real company's rates. Every one is a general
+      shape, because a confidently wrong “what it should be” would arrive at the
+      moment you are least able to notice it.</p>
+  </div>
+
+</main>
+
+<script>{{LMD}}</script>
+<script>{{ENGINES}}</script>
+<script>{{PACKS}}</script>
+<script>{{PACKLIB}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var P = window.PACKS, LIB = window.PACKLIB;
+
+  var current = null;
+  var given = {};
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+  function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+
+  /* ------------------------------------------------------------- the list -- */
+  var buttons = [];
+  LIB.packs.forEach(function (p) {
+    var e = P.effort(p);
+    var b = text("button", "pick");
+    b.type = "button";
+    b.setAttribute("aria-pressed", "false");
+    b.appendChild(text("b", null, p.title));
+    b.appendChild(text("span", null, p.about));
+    b.appendChild(text("em", null, e.asks + " numbers to type"));
+    b.addEventListener("click", function () { choose(p, b); });
+    buttons.push(b);
+    $("#packs").appendChild(b);
+  });
+
+  /* The pressed flag is flipped on each ROW. The list is built once, above, and
+     never rebuilt inside a handler bound to one of its own children -- that
+     defect destroys the button just tapped and has appeared six times in this
+     codebase. Mutate the row, never the list. */
+  function choose(pack, button) {
+    buttons.forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    button.setAttribute("aria-pressed", "true");
+    current = pack;
+    given = {};
+    $("#formTitle").textContent = pack.title;
+    $("#formAbout").textContent = pack.about;
+    $("#nothing").hidden = true;
+    $("#form").hidden = false;
+    fillIn();
+    run();
+  }
+
+  function fillIn() {
+    var box = $("#asks");
+    clear(box);
+    current.asks.forEach(function (a) {
+      var wrap = text("div", "ask");
+      var id = "ask-" + a.key;
+      var lab = text("label");
+      lab.htmlFor = id;
+      lab.appendChild(document.createTextNode(a.label));
+      if (a.optional) lab.appendChild(text("span", "opt", "  — only if it applies"));
+      wrap.appendChild(lab);
+      if (a.hint) wrap.appendChild(text("span", "hint", a.hint));
+      var input = document.createElement("input");
+      input.id = id;
+      input.type = "text";
+      input.inputMode = "decimal";
+      input.autocomplete = "off";
+      input.setAttribute("aria-describedby", a.hint ? id + "-h" : null);
+      input.addEventListener("input", function () {
+        given[a.key] = input.value;
+        run();
+      });
+      wrap.appendChild(input);
+      box.appendChild(wrap);
+    });
+  }
+
+  function run() {
+    if (!current) return;
+    var res = P.fill(current, given);
+    if (!res.ok) return;
+
+    /* refusals and gaps, in the words a person can act on */
+    var warn = $("#warn");
+    clear(warn);
+    if (res.refused.length) {
+      res.refused.forEach(function (w) { warn.appendChild(text("div", null, w)); });
+    } else if (res.missing.length) {
+      warn.appendChild(text("div", null,
+        "Still needed: " + res.missing.join(", ") + "."));
+    }
+
+    var rows = $("#rows");
+    clear(rows);
+    res.rows.forEach(function (r) {
+      var e = text("div", "rw");
+      e.appendChild(text("b", null, r.label));
+      e.appendChild(text("span", "n", P.fmt(r.value)));
+      if (r.note) e.appendChild(text("span", "note", r.note));
+      rows.appendChild(e);
+    });
+
+    var v = res.verdict;
+    $("#answer").hidden = !res.rows.length;
+    if (v) {
+      $("#verdict").hidden = false;
+      $("#verdict").setAttribute("data-m", v.matches ? "yes" : "no");
+      $("#verdictSays").textContent = v.says;
+      $("#verdictDetail").textContent = v.matches
+        ? "These parts come to " + P.fmt(v.computed) + ", and that is what is printed."
+        : "These parts come to " + P.fmt(v.computed) + ". The paper says "
+          + P.fmt(v.printed) + ". Which of the two is right is not something this "
+          + "page can know — the assumptions below are where to look first.";
+    } else {
+      $("#verdict").hidden = true;
+    }
+
+    /* limits, assumptions and where to go next travel with the answer */
+    $("#limits").hidden = false;
+    var as = $("#assumes"); clear(as);
+    res.assumes.forEach(function (a) { as.appendChild(text("li", null, a)); });
+    var gc = $("#goCheck"); clear(gc);
+    res.goCheck.forEach(function (c) { gc.appendChild(text("li", null, c)); });
+
+    var s = P.structure(current);
+    $("#structure").hidden = false;
+    $("#structureSays").textContent =
+      s.soleRoutes + " of the " + s.links.length + " steps have no second way round, and "
+      + (s.singlePoints.length
+         ? "removing " + s.singlePoints.join(" or ") + " leaves the rest in pieces."
+         : "nothing breaks the rest when removed.");
+    $("#structureWhy").textContent = s.whyNoRedundancyReading;
+  }
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+</body>
+</html>

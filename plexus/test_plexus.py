@@ -149,7 +149,8 @@ def test_the_shipped_page_carries_no_control_characters():
                 "commons.js", "library.js", "commons.html",
                 "commons_template.html", "commons_dump.mjs",
                 "lens.js", "gate.js", "gate.html", "gate_template.html",
-                "gate_dump.mjs"):
+                "gate_dump.mjs", "packs.js", "packlib.js", "packs.html",
+                "packs_template.html", "packs_dump.mjs"):
         raw = open(os.path.join(HERE, rel), "rb").read()
         assert b"\x00" not in raw, f"{rel} contains a literal NUL"
 
@@ -177,7 +178,7 @@ def test_the_shipped_page_carries_no_control_characters():
 
 KERNEL = ("engines.js", "eti.js", "manifold.js", "nere.js", "ihcei.js",
           "cairn.js", "game.js", "vault.js", "commons.js", "library.js",
-          "lens.js", "gate.js")
+          "lens.js", "gate.js", "packs.js", "packlib.js")
 
 
 def test_the_measuring_kernel_can_never_reach_the_network():

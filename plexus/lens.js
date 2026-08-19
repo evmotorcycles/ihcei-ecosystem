@@ -134,6 +134,25 @@
   });
 
   register({
+    name: "Packs",
+    page: "packs.html",
+    does: "Check a bill, a payslip or a deposit without drawing anything first.",
+    measures: [
+      "the arithmetic, recomputed from the numbers you typed, against the figure they printed",
+      "separately, which steps have no second way round",
+    ],
+    cannot: [
+      "It does not mean the price is fair.",
+      "It does not mean the reading is right.",
+      "It only means the figure they printed follows from the numbers you typed.",
+    ],
+    goCheck: [
+      "Go and read the meter yourself, now, and see whether it is past the reading they used.",
+      "Find the price per unit printed on the bill and check it against the tariff on their website or your contract.",
+    ],
+  });
+
+  register({
     name: "Agent Gate",
     page: "gate.html",
     does: "Say where an assistant may work in your plan, and where there is no second way round.",

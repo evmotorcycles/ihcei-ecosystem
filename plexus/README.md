@@ -265,6 +265,89 @@ acts on either is unmeasured and unmeasurable from inside the tool.
 
 ---
 
+## Packs — the structure arrives already built
+
+`packs.html`. The blank canvas is a defect: asking somebody holding a bill to
+name six parts and draw five links before the software says anything is
+homework, and the mask asks for one tap. Tap the kind of paper you are holding,
+type the numbers off it, done.
+
+| Pack | Numbers you type | Parts + links you would place by hand |
+|---|---|---|
+| A metered bill | 6 | 11 |
+| A payslip | 5 | 11 |
+| An invoice with tax | 3 | 8 |
+| A deposit coming back | 5 | 11 |
+| Splitting something | 2 | 5 |
+| Paying in instalments | 4 | 13 |
+| **All six** | **25** | **59** |
+
+A test asserts `asks < parts + links` for every pack. If a pack is not less work
+than drawing it by hand it has no reason to exist and should be deleted rather
+than argued for.
+
+### Two answers, never fused into one
+
+**The arithmetic**, recomputed from scratch: either it matches or the difference
+is named. **The structure**, separately: which steps have no second way round.
+One green tick covering both would be the most reassuring thing the page could
+show and the least true — a bill can be arithmetically perfect and rest entirely
+on one meter reading nobody checked.
+
+The worked case: reading 70 against 58, at 5032 a unit, plus 1700 standing
+charge → 12 units, 60384, **62084**, and the printed total follows. Pay 65000
+and 2916 carries forward.
+
+### Two carried-forward figures, found by driving the page
+
+Change the printed total to 63000 and a single "carried to next time" quietly
+becomes 2000 — measured against what they *asked*, not against what the parts
+*come to*. Both are real, they mean different things, and which one you are owed
+depends on who is right about the 916, which the page cannot know. So both are
+shown. They read the same whenever the bill matches and diverge by exactly the
+amount in dispute when it does not.
+
+### What is refused, and what is never invented
+
+- A blank optional field makes its row **vanish**, never read 0. Software that
+  turns a blank into a zero has invented a number, and inventing numbers is the
+  thing this stack exists to catch.
+- A missing required number is named, and everything downstream of it is absent.
+- Dividing by zero is refused with a reason, never shown as infinity.
+- `5,032` and `1 700` are accepted, because that is how the paper prints them.
+- A pack with no declared assumptions is refused: the flat-rate assumption is
+  the whole reason a stepped tariff will not match, and a person not told that
+  will read the difference as an accusation.
+- The verdict never says overcharged, wrong, error or owe. A test greps for those
+  words. It knows two numbers differ; it does not know who is right about the
+  tariff, the reading or the law.
+
+### Why the rest-on reading is not run here
+
+Every input to an arithmetic identity is required — units needs *both* meter
+readings. That is a conjunction, and FATHOM's sources are disjunctive. It is the
+same limit the Shapes library records as `atomic-install-list`. Run over a bill
+it would report each meter reading at 0.0625, which is not unhelpful, it is
+backwards. So packs run SPAR only, and the reason travels with the result as
+data so a page cannot quietly stop printing it.
+
+### No pack carries any real company's rates
+
+Every seed pack is a general shape. A specific tariff nobody verified would be
+worse than the blank canvas it replaces: a confidently wrong "what it should be"
+arrives at the moment a person is least able to notice. Provider-specific packs
+belong in the commons, from people holding the actual paper, with provenance
+attached. A test greps `packlib.js` for currency symbols and company suffixes.
+
+Predictions locked before anything ran: `plexus/packs_preregistration.md`, sha256
+`bc23a73a33c9261eec98c95bf0cea85bcbaf8a7fa9385c073168e96d9835a2a4`.
+
+**Registered null:** counting what a person types is not usability. Nothing here
+measures whether somebody tired at the end of a long day finds this easy. That
+needs people, and there are none in this repository.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:
