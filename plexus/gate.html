@@ -902,6 +902,26 @@ textarea{width:100%;min-height:6.5rem;background:var(--card-2);color:var(--ink);
   });
 
   register({
+    name: "Lens or mask",
+    page: "metaphor.html",
+    does: "Ask of a picture what it predicts, and who could make that prediction come true.",
+    measures: [
+      "how many things the picture puts at risk",
+      "how many of those the people showing it to you could not fix by changing their own work",
+      "what each single prediction settles on its own",
+    ],
+    cannot: [
+      "This measures pictures, not software.",
+      "Every prediction list here was written by a person.",
+      "Self-referring is not an accusation of bad faith, and every working demonstration is one.",
+    ],
+    goCheck: [
+      "Take a picture you were shown and write down one thing it predicts that could come back false.",
+      "Then ask whether the people who showed it to you could make that come true by changing their own work.",
+    ],
+  });
+
+  register({
     name: "Agent Gate",
     page: "gate.html",
     does: "Say where an assistant may work in your plan, and where there is no second way round.",

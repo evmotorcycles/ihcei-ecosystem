@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Lens or mask</title>
+<meta name="description" content="Does this picture predict anything that could come back false, and who could make it true? Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="{{ICON}}">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lens">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+textarea{width:100%;min-height:7rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.9rem;line-height:1.5;resize:vertical}
+.acts{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:8rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;
+  font-size:.87rem;font-weight:600}
+.acts button:active{border-color:var(--focus)}
+
+/* the marks found, each one strikeable in place */
+.marks{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+.marks:empty{display:none}
+.mk{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.3rem .65rem;
+  border-radius:99px;font-size:.8rem;border:1px solid var(--spare);
+  background:var(--spare-soft);color:var(--spare)}
+.mk[aria-pressed=false]{border-color:var(--edge);background:var(--card-2);
+  color:var(--mute);text-decoration:line-through}
+
+/* the headline: what runs out */
+.out{border-radius:var(--r);padding:1rem;margin:.7rem 0;border:1px solid var(--line);
+  background:var(--card)}
+.out[data-k=dry]{border-left:3px solid var(--mute)}
+.out[data-k=wet]{border-left:3px solid var(--hold)}
+.out .big{font-size:1.15rem;font-weight:700;line-height:1.3;letter-spacing:-.015em;
+  text-wrap:balance}
+.out[data-k=dry] .big{color:var(--mute)}
+.out[data-k=wet] .big{color:var(--hold)}
+.out p{margin:.5rem 0 0;font-size:.86rem;color:var(--ink-2)}
+
+/* do this first */
+.first{background:var(--hold-soft);border:1px solid var(--hold);border-radius:var(--r);
+  padding:.85rem .9rem;margin:.7rem 0}
+.first h3{margin:0 0 .3rem;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hold)}
+.first .do{font-size:1.02rem;font-weight:650;line-height:1.4;text-wrap:balance}
+.first p{margin:.45rem 0 0;font-size:.82rem;color:var(--ink-2)}
+
+.rows{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.rows:empty{display:none}
+.rw{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:.55rem .65rem;min-height:44px}
+.rw .do{font-size:.88rem;font-weight:600;line-height:1.4}
+.rw .sub{font-size:.78rem;color:var(--mute);margin-top:.2rem;line-height:1.45}
+.rw .n{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--mute);
+  font-size:.76rem}
+
+.limits{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--hold);
+  border-radius:var(--r);padding:.85rem .9rem;margin:.7rem 0}
+.limits h2{margin:0 0 .4rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold)}
+.limits ul{margin:0;padding-left:1.1rem}
+.limits li{font-size:.85rem;color:var(--ink-2);margin-bottom:.35rem}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1.2rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}. */
+.void[hidden]{display:none}
+[hidden]{display:none}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Is this picture a lens or a covering?</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>Newton's billiard balls could be killed. That is what made them useful.</h2>
+    <p>He imagined light as tiny hard particles. The picture predicted the angle
+      off a mirror, the bend into glass, and a perfectly sharp shadow. <b>Two of
+      those came back false</b> — light travels slower in water, not faster, and
+      it does bend round an edge. The picture died of its own predictions.</p>
+    <p>So there is one question to ask of any picture: <b>what does it predict
+      that could come back false, and who is able to make that prediction come
+      true?</b></p>
+    <p class="small"><b>Nothing leaves this device.</b></p>
+  </section>
+
+  <div id="list"></div>
+
+  <section class="limits">
+    <h2>What this is not telling you</h2>
+    <ul>
+      <li>This measures pictures, not software.</li>
+      <li>Every prediction list here was written by a person.</li>
+      <li>Self-referring is not an accusation of bad faith, and every working demonstration is one.</li>
+    </ul>
+    <h3>Then go and check</h3>
+    <ul>
+      <li>Take a picture you were shown and write down one thing it predicts that could come back false.</li>
+      <li>Then ask whether the people who showed it to you could make that come true by changing their own work.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <span class="fl">How to overturn any verdict here</span>
+    <p>The classing and the arithmetic are not hand-written, but the readings
+      are. If you can state a prediction that has been missed, add one and the
+      class changes. That is the whole way to overturn this page.</p>
+    <p class="small">Nobody could have rescued Newton's particles by editing
+      their own work — only the theory could give way. A picture whose every
+      prediction can be made true again by the people showing it to you is
+      answering to them, not to the world.</p>
+  </section>
+
+  <div class="foot">
+    <p>A tool built on a self-referring picture can be excellent, and a tool
+      built on a lens can be useless. Nothing here says whether anything ships,
+      sells or helps anybody.</p>
+  </div>
+
+</main>
+
+<script>{{LMD}}</script>
+<script>{{ENGINES}}</script>
+<script>{{METAPHOR}}</script>
+<script>{{METAPHORLIB}}</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var M = window.METAPHOR, LIB = window.METAPHORLIB;
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+  function pct(x) { return (x * 100).toFixed(1) + "%"; }
+
+  var GROUPS = [
+    ["lens", "Lenses — they risk something nobody here controls"],
+    ["self-referring", "Refutable, but only about themselves"],
+    ["notation", "They predict nothing, and that is all right"],
+  ];
+
+  var list = $("#list");
+  GROUPS.forEach(function (g) {
+    var klass = g[0];
+    var rows = LIB.metaphors.map(M.audit).filter(function (r) {
+      return r.ok && r.klass === klass;
+    });
+    if (!rows.length) return;
+
+    list.appendChild(text("span", "fl", g[1] + "  (" + rows.length + ")"));
+
+    rows.forEach(function (r) {
+      var card = text("section", "panel");
+      var h = text("h2", null, r.name);
+      card.appendChild(h);
+      card.appendChild(text("p", null, r.says));
+
+      if (r.killed) {
+        var k = text("div", "first");
+        k.appendChild(text("h3", null, "Its own prediction destroyed it"));
+        k.appendChild(text("div", "do", r.killedBy));
+        card.appendChild(k);
+      }
+
+      r.predictions.forEach(function (p) {
+        var e = text("div", "rw");
+        e.appendChild(text("div", "do", p.says));
+        var who = p.presenterControls
+          ? "If this came back false, the people who built it could fix it by changing their own work."
+          : "Nobody showing you this picture could make it come true.";
+        e.appendChild(text("div", "sub", who + "  On its own it settles " +
+          pct(p.settles) + " of what the picture puts at risk."));
+        card.appendChild(e);
+      });
+
+      if (!r.predictions.length) {
+        var none = text("div", "rw");
+        none.appendChild(text("div", "sub", "Nothing is put at risk here."));
+        card.appendChild(none);
+      }
+
+      card.appendChild(text("p", "small", r.verdict));
+      card.appendChild(text("p", "small", "Where this reading came from: " + r.where + "."));
+      list.appendChild(card);
+    });
+  });
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+</body>
+</html>

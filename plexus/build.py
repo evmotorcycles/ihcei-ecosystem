@@ -147,9 +147,9 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v10";
+var CACHE = "plexus-v11";
 var FILES = ["./", "./index.html", "./topology.html", "./manifold.html",
-             "./flint.html", "./commons.html", "./gate.html", "./packs.html", "./press.html",
+             "./flint.html", "./commons.html", "./gate.html", "./packs.html", "./press.html", "./metaphor.html",
              "./manifest.webmanifest", "./icon.svg",
              "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
@@ -323,6 +323,21 @@ def main():
     assert "{{" not in press, "unfilled placeholder left in press.html"
     open(os.path.join(HERE, "press.html"), "w", encoding="utf-8").write(press)
 
+    # Lens or mask: the same press arithmetic pointed at pictures rather than
+    # claims. metaphorlib.js is data with no arithmetic in it, and it holds this
+    # stack's own metaphors in the same list as everybody else's.
+    mt = open(os.path.join(HERE, "metaphor.js"), encoding="utf-8").read()
+    ml = open(os.path.join(HERE, "metaphorlib.js"), encoding="utf-8").read()
+    mtpl2 = open(os.path.join(HERE, "metaphor_template.html"), encoding="utf-8").read()
+    meta = (mtpl2.replace("{{LMD}}", lmd)
+                 .replace("{{ENGINES}}", eng)
+                 .replace("{{METAPHOR}}", mt)
+                 .replace("{{METAPHORLIB}}", ml)
+                 .replace("{{ICON}}", icon_uri)
+                 .replace("</body>", REGISTER + "</body>"))
+    assert "{{" not in meta, "unfilled placeholder left in metaphor.html"
+    open(os.path.join(HERE, "metaphor.html"), "w", encoding="utf-8").write(meta)
+
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
     open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
@@ -337,6 +352,7 @@ def main():
     print("wrote gate.html                        (%.1f KB)" % (len(gate) / 1024))
     print("wrote packs.html                       (%.1f KB)" % (len(packs) / 1024))
     print("wrote press.html                       (%.1f KB)" % (len(press) / 1024))
+    print("wrote metaphor.html                    (%.1f KB)" % (len(meta) / 1024))
     print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
     missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
                if not os.path.exists(os.path.join(HERE, f))]

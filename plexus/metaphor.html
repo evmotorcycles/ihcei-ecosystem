@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Lens or mask</title>
+<meta name="description" content="Does this picture predict anything that could come back false, and who could make it true? Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Lens">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+textarea{width:100%;min-height:7rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.9rem;line-height:1.5;resize:vertical}
+.acts{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:8rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;
+  font-size:.87rem;font-weight:600}
+.acts button:active{border-color:var(--focus)}
+
+/* the marks found, each one strikeable in place */
+.marks{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+.marks:empty{display:none}
+.mk{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.3rem .65rem;
+  border-radius:99px;font-size:.8rem;border:1px solid var(--spare);
+  background:var(--spare-soft);color:var(--spare)}
+.mk[aria-pressed=false]{border-color:var(--edge);background:var(--card-2);
+  color:var(--mute);text-decoration:line-through}
+
+/* the headline: what runs out */
+.out{border-radius:var(--r);padding:1rem;margin:.7rem 0;border:1px solid var(--line);
+  background:var(--card)}
+.out[data-k=dry]{border-left:3px solid var(--mute)}
+.out[data-k=wet]{border-left:3px solid var(--hold)}
+.out .big{font-size:1.15rem;font-weight:700;line-height:1.3;letter-spacing:-.015em;
+  text-wrap:balance}
+.out[data-k=dry] .big{color:var(--mute)}
+.out[data-k=wet] .big{color:var(--hold)}
+.out p{margin:.5rem 0 0;font-size:.86rem;color:var(--ink-2)}
+
+/* do this first */
+.first{background:var(--hold-soft);border:1px solid var(--hold);border-radius:var(--r);
+  padding:.85rem .9rem;margin:.7rem 0}
+.first h3{margin:0 0 .3rem;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hold)}
+.first .do{font-size:1.02rem;font-weight:650;line-height:1.4;text-wrap:balance}
+.first p{margin:.45rem 0 0;font-size:.82rem;color:var(--ink-2)}
+
+.rows{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.rows:empty{display:none}
+.rw{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:.55rem .65rem;min-height:44px}
+.rw .do{font-size:.88rem;font-weight:600;line-height:1.4}
+.rw .sub{font-size:.78rem;color:var(--mute);margin-top:.2rem;line-height:1.45}
+.rw .n{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--mute);
+  font-size:.76rem}
+
+.limits{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--hold);
+  border-radius:var(--r);padding:.85rem .9rem;margin:.7rem 0}
+.limits h2{margin:0 0 .4rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold)}
+.limits ul{margin:0;padding-left:1.1rem}
+.limits li{font-size:.85rem;color:var(--ink-2);margin-bottom:.35rem}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1.2rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}. */
+.void[hidden]{display:none}
+[hidden]{display:none}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Is this picture a lens or a covering?</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>Newton's billiard balls could be killed. That is what made them useful.</h2>
+    <p>He imagined light as tiny hard particles. The picture predicted the angle
+      off a mirror, the bend into glass, and a perfectly sharp shadow. <b>Two of
+      those came back false</b> — light travels slower in water, not faster, and
+      it does bend round an edge. The picture died of its own predictions.</p>
+    <p>So there is one question to ask of any picture: <b>what does it predict
+      that could come back false, and who is able to make that prediction come
+      true?</b></p>
+    <p class="small"><b>Nothing leaves this device.</b></p>
+  </section>
+
+  <div id="list"></div>
+
+  <section class="limits">
+    <h2>What this is not telling you</h2>
+    <ul>
+      <li>This measures pictures, not software.</li>
+      <li>Every prediction list here was written by a person.</li>
+      <li>Self-referring is not an accusation of bad faith, and every working demonstration is one.</li>
+    </ul>
+    <h3>Then go and check</h3>
+    <ul>
+      <li>Take a picture you were shown and write down one thing it predicts that could come back false.</li>
+      <li>Then ask whether the people who showed it to you could make that come true by changing their own work.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <span class="fl">How to overturn any verdict here</span>
+    <p>The classing and the arithmetic are not hand-written, but the readings
+      are. If you can state a prediction that has been missed, add one and the
+      class changes. That is the whole way to overturn this page.</p>
+    <p class="small">Nobody could have rescued Newton's particles by editing
+      their own work — only the theory could give way. A picture whose every
+      prediction can be made true again by the people showing it to you is
+      answering to them, not to the world.</p>
+  </section>
+
+  <div class="foot">
+    <p>A tool built on a self-referring picture can be excellent, and a tool
+      built on a lens can be useless. Nothing here says whether anything ships,
+      sells or helps anybody.</p>
+  </div>
+
+</main>
+
+<script>/* lmd.js -- the LMD metric engine, in the browser.
+ * ===========================================================================
+ * A faithful port of smi/lmd.py so SMI runs on a phone with no server. A port
+ * is a liability unless it is checked: smi/test_parity.py runs both engines
+ * over a shared list of graphs and fails if any distance differs by more than
+ * 1e-9. The port is not trusted; it is tested.
+ *
+ * There is no linear-algebra library here on purpose. The Laplacian is real and
+ * symmetric, so the cyclic Jacobi eigenvalue algorithm gives an exact
+ * eigendecomposition in about forty lines, and the pseudo-inverse is then
+ *
+ *     pinv(L) = V · diag(1/λ for λ above tolerance, else 0) · Vᵀ
+ *
+ * which is all this needs. Fifty nodes is well under a millisecond.
+ *
+ * WHAT IS BEING MEASURED
+ * A dependency graph inside running software: which live elements determine
+ * which others, and how strongly. J is the strength of a dependency; d is how
+ * far apart two elements should sit given all of them. Information layer. Not
+ * a claim about matter or physical distance.
+ */
+(function (root) {
+  "use strict";
+
+  var DEAD_MESH_EPS = 1e-12;
+
+  /* A coupling below this is DECLARED FADING: still connected, but too weak to
+   * show at display precision. Without a name for it, a wire reading 0.00 in
+   * the readout while the legend insists "live" is a fourth, unnamed state --
+   * the interface saying connected and the arithmetic saying I move nothing. */
+  var FADE_BELOW = 0.01;
+
+  /* Cyclic Jacobi for a real symmetric matrix. Returns { values, vectors }
+   * where vectors[i][k] is component i of eigenvector k. */
+  function eigSymmetric(Ain, sweeps) {
+    var n = Ain.length, i, j, k, p, q, s;
+    var A = Ain.map(function (r) { return r.slice(); });
+    var V = [];
+    for (i = 0; i < n; i++) {
+      V.push(new Array(n).fill(0));
+      V[i][i] = 1;
+    }
+    sweeps = sweeps || 60;
+    for (s = 0; s < sweeps; s++) {
+      var off = 0;
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) off += A[i][j] * A[i][j];
+      if (off < 1e-30) break;
+      for (p = 0; p < n - 1; p++) {
+        for (q = p + 1; q < n; q++) {
+          if (Math.abs(A[p][q]) < 1e-300) continue;
+          var theta = (A[q][q] - A[p][p]) / (2 * A[p][q]);
+          var t = Math.sign(theta || 1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+          var c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+          for (k = 0; k < n; k++) {
+            var akp = A[k][p], akq = A[k][q];
+            A[k][p] = c * akp - sn * akq;
+            A[k][q] = sn * akp + c * akq;
+          }
+          for (k = 0; k < n; k++) {
+            var apk = A[p][k], aqk = A[q][k];
+            A[p][k] = c * apk - sn * aqk;
+            A[q][k] = sn * apk + c * aqk;
+          }
+          for (k = 0; k < n; k++) {
+            var vkp = V[k][p], vkq = V[k][q];
+            V[k][p] = c * vkp - sn * vkq;
+            V[k][q] = sn * vkp + c * vkq;
+          }
+        }
+      }
+    }
+    var vals = [];
+    for (i = 0; i < n; i++) vals.push(A[i][i]);
+    return { values: vals, vectors: V };
+  }
+
+  /* d_ij = sqrt(R_ij), R_ij = L⁺_ii + L⁺_jj − 2·L⁺_ij. Same as the Python. */
+  function metricFromLaplacian(L) {
+    var n = L.length, i, j, k;
+    var e = eigSymmetric(L);
+    var maxAbs = 0;
+    for (i = 0; i < n; i++) maxAbs = Math.max(maxAbs, Math.abs(e.values[i]));
+    // the same rank tolerance numpy/jax use for pinv on a symmetric matrix
+    var tol = maxAbs * n * 2.220446049250313e-16;
+
+    var P = [];
+    for (i = 0; i < n; i++) P.push(new Array(n).fill(0));
+    for (k = 0; k < n; k++) {
+      if (Math.abs(e.values[k]) <= tol) continue;
+      var inv = 1 / e.values[k];
+      for (i = 0; i < n; i++) {
+        var vik = e.vectors[i][k];
+        if (vik === 0) continue;
+        for (j = 0; j < n; j++) P[i][j] += inv * vik * e.vectors[j][k];
+      }
+    }
+    var D = [];
+    for (i = 0; i < n; i++) {
+      D.push(new Array(n).fill(0));
+      for (j = 0; j < n; j++) {
+        var R = P[i][i] + P[j][j] - 2 * P[i][j];
+        D[i][j] = Math.sqrt(R > 0 ? R : 0);
+      }
+    }
+    return D;
+  }
+
+  /* Which nodes can actually reach which. pinv neither knows nor cares that a
+   * graph is in pieces; this does. */
+  function componentsOf(L, tol) {
+    tol = tol || 1e-12;
+    var n = L.length, label = new Array(n).fill(-1), next = 0, i, u, v;
+    for (i = 0; i < n; i++) {
+      if (label[i] !== -1) continue;
+      var stack = [i];
+      label[i] = next;
+      while (stack.length) {
+        u = stack.pop();
+        for (v = 0; v < n; v++) {
+          if (v !== u && Math.abs(L[u][v]) > tol && label[v] === -1) {
+            label[v] = next;
+            stack.push(v);
+          }
+        }
+      }
+      next++;
+    }
+    return label;
+  }
+
+  /* The distance matrix an interface may actually trust: the raw metric with
+   * the two places pinv lies removed.
+   *   - pairs in different pieces come back Infinity, not a small number
+   *   - a mesh with no coupling left comes back all-Infinity, not all-zero */
+  function meshMetric(L) {
+    var n = L.length, i, j, off = 0, D;
+    for (i = 0; i < n; i++) for (j = 0; j < n; j++) if (i !== j) off += Math.abs(L[i][j]);
+    if (off < DEAD_MESH_EPS) {
+      D = [];
+      for (i = 0; i < n; i++) {
+        D.push(new Array(n).fill(Infinity));
+        D[i][i] = 0;
+      }
+      return { D: D, labels: Array.from({ length: n }, function (_, k) { return k; }), dead: true };
+    }
+    D = metricFromLaplacian(L);
+    var lab = componentsOf(L);
+    var pieces = Math.max.apply(null, lab);
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        if (i === j) D[i][j] = 0;
+        else if (pieces > 0 && lab[i] !== lab[j]) D[i][j] = Infinity;
+      }
+    }
+    return { D: D, labels: lab, dead: false };
+  }
+
+  function laplacianFromEdges(n, edges) {
+    var W = [], i;
+    for (i = 0; i < n; i++) W.push(new Array(n).fill(0));
+    edges.forEach(function (e) {
+      if (e[0] === e[1]) throw new Error("a node cannot depend on itself: " + e[0]);
+      W[e[0]][e[1]] = W[e[1]][e[0]] = e[2];
+    });
+    var L = [];
+    for (i = 0; i < n; i++) {
+      L.push(W[i].map(function (w) { return -w; }));
+      L[i][i] = W[i].reduce(function (a, b) { return a + b; }, 0);
+    }
+    return L;
+  }
+
+  function ringLaplacian(n, J) {
+    var edges = [], i;
+    for (i = 0; i < n; i++) edges.push([i, (i + 1) % n, J]);
+    return laplacianFromEdges(n, edges);
+  }
+
+  /* Classical MDS: double-centre the squared distances, take the top two
+   * eigenvectors. The flat picture that best preserves the metric. */
+  /* `axes` selects WHICH two eigenvectors, by rank. (0,1) is the classical
+   * choice and keeps the most total structure. It is not always the one that
+   * keeps the most useful structure -- see bestAxes. */
+  function layout2d(D, keep, axes) {
+    axes = axes || [0, 1];
+    var m = keep.length, i, j;
+    var B = [];
+    for (i = 0; i < m; i++) B.push(new Array(m).fill(0));
+    var sq = [];
+    for (i = 0; i < m; i++) {
+      sq.push(new Array(m).fill(0));
+      for (j = 0; j < m; j++) {
+        var d = D[keep[i]][keep[j]];
+        sq[i][j] = d * d;
+      }
+    }
+    var rowMean = sq.map(function (r) { return r.reduce(function (a, b) { return a + b; }, 0) / m; });
+    var grand = rowMean.reduce(function (a, b) { return a + b; }, 0) / m;
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < m; j++) B[i][j] = -0.5 * (sq[i][j] - rowMean[i] - rowMean[j] + grand);
+    }
+    var e = eigSymmetric(B);
+    var order = e.values.map(function (v, k) { return [v, k]; })
+      .sort(function (a, b) { return b[0] - a[0]; });
+    var p1 = order[Math.min(axes[0], m - 1)], p2 = order[Math.min(axes[1], m - 1)];
+    var out = [];
+    for (i = 0; i < m; i++) {
+      out.push([
+        e.vectors[i][p1[1]] * Math.sqrt(Math.max(p1[0], 0)),
+        e.vectors[i][p2[1]] * Math.sqrt(Math.max(p2[0], 0)),
+      ]);
+    }
+    return out;
+  }
+
+  /* The worst pair in a layout, as a fraction of its true distance. 1.0 means
+   * every distance on screen is the real one. */
+  function flatness(D, keep, xy) {
+    var worst = 1.0, a = -1, b = -1, i, j;
+    for (i = 0; i < keep.length; i++) {
+      for (j = i + 1; j < keep.length; j++) {
+        var trueD = D[keep[i]][keep[j]];
+        if (!isFinite(trueD) || trueD <= 0) continue;
+        var ratio = Math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]) / trueD;
+        if (ratio < worst) { worst = ratio; a = keep[i]; b = keep[j]; }
+      }
+    }
+    return { ratio: worst, a: a, b: b };
+  }
+
+  /* The plane that leaves NO pair collapsed, if there is one.
+   *
+   * Classical MDS minimises strain, which is a TOTAL -- and a total can be
+   * excellent while one pair is destroyed. On the mesh SMI ships, the
+   * strain-best plane draws two elements on top of each other (0% of their true
+   * distance) while a different plane draws every pair at 71% or better.
+   * Neither view is wrong; they answer different questions. */
+  function bestAxes(D, keep, limit) {
+    limit = Math.min(limit || 4, keep.length);
+    var best = [0, 1], bestRatio = -1, i, j;
+    for (i = 0; i < limit; i++) {
+      for (j = i + 1; j < limit; j++) {
+        var r = flatness(D, keep, layout2d(D, keep, [i, j])).ratio;
+        if (r > bestRatio) { bestRatio = r; best = [i, j]; }
+      }
+    }
+    return { axes: best, ratio: bestRatio };
+  }
+
+  /* ------------------------------------------------------- frame alignment --
+   * Classical MDS fixes an embedding only up to rotation and reflection: the
+   * eigenvectors are defined up to sign, so a small change in the graph can
+   * hand back the same picture upside down. Deterministic per input, and to a
+   * person dragging it, the map flipping under their finger reads as the
+   * positions being arbitrary -- which is exactly the claim SMI makes against.
+   *
+   * So each new embedding is rotated/reflected onto the previous one, choosing
+   * whichever orthogonal transform moves the shared nodes least. Real change
+   * still shows; the cosmetic flips stop. This is the orthogonal Procrustes
+   * problem, solved in closed form because 2-D needs no SVD.
+   */
+  function procrustes2d(Q, P) {
+    var n = Math.min(Q.length, P.length), i;
+    if (n < 2) return Q.slice();
+    var qc = [0, 0], pc = [0, 0];
+    for (i = 0; i < n; i++) {
+      qc[0] += Q[i][0]; qc[1] += Q[i][1];
+      pc[0] += P[i][0]; pc[1] += P[i][1];
+    }
+    qc = [qc[0] / n, qc[1] / n];
+    pc = [pc[0] / n, pc[1] / n];
+
+    function residual(theta, flip) {
+      var c = Math.cos(theta), s2 = Math.sin(theta), tot = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var x = c * qx - s2 * qy, y = s2 * qx + c * qy;
+        tot += (x - (P[k][0] - pc[0])) * (x - (P[k][0] - pc[0])) +
+               (y - (P[k][1] - pc[1])) * (y - (P[k][1] - pc[1]));
+      }
+      return tot;
+    }
+    function bestAngle(flip) {
+      var num = 0, den = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var px = P[k][0] - pc[0], py = P[k][1] - pc[1];
+        num += qx * py - qy * px;
+        den += qx * px + qy * py;
+      }
+      return Math.atan2(num, den);
+    }
+    var best = null;
+    [false, true].forEach(function (flip) {
+      var th = bestAngle(flip), r = residual(th, flip);
+      if (best === null || r < best.r) best = { r: r, th: th, flip: flip };
+    });
+    var c = Math.cos(best.th), sn = Math.sin(best.th), out = [];
+    for (i = 0; i < Q.length; i++) {
+      var qx = (Q[i][0] - qc[0]) * (best.flip ? -1 : 1), qy = Q[i][1] - qc[1];
+      out.push([c * qx - sn * qy + pc[0], sn * qx + c * qy + pc[1]]);
+    }
+    return out;
+  }
+
+  var API = {
+    procrustes2d: procrustes2d,
+    FADE_BELOW: FADE_BELOW,
+    metricFromLaplacian: metricFromLaplacian,
+    meshMetric: meshMetric,
+    componentsOf: componentsOf,
+    laplacianFromEdges: laplacianFromEdges,
+    ringLaplacian: ringLaplacian,
+    eigSymmetric: eigSymmetric,
+    layout2d: layout2d,
+    flatness: flatness,
+    bestAxes: bestAxes,
+    DEAD_MESH_EPS: DEAD_MESH_EPS,
+  };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LMD = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* engines.js -- SPAR and FATHOM in the browser, on top of the tested LMD engine.
+ * ===========================================================================
+ * Loaded after smi/lmd.js, which supplies meshMetric, laplacianFromEdges,
+ * layout2d, procrustes2d and the two guards. That engine is parity-checked
+ * against the JAX engine over fourteen graphs; nothing here re-implements it.
+ *
+ * These two are checked the same way, by plexus/test_plexus.py, against the
+ * Python in spar/spar.py and fathom/fathom.py.
+ */
+(function (root) {
+  "use strict";
+
+  var LMD = root.LMD || (typeof require === "function" ? require("../smi/lmd.js") : null);
+
+  /* ------------------------------------------------------------- SPAR ---- */
+  /* bearing = w * R = P(this link is in a random spanning tree) = how often the
+   * link is the thing holding the structure together. The bearings sum to
+   * exactly parts - pieces, by Foster's theorem, which is why nothing here is a
+   * score somebody chose. */
+  function bearings(names, links) {
+    var idx = {}, i;
+    for (i = 0; i < names.length; i++) idx[names[i]] = i;
+    if (!links.length) {
+      return { links: [], total: 0, pieces: names.length, parts: names.length,
+               expected: 0, conserved: true, dead: true };
+    }
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rows = [], total = 0;
+    links.forEach(function (l, k) {
+      var d = r.D[idx[l[0]]][idx[l[1]]];
+      var b = l[2] * d * d;
+      total += b;
+      rows.push({ i: k, from: l[0], to: l[1], weight: l[2], bearing: b,
+                  soleRoute: b >= 0.999 });
+    });
+    var expected = names.length - pieces;
+    return { links: rows, total: total, pieces: pieces, parts: names.length,
+             expected: expected, conserved: Math.abs(total - expected) < 1e-9,
+             dead: false };
+  }
+
+  /* Which PARTS everything passes through. A link's bearing cannot answer this,
+   * and it is computed by removal rather than by a formula. */
+  function singlePoints(names, links) {
+    if (names.length < 3 || !links.length) return [];
+    var base = bearings(names, links).pieces, out = [];
+    names.forEach(function (n) {
+      var rest = names.filter(function (x) { return x !== n; });
+      var kept = links.filter(function (l) { return l[0] !== n && l[1] !== n; });
+      // NOT skipped when kept is empty: a part whose removal leaves no links at
+      // all is the most complete break there is.
+      var after = kept.length ? bearings(rest, kept).pieces : rest.length;
+      if (after > base) out.push({ part: n, piecesAfter: after });
+    });
+    return out;
+  }
+
+  /* ----------------------------------------------------------- FATHOM ---- */
+  var GROUND = "\u0000ground";   // cannot collide with a real name
+
+  function support(names, links, sources, drop) {
+    var keep = sources.filter(function (s) { return s !== drop; });
+    if (!keep.length) return null;
+    var live = links.filter(function (l) { return l[0] !== drop && l[1] !== drop; });
+    var isSrc = {};
+    keep.forEach(function (s) { isSrc[s] = true; });
+
+    /* pairs are kept as ARRAYS. An earlier version joined the two names into a
+       string key and split it back with split(""), which splits into single
+       characters -- it worked only for one-character names and silently built
+       nonsense graphs for everything else. */
+    var pairs = [], seen = {};
+    live.forEach(function (l) {
+      var a = isSrc[l[0]] ? GROUND : l[0], b = isSrc[l[1]] ? GROUND : l[1];
+      if (a === b) return;                        // inside the contracted ground
+      var lo = a < b ? a : b, hi = a < b ? b : a;
+      var key = lo + "\u0000" + hi;
+      if (key in seen) { pairs[seen[key]][2] += l[2]; return; }
+      seen[key] = pairs.length;
+      pairs.push([lo, hi, l[2]]);
+    });
+    if (!pairs.length) return null;
+
+    var nm = [], set = {};
+    pairs.forEach(function (p) {
+      [p[0], p[1]].forEach(function (n) {
+        if (!(n in set)) { set[n] = true; nm.push(n); }
+      });
+    });
+    nm.sort();
+    var idx = {}, i;
+    for (i = 0; i < nm.length; i++) idx[nm[i]] = i;
+    return { nm: nm, idx: idx, pairs: pairs };
+  }
+
+  function conductance(names, links, sources, conclusion, drop) {
+    var g = support(names, links, sources, drop);
+    if (!g || !(conclusion in g.idx) || !(GROUND in g.idx)) return 0;
+    var edges = g.pairs.map(function (p) { return [g.idx[p[0]], g.idx[p[1]], p[2]]; });
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.nm.length, edges));
+    if (r.dead) return 0;
+    var d = r.D[g.idx[conclusion]][g.idx[GROUND]];
+    if (!isFinite(d) || d <= 0) return 0;
+    return 1 / (d * d);
+  }
+
+  /* dependence(s) = 1 - support without s / support with all.
+   * Contraction is the move: it stops asking "is there another way round this
+   * link" and starts asking "is there another way IN". */
+  function sound(names, links, sources, conclusion) {
+    var base = conductance(names, links, sources, conclusion, null);
+    var rows = sources.map(function (s) {
+      var without = conductance(names, links, sources, conclusion, s);
+      var dep = base > 0 ? 1 - without / base : 1;
+      return { source: s, dependence: dep, carriesItAlone: dep >= 0.999 };
+    });
+    rows.sort(function (a, b) { return b.dependence - a.dependence; });
+    var deepest = rows.length ? rows[0] : null;
+    return {
+      conclusion: conclusion, support: base, bySource: rows,
+      deepest: deepest ? deepest.dependence : 1,
+      restsOnOneThread: !!(deepest && deepest.carriesItAlone),
+      remaining: deepest ? 1 - deepest.dependence : 0,
+    };
+  }
+
+  /* ------------------------------------------------- suggested links ----- */
+  /* Shared labels only. This is a SUGGESTION and never a measurement: two
+   * things sharing a word are not thereby dependent on one another, and
+   * nothing computed here is fed into a bearing or a sounding unless a person
+   * confirms the link first. */
+  function suggest(items) {
+    var out = [], i, j;
+    for (i = 0; i < items.length; i++) {
+      for (j = i + 1; j < items.length; j++) {
+        var a = items[i].tags || [], b = items[j].tags || [];
+        if (!a.length || !b.length) continue;
+        var inter = a.filter(function (t) { return b.indexOf(t) >= 0; });
+        if (!inter.length) continue;
+        var union = a.concat(b.filter(function (t) { return a.indexOf(t) < 0; }));
+        out.push({ a: items[i].name, b: items[j].name,
+                   shared: inter, score: inter.length / union.length });
+      }
+    }
+    out.sort(function (x, y) { return y.score - x.score; });
+    return out;
+  }
+
+  var API = { bearings: bearings, singlePoints: singlePoints, sound: sound,
+              conductance: conductance, suggest: suggest, GROUND: GROUND };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PLEXUS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* metaphor.js -- is this picture a lens or a covering? KERNEL: no interface.
+ * ===========================================================================
+ * THE TEST, AND IT IS NEWTON'S
+ * He imagined light as tiny billiard balls. That picture predicted the angle
+ * off a mirror, the bend into glass, and a perfectly sharp shadow with no
+ * bending round an edge. Two of those came back FALSE. The corpuscle metaphor
+ * was killed by its own predictions, and that is exactly what made it a lens
+ * rather than a decoration: it had put something at risk.
+ *
+ * So a metaphor is audited on one question. What does this picture predict that
+ * could come back false -- and WHO IS ABLE TO MAKE THAT PREDICTION COME TRUE?
+ *
+ * THREE CLASSES, AND THE MIDDLE ONE IS THE FINDING
+ *
+ *   notation        predicts nothing at all. "Cloud". "Folder". "For you".
+ *                   Not a criticism: a legend on a map cannot be wrong and is
+ *                   still worth having. It is simply not a model.
+ *
+ *   self-referring  predicts only things the presenter controls. "Widen the
+ *                   pipe and bandwidth rises" is refutable -- widen it, watch
+ *                   throughput -- but if it comes back false the people who
+ *                   built the pipe can fix it by editing their own code. Not an
+ *                   accusation of bad faith: every working demo is like this.
+ *
+ *   lens            predicts at least one thing the presenter does NOT control.
+ *                   Nobody could rescue Newton's corpuscles by changing
+ *                   anything except the theory.
+ *
+ * That last distinction is the whole reason a picture over infrastructure a
+ * vendor operates cannot do the work this stack needs a picture to do.
+ *
+ * WHERE THE ARITHMETIC COMES FROM
+ * A metaphor's predictions hang off the metaphor, exactly as a claim's handles
+ * hang off its origin in press.js -- if the picture is wrong they all go
+ * together. Same graph, same engine, and the same law falls out: with m
+ * predictions, each settles 1/m^2.
+ *
+ * WHAT IS HAND-WRITTEN AND WHAT IS NOT
+ * The list of predictions for each metaphor is written by a person. The
+ * classification and the arithmetic over that list are not. Anyone who thinks a
+ * prediction has been missed can add one, and the class will change -- which is
+ * the only honest way to publish a judgement about somebody else's design.
+ */
+(function (root) {
+  "use strict";
+
+  var ENG = root.PLEXUS || (typeof require === "function" ? require("./engines.js") : null);
+
+  var NOTATION = "notation";
+  var SELF = "self-referring";
+  var LENS = "lens";
+
+  function problems(m) {
+    var why = [];
+    if (!m || typeof m !== "object") return ["that is not a metaphor"];
+    if (typeof m.id !== "string" || !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(m.id)) {
+      why.push("id must be lowercase words joined by hyphens");
+    }
+    ["name", "says"].forEach(function (k) {
+      if (typeof m[k] !== "string" || !m[k].trim()) why.push(k + " is missing");
+    });
+    if (!Array.isArray(m.predicts)) {
+      /* An absent list and an empty list are different things. Empty is a
+         finding -- this picture predicts nothing. Absent means nobody looked,
+         and publishing a class for something nobody looked at is the failure
+         this file exists to name. */
+      why.push((m.id || "the metaphor") + " has no predicts list at all, so " +
+               "nobody has asked what it puts at risk");
+    } else {
+      m.predicts.forEach(function (p, i) {
+        var at = (m.id || "a metaphor") + " prediction " + (i + 1);
+        if (!p || typeof p !== "object") { why.push(at + " is not a prediction"); return; }
+        if (typeof p.says !== "string" || !p.says.trim()) {
+          why.push(at + " does not say what could come back false");
+        }
+        if (typeof p.presenterControls !== "boolean") {
+          why.push(at + " does not say whether the presenter could make it true " +
+                   "by changing their own work, which is the whole question");
+        }
+      });
+    }
+    if (typeof m.where !== "string" || !m.where.trim()) {
+      why.push((m.id || "the metaphor") + " does not say where this reading came from");
+    }
+    return why;
+  }
+
+  /* Same shape as press.js: predictions hang off the metaphor, the metaphor
+     carries the picture. If the picture is wrong they all go at once. */
+  function graph(m) {
+    var origin = m.name;
+    var claim = "The picture holds";
+    var parts = [claim, origin], links = [[origin, claim, 1.0]], seen = {};
+    var names = [];
+    m.predicts.forEach(function (p, i) {
+      var n = "prediction " + (i + 1), k = 2;
+      while (seen[n]) { n = "prediction " + (i + 1) + " (" + k + ")"; k++; }
+      seen[n] = true;
+      parts.push(n);
+      links.push([n, origin, 1.0]);
+      names.push(n);
+    });
+    return { parts: parts, links: links, predictions: names,
+             origin: origin, claim: claim };
+  }
+
+  function audit(m) {
+    var why = problems(m);
+    if (why.length) return { ok: false, id: m && m.id, why: why };
+
+    var uncontrolled = m.predicts.filter(function (p) { return !p.presenterControls; });
+
+    if (!m.predicts.length) {
+      return {
+        ok: true, why: [], id: m.id, name: m.name, says: m.says, where: m.where,
+        refutable: false, klass: NOTATION,
+        uncontrolled: 0, predictions: [],
+        verdict: "This picture predicts nothing, so nothing could show it wrong. " +
+                 "That is not a fault -- a legend on a map cannot be wrong either " +
+                 "-- but it is a way of writing something down, not a model of it.",
+        structure: null, killed: !!m.killed,
+      };
+    }
+
+    var g = graph(m);
+    var b = ENG.bearings(g.parts, g.links);
+    var f = ENG.sound(g.parts, g.links, g.predictions, g.claim);
+    var by = {};
+    f.bySource.forEach(function (r) { by[r.source] = r.dependence; });
+
+    var klass = uncontrolled.length ? LENS : SELF;
+
+    return {
+      ok: true, why: [], id: m.id, name: m.name, says: m.says, where: m.where,
+      refutable: true, klass: klass,
+      uncontrolled: uncontrolled.length,
+      killed: !!m.killed,
+      killedBy: m.killedBy || null,
+      predictions: m.predicts.map(function (p, i) {
+        return { says: p.says, presenterControls: p.presenterControls,
+                 settles: by[g.predictions[i]] };
+      }),
+      verdict: klass === LENS
+        ? "At least one of these could come back false in a way the people " +
+          "showing you the picture could not fix by changing their own work. " +
+          "That is what makes it worth looking through."
+        : "Every one of these could be made true by the people who built it, " +
+          "editing their own code. It is refutable about itself and silent " +
+          "about the world. That is a demonstration, not an instrument.",
+      structure: {
+        parts: g.parts.length,
+        bearings: b.links.map(function (r) { return r.bearing; }),
+        totalBearing: b.total, expected: b.expected, conserved: b.conserved,
+        pieces: b.pieces,
+      },
+    };
+  }
+
+  function tally(list) {
+    var out = {};
+    out[NOTATION] = 0; out[SELF] = 0; out[LENS] = 0;
+    list.map(audit).forEach(function (r) { if (r.ok) out[r.klass] += 1; });
+    return out;
+  }
+
+  var API = { audit: audit, problems: problems, graph: graph, tally: tally,
+              NOTATION: NOTATION, SELF: SELF, LENS: LENS };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.METAPHOR = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* metaphorlib.js -- the metaphors audited. DATA ONLY: no arithmetic in here.
+ * ===========================================================================
+ * OUR OWN ARE IN THE SAME TABLE, ON PURPOSE
+ * An audit that puts somebody else's pictures under a standard and its own in a
+ * section headed "why ours are different" is not an audit. Everything this
+ * stack ships is in this list, judged by the same rule, and a test asserts that
+ * every one of ours comes out a lens. If one does not, the honest response is
+ * to give it a real prediction or stop calling it a lens -- not to soften the
+ * rule.
+ *
+ * EVERY PREDICTION LIST IS HAND-WRITTEN
+ * These are a reading. The arithmetic over them is not. Anyone who thinks a
+ * prediction has been missed can add it and the class will change, which is the
+ * only honest way to publish a judgement about somebody else's design.
+ *
+ * `presenterControls` IS THE WHOLE QUESTION
+ * Not "is this true" and not "is this good". Only: if this came back false,
+ * could the people showing you the picture fix it by changing their own work?
+ * Newton could not have rescued corpuscles by editing anything but the theory.
+ * A vendor whose pipe does not widen throughput can ship a patch on Tuesday.
+ */
+(function (root) {
+  "use strict";
+
+  var METAPHORS = [
+
+    /* ------------------------------------------------- the ones that worked -- */
+    {
+      id: "corpuscles",
+      name: "Light as tiny billiard balls",
+      says: "A beam is a stream of small hard particles, so it bounces and " +
+            "swerves the way thrown things do.",
+      where: "Newton's optics, and the two experiments that later contradicted it",
+      killed: true,
+      killedBy: "Light was measured travelling SLOWER in water, not faster, and " +
+                "light does bend round a sharp edge. Both predictions came back " +
+                "false and the picture went with them.",
+      predicts: [
+        { says: "The angle a beam leaves a mirror equals the angle it arrived at.",
+          presenterControls: false },
+        { says: "Light entering glass or water bends toward the normal because it " +
+                "speeds UP in the denser material.",
+          presenterControls: false },
+        { says: "Light passing a sharp edge casts a perfectly sharp shadow and " +
+                "does not bend around it.",
+          presenterControls: false },
+      ],
+    },
+
+    {
+      id: "falling-lift",
+      name: "A person in a windowless falling lift",
+      says: "Standing in gravity and accelerating through empty space feel the " +
+            "same from inside the box.",
+      where: "Einstein's equivalence thought experiment, and the eclipse " +
+             "measurements that followed",
+      predicts: [
+        { says: "No experiment performed inside the sealed box can tell falling " +
+                "from floating.",
+          presenterControls: false },
+        { says: "A beam crossing the box travels a bent path seen from outside, " +
+                "so starlight grazing the sun is deflected by a specific amount.",
+          presenterControls: false },
+      ],
+    },
+
+    /* ----------------------------------------------------- what this ships -- */
+    {
+      id: "sole-route",
+      name: "A step with no way round it",
+      says: "Some steps are the only path through; take one away and what was " +
+            "one thing becomes two things that cannot reach each other.",
+      where: "plexus/engines.js, and any structure a person enters themselves",
+      predicts: [
+        { says: "Remove the step it marked and the structure really does separate " +
+                "into pieces that cannot reach each other.",
+          presenterControls: false },
+        { says: "The numbers across every step add up to the parts minus the " +
+                "pieces, exactly.",
+          presenterControls: true },
+      ],
+    },
+
+    {
+      id: "handles",
+      name: "Handles on a claim",
+      says: "A claim you can grip has a named source, a figure, a method, a date " +
+            "and a scope; one you cannot grip has none of them.",
+      where: "cairn/ei_engine.js and plexus/press.js",
+      predicts: [
+        { says: "Go to the thing it named and it will exist, and it will say this.",
+          presenterControls: false },
+      ],
+    },
+
+    {
+      id: "what-the-bill-should-be",
+      name: "Working the bill out again from its parts",
+      says: "A bill is its parts put together in one particular way, so you can " +
+            "do it again yourself and compare.",
+      where: "plexus/packlib.js, against any bill a person is holding",
+      predicts: [
+        { says: "Recompute from the printed inputs and you get the printed total.",
+          presenterControls: false },
+      ],
+    },
+
+    /* ------------------------------------- the ones from the MetaphorOS brief */
+    {
+      id: "wider-pipe",
+      name: "A wider pipe means more bandwidth",
+      says: "Data is water, a connection is piping, and dragging the pipe wider " +
+            "gives the connection more room.",
+      where: "the MetaphorOS brief, Flow Engine",
+      predicts: [
+        { says: "Drag the pipe wider and throughput actually rises.",
+          presenterControls: true },
+      ],
+    },
+
+    {
+      id: "scale-slider",
+      name: "Stretch the boundary to serve a million people",
+      says: "Zooming out or stretching the edge of the map tells the system to " +
+            "allocate more machines, so nobody has to think about servers.",
+      where: "the MetaphorOS brief, Scale Slider",
+      predicts: [
+        { says: "Stretch it and the application really does serve the larger " +
+                "number without falling over.",
+          presenterControls: true },
+      ],
+    },
+
+    {
+      id: "snapping-bricks",
+      name: "Snapping two bricks together",
+      says: "Clicking two shapes into each other writes the integration between " +
+            "two applications.",
+      where: "the MetaphorOS brief, Blueprint Engine",
+      predicts: [
+        { says: "Snap them and the two applications really do exchange what the " +
+                "shapes suggest they exchange.",
+          presenterControls: true },
+      ],
+    },
+
+    {
+      id: "water-grid-budget",
+      name: "Water filling reservoirs, gates opening when full",
+      says: "Money is water; a payout is a gate that opens when its reservoir " +
+            "reaches the line.",
+      where: "the MetaphorOS brief, Metaphor Library",
+      predicts: [
+        { says: "Fill the reservoir to the line and the payout really is sent.",
+          presenterControls: true },
+      ],
+    },
+
+    /* ------------------------------------------------------- pure covering -- */
+    {
+      id: "cloud-storage",
+      name: "The cloud",
+      says: "Your files float safely somewhere above you.",
+      where: "consumer storage products generally",
+      predicts: [],
+    },
+
+    {
+      id: "desktop-and-folders",
+      name: "A desktop with folders on it",
+      says: "Your work sits on a wooden surface in paper wallets you can open.",
+      where: "every graphical operating system since the early eighties",
+      predicts: [],
+    },
+
+    {
+      id: "for-you",
+      name: "Chosen for you",
+      says: "What you are shown was picked with your interests in mind.",
+      where: "ranked feeds generally",
+      predicts: [],
+    },
+
+  ];
+
+  var OURS = ["sole-route", "handles", "what-the-bill-should-be"];
+
+  var API = { metaphors: METAPHORS, OURS: OURS };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.METAPHORLIB = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var M = window.METAPHOR, LIB = window.METAPHORLIB;
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+  function pct(x) { return (x * 100).toFixed(1) + "%"; }
+
+  var GROUPS = [
+    ["lens", "Lenses — they risk something nobody here controls"],
+    ["self-referring", "Refutable, but only about themselves"],
+    ["notation", "They predict nothing, and that is all right"],
+  ];
+
+  var list = $("#list");
+  GROUPS.forEach(function (g) {
+    var klass = g[0];
+    var rows = LIB.metaphors.map(M.audit).filter(function (r) {
+      return r.ok && r.klass === klass;
+    });
+    if (!rows.length) return;
+
+    list.appendChild(text("span", "fl", g[1] + "  (" + rows.length + ")"));
+
+    rows.forEach(function (r) {
+      var card = text("section", "panel");
+      var h = text("h2", null, r.name);
+      card.appendChild(h);
+      card.appendChild(text("p", null, r.says));
+
+      if (r.killed) {
+        var k = text("div", "first");
+        k.appendChild(text("h3", null, "Its own prediction destroyed it"));
+        k.appendChild(text("div", "do", r.killedBy));
+        card.appendChild(k);
+      }
+
+      r.predictions.forEach(function (p) {
+        var e = text("div", "rw");
+        e.appendChild(text("div", "do", p.says));
+        var who = p.presenterControls
+          ? "If this came back false, the people who built it could fix it by changing their own work."
+          : "Nobody showing you this picture could make it come true.";
+        e.appendChild(text("div", "sub", who + "  On its own it settles " +
+          pct(p.settles) + " of what the picture puts at risk."));
+        card.appendChild(e);
+      });
+
+      if (!r.predictions.length) {
+        var none = text("div", "rw");
+        none.appendChild(text("div", "sub", "Nothing is put at risk here."));
+        card.appendChild(none);
+      }
+
+      card.appendChild(text("p", "small", r.verdict));
+      card.appendChild(text("p", "small", "Where this reading came from: " + r.where + "."));
+      list.appendChild(card);
+    });
+  });
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+
+<script>
+/* Registers only when the page is served (https or localhost). Opened straight
+   from a file there is no service worker, and the app works anyway -- it is one
+   file with everything already in it. */
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>

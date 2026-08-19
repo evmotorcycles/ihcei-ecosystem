@@ -432,6 +432,73 @@ Predictions locked before anything ran: `plexus/press_preregistration.md`, sha25
 
 ---
 
+## Lens or mask — auditing a picture, including our own
+
+`metaphor.html`. Newton imagined light as tiny billiard balls. The picture
+predicted the angle off a mirror, the bend into glass, and a perfectly sharp
+shadow. **Two of those came back false** — light travels slower in water, not
+faster, and it does bend round an edge. The picture died of its own predictions,
+and that is exactly what made it a lens.
+
+So one question is asked of any picture: **what does it predict that could come
+back false, and who is able to make that prediction come true?**
+
+| Class | Test | Count |
+|---|---|---|
+| **lens** | predicts at least one thing the presenter does **not** control | 5 |
+| **self-referring** | predicts only things the presenter controls | 4 |
+| **notation** | predicts nothing at all | 3 |
+
+### The finding on MetaphorOS
+
+All four audited metaphors — *a wider pipe means more bandwidth*, *stretch the
+boundary to serve a million*, *snapping two bricks writes the integration*,
+*water filling reservoirs pays out* — classify **self-referring**. They are not
+vacuous: each really does predict something and each could come back false.
+But every one could be made true again by the people who built it, editing their
+own code. Nobody could have rescued Newton's particles that way.
+
+**Self-referring is not an accusation of bad faith**, and every working
+demonstration is one. It says only who holds the ability to make the prediction
+come true. That is why a picture drawn over infrastructure a vendor operates
+cannot do the job this stack needs a picture to do — and the Scale Slider is the
+clearest case, because "stretch it and stop thinking about servers" is the cloud
+metaphor with a new handle on it.
+
+### Our own are in the same table
+
+`sole-route`, `handles` and `what the bill should be` all classify **lens**, and
+a test asserts it. If one had not, the standard would have been applied in one
+direction only. One of the sole-route predictions — that the numbers add up to
+parts minus pieces — is marked `presenterControls: true`, because it is a fact
+about our arithmetic and not about the world. Marking it false would have been
+the cheap way to inflate our own count.
+
+### Same arithmetic as Press
+
+A picture's predictions hang off the picture exactly as a claim's handles hang
+off its origin — if the picture is wrong they all go together. So `press.js`'s
+graph applies unchanged, and **1/m² reproduces exactly**: 1 → 1.000, 2 → 0.250,
+3 → 0.111111.
+
+### How to overturn any verdict on that page
+
+Every prediction list is hand-written; the classing and arithmetic are not. State
+a prediction that has been missed, add it, and the class changes. In particular:
+if anyone can give a prediction of the pipe metaphor that its own builders could
+**not** make true by editing their own code, M5 is wrong and the audit should be
+withdrawn rather than defended.
+
+Predictions locked before anything ran: `plexus/metaphor_preregistration.md`,
+sha256 `c2588fcdbad5b7adf5ca022fc6b2b383d71549993abc08d8790cc79f906e0b33`.
+
+**Registered null:** this measures pictures, not software. A tool built on a
+self-referring picture can be excellent, and a tool built on a lens can be
+useless. Nothing here says whether MetaphorOS would work, sell, or help anybody
+— visual programming is forty years old and works.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:
