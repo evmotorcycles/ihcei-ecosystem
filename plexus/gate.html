@@ -882,6 +882,26 @@ textarea{width:100%;min-height:6.5rem;background:var(--card-2);color:var(--ink);
   });
 
   register({
+    name: "Press",
+    page: "press.html",
+    does: "Press a claim and see what runs out — what you could go and check, and which to do first.",
+    measures: [
+      "how many things in the claim could come back negative",
+      "which one, removed, leaves the rest with nothing behind it",
+      "how much each single check settles on its own",
+    ],
+    cannot: [
+      "A claim that is completely made up reads exactly like a true one here.",
+      "This says how quickly you could find out, not which way it will go.",
+      "Nothing here has been checked. Every line above is something for you to go and do.",
+    ],
+    goCheck: [
+      "Open the thing it named first and confirm it exists and says this.",
+      "Find the figure in the original, not in the summary of it.",
+    ],
+  });
+
+  register({
     name: "Agent Gate",
     page: "gate.html",
     does: "Say where an assistant may work in your plan, and where there is no second way round.",

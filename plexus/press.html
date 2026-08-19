@@ -1,0 +1,1306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0F1418">
+<title>Plexus &middot; Press</title>
+<meta name="description" content="Paste what you were told. See what runs out — the things you can go and check, and which one to do first. Nothing leaves this device.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Press">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="dark light">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489; --spare-soft:#12291E;
+  --focus:#5AB4D6; --hud:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+    --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+    --hold:#B23A22; --hold-soft:#FBE6E1;
+    --share:#8A6708; --share-soft:#FAF1D8;
+    --spare:#256B4B; --spare-soft:#E1F1E9;
+    --focus:#116D8C; --hud:#116D8C;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFFFFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1;
+  --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --spare-soft:#E1F1E9;
+  --focus:#116D8C; --hud:#116D8C;
+}
+:root[data-theme="dark"]{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A; --focus:#5AB4D6; --hud:#5AB4D6;
+}
+:root[data-big]{ font-size:19px }
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;color:inherit;border:0;background:none}
+a{color:var(--hud)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute);letter-spacing:0}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;
+  align-items:center;text-decoration:none}
+.chip:active{background:var(--card);border-color:var(--edge)}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.85rem .9rem;margin-bottom:.7rem}
+.panel h2{margin:0 0 .35rem;font-size:1rem;letter-spacing:-.01em;text-wrap:balance}
+.panel p{margin:.4rem 0 0;font-size:.87rem;color:var(--ink-2)}
+.panel p.small{font-size:.8rem;color:var(--mute)}
+.fl{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--mute);font-weight:650;margin:1rem 0 .35rem}
+.fl:first-child{margin-top:0}
+textarea{width:100%;min-height:7rem;background:var(--card-2);color:var(--ink);
+  border:1px solid var(--edge);border-radius:10px;padding:.6rem;font:inherit;
+  font-size:.9rem;line-height:1.5;resize:vertical}
+.acts{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:8rem;background:var(--card-2);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;
+  font-size:.87rem;font-weight:600}
+.acts button:active{border-color:var(--focus)}
+
+/* the marks found, each one strikeable in place */
+.marks{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.5rem}
+.marks:empty{display:none}
+.mk{display:inline-flex;align-items:center;gap:.4rem;min-height:44px;padding:.3rem .65rem;
+  border-radius:99px;font-size:.8rem;border:1px solid var(--spare);
+  background:var(--spare-soft);color:var(--spare)}
+.mk[aria-pressed=false]{border-color:var(--edge);background:var(--card-2);
+  color:var(--mute);text-decoration:line-through}
+
+/* the headline: what runs out */
+.out{border-radius:var(--r);padding:1rem;margin:.7rem 0;border:1px solid var(--line);
+  background:var(--card)}
+.out[data-k=dry]{border-left:3px solid var(--mute)}
+.out[data-k=wet]{border-left:3px solid var(--hold)}
+.out .big{font-size:1.15rem;font-weight:700;line-height:1.3;letter-spacing:-.015em;
+  text-wrap:balance}
+.out[data-k=dry] .big{color:var(--mute)}
+.out[data-k=wet] .big{color:var(--hold)}
+.out p{margin:.5rem 0 0;font-size:.86rem;color:var(--ink-2)}
+
+/* do this first */
+.first{background:var(--hold-soft);border:1px solid var(--hold);border-radius:var(--r);
+  padding:.85rem .9rem;margin:.7rem 0}
+.first h3{margin:0 0 .3rem;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hold)}
+.first .do{font-size:1.02rem;font-weight:650;line-height:1.4;text-wrap:balance}
+.first p{margin:.45rem 0 0;font-size:.82rem;color:var(--ink-2)}
+
+.rows{display:flex;flex-direction:column;gap:.35rem;margin-top:.5rem}
+.rows:empty{display:none}
+.rw{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:.55rem .65rem;min-height:44px}
+.rw .do{font-size:.88rem;font-weight:600;line-height:1.4}
+.rw .sub{font-size:.78rem;color:var(--mute);margin-top:.2rem;line-height:1.45}
+.rw .n{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--mute);
+  font-size:.76rem}
+
+.limits{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--hold);
+  border-radius:var(--r);padding:.85rem .9rem;margin:.7rem 0}
+.limits h2{margin:0 0 .4rem;font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold)}
+.limits ul{margin:0;padding-left:1.1rem}
+.limits li{font-size:.85rem;color:var(--ink-2);margin-bottom:.35rem}
+
+.void{display:flex;align-items:center;justify-content:center;padding:1.2rem;
+  color:var(--mute);font-size:.85rem;text-align:center}
+/* An author display: rule outranks the user agent's [hidden]{display:none}. */
+.void[hidden]{display:none}
+[hidden]{display:none}
+
+.foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--mute)}
+.foot p{margin:.5rem 0}
+.foot b{color:var(--ink-2)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Plexus <span>Press it and see what runs out</span></div>
+  <div class="sp"></div>
+  <a class="chip" href="index.html">Back</a>
+  <button class="chip" id="big" aria-pressed="false">Bigger text</button>
+  <button class="chip" id="theme">Light / dark</button>
+</header>
+
+<main class="wrap">
+
+  <section class="panel">
+    <h2>Do not argue with the peel</h2>
+    <p>A pomegranate is peel, bitter pith and seeds around the part you want. You
+      do not argue with the peel — you press it, and what runs out is what you
+      can use. This does the same with a sentence: it presses out the things you
+      could go and check, and tells you which one to do first.</p>
+    <p class="small"><b>Nothing leaves this device.</b> What you paste is not
+      sent anywhere, and there is nothing here that could send it.</p>
+  </section>
+
+  <section class="panel">
+    <span class="fl">Paste what you were told</span>
+    <textarea id="text" aria-label="The sentence or paragraph you want to press"
+      placeholder="A letter, a quote, a message, something an assistant told you."></textarea>
+    <div class="acts">
+      <button id="fog">Try a vague one</button>
+      <button id="sharp">Try a specific one</button>
+      <button id="clear">Clear</button>
+    </div>
+    <span class="fl">What it found
+      <span style="display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
+        font-weight:400;color:var(--mute);margin-top:.2rem">This matches words. It
+        does not read. Tap any of these to strike it, if it is wrong.</span></span>
+    <div class="marks" id="marks"></div>
+    <div class="void" id="nomarks" hidden>No handles found in this yet.</div>
+  </section>
+
+  <div class="out" id="out" data-k="dry" hidden>
+    <div class="big" id="outSays"></div>
+    <p id="outMeans"></p>
+  </div>
+
+  <div class="first" id="first" hidden>
+    <h3>Do this one first</h3>
+    <div class="do" id="firstDo"></div>
+    <p id="firstWhy"></p>
+  </div>
+
+  <div class="rows" id="rows"></div>
+
+  <section class="limits">
+    <h2>What this is not telling you</h2>
+    <ul>
+      <li>A claim that is completely made up reads exactly like a true one here.</li>
+      <li>This says how quickly you could find out, not which way it will go.</li>
+      <li>Nothing here has been checked. Every line above is something for you to go and do.</li>
+    </ul>
+  </section>
+
+  <section class="panel">
+    <span class="fl">Why a vague sentence scores nothing</span>
+    <p>“Experts generally agree that our meters are highly accurate.” That sounds
+      professional and careful, and press it and nothing comes out — there is no
+      source to open, no figure to look up, no date to compare. <b>This cannot be
+      shown false.</b> That is not the same as false; it is worse. Wording like
+      it survives every argument, because there is nothing in it to lose.</p>
+    <p class="small">The specific version — a named body, a year, a percentage, a
+      stated way of measuring — can be destroyed in one phone call. That is why
+      it reads high here even when it is invented. Pressing a well-made lie traps
+      it inside its own structure.</p>
+  </section>
+
+  <div class="foot">
+    <p><b>When many handles read low, that is the warning, not the comfort.</b>
+      With everything hanging off one source, five handles are not five ways in.
+      They are one way in, counted five times, and each reads one twenty-fifth
+      because the arithmetic is saying they are not independent.</p>
+  </div>
+
+</main>
+
+<script>/* lmd.js -- the LMD metric engine, in the browser.
+ * ===========================================================================
+ * A faithful port of smi/lmd.py so SMI runs on a phone with no server. A port
+ * is a liability unless it is checked: smi/test_parity.py runs both engines
+ * over a shared list of graphs and fails if any distance differs by more than
+ * 1e-9. The port is not trusted; it is tested.
+ *
+ * There is no linear-algebra library here on purpose. The Laplacian is real and
+ * symmetric, so the cyclic Jacobi eigenvalue algorithm gives an exact
+ * eigendecomposition in about forty lines, and the pseudo-inverse is then
+ *
+ *     pinv(L) = V · diag(1/λ for λ above tolerance, else 0) · Vᵀ
+ *
+ * which is all this needs. Fifty nodes is well under a millisecond.
+ *
+ * WHAT IS BEING MEASURED
+ * A dependency graph inside running software: which live elements determine
+ * which others, and how strongly. J is the strength of a dependency; d is how
+ * far apart two elements should sit given all of them. Information layer. Not
+ * a claim about matter or physical distance.
+ */
+(function (root) {
+  "use strict";
+
+  var DEAD_MESH_EPS = 1e-12;
+
+  /* A coupling below this is DECLARED FADING: still connected, but too weak to
+   * show at display precision. Without a name for it, a wire reading 0.00 in
+   * the readout while the legend insists "live" is a fourth, unnamed state --
+   * the interface saying connected and the arithmetic saying I move nothing. */
+  var FADE_BELOW = 0.01;
+
+  /* Cyclic Jacobi for a real symmetric matrix. Returns { values, vectors }
+   * where vectors[i][k] is component i of eigenvector k. */
+  function eigSymmetric(Ain, sweeps) {
+    var n = Ain.length, i, j, k, p, q, s;
+    var A = Ain.map(function (r) { return r.slice(); });
+    var V = [];
+    for (i = 0; i < n; i++) {
+      V.push(new Array(n).fill(0));
+      V[i][i] = 1;
+    }
+    sweeps = sweeps || 60;
+    for (s = 0; s < sweeps; s++) {
+      var off = 0;
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) off += A[i][j] * A[i][j];
+      if (off < 1e-30) break;
+      for (p = 0; p < n - 1; p++) {
+        for (q = p + 1; q < n; q++) {
+          if (Math.abs(A[p][q]) < 1e-300) continue;
+          var theta = (A[q][q] - A[p][p]) / (2 * A[p][q]);
+          var t = Math.sign(theta || 1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+          var c = 1 / Math.sqrt(t * t + 1), sn = t * c;
+          for (k = 0; k < n; k++) {
+            var akp = A[k][p], akq = A[k][q];
+            A[k][p] = c * akp - sn * akq;
+            A[k][q] = sn * akp + c * akq;
+          }
+          for (k = 0; k < n; k++) {
+            var apk = A[p][k], aqk = A[q][k];
+            A[p][k] = c * apk - sn * aqk;
+            A[q][k] = sn * apk + c * aqk;
+          }
+          for (k = 0; k < n; k++) {
+            var vkp = V[k][p], vkq = V[k][q];
+            V[k][p] = c * vkp - sn * vkq;
+            V[k][q] = sn * vkp + c * vkq;
+          }
+        }
+      }
+    }
+    var vals = [];
+    for (i = 0; i < n; i++) vals.push(A[i][i]);
+    return { values: vals, vectors: V };
+  }
+
+  /* d_ij = sqrt(R_ij), R_ij = L⁺_ii + L⁺_jj − 2·L⁺_ij. Same as the Python. */
+  function metricFromLaplacian(L) {
+    var n = L.length, i, j, k;
+    var e = eigSymmetric(L);
+    var maxAbs = 0;
+    for (i = 0; i < n; i++) maxAbs = Math.max(maxAbs, Math.abs(e.values[i]));
+    // the same rank tolerance numpy/jax use for pinv on a symmetric matrix
+    var tol = maxAbs * n * 2.220446049250313e-16;
+
+    var P = [];
+    for (i = 0; i < n; i++) P.push(new Array(n).fill(0));
+    for (k = 0; k < n; k++) {
+      if (Math.abs(e.values[k]) <= tol) continue;
+      var inv = 1 / e.values[k];
+      for (i = 0; i < n; i++) {
+        var vik = e.vectors[i][k];
+        if (vik === 0) continue;
+        for (j = 0; j < n; j++) P[i][j] += inv * vik * e.vectors[j][k];
+      }
+    }
+    var D = [];
+    for (i = 0; i < n; i++) {
+      D.push(new Array(n).fill(0));
+      for (j = 0; j < n; j++) {
+        var R = P[i][i] + P[j][j] - 2 * P[i][j];
+        D[i][j] = Math.sqrt(R > 0 ? R : 0);
+      }
+    }
+    return D;
+  }
+
+  /* Which nodes can actually reach which. pinv neither knows nor cares that a
+   * graph is in pieces; this does. */
+  function componentsOf(L, tol) {
+    tol = tol || 1e-12;
+    var n = L.length, label = new Array(n).fill(-1), next = 0, i, u, v;
+    for (i = 0; i < n; i++) {
+      if (label[i] !== -1) continue;
+      var stack = [i];
+      label[i] = next;
+      while (stack.length) {
+        u = stack.pop();
+        for (v = 0; v < n; v++) {
+          if (v !== u && Math.abs(L[u][v]) > tol && label[v] === -1) {
+            label[v] = next;
+            stack.push(v);
+          }
+        }
+      }
+      next++;
+    }
+    return label;
+  }
+
+  /* The distance matrix an interface may actually trust: the raw metric with
+   * the two places pinv lies removed.
+   *   - pairs in different pieces come back Infinity, not a small number
+   *   - a mesh with no coupling left comes back all-Infinity, not all-zero */
+  function meshMetric(L) {
+    var n = L.length, i, j, off = 0, D;
+    for (i = 0; i < n; i++) for (j = 0; j < n; j++) if (i !== j) off += Math.abs(L[i][j]);
+    if (off < DEAD_MESH_EPS) {
+      D = [];
+      for (i = 0; i < n; i++) {
+        D.push(new Array(n).fill(Infinity));
+        D[i][i] = 0;
+      }
+      return { D: D, labels: Array.from({ length: n }, function (_, k) { return k; }), dead: true };
+    }
+    D = metricFromLaplacian(L);
+    var lab = componentsOf(L);
+    var pieces = Math.max.apply(null, lab);
+    for (i = 0; i < n; i++) {
+      for (j = 0; j < n; j++) {
+        if (i === j) D[i][j] = 0;
+        else if (pieces > 0 && lab[i] !== lab[j]) D[i][j] = Infinity;
+      }
+    }
+    return { D: D, labels: lab, dead: false };
+  }
+
+  function laplacianFromEdges(n, edges) {
+    var W = [], i;
+    for (i = 0; i < n; i++) W.push(new Array(n).fill(0));
+    edges.forEach(function (e) {
+      if (e[0] === e[1]) throw new Error("a node cannot depend on itself: " + e[0]);
+      W[e[0]][e[1]] = W[e[1]][e[0]] = e[2];
+    });
+    var L = [];
+    for (i = 0; i < n; i++) {
+      L.push(W[i].map(function (w) { return -w; }));
+      L[i][i] = W[i].reduce(function (a, b) { return a + b; }, 0);
+    }
+    return L;
+  }
+
+  function ringLaplacian(n, J) {
+    var edges = [], i;
+    for (i = 0; i < n; i++) edges.push([i, (i + 1) % n, J]);
+    return laplacianFromEdges(n, edges);
+  }
+
+  /* Classical MDS: double-centre the squared distances, take the top two
+   * eigenvectors. The flat picture that best preserves the metric. */
+  /* `axes` selects WHICH two eigenvectors, by rank. (0,1) is the classical
+   * choice and keeps the most total structure. It is not always the one that
+   * keeps the most useful structure -- see bestAxes. */
+  function layout2d(D, keep, axes) {
+    axes = axes || [0, 1];
+    var m = keep.length, i, j;
+    var B = [];
+    for (i = 0; i < m; i++) B.push(new Array(m).fill(0));
+    var sq = [];
+    for (i = 0; i < m; i++) {
+      sq.push(new Array(m).fill(0));
+      for (j = 0; j < m; j++) {
+        var d = D[keep[i]][keep[j]];
+        sq[i][j] = d * d;
+      }
+    }
+    var rowMean = sq.map(function (r) { return r.reduce(function (a, b) { return a + b; }, 0) / m; });
+    var grand = rowMean.reduce(function (a, b) { return a + b; }, 0) / m;
+    for (i = 0; i < m; i++) {
+      for (j = 0; j < m; j++) B[i][j] = -0.5 * (sq[i][j] - rowMean[i] - rowMean[j] + grand);
+    }
+    var e = eigSymmetric(B);
+    var order = e.values.map(function (v, k) { return [v, k]; })
+      .sort(function (a, b) { return b[0] - a[0]; });
+    var p1 = order[Math.min(axes[0], m - 1)], p2 = order[Math.min(axes[1], m - 1)];
+    var out = [];
+    for (i = 0; i < m; i++) {
+      out.push([
+        e.vectors[i][p1[1]] * Math.sqrt(Math.max(p1[0], 0)),
+        e.vectors[i][p2[1]] * Math.sqrt(Math.max(p2[0], 0)),
+      ]);
+    }
+    return out;
+  }
+
+  /* The worst pair in a layout, as a fraction of its true distance. 1.0 means
+   * every distance on screen is the real one. */
+  function flatness(D, keep, xy) {
+    var worst = 1.0, a = -1, b = -1, i, j;
+    for (i = 0; i < keep.length; i++) {
+      for (j = i + 1; j < keep.length; j++) {
+        var trueD = D[keep[i]][keep[j]];
+        if (!isFinite(trueD) || trueD <= 0) continue;
+        var ratio = Math.hypot(xy[i][0] - xy[j][0], xy[i][1] - xy[j][1]) / trueD;
+        if (ratio < worst) { worst = ratio; a = keep[i]; b = keep[j]; }
+      }
+    }
+    return { ratio: worst, a: a, b: b };
+  }
+
+  /* The plane that leaves NO pair collapsed, if there is one.
+   *
+   * Classical MDS minimises strain, which is a TOTAL -- and a total can be
+   * excellent while one pair is destroyed. On the mesh SMI ships, the
+   * strain-best plane draws two elements on top of each other (0% of their true
+   * distance) while a different plane draws every pair at 71% or better.
+   * Neither view is wrong; they answer different questions. */
+  function bestAxes(D, keep, limit) {
+    limit = Math.min(limit || 4, keep.length);
+    var best = [0, 1], bestRatio = -1, i, j;
+    for (i = 0; i < limit; i++) {
+      for (j = i + 1; j < limit; j++) {
+        var r = flatness(D, keep, layout2d(D, keep, [i, j])).ratio;
+        if (r > bestRatio) { bestRatio = r; best = [i, j]; }
+      }
+    }
+    return { axes: best, ratio: bestRatio };
+  }
+
+  /* ------------------------------------------------------- frame alignment --
+   * Classical MDS fixes an embedding only up to rotation and reflection: the
+   * eigenvectors are defined up to sign, so a small change in the graph can
+   * hand back the same picture upside down. Deterministic per input, and to a
+   * person dragging it, the map flipping under their finger reads as the
+   * positions being arbitrary -- which is exactly the claim SMI makes against.
+   *
+   * So each new embedding is rotated/reflected onto the previous one, choosing
+   * whichever orthogonal transform moves the shared nodes least. Real change
+   * still shows; the cosmetic flips stop. This is the orthogonal Procrustes
+   * problem, solved in closed form because 2-D needs no SVD.
+   */
+  function procrustes2d(Q, P) {
+    var n = Math.min(Q.length, P.length), i;
+    if (n < 2) return Q.slice();
+    var qc = [0, 0], pc = [0, 0];
+    for (i = 0; i < n; i++) {
+      qc[0] += Q[i][0]; qc[1] += Q[i][1];
+      pc[0] += P[i][0]; pc[1] += P[i][1];
+    }
+    qc = [qc[0] / n, qc[1] / n];
+    pc = [pc[0] / n, pc[1] / n];
+
+    function residual(theta, flip) {
+      var c = Math.cos(theta), s2 = Math.sin(theta), tot = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var x = c * qx - s2 * qy, y = s2 * qx + c * qy;
+        tot += (x - (P[k][0] - pc[0])) * (x - (P[k][0] - pc[0])) +
+               (y - (P[k][1] - pc[1])) * (y - (P[k][1] - pc[1]));
+      }
+      return tot;
+    }
+    function bestAngle(flip) {
+      var num = 0, den = 0;
+      for (var k = 0; k < n; k++) {
+        var qx = (Q[k][0] - qc[0]) * (flip ? -1 : 1), qy = Q[k][1] - qc[1];
+        var px = P[k][0] - pc[0], py = P[k][1] - pc[1];
+        num += qx * py - qy * px;
+        den += qx * px + qy * py;
+      }
+      return Math.atan2(num, den);
+    }
+    var best = null;
+    [false, true].forEach(function (flip) {
+      var th = bestAngle(flip), r = residual(th, flip);
+      if (best === null || r < best.r) best = { r: r, th: th, flip: flip };
+    });
+    var c = Math.cos(best.th), sn = Math.sin(best.th), out = [];
+    for (i = 0; i < Q.length; i++) {
+      var qx = (Q[i][0] - qc[0]) * (best.flip ? -1 : 1), qy = Q[i][1] - qc[1];
+      out.push([c * qx - sn * qy + pc[0], sn * qx + c * qy + pc[1]]);
+    }
+    return out;
+  }
+
+  var API = {
+    procrustes2d: procrustes2d,
+    FADE_BELOW: FADE_BELOW,
+    metricFromLaplacian: metricFromLaplacian,
+    meshMetric: meshMetric,
+    componentsOf: componentsOf,
+    laplacianFromEdges: laplacianFromEdges,
+    ringLaplacian: ringLaplacian,
+    eigSymmetric: eigSymmetric,
+    layout2d: layout2d,
+    flatness: flatness,
+    bestAxes: bestAxes,
+    DEAD_MESH_EPS: DEAD_MESH_EPS,
+  };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.LMD = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* engines.js -- SPAR and FATHOM in the browser, on top of the tested LMD engine.
+ * ===========================================================================
+ * Loaded after smi/lmd.js, which supplies meshMetric, laplacianFromEdges,
+ * layout2d, procrustes2d and the two guards. That engine is parity-checked
+ * against the JAX engine over fourteen graphs; nothing here re-implements it.
+ *
+ * These two are checked the same way, by plexus/test_plexus.py, against the
+ * Python in spar/spar.py and fathom/fathom.py.
+ */
+(function (root) {
+  "use strict";
+
+  var LMD = root.LMD || (typeof require === "function" ? require("../smi/lmd.js") : null);
+
+  /* ------------------------------------------------------------- SPAR ---- */
+  /* bearing = w * R = P(this link is in a random spanning tree) = how often the
+   * link is the thing holding the structure together. The bearings sum to
+   * exactly parts - pieces, by Foster's theorem, which is why nothing here is a
+   * score somebody chose. */
+  function bearings(names, links) {
+    var idx = {}, i;
+    for (i = 0; i < names.length; i++) idx[names[i]] = i;
+    if (!links.length) {
+      return { links: [], total: 0, pieces: names.length, parts: names.length,
+               expected: 0, conserved: true, dead: true };
+    }
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      names.length, links.map(function (l) { return [idx[l[0]], idx[l[1]], l[2]]; })));
+    var pieces = Math.max.apply(null, r.labels) + 1;
+    var rows = [], total = 0;
+    links.forEach(function (l, k) {
+      var d = r.D[idx[l[0]]][idx[l[1]]];
+      var b = l[2] * d * d;
+      total += b;
+      rows.push({ i: k, from: l[0], to: l[1], weight: l[2], bearing: b,
+                  soleRoute: b >= 0.999 });
+    });
+    var expected = names.length - pieces;
+    return { links: rows, total: total, pieces: pieces, parts: names.length,
+             expected: expected, conserved: Math.abs(total - expected) < 1e-9,
+             dead: false };
+  }
+
+  /* Which PARTS everything passes through. A link's bearing cannot answer this,
+   * and it is computed by removal rather than by a formula. */
+  function singlePoints(names, links) {
+    if (names.length < 3 || !links.length) return [];
+    var base = bearings(names, links).pieces, out = [];
+    names.forEach(function (n) {
+      var rest = names.filter(function (x) { return x !== n; });
+      var kept = links.filter(function (l) { return l[0] !== n && l[1] !== n; });
+      // NOT skipped when kept is empty: a part whose removal leaves no links at
+      // all is the most complete break there is.
+      var after = kept.length ? bearings(rest, kept).pieces : rest.length;
+      if (after > base) out.push({ part: n, piecesAfter: after });
+    });
+    return out;
+  }
+
+  /* ----------------------------------------------------------- FATHOM ---- */
+  var GROUND = "\u0000ground";   // cannot collide with a real name
+
+  function support(names, links, sources, drop) {
+    var keep = sources.filter(function (s) { return s !== drop; });
+    if (!keep.length) return null;
+    var live = links.filter(function (l) { return l[0] !== drop && l[1] !== drop; });
+    var isSrc = {};
+    keep.forEach(function (s) { isSrc[s] = true; });
+
+    /* pairs are kept as ARRAYS. An earlier version joined the two names into a
+       string key and split it back with split(""), which splits into single
+       characters -- it worked only for one-character names and silently built
+       nonsense graphs for everything else. */
+    var pairs = [], seen = {};
+    live.forEach(function (l) {
+      var a = isSrc[l[0]] ? GROUND : l[0], b = isSrc[l[1]] ? GROUND : l[1];
+      if (a === b) return;                        // inside the contracted ground
+      var lo = a < b ? a : b, hi = a < b ? b : a;
+      var key = lo + "\u0000" + hi;
+      if (key in seen) { pairs[seen[key]][2] += l[2]; return; }
+      seen[key] = pairs.length;
+      pairs.push([lo, hi, l[2]]);
+    });
+    if (!pairs.length) return null;
+
+    var nm = [], set = {};
+    pairs.forEach(function (p) {
+      [p[0], p[1]].forEach(function (n) {
+        if (!(n in set)) { set[n] = true; nm.push(n); }
+      });
+    });
+    nm.sort();
+    var idx = {}, i;
+    for (i = 0; i < nm.length; i++) idx[nm[i]] = i;
+    return { nm: nm, idx: idx, pairs: pairs };
+  }
+
+  function conductance(names, links, sources, conclusion, drop) {
+    var g = support(names, links, sources, drop);
+    if (!g || !(conclusion in g.idx) || !(GROUND in g.idx)) return 0;
+    var edges = g.pairs.map(function (p) { return [g.idx[p[0]], g.idx[p[1]], p[2]]; });
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(g.nm.length, edges));
+    if (r.dead) return 0;
+    var d = r.D[g.idx[conclusion]][g.idx[GROUND]];
+    if (!isFinite(d) || d <= 0) return 0;
+    return 1 / (d * d);
+  }
+
+  /* dependence(s) = 1 - support without s / support with all.
+   * Contraction is the move: it stops asking "is there another way round this
+   * link" and starts asking "is there another way IN". */
+  function sound(names, links, sources, conclusion) {
+    var base = conductance(names, links, sources, conclusion, null);
+    var rows = sources.map(function (s) {
+      var without = conductance(names, links, sources, conclusion, s);
+      var dep = base > 0 ? 1 - without / base : 1;
+      return { source: s, dependence: dep, carriesItAlone: dep >= 0.999 };
+    });
+    rows.sort(function (a, b) { return b.dependence - a.dependence; });
+    var deepest = rows.length ? rows[0] : null;
+    return {
+      conclusion: conclusion, support: base, bySource: rows,
+      deepest: deepest ? deepest.dependence : 1,
+      restsOnOneThread: !!(deepest && deepest.carriesItAlone),
+      remaining: deepest ? 1 - deepest.dependence : 0,
+    };
+  }
+
+  /* ------------------------------------------------- suggested links ----- */
+  /* Shared labels only. This is a SUGGESTION and never a measurement: two
+   * things sharing a word are not thereby dependent on one another, and
+   * nothing computed here is fed into a bearing or a sounding unless a person
+   * confirms the link first. */
+  function suggest(items) {
+    var out = [], i, j;
+    for (i = 0; i < items.length; i++) {
+      for (j = i + 1; j < items.length; j++) {
+        var a = items[i].tags || [], b = items[j].tags || [];
+        if (!a.length || !b.length) continue;
+        var inter = a.filter(function (t) { return b.indexOf(t) >= 0; });
+        if (!inter.length) continue;
+        var union = a.concat(b.filter(function (t) { return a.indexOf(t) < 0; }));
+        out.push({ a: items[i].name, b: items[j].name,
+                   shared: inter, score: inter.length / union.length });
+      }
+    }
+    out.sort(function (x, y) { return y.score - x.score; });
+    return out;
+  }
+
+  var API = { bearings: bearings, singlePoints: singlePoints, sound: sound,
+              conductance: conductance, suggest: suggest, GROUND: GROUND };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PLEXUS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* ei_engine.js -- faithful JS port of cairn/ei_llm.py's assay().
+ *
+ * This exists so the browser app runs the SAME logic as the audited Python
+ * engine, with no server and no network. Parity is not assumed: it is tested by
+ * cairn/test_parity.py, which runs both engines over a shared case list and
+ * fails if any verdict, claim type, confidence or evidence count differs.
+ *
+ * Same limits as the Python engine, restated so nobody reads the port as an
+ * upgrade: this does NOT understand language. Ambiguity detection is syntactic
+ * pattern matching and the plausibility check reads a hand-written list of 15
+ * landform nouns.
+ */
+(function (root) {
+  "use strict";
+
+  var EVIDENCE = [
+    ["source", /\b(according to|source|cited|reference|study|report|dataset|https?:\/\/|\.gov|\.org|doi)\b/i,
+      "A checkable source is named", "No source is named"],
+    ["figures", /\d/, "Contains specific figures", "No specific figures given"],
+    ["method", /\b(method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/i,
+      "Says how it was measured", "Does not say how it was measured"],
+    ["time", /\b(19|20)\d{2}\b|\b(today|yesterday|last (year|month|quarter)|q[1-4])\b/i,
+      "Anchored to a date or period", "No date or period given"],
+    ["scope", /\b(in|across|among|between|per|for)\b[\s\S]{0,28}\b(uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/i,
+      "States who or where it applies", "Scope is not stated"]
+  ];
+
+  var IMMOBILE = ["canyon", "grand canyon", "mountain", "mountains", "valley", "plateau",
+    "cliff", "lake", "river", "desert", "glacier", "volcano", "island", "coastline", "forest"];
+  var SELF_PROPELLED = ["flying", "walking", "running", "driving", "swimming",
+    "travelling", "traveling", "climbing"];
+
+  var ATTACH_RE = /^\s*(i|we|he|she|they|you)\s+(\w+)\s+(the|a|an|my|our|his|her|their)\s+([\w\s]{2,40}?)\s+(\w+ing)\b([\s\S]*)$/i;
+  var CONCEPTUAL_RE = /(\bis (the|a|an) (study|branch|theory|field|concept|term|word|practice|process|state|quality)\b|\bis defined as\b|\bmeans\b|\brefers to\b|\bdefinition of\b|\bby definition\b|^\s*\w+\s*[:—-]\s*(the|a|an)\b)/i;
+  var MATHY_RE = /^\s*[\d\s()+\-*/^=.]+\s*$/;
+  var OPINION_RE = /\b(i think|i believe|in my opinion|i feel|should be|ought to|is better than|is the best|is amazing|is terrible|prefer)\b/i;
+  var QUESTION_RE = /^\s*(what|who|when|where|why|how|is|are|do|does|did|can|could|should|would|will)\b[\s\S]*\?\s*$/i;
+  var IMPERATIVE_RE = /^\s*(mix|add|combine|apply|take|use|heat|stir|install|run|pour|dissolve|blend)\b/i;
+
+  var DOMAIN_RISK = [
+    ["chemistry/formulation", /\b(acid|ph\b|emulsif|oil|solvent|dissolve|concentration|serum|formulation|mix(ing)?|bleach|ammonia)\b/i],
+    ["medical/health", /\b(dose|dosage|mg\b|ml\b|supplement|treatment|symptom|diagnos|medication|serum|skin|ingest|therapy|clinical trial|metabolic|nutrition|placebo|patient|participants|infect\w*|outbreak|epidemic|pandemic|bacteri\w*|virus|viral|fungal|parasit\w*|contagio\w*|antibiotic|antimicrobial|pathogen\w*|contaminat\w*|quarantine|measles|cholera|influenza|bird flu|covid|death[s]?|died|dying|fatal\w*|mortality|lethal|survive|survival|kill(s|ed)?|life-threatening|amputat\w*|wound[s]?|illness|disease|disorder|syndrome|cancer|tumou?r|malignan\w*|biopsy|carcinom\w*|diabet\w*|blood pressure|cholesterol|kidney|cardiac|stroke|asthma|vaccin\w*|immunis\w*|immuniz\w*|booster|screening|hospital\w*|clinic\w*|doctor|nurse|prescription|fever|nausea)\b/i],
+    ["legal/regulatory", /\b(contract|clause|liabilit\w*|complian\w*|regulat\w*|statute|gdpr|licen[cs]e|jurisdiction|appeal|waive[sd]?|legal|lawsuit|court|breach|terminat\w*|disclos\w*|entitle\w*|tribunal)\b/i],
+    ["financial", /\b(revenue|profit|forecast|invest\w*|valuation|roi\b|interest rate|loan|credit|guaranteed returns?|returns? of|pension|tax|apr\b|mortgage|debt|refund|deposit|payment|withdraw\w*)\b/i],
+    ["safety-critical", /\b(voltage|electrical|structural|load-bearing|pressure|gas|flammable|dosing|carbon monoxide|scaffold\w*|toxic|fumes|corrosive|explosi\w*|asbestos|brake[s]?|overheat\w*|wiring|flue|ventilat\w*|pesticide|solvent)\b/i]
+  ];
+
+  function classifyClaim(text) {
+    var t = (text || "").trim();
+    if (!t) return ["EMPTY", "Nothing to look at yet."];
+    if (QUESTION_RE.test(t)) return ["QUESTION",
+      "That's a question, not a claim. I audit statements — paste an answer you've been given and I'll tell you how far it can be trusted."];
+    if (MATHY_RE.test(t)) return ["CONCEPTUAL",
+      "That's arithmetic. It's true by definition, so there's nothing for me to verify against the world."];
+    if (CONCEPTUAL_RE.test(t) && !/\d/.test(t)) return ["CONCEPTUAL",
+      "That's a definition or a concept. Definitions are true by agreement, not by measurement — so there's no source, date or figure for me to check. This isn't a failure; it's simply outside what I audit."];
+    if (OPINION_RE.test(t)) return ["OPINION",
+      "That's a preference or a judgement. I can't audit what someone values — only claims about what is measurably the case."];
+    if (IMPERATIVE_RE.test(t)) return ["INSTRUCTION",
+      "That's a set of instructions. I can check whether it's specified precisely enough to follow — but NOT whether following it is safe or correct."];
+    return ["EMPIRICAL", ""];
+  }
+
+  function domainFlags(text) {
+    var out = [];
+    for (var i = 0; i < DOMAIN_RISK.length; i++) {
+      if (DOMAIN_RISK[i][1].test(text || "")) out.push(DOMAIN_RISK[i][0]);
+    }
+    return out;
+  }
+
+  function scoreEvidence(text) {
+    return EVIDENCE.map(function (e) {
+      var hit = e[1].test(text || "");
+      return { signal: e[0], hit: hit, note: hit ? e[2] : e[3] };
+    });
+  }
+
+  /* ------------------------------------------------------------- handles ---
+   * A tick saying "contains specific figures" leaves the reader to find the
+   * figures themselves. The handles are the SPANS that made each signal fire --
+   * the exact words someone would paste into a search engine to go and check.
+   * Strictly additional: same signals, same hits, plus the causing text. */
+  var FIGURE_RX = /\d[\d,.]*(?:\s*(?:%|percent))?(?:\s+[a-z][a-z-]{2,20})?/gi;
+  var YEAR_RX = /\b(?:19|20)\d{2}\b|\b(?:today|yesterday|last (?:year|month|quarter)|q[1-4])\b/gi;
+  var METHOD_RX = /\b(?:[a-z-]+\s+)?(?:method|measured|sample|n\s*=|survey|trial|audit|tested|compared|control|logs?)\b/gi;
+  var SCOPE_RX = /\b(?:in|across|among|between|per|for)\b.{0,28}?\b(?:uk|us|eu|africa|asia|region|country|sector|team|school|hospital|company|cities|clinics)\b/gi;
+  var SOURCE_RX = /\b(?:according to|source|cited|reference|study|report|dataset|doi)\b|https?:\/\/\S+|\b\S+\.(?:gov|org)\b/gi;
+  /* A source MARKER ("according to") is not a source NAME. The distinction only
+   * becomes visible once the span is shown, which is the point of showing it. */
+  var NAMED_RX = /https?:\/\/\S+|\bdoi\b|\b\S+\.(?:gov|org)\b|\b(?:the )?[A-Z][a-zA-Z]+(?: [A-Z][a-zA-Z]+)*\s+(?:Journal|Review|Times|Post|University|Institute|Office|Agency|Association|Society)\b|\b(?:Nature|Science|Lancet|BMJ|JAMA|NEJM|WHO|CDC|NHS|ONS|OECD|NASA)\b/g;
+  var STOP = ["a","an","the","of","in","on","at","by","to","and","or","was","were","is","are"];
+
+  function spans(rx, text, limit) {
+    var out = [], m;
+    rx.lastIndex = 0;
+    while ((m = rx.exec(text || "")) !== null) {
+      var s = m[0].replace(/^[\s,.;:]+|[\s,.;:]+$/g, "");
+      if (s && STOP.indexOf(s.toLowerCase()) === -1 && out.indexOf(s) === -1) out.push(s);
+      if (out.length >= limit) break;
+      if (m.index === rx.lastIndex) rx.lastIndex++;
+    }
+    return out;
+  }
+
+  function extractHandles(text) {
+    text = text || "";
+    var all = spans(FIGURE_RX, text, 6);
+    var figures = all.filter(function (s) { return !/^(?:19|20)\d{2}$/.test(s.split(/\s+/)[0]); });
+    if (!figures.length) figures = all;
+    var method = [], mm;
+    METHOD_RX.lastIndex = 0;
+    while ((mm = METHOD_RX.exec(text)) !== null) {
+      var s = mm[0].trim(), first = s.split(/\s+/)[0].toLowerCase();
+      if (s.split(/\s+/).length > 1 && STOP.indexOf(first) !== -1) s = s.split(/\s+/).slice(1).join(" ");
+      if (method.indexOf(s) === -1) method.push(s);
+      if (mm.index === METHOD_RX.lastIndex) METHOD_RX.lastIndex++;
+    }
+    var src = spans(SOURCE_RX, text, 3);
+    spans(NAMED_RX, text, 2).forEach(function (s) { if (src.indexOf(s) === -1) src.push(s); });
+    return {
+      source: src, figures: figures, method: method.slice(0, 3),
+      time: spans(YEAR_RX, text, 3), scope: spans(SCOPE_RX, text, 3),
+      // Reported, never scored.
+      source_named: (NAMED_RX.lastIndex = 0, NAMED_RX.test(text))
+    };
+  }
+
+  function searchLine(h) {
+    var parts = [];
+    ["time", "figures", "method", "scope"].forEach(function (k) {
+      (h[k] || []).forEach(function (s) { if (parts.indexOf(s) === -1) parts.push(s); });
+    });
+    return parts.join(" ");
+  }
+
+  function nextSteps(checks, kind) {
+    if (kind === "QUESTION") return ["Paste the answer you were given, and I'll audit that instead."];
+    if (kind === "CONCEPTUAL" || kind === "OPINION") return [
+      "Add a measurement, a date or a source and it becomes something I can check.",
+      "For definitions, an ordinary assistant or a dictionary is the right tool."];
+    var fix = {
+      source: "Name where it came from — a study, a report, a link.",
+      figures: "Add the actual numbers.",
+      method: "Say how it was measured.",
+      time: "Add when it was measured.",
+      scope: "Say who or where it applies to."
+    };
+    var missing = checks.filter(function (c) { return !c.hit; }).slice(0, 3)
+      .map(function (c) { return fix[c.signal]; });
+    return missing.length ? missing : ["Nothing material is missing."];
+  }
+
+  function inImmobile(s) {
+    if (IMMOBILE.indexOf(s) !== -1) return true;
+    return s.split(/\s+/).some(function (w) { return IMMOBILE.indexOf(w) !== -1; });
+  }
+
+  function detectAmbiguity(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = ATTACH_RE.exec(t);
+    if (!m) return { ambiguous: false, readings: [], pattern: null };
+    var subj = m[1], verb = m[2], obj = m[4].trim(), part = m[5], rest = m[6].trim();
+    var objKey = obj.toLowerCase().trim();
+    var objImmobile = inImmobile(objKey);
+    var partMoves = SELF_PROPELLED.indexOf(part.toLowerCase()) !== -1;
+    return {
+      ambiguous: true, pattern: "participial attachment", object: obj, participle: part,
+      object_in_immobile_lexicon: objImmobile,
+      readings: [
+        { id: "A", attaches_to: "subject",
+          paraphrase: (subj + " was " + part + " " + rest + ", and " + subj + " " + verb + " the " + obj).trim(),
+          plausible: true, why: "The subject is an agent, so it can perform the action." },
+        { id: "B", attaches_to: "object",
+          paraphrase: (subj + " " + verb + " the " + obj + ", and the " + obj + " was " + part + " " + rest).trim(),
+          plausible: !(objImmobile && partMoves),
+          why: (objImmobile && partMoves)
+            ? "'" + obj + "' is in the declared immobile-landform lexicon and '" + part + "' is self-propelled motion, so this reading is physically implausible."
+            : "Both the object and the action are ordinary, so this reading is perfectly possible." }
+      ]
+    };
+  }
+
+  function checkImpossible(text) {
+    var t = (text || "").trim().replace(/\.+$/, "");
+    var m = /^\s*(the\s+)?([\w\s]{2,40}?)\s+(was|is|were|are)\s+(\w+ing)\b/i.exec(t);
+    if (!m) return null;
+    var obj = m[2].trim().toLowerCase(), part = m[4].toLowerCase();
+    if (inImmobile(obj) && SELF_PROPELLED.indexOf(part) !== -1) {
+      return { implausible: true, subject: obj, action: part,
+        basis: "declared immobile-landform lexicon (a hand-written list of " + IMMOBILE.length + " nouns), NOT comprehension" };
+    }
+    return null;
+  }
+
+  function assay(text, model) {
+    model = model || "slate";
+    text = (text || "").trim();
+    var kr = classifyClaim(text), kind = kr[0], kindNote = kr[1];
+    var checks = scoreEvidence(text);
+    var hits = checks.filter(function (c) { return c.hit; }).length;
+    var hnd = extractHandles(text);
+    var words = text ? text.split(/\s+/).length : 0;
+    var amb = detectAmbiguity(text);
+    var impossible = checkImpossible(text);
+    var domains = domainFlags(text);
+
+    if (kind === "CONCEPTUAL" || kind === "OPINION" || kind === "QUESTION" || kind === "EMPTY") {
+      return {
+        input: text, model: model, verdict: "OUT_OF_SCOPE", claim_type: kind,
+        committed_answer: null, confidence: null, band: "not applicable",
+        evidence: [], evidence_hits: 0, evidence_total: EVIDENCE.length,
+        handles: hnd, search_line: searchLine(hnd),
+        ambiguity: amb, implausible: null, domain_flags: domains,
+        explanation: kindNote, question: null, next_steps: nextSteps(checks, kind),
+        abstained: false, engine: "cairn-ei/1.1 (js)",
+        limits: "Out of scope is not a failure. I audit empirical claims; this text is not one."
+      };
+    }
+
+    var conf = hits / EVIDENCE.length;
+    if (words < 4) conf = 0.0;
+    if (model === "granite" || model === "quartz") conf = Math.min(1.0, conf * 1.12);
+    if (amb.ambiguous) conf = Math.min(conf, 0.35);
+
+    var verdict, committed, question = null;
+    if (amb.ambiguous) {
+      verdict = "AMBIGUOUS"; committed = null;
+      question = "Which did you mean: were you " + amb.participle + ", or was the " + amb.object + " " + amb.participle + "?";
+    } else if (impossible) {
+      verdict = "IMPLAUSIBLE"; committed = null;
+      question = "Did you mean this literally, or is a word missing?";
+    } else if (conf < 0.25) {
+      verdict = "INSUFFICIENT_EVIDENCE"; committed = null;
+      question = "Add a source, a figure, a date, a method or a scope and I can work with it.";
+    } else {
+      verdict = "SUPPORTED"; committed = text;
+    }
+
+    var band = conf >= 0.7 ? "high" : conf >= 0.45 ? "moderate" : conf >= 0.25 ? "low" : "insufficient";
+    return {
+      input: text, model: model, verdict: verdict, claim_type: kind,
+      committed_answer: committed, confidence: Math.round(conf * 1000) / 1000, band: band,
+      evidence: checks, evidence_hits: hits, evidence_total: EVIDENCE.length,
+      handles: hnd, search_line: searchLine(hnd),
+      ambiguity: amb, implausible: impossible, domain_flags: domains,
+      explanation: kindNote, question: question, next_steps: nextSteps(checks, kind),
+      abstained: committed === null, engine: "cairn-ei/1.1 (js)",
+      limits: "This engine does not understand language. Ambiguity detection is pattern matching; plausibility reads a hand-written list of " + IMMOBILE.length + " landform nouns."
+    };
+  }
+
+  var API = { assay: assay, classifyClaim: classifyClaim, domainFlags: domainFlags,
+    scoreEvidence: scoreEvidence, extractHandles: extractHandles, searchLine: searchLine,
+    IMMOBILE: IMMOBILE, EVIDENCE_N: EVIDENCE.length };
+
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.EI = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>/* press.js -- the Lens algorithm. KERNEL: no interface, no network, ever.
+ * ===========================================================================
+ * THE LOGIC, WITHOUT THE TERMINOLOGY
+ * A pomegranate is peel, bitter pith and seeds around the part you want. You do
+ * not argue with the peel. You press it, and what runs out is what you can use.
+ * Whatever does not run out was never going to nourish anybody, however good the
+ * fruit looked from outside.
+ *
+ * Truthfulness is not truth. Truthfulness is manner -- fluent, confident,
+ * sincere-sounding. Truth is what survives the pressing. That is the whole
+ * distinction this stack is arranged around, and this file is it as arithmetic.
+ *
+ * WHAT IS MEASURED
+ * How fast reality could contradict this, IF reality disagrees. Not whether it
+ * is true. Not how likely. Not how good.
+ *
+ * THE CONSEQUENCE, SAID BEFORE ANYBODY MEETS IT AS A BUG
+ * A completely fabricated claim carrying a named body, a year, a percentage and
+ * a stated method reads MAXIMUM here. A careful, honest, vague statement reads
+ * NOTHING.
+ *
+ * That is correct. The fabrication has staked something and can be destroyed
+ * with one phone call. The vague statement cannot be destroyed at all, which is
+ * why fog survives and specifics die. Pressing a well-formed lie traps the liar
+ * inside their own structure. Pressing fog produces nothing, and this file says
+ * so rather than producing a number.
+ *
+ * WHY THE MARKS HANG OFF THE ORIGIN AND NOT OFF THE CLAIM
+ * A figure attributed to a report is worth nothing if the report does not exist.
+ * So marks attach to the ORIGIN they are attributed to, and the origin attaches
+ * to the claim. That one modelling decision produces the finding:
+ *
+ *     with m marks on one origin, each mark reads 1/m^2
+ *
+ * Five handles do not give you five ways to check. They give you one way to
+ * check, dressed as five, and each reads 0.040 precisely because the graph is
+ * saying they are not independent. The reassuring number is the warning. It is
+ * the fifth time this shape has turned up while this repository was being built.
+ *
+ * WHY CONTRACTION IS THE RIGHT MOVE HERE AND THE WRONG ONE IN A BILL
+ * FATHOM's sources are disjunctive. In a bill every input is required, so packs
+ * refuse this readout. Here any SINGLE check coming back negative can kill the
+ * claim, so disjunction is exactly the relation that holds.
+ */
+(function (root) {
+  "use strict";
+
+  var ENG = root.PLEXUS || (typeof require === "function" ? require("./engines.js") : null);
+
+  var CLAIM = "The claim stands";
+  var UNNAMED = "an origin nobody named";
+
+  /* What a person actually does, per kind of mark. These are instructions, not
+     judgements: each one can come back negative, which is the only property
+     that makes a mark a check at all. */
+  var INSTRUCTION = {
+    source: "Open it. Confirm the thing named actually exists and says this.",
+    figures: "Find the figure in the original, not in the summary of it.",
+    method: "Ask how it was measured, and on how many.",
+    time: "Check the date, and ask what has changed since.",
+    scope: "Ask who and where it covers, and whether that includes you.",
+  };
+
+  var LABEL = {
+    source: "something named you can open",
+    figures: "a specific figure",
+    method: "a stated way of measuring",
+    time: "a date or period",
+    scope: "who or where it applies",
+  };
+
+  /* ------------------------------------------------------- the check graph -- */
+  /* marks: [{ kind, text, origin }]. `origin` is what the mark is attributed to.
+     Marks with no stated origin all hang off one unnamed node -- which is not a
+     technicality, it is the finding: an origin nobody named cannot be opened,
+     and everything hanging off it goes when it goes. */
+  function graph(marks) {
+    var parts = [CLAIM], links = [], seenOrigin = {}, seenMark = {};
+    marks.forEach(function (m, i) {
+      var origin = (m.origin && String(m.origin).trim()) || UNNAMED;
+      if (!seenOrigin[origin]) {
+        seenOrigin[origin] = true;
+        parts.push(origin);
+        links.push([origin, CLAIM, 1.0]);
+      }
+      /* names must be unique in the graph, and two marks of the same kind on the
+         same origin are two different checks */
+      var name = m.name || (LABEL[m.kind] || m.kind);
+      var n = name, k = 2;
+      while (seenMark[n]) { n = name + " (" + k + ")"; k++; }
+      seenMark[n] = true;
+      parts.push(n);
+      links.push([n, origin, 1.0]);
+      m._node = n;
+      m._origin = origin;
+      void i;
+    });
+    return { parts: parts, links: links,
+             marks: marks.map(function (m) { return m._node; }),
+             origins: Object.keys(seenOrigin) };
+  }
+
+  /* ------------------------------------------------------------- the press -- */
+  function press(marks) {
+    marks = (marks || []).filter(function (m) { return m && m.kind; });
+
+    if (!marks.length) {
+      /* No number. Assigning a value to fog is the mask failure, committed by
+         the tool built to name it. */
+      return {
+        checkable: false,
+        says: "Nothing runs out. There is no source to open, no figure to look " +
+              "up and no date to compare, so there is nothing here that could " +
+              "come back negative.",
+        meaning: "That is not the same as false. It means this cannot be shown " +
+                 "false, which is why wording like this survives and specific " +
+                 "claims die.",
+        firstCheck: null, checks: [], origins: [], sharedOrigin: false,
+        structure: null, marks: 0,
+      };
+    }
+
+    var g = graph(marks);
+    var b = ENG.bearings(g.parts, g.links);
+    var sp = ENG.singlePoints(g.parts, g.links).map(function (r) { return r.part; });
+    var f = ENG.sound(g.parts, g.links, g.marks, CLAIM);
+
+    var byNode = {};
+    f.bySource.forEach(function (r) { byNode[r.source] = r.dependence; });
+
+    var checks = marks.map(function (m) {
+      return {
+        kind: m.kind,
+        node: m._node,
+        origin: m._origin,
+        namedOrigin: m._origin !== UNNAMED,
+        text: m.text || null,
+        instruction: INSTRUCTION[m.kind] || "Go and confirm this.",
+        settles: byNode[m._node],
+      };
+    });
+
+    /* The first thing to do is whatever, if removed, leaves the rest of the
+       claim in pieces. That is an origin -- computed by removal, never by a
+       rank somebody assigned.
+       THE CLAIM ITSELF IS EXCLUDED. With two or more origins the claim node is
+       also a cut vertex, which is true and useless: it would have the tool
+       telling somebody to go and open "The claim stands". Found by running it,
+       and it also falsified a prediction made before the run -- the count of
+       single points with two origins is three, not two. */
+    var origins = g.origins;
+    var cuts = sp.filter(function (n) { return n !== CLAIM; });
+    var first = cuts.length ? cuts[0] : null;
+    var shared = origins.length === 1 && marks.length > 1;
+
+    return {
+      checkable: true,
+      marks: marks.length,
+      origins: origins,
+      unnamedOrigin: origins.indexOf(UNNAMED) >= 0,
+      firstCheck: first ? {
+        origin: first,
+        instruction: first === UNNAMED
+          ? "Ask where this came from. Until something is named there is nothing to open."
+          : "Open " + first + " and confirm it exists and says this.",
+        breaks: cuts.length,
+      } : null,
+      checks: checks.sort(function (a, b2) { return b2.settles - a.settles; }),
+      singlePoints: sp,
+      cutOrigins: cuts,
+      sharedOrigin: shared,
+      eachSettles: shared ? checks[0].settles : null,
+      says: shared
+        ? marks.length + " things to check, and every one of them hangs off " +
+          (origins[0] === UNNAMED ? "an origin nobody named" : origins[0]) +
+          ". They are not " + marks.length + " ways in; they are one way in, " +
+          "counted " + marks.length + " times."
+        : "There are " + marks.length + " things here you can go and do.",
+      meaning: "A claim that is completely made up reads exactly like a true one " +
+               "here. This says how quickly you could find out, not which way it " +
+               "will go.",
+      structure: {
+        parts: g.parts.length,
+        bearings: b.links.map(function (r) { return r.bearing; }),
+        totalBearing: b.total, expected: b.expected, conserved: b.conserved,
+        pieces: b.pieces,
+      },
+    };
+  }
+
+  /* Marks straight from a list of kinds, all on one origin. Used by the page and
+     by the suite; keeps the 1/m^2 law testable without any text at all. */
+  function fromKinds(kinds, origin) {
+    return (kinds || []).map(function (k) {
+      return { kind: k, origin: origin || null };
+    });
+  }
+
+  var API = { press: press, graph: graph, fromKinds: fromKinds,
+              INSTRUCTION: INSTRUCTION, LABEL: LABEL,
+              CLAIM: CLAIM, UNNAMED: UNNAMED };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.PRESS = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var P = window.PRESS, EI = window.EI;
+
+  var FOG = "Industry experts generally agree that our meters are highly " +
+            "accurate and save you money.";
+  var SHARP = "A 2026 audit by the water authority using the flow-rate method " +
+              "proved that 90% of meters overcharge by exactly 12% across the region.";
+
+  var struck = {};
+
+  function text(tag, cls, s) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (s !== undefined) el.textContent = s;
+    return el;
+  }
+  function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+
+  function pct(x) { return (x * 100).toFixed(1) + "%"; }
+
+  /* The marks come from cairn/ei_engine.js -- the one implementation of what a
+     mark is in this repository. No private copy here to drift away from it. */
+  function found(src) {
+    var hits = EI.scoreEvidence(src).filter(function (c) { return c.hit; });
+    var h = EI.extractHandles(src);
+    var origin = (h.source && h.source.length) ? h.source[0] : null;
+    return { kinds: hits.map(function (c) { return c.signal; }), handles: h, origin: origin };
+  }
+
+  function run() {
+    var src = $("#text").value.trim();
+    var f = found(src);
+
+    /* The chips are built once per press and each one flips ITS OWN state --
+       the list is never rebuilt inside a handler bound to one of its children.
+       That defect has appeared six times in this codebase. */
+    var box = $("#marks");
+    clear(box);
+    f.kinds.forEach(function (kind) {
+      var b = text("button", "mk");
+      b.type = "button";
+      b.setAttribute("aria-pressed", struck[kind] ? "false" : "true");
+      b.appendChild(text("span", null, P.LABEL[kind] || kind));
+      var spans = (f.handles[kind === "figures" ? "figures" : kind] || []);
+      if (spans.length) b.appendChild(text("span", "n", spans[0]));
+      b.addEventListener("click", function () {
+        struck[kind] = !struck[kind];
+        b.setAttribute("aria-pressed", struck[kind] ? "false" : "true");
+        measure(f);
+      });
+      box.appendChild(b);
+    });
+    $("#nomarks").hidden = f.kinds.length > 0 || !src;
+    measure(f);
+  }
+
+  function measure(f) {
+    var kinds = f.kinds.filter(function (k) { return !struck[k]; });
+    var r = P.press(kinds.map(function (k) {
+      return { kind: k, origin: f.origin };
+    }));
+
+    var out = $("#out");
+    out.hidden = !$("#text").value.trim();
+    out.setAttribute("data-k", r.checkable ? "wet" : "dry");
+    $("#outSays").textContent = r.says;
+    $("#outMeans").textContent = r.meaning;
+
+    $("#first").hidden = !r.firstCheck;
+    if (r.firstCheck) {
+      $("#firstDo").textContent = r.firstCheck.instruction;
+      $("#firstWhy").textContent =
+        "Everything else here hangs off it. If it comes back negative, the rest " +
+        "goes with it — which is why it is worth doing before any of the others.";
+    }
+
+    var rows = $("#rows");
+    clear(rows);
+    r.checks.forEach(function (c) {
+      var e = text("div", "rw");
+      e.appendChild(text("div", "do", c.instruction));
+      var sub = text("div", "sub");
+      sub.textContent = (c.text ? "“" + c.text + "” — " : "") +
+        "on its own this settles " + pct(c.settles) + " of what is here.";
+      e.appendChild(sub);
+      rows.appendChild(e);
+    });
+  }
+
+  $("#text").addEventListener("input", function () { struck = {}; run(); });
+  $("#fog").addEventListener("click", function () {
+    $("#text").value = FOG; struck = {}; run();
+  });
+  $("#sharp").addEventListener("click", function () {
+    $("#text").value = SHARP; struck = {}; run();
+  });
+  $("#clear").addEventListener("click", function () {
+    $("#text").value = ""; struck = {}; run();
+  });
+
+  $("#big").addEventListener("click", function () {
+    var on = document.documentElement.hasAttribute("data-big");
+    if (on) document.documentElement.removeAttribute("data-big");
+    else document.documentElement.setAttribute("data-big", "1");
+    $("#big").setAttribute("aria-pressed", on ? "false" : "true");
+  });
+  $("#theme").addEventListener("click", function () {
+    var now = document.documentElement.getAttribute("data-theme");
+    var dark = now ? now === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+
+  run();
+})();
+</script>
+
+<script>
+/* Registers only when the page is served (https or localhost). Opened straight
+   from a file there is no service worker, and the app works anyway -- it is one
+   file with everything already in it. */
+if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>

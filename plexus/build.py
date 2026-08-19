@@ -147,9 +147,9 @@ SW = """/* sw.js -- Plexus offline.
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v9";
+var CACHE = "plexus-v10";
 var FILES = ["./", "./index.html", "./topology.html", "./manifold.html",
-             "./flint.html", "./commons.html", "./gate.html", "./packs.html",
+             "./flint.html", "./commons.html", "./gate.html", "./packs.html", "./press.html",
              "./manifest.webmanifest", "./icon.svg",
              "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 
@@ -307,6 +307,22 @@ def main():
     assert "{{" not in packs, "unfilled placeholder left in packs.html"
     open(os.path.join(HERE, "packs.html"), "w", encoding="utf-8").write(packs)
 
+    # Press: the Lens algorithm. The mark finder is cairn/ei_engine.js -- the one
+    # implementation of what a mark is in this repository, inlined rather than
+    # copied, so the page cannot grow a private version that drifts from the
+    # suite that tests it.
+    ei = open(os.path.join(ROOT, "cairn", "ei_engine.js"), encoding="utf-8").read()
+    pr = open(os.path.join(HERE, "press.js"), encoding="utf-8").read()
+    rtpl = open(os.path.join(HERE, "press_template.html"), encoding="utf-8").read()
+    press = (rtpl.replace("{{LMD}}", lmd)
+                 .replace("{{ENGINES}}", eng)
+                 .replace("{{EI}}", ei)
+                 .replace("{{PRESS}}", pr)
+                 .replace("{{ICON}}", icon_uri)
+                 .replace("</body>", REGISTER + "</body>"))
+    assert "{{" not in press, "unfilled placeholder left in press.html"
+    open(os.path.join(HERE, "press.html"), "w", encoding="utf-8").write(press)
+
     open(os.path.join(HERE, "manifest.webmanifest"), "w", encoding="utf-8").write(MANIFEST)
     open(os.path.join(HERE, "sw.js"), "w", encoding="utf-8").write(SW)
     open(os.path.join(HERE, "vercel.json"), "w", encoding="utf-8").write(VERCEL)
@@ -320,6 +336,7 @@ def main():
     print("wrote commons.html                     (%.1f KB)" % (len(shapes) / 1024))
     print("wrote gate.html                        (%.1f KB)" % (len(gate) / 1024))
     print("wrote packs.html                       (%.1f KB)" % (len(packs) / 1024))
+    print("wrote press.html                       (%.1f KB)" % (len(press) / 1024))
     print("wrote manifest.webmanifest, sw.js, vercel.json, icon.svg")
     missing = [f for f in ("icon-192.png", "icon-512.png", "icon-180.png")
                if not os.path.exists(os.path.join(HERE, f))]

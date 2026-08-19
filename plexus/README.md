@@ -348,6 +348,90 @@ needs people, and there are none in this repository.
 
 ---
 
+## Press — the Lens algorithm
+
+`press.html`. Paste what you were told. It presses out the things you could go
+and check, and names the one to do first.
+
+The logic is borrowed and the vocabulary is not: a pomegranate is peel, bitter
+pith and seeds around the part you want, and you do not argue with the peel —
+you press it, and what runs out is what you can use. Whatever does not run out
+was never going to nourish anybody, however good the fruit looked. Truthfulness
+is manner; truth is what survives the pressing. A test greps `press.html` for
+the source's terminology and fails if any of it appears.
+
+### What it measures
+
+**How fast reality could contradict this, if reality disagrees.** Not whether it
+is true, not how likely, not how good.
+
+The consequence has to be said before anyone meets it as a bug:
+
+> A completely fabricated claim carrying a named body, a year, a percentage and
+> a stated method reads **maximum**. A careful, honest, vague statement reads
+> **nothing**.
+
+That is correct. The fabrication has staked something and can be destroyed with
+one phone call. *“Industry experts generally agree that our meters are highly
+accurate”* cannot be destroyed at all — which is why fog survives every argument
+and specifics die. Pressing a well-made lie traps it inside its own structure;
+pressing fog produces nothing, and the tool returns **no number** rather than a
+low one.
+
+A fabricated claim and a true one of the same shape return **identical numbers,
+to 1e-12**, sharing no word. That is the test marked THESIS. If it ever fails,
+the engine has begun guessing about the world and should be stopped rather than
+improved.
+
+### The finding: 1/m², exactly
+
+Marks do not attach to the claim — they attach to the **origin** they are
+attributed to, because a figure attributed to a report is worth nothing if the
+report does not exist. That one modelling choice produces an exact law:
+
+| Handles on one origin | Each one settles |
+|---|---|
+| 1 | 1.000 |
+| 2 | 0.250 |
+| 3 | 0.111 |
+| 4 | 0.0625 |
+| 5 | 0.040 |
+
+**Five handles do not give you five ways to check.** They give you one way to
+check, dressed as five, and each reads 0.040 *because* the graph is saying they
+are not independent. The reassuring number is the warning. Split the same four
+marks across two genuine origins and each rises to 0.125.
+
+This is the fifth appearance of the shared-origin shape in this repository.
+
+### The check to do first
+
+Computed by removal, never by a rank anyone assigned: the part whose removal
+leaves the rest in pieces. On a claim citing an unnamed audit that comes out as
+*“Ask where this came from. Until something is named there is nothing to open.”*
+
+### A prediction that missed, and the defect behind it
+
+L4 predicted two single points with two origins. There are **three**: with two
+origins hanging off it, the claim node is itself a cut vertex. The arithmetic
+was right and the hand calculation was wrong — and it was not just a wrong
+number, it was a defect. `firstCheck` took the first single point, so on any
+two-origin claim the tool told the reader to go and open *“The claim stands”*.
+The claim node is now excluded and `test_the_prediction_that_missed` pins both
+the correction and the miss. The pre-registration was not edited.
+
+Marks come from `cairn/ei_engine.js`, inlined rather than copied, so the page
+cannot grow a private copy that drifts. It matches words and does not read: on
+the worked example it misses the source entirely, because neither *authority*
+nor *audit* is in the pattern it looks for. That is registered as a null, not
+patched by widening a regex until it fires on everything — a person can add or
+strike any mark with one tap.
+
+Predictions locked before anything ran: `plexus/press_preregistration.md`, sha256
+`a72e5d6950ae55db446479f40e472b288008068a7f0758ad6b3789c2bdfb48eb`.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:

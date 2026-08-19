@@ -7,9 +7,9 @@
  */
 /* Bump CACHE whenever a shipped file changes. The old cache is deleted on
  * activate, so a stale page cannot survive a deploy. */
-var CACHE = "plexus-v9";
+var CACHE = "plexus-v10";
 var FILES = ["./", "./index.html", "./topology.html", "./manifold.html",
-             "./flint.html", "./commons.html", "./gate.html", "./packs.html",
+             "./flint.html", "./commons.html", "./gate.html", "./packs.html", "./press.html",
              "./manifest.webmanifest", "./icon.svg",
              "./icon-192.png", "./icon-512.png", "./icon-180.png"];
 

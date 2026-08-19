@@ -95,7 +95,7 @@ out.tools = L.tools().map(t => ({
 out.paradigm = L.PARADIGM;
 out.refusals = {};
 for (const page of ["index.html", "flint.html", "commons.html", "gate.html",
-                    "packs.html"]) {
+                    "packs.html", "press.html"]) {
   out.refusals[page] = L.refusalsFor(page);
 }
 

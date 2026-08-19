@@ -324,7 +324,7 @@ def test_every_shipped_page_prints_its_own_refusals(g):
             assert _flat(sentence) in src, \
                 f"{page} does not print its own limit: {sentence!r}"
         checked += 1
-    assert checked == 5, "a page dropped out of the register without anyone noticing"
+    assert checked == 6, "a page dropped out of the register without anyone noticing"
 
 
 def test_every_shipped_page_says_where_to_go_afterwards(g):
