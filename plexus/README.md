@@ -499,6 +499,64 @@ useless. Nothing here says whether MetaphorOS would work, sell, or help anybody
 
 ---
 
+## Qwen and DeepSeek — one test that could not run, and one that could
+
+### The test that could not run
+
+`hf_preregistration.md` (sha256 `ebe1366f…65adf87`) asked seven questions about
+the text of real Qwen and DeepSeek model cards: how many quantitative sentences
+press as checkable, how many marks each carries, how often the origin is
+unnamed. **Not one of them has an answer.**
+
+Two routes were tried, both closed here: the Hugging Face MCP tools returned
+*requires approval* and no approval arrived, and the network policy answered
+**403 to CONNECT for `huggingface.co:443`** — the proxy logged both refusals
+itself. Every prediction in that file is about card text, so there is no partial
+result and no substitute corpus.
+
+**The pre-registration was not rewritten** into a question this environment can
+answer. It stays locked and unedited; `HF_NULL.md` records the block and what it
+would take to run it. Predictions edited after meeting the data are not
+predictions.
+
+### The test that could run
+
+A separate, smaller question with its own pre-registration
+(`cohort_preregistration.md`, sha256 `68682bef…5bf3d7aa`), about a file already
+in this repository. `ei-dashboards/data/qwen_deepseek_frozen.json` holds 22 real
+Qwen and DeepSeek projects, frozen 2026-08-06. Twenty-two projects reads as
+twenty-two observations.
+
+They are **two organisations**: deepseek-ai 12, QwenLM 10. Both are cut points.
+Pressing each repository as a mark hanging off its publisher:
+
+| | Each repository settles | A naive 1/22 implies |
+|---|---|---|
+| deepseek-ai (12) | **0.003499** | 0.045455 |
+| QwenLM (10) | **0.004962** | 0.045455 |
+
+An order of magnitude below what counting to twenty-two suggests. Sixth
+appearance of this shape in this repository, and the first time it has been
+pointed at a cohort we use ourselves rather than at somebody else's work.
+
+**A pre-registered figure missed in its last digit.** C4 was written as
+0.003498; the exact value is 262/143 arithmetic giving 0.0034987, so the
+measured 0.003499 is right and the prediction was truncated where it should have
+been rounded. Recorded in `test_cohort.py` rather than tidied away.
+
+**What this does not say:** nothing about the quality of any repository or
+either organisation, and nothing about the cohort's fitness for the use `plumb`
+already makes of it — which is marked descriptive-only there for its own
+separate reasons. Two labs publishing separately can still make genuinely
+independent choices; the arithmetic reads the publishing structure and nothing
+else.
+
+**And the readout does not fit.** `press.js` was built for claims, so its
+sentence here reads *"there are 22 things here you can go and do"* — true, and
+beside the point. A test pins that, and the sentence is not used.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:
