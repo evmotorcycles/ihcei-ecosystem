@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0F1418">
-<title>Plexus &middot; Press</title>
-<meta name="description" content="Paste what you were told. See what runs out — the things you can go and check, and which one to do first. Nothing leaves this device.">
+<title>Plexus &middot; Intercept</title>
+<meta name="description" content="Paste what an assistant told you. See what can be checked, what to check first, and what a workable plan still has to settle. Nothing leaves this device.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CjxyZWN0IHdpZHRoPSI2NCIgaGVpZ2h0PSI2NCIgcng9IjE0IiBmaWxsPSIjMEYxNDE4Ii8+CjxnIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCI+CjxwYXRoIGQ9Ik0zMiAxNSBMMTggMzQgTTMyIDE1IEw0NiAzNCBNMTggMzQgTDMyIDUwIE00NiAzNCBMMzIgNTAgTTE4IDM0IEw0NiAzNCIKICAgICAgc3Ryb2tlPSIjMzM0MzRGIiBzdHJva2Utd2lkdGg9IjIuNCIvPgo8cGF0aCBkPSJNMzIgMTUgTDE4IDM0IE0xOCAzNCBMMzIgNTAiIHN0cm9rZT0iI0UyNjY0QiIgc3Ryb2tlLXdpZHRoPSIzLjQiLz4KPC9nPgo8ZyBmaWxsPSIjRURGM0Y3Ij4KPGNpcmNsZSBjeD0iMzIiIGN5PSIxNSIgcj0iNC42Ii8+PGNpcmNsZSBjeD0iMTgiIGN5PSIzNCIgcj0iNC42Ii8+CjxjaXJjbGUgY3g9IjQ2IiBjeT0iMzQiIHI9IjQuNiIvPjxjaXJjbGUgY3g9IjMyIiBjeT0iNTAiIHI9IjQuNiIvPgo8L2c+PC9zdmc+">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Press">
+<meta name="apple-mobile-web-app-title" content="Intercept">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="color-scheme" content="dark light">
 <style>
@@ -147,7 +147,7 @@ textarea{width:100%;min-height:7rem;background:var(--card-2);color:var(--ink);
 <body>
 
 <header class="top">
-  <div class="brand">Plexus <span>Press it and see what runs out</span></div>
+  <div class="brand">Plexus <span>Before you act on what it told you</span></div>
   <div class="sp"></div>
   <a class="chip" href="index.html">Back</a>
   <button class="chip" id="big" aria-pressed="false">Bigger text</button>
@@ -157,72 +157,72 @@ textarea{width:100%;min-height:7rem;background:var(--card-2);color:var(--ink);
 <main class="wrap">
 
   <section class="panel">
-    <h2>Do not argue with the peel</h2>
-    <p>A pomegranate is peel, bitter pith and seeds around the part you want. You
-      do not argue with the peel — you press it, and what runs out is what you
-      can use. This does the same with a sentence: it presses out the things you
-      could go and check, and tells you which one to do first.</p>
+    <h2>Paste what the assistant gave you</h2>
+    <p>Three things come back, and they are kept apart because they are three
+      different kinds of answer: what in the text could be <b>checked</b>, what a
+      workable plan still has to <b>settle</b>, and whether this is a subject
+      where being wrong <b>hurts</b>.</p>
     <p class="small"><b>Nothing leaves this device.</b> What you paste is not
-      sent anywhere, and there is nothing here that could send it.</p>
+      sent anywhere, is not stored, and there is nothing here that could send it.</p>
   </section>
 
   <section class="panel">
-    <span class="fl">Paste what you were told</span>
-    <textarea id="text" aria-label="The sentence or paragraph you want to press"
-      placeholder="A letter, a quote, a message, something an assistant told you."></textarea>
+    <textarea id="text" aria-label="What the assistant told you"
+      placeholder="Paste the answer, the plan, the steps — whatever you were about to act on."></textarea>
     <div class="acts">
-      <button id="fog">Try a vague one</button>
-      <button id="sharp">Try a specific one</button>
+      <button id="ex1">Try a plan</button>
+      <button id="ex2">Try a vague answer</button>
       <button id="clear">Clear</button>
     </div>
-    <span class="fl">What it found
-      <span style="display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
-        font-weight:400;color:var(--mute);margin-top:.2rem">This matches words. It
-        does not read. Tap any of these to strike it, if it is wrong.</span></span>
-    <div class="marks" id="marks"></div>
-    <div class="void" id="nomarks" hidden>No handles found in this yet.</div>
   </section>
+
+  <div class="first" id="risk" hidden>
+    <h3>Before anything else</h3>
+    <div class="do" id="riskDo"></div>
+    <p id="riskWho"></p>
+  </div>
 
   <div class="out" id="out" data-k="dry" hidden>
     <div class="big" id="outSays"></div>
     <p id="outMeans"></p>
   </div>
 
-  <div class="first" id="first" hidden>
-    <h3>Do this one first</h3>
+  <div class="first" id="firstCheck" hidden>
+    <h3>Check this one first</h3>
     <div class="do" id="firstDo"></div>
-    <p id="firstWhy"></p>
   </div>
 
   <div class="rows" id="rows"></div>
 
+  <section class="panel" id="tenPanel" hidden>
+    <span class="fl">What a workable plan still has to settle
+      <span style="display:block;text-transform:none;letter-spacing:0;font-size:.76rem;
+        font-weight:400;color:var(--mute);margin-top:.2rem">Counted, not measured.
+        These are words being matched, so treat a tick as a hint and a gap as a
+        question worth asking.</span></span>
+    <div class="rows" id="tenRows"></div>
+  </section>
+
   <section class="limits">
     <h2>What this is not telling you</h2>
     <ul>
+      <li>This does not understand what you pasted.</li>
+      <li>This does not certify that anything is safe.</li>
       <li>A claim that is completely made up reads exactly like a true one here.</li>
-      <li>This says how quickly you could find out, not which way it will go.</li>
-      <li>Nothing here has been checked. Every line above is something for you to go and do.</li>
+    </ul>
+    <h3>Then go and check</h3>
+    <ul>
+      <li>Open whatever it named first and confirm it exists and says this.</li>
+      <li>For anything that could hurt you or cost you, ask somebody qualified before you act.</li>
     </ul>
   </section>
 
-  <section class="panel">
-    <span class="fl">Why a vague sentence scores nothing</span>
-    <p>“Experts generally agree that our meters are highly accurate.” That sounds
-      professional and careful, and press it and nothing comes out — there is no
-      source to open, no figure to look up, no date to compare. <b>This cannot be
-      shown false.</b> That is not the same as false; it is worse. Wording like
-      it survives every argument, because there is nothing in it to lose.</p>
-    <p class="small">The specific version — a named body, a year, a percentage, a
-      stated way of measuring — can be destroyed in one phone call. That is why
-      it reads high here even when it is invented. Pressing a well-made lie traps
-      it inside its own structure.</p>
-  </section>
-
   <div class="foot">
-    <p><b>When many handles read low, that is the warning, not the comfort.</b>
-      With everything hanging off one source, five handles are not five ways in.
-      They are one way in, counted five times, and each reads one twenty-fifth
-      because the arithmetic is saying they are not independent.</p>
+    <p><b>The three readings are never added together.</b> What can be checked is
+      measured. What a plan has to settle is counted. Whether the subject is
+      risky is a word match. There is no single number that combines them
+      honestly, and a tool that showed one would be doing the thing this page
+      exists to catch.</p>
   </div>
 
 </main>
@@ -1188,18 +1188,166 @@ textarea{width:100%;min-height:7rem;background:var(--card-2);color:var(--ink);
   else root.PRESS = API;
 })(typeof globalThis !== "undefined" ? globalThis : this);
 </script>
+<script>/* intercept.js -- the AI interceptor kernel. No interface, no network, ever.
+ * ===========================================================================
+ * WHAT THIS DOES AND WHAT IT MUST NEVER BE SAID TO DO
+ * You paste what an assistant told you. It reports what in that text could be
+ * checked, which check to do first, and which of the ten things a workable plan
+ * has to settle were never mentioned.
+ *
+ * It does NOT make anybody safe. It cannot read the text, it knows no chemistry,
+ * no medicine, no law and no finance, and it certifies nothing. What it does is
+ * refuse to let an unverifiable step be treated as settled. A person still has
+ * to go and check, and for anything that can hurt them, ask somebody qualified.
+ * Every one of those sentences is printed on the page and asserted by a test:
+ * an interceptor that implies safety is a mask worn by the tool built to name
+ * masks.
+ *
+ * THE TEN, WITH THE VOCABULARY LEFT OUT
+ * The governance reading this stack draws on lists ten things any working order
+ * has to settle. They transfer to a plan with no terminology attached at all,
+ * and a plan missing most of them is not a plan, it is a paragraph:
+ *
+ *    1 terms          what each word means here, exactly
+ *    2 roles          who does which part
+ *    3 dues           what is owed, by whom, and when
+ *    4 boundaries     what may be touched and what may not
+ *    5 rules          the constraints that must hold
+ *    6 standards      what counts as done properly
+ *    7 steps          the order things happen in
+ *    8 consequences   what happens when a step fails
+ *    9 where          the scope it applies to
+ *   10 exceptions     the cases that do not follow the rest
+ *
+ * Detection is lexical and is a SUGGESTION, exactly as the five marks are. It
+ * matches words; it does not read. A person adds or strikes any of them.
+ *
+ * WHAT IS MEASURED AND WHAT IS COUNTED
+ * The measuring is press.js: same graph, same engine, same 1/m^2. The ten are
+ * COUNTED, not measured, and the two are reported apart. A count of ten
+ * keywords is not a measurement and calling it one would be the whole failure.
+ */
+(function (root) {
+  "use strict";
+
+  var PRESS = root.PRESS || (typeof require === "function" ? require("./press.js") : null);
+  var EI = root.EI || (typeof require === "function" ? require("../cairn/ei_engine.js") : null);
+
+  var TEN = [
+    ["terms", /\b(means|defined as|refers to|that is,|i\.e\.|by ["']?[a-z ]+["']? we mean)\b/i,
+     "what each word means here"],
+    ["roles", /\b(you|your|the (user|client|customer|supplier|landlord|employer|doctor|pharmacist)|who (is|will)|responsible|assigned)\b/i,
+     "who does which part"],
+    ["dues", /\b(owe|owed|pay|cost|price|fee|charge|due|invoice|refund|deposit)\b/i,
+     "what is owed, by whom"],
+    ["boundaries", /\b(do not|don't|never|only|must not|avoid|limit|no more than|at most|permission|allowed)\b/i,
+     "what may be touched and what may not"],
+    /* `%` sits OUTSIDE the \b(...)\b group. Inside it, it never fires: a percent
+       sign is a non-word character, so "30% glycolic" has no word boundary after
+       the % and the alternation silently fails. Found by running it on a
+       concentration, which is exactly the case the flag exists for. */
+    ["rules", /\b(must|required|shall|has to|ratio|per cent|percent|ph|maximum|minimum|no less than)\b|%/i,
+     "the constraints that must hold"],
+    ["standards", /\b(quality|standard|specification|grade|tolerance|acceptable|correct|verified|tested)\b/i,
+     "what counts as done properly"],
+    ["steps", /\b(first|then|next|after|finally|step \d|\d\.\s|stage)\b/i,
+     "the order things happen in"],
+    ["consequences", /\b(if .{0,40}(fails?|goes wrong|does not|doesn't)|otherwise|else|risk|danger|harm|burn|damage|penalty)\b/i,
+     "what happens when a step fails"],
+    ["where", /\b(in |across |within |for |applies to |jurisdiction|country|region|state|only in)\b/i,
+     "the scope it applies to"],
+    ["exceptions", /\b(except|unless|apart from|other than|does not apply|edge case|but if)\b/i,
+     "the cases that do not follow the rest"],
+  ];
+
+  /* Domains where being wrong hurts. Deliberately blunt and deliberately
+     over-inclusive: a false alarm costs somebody a sentence of reading, and a
+     miss costs something that cannot be undone. */
+  var RISK = [
+    ["health", /\b(dose|dosage|mg\b|ml\b|medicine|drug|tablet|treat|symptom|diagnos|skin|serum|acid|peel|allerg|pregnan|infant|wound|infection)\b/i,
+     "a pharmacist, doctor or nurse"],
+    ["chemicals", /\b(mix|dilute|concentration|ph\b|acid|alkali|bleach|ammonia|solvent|reagent|ratio|formulat)\b/i,
+     "somebody who handles these materials for a living"],
+    ["money", /\b(invest|loan|interest|tax|refund|deposit|mortgage|pension|crypto|shares|returns?)\b/i,
+     "a qualified financial or tax adviser"],
+    ["law", /\b(contract|clause|liable|liability|sue|court|legal|rights|notice period|tenancy|eviction|visa)\b/i,
+     "somebody qualified in the law where you live"],
+    ["safety", /\b(electric|wiring|gas\b|voltage|ladder|structural|load-bearing|brake|scaffold)\b/i,
+     "a qualified tradesperson or engineer"],
+  ];
+
+  function marksIn(text) {
+    var hits = EI.scoreEvidence(text).filter(function (c) { return c.hit; });
+    var h = EI.extractHandles(text);
+    return { kinds: hits.map(function (c) { return c.signal; }), handles: h,
+             origin: (h.source && h.source.length) ? h.source[0] : null };
+  }
+
+  function ten(text) {
+    var t = String(text || "");
+    return TEN.map(function (row) {
+      return { key: row[0], present: row[1].test(t), asks: row[2] };
+    });
+  }
+
+  function risks(text) {
+    var t = String(text || ""), out = [];
+    RISK.forEach(function (r) {
+      if (r[1].test(t)) out.push({ domain: r[0], ask: r[2] });
+    });
+    return out;
+  }
+
+  function intercept(text, struck) {
+    var t = String(text || "").trim();
+    struck = struck || {};
+    if (!t) return { empty: true };
+
+    var f = marksIn(t);
+    var kinds = f.kinds.filter(function (k) { return !struck[k]; });
+    var pressed = PRESS.press(kinds.map(function (k) {
+      return { kind: k, origin: f.origin };
+    }));
+
+    var rows = ten(t);
+    var settled = rows.filter(function (r) { return r.present; });
+    var missing = rows.filter(function (r) { return !r.present; });
+    var flags = risks(t);
+
+    return {
+      empty: false,
+      handles: { of: 5, found: kinds.length, kinds: kinds, spans: f.handles },
+      pressed: pressed,
+      ten: { rows: rows, settled: settled.length, missing: missing },
+      flags: flags,
+      /* Never fused. The handles are measured; the ten are counted; the flags
+         are pattern matches. Three different kinds of thing and no arithmetic
+         combines them honestly. */
+      limits: [
+        "This does not understand what you pasted.",
+        "This does not certify that anything is safe.",
+        "A claim that is completely made up reads exactly like a true one here.",
+      ],
+    };
+  }
+
+  var API = { intercept: intercept, ten: ten, risks: risks, marksIn: marksIn,
+              TEN: TEN, RISK: RISK };
+  if (typeof module !== "undefined" && module.exports) module.exports = API;
+  else root.INTERCEPT = API;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
 <script>
 (function () {
   "use strict";
   var $ = function (s) { return document.querySelector(s); };
-  var P = window.PRESS, EI = window.EI;
+  var I = window.INTERCEPT;
 
-  var FOG = "Industry experts generally agree that our meters are highly " +
-            "accurate and save you money.";
-  var SHARP = "A 2026 audit by the water authority using the flow-rate method " +
-              "proved that 90% of meters overcharge by exactly 12% across the region.";
-
-  var struck = {};
+  var EX1 = "Mix 30% glycolic acid with 10ml distilled water and apply to the " +
+            "skin for 15 minutes. First cleanse, then apply, then rinse. This is " +
+            "a standard 2024 dermatological method.";
+  var EX2 = "Experts generally agree this approach works well for most people " +
+            "and is considered best practice in the industry.";
 
   function text(tag, cls, s) {
     var el = document.createElement(tag);
@@ -1208,88 +1356,64 @@ textarea{width:100%;min-height:7rem;background:var(--card-2);color:var(--ink);
     return el;
   }
   function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); }
-
   function pct(x) { return (x * 100).toFixed(1) + "%"; }
 
-  /* The marks come from cairn/ei_engine.js -- the one implementation of what a
-     mark is in this repository. No private copy here to drift away from it. */
-  function found(src) {
-    var hits = EI.scoreEvidence(src).filter(function (c) { return c.hit; });
-    var h = EI.extractHandles(src);
-    var origin = (h.source && h.source.length) ? h.source[0] : null;
-    return { kinds: hits.map(function (c) { return c.signal; }), handles: h, origin: origin };
-  }
-
   function run() {
-    var src = $("#text").value.trim();
-    var f = found(src);
+    var r = I.intercept($("#text").value, {});
+    var blank = r.empty;
 
-    /* The chips are built once per press and each one flips ITS OWN state --
-       the list is never rebuilt inside a handler bound to one of its children.
-       That defect has appeared six times in this codebase. */
-    var box = $("#marks");
-    clear(box);
-    f.kinds.forEach(function (kind) {
-      var b = text("button", "mk");
-      b.type = "button";
-      b.setAttribute("aria-pressed", struck[kind] ? "false" : "true");
-      b.appendChild(text("span", null, P.LABEL[kind] || kind));
-      var spans = (f.handles[kind === "figures" ? "figures" : kind] || []);
-      if (spans.length) b.appendChild(text("span", "n", spans[0]));
-      b.addEventListener("click", function () {
-        struck[kind] = !struck[kind];
-        b.setAttribute("aria-pressed", struck[kind] ? "false" : "true");
-        measure(f);
-      });
-      box.appendChild(b);
+    ["#out", "#firstCheck", "#tenPanel", "#risk"].forEach(function (s) {
+      $(s).hidden = true;
     });
-    $("#nomarks").hidden = f.kinds.length > 0 || !src;
-    measure(f);
-  }
+    clear($("#rows"));
+    clear($("#tenRows"));
+    if (blank) return;
 
-  function measure(f) {
-    var kinds = f.kinds.filter(function (k) { return !struck[k]; });
-    var r = P.press(kinds.map(function (k) {
-      return { kind: k, origin: f.origin };
-    }));
-
-    var out = $("#out");
-    out.hidden = !$("#text").value.trim();
-    out.setAttribute("data-k", r.checkable ? "wet" : "dry");
-    $("#outSays").textContent = r.says;
-    $("#outMeans").textContent = r.meaning;
-
-    $("#first").hidden = !r.firstCheck;
-    if (r.firstCheck) {
-      $("#firstDo").textContent = r.firstCheck.instruction;
-      $("#firstWhy").textContent =
-        "Everything else here hangs off it. If it comes back negative, the rest " +
-        "goes with it — which is why it is worth doing before any of the others.";
+    if (r.flags.length) {
+      $("#risk").hidden = false;
+      $("#riskDo").textContent =
+        "This looks like " + r.flags.map(function (f) { return f.domain; }).join(" and ") +
+        ". This page does not certify that anything here is safe.";
+      $("#riskWho").textContent =
+        "Have the handles checked by " +
+        r.flags.map(function (f) { return f.ask; }).join(", or ") +
+        " before you act on any of it.";
     }
 
-    var rows = $("#rows");
-    clear(rows);
-    r.checks.forEach(function (c) {
+    $("#out").hidden = false;
+    $("#out").setAttribute("data-k", r.pressed.checkable ? "wet" : "dry");
+    $("#outSays").textContent = r.handles.found + " of 5 handles. " + r.pressed.says;
+    $("#outMeans").textContent = r.pressed.meaning;
+
+    if (r.pressed.firstCheck) {
+      $("#firstCheck").hidden = false;
+      $("#firstDo").textContent = r.pressed.firstCheck.instruction;
+    }
+
+    r.pressed.checks.forEach(function (c) {
       var e = text("div", "rw");
       e.appendChild(text("div", "do", c.instruction));
-      var sub = text("div", "sub");
-      sub.textContent = (c.text ? "“" + c.text + "” — " : "") +
-        "on its own this settles " + pct(c.settles) + " of what is here.";
-      e.appendChild(sub);
-      rows.appendChild(e);
+      e.appendChild(text("div", "sub",
+        (c.text ? "\u201c" + c.text + "\u201d — " : "") +
+        "on its own this settles " + pct(c.settles) + " of what is here."));
+      $("#rows").appendChild(e);
+    });
+
+    $("#tenPanel").hidden = false;
+    r.ten.rows.forEach(function (row) {
+      var e = text("div", "rw");
+      e.appendChild(text("div", "do", (row.present ? "\u2713  " : "\u2014  ") + row.asks));
+      e.appendChild(text("div", "sub", row.present
+        ? "Something in the text speaks to this."
+        : "Nothing in the text speaks to this. Worth asking before you act."));
+      $("#tenRows").appendChild(e);
     });
   }
 
-  $("#text").addEventListener("input", function () { struck = {}; run(); });
-  $("#fog").addEventListener("click", function () {
-    $("#text").value = FOG; struck = {}; run();
-  });
-  $("#sharp").addEventListener("click", function () {
-    $("#text").value = SHARP; struck = {}; run();
-  });
-  $("#clear").addEventListener("click", function () {
-    $("#text").value = ""; struck = {}; run();
-  });
+  $("#text").addEventListener("input", run);
+  $("#ex1").addEventListener("click", function () { $("#text").value = EX1; run(); });
+  $("#ex2").addEventListener("click", function () { $("#text").value = EX2; run(); });
+  $("#clear").addEventListener("click", function () { $("#text").value = ""; run(); });
 
   $("#big").addEventListener("click", function () {
     var on = document.documentElement.hasAttribute("data-big");

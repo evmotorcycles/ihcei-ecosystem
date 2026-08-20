@@ -153,7 +153,8 @@ def test_the_shipped_page_carries_no_control_characters():
                 "packs_template.html", "packs_dump.mjs",
                 "press.js", "press.html", "press_template.html", "press_dump.mjs",
                 "metaphor.js", "metaphorlib.js", "metaphor.html",
-                "metaphor_template.html", "metaphor_dump.mjs"):
+                "metaphor_template.html", "metaphor_dump.mjs",
+                "intercept.js", "intercept.html", "intercept_template.html"):
         raw = open(os.path.join(HERE, rel), "rb").read()
         assert b"\x00" not in raw, f"{rel} contains a literal NUL"
 
@@ -182,7 +183,7 @@ def test_the_shipped_page_carries_no_control_characters():
 KERNEL = ("engines.js", "eti.js", "manifold.js", "nere.js", "ihcei.js",
           "cairn.js", "game.js", "vault.js", "commons.js", "library.js",
           "lens.js", "gate.js", "packs.js", "packlib.js", "press.js",
-          "metaphor.js", "metaphorlib.js")
+          "metaphor.js", "metaphorlib.js", "intercept.js")
 
 
 def test_the_measuring_kernel_can_never_reach_the_network():

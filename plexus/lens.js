@@ -193,6 +193,26 @@
   });
 
   register({
+    name: "Intercept",
+    page: "intercept.html",
+    does: "Look at what an assistant told you before you act on it.",
+    measures: [
+      "what in the text could be checked, and which check to do first",
+      "separately, how many of the ten things a workable plan settles are mentioned at all",
+      "separately again, whether this is a subject where being wrong hurts",
+    ],
+    cannot: [
+      "This does not understand what you pasted.",
+      "This does not certify that anything is safe.",
+      "A claim that is completely made up reads exactly like a true one here.",
+    ],
+    goCheck: [
+      "Open whatever it named first and confirm it exists and says this.",
+      "For anything that could hurt you or cost you, ask somebody qualified before you act.",
+    ],
+  });
+
+  register({
     name: "Agent Gate",
     page: "gate.html",
     does: "Say where an assistant may work in your plan, and where there is no second way round.",

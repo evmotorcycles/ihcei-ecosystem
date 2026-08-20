@@ -75,29 +75,45 @@
      technicality, it is the finding: an origin nobody named cannot be opened,
      and everything hanging off it goes when it goes. */
   function graph(marks) {
-    var parts = [CLAIM], links = [], seenOrigin = {}, seenMark = {};
+    var parts = [CLAIM], links = [], seenOrigin = {}, used = {};
+    used[CLAIM] = true;
+
+    /* ONE name registry across origins AND marks. Found by running this over
+       real model lineage: thinkingmachines/Inkling was both a model in the
+       cohort and the declared base of another model, so it was added once as a
+       mark and once as an origin. bearings() keys nodes by name, so the two
+       silently became ONE node -- 35 parts entered, 34 were measured, and every
+       dependence in that run was computed on a graph nobody described.
+
+       Not exotic. On any lineage data a thing is routinely both a derivative
+       and a base, so this is the normal case rather than the corner one. The
+       mark is the one disambiguated: the origin is what is being pointed AT and
+       its name has to stay recognisable. */
+    function unique(name) {
+      var n = name, k = 2;
+      while (used[n]) { n = name + " (" + k + ")"; k++; }
+      used[n] = true;
+      return n;
+    }
+
     marks.forEach(function (m, i) {
       var origin = (m.origin && String(m.origin).trim()) || UNNAMED;
       if (!seenOrigin[origin]) {
-        seenOrigin[origin] = true;
-        parts.push(origin);
-        links.push([origin, CLAIM, 1.0]);
+        seenOrigin[origin] = unique(origin);
+        parts.push(seenOrigin[origin]);
+        links.push([seenOrigin[origin], CLAIM, 1.0]);
       }
-      /* names must be unique in the graph, and two marks of the same kind on the
-         same origin are two different checks */
-      var name = m.name || (LABEL[m.kind] || m.kind);
-      var n = name, k = 2;
-      while (seenMark[n]) { n = name + " (" + k + ")"; k++; }
-      seenMark[n] = true;
+      /* two marks of the same kind on the same origin are two different checks */
+      var n = unique(m.name || (LABEL[m.kind] || m.kind));
       parts.push(n);
-      links.push([n, origin, 1.0]);
+      links.push([n, seenOrigin[origin], 1.0]);
       m._node = n;
-      m._origin = origin;
+      m._origin = seenOrigin[origin];
       void i;
     });
     return { parts: parts, links: links,
              marks: marks.map(function (m) { return m._node; }),
-             origins: Object.keys(seenOrigin) };
+             origins: Object.keys(seenOrigin).map(function (k) { return seenOrigin[k]; }) };
   }
 
   /* ------------------------------------------------------------- the press -- */

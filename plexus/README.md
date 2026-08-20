@@ -557,6 +557,83 @@ beside the point. A test pins that, and the sentence is not used.
 
 ---
 
+## Intercept — before you act on what an assistant told you
+
+`intercept.html`. Paste the answer. Three readings come back and they are never
+added together, because they are three different kinds of thing:
+
+| Reading | Kind | On the worked skincare plan |
+|---|---|---|
+| What can be checked | **measured** (press.js) | 3 of 5 handles, all on one unnamed origin |
+| What a plan still has to settle | **counted** (ten keywords) | 4 of 10 |
+| Whether being wrong hurts | **pattern-matched** | health, chemicals |
+
+*"Mix 30% glycolic acid … a standard 2024 dermatological method"* — the page
+flags health and chemicals, says **it does not certify that anything is safe**,
+names who to ask, and reports that the missing element is **what happens when a
+step fails**. That is the failure gate that would have to exist before any of it
+were treated as settled.
+
+### The ten, with the vocabulary left out
+
+terms · roles · dues · boundaries · rules · standards · steps · consequences ·
+where it applies · exceptions.
+
+Taken as logic from the governance reading, with no terminology attached. A test
+greps the page for that vocabulary and fails if any of it appears.
+
+### It does not make anyone safe, and says so
+
+The brief asked for a page giving people "safety and security". It cannot. It
+forces a check; a person still has to go and do it, and for anything that can
+hurt them, ask somebody qualified. `test_the_page_never_promises_safety` greps
+for *keeps you safe*, *guarantees*, *protects you from*, *certified*. A page that
+implied safety would be a mask worn by the tool built to name masks.
+
+### A regex bug the worked example found
+
+`%` inside a `\b(…)\b` group never fires — a percent sign is a non-word
+character, so *"30% glycolic"* has no word boundary after it and the alternation
+silently failed. Found by running it on a concentration, which is exactly the
+case the rule flag exists for.
+
+---
+
+## Qwen and DeepSeek, corrected
+
+**I was wrong last turn.** I reported that no substitute corpus existed. There
+is a whole frozen HuggingFace cohort in this repo — `hf-cohort/`, 24 real models,
+SHA-locked, fetched 2026-07-22 — and I did not look for it.
+
+It holds **metadata, not card text**, so the seven card-text predictions in
+`hf_preregistration.md` still cannot be answered and that file stays locked. But
+the metadata answers a related question, pre-registered separately
+(`hf_meta_preregistration.md`, sha256 `335c8d01…5b9f5e84d`).
+
+**Two of six predictions failed:**
+
+- **G1 failed.** Predicted ≥ 0.50 of models would report evaluation results with
+  no arXiv reference. Measured **0.2917**.
+- **G5 failed.** Predicted every model would settle below 1/24 = 0.041667. The
+  largest settles **0.087366**, twice that. The prediction assumed the
+  single-origin shape; with ten origins, a model alone on its own origin carries
+  that whole route and settles *more*.
+
+**And the first run was invalid.** Pressing real lineage exposed a defect in
+`press.js`: `thinkingmachines/Inkling` is both a model in the cohort and the
+declared base of another, so it was added once as a mark and once as an origin —
+and `bearings()` keys nodes by name, so the two silently became one. **35 parts
+went in, 34 were measured.** Not a corner case: on lineage data a thing is
+routinely both a derivative and a base. One name registry now covers both.
+
+**The finding, on the corrected graph:** half the cohort declares no base model
+at all, so all twelve hang off one unnamed node and each settles **0.00112** —
+seventy times less than a model alone on a named origin (0.087366). Declaring
+nothing does not keep a thing independent. It puts it in the largest
+undifferentiated pile.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:

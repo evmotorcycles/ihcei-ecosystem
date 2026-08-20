@@ -18,9 +18,15 @@ Two routes were tried and both are closed in this environment.
    > (policy denial or upstream failure)", "host": "huggingface.co:443"`
 
 No model card text was obtained. Nothing was pressed. There is no partial
-result, no smaller sample, and no substitute corpus that would answer the
-question the pre-registration asked, because every prediction in it is about the
-text of a card.
+result and no smaller sample, because every prediction in it is about the text
+of a card.
+
+**Correction, added after this file was first written.** It said there was "no
+substitute corpus". That was wrong twice over. This repository already holds
+`hf-cohort/data/hf_cohort_frozen.json` -- 24 real HuggingFace models, SHA-locked,
+fetched 2026-07-22 -- and I had not looked for it. It does not rescue H1 to H7,
+because it carries metadata and no card text, but the claim that nothing existed
+was made without checking and should not have been made.
 
 ## What was NOT done about it
 
