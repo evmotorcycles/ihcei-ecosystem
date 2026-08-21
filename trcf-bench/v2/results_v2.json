@@ -1,0 +1,126 @@
+{
+  "spec_sha256": "37812580b45a216b598ef00837ef0e741279413bcdf1597feac476961e731458",
+  "supersedes": "916beaf4f4b094b612510ec89bb62d4f1713e9621390f0e7ac51f1ea7c70b76a",
+  "score": "6/6",
+  "gates": [
+    {
+      "id": "W1_INDEPENDENCE_GATE_REPEATED_PRE_OUTCOME",
+      "met": true,
+      "weight": "counted",
+      "detail": "VIF {'logU': 1.269, 'D_enc': 1.055, 'D_dec': 1.231} -- all below 5, computed from features alone before any v2 outcome look. Repeated rather than inherited from T0, because a gate you assume is not a gate."
+    },
+    {
+      "id": "W2_PRIMARY_V2a_THE_VETO_FORM_RACE",
+      "met": true,
+      "weight": "counted",
+      "detail": "direction-free AUC: {'additive': 0.5925, 'product': 0.5037, 'minimum': 0.6807}. additive - minimum = -0.0882, and V2a FIRES when that is below MARGIN=0.01 -> FIRED. The MINIMUM form WINS at 0.6807. Single index, NO fitting, so no overfitting and no fold reuse -- the cleanest new look available on this cohort. This gate is about reporting, not about any particular form winning."
+    },
+    {
+      "id": "W3_THE_DOUBLE_DIP_IS_LOGGED_NOT_COUNTED",
+      "met": true,
+      "weight": "counted",
+      "detail": "CONFIRMATORY ONLY: additive - product = +0.0888, product sits at 0.5037 which reproduces T0's chance-level result. T0 already ran this comparison; it contributes to NO gate and NO score in v2, because counting one look twice is the double-dip."
+    },
+    {
+      "id": "W4_THE_SUNSET_FIRES_BY_DATE",
+      "met": true,
+      "weight": "counted",
+      "detail": "V2b is CONDITIONAL (pre-outcome shock markers present: NONE). SUNSET 2026-06-30, today 2026-08-21, expired=True. THE TAIL-LEMMA DEMOTION IS EXECUTED: the lemma drops to a weight-zero prior and the branch stands on cascade alone. Fired by date, not by mood, and it fires AGAINST the carrier."
+    },
+    {
+      "id": "W5_EVERY_UNRUN_TEST_CARRIES_A_STATUS_AND_A_REMEDY",
+      "met": true,
+      "weight": "counted",
+      "detail": "seven declared: {'V1_additive_forward': 'AWAITING_EXTERNAL', 'V2b_tail_crossover': 'CONDITIONAL_SUNSET_EXPIRED', 'V3a_cascade_mechanism': 'DATA_ABSENT', 'V3b_cascade_analogue': 'DATA_ABSENT', 'V3c_ABM_coherence': 'NOT_BUILT_BY_CHOICE', 'V4_knife_rationales': 'DATA_ABSENT', 'V5_substrate_circulation': 'DATA_ABSENT'}. Each names the artefact that would unblock it, and every status comes from the declared vocabulary -- none is 'pending' or 'in progress'. DISCLOSED: the first implementation of this check scanned the whole entry for the substring 'pending' and tripped on the V1 note that uses the word to DENY it. The check was corrected to read the STATUS field, which is what 'described as' means; the spec's condition was not touched."
+    },
+    {
+      "id": "W6_V6_DRY_RUN_PROVES_THE_KNIFE_AND_THE_SEATBELT",
+      "met": true,
+      "weight": "counted",
+      "detail": "inward knife: fixed/unbacked canary -> RIBA-STRUCTURE; state-contingent control -> COUPLED (so the classifier is not a constant). Seatbelt: an F3 fire removes L2, leaving ['L0', 'L1', 'L3', 'L4']. The invocation logic is proven BEFORE it is needed, which is the only time proving it is cheap."
+    },
+    {
+      "id": "W7_does_V2a_firing_rescue_A2",
+      "met": false,
+      "weight": "excluded",
+      "detail": "Partly, and the distinction matters. A2 AS WRITTEN says viability is the PRODUCT; T0 refuted that and v2 does not disturb it -- the product still sits at chance. A2's stated INTUITION, 'a zero in any factor zeroes the claim', is VETO semantics, which is what min() encodes and which wins here. So the idea may survive while the published formalisation does not. That is NOT a rescue of the published form, and reinterpreting a refuted formalisation after seeing the result is exactly what the anti-immunisation rule forbids counting."
+    },
+    {
+      "id": "W8_does_any_of_this_touch_the_reading_of_2_275",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No. Every form raced here is an operationalisation chosen downstream of the schema. The aya is not a functional form."
+    }
+  ],
+  "gates_not_met": [],
+  "V2a": {
+    "direction_free_auc": {
+      "additive": 0.5925,
+      "product": 0.5037,
+      "minimum": 0.6807
+    },
+    "additive_minus_minimum": -0.0882,
+    "margin": 0.01,
+    "fired": true,
+    "winner": "minimum"
+  },
+  "confirmatory_only": {
+    "additive_minus_product": 0.0888,
+    "product_auc": 0.5037,
+    "counted_toward_score": false
+  },
+  "sunset": {
+    "date": "2026-06-30",
+    "today": "2026-08-21",
+    "expired": true,
+    "v2b_conditional": true,
+    "demotion_executed": true
+  },
+  "vif": {
+    "logU": 1.269,
+    "D_enc": 1.055,
+    "D_dec": 1.231
+  },
+  "n": 992,
+  "archived": 295,
+  "unrun": {
+    "V1_additive_forward": {
+      "status": "AWAITING_EXTERNAL",
+      "needs": "a temporal field (registered_at / archived_at) for the forward holdout. Neither exists in the 992 cohort, so the additive lock waits -- it is not 'pending'."
+    },
+    "V2b_tail_crossover": {
+      "status": "CONDITIONAL_SUNSET_EXPIRED",
+      "needs": "a pre-outcome shock marker (dep_shock / maintainer_loss / issue_spike) and >=50 stressed rows. None exists; the sunset has passed and the demotion above is executed."
+    },
+    "V3a_cascade_mechanism": {
+      "status": "DATA_ABSENT",
+      "needs": "HAMP or servicer panels with downstream-counterparty distress. F3 null retires the hardship branch and invokes the fallback."
+    },
+    "V3b_cascade_analogue": {
+      "status": "DATA_ABSENT",
+      "needs": "an edge file for THESE repositories. A real dependency graph exists at data/pypi/dep_graph_edges.csv (1287 edges, 540 nodes) but it is PyPI packages: only 27 names overlap the 992 GitHub repos, and cross-ecosystem name matching is unreliable. It is not this cohort's edge file and is not substituted for one. Separately, that graph carries no failure events and no absorber variable, so any cascade computed on it would be simulated."
+    },
+    "V3c_ABM_coherence": {
+      "status": "NOT_BUILT_BY_CHOICE",
+      "needs": "opt-in. If built it prints NOT EVIDENCE. It calibrates to T1/T5 moments that do not exist, so it would be calibrated to nothing."
+    },
+    "V4_knife_rationales": {
+      "status": "DATA_ABSENT",
+      "needs": "T2 bend-vs-stagger plus the label-null. An F2 fire re-anchors the knife on extraction and L4 must log it."
+    },
+    "V5_substrate_circulation": {
+      "status": "DATA_ABSENT",
+      "needs": "T1/T3 data. Never A2-dependent, so T0's and v2's results do not touch it either way."
+    }
+  },
+  "absent_paths": {
+    "note": "The supplied trcf_v2_tests.py references files and fields that are not in this repository. Recorded rather than silently repaired, because a spec that names absent data is exactly what the status vocabulary is for.",
+    "lism-cohorts/repos992.json": "ABSENT. The real cohort is data/github/govphys_quadratic_results.csv, 992 rows.",
+    "lism-cohorts/repo_deps.json": "ABSENT. A real dependency graph does exist at data/pypi/dep_graph_edges.csv (1287 edges, 540 nodes) but it is PyPI packages, not these GitHub repositories: only 27 names overlap, and name-matching across ecosystems is unreliable. It cannot serve as this cohort's edge file.",
+    "registered_at / archived_at": "ABSENT. No temporal field exists, so V1's forward holdout cannot be constructed.",
+    "dep_shock / maintainer_loss / issue_spike": "ABSENT. No pre-outcome shock marker exists, so V2b's stress subset cannot be defined."
+  },
+  "simulated_values": 0,
+  "primary_verdict": "6/6. Two genuinely new results. FIRST, V2a FIRED: the MINIMUM (veto) form min(U, D_enc, D_dec) scores 0.6807 and BEATS additive 0.5925 by 0.0882, while the product remains at chance 0.5037. T0 never computed the veto form; this is a clean new look with no fitting and no fold reuse. It says viability on this cohort is governed by the WEAKEST factor, not by a sum and not by a product. SECOND, the SUNSET has EXPIRED: V2b is still CONDITIONAL because no pre-outcome shock marker exists, the date 2026-06-30 has passed, and the tail-lemma demotion is EXECUTED -- weight-zero prior, branch on cascade alone. product-vs-additive is logged CONFIRMATORY ONLY and counts toward nothing. Three paths the supplied module names do not exist here, including its edge file; a real PyPI graph exists but overlaps these repos by only 27 names and is NOT substituted. And note what V2a does NOT do: A2 as written claims a PRODUCT, which stays refuted. Its intuition -- a zero in any factor zeroes the claim -- is veto semantics, so the idea may survive while the formalisation does not. Reinterpreting after the result is not a rescue.",
+  "receipt": "d5c503a75e6ae6ce"
+}

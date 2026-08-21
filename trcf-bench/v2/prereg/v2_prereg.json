@@ -1,0 +1,74 @@
+{
+  "id": "trcf_bench_v2",
+  "title": "The v2 bench: the veto-form race that T0 never ran, and a sunset that has already expired",
+  "supersedes": "916beaf4f4b094b612510ec89bb62d4f1713e9621390f0e7ac51f1ea7c70b76a",
+  "THE_DOUBLE_DIP_HANDLED_IN_THE_OPEN": {
+    "the_problem": "T0 already raced product against additive on this exact cohort. Re-reporting that comparison as a v2 finding would be counting one look twice.",
+    "the_rule": "product-vs-additive at baseline is logged CONFIRMATORY ONLY and contributes to NO gate and NO score in v2. The genuinely new in-container test is V2a: the minimum (veto) form, which T0 never computed.",
+    "why_V2a_is_clean": "It is a single index requiring NO fitting, so there is no overfitting and no fold reuse. Direction-free AUC is used (max of a, 1-a) because an index may point either way and pre-committing to a sign would be a hidden researcher degree of freedom."
+  },
+  "PATHS_IN_THE_SUPPLIED_MODULE_THAT_DO_NOT_EXIST": {
+    "note": "The supplied trcf_v2_tests.py references files and fields that are not in this repository. Recorded rather than silently repaired, because a spec that names absent data is exactly what the status vocabulary is for.",
+    "lism-cohorts/repos992.json": "ABSENT. The real cohort is data/github/govphys_quadratic_results.csv, 992 rows.",
+    "lism-cohorts/repo_deps.json": "ABSENT. A real dependency graph does exist at data/pypi/dep_graph_edges.csv (1287 edges, 540 nodes) but it is PyPI packages, not these GitHub repositories: only 27 names overlap, and name-matching across ecosystems is unreliable. It cannot serve as this cohort's edge file.",
+    "registered_at / archived_at": "ABSENT. No temporal field exists, so V1's forward holdout cannot be constructed.",
+    "dep_shock / maintainer_loss / issue_spike": "ABSENT. No pre-outcome shock marker exists, so V2b's stress subset cannot be defined."
+  },
+  "THE_SUNSET_HAS_ALREADY_EXPIRED": {
+    "rule_as_written": "SUNSET = 2026-06-30. If V2b stays CONDITIONAL past that date, the tail lemma is demoted to a weight-zero prior and the branch stands on cascade alone.",
+    "today": "2026-08-21",
+    "consequence": "The date has passed and V2b is CONDITIONAL, because no pre-outcome shock marker exists in this cohort. THE DEMOTION FIRES NOW. This is the seatbelt working exactly as designed -- by date, not by mood -- and it fires against the carrier, not for it."
+  },
+  "gates": {
+    "W1_INDEPENDENCE_GATE_REPEATED_PRE_OUTCOME": {
+      "claim": "VIF < 5 on logU, D_enc, D_dec, features only, before any v2 outcome look.",
+      "passes_if": "all three below 5.",
+      "weight": "counted"
+    },
+    "W2_PRIMARY_V2a_THE_VETO_FORM_RACE": {
+      "claim": "The minimum form min(U, D_enc, D_dec) was never computed in T0. Race it against additive at baseline.",
+      "passes_if": "the race runs on a single index with no fitting, and the verdict is reported whichever way it falls. V2a FIRES if additive - minimum < 0.01.",
+      "weight": "counted"
+    },
+    "W3_THE_DOUBLE_DIP_IS_LOGGED_NOT_COUNTED": {
+      "claim": "product-vs-additive appears in the output labelled CONFIRMATORY ONLY and contributes to no gate.",
+      "passes_if": "the label is present and no counted gate depends on that comparison.",
+      "weight": "counted"
+    },
+    "W4_THE_SUNSET_FIRES_BY_DATE": {
+      "claim": "V2b is CONDITIONAL and the sunset date has passed, so the tail lemma demotes to weight-zero.",
+      "passes_if": "the run compares today against SUNSET, finds it expired, and records the demotion as EXECUTED rather than as a recommendation.",
+      "weight": "counted"
+    },
+    "W5_EVERY_UNRUN_TEST_CARRIES_A_STATUS_AND_A_REMEDY": {
+      "claim": "V1, V2b, V3a, V3b, V3c, V4, V5 each carry a status from the declared vocabulary plus the artefact that would unblock them.",
+      "passes_if": "all seven carry both, and none is described as pending or in progress.",
+      "weight": "counted"
+    },
+    "W6_V6_DRY_RUN_PROVES_THE_KNIFE_AND_THE_SEATBELT": {
+      "claim": "The inward knife reclassifies a synthetic canary as RIBA-STRUCTURE, and an F3 fire removes L2 from the surviving stack.",
+      "passes_if": "both assertions hold. This proves the invocation logic BEFORE it is ever needed, which is the only time proving it is cheap.",
+      "weight": "counted"
+    },
+    "W7_does_V2a_firing_rescue_A2": {
+      "claim": "Partly, and the distinction matters. A2 as WRITTEN says viability is the PRODUCT; T0 refuted that and v2 does not disturb it. A2's stated intuition -- 'a zero in any factor zeroes the claim' -- is VETO semantics, which is what min() encodes. So the axiom's idea may survive while its formalisation does not. That is a real distinction and it is not a rescue of the published form.",
+      "weight": "excluded",
+      "reason": "reinterpreting a refuted formalisation post hoc is exactly what the anti-immunisation rule forbids counting"
+    },
+    "W8_does_any_of_this_touch_the_reading_of_2_275": {
+      "claim": "No. Every form raced here is an operationalisation chosen downstream of the schema. The aya is not a functional form.",
+      "weight": "excluded",
+      "reason": "unchanged from v1"
+    }
+  },
+  "preflight_probe_recorded_before_locking": {
+    "V2a_direction_free_AUC": {"minimum": 0.6807, "additive": 0.5925, "product": 0.5037},
+    "additive_minus_minimum": -0.0882,
+    "additive_minus_product_CONFIRMATORY_ONLY": 0.0888,
+    "note": "The veto form WINS. V2a fires. The product sits at chance, reproducing T0."
+  },
+  "data": {"cohort": "data/github/govphys_quadratic_results.csv"},
+  "constants": {"MARGIN": 0.01, "SUNSET": "2026-06-30", "MIN_STRESS": 50},
+  "simulation": "none.",
+  "scoring": "6 counted gates. W7 and W8 are excluded."
+}
