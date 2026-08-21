@@ -1,0 +1,147 @@
+{
+  "spec_sha256": "916beaf4f4b094b612510ec89bb62d4f1713e9621390f0e7ac51f1ea7c70b76a",
+  "score": "6/6",
+  "gates": [
+    {
+      "id": "S1_THE_INDEPENDENCE_GATE_IS_CHECKED_BEFORE_ANY_OUTCOME",
+      "met": true,
+      "weight": "counted",
+      "detail": "VIF {'logU': 1.269, 'D_enc': 1.055, 'D_dec': 1.231} -- all below the pre-registered 5, computed from features alone. Had this failed the run would stop and redesign proxies WITHOUT ever touching the outcome."
+    },
+    {
+      "id": "S2_THE_FAIL_REGION_IS_POPULATED",
+      "met": true,
+      "weight": "counted",
+      "detail": "n=992 repositories, 295 archived (29.7%). AUC is meaningful on this base rate."
+    },
+    {
+      "id": "S3_PRIMARY_THE_FUNCTIONAL_FORM_RACE_IS_RUN_AND_REPORTED_EITHER_WAY",
+      "met": true,
+      "weight": "counted",
+      "detail": "5-fold CV, seed 20260806, identical folds for all three: {'product': 0.4855, 'additive': 0.653, 'saturated': 0.7023}. This gate is about REPORTING, not about the product winning."
+    },
+    {
+      "id": "S4_F7_IS_ADJUDICATED_EXPLICITLY",
+      "met": true,
+      "weight": "counted",
+      "detail": "F7 FIRED. product - additive = -0.1675; product - saturated = -0.2168; margin 0.01 fixed before the run and NOT moved after seeing these. The product specification scores 0.4855, which is at chance -- it loses to both rivals, in the wrong direction, by more than an order of magnitude beyond the margin."
+    },
+    {
+      "id": "S5_THE_SEVEN_UNRUN_FAMILIES_ARE_DECLARED_NOT_IMPLIED",
+      "met": true,
+      "weight": "counted",
+      "detail": "seven families declared: {'T1_substrate_P1': 'DATA_ABSENT', 'T2_bend_vs_stagger_P2': 'DATA_ABSENT', 'T3_circulation_P3': 'DATA_ABSENT', 'T4_hardship_branch_P4': 'DATA_ABSENT', 'T5_tether_P5': 'DATA_ABSENT', 'B_the_ABM': 'NOT_BUILT_BY_CHOICE', 'D_the_pilot': 'CANNOT_RUN'}. Each names the artefact that would unblock it. None is reported as pending or partially complete. The ABM was buildable and deliberately NOT built -- it calibrates to T1/T5 moments that do not exist, so building it would have produced impressive numbers calibrated to nothing."
+    },
+    {
+      "id": "S6_THE_DOMAIN_SUBSTITUTION_IS_DISCLOSED_IN_THE_RESULT_ITSELF",
+      "met": true,
+      "weight": "counted",
+      "detail": "The bench specified SME/mortgage loan panels; none exist here and outbound fetch is policy-blocked, so 992 GitHub repositories were substituted. This appears in the primary verdict, not only in the spec."
+    },
+    {
+      "id": "S7_does_F7_firing_refute_the_pressed_reading_of_2_275",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No. F7 concerns a FUNCTIONAL FORM chosen at step 3 of the N182 pipeline -- one operationalisation among many. The step-2 schema predicted COUPLING, not multiplication specifically. A2 is an axiom someone wrote down; the aya is not."
+    },
+    {
+      "id": "S8_does_T0_alone_settle_A2",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No. One cohort, one domain. A2 could still hold on loan panels -- which is exactly what T1-T5 were designed to find out and exactly what could not be run here."
+    }
+  ],
+  "gates_not_met": [],
+  "T0": {
+    "n": 992,
+    "archived": 295,
+    "vif": {
+      "logU": 1.269,
+      "D_enc": 1.055,
+      "D_dec": 1.231
+    },
+    "race": {
+      "product": {
+        "mean_auc": 0.4855,
+        "folds": [
+          0.519,
+          0.489,
+          0.396,
+          0.538,
+          0.485
+        ]
+      },
+      "additive": {
+        "mean_auc": 0.653,
+        "folds": [
+          0.708,
+          0.665,
+          0.58,
+          0.648,
+          0.664
+        ]
+      },
+      "saturated": {
+        "mean_auc": 0.7023,
+        "folds": [
+          0.739,
+          0.725,
+          0.672,
+          0.661,
+          0.715
+        ]
+      }
+    },
+    "product_minus_additive": -0.1675,
+    "product_minus_saturated": -0.2168,
+    "margin": 0.01,
+    "F7": "FIRED"
+  },
+  "unrun_families": {
+    "T1_substrate_P1": "DATA_ABSENT",
+    "T2_bend_vs_stagger_P2": "DATA_ABSENT",
+    "T3_circulation_P3": "DATA_ABSENT",
+    "T4_hardship_branch_P4": "DATA_ABSENT",
+    "T5_tether_P5": "DATA_ABSENT",
+    "B_the_ABM": "NOT_BUILT_BY_CHOICE",
+    "D_the_pilot": "CANNOT_RUN"
+  },
+  "unrun_detail": {
+    "T1_substrate_P1": {
+      "status": "DATA_ABSENT",
+      "needs": "FDIC failed-bank files + Call Reports (2007-09, 2020, 2023) and stablecoin depeg on-chain flows. None committed; api.github.com returns 403 and outbound fetch is policy-blocked.",
+      "falsifier": "F1'"
+    },
+    "T2_bend_vs_stagger_P2": {
+      "status": "DATA_ABSENT",
+      "needs": "loss/outflow distributions for fixed-claim books vs coupled books under common shocks, for the dip-test and the regression-discontinuity. The three committed contract panels are 10 accounts each with no outflow series and no common shock, which is nowhere near a dip-test.",
+      "falsifier": "F2 / F4"
+    },
+    "T3_circulation_P3": {
+      "status": "DATA_ABSENT",
+      "needs": "negative-rate / carry-cost episodes with holdings concentration series, or published ROSCA member-shock trials. Neither committed.",
+      "falsifier": "F6"
+    },
+    "T4_hardship_branch_P4": {
+      "status": "DATA_ABSENT",
+      "needs": "HAMP or comparable modification evaluations with downstream-counterparty distress within 12 months. The committed panels carry default flags and recovery but NO counterparty graph, so cascade size is undefined on them.",
+      "falsifier": "F3"
+    },
+    "T5_tether_P5": {
+      "status": "DATA_ABSENT",
+      "needs": "asset panels with claim-growth and real-cashflow-growth series (US housing 2000-08, equities margin vs dividends, crypto 2020-22, CRE 2021-24). None committed.",
+      "falsifier": "F5"
+    },
+    "B_the_ABM": {
+      "status": "NOT_BUILT_BY_CHOICE",
+      "reason": "It is buildable here and was deliberately not built. The bench itself says the ABM is 'not evidence about the world', and it is calibrated to T1/T5 moments AFTER those publish -- which they cannot, since T1 and T5 are DATA_ABSENT. Building it now would produce impressive numbers calibrated to nothing, and the simulator rule in this repository forbids treating that as evidence. It is deferred, not skipped."
+    },
+    "D_the_pilot": {
+      "status": "CANNOT_RUN",
+      "reason": "A 24-month sandbox cooperative with ~200 members and two interim looks. No amount of compute substitutes for elapsed time and real members.",
+      "falsifier": "F8"
+    }
+  },
+  "simulated_values": 0,
+  "primary_verdict": "6/6. The full eight-falsifier bench is LOCKED; exactly ONE family could be executed. T0 ran and F7 FIRED. The independence gate passed first on features alone (VIF {'logU': 1.269, 'D_enc': 1.055, 'D_dec': 1.231}, all under 5), the outcome is well populated (295 of 992 archived), and on identical folds the product specification U*D_enc*D_dec scored 0.4855 -- AT CHANCE -- against additive 0.6530 and saturated 0.7023. It loses by -0.1675 and -0.2168 against a pre-registered margin of 0.01 that was not moved afterwards. The multiplicative axiom A2 is DISCONFIRMED on this cohort. DOMAIN SUBSTITUTION: the bench specified SME/mortgage loan panels; none exist here and outbound fetch is policy-blocked, so 992 GitHub repositories were used instead. This is the home ground where E = U*D_enc*D_dec was defined, which makes it a friendly test rather than a hostile one -- but it settles NOTHING about lending, and a defender saying 'repos are not loans' is right. The other seven families are DATA_ABSENT, NOT_BUILT_BY_CHOICE or CANNOT_RUN, each naming what would unblock it; none is dressed up as pending."
+}
