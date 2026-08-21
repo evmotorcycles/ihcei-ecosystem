@@ -1,0 +1,84 @@
+{
+  "id": "riba_schema_v1",
+  "title": "The N182 pipeline applied to Riba: measure the text, build the schema, extract a rule, and let the rule fail",
+  "THE_PIPELINE_BEING_FOLLOWED": {
+    "source": "N182 states the method it uses: 'Metaphors in the QurꜤān are rich with meanings, but patience and perseverance must be applied to understand them', and distinguishes Truth (al-Ḥaqq) from Truthfulness (aṣ-Ṣidq). The requested pipeline is: abstract physical reality -> metaphor -> mental schema -> extract a solution -> verify it empirically.",
+    "the_danger_in_this_specific_pipeline": "Steps 1 and 4 are measurable. Steps 2 and 3 are not. If a rule derived at step 3 survives step 4, that is evidence about THE RULE and NOT about the metaphor that suggested it -- many different schemas generate the same rule, and a schema cannot inherit credibility from a downstream success. This spec is built so that the two halves cannot be silently welded together.",
+    "what_makes_it_worth_doing_anyway": "A schema that generates NO falsifiable rule is inert, and a rule that cannot fail is not evidence. Both are checked here, and the rule is allowed to lose."
+  },
+  "STEP_1_WHAT_THE_TEXT_MEASURABLY_CONTAINS": {
+    "layer": "L1 measured",
+    "2:275": "ٱلَّذِينَ يَأْكُلُونَ ٱلرِّبَوٰا۟ لَا يَقُومُونَ إِلَّا كَمَا يَقُومُ ٱلَّذِى يَتَخَبَّطُهُ ٱلشَّيْطَٰنُ مِنَ ٱلْمَسِّ. The metaphor is supplied BY THE TEXT ITSELF -- a physical gait ('they do not stand except as one stands whom the touch has convulsed') standing for a condition. That is the N182 abstraction pattern occurring inside the aya, not imported onto it.",
+    "the_contrast_structure": "The aya records and rejects an objection: إِنَّمَا ٱلْبَيْعُ مِثْلُ ٱلرِّبَوٰا۟ -- 'sale is merely LIKE riba' -- then answers وَأَحَلَّ ٱللَّهُ ٱلْبَيْعَ وَحَرَّمَ ٱلرِّبَوٰا۟. So the text asserts a DISCRIMINABLE difference between two things that look alike. That is a structural claim and it is measurable that the aya makes it.",
+    "3:130": "adds the qualifier أَضْعَٰفًا مُّضَٰعَفَةً -- a compounding mechanism.",
+    "30:39": "وَمَآ ءَاتَيْتُم مِّن رِّبًا لِّيَرْبُوَا۟ فِىٓ أَمْوَٰلِ ٱلنَّاسِ فَلَا يَرْبُوا۟ عِندَ ٱللَّهِ -- growth that registers in one ledger (people's wealth) and does NOT register in another. TWO LEDGERS THAT DIVERGE.",
+    "a_homograph_rejected_by_hand": "6:164 رَبًّا is root ر-ب-ب, 'a Lord', NOT riba (ر-ب-و). A naive form list accepts it. It is rejected here by hand adjudication and the rejection is printed -- the same discipline the قري homograph forced in v10."
+  },
+  "STEP_2_THE_SCHEMA": {
+    "layer": "L3 interpretive prior -- NOT MEASURED AND NOT MEASURABLE",
+    "statement": "Reading 30:39's two diverging ledgers together with 2:275's unsteady gait: riba is a return that accumulates on the nominal ledger while the underlying ledger does not move with it. The 'cannot stand upright' image is what a two-ledger divergence looks like from outside -- the entity's books and its substance no longer track each other, so it cannot balance.",
+    "THE_FIREWALL": "This is a reading. It is not established by any measurement in this run and cannot be. A reader who rejects it entirely can still evaluate Step 3 and Step 4 on their own merits, because the rule below is stated independently of the reading that suggested it."
+  },
+  "STEP_3_THE_EXTRACTED_RULE": {
+    "layer": "L2 operational definition",
+    "rule": "A financing arrangement is RIBA-LIKE to the degree that the financier's carried position is DECOUPLED from the realised outcome of the underlying asset. Coupled = the financier's position moves when the asset's value moves. Decoupled = it follows a schedule regardless.",
+    "why_this_is_the_honest_operationalisation": "It is stated in terms anyone can measure without accepting Step 2, it makes a directional prediction that can come out backwards, and it is measurable on the panels already committed to this repository."
+  },
+  "STEP_4_THE_PREDICTION_THAT_CAN_FAIL": {
+    "layer": "L1 testable",
+    "prediction": "Across the three supplied contract panels, coupling should be HIGHEST for musharakah (an equity partnership, where the financier is said to share asset risk) and LOWEST for murabahah (cost-plus debt, where the return is fixed at contract). If musharakah's financier position turns out to be a fixed schedule too, THE PREDICTION FAILS.",
+    "operationalisation": "For each account, take the month-to-month change in the financier's carried position and in the underlying asset value. If the financier's changes have ZERO VARIANCE the position is a fixed ladder and coupling is absent by construction. Where it does vary, compute Spearman rho between the two change series.",
+    "declared_before_running": "n is small -- 10 musharakah accounts, 10 murabahah deals, 10 ijarah contracts, 24 monthly rows each. This is underpowered for a fine effect and is reported as such. It is NOT underpowered for detecting a fixed ladder, which is a zero-variance fact, not a statistical one."
+  },
+  "PROVENANCE_OF_THE_DATA_STATED_PLAINLY": "The manifests say these panels were 'supplied for audit'. They do NOT say the data is real-world. I did not collect it and cannot verify its origin. Everything below is therefore a statement about THESE SUPPLIED SCHEDULES, not about musharakah as practised anywhere. A flat monthly step could be a modelling simplification by whoever wrote the file.",
+  "gates": {
+    "R1_THE_TEXT_SUPPLIES_ITS_OWN_METAPHOR": {
+      "claim": "2:275 contains the gait metaphor and the sale/riba contrast, and 30:39 contains the two-ledger clause.",
+      "passes_if": "all three clauses are located in the corpus by measurement, not quotation from memory.",
+      "weight": "counted"
+    },
+    "R2_THE_HOMOGRAPH_IS_REJECTED_BY_HAND": {
+      "claim": "6:164 رَبًّا is root ر-ب-ب and must not enter the riba set.",
+      "passes_if": "it appears in the candidate list and in the REJECTED list with its reason printed.",
+      "weight": "counted"
+    },
+    "R3_THE_SCHEMA_GENERATES_A_RULE_THAT_COULD_COME_OUT_BACKWARDS": {
+      "claim": "The Step-3 rule makes a directional prediction whose opposite is a coherent possible result.",
+      "passes_if": "the run states both the predicted direction and the exact observation that would refute it, before reporting which occurred.",
+      "weight": "counted"
+    },
+    "R4_PRIMARY_THE_PREDICTION_IS_TESTED_AND_THE_RESULT_REPORTED_EITHER_WAY": {
+      "claim": "Measure coupling on all three panels.",
+      "passes_if": "the measurement completes and the verdict is reported whichever way it falls. THIS GATE IS ABOUT REPORTING, NOT ABOUT WINNING -- it passes if the prediction is refuted, provided the refutation is stated.",
+      "weight": "counted"
+    },
+    "R5_A_FIXED_LADDER_IS_IDENTIFIED_AS_SUCH": {
+      "claim": "Where a financier's position has zero variance in its monthly change, that is a fixed schedule and coupling is absent by construction, not by weak correlation.",
+      "passes_if": "such accounts are counted and separated from accounts where a correlation is computable. Reporting a correlation for a constant series would be meaningless, and nan is not a small number.",
+      "weight": "counted"
+    },
+    "R6_does_a_SURVIVING_rule_validate_the_metaphor": {
+      "claim": "No. Many schemas generate the same rule. A rule that survives testing is evidence about the rule. The metaphor that suggested it gains nothing, and would gain nothing even if every prediction had held.",
+      "weight": "excluded",
+      "reason": "the layer firewall this whole repository exists to hold"
+    },
+    "R7_does_a_FAILING_rule_refute_the_Quranic_text": {
+      "claim": "No, and this matters more than R6 given what was measured. If the prediction fails, the candidates are: the schema is wrong, OR the rule is a poor operationalisation of the schema, OR the supplied schedules are not what their labels say. This run cannot distinguish those three, and it does not get to pick the flattering one.",
+      "weight": "excluded",
+      "reason": "a failed derived prediction is not a measurement of scripture"
+    }
+  },
+  "preflight_probe_recorded_before_locking": {
+    "musharakah": "10 accounts, 24 months each. Bank_Ownership_Balance steps by a FLAT -1500/month in 6 of 10 accounts -- zero variance, a fixed ladder. In the 4 where it varies, rho(delta asset, delta bank) = -0.142, -0.145, +0.178, +0.161: near zero and inconsistent in sign.",
+    "murabahah": "10 deals, 24 months. There is NO asset market-value column at all; the receivable amortises on a fixed schedule. Decoupling is structural.",
+    "ijarah": "10 contracts, 24 months; Asset_Book_Value only.",
+    "what_this_means_for_the_prediction": "It fails. Musharakah is not measurably more coupled than murabahah in these panels."
+  },
+  "data": {
+    "musharakah": "data/islamic-outcomes/musharakah_audit_outcomes.csv",
+    "murabahah": "data/islamic-outcomes/murabahah_audit_outcomes.csv",
+    "ijarah": "data/islamic-outcomes/ijarah_audit_outcomes.csv"
+  },
+  "simulation": "none. No value is generated, fitted or assumed. The panels are read as committed.",
+  "scoring": "5 counted gates. R6 and R7 are excluded."
+}

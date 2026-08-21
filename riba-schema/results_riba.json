@@ -1,0 +1,202 @@
+{
+  "spec_sha256": "0937cf450ce157ff0b971bcb23916712f3efc504a15c7a3c2da11ccdb49aaada",
+  "score": "5/5",
+  "gates": [
+    {
+      "id": "R1_THE_TEXT_SUPPLIES_ITS_OWN_METAPHOR",
+      "met": true,
+      "weight": "counted",
+      "detail": "2:275 metaphor tokens present ['يتخبطه', 'الشيطان', 'المس', 'يقومون']; sale/riba contrast tokens ['البيع', 'مثل']; 30:39 two-ledger tokens ['ليربوا', 'يربوا', 'اموال', 'الناس']. The gait image is supplied BY THE TEXT, not imported onto it -- which is the N182 abstraction pattern occurring inside the aya."
+    },
+    {
+      "id": "R2_THE_HOMOGRAPH_IS_REJECTED_BY_HAND",
+      "met": true,
+      "weight": "counted",
+      "detail": "candidate ayahs ['2:275', '2:276', '2:278', '30:39', '3:130', '4:161', '6:164']. REJECTED: {'6:164': \"رَبًّا is root ر-ب-ب ('a Lord'), not riba ر-ب-و\"}. A naive form list accepts 6:164; hand adjudication removes it and the reason is printed, the same discipline the قري collision forced in v10."
+    },
+    {
+      "id": "R3_THE_SCHEMA_GENERATES_A_RULE_THAT_COULD_COME_OUT_BACKWARDS",
+      "met": true,
+      "weight": "counted",
+      "detail": "predicted direction: coupling(musharakah) > coupling(murabahah). It is REFUTED IF: musharakah's financier position turns out to be a fixed schedule too, i.e. its monthly change has zero variance. Both stated before the result is reported below."
+    },
+    {
+      "id": "R4_PRIMARY_THE_PREDICTION_IS_TESTED_AND_THE_RESULT_REPORTED_EITHER_WAY",
+      "met": true,
+      "weight": "counted",
+      "detail": "PREDICTION REFUTED. Musharakah: 10 accounts, financier position is a FIXED LADDER in 6 of them (zero-variance monthly step [[-1500.0]]) and varies in 4, where rho(delta asset, delta bank) = [-0.142, -0.145, 0.178, 0.161] -- near zero and INCONSISTENT IN SIGN. Murabahah: the panel has no asset market-value column at all (False), so its decoupling is structural. So musharakah is NOT measurably more coupled than murabahah in these panels. This gate is about REPORTING, not winning: it passes because the refutation is stated."
+    },
+    {
+      "id": "R5_A_FIXED_LADDER_IS_IDENTIFIED_AS_SUCH",
+      "met": true,
+      "weight": "counted",
+      "detail": "6 musharakah accounts have a financier position whose monthly change has ZERO VARIANCE. Coupling is absent BY CONSTRUCTION there, not by weak correlation, and no rho is reported for them -- nan is not a small number. The 4 varying accounts are counted separately."
+    },
+    {
+      "id": "R6_does_a_SURVIVING_rule_validate_the_metaphor",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No. Many schemas generate the same rule. A rule that survives testing is evidence about the rule; the metaphor that suggested it gains nothing, and would have gained nothing even if every prediction had held."
+    },
+    {
+      "id": "R7_does_a_FAILING_rule_refute_the_Quranic_text",
+      "met": false,
+      "weight": "excluded",
+      "detail": "No, and this matters more here because the prediction DID fail. The candidates are: the schema is wrong, OR the rule is a poor operationalisation of the schema, OR the supplied schedules are not what their labels say. This run cannot distinguish those three and does not get to pick the flattering one. What it can say is narrow and real: in THESE panels, the contract labelled risk-sharing does not share asset risk in its financier ledger."
+    }
+  ],
+  "gates_not_met": [],
+  "step1_text": {
+    "metaphor_tokens": [
+      "يتخبطه",
+      "الشيطان",
+      "المس",
+      "يقومون"
+    ],
+    "contrast_tokens": [
+      "البيع",
+      "مثل"
+    ],
+    "two_ledger_tokens": [
+      "ليربوا",
+      "يربوا",
+      "اموال",
+      "الناس"
+    ],
+    "riba_ayahs_accepted": [
+      "2:275",
+      "2:276",
+      "2:278",
+      "30:39",
+      "3:130",
+      "4:161"
+    ],
+    "rejected_homograph": {
+      "6:164": "رَبًّا is root ر-ب-ب ('a Lord'), not riba ر-ب-و"
+    }
+  },
+  "step2_schema": {
+    "layer": "L3 interpretive prior -- NOT MEASURED AND NOT MEASURABLE",
+    "statement": "Reading 30:39's two diverging ledgers together with 2:275's unsteady gait: riba is a return that accumulates on the nominal ledger while the underlying ledger does not move with it. The 'cannot stand upright' image is what a two-ledger divergence looks like from outside -- the entity's books and its substance no longer track each other, so it cannot balance.",
+    "THE_FIREWALL": "This is a reading. It is not established by any measurement in this run and cannot be. A reader who rejects it entirely can still evaluate Step 3 and Step 4 on their own merits, because the rule below is stated independently of the reading that suggested it."
+  },
+  "step3_rule": "A financing arrangement is RIBA-LIKE to the degree that the financier's carried position is DECOUPLED from the realised outcome of the underlying asset. Coupled = the financier's position moves when the asset's value moves. Decoupled = it follows a schedule regardless.",
+  "step4": {
+    "prediction": "coupling(musharakah) > coupling(murabahah)",
+    "refuted_if": "musharakah's financier position turns out to be a fixed schedule too, i.e. its monthly change has zero variance",
+    "verdict": "REFUTED",
+    "musharakah": {
+      "n_accounts": 10,
+      "accounts": [
+        {
+          "id": "MSH-2026-001",
+          "n_months": 24,
+          "financier_varies": false,
+          "rho_delta": null,
+          "step": [
+            -1500.0
+          ]
+        },
+        {
+          "id": "MSH-2026-002",
+          "n_months": 24,
+          "financier_varies": false,
+          "rho_delta": null,
+          "step": [
+            -1500.0
+          ]
+        },
+        {
+          "id": "MSH-2026-003",
+          "n_months": 24,
+          "financier_varies": true,
+          "rho_delta": -0.142,
+          "step": [
+            -1500.0,
+            0.0
+          ]
+        },
+        {
+          "id": "MSH-2026-004",
+          "n_months": 24,
+          "financier_varies": false,
+          "rho_delta": null,
+          "step": [
+            -1500.0
+          ]
+        },
+        {
+          "id": "MSH-2026-005",
+          "n_months": 24,
+          "financier_varies": true,
+          "rho_delta": -0.145,
+          "step": [
+            -1500.0,
+            0.0
+          ]
+        },
+        {
+          "id": "MSH-2026-006",
+          "n_months": 24,
+          "financier_varies": false,
+          "rho_delta": null,
+          "step": [
+            -1500.0
+          ]
+        },
+        {
+          "id": "MSH-2026-007",
+          "n_months": 24,
+          "financier_varies": true,
+          "rho_delta": 0.178,
+          "step": [
+            -315775.0,
+            -47366.25,
+            -7104.94
+          ]
+        },
+        {
+          "id": "MSH-2026-008",
+          "n_months": 24,
+          "financier_varies": false,
+          "rho_delta": null,
+          "step": [
+            -1500.0
+          ]
+        },
+        {
+          "id": "MSH-2026-009",
+          "n_months": 24,
+          "financier_varies": true,
+          "rho_delta": 0.161,
+          "step": [
+            -1500.0,
+            0.0
+          ]
+        },
+        {
+          "id": "MSH-2026-010",
+          "n_months": 24,
+          "financier_varies": false,
+          "rho_delta": null,
+          "step": [
+            -1500.0
+          ]
+        }
+      ],
+      "fixed_ladder": 6,
+      "varying": 4,
+      "rhos": [
+        -0.142,
+        -0.145,
+        0.178,
+        0.161
+      ]
+    },
+    "ijarah_accounts": 10,
+    "murabahah_has_asset_value_column": false
+  },
+  "provenance_caveat": "The manifests say these panels were 'supplied for audit'. They do NOT say the data is real-world. I did not collect it and cannot verify its origin. Everything below is therefore a statement about THESE SUPPLIED SCHEDULES, not about musharakah as practised anywhere. A flat monthly step could be a modelling simplification by whoever wrote the file.",
+  "simulated_values": 0,
+  "primary_verdict": "5/5. The pipeline ran end to end and the rule LOST. Step 1 holds: 2:275 supplies its own metaphor and 30:39 supplies the two-ledger clause, both measured rather than quoted, with the 6:164 homograph rejected by hand. Step 3's rule -- riba-likeness as decoupling of the financier from the underlying asset -- predicted musharakah would be more coupled than murabahah. IT IS NOT. In 6 of 10 supplied musharakah accounts the bank's position steps by a flat amount every month regardless of the asset, and in the 4 where it varies the correlation is near zero with inconsistent sign. That is a real finding about THESE SUPPLIED SCHEDULES and nothing more: it cannot tell you whether the schema is wrong, the operationalisation is poor, or the file is mislabelled, and it is not a measurement of the Qur'an."
+}
