@@ -690,6 +690,51 @@ that, so it cannot quietly become a claim.
 
 ---
 
+## Does the five map onto the ten? Measured, under three readings
+
+A claim worth checking rather than agreeing with: *"scope touches
+domains-of-application, figures touches actions-and-results, and the other eight
+have no corresponding signal. That's 2 of 10, weakly."*
+
+Both lists are in this repository already — the five signals in
+`cairn/ei_engine.js`, the ten elements in `plexus/intercept.js` — so the mapping
+can be measured. My link assignment was written down and hashed **before** the
+graph was built.
+
+| Reading | Links | Covered | Uncovered | Pieces |
+|---|---|---|---|---|
+| the exchange's | 2 | 2 | 8 | 13 |
+| mine | 5 | **5** | 5 | 10 |
+| a third reasonable one | 6 | **6** | 4 | 9 |
+
+**The count is 2, 5 or 6 depending on who assigns the links.** A derivation has
+one answer. This has as many answers as it has readers.
+
+**Only one element survives all three readings: *domains of application*.** Seven
+of the ten are claimed by at least one reading and dropped by another. That is a
+sharper result than any single count, and it supports the exchange's conclusion
+better than its own number did.
+
+### What held and what missed
+
+M1–M4 and M6 held exactly. My five uncovered elements were named in advance and
+came out exactly: terminology, roles, dues, policies, exceptions.
+
+**Half of M5 missed.** I predicted the covered count would be unstable but the
+*uncovered* set would be "largely stable". Only **three of ten** — dues,
+policies, roles — are uncovered on every reading. The uncovered set moves too.
+"Largely stable" was too strong, and it is recorded rather than softened.
+
+**And my count was not the exchange's.** It said 2; on my links it is 5. The
+count was low. The conclusion it supported survives the correction — and rests
+better on the instability than on either number.
+
+**Registered null:** my links are no more authoritative than theirs. Both are
+readings. The arithmetic is only as good as the links, and the links are
+opinions with reasons attached.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:
