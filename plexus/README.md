@@ -634,6 +634,62 @@ undifferentiated pile.
 
 ---
 
+## Press to Evidence — the process, as six stages that can refuse
+
+`pipeline.js`. The thing this stack keeps describing, made into something that
+can fail.
+
+| Stage | What it holds | Refused when |
+|---|---|---|
+| 1 · Press | the physical thing this is like | it risks nothing — audited by `metaphor.js` |
+| 2 · Schema | what the picture organises | it does not carry `provesNothing: true` |
+| 3 · Guidelines | what the schema sends you to check | empty |
+| 4 · Topology | what the claim rests on — **measured, never written** | fewer than two parts |
+| 5 · Solutions | what to build | any solution has no `wrongIf` |
+| 6 · Evidence | what was actually measured | see below |
+
+**Stage six is the one everybody skips**, so it costs something:
+
+- `measured` — **requires the sha256 of a pre-registration locked before the run.**
+  A project claiming a measured result without one is refused outright.
+- `untestable-here` — requires naming the missing artefact. Otherwise it is a
+  shrug with a label on.
+- `not-yet` — requires a date or a trigger, or it will still be *not-yet* in a year.
+
+### The claim put through it, twice
+
+*The value is at the point of use: a check a person can run on what an assistant
+told them, before they act.* Pressed by two rival pictures, because running one
+press and stopping is how a process fixes its own answer.
+
+| | Press | Sole routes | Single points | Evidence |
+|---|---|---|---|---|
+| **Test at the tap** | what makes a glass safe is a test where the water is poured, not the purity of the reservoir | 5 of 5 | 4 | `not-yet` |
+| **The seatbelt** | nobody shops for one; it reached everybody by becoming the **default fitting** | 6 of 6 | 5 | `untestable-here` |
+
+**Both presses audit as lenses.** Both topologies are chains with **no second
+route anywhere** — every link carries the whole load, because the conditions are
+conjunctive and each really does presuppose the last.
+
+**The uncomfortable finding:** the seatbelt reading inserts one condition the tap
+reading does not have — *the check is on by default* — which takes the chain from
+five sole routes to six. If that reading is right, the claim needs one more thing
+to hold, and it is precisely the thing a page sold one at a time cannot buy.
+
+The conjunction is drawn as a **chain, not a star** — the lesson already recorded
+in the Shapes library as `atomic-install-list`, where four independent-looking
+supports understated by 0.917. A test reads the links and fails if anyone
+re-draws it as a star.
+
+### Neither project claims a measured result
+
+One is `not-yet` with a trigger; the other is `untestable-here` with the missing
+artefact named. Nothing has shipped, nothing has been sold, no integrator exists,
+and every adoption figure in either project is unmeasured. A test asserts exactly
+that, so it cannot quietly become a claim.
+
+---
+
 ## Deploying it (Vercel)
 
 `plexus/build.py` emits everything the deploy needs. From the repository root:
