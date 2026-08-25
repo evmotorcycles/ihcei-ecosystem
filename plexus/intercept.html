@@ -1382,7 +1382,12 @@ textarea{width:100%;min-height:7rem;background:var(--card-2);color:var(--ink);
 
     $("#out").hidden = false;
     $("#out").setAttribute("data-k", r.pressed.checkable ? "wet" : "dry");
-    $("#outSays").textContent = r.handles.found + " of 5 handles. " + r.pressed.says;
+    /* "3 of 5 handles" was a grade with a jargon word attached, on the first
+       screen, in a build whose whole argument is that a spellchecker does not
+       score. r.pressed.says already carries the errand count, which is the
+       number a person actually holds. The five live behind the schema, one tap
+       down, for whoever wants them. */
+    $("#outSays").textContent = r.pressed.says;
     $("#outMeans").textContent = r.pressed.meaning;
 
     if (r.pressed.firstCheck) {

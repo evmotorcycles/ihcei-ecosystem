@@ -172,3 +172,51 @@ def test_the_ten_are_counted_and_the_handles_are_measured_and_the_page_says_so()
 def test_the_service_worker_caches_the_interceptor():
     sw = open(os.path.join(HERE, "sw.js"), encoding="utf-8").read()
     assert "./intercept.html" in sw
+
+
+def test_the_parties_can_be_inverted_and_the_readout_does_not_move():
+    """The falsification test, mechanised.
+
+    "The landlord must return the deposit to the tenant" and "the tenant must
+    return the deposit to the landlord" are the same words in a different order
+    and opposite in meaning. The readout is BIT-IDENTICAL across the pair --
+    same handles, same errands, same dependences, same flags, same sentence.
+
+    That is not a defect being tolerated. It is the property that keeps this a
+    lens: the engine reads no meaning, so it cannot pretend to have caught a
+    semantic inversion, and it says so on the screen in the same size type. An
+    engine that appeared to catch this would be claiming a comprehension it does
+    not have, which is the precise failure the whole build is arranged against.
+
+    What the tool CANNOT do about it is the user's job, and the page says so.
+    """
+    a = _run("Under clause 4 of the 2024 tenancy agreement, the landlord must "
+             "return the deposit of 1200 to the tenant within 14 days of the "
+             "inspection report.")
+    b = _run("Under clause 4 of the 2024 tenancy agreement, the tenant must "
+             "return the deposit of 1200 to the landlord within 14 days of the "
+             "inspection report.")
+
+    assert json.dumps(a, sort_keys=True) == json.dumps(b, sort_keys=True), \
+        "the engine appears to read meaning; that is worse than being blind"
+
+    assert a["handles"]["found"] == 3
+    assert "money" in [f["domain"] for f in a["flags"]]
+    assert "law" in [f["domain"] for f in a["flags"]]
+    assert "This does not understand what you pasted." in a["limits"]
+
+
+def test_the_first_screen_carries_no_grade():
+    """The leak, closed. "3 of 5 handles" is a mark out of five with a jargon
+    word attached, on the screen a person meets first, in a build whose whole
+    argument is that a spellchecker does not score."""
+    import re
+    tpl = open(os.path.join(HERE, "intercept_template.html"), encoding="utf-8").read()
+    i = tpl.index('$("#outSays")')
+    line = tpl[i:tpl.index("\n", i)]
+    assert "of 5 handles" not in line, "the grade is back on the first screen"
+    assert "r.pressed.says" in line
+
+    src = re.sub(r"\s+", " ", open(os.path.join(HERE, "intercept.html"),
+                                   encoding="utf-8").read())
+    assert "of 5 handles." not in src
