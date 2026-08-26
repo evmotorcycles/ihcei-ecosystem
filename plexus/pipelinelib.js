@@ -26,6 +26,9 @@
 
     {
       id: "check-at-the-tap",
+      invariant: "A judgement is made at the moment an output meets an action, "
+                 + "and whoever holds that moment holds the position that matters "
+                 + "-- independent of who produced the output.",
       claim: "The value is at the point of use: a check a person can run on what " +
              "an assistant told them, before they act on it.",
       press: {
@@ -53,6 +56,23 @@
               "output is produced. Whoever holds the moment before acting holds " +
               "the position that matters, regardless of who built the model.",
         provesNothing: true,
+        fills: {
+          terminology: "tap, supply, reservoir, pipe, test strip, a reading",
+          roles: "the person pouring; whoever runs the supply; whoever makes the strip",
+          dues: "the drinker owes the test; the supplier owes a supply fit to test",
+          authorities: "a strip reports on the water in this glass and no other",
+          rules: "a reading below the line means do not drink it yet",
+          policies: "test at the point of use, not at the source",
+          procedures: "fill, dip, wait the stated seconds, read",
+          results: "a reading, and whether the glass was drunk",
+          domains: "this tap, this glass, now -- not the mains and not tomorrow",
+          exceptions: "a strip that has expired, and water hot enough to skew it",
+        },
+        leaks: [
+          "A test strip returns a number in seconds. A check on a claim returns an errand that may take days, so the feedback the carrier promises is not the feedback the target gives.",
+          "Water is homogeneous within the glass; a paragraph is not. One sentence can be checkable and the next fog, and the strip has no equivalent of that.",
+          "A strip has a manufacturer who can be held to account for a wrong reading. Nobody stands behind a regex.",
+        ],
       },
       guidelines: [
         "Count how many seconds the check adds before somebody acts. If it is more than the reading, it will not be run.",
@@ -98,6 +118,9 @@
 
     {
       id: "the-seatbelt-reading",
+      invariant: "A judgement is made at the moment an output meets an action, "
+                 + "and whoever holds that moment holds the position that matters "
+                 + "-- independent of who produced the output.",
       claim: "The value is at the point of use: a check a person can run on what " +
              "an assistant told them, before they act on it.",
       press: {
@@ -122,6 +145,23 @@
               "whoever controls the surface, not through purchase. A tool sold " +
               "one at a time reaches the worried, not the many.",
         provesNothing: true,
+        fills: {
+          terminology: "belt, buckle, anchor point, pretensioner, the click",
+          roles: "the occupant; the fitter; the regulator who required it",
+          dues: "the occupant owes the click; the maker owes an anchor that holds",
+          authorities: "a belt restrains the person in that seat and nobody else",
+          rules: "worn on every journey, however short",
+          policies: "fitted as standard, not sold as an option",
+          procedures: "sit, draw across, click, tug to check it locked",
+          results: "in the ordinary case nothing happens, which is the point",
+          domains: "vehicles in motion -- not a stationary car, not a bicycle",
+          exceptions: "medical exemptions; a belt cut away after a crash",
+        },
+        leaks: [
+          "A belt costs the wearer nothing per journey once fitted. A check on a claim costs attention every single time, so the adoption argument does not transfer as cleanly as the picture suggests.",
+          "A belt's benefit is invisible until a crash. A check on a claim gives something back immediately -- an errand -- so the carrier understates what the target offers.",
+          "Seatbelt adoption was driven by law. Nobody can legislate a check on what an assistant said, which is exactly the condition the carrier presupposes and the target lacks.",
+        ],
       },
       guidelines: [
         "Ask who could switch this on for a million people without asking any of them, and whether they have any reason to.",

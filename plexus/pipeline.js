@@ -51,24 +51,63 @@
       why.push("a project has to state the claim it is about, in one sentence");
     }
 
-    /* 1 press -- audited by metaphor.js, the same instrument used on everybody
-       else's pictures. A press that risks nothing is notation. */
-    if (!p.press) why.push("stage 1: no press. What physical thing is this like?");
+    /* 1 ABSTRACT -- the invariant, found BEFORE a carrier is chosen.
+       Choosing the picture first is how a project ends up with a carrier picked
+       for its decoration. The invariant is what survives when every particular
+       is changed, and it has to be stated before anything is allowed to
+       illustrate it. */
+    if (typeof p.invariant !== "string" || !p.invariant.trim()) {
+      why.push("stage 1: no invariant. What survives when every particular of " +
+               "this is changed? State it before choosing a picture, or the " +
+               "picture will be chosen for its decoration");
+    }
+
+    /* 2 METAPHORISE -- audited by metaphor.js, the same instrument used on
+       everybody else's pictures. A press that risks nothing is notation. */
+    if (!p.press) why.push("stage 2: no carrier. What physical thing is this like?");
     else why = why.concat((META.problems(p.press) || []).map(function (w) {
-      return "stage 1: " + w;
+      return "stage 2: " + w;
     }));
 
-    /* 2 schema */
+    /* 3 SCHEMATISE -- and the GOVERNABILITY TEST is the gate.
+       A carrier is admitted only if all ten elements fill NON-TRIVIALLY. This
+       is what separates a picture that generates from one that decorates: a
+       restaurant has a real procedure manual, so every slot fills; a sunset
+       fills none and can only illustrate.
+       The leaks go in `exceptions` on purpose. An inference that is legal in
+       the carrier and illegal in the target does quiet damage until it is
+       written down -- the bowling ball on the trampoline explains gravity by
+       presupposing gravity, and nobody ever put that in an exceptions list. */
     if (!p.schema || typeof p.schema.says !== "string" || !p.schema.says.trim()) {
-      why.push("stage 2: no schema. What does the picture organise?");
+      why.push("stage 3: no schema. What does the picture organise?");
     } else if (p.schema.provesNothing !== true) {
-      why.push("stage 2: the schema must carry provesNothing: true. A mental " +
+      why.push("stage 3: the schema must carry provesNothing: true. A mental " +
                "model organises thinking and certifies nothing, and a project " +
                "that treats its schema as a finding hands a conclusion nobody " +
                "measured to everything downstream");
     }
 
-    /* 3 guidelines -- each must be a thing a person DOES */
+    if (p.schema) {
+      var TEN = ["terminology", "roles", "dues", "authorities", "rules",
+                 "policies", "procedures", "results", "domains", "exceptions"];
+      var fills = p.schema.fills || {};
+      var blank = TEN.filter(function (k) {
+        return typeof fills[k] !== "string" || !fills[k].trim();
+      });
+      if (blank.length) {
+        why.push("stage 3: the governability test fails -- " +
+                 (10 - blank.length) + "/10. Blank: " + blank.join(", ") +
+                 ". A carrier that cannot fill every element decorates rather " +
+                 "than governs, and the blanks are where it will mislead");
+      }
+      if (!Array.isArray(p.schema.leaks) || !p.schema.leaks.length) {
+        why.push("stage 3: no declared leaks. Every carrier permits an " +
+                 "inference the target forbids; naming none means none was " +
+                 "looked for, and an undeclared leak does quiet damage");
+      }
+    }
+
+    /* 4 EXTRACT: guidelines -- each must be a thing a person DOES */
     if (!Array.isArray(p.guidelines) || !p.guidelines.length) {
       why.push("stage 3: no guidelines. What does the schema send you to check?");
     } else {
@@ -163,6 +202,25 @@
       },
       solutions: p.solutions.slice(),
       evidence: p.evidence,
+      /* THE LOOP RULE. When the evidence comes back against the theories, go
+         back to stage 2 and choose a different carrier -- not to stage 1.
+         Reality did not fail; the picture failed to carry it. Returning to
+         stage 1 claims the invariant itself was mis-stated, which is a rarer
+         and far more serious error. Newton's corpuscles died at the gate in
+         1801 and optics went back for a new carrier, not for a new subject. */
+      onFailure: "return to stage 2 and choose another carrier. Reality did " +
+                 "not fail -- the picture failed to carry it. Going back to " +
+                 "stage 1 claims the invariant was mis-stated, which is rarer " +
+                 "and much more serious.",
+      governability: (function () {
+        var TEN = ["terminology", "roles", "dues", "authorities", "rules",
+                   "policies", "procedures", "results", "domains", "exceptions"];
+        var f = p.schema.fills || {};
+        return TEN.filter(function (k) { return (f[k] || "").trim(); }).length + "/10";
+      })(),
+      leaks: (p.schema.leaks || []).length,
+      invariant: p.invariant,
+
       /* the one line worth reading first */
       standing: p.evidence.status === "measured"
         ? "Something here was measured against a prediction locked beforehand."

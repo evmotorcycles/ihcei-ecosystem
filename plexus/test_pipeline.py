@@ -218,3 +218,103 @@ def test_the_rival_press_says_it_threatens_the_business_model(runs):
     says so rather than burying it."""
     w = runs["the-seatbelt-reading"]["press"]["where"]
     assert "RIVAL" in w and "threatens the business model" in w
+
+
+# ------------------------------------------- the two stages that were missing --
+def test_a_project_with_no_invariant_is_refused(projects):
+    """Stage 1, and it comes BEFORE the carrier for a reason.
+
+    Choosing the picture first is how a project ends up with a carrier picked
+    for its decoration. The invariant is what survives when every particular is
+    changed, and it has to be stated before anything is allowed to illustrate it.
+    """
+    p = copy.deepcopy(projects[0])
+    del p["invariant"]
+    assert any("chosen for its decoration" in w for w in _node("P.problems(a)", p))
+
+
+def test_the_governability_test_refuses_a_carrier_that_cannot_fill_ten(projects):
+    """Stage 3's gate, and it is what separates a picture that generates from
+    one that decorates.
+
+    A restaurant has a real procedure manual, so every element fills. A sunset
+    fills none and can only illustrate. The blanks are exactly where a carrier
+    will mislead, so a partial fill is refused and the missing ones are named.
+    """
+    p = copy.deepcopy(projects[0])
+    del p["schema"]["fills"]["procedures"]
+    del p["schema"]["fills"]["exceptions"]
+    why = _node("P.problems(a)", p)
+    assert any("8/10" in w for w in why)
+    assert any("procedures, exceptions" in w for w in why)
+    assert any("decorates rather than governs" in w for w in why)
+
+
+def test_a_carrier_with_no_declared_leaks_is_refused(projects):
+    """Every carrier permits an inference the target forbids. Naming none means
+    none was looked for.
+
+    The canonical case is the bowling ball on the trampoline: the marble rolls
+    into the dip because gravity pulls it onto the sheet, so the carrier
+    explains gravity by presupposing gravity. Nobody wrote that into an
+    exceptions list, and it has been teaching a false inference ever since.
+    """
+    p = copy.deepcopy(projects[0])
+    p["schema"]["leaks"] = []
+    assert any("does quiet damage" in w for w in _node("P.problems(a)", p))
+
+
+def test_both_projects_now_fill_all_ten_and_declare_their_leaks(runs):
+    """The new gate found both worked examples incomplete -- they had been
+    admitted under the weaker spec. Fixed rather than grandfathered."""
+    for pid, r in runs.items():
+        assert r["governability"] == "10/10", pid
+        assert r["leaks"] >= 3, pid
+        assert r["invariant"].strip()
+
+
+def test_the_loop_rule_points_at_stage_two_not_stage_one(runs):
+    """When the evidence comes back against the theories, choose another
+    carrier. Reality did not fail; the picture failed to carry it.
+
+    Newton's corpuscles died at the double slit in 1801 and optics went back
+    for a new carrier, not for a new subject. Returning to stage 1 would claim
+    the invariant itself was mis-stated, which is rarer and much more serious.
+    """
+    for r in runs.values():
+        assert "return to stage 2" in r["onFailure"]
+        assert "Reality did not fail" in r["onFailure"]
+        assert "stage 1" in r["onFailure"] and "mis-stated" in r["onFailure"]
+
+
+def test_the_twelve_by_twelve_cascade_verified_independently():
+    """The arithmetic claim on the demonstration page, re-derived here rather
+    than taken on trust: 144 -> 78 -> 21 -> 6 -> 1.
+
+    And one correction. The page names 36 as the product sitting at three
+    addresses. There are THREE such products, not one: 12, 24 and 36 each
+    answer at three distinct doors.
+    """
+    from itertools import combinations_with_replacement as cwr
+    from collections import Counter
+
+    pairs = list(cwr(range(1, 13), 2))
+    assert len(pairs) == 78, "144 ordered cells are 78 unordered pairs"
+
+    gates, doubles, steps = {1, 2, 5, 9, 10, 11}, {4, 8, 12}, {3, 6}
+    after_gates = [p for p in pairs if not set(p) & gates]
+    after_doubles = [p for p in after_gates if not set(p) & doubles]
+    after_steps = [p for p in after_doubles if not set(p) & steps]
+
+    assert len(after_gates) == 21
+    assert len(after_doubles) == 6
+    assert sorted(after_doubles) == [(3, 3), (3, 6), (3, 7), (6, 6), (6, 7), (7, 7)]
+    assert after_steps == [(7, 7)], "one door no rule reaches"
+
+    counts = Counter(a * b for a, b in pairs)
+    namesakes = [v for v, c in counts.items() if c > 1]
+    assert len(namesakes) == 16, "sixteen products answer at more than one door"
+
+    at_three = sorted(v for v, c in counts.items() if c >= 3)
+    assert at_three == [12, 24, 36], \
+        "the page names only 36; 12 and 24 also sit at three addresses"
