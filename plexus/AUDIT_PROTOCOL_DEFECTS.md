@@ -91,3 +91,73 @@ anything. The instruction to record failures rather than fill gaps with
 plausible text. The second critic told not to soften. Those are the parts most
 protocols do not have, and they are the reason the five defects above are worth
 fixing rather than the protocol worth discarding.
+
+## Two more, found while checking the corrections
+
+### 6 · The protocol overwrites a locked pre-registration
+
+Layer 0: *"you must write the following to a file called `PREREGISTRATION.md` in
+the working directory."* A fixed filename, no collision check.
+
+`PREREGISTRATION.md` at this repository's root is the **locked** GovPhys
+quadratic-coupling pre-registration, dated 2026-08-06, whose own text reads
+*"Commit this file and the SHA-256 ... before the first data fetch. Do not
+change."*
+
+Following the instruction literally destroys it. That is the protocol commanding
+the single act every other line of it forbids, and it is the worst of the six
+because it is silent: a locked file is unchanged until it isn't, and nothing in
+the run would report the loss.
+
+The Layer 3 pre-flight does halt here — but for a different reason ("confirm no
+git repository is initialized"), which masks the collision rather than naming
+it. A run in a clean directory would pass pre-flight and still carry the defect
+into any repository it was later pointed at.
+
+**Fix:** a unique filename, and a pre-flight that refuses to write over any
+existing file rather than checking for git. The corrected file is at
+`plexus/audit_preregistration.md` for exactly this reason.
+
+### 7 · H4's quantity has two causes and the protocol names one
+
+H4 — *"manifests list more than the code uses"* — measures the median
+load-bearing fraction, where LOAD-BEARING was "imported at depth ≤ 2 from the
+entry point".
+
+A low fraction has **two** possible causes:
+
+1. the manifest over-declares, which is H4; or
+2. the import window is too shallow to see the use.
+
+A thin CLI entry point delegating to modules four levels down produces a very
+low fraction with a perfectly accurate manifest. Nothing else in the protocol
+separates these — the lockfile verifier answers a different question
+(resolution, not import depth).
+
+This is the same class of error as defect 2, recurring **inside the hypothesis
+added to fix defect 2**. It survived a careful correction pass, which is the
+strongest evidence available for the meta-defect: gate relevance is not
+mechanisable, and a reader catching one does not mean the next is caught.
+
+**Fix, now in the locked file:** compute and report the fraction at depths 1, 2
+and 3. If it is still rising by more than 0.10 between depth 2 and depth 3, the
+window is demonstrably too shallow for that repository and its contribution to
+H4 is recorded as **not computable** rather than as support. A fraction still
+climbing at the edge of the window is evidence about the window, not about the
+manifest. This is a precondition on computing H4, not a second gate, so the
+partition is untouched.
+
+## Status of the four gates, checked before hashing
+
+All four partition their outcome space with zero uncovered range and zero
+contradiction, verified by `plexus/gates.js`:
+
+| | quantity | supported | fails | uncovered |
+|---|---|---|---|---|
+| H1 | median divergences | ≥ 1 | < 1 | 0 |
+| H2 | rot fraction | ≥ 0.20 | < 0.20 | 0 |
+| H3 | hidden deps | ≥ 1 | < 1 | 0 |
+| H4 | load-bearing fraction | < 0.80 | ≥ 0.80 | 0 |
+
+Defect 1 is closed and measured. Defects 2, 3, 4, 5 are addressed in the
+corrected file. Defects 6 and 7 were found while checking those corrections.

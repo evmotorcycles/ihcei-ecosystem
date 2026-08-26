@@ -86,3 +86,87 @@ def test_the_blockers_and_defects_are_written_down():
     assert "Layer 2 contradicts Layer 3" in flat
     assert "Running a test suite **is** executing".replace("**", "") in flat.replace("**", "")
     assert "What is right, and should not be lost in the fixing" in flat
+
+
+def test_all_four_corrected_gates_partition_their_outcome_space():
+    """Defect 1 closed, and checked rather than asserted.
+
+    Each hypothesis and its gate are swept over the range the quantity can
+    actually take -- counts over [0, 50], fractions over [0, 1] -- and every
+    outcome must fall on exactly one side.
+    """
+    for spec, lo, hi in [
+        ({"id": "H1", "supportsIf": ">= 1", "failsIf": "< 1"}, 0, 10),
+        ({"id": "H2", "supportsIf": ">= 0.20", "failsIf": "< 0.20"}, 0, 1),
+        ({"id": "H3", "supportsIf": ">= 1", "failsIf": "< 1"}, 0, 50),
+        ({"id": "H4", "supportsIf": "< 0.80", "failsIf": ">= 0.80"}, 0, 1),
+    ]:
+        out = subprocess.run(
+            ["node", "-e",
+             "const G=require('./gates.js');"
+             "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{"
+             "const a=JSON.parse(s);"
+             "process.stdout.write(JSON.stringify(G.coverage(a.spec,{lo:a.lo,hi:a.hi})))})"],
+            cwd=HERE, input=json.dumps({"spec": spec, "lo": lo, "hi": hi}),
+            capture_output=True, text=True, timeout=60)
+        assert out.returncode == 0, out.stderr
+        r = json.loads(out.stdout)
+        assert r["partitions"] is True, f"{spec['id']} leaves a gap"
+        assert r["contradicts"] is False, f"{spec['id']} contradicts itself"
+        assert r["uncoveredWidth"] == 0
+
+
+def test_the_corrected_file_is_not_called_preregistration_md():
+    """Defect 6. PREREGISTRATION.md at this repository's root is a LOCKED
+    pre-registration from 2026-08-06 whose own text says "Do not change".
+
+    The protocol instructs writing to that exact filename with no collision
+    check. Following it literally destroys a locked file -- the one act every
+    other line of the protocol forbids, and silent when it happens.
+    """
+    root = os.path.dirname(HERE)
+    assert os.path.exists(os.path.join(root, "PREREGISTRATION.md")), \
+        "if this is gone, defect 6 has already fired"
+    existing = open(os.path.join(root, "PREREGISTRATION.md"), encoding="utf-8").read()
+    assert "Do not change" in existing
+    assert "Quadratic Governance Coupling" in existing
+
+    ours = os.path.join(HERE, "audit_preregistration.md")
+    assert os.path.exists(ours), "the corrected file must live somewhere else"
+    assert "deliberately NOT called PREREGISTRATION.md" in \
+        open(ours, encoding="utf-8").read()
+
+
+def test_the_defect_found_inside_the_fix_for_the_earlier_defect():
+    """Defect 7, and it is the strongest evidence for the meta-defect.
+
+    H4 was added to fix defect 2 -- a gate pointed at the wrong quantity. H4's
+    own quantity has two causes: the manifest over-declares, or the import
+    window is too shallow. A thin entry point delegating four levels down gives
+    a low fraction with an accurate manifest.
+
+    The same class of error, inside the correction for it, surviving a careful
+    pass. Gate relevance is not mechanisable and catching one does not mean the
+    next is caught.
+    """
+    flat = re.sub(r"\s+", " ", open(os.path.join(HERE, "AUDIT_PROTOCOL_DEFECTS.md"),
+                                    encoding="utf-8").read())
+    assert "recurring **inside the hypothesis added to fix defect 2**".replace("**", "") \
+        in flat.replace("**", "")
+
+    prereg = re.sub(r"\s+", " ", open(os.path.join(HERE, "audit_preregistration.md"),
+                                      encoding="utf-8").read())
+    assert "CONFOUND, named because it is not otherwise separable" in prereg
+    assert "still rising by more than 0.10 between depth 2 and depth 3" in prereg
+    assert "evidence about the window, not about the manifest" in prereg
+
+
+def test_the_relevance_check_declares_the_limit_already_measured():
+    """Two readers who are instances of the same model are not two origins.
+    Pressed with this project's own instrument they settle 0.250 each, and the
+    locked file says so rather than presenting the check as a proof."""
+    prereg = re.sub(r"\s+", " ", open(os.path.join(HERE, "audit_preregistration.md"),
+                                      encoding="utf-8").read())
+    assert "not two origins" in prereg
+    assert "0.250 each rather than 0.500" in prereg
+    assert "worth having and worth a quarter" in prereg
