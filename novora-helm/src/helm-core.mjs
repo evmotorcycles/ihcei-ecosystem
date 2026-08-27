@@ -1,10 +1,10 @@
-// helm-core.mjs — HELM on-device agency kernel (fast mode) · GT v18.2
+// helm-core.mjs — HELM on-device agency kernel (fast mode)
 // ============================================================================
 // The load-bearing engine of HELM v0.1. Pure arithmetic + regex evidence +
 // LLR posterior + corroboration gate. No network, no API key, no state that
 // leaves the device. This is the "runs on a watch if needed" core from the
-// design doc §3, and it is byte-compatible in spirit with the IHCEI/NERE v3
-// posterior math (govern.js) — only the extractor and the ambient tuning differ.
+// design doc §3, and it is byte-compatible in spirit with the enterprise
+// posterior math — only the extractor and the ambient tuning differ.
 //
 // Two changes from the enterprise engine, both validated:
 //   1. CORROBORATION GATE (on by default). The heaviest gates — methodology-
@@ -13,7 +13,7 @@
 //      requires a real manipulation MECHANISM (verification-bypass, unverifiable
 //      authority, manufactured consensus, secrecy/isolation, or payment-
 //      pressure) before those gates and the urgency/fear/imperative words carry
-//      full weight. On the IHCEI corpus this took legitimate-urgency false-HOLD
+//      full weight. On the enterprise corpus this took legitimate-urgency false-HOLD
 //      from 0.50 to 0.00 for free. Silence on emergencies is the whole point.
 //   2. CONSUMER MECHANISM LEXICON. The enterprise set (bypass/authority/
 //      consensus) misses phone-scam and dark-pattern mechanisms. HELM adds

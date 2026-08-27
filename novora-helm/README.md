@@ -18,18 +18,73 @@ gate + the four primitives, all local.** No API key, no server, no account.
 
 ```
 novora-helm/
-  src/helm-core.mjs     AUDIT — the on-device kernel (fast NERE + posterior +
+  helm.html             THE APP. One file. Open it in a browser — that is the
+                        whole install. No server, no build step to read it.
+  helm_template.html    what helm.html is generated FROM (edit this, not that)
+  build_helm.mjs        inlines the kernel; --check asserts the page matches
+  src/helm-core.mjs     AUDIT — the on-device kernel (posterior +
                         corroboration gate + consumer-threat lexicon)
   src/primitives.mjs    DELEGATE (decision-permission table) ·
                         DEVELOP (capacity vs. dependency) ·
                         PROVE (hash-chained certificate wallet)
+  src/order.mjs         the three layers, the six stages, the ten elements,
+                        the six procedures — and what each one refuses
   test/helm.test.mjs    48 assertions — safety, scam armor, gate, 4 primitives
   test/parity.test.mjs  22 assertions — cross-engine gate + lexicon-stamp parity
+  test/order.test.mjs   18 assertions — the hierarchy, and whether it refuses
+  test/helm-html.test.mjs  25 assertions — the shipped page's four claims
   demo/index.html       renderable local demo (paste anything, see the verdict)
   extension/            MV3 browser-extension scaffold (popup surface, loadable)
   VALIDATION.md         what was tested, the numbers, what HELM does in the world
   PREREGISTRATION.md    LOCKED spec for on-device deep mode + emergency-at-scale
 ```
+
+## Open it
+
+```sh
+npm test                      # 143 assertions across six suites
+node build_helm.mjs           # regenerate helm.html from its sources
+open novora-helm/helm.html    # or just double-click it
+```
+
+Pull the network cable out first if you want to watch the claim hold. There is
+no `fetch`, no `XMLHttpRequest`, no `<script src>`, no `<link>`, no `@import`
+and no webfont in that file, and `test/helm-html.test.mjs` greps for every one
+of them on the shipped bytes.
+
+## The hierarchy the whole thing hangs off
+
+Three layers, each strictly inside the next:
+
+| | Layer | What is there | What HELM does |
+|---|---|---|---|
+| 1 | **What instruments reach** | Weighable, repeatable, countable. | Measures here, and nowhere else. |
+| 2 | **The working order** | What things are, who holds what, what is owed, what follows from crossing a boundary. | Can check an order was *written down*. Cannot check it is right. |
+| 3 | **The whole domain** | Everything there is, reached or not. | Measures nothing. Says so. |
+
+This is in `src/order.mjs` rather than in prose because two rules the stack
+already enforces are *consequences* of it, and stating the hierarchy makes them
+one rule instead of two coincidences:
+
+1. **Silence is a fact about the instrument, not about the message.** When
+   nothing crosses the floor it means this instrument found nothing — not that
+   the message was found safe. Empty is not false.
+2. **A reading cannot answer a question wider than the layer it was taken at.**
+   Counting words is a reading at layer 1; *"this person is lying"* is a question
+   at layer 3. `escalation()` computes that gap rather than trusting anyone to
+   notice it.
+
+**Governance is stages 1–4** — invariant, carrier, order, structure. Nothing is
+built and nothing is claimed; these settle what the thing *is*.
+**Reasoning is stages 5–6** — proposal and evidence, where a person can be
+wrong on purpose. Each stage names what it refuses, and a stage that refuses
+nothing is a heading. Six standard procedures, one per stage, each ending in
+something done off the screen.
+
+The vocabulary is deliberately ordinary English throughout. The logic is the
+asset; the terminology is not, and `build_helm.mjs` **fails the build** if an
+internal term reaches the page — including in a comment, because someone who
+opens view-source is still the reader. It caught two on its first run.
 
 Every verdict now stamps a **versioned mechanism lexicon** — `consumer-v1` here,
 `enterprise-v1` on the server (`api/govern.js`) and the Python reference — so a

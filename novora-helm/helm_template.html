@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HELM</title>
+<!--
+  HELM — the personal agency layer. ONE FILE. NO NETWORK. NO ACCOUNT.
+  ==========================================================================
+  Open this file in a browser with the network cable pulled out and every
+  part of it still works. That is not a feature list, it is the topology:
+  there is no fetch, no XMLHttpRequest, no WebSocket, no <script src>, no
+  <link href>, no @import and no webfont in this file, and the suite greps
+  for every one of them.
+
+  NO WEBFONT, DELIBERATELY. A font from a CDN is a network request, and a
+  network request would mean the page knows when you opened it. System
+  stacks only. That is why the type is set the way it is.
+
+  The kernel below is INJECTED from src/helm-core.mjs, src/primitives.mjs
+  and src/order.mjs by build_helm.mjs. Do not edit it here — edit the
+  modules and rebuild. test_helm_html asserts a rebuild is byte-identical,
+  so a hand-edit to this file fails the build that made it.
+-->
+<style>
+/* ── tokens ────────────────────────────────────────────────────────────────
+   A ship's helm at night is lit low and warm, because white light destroys
+   the night vision the helmsman steers by. The station stays dark so the
+   person can see. That is the product, so it is also the palette. */
+:root{
+  --ground:#F6F3EA; --panel:#FFFFFF; --line:#E0DACB; --line2:#CFC7B4;
+  --ink:#161D26; --dim:#5E6B7A; --faint:#8A94A1;
+  --amber:#9A6410; --amber-soft:rgba(154,100,16,.10);
+  --signal:#A03A32; --signal-soft:rgba(160,58,50,.09);
+  --radius:12px;
+  --f-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A0E13; --panel:#121821; --line:#1E2732; --line2:#2B3745;
+    --ink:#E4EBF2; --dim:#8B9AAB; --faint:#5E6D7E;
+    --amber:#E8A33D; --amber-soft:rgba(232,163,61,.10);
+    --signal:#E2726B; --signal-soft:rgba(226,114,107,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A0E13; --panel:#121821; --line:#1E2732; --line2:#2B3745;
+  --ink:#E4EBF2; --dim:#8B9AAB; --faint:#5E6D7E;
+  --amber:#E8A33D; --amber-soft:rgba(232,163,61,.10);
+  --signal:#E2726B; --signal-soft:rgba(226,114,107,.10);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font:17px/1.65 var(--f-ui);            /* 17px base: readable at 8 and at 80 */
+  padding:0 18px 72px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:720px;margin:0 auto}
+
+/* ── header ─────────────────────────────────────────────────────────────── */
+header{padding:34px 0 8px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{
+  margin:0; font-size:26px; font-weight:800; letter-spacing:-.02em;
+}
+h1 .m{color:var(--amber)}
+header p{margin:0;color:var(--dim);font-size:16px}
+.themebtn{
+  margin-left:auto;background:none;border:1px solid var(--line2);color:var(--dim);
+  border-radius:999px;padding:5px 13px;font:inherit;font-size:14px;cursor:pointer;
+}
+.themebtn:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ── sections ───────────────────────────────────────────────────────────── */
+section{
+  margin-top:22px;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius);padding:20px;
+}
+.eyebrow{
+  font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--amber);margin:0 0 4px;
+}
+h2{margin:0 0 4px;font-size:20px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+.sub{margin:0 0 16px;color:var(--dim);font-size:16px;text-wrap:pretty}
+
+/* ── audit ──────────────────────────────────────────────────────────────── */
+textarea{
+  width:100%;min-height:132px;resize:vertical;
+  background:var(--ground);color:var(--ink);
+  border:1px solid var(--line2);border-radius:10px;padding:13px 14px;
+  font:17px/1.6 var(--f-ui);
+}
+textarea:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
+  outline:2px solid var(--amber);outline-offset:2px;
+}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+button.go{
+  background:var(--amber);color:var(--ground);border:0;border-radius:9px;
+  padding:11px 22px;font:inherit;font-size:17px;font-weight:700;cursor:pointer;
+}
+button.go:hover{filter:brightness(1.08)}
+button.ghost{
+  background:none;border:1px solid var(--line2);color:var(--dim);
+  border-radius:9px;padding:10px 16px;font:inherit;font-size:16px;cursor:pointer;
+}
+button.ghost:hover{color:var(--ink);border-color:var(--ink)}
+.samples{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.samples span{color:var(--faint);font-size:14px}
+.samples button{
+  background:none;border:1px dashed var(--line2);color:var(--dim);
+  border-radius:999px;padding:5px 12px;font:inherit;font-size:14px;cursor:pointer;
+}
+.samples button:hover{color:var(--amber);border-color:var(--amber)}
+
+/* the readout. quiet is the ordinary state and it is not styled as success. */
+#out{margin-top:18px}
+#out:empty{display:none}
+.quiet{
+  color:var(--dim);font-size:17px;border-top:1px solid var(--line);padding-top:16px;
+}
+.alert{
+  border:1px solid var(--signal);background:var(--signal-soft);
+  border-radius:10px;padding:16px 17px;
+}
+.chip{
+  display:inline-block;background:var(--signal);color:var(--ground);
+  border-radius:999px;padding:4px 13px;font-size:14px;font-weight:700;
+  letter-spacing:.01em;
+}
+.alert h3{margin:11px 0 6px;font-size:18px;font-weight:700}
+.alert p{margin:0;font-size:17px}
+.todo{margin:13px 0 0;padding-left:20px}
+.todo li{margin:5px 0}
+@media (prefers-reduced-motion:no-preference){
+  #out>*{animation:rise .22s ease-out}
+  @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+}
+
+/* arithmetic, folded away — never on the first screen */
+details{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;color:var(--dim);font-size:15px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";color:var(--faint)}
+details[open] summary::before{content:"▾ "}
+.arith{margin-top:11px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:6px 12px 6px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--faint);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;padding-right:0}
+
+/* ── the limits, same size type as everything else ──────────────────────── */
+.limits{margin-top:18px;border-top:1px solid var(--line);padding-top:15px}
+.limits h4{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--dim);
+  letter-spacing:.06em;text-transform:uppercase}
+.limits li{margin:6px 0;color:var(--dim)}
+.limits ul{margin:0;padding-left:20px}
+
+/* ── the hierarchy: containment drawn as containment ────────────────────── */
+.lay{border:1px solid var(--line2);border-radius:12px;padding:15px 16px 16px}
+.lay+.lay{margin-top:0}
+.lay .lab{display:block;font-size:13px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+.lay p.is{margin:0 0 13px;color:var(--dim);font-size:15px}
+.l1{border-color:var(--amber);background:var(--amber-soft)}
+.l1 .lab{color:var(--amber)}
+.l1 p.is{margin-bottom:8px}
+.here{margin:0;font-weight:700;color:var(--amber);font-size:15px}
+.because{margin:16px 0 0;padding-left:15px;border-left:2px solid var(--line2);
+  color:var(--dim);font-size:16px}
+
+/* ── stages ─────────────────────────────────────────────────────────────── */
+.band{margin-top:16px}
+.band>h4{margin:0 0 3px;font-size:13px;font-weight:700;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--amber)}
+.band>p{margin:0 0 11px;color:var(--faint);font-size:15px}
+.stage{display:flex;gap:13px;padding:11px 0;border-top:1px solid var(--line)}
+.stage .num{font-family:var(--f-mono);color:var(--faint);font-size:15px;
+  font-variant-numeric:tabular-nums;padding-top:1px}
+.stage b{display:block;font-size:17px}
+.stage .asks{color:var(--dim);font-size:16px}
+.stage .ref{color:var(--faint);font-size:15px;margin-top:3px}
+.stage .ref em{font-style:normal;color:var(--signal)}
+
+/* ── delegate ───────────────────────────────────────────────────────────── */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+input,select{
+  width:100%;background:var(--ground);color:var(--ink);
+  border:1px solid var(--line2);border-radius:9px;padding:10px 12px;
+  font:inherit;font-size:16px;
+}
+label{display:block;font-size:14px;color:var(--dim);margin-bottom:4px}
+.tbl{overflow-x:auto;margin-top:16px}
+.perm{font-size:14px;font-weight:700;padding:2px 9px;border-radius:999px;
+  border:1px solid var(--line2);color:var(--dim)}
+.perm.allow{color:var(--amber);border-color:var(--amber)}
+.perm.deny{color:var(--signal);border-color:var(--signal)}
+.revoked{opacity:.45}
+button.rev{background:none;border:1px solid var(--line2);color:var(--dim);
+  border-radius:7px;padding:4px 11px;font:inherit;font-size:14px;cursor:pointer}
+button.rev:hover{color:var(--signal);border-color:var(--signal)}
+.empty{color:var(--faint);font-size:16px;margin:14px 0 0}
+
+/* ── wallet ─────────────────────────────────────────────────────────────── */
+.cert{border-top:1px solid var(--line);padding:11px 0;display:flex;gap:12px;
+  align-items:baseline;flex-wrap:wrap}
+.cert code{font-family:var(--f-mono);font-size:14px;color:var(--amber)}
+.cert .kind{font-size:14px;color:var(--dim)}
+.cert .ts{font-size:13px;color:var(--faint);margin-left:auto;
+  font-variant-numeric:tabular-nums}
+.verifyline{margin-top:15px;font-size:16px;color:var(--dim)}
+
+footer{max-width:720px;margin:34px auto 0;color:var(--faint);font-size:15px;
+  text-align:center;text-wrap:pretty}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>HEL<span class="m">M</span></h1>
+  <p>the place you steer</p>
+  <button class="themebtn" id="theme" type="button">Light / dark</button>
+</header>
+
+<!-- ═══ AUDIT ═══════════════════════════════════════════════════════════ -->
+<section id="audit-sec">
+  <p class="eyebrow">Audit</p>
+  <h2>Check something before you act on it</h2>
+  <p class="sub">Paste a message, an email, or anything an assistant told you.
+    Nothing you paste leaves this page &mdash; there is nowhere for it to go.</p>
+
+  <textarea id="t" aria-label="Text to check"
+    placeholder="Paste the message here&hellip;"></textarea>
+
+  <div class="row">
+    <button class="go" id="go" type="button">Check it</button>
+    <button class="ghost" id="clear" type="button">Clear</button>
+  </div>
+
+  <div class="samples">
+    <span>Or try:</span>
+    <button type="button" data-s="calm">an ordinary message</button>
+    <button type="button" data-s="scam">a phone call about money</button>
+    <button type="button" data-s="dark">a checkout page</button>
+  </div>
+
+  <div id="out" aria-live="polite"></div>
+
+  <div class="limits">
+    <h4>What this cannot do</h4>
+    <ul id="limits"></ul>
+  </div>
+</section>
+
+<!-- ═══ THE ORDER ═══════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">The order</p>
+  <h2>Three layers, and the middle one is where people get hurt</h2>
+  <p class="sub">Each layer sits inside the next. The reason this is on the
+    screen and not in a manual: it is what stops a reading from being used for
+    more than it can carry.</p>
+
+  <div class="lay" id="layers"></div>
+
+  <p class="because">Two things follow, and they are the whole reason HELM
+    behaves the way it does.<br><br>
+    <strong>Saying nothing is a fact about the instrument, not about the
+    message.</strong> When nothing here crosses the floor it means this
+    instrument found nothing &mdash; not that the message was found safe.
+    Empty is not the same as false.<br><br>
+    <strong>A reading cannot answer a bigger question than the layer it was
+    taken at.</strong> Counting words is a reading at layer&nbsp;1. &ldquo;This
+    person is lying&rdquo; is a question at layer&nbsp;3. HELM never crosses
+    that gap, and it will tell you when something else has.</p>
+</section>
+
+<!-- ═══ STAGES ══════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">How a decision gets made</p>
+  <h2>Six stages: four to set the order, two to reason inside it</h2>
+  <p class="sub">The first four settle what a thing <em>is</em>. Nothing is
+    built and nothing is claimed. The last two are where you can be wrong on
+    purpose &mdash; which is the point of them.</p>
+  <div id="stages"></div>
+</section>
+
+<!-- ═══ SOPS ════════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">Standard procedures</p>
+  <h2>One procedure per stage, and each one names what it turns away</h2>
+  <p class="sub">A procedure that refuses nothing is advice. Each of these ends
+    in something you do, and something you decline to accept.</p>
+  <div id="sops"></div>
+</section>
+
+<!-- ═══ DELEGATE ════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">Delegate</p>
+  <h2>What you have handed to machines</h2>
+  <p class="sub">One row per permission. Anything not on this list is refused
+    by default &mdash; that is the rule, not a setting. Every row revokes in one
+    tap and every decision lands in the wallet below.</p>
+
+  <div class="grid">
+    <div><label for="g-agent">Which assistant</label>
+      <input id="g-agent" placeholder="e.g. shopping assistant"></div>
+    <div><label for="g-action">May do what</label>
+      <input id="g-action" placeholder="e.g. reorder groceries"></div>
+    <div><label for="g-perm">Permission</label>
+      <select id="g-perm">
+        <option value="allow">allow &mdash; may do it</option>
+        <option value="draft">draft &mdash; may prepare, never send</option>
+        <option value="deny">deny &mdash; never</option>
+      </select></div>
+    <div><label for="g-cap">Spending cap</label>
+      <input id="g-cap" type="number" min="0" step="1" value="0"></div>
+  </div>
+  <div class="row"><button class="go" id="g-add" type="button">Add permission</button></div>
+
+  <div class="tbl" id="grants"></div>
+</section>
+
+<!-- ═══ DEVELOP ═════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">Develop</p>
+  <h2>Is this growing what you can do, or replacing it?</h2>
+  <p class="sub">Not a screen-time meter. After you use an assistant, say what
+    happened. Only you ever see this.</p>
+
+  <div class="row">
+    <button class="ghost" data-dev="stayed" type="button">I checked it / added my own thinking</button>
+    <button class="ghost" data-dev="took" type="button">I took the answer as it came</button>
+  </div>
+  <div id="capacity" class="verifyline"></div>
+</section>
+
+<!-- ═══ PROVE ═══════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">Prove</p>
+  <h2>What you checked, and when</h2>
+  <p class="sub">Each entry is sealed against the one before it. Change any
+    past entry and the chain breaks at exactly that point &mdash; which is what
+    makes it worth keeping.</p>
+
+  <div class="row">
+    <button class="ghost" id="verify" type="button">Check the chain</button>
+    <button class="ghost" id="wipe" type="button">Erase everything on this device</button>
+  </div>
+  <div id="verified" class="verifyline"></div>
+  <div id="wallet"></div>
+</section>
+
+<footer>
+  Everything on this page runs on this device. There is no account, no server
+  and no network request in this file.<br>
+  After the screen, the next step is yours.
+</footer>
+
+</div>
+
+<script>
+"use strict";
+/*__KERNEL__*/
+
+/* ════════════════════════════════════════════════════════════════════════
+   THE SCREEN
+   ════════════════════════════════════════════════════════════════════════ */
+var $ = function (id) { return document.getElementById(id); };
+
+function el(tag, cls, text) {
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;   /* textContent, never innerHTML */
+  return n;
+}
+
+/* ── storage. Wrapped because a private window throws on access rather than
+      returning null, and a page that dies on that is a page that dies on a
+      grandparent's locked-down browser. ────────────────────────────────── */
+var K = { grants: "helm.v1.grants", chain: "helm.v1.chain", cap: "helm.v1.capacity" };
+function load(k, fallback) {
+  try { var raw = localStorage.getItem(k); return raw ? JSON.parse(raw) : fallback; }
+  catch (e) { return fallback; }
+}
+function save(k, v) {
+  try { localStorage.setItem(k, JSON.stringify(v)); return true; }
+  catch (e) { return false; }
+}
+
+/* ── theme ──────────────────────────────────────────────────────────────── */
+try {
+  var saved = localStorage.getItem("helm.v1.theme");
+  if (saved) document.documentElement.setAttribute("data-theme", saved);
+} catch (e) { /* no storage; the media query still decides */ }
+$("theme").onclick = function () {
+  var cur = document.documentElement.getAttribute("data-theme");
+  if (!cur) {
+    cur = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  var next = cur === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("helm.v1.theme", next); } catch (e) { /* fine */ }
+};
+
+/* ── the limits, rendered from the one place they are written ───────────── */
+(function () {
+  var ul = $("limits");
+  LIMITS.forEach(function (s) { ul.appendChild(el("li", null, s)); });
+})();
+
+/* ── the hierarchy, drawn as containment ────────────────────────────────── */
+(function () {
+  var host = $("layers");
+  /* outermost first, each nested inside the last */
+  var order = [LAYERS[2], LAYERS[1], LAYERS[0]];
+  var cursor = host;
+  order.forEach(function (L, i) {
+    var box = i === 0 ? host : el("div", "lay" + (L.n === 1 ? " l1" : ""));
+    if (i === 0) box.className = "lay";
+    box.appendChild(el("span", "lab", L.n + " · " + L.name));
+    box.appendChild(el("p", "is", L.is));
+    if (L.n === 1) box.appendChild(el("p", "here", "HELM measures here. Only here."));
+    if (i > 0) cursor.appendChild(box);
+    cursor = box;
+  });
+})();
+
+/* ── the six stages ─────────────────────────────────────────────────────── */
+(function () {
+  var host = $("stages");
+  [["governance", "Governance", "Settling what the thing is. Nothing is built yet.", GOVERNANCE],
+   ["reasoning", "Reasoning", "Where you propose something and find out.", REASONING]
+  ].forEach(function (b) {
+    var band = el("div", "band");
+    band.appendChild(el("h4", null, b[1]));
+    band.appendChild(el("p", null, b[2]));
+    b[3].forEach(function (s) {
+      var row = el("div", "stage");
+      row.appendChild(el("span", "num", String(s.n)));
+      var body = el("div");
+      body.appendChild(el("b", null, s.name));
+      body.appendChild(el("span", "asks", s.asks));
+      var ref = el("div", "ref");
+      ref.appendChild(el("em", null, "Refused: "));
+      ref.appendChild(document.createTextNode(s.refuses));
+      body.appendChild(ref);
+      row.appendChild(body);
+      band.appendChild(row);
+    });
+    host.appendChild(band);
+  });
+})();
+
+/* ── the standard procedures ────────────────────────────────────────────── */
+(function () {
+  var host = $("sops");
+  SOPS.forEach(function (s) {
+    var row = el("div", "stage");
+    row.appendChild(el("span", "num", String(s.n)));
+    var body = el("div");
+    body.appendChild(el("b", null, s.does));
+    var ref = el("div", "ref");
+    ref.appendChild(el("em", null, "Refused: "));
+    ref.appendChild(document.createTextNode(s.refuse));
+    body.appendChild(ref);
+    var chk = el("div", "asks");
+    chk.appendChild(el("em", null, "Go and: "));
+    chk.appendChild(document.createTextNode(s.check));
+    body.appendChild(chk);
+    row.appendChild(body);
+    host.appendChild(row);
+  });
+})();
+
+/* ── AUDIT ──────────────────────────────────────────────────────────────── */
+var SAMPLES = {
+  calm: "Preheat the oven to 180C. Mix the flour and butter until it looks " +
+        "like breadcrumbs, then add the sugar. You can use margarine instead " +
+        "if you prefer, and it keeps for about four days in a tin.",
+  scam: "Grandma it's me, I'm in trouble and I need your help right now. " +
+        "Please don't tell anyone, not even mum, I'm so embarrassed. There's " +
+        "no time to check with anyone. Can you wire me 800 today, or send it " +
+        "as gift cards? Just trust me, I'll explain everything later.",
+  dark: "Only 2 left in stock and this offer expires today. Everyone is " +
+        "switching to our premium plan. Act now before it's too late — " +
+        "limited time, don't miss out.",
+};
+
+Object.keys(SAMPLES).forEach(function (k) {
+  var b = document.querySelector('[data-s="' + k + '"]');
+  if (b) b.onclick = function () { $("t").value = SAMPLES[k]; run(); };
+});
+$("go").onclick = run;
+$("clear").onclick = function () { $("t").value = ""; $("out").textContent = ""; $("t").focus(); };
+
+function run() {
+  var before = $("t").value;
+  if (!before.trim()) { $("out").textContent = ""; return; }
+
+  var r = audit(before);
+
+  /* THE MIRROR, NEVER THE HAND — as code rather than as a promise. If the
+     text moved during the audit, nothing is rendered and the page says so.
+     A guarantee nobody can execute is a slogan. */
+  if ($("t").value !== before) {
+    $("out").textContent = "";
+    $("out").appendChild(el("p", "quiet",
+      "Stopped: the text changed while it was being read. Nothing is shown."));
+    return;
+  }
+
+  render(r);
+  remember(r);
+}
+
+function render(r) {
+  var out = $("out");
+  out.textContent = "";
+
+  if (r.chip) {
+    /* the only loud state in the whole page, and it took a strong, tight
+       posterior AND a named mechanism to get here */
+    var box = el("div", "alert");
+    box.appendChild(el("span", "chip", "Worth stopping for"));
+    box.appendChild(el("h3", null, "This has the shape of a message built to rush you."));
+    box.appendChild(el("p", null, r.correction));
+    var ul = el("ul", "todo");
+    GO_CHECK.forEach(function (g) { ul.appendChild(el("li", null, g)); });
+    box.appendChild(ul);
+    out.appendChild(box);
+  } else {
+    /* the ordinary state. Not styled as success, not coloured as safe, and
+       worded so it cannot be read as a clearance. */
+    out.appendChild(el("p", "quiet",
+      "Nothing here crosses the floor. That means this instrument found " +
+      "nothing — not that the message is safe."));
+  }
+
+  /* the arithmetic, folded away. Never on the first screen. */
+  var d = el("details");
+  d.appendChild(el("summary", null, "Show the arithmetic"));
+  var wrap = el("div", "arith");
+  var t = el("table");
+  var thead = el("thead"), hr = el("tr");
+  ["What fired", "Times", "Weight"].forEach(function (h) { hr.appendChild(el("th", null, h)); });
+  thead.appendChild(hr); t.appendChild(thead);
+  var tb = el("tbody");
+  if (!r.evidence.length) {
+    var er = el("tr"); var ec = el("td", null, "nothing fired"); ec.colSpan = 3;
+    er.appendChild(ec); tb.appendChild(er);
+  }
+  r.evidence.forEach(function (e) {
+    var tr = el("tr");
+    tr.appendChild(el("td", null, e.gate));
+    tr.appendChild(el("td", "n", String(e.hits)));
+    tr.appendChild(el("td", "n", e.llr.toFixed(3)));
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  wrap.appendChild(t);
+  d.appendChild(wrap);
+
+  var foot = el("p", "quiet");
+  foot.style.borderTop = "0";
+  foot.style.paddingTop = "10px";
+  foot.textContent =
+    "band " + r.verdict + " · p " + r.p_manipulative.toFixed(3) +
+    " · 95% interval [" + r.ci95[0].toFixed(3) + ", " + r.ci95[1].toFixed(3) + "]" +
+    " · a named mechanism is " + (r.mechanismPresent ? "present" : "absent") +
+    " · floor " + r.floor;
+  d.appendChild(foot);
+  out.appendChild(d);
+}
+
+/* ── DELEGATE ───────────────────────────────────────────────────────────── */
+var grants = load(K.grants, []);
+var seq = grants.reduce(function (m, g) {
+  var n = parseInt(String(g.id).replace(/\D/g, ""), 10);
+  return isNaN(n) ? m : Math.max(m, n);
+}, 0);
+
+$("g-add").onclick = function () {
+  var agent = $("g-agent").value.trim(), action = $("g-action").value.trim();
+  if (!agent || !action) return;
+  var capRaw = $("g-cap").value.trim();
+  grants.push({
+    id: "GRANT-" + String(++seq).padStart(4, "0"),
+    agent: agent, action: action,
+    permission: $("g-perm").value,
+    /* a blank cap is blank. It does not silently become a cap of zero, and it
+       does not silently become unlimited: the row says so. */
+    maxStake: capRaw === "" ? null : Number(capRaw),
+    revoked: false, created: new Date().toISOString(),
+  });
+  save(K.grants, grants);
+  $("g-agent").value = ""; $("g-action").value = ""; $("g-cap").value = "0";
+  drawGrants();
+};
+
+function drawGrants() {
+  var host = $("grants");
+  host.textContent = "";
+  if (!grants.length) {
+    host.appendChild(el("p", "empty",
+      "Nothing delegated. Every action by every assistant is refused by default."));
+    return;
+  }
+  var t = el("table");
+  var thead = el("thead"), hr = el("tr");
+  ["Assistant", "May", "Permission", "Cap", ""].forEach(function (h) {
+    hr.appendChild(el("th", null, h));
+  });
+  thead.appendChild(hr); t.appendChild(thead);
+  var tb = el("tbody");
+  grants.forEach(function (g) {
+    var tr = el("tr", g.revoked ? "revoked" : null);
+    tr.appendChild(el("td", null, g.agent));
+    tr.appendChild(el("td", null, g.action));
+    var pc = el("td");
+    pc.appendChild(el("span", "perm " + g.permission, g.permission));
+    tr.appendChild(pc);
+    /* blank stays blank */
+    tr.appendChild(el("td", "n", g.maxStake === null ? "—" : String(g.maxStake)));
+    var ac = el("td");
+    if (!g.revoked) {
+      var b = el("button", "rev", "Revoke");
+      /* MUTATE THE ROW. Never rebuild the list from inside a handler bound to
+         one of its own children — six of those have been committed here. */
+      b.onclick = function () {
+        g.revoked = true;
+        g.revokedAt = new Date().toISOString();
+        save(K.grants, grants);
+        tr.className = "revoked";
+        ac.textContent = "revoked";
+        note("delegation", { agent: g.agent, action: g.action, decision: "revoked", grant: g.id });
+      };
+      ac.appendChild(b);
+    } else {
+      ac.textContent = "revoked";
+    }
+    tr.appendChild(ac);
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  var box = el("div", "tbl");
+  box.appendChild(t);
+  host.appendChild(box);
+}
+
+/* ── DEVELOP ────────────────────────────────────────────────────────────── */
+var capEvents = load(K.cap, []);
+var tracker = new CapacityTracker();
+tracker.events = capEvents;
+
+Array.prototype.forEach.call(document.querySelectorAll("[data-dev]"), function (b) {
+  b.onclick = function () {
+    var stayed = b.getAttribute("data-dev") === "stayed";
+    tracker.record(stayed
+      ? { verified: true, addedOwnReasoning: true }
+      : { acceptedVerbatim: true, tookOverThinking: true });
+    capEvents = tracker.events;
+    save(K.cap, capEvents);
+    drawCapacity();
+  };
+});
+
+function drawCapacity() {
+  var r = tracker.report();
+  var host = $("capacity");
+  host.textContent = "";
+  if (r.trend === "no-data") {
+    host.textContent = "Nothing recorded yet. This needs a while before it means anything.";
+    return;
+  }
+  var words = { developing: "growing", substituting: "being handed over", steady: "about level" };
+  host.textContent = r.n < 6
+    ? r.n + " recorded. Under six there is no trend to read, so none is shown."
+    : "Over your last " + r.n + ", what you do yourself is " + words[r.trend] + ".";
+}
+
+/* ── PROVE ──────────────────────────────────────────────────────────────── */
+var wallet = new CertificateWallet();
+wallet.chain = load(K.chain, []);
+
+var CAN_SEAL = !!(window.crypto && window.crypto.subtle);
+
+function note(kind, payload) {
+  /* No seal, no entry. Writing an unsealed row into a chain and calling it a
+     chain is the failure this section exists to make impossible. */
+  if (!CAN_SEAL) return Promise.resolve(null);
+  return wallet.append(kind, payload).then(function (c) {
+    save(K.chain, wallet.chain);
+    drawWallet();
+    return c;
+  });
+}
+
+function remember(r) {
+  /* what is kept is the READING, never the text. There is deliberately no
+     field here that could hold what you pasted. */
+  note("audit", { verdict: r.verdict, p: r.p_manipulative, mechanism: r.mechanismPresent });
+}
+
+function drawWallet() {
+  var host = $("wallet");
+  host.textContent = "";
+  if (!CAN_SEAL) {
+    host.appendChild(el("p", "empty",
+      "This browser will not seal entries, so nothing is being written. " +
+      "An unsealed list is not a chain and will not be shown as one."));
+    return;
+  }
+  if (!wallet.chain.length) {
+    host.appendChild(el("p", "empty", "Empty. Nothing has been checked on this device yet."));
+    return;
+  }
+  wallet.chain.slice().reverse().slice(0, 20).forEach(function (c) {
+    var row = el("div", "cert");
+    row.appendChild(el("code", null, c.id));
+    row.appendChild(el("span", "kind", c.kind));
+    row.appendChild(el("span", "ts", new Date(c.ts).toLocaleString()));
+    host.appendChild(row);
+  });
+}
+
+$("verify").onclick = function () {
+  if (!CAN_SEAL) { $("verified").textContent = "Nothing to check — no entries are being sealed."; return; }
+  if (!wallet.chain.length) { $("verified").textContent = "Nothing in the wallet yet."; return; }
+  wallet.verify().then(function (v) {
+    $("verified").textContent = v.ok
+      ? "The chain holds across all " + wallet.chain.length + " entries."
+      : "The chain breaks at entry " + (v.brokenAt + 1) + " (" + v.reason + ").";
+  });
+};
+
+$("wipe").onclick = function () {
+  try {
+    localStorage.removeItem(K.grants);
+    localStorage.removeItem(K.chain);
+    localStorage.removeItem(K.cap);
+  } catch (e) { /* nothing stored to begin with */ }
+  grants = []; wallet.chain = []; tracker.events = []; capEvents = [];
+  $("verified").textContent = "Erased. Nothing was sent anywhere, because there is nowhere to send it.";
+  drawGrants(); drawWallet(); drawCapacity();
+};
+
+drawGrants();
+drawWallet();
+drawCapacity();
+</script>
+</body>
+</html>

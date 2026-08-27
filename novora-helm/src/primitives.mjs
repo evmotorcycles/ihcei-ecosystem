@@ -1,4 +1,4 @@
-// primitives.mjs — HELM DELEGATE / DEVELOP / PROVE · GT v18.2
+// primitives.mjs — HELM DELEGATE / DEVELOP / PROVE
 // ============================================================================
 // The three primitives beyond AUDIT (helm-core.mjs). All local, no network.
 // PROVE uses Web Crypto SHA-256 (present in browsers and Node 18+), so the

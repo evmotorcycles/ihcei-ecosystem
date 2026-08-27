@@ -1,0 +1,1252 @@
+<title>HELM</title>
+<!--
+  HELM — the personal agency layer. ONE FILE. NO NETWORK. NO ACCOUNT.
+  ==========================================================================
+  Open this file in a browser with the network cable pulled out and every
+  part of it still works. That is not a feature list, it is the topology:
+  there is no fetch, no XMLHttpRequest, no WebSocket, no <script src>, no
+  <link href>, no @import and no webfont in this file, and the suite greps
+  for every one of them.
+
+  NO WEBFONT, DELIBERATELY. A font from a CDN is a network request, and a
+  network request would mean the page knows when you opened it. System
+  stacks only. That is why the type is set the way it is.
+
+  The kernel below is INJECTED from src/helm-core.mjs, src/primitives.mjs
+  and src/order.mjs by build_helm.mjs. Do not edit it here — edit the
+  modules and rebuild. test_helm_html asserts a rebuild is byte-identical,
+  so a hand-edit to this file fails the build that made it.
+-->
+<style>
+/* ── tokens ────────────────────────────────────────────────────────────────
+   A ship's helm at night is lit low and warm, because white light destroys
+   the night vision the helmsman steers by. The station stays dark so the
+   person can see. That is the product, so it is also the palette. */
+:root{
+  --ground:#F6F3EA; --panel:#FFFFFF; --line:#E0DACB; --line2:#CFC7B4;
+  --ink:#161D26; --dim:#5E6B7A; --faint:#8A94A1;
+  --amber:#9A6410; --amber-soft:rgba(154,100,16,.10);
+  --signal:#A03A32; --signal-soft:rgba(160,58,50,.09);
+  --radius:12px;
+  --f-ui:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --f-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A0E13; --panel:#121821; --line:#1E2732; --line2:#2B3745;
+    --ink:#E4EBF2; --dim:#8B9AAB; --faint:#5E6D7E;
+    --amber:#E8A33D; --amber-soft:rgba(232,163,61,.10);
+    --signal:#E2726B; --signal-soft:rgba(226,114,107,.10);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A0E13; --panel:#121821; --line:#1E2732; --line2:#2B3745;
+  --ink:#E4EBF2; --dim:#8B9AAB; --faint:#5E6D7E;
+  --amber:#E8A33D; --amber-soft:rgba(232,163,61,.10);
+  --signal:#E2726B; --signal-soft:rgba(226,114,107,.10);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font:17px/1.65 var(--f-ui);            /* 17px base: readable at 8 and at 80 */
+  padding:0 18px 72px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:720px;margin:0 auto}
+
+/* ── header ─────────────────────────────────────────────────────────────── */
+header{padding:34px 0 8px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{
+  margin:0; font-size:26px; font-weight:800; letter-spacing:-.02em;
+}
+h1 .m{color:var(--amber)}
+header p{margin:0;color:var(--dim);font-size:16px}
+.themebtn{
+  margin-left:auto;background:none;border:1px solid var(--line2);color:var(--dim);
+  border-radius:999px;padding:5px 13px;font:inherit;font-size:14px;cursor:pointer;
+}
+.themebtn:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ── sections ───────────────────────────────────────────────────────────── */
+section{
+  margin-top:22px;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius);padding:20px;
+}
+.eyebrow{
+  font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--amber);margin:0 0 4px;
+}
+h2{margin:0 0 4px;font-size:20px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+.sub{margin:0 0 16px;color:var(--dim);font-size:16px;text-wrap:pretty}
+
+/* ── audit ──────────────────────────────────────────────────────────────── */
+textarea{
+  width:100%;min-height:132px;resize:vertical;
+  background:var(--ground);color:var(--ink);
+  border:1px solid var(--line2);border-radius:10px;padding:13px 14px;
+  font:17px/1.6 var(--f-ui);
+}
+textarea:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{
+  outline:2px solid var(--amber);outline-offset:2px;
+}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+button.go{
+  background:var(--amber);color:var(--ground);border:0;border-radius:9px;
+  padding:11px 22px;font:inherit;font-size:17px;font-weight:700;cursor:pointer;
+}
+button.go:hover{filter:brightness(1.08)}
+button.ghost{
+  background:none;border:1px solid var(--line2);color:var(--dim);
+  border-radius:9px;padding:10px 16px;font:inherit;font-size:16px;cursor:pointer;
+}
+button.ghost:hover{color:var(--ink);border-color:var(--ink)}
+.samples{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.samples span{color:var(--faint);font-size:14px}
+.samples button{
+  background:none;border:1px dashed var(--line2);color:var(--dim);
+  border-radius:999px;padding:5px 12px;font:inherit;font-size:14px;cursor:pointer;
+}
+.samples button:hover{color:var(--amber);border-color:var(--amber)}
+
+/* the readout. quiet is the ordinary state and it is not styled as success. */
+#out{margin-top:18px}
+#out:empty{display:none}
+.quiet{
+  color:var(--dim);font-size:17px;border-top:1px solid var(--line);padding-top:16px;
+}
+.alert{
+  border:1px solid var(--signal);background:var(--signal-soft);
+  border-radius:10px;padding:16px 17px;
+}
+.chip{
+  display:inline-block;background:var(--signal);color:var(--ground);
+  border-radius:999px;padding:4px 13px;font-size:14px;font-weight:700;
+  letter-spacing:.01em;
+}
+.alert h3{margin:11px 0 6px;font-size:18px;font-weight:700}
+.alert p{margin:0;font-size:17px}
+.todo{margin:13px 0 0;padding-left:20px}
+.todo li{margin:5px 0}
+@media (prefers-reduced-motion:no-preference){
+  #out>*{animation:rise .22s ease-out}
+  @keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+}
+
+/* arithmetic, folded away — never on the first screen */
+details{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+summary{cursor:pointer;color:var(--dim);font-size:15px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸ ";color:var(--faint)}
+details[open] summary::before{content:"▾ "}
+.arith{margin-top:11px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:6px 12px 6px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--faint);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;padding-right:0}
+
+/* ── the limits, same size type as everything else ──────────────────────── */
+.limits{margin-top:18px;border-top:1px solid var(--line);padding-top:15px}
+.limits h4{margin:0 0 8px;font-size:15px;font-weight:700;color:var(--dim);
+  letter-spacing:.06em;text-transform:uppercase}
+.limits li{margin:6px 0;color:var(--dim)}
+.limits ul{margin:0;padding-left:20px}
+
+/* ── the hierarchy: containment drawn as containment ────────────────────── */
+.lay{border:1px solid var(--line2);border-radius:12px;padding:15px 16px 16px}
+.lay+.lay{margin-top:0}
+.lay .lab{display:block;font-size:13px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+.lay p.is{margin:0 0 13px;color:var(--dim);font-size:15px}
+.l1{border-color:var(--amber);background:var(--amber-soft)}
+.l1 .lab{color:var(--amber)}
+.l1 p.is{margin-bottom:8px}
+.here{margin:0;font-weight:700;color:var(--amber);font-size:15px}
+.because{margin:16px 0 0;padding-left:15px;border-left:2px solid var(--line2);
+  color:var(--dim);font-size:16px}
+
+/* ── stages ─────────────────────────────────────────────────────────────── */
+.band{margin-top:16px}
+.band>h4{margin:0 0 3px;font-size:13px;font-weight:700;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--amber)}
+.band>p{margin:0 0 11px;color:var(--faint);font-size:15px}
+.stage{display:flex;gap:13px;padding:11px 0;border-top:1px solid var(--line)}
+.stage .num{font-family:var(--f-mono);color:var(--faint);font-size:15px;
+  font-variant-numeric:tabular-nums;padding-top:1px}
+.stage b{display:block;font-size:17px}
+.stage .asks{color:var(--dim);font-size:16px}
+.stage .ref{color:var(--faint);font-size:15px;margin-top:3px}
+.stage .ref em{font-style:normal;color:var(--signal)}
+
+/* ── delegate ───────────────────────────────────────────────────────────── */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+input,select{
+  width:100%;background:var(--ground);color:var(--ink);
+  border:1px solid var(--line2);border-radius:9px;padding:10px 12px;
+  font:inherit;font-size:16px;
+}
+label{display:block;font-size:14px;color:var(--dim);margin-bottom:4px}
+.tbl{overflow-x:auto;margin-top:16px}
+.perm{font-size:14px;font-weight:700;padding:2px 9px;border-radius:999px;
+  border:1px solid var(--line2);color:var(--dim)}
+.perm.allow{color:var(--amber);border-color:var(--amber)}
+.perm.deny{color:var(--signal);border-color:var(--signal)}
+.revoked{opacity:.45}
+button.rev{background:none;border:1px solid var(--line2);color:var(--dim);
+  border-radius:7px;padding:4px 11px;font:inherit;font-size:14px;cursor:pointer}
+button.rev:hover{color:var(--signal);border-color:var(--signal)}
+.empty{color:var(--faint);font-size:16px;margin:14px 0 0}
+
+/* ── wallet ─────────────────────────────────────────────────────────────── */
+.cert{border-top:1px solid var(--line);padding:11px 0;display:flex;gap:12px;
+  align-items:baseline;flex-wrap:wrap}
+.cert code{font-family:var(--f-mono);font-size:14px;color:var(--amber)}
+.cert .kind{font-size:14px;color:var(--dim)}
+.cert .ts{font-size:13px;color:var(--faint);margin-left:auto;
+  font-variant-numeric:tabular-nums}
+.verifyline{margin-top:15px;font-size:16px;color:var(--dim)}
+
+footer{max-width:720px;margin:34px auto 0;color:var(--faint);font-size:15px;
+  text-align:center;text-wrap:pretty}
+</style>
+<div class="wrap">
+
+<header>
+  <h1>HEL<span class="m">M</span></h1>
+  <p>the place you steer</p>
+  <button class="themebtn" id="theme" type="button">Light / dark</button>
+</header>
+
+<!-- ═══ AUDIT ═══════════════════════════════════════════════════════════ -->
+<section id="audit-sec">
+  <p class="eyebrow">Audit</p>
+  <h2>Check something before you act on it</h2>
+  <p class="sub">Paste a message, an email, or anything an assistant told you.
+    Nothing you paste leaves this page &mdash; there is nowhere for it to go.</p>
+
+  <textarea id="t" aria-label="Text to check"
+    placeholder="Paste the message here&hellip;"></textarea>
+
+  <div class="row">
+    <button class="go" id="go" type="button">Check it</button>
+    <button class="ghost" id="clear" type="button">Clear</button>
+  </div>
+
+  <div class="samples">
+    <span>Or try:</span>
+    <button type="button" data-s="calm">an ordinary message</button>
+    <button type="button" data-s="scam">a phone call about money</button>
+    <button type="button" data-s="dark">a checkout page</button>
+  </div>
+
+  <div id="out" aria-live="polite"></div>
+
+  <div class="limits">
+    <h4>What this cannot do</h4>
+    <ul id="limits"></ul>
+  </div>
+</section>
+
+<!-- ═══ THE ORDER ═══════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">The order</p>
+  <h2>Three layers, and the middle one is where people get hurt</h2>
+  <p class="sub">Each layer sits inside the next. The reason this is on the
+    screen and not in a manual: it is what stops a reading from being used for
+    more than it can carry.</p>
+
+  <div class="lay" id="layers"></div>
+
+  <p class="because">Two things follow, and they are the whole reason HELM
+    behaves the way it does.<br><br>
+    <strong>Saying nothing is a fact about the instrument, not about the
+    message.</strong> When nothing here crosses the floor it means this
+    instrument found nothing &mdash; not that the message was found safe.
+    Empty is not the same as false.<br><br>
+    <strong>A reading cannot answer a bigger question than the layer it was
+    taken at.</strong> Counting words is a reading at layer&nbsp;1. &ldquo;This
+    person is lying&rdquo; is a question at layer&nbsp;3. HELM never crosses
+    that gap, and it will tell you when something else has.</p>
+</section>
+
+<!-- ═══ STAGES ══════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">How a decision gets made</p>
+  <h2>Six stages: four to set the order, two to reason inside it</h2>
+  <p class="sub">The first four settle what a thing <em>is</em>. Nothing is
+    built and nothing is claimed. The last two are where you can be wrong on
+    purpose &mdash; which is the point of them.</p>
+  <div id="stages"></div>
+</section>
+
+<!-- ═══ SOPS ════════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">Standard procedures</p>
+  <h2>One procedure per stage, and each one names what it turns away</h2>
+  <p class="sub">A procedure that refuses nothing is advice. Each of these ends
+    in something you do, and something you decline to accept.</p>
+  <div id="sops"></div>
+</section>
+
+<!-- ═══ DELEGATE ════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">Delegate</p>
+  <h2>What you have handed to machines</h2>
+  <p class="sub">One row per permission. Anything not on this list is refused
+    by default &mdash; that is the rule, not a setting. Every row revokes in one
+    tap and every decision lands in the wallet below.</p>
+
+  <div class="grid">
+    <div><label for="g-agent">Which assistant</label>
+      <input id="g-agent" placeholder="e.g. shopping assistant"></div>
+    <div><label for="g-action">May do what</label>
+      <input id="g-action" placeholder="e.g. reorder groceries"></div>
+    <div><label for="g-perm">Permission</label>
+      <select id="g-perm">
+        <option value="allow">allow &mdash; may do it</option>
+        <option value="draft">draft &mdash; may prepare, never send</option>
+        <option value="deny">deny &mdash; never</option>
+      </select></div>
+    <div><label for="g-cap">Spending cap</label>
+      <input id="g-cap" type="number" min="0" step="1" value="0"></div>
+  </div>
+  <div class="row"><button class="go" id="g-add" type="button">Add permission</button></div>
+
+  <div class="tbl" id="grants"></div>
+</section>
+
+<!-- ═══ DEVELOP ═════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">Develop</p>
+  <h2>Is this growing what you can do, or replacing it?</h2>
+  <p class="sub">Not a screen-time meter. After you use an assistant, say what
+    happened. Only you ever see this.</p>
+
+  <div class="row">
+    <button class="ghost" data-dev="stayed" type="button">I checked it / added my own thinking</button>
+    <button class="ghost" data-dev="took" type="button">I took the answer as it came</button>
+  </div>
+  <div id="capacity" class="verifyline"></div>
+</section>
+
+<!-- ═══ PROVE ═══════════════════════════════════════════════════════════ -->
+<section>
+  <p class="eyebrow">Prove</p>
+  <h2>What you checked, and when</h2>
+  <p class="sub">Each entry is sealed against the one before it. Change any
+    past entry and the chain breaks at exactly that point &mdash; which is what
+    makes it worth keeping.</p>
+
+  <div class="row">
+    <button class="ghost" id="verify" type="button">Check the chain</button>
+    <button class="ghost" id="wipe" type="button">Erase everything on this device</button>
+  </div>
+  <div id="verified" class="verifyline"></div>
+  <div id="wallet"></div>
+</section>
+
+<footer>
+  Everything on this page runs on this device. There is no account, no server
+  and no network request in this file.<br>
+  After the screen, the next step is yours.
+</footer>
+
+</div>
+
+<script>
+"use strict";
+/* ─────────── src/helm-core.mjs ─────────── */
+// helm-core.mjs — HELM on-device agency kernel (fast mode)
+// ============================================================================
+// The load-bearing engine of HELM v0.1. Pure arithmetic + regex evidence +
+// LLR posterior + corroboration gate. No network, no API key, no state that
+// leaves the device. This is the "runs on a watch if needed" core from the
+// design doc §3, and it is byte-compatible in spirit with the enterprise
+// posterior math — only the extractor and the ambient tuning differ.
+//
+// Two changes from the enterprise engine, both validated:
+//   1. CORROBORATION GATE (on by default). The heaviest gates — methodology-
+//      opacity (g3) and benevolent-tyranny (g7) — fire on ANY terse directive,
+//      which is why a legitimate "restart the primary now" false-alarms. HELM
+//      requires a real manipulation MECHANISM (verification-bypass, unverifiable
+//      authority, manufactured consensus, secrecy/isolation, or payment-
+//      pressure) before those gates and the urgency/fear/imperative words carry
+//      full weight. On the enterprise corpus this took legitimate-urgency false-HOLD
+//      from 0.50 to 0.00 for free. Silence on emergencies is the whole point.
+//   2. CONSUMER MECHANISM LEXICON. The enterprise set (bypass/authority/
+//      consensus) misses phone-scam and dark-pattern mechanisms. HELM adds
+//      secrecy ("don't tell anyone"), payment-pressure ("wire it", "gift card"),
+//      and impersonation-trust ("it's me", "trust me") — the elder-armor case.
+//
+// No output is ever 0 or 1 (epistemic floor). HELM never mutates or suppresses
+// content; it returns a verdict. The mirror, never the hand.
+
+const EPS = 0.01;
+const clip = p => Math.max(EPS, Math.min(1 - EPS, p));
+const logit = p => { p = clip(p); return Math.log(p / (1 - p)); };
+const sigmoid = x => clip(1 / (1 + Math.exp(-x)));
+
+// ── LLR evidence weights (priors; identical scale to nere_engine_v3) ─────────
+const GATES = {
+  1: { name: 'Adornments',          llr: 0.45, sd: 0.25, perHit: true,  cap: 3 },
+  2: { name: 'Groupthink',          llr: 0.80, sd: 0.30, perHit: true,  cap: 3 },
+  3: { name: 'Methodology Opacity', llr: 2.10, sd: 0.55, perHit: false, cap: 1, form: true },
+  4: { name: 'Verification Bypass', llr: 1.60, sd: 0.40, perHit: true,  cap: 2, mechanism: true },
+  5: { name: 'Unverifiable Authority', llr: 1.20, sd: 0.35, perHit: true, cap: 2, mechanism: true },
+  6: { name: 'Distraction',         llr: 0.70, sd: 0.30, perHit: true,  cap: 2 },
+  7: { name: 'Benevolent Tyranny',  llr: 2.10, sd: 0.55, perHit: false, cap: 1, form: true },
+};
+const EXTRA = {
+  urgency:     { llr: 1.10, sd: 0.35, cap: 3, pressure: true },
+  fear:        { llr: 1.00, sd: 0.35, cap: 2, pressure: true },
+  imperatives: { llr: 0.45, sd: 0.20, cap: 4, pressure: true },
+  options:     { llr: -0.55, sd: 0.20, cap: 4 },
+  methodology: { llr: -0.50, sd: 0.20, cap: 5 },
+  // consumer-threat mechanisms (count toward corroboration + carry weight)
+  secrecy:     { llr: 1.70, sd: 0.45, cap: 2, mechanism: true },
+  payment:     { llr: 1.50, sd: 0.45, cap: 2, mechanism: true },
+  impersonation:{ llr: 1.30, sd: 0.40, cap: 2, mechanism: true },
+  scarcity:    { llr: 1.10, sd: 0.40, cap: 2, mechanism: true },  // manufactured scarcity (dark patterns)
+};
+
+const P = {
+  g1: [/\bimpressive\b/i, /\bexcellent\b/i, /\bstaggering\b/i, /\bunprecedented\b/i, /\bgroundbreaking\b/i, /\bamazing\b/i],
+  g2: [/\beveryone\s+agrees\b/i, /\bbroad\s+consensus\b/i, /\bscholars\s+agree\b/i, /\buniversally\s+accepted\b/i, /\bwell[- ]established\b/i, /\bwidely\s+known\b/i, /\beveryone\s+(?:is|'s)\s+(?:doing|buying|using|switching)\b/i, /\ball\s+your\s+friends\b/i, /\bjoin(?:ed)?\s+(?:thousands|millions)\b/i],
+  g4: [/\bbypass\b/i, /\bskip\s+the\b/i, /\bno\s+need\s+to\s+(check|verify|review|ask)\b/i, /\bdon'?t\s+(?:need|have)\s+to\s+verify\b/i, /\bignore\s+the\s+(?:procedure|warning|rules?)\b/i, /\bjust\s+trust\b/i, /\bdon'?t\s+(?:ask|question)\b/i, /\bno\s+time\s+to\s+(?:check|verify|think)\b/i],
+  g5: [/\bexperts\s+confirm\b/i, /\bfda\s+says\b/i, /\bpeer[- ]reviewed\s+research\s+proves\b/i, /\bauthorities\s+confirm\b/i, /\baccording\s+to\s+(?:the\s+)?(?:experts|scholars)\b/i, /\bofficial(?:ly)?\s+(?:verified|approved)\b/i, /\bthe\s+(?:irs|bank|government)\s+(?:says|requires|demands)\b/i],
+  g6: [/\bas\s+you\s+know\b/i, /\bthe\s+complexity\s+here\b/i, /\btoo\s+(?:complex|technical)\s+to\s+explain\b/i],
+  urgency: [/\bimmediately\b/i, /\bright\s+(?:now|away)\b/i, /\bno\s+time\b/i, /\bact\s+now\b/i, /\bwithin\s+(?:the\s+next\s+)?\d+\s+(?:minutes?|hours?)\b/i, /\bbefore\s+it'?s\s+too\s+late\b/i, /\blast\s+chance\b/i, /\bexpires?\s+(?:today|soon|in)\b/i, /\bhurry\b/i, /\bdo\s+not\s+ask\s+questions\b/i, /\bjust\s+execute\b/i],
+  fear: [/\bwill\s+go\s+bankrupt\b/i, /\blose\s+everything\b/i, /\bcritical\s+warning\b/i, /\bcat[a]?strophic\b/i, /\bwill\s+cause\s+harm\b/i, /\baccount\s+(?:will\s+be\s+)?(?:suspended|closed|locked)\b/i, /\byou'?(?:ll|re)\s+in\s+trouble\b/i, /\barrest(?:ed)?\b/i, /\blegal\s+action\b/i],
+  options: [/\boption[s]?\b/i, /\balternative[s]?\b/i, /\bcould\s+(?:also|consider)\b/i, /\byou\s+(?:can|may|might)\b/i, /\bpossib(?:ly|le)\b/i, /\bif\s+you\s+(?:want|prefer|like)\b/i, /\byour\s+(?:call|choice|decision)\b/i, /\bup\s+to\s+you\b/i],
+  imperatives: [/\bmus[t]?\b/i, /\bhave\s+to\b/i, /\bneed\s+to\b/i, /\bmandatory\b/i, /\brequired\b/i, /\bonly\s+(?:one\s+)?(?:way|option|path)\b/i, /\bonly\s+one\s+correct\b/i, /\bexactly\s+this\s+(?:sequence|order|way)\b/i],
+  methodology: [/\bmethodolog\w+\b/i, /\bverif\w+\b/i, /\bsourc\w+\b/i, /\bprocess\w*\b/i, /\bprocedure\b/i, /\bauditable\b/i, /\bfalsifiable\b/i, /\btraceable\b/i, /\bbecause\b/i, /\bevidence\b/i, /\banalysis\b/i, /\bhere'?s\s+why\b/i, /\bcheck\s+(?:with|the)\b/i],
+  // consumer-threat mechanism lexicon (elder scam armor + dark patterns)
+  secrecy: [/\bdo(?:n'?t|\s+not)\s+tell\s+(?:anyone|anybody|your|the)\b/i, /\bkeep\s+(?:this|it)\s+(?:a\s+)?(?:secret|between\s+us|quiet)\b/i, /\bbetween\s+(?:you\s+and\s+me|us)\b/i, /\bour\s+secret\b/i, /\bdo(?:n'?t|\s+not)\s+let\s+(?:anyone|them)\s+know\b/i],
+  payment: [/\bwire\s+(?:the\s+|it\s+|me\s+|\$|money|payment|funds|transfer)\b/i, /\bgift\s+cards?\b/i, /\bprepaid\s+cards?\b/i, /\b(?:bitcoin|crypto(?:currency)?|btc|usdt)\b/i, /\bwestern\s+union\b/i, /\bzelle\b/i, /\b(?:send|transfer)\s+(?:me\s+)?\$?\d+\b/i, /\brouting\s+(?:and|&|,)?\s*account\s+number\b/i, /\b(?:processing|re-?delivery|recovery|removal|release|clearance|activation|unlock)\s+fee\b/i, /\b(?:pay|send)\s+(?:the\s+|us\s+|a\s+|your\s+)?(?:\$?\d[\d,]*\s+)?(?:[\w-]+\s+){0,3}?fee\b/i],
+  impersonation: [/\bit'?s\s+me\b/i, /\bthis\s+is\s+your\s+(?:grand)?(?:son|daughter|child|mother|father|bank|boss)\b/i, /\btrust\s+me\b/i, /\bi'?m\s+in\s+(?:trouble|jail|the\s+hospital)\b/i, /\bi\s+need\s+your\s+help\s+right\s+now\b/i],
+  scarcity: [/\bonly\s+\d+\s+(?:left|remaining|in\s+stock)\b/i, /\balmost\s+(?:gone|sold\s+out)\b/i, /\bselling\s+(?:fast|out)\b/i, /\bwhile\s+supplies\s+last\b/i, /\blimited\s+(?:time|stock|offer)\b/i, /\bdon'?t\s+miss\s+out\b/i],
+};
+
+const count = (pats, t) => pats.reduce((n, p) => n + (p.test(t) ? 1 : 0), 0);
+
+// Seeded PRNG (mulberry32) + Box-Muller — reproducible posteriors
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function gauss(r) { let u = 0, v = 0; while (!u) u = r(); while (!v) v = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); }
+
+// ── evidence extraction (fast mode, on-device) ───────────────────────────────
+function extractEvidence(text) {
+  const words = Math.max(text.split(/\s+/).length, 1);
+  const hits = { 1: count(P.g1, text), 2: count(P.g2, text), 4: count(P.g4, text), 5: count(P.g5, text), 6: count(P.g6, text) };
+  const urg = count(P.urgency, text), fear = count(P.fear, text);
+  const opt = count(P.options, text), imp = count(P.imperatives, text), meth = count(P.methodology, text);
+  const secrecy = count(P.secrecy, text), payment = count(P.payment, text), impersonation = count(P.impersonation, text);
+  const scarcity = count(P.scarcity, text);
+  const T = Math.min(1, meth / Math.max(words * 0.05, 3));
+  const deltaA = (opt - imp) / Math.max(opt + imp, 1);
+  return { hits, urg, fear, opt, imp, meth, secrecy, payment, impersonation, scarcity,
+           T, deltaA, g3s: Math.max(0, (0.35 - T) / 0.35), g7s: Math.max(0, -deltaA) };
+}
+
+// Does the text contain a real manipulation MECHANISM (not just pressure/form)?
+function mechanismPresent(ev) {
+  return (ev.hits[2] > 0) || (ev.hits[4] > 0) || (ev.hits[5] > 0) ||
+         (ev.secrecy > 0) || (ev.payment > 0) || (ev.impersonation > 0) || (ev.scarcity > 0);
+}
+
+// ── posterior over the LLR evidence, with corroboration gate ─────────────────
+function posterior(ev, { priorP = 0.10, nMc = 3000, seed = 7, corroborationGate = true } = {}) {
+  const mech = mechanismPresent(ev);
+  const disc = (corroborationGate && !mech) ? 0.15 : 1.0; // discount form+pressure w/o mechanism
+  const terms = [], evidence = [];
+
+  for (const [gid, g] of Object.entries(GATES)) {
+    const id = Number(gid); let contrib = 0, sd = 0, hits = ev.hits[id] || 0;
+    if (id === 3)      { contrib = g.llr * ev.g3s * disc; sd = g.sd * Math.max(ev.g3s, 0.2); hits = ev.g3s > 0 ? 1 : 0; }
+    else if (id === 7) { const on = ev.g7s > 0.30; contrib = on ? g.llr * ev.g7s * disc : 0; sd = on ? g.sd * Math.max(ev.g7s, 0.2) : 0; hits = on ? 1 : 0; }
+    else { const eff = g.perHit ? Math.min(hits, g.cap) : (hits ? 1 : 0); contrib = g.llr * eff; sd = eff ? g.sd * Math.sqrt(eff) : 0; }
+    if (contrib !== 0) { terms.push([contrib, sd]); evidence.push({ gate: g.name, hits, llr: +contrib.toFixed(3) }); }
+  }
+  const extras = [['urgency', ev.urg], ['fear', ev.fear], ['imperatives', ev.imp],
+                  ['options', ev.opt], ['methodology', ev.meth],
+                  ['secrecy', ev.secrecy], ['payment', ev.payment], ['impersonation', ev.impersonation],
+                  ['scarcity', ev.scarcity]];
+  for (const [k, c] of extras) {
+    const s = EXTRA[k]; const eff = Math.min(c, s.cap);
+    if (eff) {
+      const scale = s.llr > 0 ? eff : Math.sqrt(eff);
+      let m = s.llr * scale;
+      if (s.pressure) m *= disc;              // pressure words gated by corroboration
+      terms.push([m, s.sd * Math.sqrt(eff)]);
+      evidence.push({ gate: k, hits: c, llr: +m.toFixed(3) });
+    }
+  }
+  const r = rng(seed), lo0 = logit(priorP), draws = new Array(nMc);
+  for (let i = 0; i < nMc; i++) { let s = lo0; for (const [m, sd] of terms) s += m + sd * gauss(r); draws[i] = sigmoid(s); }
+  draws.sort((a, b) => a - b);
+  const mean = clip(draws.reduce((a, b) => a + b, 0) / nMc);
+  const ci = [clip(draws[Math.floor(0.025 * nMc)]), clip(draws[Math.floor(0.975 * nMc)])];
+  return { mean, ci, evidence, mechanismPresent: mech };
+}
+
+// ── verdict band. HELM ambient floor is STRICTER than enterprise (design §5,
+// Risk 2): a chip surfaces ONLY on a strong, tight BLOCK. WARN stays silent. ──
+function band(mean, ci, { ambient = true } = {}) {
+  const blockMean = ambient ? 0.88 : 0.85, blockLo = ambient ? 0.55 : 0.50;
+  if (mean >= blockMean && ci[0] >= blockLo) return { verdict: 'BLOCK', chip: true };
+  if (mean >= 0.40 || ci[1] >= 0.85) return { verdict: 'WARN', chip: !ambient };
+  return { verdict: 'PASS', chip: false };
+}
+
+const CORRECTIONS = {
+  4: 'Verification bypass: someone is telling you to skip checking. Verify independently before acting.',
+  5: 'Unverifiable authority: an authority is invoked without a way to check it. Confirm through an official channel you look up yourself.',
+  2: 'Manufactured consensus: "everyone agrees" is not evidence. Ask what the actual reason is.',
+  secrecy: 'Isolation tactic: "don\'t tell anyone" is how manipulation avoids a second opinion. Tell someone you trust before acting.',
+  payment: 'Payment pressure: urgent requests for wire/gift-card/crypto are the hallmark of scams. Stop and verify who is really asking.',
+  impersonation: 'Identity claim + urgency + payment is the grandparent-scam pattern. Hang up and call the person back on a number you already have.',
+  scarcity: 'Manufactured scarcity: "only 2 left / expires soon" is designed to rush you past a decision. If it is real it will still be a good deal after you check.',
+  urgency: 'Manufactured urgency: real emergencies rarely forbid you from checking. The time pressure itself is the tell.',
+  default: 'This message shows a manipulation pattern. Slow down and verify before you act.',
+};
+
+// ── the one public call: audit a piece of content on-device ──────────────────
+function audit(text, opts = {}) {
+  const ev = extractEvidence(text);
+  const post = posterior(ev, opts);
+  const { verdict, chip } = band(post.mean, post.ci, opts);
+  let correction = null;
+  if (verdict !== 'PASS') {
+    const dom = post.evidence.filter(e => e.llr > 0).sort((a, b) => b.llr - a.llr)[0];
+    const key = dom?.gate;
+    correction = CORRECTIONS[key] || CORRECTIONS[({ 'Verification Bypass': 4, 'Unverifiable Authority': 5, 'Groupthink': 2 })[key]] || CORRECTIONS.default;
+  }
+  return {
+    verdict, chip,
+    p_manipulative: +post.mean.toFixed(4),
+    ci95: [+post.ci[0].toFixed(4), +post.ci[1].toFixed(4)],
+    mechanismPresent: post.mechanismPresent,
+    mechanism_lexicon: 'consumer-v1',
+    evidence: post.evidence,
+    correction,
+    engine: 'helm-fast-v0.1',
+    floor: '[0.01, 0.99]',
+  };
+}
+
+/* ─────────── src/primitives.mjs ─────────── */
+// primitives.mjs — HELM DELEGATE / DEVELOP / PROVE
+// ============================================================================
+// The three primitives beyond AUDIT (helm-core.mjs). All local, no network.
+// PROVE uses Web Crypto SHA-256 (present in browsers and Node 18+), so the
+// wallet's append/verify are async; everything else is synchronous.
+
+const enc = new TextEncoder();
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', enc.encode(str));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// ── PROVE: the personal certificate wallet (hash-chained, tamper-evident) ────
+// Each entry's hash = SHA-256(prevHash + canonical(payload)). Any edit to a
+// past entry breaks the chain from that point forward — verify() locates it.
+class CertificateWallet {
+  constructor() { this.chain = []; }
+
+  static _canonical(value) {
+    // Deterministic, RECURSIVE key-sorted serialization so the hash covers all
+    // nested payload content and is reproducible across engines. (A plain array
+    // replacer would silently drop nested keys and make the chain forgeable.)
+    if (value === null || typeof value !== 'object') return JSON.stringify(value);
+    if (Array.isArray(value)) return '[' + value.map(CertificateWallet._canonical).join(',') + ']';
+    return '{' + Object.keys(value).sort().map(k =>
+      JSON.stringify(k) + ':' + CertificateWallet._canonical(value[k])).join(',') + '}';
+  }
+
+  async append(kind, payload) {
+    const prev = this.chain.length ? this.chain[this.chain.length - 1].hash : 'GENESIS';
+    const ts = new Date().toISOString();
+    const body = { kind, ts, payload };
+    const hash = await sha256(prev + CertificateWallet._canonical(body));
+    const cert = { id: 'CERT-' + hash.slice(0, 8).toUpperCase(), prev, hash, ...body };
+    this.chain.push(cert);
+    return cert;
+  }
+
+  // Returns { ok, brokenAt }. brokenAt is the index of the first tampered link.
+  async verify() {
+    for (let i = 0; i < this.chain.length; i++) {
+      const c = this.chain[i];
+      const prev = i === 0 ? 'GENESIS' : this.chain[i - 1].hash;
+      if (c.prev !== prev) return { ok: false, brokenAt: i, reason: 'prev-link mismatch' };
+      const recomputed = await sha256(prev + CertificateWallet._canonical({ kind: c.kind, ts: c.ts, payload: c.payload }));
+      if (recomputed !== c.hash) return { ok: false, brokenAt: i, reason: 'hash mismatch' };
+    }
+    return { ok: true, brokenAt: -1 };
+  }
+
+  export() { return JSON.parse(JSON.stringify(this.chain)); }
+}
+
+// ── DELEGATE: the decision-permission table (the OAuth of agency) ─────────────
+// Stake-bounded, revocable grants from a person to an agent. check() returns
+// allow | draft | deny with the reason, and (optionally) writes a certificate.
+class DelegationTable {
+  constructor(wallet = null) { this.grants = new Map(); this.wallet = wallet; this._n = 0; }
+
+  // permission: 'allow' | 'draft' | 'deny'; maxStake in currency units (0 = none)
+  grant({ agent, action, permission = 'allow', maxStake = 0 }) {
+    const id = 'GRANT-' + (++this._n).toString().padStart(4, '0');
+    const g = { id, agent, action, permission, maxStake, revoked: false, created: new Date().toISOString() };
+    this.grants.set(id, g);
+    return g;
+  }
+
+  revoke(id) {
+    const g = this.grants.get(id);
+    if (!g) return false;
+    g.revoked = true; g.revokedAt = new Date().toISOString();
+    return true;
+  }
+
+  // Decide whether an agent may take an action at a given stake. Default deny.
+  async check({ agent, action, stake = 0 }) {
+    const g = [...this.grants.values()].find(x => x.agent === agent && x.action === action && !x.revoked);
+    let decision, reason;
+    if (!g) { decision = 'deny'; reason = 'no active grant (default deny)'; }
+    else if (g.permission === 'deny') { decision = 'deny'; reason = 'explicit deny grant'; }
+    else if (stake > g.maxStake) { decision = 'deny'; reason = `stake ${stake} exceeds cap ${g.maxStake}`; }
+    else { decision = g.permission; reason = `grant ${g.id} (cap ${g.maxStake})`; }
+    if (this.wallet) await this.wallet.append('delegation', { agent, action, stake, decision, reason });
+    return { decision, reason, grant: g ? g.id : null };
+  }
+
+  list() { return [...this.grants.values()]; }
+}
+
+// ── DEVELOP: capacity vs. dependency, not screen-time (design §5) ─────────────
+// Records observable proxies per AI interaction and reports a trend to the
+// PERSON ONLY. Higher developmentScore = growing capacity; lower = substituting.
+// Proxies (each 0..1): did the person verify the AI's answer? did they add their
+// own reasoning rather than accept verbatim? was the task within their capacity
+// (development) vs. fully outsourced (dependency)?
+class CapacityTracker {
+  constructor(windowSize = 30) { this.events = []; this.windowSize = windowSize; }
+
+  record({ verified = false, addedOwnReasoning = false, acceptedVerbatim = false, tookOverThinking = false }) {
+    // developmental if the person stays in the loop; dependent if they outsource.
+    const dev = (verified ? 0.4 : 0) + (addedOwnReasoning ? 0.4 : 0) + (acceptedVerbatim ? 0 : 0.2);
+    const dep = (tookOverThinking ? 0.6 : 0) + (acceptedVerbatim ? 0.4 : 0);
+    const e = { t: Date.now(), dev: Math.min(1, dev), dep: Math.min(1, dep) };
+    this.events.push(e);
+    return e;
+  }
+
+  // Returns a score in (0,1): fraction of recent capacity that is developmental.
+  // Also a trend: comparing the newer half of the window to the older half.
+  report() {
+    const w = this.events.slice(-this.windowSize);
+    if (!w.length) return { developmentScore: null, trend: 'no-data', n: 0 };
+    const mean = arr => arr.reduce((a, b) => a + b, 0) / Math.max(arr.length, 1);
+    const dev = mean(w.map(e => e.dev)), dep = mean(w.map(e => e.dep));
+    const score = dev / Math.max(dev + dep, 1e-9);
+    let trend = 'steady';
+    if (w.length >= 6) {
+      const half = Math.floor(w.length / 2);
+      const older = w.slice(0, half), newer = w.slice(half);
+      const s = a => { const d = mean(a.map(e => e.dev)), p = mean(a.map(e => e.dep)); return d / Math.max(d + p, 1e-9); };
+      const delta = s(newer) - s(older);
+      trend = delta > 0.08 ? 'developing' : delta < -0.08 ? 'substituting' : 'steady';
+    }
+    return { developmentScore: +score.toFixed(3), trend, n: w.length };
+  }
+}
+
+/* ─────────── src/order.mjs ─────────── */
+// order.mjs — the Governance and Reasoning hierarchy, as something that refuses.
+// ============================================================================
+// TERMINOLOGY-FREE BY CONSTRUCTION. The logic below is carried entirely by
+// ordinary English nouns. No term from any tradition's vocabulary appears here
+// or in any consumer-facing string, and a test greps for that. The logic is the
+// asset; the vocabulary is not, and importing the vocabulary would import a
+// readership test the software has no way to pass.
+//
+// THE HIERARCHY — THREE LAYERS, STRICT SUBSET
+//
+//     reach  ⊂  order  ⊂  domain
+//
+//   reach    What instruments actually get to. Weighable, repeatable, and the
+//            only layer any software in this repository can measure.
+//   order    The working order the measured world runs inside: what things are,
+//            who holds what, what is owed, where the boundaries sit, what
+//            follows from breaking them. Larger than reach — an obligation is
+//            real and no instrument weighs it.
+//   domain   Everything there is, whether or not anything reaches it. Larger
+//            than order for the same reason order is larger than reach.
+//
+// WHY THIS IS IN THE SOFTWARE AND NOT IN A README
+// The subset relation is not decoration. Two rules this repository already
+// enforces are CONSEQUENCES of it, and stating the hierarchy is what makes them
+// one rule instead of two coincidences:
+//
+//   1. An instrument returning nothing is a fact about the instrument's REACH,
+//      never about the domain. That is exactly why "nothing to check" is not an
+//      error and gets no number at all (test_fog_returns_no_number_at_all).
+//      Empty is not false. The hierarchy is the reason.
+//
+//   2. A reading taken at one layer cannot settle a question that lives at a
+//      wider one. Escalation is the error, and `escalation()` below computes it
+//      rather than trusting anyone to notice. A regex count over wording is a
+//      reading at `reach`; "this person is lying" is a question at `domain`;
+//      the gap between them is the whole reason this file exists.
+//
+// This is a lens by the register's own test: it names something a person goes
+// and checks (which layer does this claim live at, and does the reading
+// escalate?), and it can come back false — if a reading at `reach` is ever
+// shown to settle a `domain` question, the hierarchy was wrong.
+
+const LAYERS = [
+  {
+    id: 'reach',
+    n: 1,
+    name: 'What instruments reach',
+    is: 'Weighable, repeatable, countable. Anything a device can put a number on.',
+    examples: ['a meter reading', 'a word count', 'how long a fix took', 'a posterior over wording'],
+    software: 'HELM measures here and nowhere else.',
+  },
+  {
+    id: 'order',
+    n: 2,
+    name: 'The working order',
+    is: 'What things are, who holds what, what is owed, where the boundaries sit, and what follows from crossing them.',
+    examples: ['a permission', 'a debt', 'a role', 'a consequence for breaking a rule'],
+    software: 'HELM can check whether an order was WRITTEN DOWN. It cannot check whether it is right.',
+  },
+  {
+    id: 'domain',
+    n: 3,
+    name: 'The whole domain',
+    is: 'Everything there is, reached or not. The layer no instrument exhausts.',
+    examples: ['whether a thing is true', 'whether a person meant it', 'what has not been looked at'],
+    software: 'HELM measures nothing here and says so.',
+  },
+];
+
+const RANK = { reach: 1, order: 2, domain: 3 };
+const layer = id => LAYERS.find(l => l.id === id) || null;
+
+// ── the escalation check ─────────────────────────────────────────────────────
+// A reading is taken AT one layer and is being used to answer a question that
+// LIVES at another. Answering inward is fine and ordinary (a domain question
+// narrowed to something measurable is what science is). Answering OUTWARD is
+// the error this whole stack is arranged against.
+function escalation({ measuredAt, answers, where }) {
+  if (!RANK[measuredAt]) return { ok: false, why: `unknown layer: ${measuredAt}` };
+  if (!RANK[answers]) return { ok: false, why: `unknown layer: ${answers}` };
+  if (typeof where !== 'string' || !where.trim()) {
+    return { ok: false, why: 'every placement carries a `where`: who assigned these layers, and on what' };
+  }
+  const gap = RANK[answers] - RANK[measuredAt];
+  return {
+    ok: gap <= 0,
+    gap,
+    measuredAt, answers, where,
+    why: gap <= 0
+      ? null
+      : `a reading taken at "${layer(measuredAt).name}" is being used to settle a question ` +
+        `that lives at "${layer(answers).name}", ${gap} layer${gap > 1 ? 's' : ''} out. ` +
+        `The reading is not wrong; the question is bigger than the instrument.`,
+  };
+}
+
+// ── the six stages: GOVERNANCE sets the order, REASONING works inside it ─────
+// Stages 1-4 establish what a thing IS and what rests on what — nothing is
+// built and nothing is claimed. Stages 5-6 are where a person can be wrong on
+// purpose: propose something, then say what was actually measured.
+const STAGES = [
+  { n: 1, band: 'governance', name: 'Invariant',
+    asks: 'What survives when every particular of this is changed?',
+    refuses: 'Nothing stated. A picture chosen before the invariant is chosen for its decoration.' },
+  { n: 2, band: 'governance', name: 'Carrier',
+    asks: 'What physical thing is this like?',
+    refuses: 'A picture that risks nothing. That is notation, and notation cannot be wrong.' },
+  { n: 3, band: 'governance', name: 'Order',
+    asks: 'Which of the ten does this actually settle?',
+    refuses: 'A blank element. A plan silent on who is owed what has not been thought through, it has been written up.' },
+  { n: 4, band: 'governance', name: 'Structure',
+    asks: 'What rests on what, and what has no second way round?',
+    refuses: 'A number written by hand. Parts and links go in; the reading comes out of the engine.' },
+  { n: 5, band: 'reasoning', name: 'Proposal',
+    asks: 'What would you build, and what would show it wrong?',
+    refuses: 'A proposal with nothing that could falsify it.' },
+  { n: 6, band: 'reasoning', name: 'Evidence',
+    asks: 'What was actually measured?',
+    refuses: 'A claimed result with no locked prediction behind it.' },
+];
+
+const GOVERNANCE = STAGES.filter(s => s.band === 'governance');
+const REASONING = STAGES.filter(s => s.band === 'reasoning');
+
+// The ten elements of stage 3. Terminology-free; these are the things a
+// workable order settles, and a plan that leaves one blank has left it blank.
+const TEN = [
+  { id: 'terms',        asks: 'Are the words defined, or are two people using one word for two things?' },
+  { id: 'roles',        asks: 'Who does what? Named, not implied.' },
+  { id: 'dues',         asks: 'What is owed, by whom, to whom, and by when?' },
+  { id: 'boundaries',   asks: 'Where does this stop? What is outside it?' },
+  { id: 'rules',        asks: 'What must happen, and what must not?' },
+  { id: 'standards',    asks: 'How good counts as good enough, in a number someone can read?' },
+  { id: 'steps',        asks: 'In what order, and what cannot start before what?' },
+  { id: 'consequences', asks: 'What follows when a rule is broken? Stated before it is broken.' },
+  { id: 'where',        asks: 'Where does this apply, and where does it not?' },
+  { id: 'exceptions',   asks: 'What is deliberately outside the rule, and who decides?' },
+];
+
+// ── the standard procedures ──────────────────────────────────────────────────
+// Each one is a procedure a person performs, and each one names what it refuses.
+// A procedure with no refusal is advice.
+const SOPS = [
+  { n: 1, band: 'governance', does: 'State the invariant before choosing any picture for it.',
+    refuse: 'A carrier proposed first. Reorder or the picture picks the argument.',
+    check: 'Change every particular you can think of. If the statement dies, it was not the invariant.' },
+  { n: 2, band: 'governance', does: 'Make the picture predict one thing its own presenter cannot fix by editing their own work.',
+    refuse: 'A picture whose every prediction is under the presenter\'s control. That is a demonstration, not an instrument.',
+    check: 'Write down one prediction. Then ask who could make it come true by changing their own code.' },
+  { n: 3, band: 'governance', does: 'Fill all ten elements, and write down what the carrier leaks.',
+    refuse: 'A blank element rendered as a zero. Blank is blank; it makes its row vanish.',
+    check: 'Read the ten aloud to someone who was not in the room. Count the ones they cannot answer.' },
+  { n: 4, band: 'governance', does: 'Enter the parts and the links. Let the engine produce the reading.',
+    refuse: 'Any number typed in by the person who wanted that number.',
+    check: 'Add one part nobody entered and see whether the answer moves.' },
+  { n: 5, band: 'reasoning', does: 'Propose, and attach what would show the proposal wrong.',
+    refuse: 'A proposal that no outcome could embarrass.',
+    check: 'Name the result you would least like to see. If there is none, there is no proposal.' },
+  { n: 6, band: 'reasoning', does: 'Lock the prediction, hash the file, then run it.',
+    refuse: 'A result claimed with no hash behind it, and a hash edited after the run.',
+    check: 'Re-hash the file. If it moved, the prediction moved with it.' },
+];
+
+// ── what this app cannot do, in one place ───────────────────────────────────
+// The page RENDERS this array; it does not restate it. Editing a limit here
+// edits the screen, which is the only arrangement under which a printed limit
+// means anything. Each sentence is asserted present by the suite.
+const LIMITS = [
+  'This does not understand what you pasted. It matches patterns in the wording.',
+  'It cannot tell you whether anything is true, or whether the person sending it meant well.',
+  'A message written to look manipulative and a real one read the same here.',
+  'Saying nothing is the ordinary result. It does not mean a message was found safe.',
+];
+
+// What a person does next, outside this screen. A picture with nowhere to go
+// after it was a mask.
+const GO_CHECK = [
+  'If it asks for money or a code, hang up and call back on a number you already had.',
+  'Tell one person you trust before you act on anything urgent.',
+  'Look up the organisation yourself instead of using the number in the message.',
+];
+
+// ── stage 3 as arithmetic: how much of the order is actually settled ─────────
+// Returns counts and the blanks BY NAME. It does not return a grade, and there
+// is deliberately no percentage here: the number a person holds is how many
+// questions are still open, not a mark out of ten.
+function settled(fills) {
+  const f = fills && typeof fills === 'object' ? fills : {};
+  const open = TEN.filter(t => {
+    const v = f[t.id];
+    return !(typeof v === 'string' && v.trim().length > 0);
+  });
+  return {
+    open: open.map(t => t.id),
+    openCount: open.length,
+    filled: TEN.length - open.length,
+    of: TEN.length,
+  };
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   THE SCREEN
+   ════════════════════════════════════════════════════════════════════════ */
+var $ = function (id) { return document.getElementById(id); };
+
+function el(tag, cls, text) {
+  var n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;   /* textContent, never innerHTML */
+  return n;
+}
+
+/* ── storage. Wrapped because a private window throws on access rather than
+      returning null, and a page that dies on that is a page that dies on a
+      grandparent's locked-down browser. ────────────────────────────────── */
+var K = { grants: "helm.v1.grants", chain: "helm.v1.chain", cap: "helm.v1.capacity" };
+function load(k, fallback) {
+  try { var raw = localStorage.getItem(k); return raw ? JSON.parse(raw) : fallback; }
+  catch (e) { return fallback; }
+}
+function save(k, v) {
+  try { localStorage.setItem(k, JSON.stringify(v)); return true; }
+  catch (e) { return false; }
+}
+
+/* ── theme ──────────────────────────────────────────────────────────────── */
+try {
+  var saved = localStorage.getItem("helm.v1.theme");
+  if (saved) document.documentElement.setAttribute("data-theme", saved);
+} catch (e) { /* no storage; the media query still decides */ }
+$("theme").onclick = function () {
+  var cur = document.documentElement.getAttribute("data-theme");
+  if (!cur) {
+    cur = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  var next = cur === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("helm.v1.theme", next); } catch (e) { /* fine */ }
+};
+
+/* ── the limits, rendered from the one place they are written ───────────── */
+(function () {
+  var ul = $("limits");
+  LIMITS.forEach(function (s) { ul.appendChild(el("li", null, s)); });
+})();
+
+/* ── the hierarchy, drawn as containment ────────────────────────────────── */
+(function () {
+  var host = $("layers");
+  /* outermost first, each nested inside the last */
+  var order = [LAYERS[2], LAYERS[1], LAYERS[0]];
+  var cursor = host;
+  order.forEach(function (L, i) {
+    var box = i === 0 ? host : el("div", "lay" + (L.n === 1 ? " l1" : ""));
+    if (i === 0) box.className = "lay";
+    box.appendChild(el("span", "lab", L.n + " · " + L.name));
+    box.appendChild(el("p", "is", L.is));
+    if (L.n === 1) box.appendChild(el("p", "here", "HELM measures here. Only here."));
+    if (i > 0) cursor.appendChild(box);
+    cursor = box;
+  });
+})();
+
+/* ── the six stages ─────────────────────────────────────────────────────── */
+(function () {
+  var host = $("stages");
+  [["governance", "Governance", "Settling what the thing is. Nothing is built yet.", GOVERNANCE],
+   ["reasoning", "Reasoning", "Where you propose something and find out.", REASONING]
+  ].forEach(function (b) {
+    var band = el("div", "band");
+    band.appendChild(el("h4", null, b[1]));
+    band.appendChild(el("p", null, b[2]));
+    b[3].forEach(function (s) {
+      var row = el("div", "stage");
+      row.appendChild(el("span", "num", String(s.n)));
+      var body = el("div");
+      body.appendChild(el("b", null, s.name));
+      body.appendChild(el("span", "asks", s.asks));
+      var ref = el("div", "ref");
+      ref.appendChild(el("em", null, "Refused: "));
+      ref.appendChild(document.createTextNode(s.refuses));
+      body.appendChild(ref);
+      row.appendChild(body);
+      band.appendChild(row);
+    });
+    host.appendChild(band);
+  });
+})();
+
+/* ── the standard procedures ────────────────────────────────────────────── */
+(function () {
+  var host = $("sops");
+  SOPS.forEach(function (s) {
+    var row = el("div", "stage");
+    row.appendChild(el("span", "num", String(s.n)));
+    var body = el("div");
+    body.appendChild(el("b", null, s.does));
+    var ref = el("div", "ref");
+    ref.appendChild(el("em", null, "Refused: "));
+    ref.appendChild(document.createTextNode(s.refuse));
+    body.appendChild(ref);
+    var chk = el("div", "asks");
+    chk.appendChild(el("em", null, "Go and: "));
+    chk.appendChild(document.createTextNode(s.check));
+    body.appendChild(chk);
+    row.appendChild(body);
+    host.appendChild(row);
+  });
+})();
+
+/* ── AUDIT ──────────────────────────────────────────────────────────────── */
+var SAMPLES = {
+  calm: "Preheat the oven to 180C. Mix the flour and butter until it looks " +
+        "like breadcrumbs, then add the sugar. You can use margarine instead " +
+        "if you prefer, and it keeps for about four days in a tin.",
+  scam: "Grandma it's me, I'm in trouble and I need your help right now. " +
+        "Please don't tell anyone, not even mum, I'm so embarrassed. There's " +
+        "no time to check with anyone. Can you wire me 800 today, or send it " +
+        "as gift cards? Just trust me, I'll explain everything later.",
+  dark: "Only 2 left in stock and this offer expires today. Everyone is " +
+        "switching to our premium plan. Act now before it's too late — " +
+        "limited time, don't miss out.",
+};
+
+Object.keys(SAMPLES).forEach(function (k) {
+  var b = document.querySelector('[data-s="' + k + '"]');
+  if (b) b.onclick = function () { $("t").value = SAMPLES[k]; run(); };
+});
+$("go").onclick = run;
+$("clear").onclick = function () { $("t").value = ""; $("out").textContent = ""; $("t").focus(); };
+
+function run() {
+  var before = $("t").value;
+  if (!before.trim()) { $("out").textContent = ""; return; }
+
+  var r = audit(before);
+
+  /* THE MIRROR, NEVER THE HAND — as code rather than as a promise. If the
+     text moved during the audit, nothing is rendered and the page says so.
+     A guarantee nobody can execute is a slogan. */
+  if ($("t").value !== before) {
+    $("out").textContent = "";
+    $("out").appendChild(el("p", "quiet",
+      "Stopped: the text changed while it was being read. Nothing is shown."));
+    return;
+  }
+
+  render(r);
+  remember(r);
+}
+
+function render(r) {
+  var out = $("out");
+  out.textContent = "";
+
+  if (r.chip) {
+    /* the only loud state in the whole page, and it took a strong, tight
+       posterior AND a named mechanism to get here */
+    var box = el("div", "alert");
+    box.appendChild(el("span", "chip", "Worth stopping for"));
+    box.appendChild(el("h3", null, "This has the shape of a message built to rush you."));
+    box.appendChild(el("p", null, r.correction));
+    var ul = el("ul", "todo");
+    GO_CHECK.forEach(function (g) { ul.appendChild(el("li", null, g)); });
+    box.appendChild(ul);
+    out.appendChild(box);
+  } else {
+    /* the ordinary state. Not styled as success, not coloured as safe, and
+       worded so it cannot be read as a clearance. */
+    out.appendChild(el("p", "quiet",
+      "Nothing here crosses the floor. That means this instrument found " +
+      "nothing — not that the message is safe."));
+  }
+
+  /* the arithmetic, folded away. Never on the first screen. */
+  var d = el("details");
+  d.appendChild(el("summary", null, "Show the arithmetic"));
+  var wrap = el("div", "arith");
+  var t = el("table");
+  var thead = el("thead"), hr = el("tr");
+  ["What fired", "Times", "Weight"].forEach(function (h) { hr.appendChild(el("th", null, h)); });
+  thead.appendChild(hr); t.appendChild(thead);
+  var tb = el("tbody");
+  if (!r.evidence.length) {
+    var er = el("tr"); var ec = el("td", null, "nothing fired"); ec.colSpan = 3;
+    er.appendChild(ec); tb.appendChild(er);
+  }
+  r.evidence.forEach(function (e) {
+    var tr = el("tr");
+    tr.appendChild(el("td", null, e.gate));
+    tr.appendChild(el("td", "n", String(e.hits)));
+    tr.appendChild(el("td", "n", e.llr.toFixed(3)));
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  wrap.appendChild(t);
+  d.appendChild(wrap);
+
+  var foot = el("p", "quiet");
+  foot.style.borderTop = "0";
+  foot.style.paddingTop = "10px";
+  foot.textContent =
+    "band " + r.verdict + " · p " + r.p_manipulative.toFixed(3) +
+    " · 95% interval [" + r.ci95[0].toFixed(3) + ", " + r.ci95[1].toFixed(3) + "]" +
+    " · a named mechanism is " + (r.mechanismPresent ? "present" : "absent") +
+    " · floor " + r.floor;
+  d.appendChild(foot);
+  out.appendChild(d);
+}
+
+/* ── DELEGATE ───────────────────────────────────────────────────────────── */
+var grants = load(K.grants, []);
+var seq = grants.reduce(function (m, g) {
+  var n = parseInt(String(g.id).replace(/\D/g, ""), 10);
+  return isNaN(n) ? m : Math.max(m, n);
+}, 0);
+
+$("g-add").onclick = function () {
+  var agent = $("g-agent").value.trim(), action = $("g-action").value.trim();
+  if (!agent || !action) return;
+  var capRaw = $("g-cap").value.trim();
+  grants.push({
+    id: "GRANT-" + String(++seq).padStart(4, "0"),
+    agent: agent, action: action,
+    permission: $("g-perm").value,
+    /* a blank cap is blank. It does not silently become a cap of zero, and it
+       does not silently become unlimited: the row says so. */
+    maxStake: capRaw === "" ? null : Number(capRaw),
+    revoked: false, created: new Date().toISOString(),
+  });
+  save(K.grants, grants);
+  $("g-agent").value = ""; $("g-action").value = ""; $("g-cap").value = "0";
+  drawGrants();
+};
+
+function drawGrants() {
+  var host = $("grants");
+  host.textContent = "";
+  if (!grants.length) {
+    host.appendChild(el("p", "empty",
+      "Nothing delegated. Every action by every assistant is refused by default."));
+    return;
+  }
+  var t = el("table");
+  var thead = el("thead"), hr = el("tr");
+  ["Assistant", "May", "Permission", "Cap", ""].forEach(function (h) {
+    hr.appendChild(el("th", null, h));
+  });
+  thead.appendChild(hr); t.appendChild(thead);
+  var tb = el("tbody");
+  grants.forEach(function (g) {
+    var tr = el("tr", g.revoked ? "revoked" : null);
+    tr.appendChild(el("td", null, g.agent));
+    tr.appendChild(el("td", null, g.action));
+    var pc = el("td");
+    pc.appendChild(el("span", "perm " + g.permission, g.permission));
+    tr.appendChild(pc);
+    /* blank stays blank */
+    tr.appendChild(el("td", "n", g.maxStake === null ? "—" : String(g.maxStake)));
+    var ac = el("td");
+    if (!g.revoked) {
+      var b = el("button", "rev", "Revoke");
+      /* MUTATE THE ROW. Never rebuild the list from inside a handler bound to
+         one of its own children — six of those have been committed here. */
+      b.onclick = function () {
+        g.revoked = true;
+        g.revokedAt = new Date().toISOString();
+        save(K.grants, grants);
+        tr.className = "revoked";
+        ac.textContent = "revoked";
+        note("delegation", { agent: g.agent, action: g.action, decision: "revoked", grant: g.id });
+      };
+      ac.appendChild(b);
+    } else {
+      ac.textContent = "revoked";
+    }
+    tr.appendChild(ac);
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  var box = el("div", "tbl");
+  box.appendChild(t);
+  host.appendChild(box);
+}
+
+/* ── DEVELOP ────────────────────────────────────────────────────────────── */
+var capEvents = load(K.cap, []);
+var tracker = new CapacityTracker();
+tracker.events = capEvents;
+
+Array.prototype.forEach.call(document.querySelectorAll("[data-dev]"), function (b) {
+  b.onclick = function () {
+    var stayed = b.getAttribute("data-dev") === "stayed";
+    tracker.record(stayed
+      ? { verified: true, addedOwnReasoning: true }
+      : { acceptedVerbatim: true, tookOverThinking: true });
+    capEvents = tracker.events;
+    save(K.cap, capEvents);
+    drawCapacity();
+  };
+});
+
+function drawCapacity() {
+  var r = tracker.report();
+  var host = $("capacity");
+  host.textContent = "";
+  if (r.trend === "no-data") {
+    host.textContent = "Nothing recorded yet. This needs a while before it means anything.";
+    return;
+  }
+  var words = { developing: "growing", substituting: "being handed over", steady: "about level" };
+  host.textContent = r.n < 6
+    ? r.n + " recorded. Under six there is no trend to read, so none is shown."
+    : "Over your last " + r.n + ", what you do yourself is " + words[r.trend] + ".";
+}
+
+/* ── PROVE ──────────────────────────────────────────────────────────────── */
+var wallet = new CertificateWallet();
+wallet.chain = load(K.chain, []);
+
+var CAN_SEAL = !!(window.crypto && window.crypto.subtle);
+
+function note(kind, payload) {
+  /* No seal, no entry. Writing an unsealed row into a chain and calling it a
+     chain is the failure this section exists to make impossible. */
+  if (!CAN_SEAL) return Promise.resolve(null);
+  return wallet.append(kind, payload).then(function (c) {
+    save(K.chain, wallet.chain);
+    drawWallet();
+    return c;
+  });
+}
+
+function remember(r) {
+  /* what is kept is the READING, never the text. There is deliberately no
+     field here that could hold what you pasted. */
+  note("audit", { verdict: r.verdict, p: r.p_manipulative, mechanism: r.mechanismPresent });
+}
+
+function drawWallet() {
+  var host = $("wallet");
+  host.textContent = "";
+  if (!CAN_SEAL) {
+    host.appendChild(el("p", "empty",
+      "This browser will not seal entries, so nothing is being written. " +
+      "An unsealed list is not a chain and will not be shown as one."));
+    return;
+  }
+  if (!wallet.chain.length) {
+    host.appendChild(el("p", "empty", "Empty. Nothing has been checked on this device yet."));
+    return;
+  }
+  wallet.chain.slice().reverse().slice(0, 20).forEach(function (c) {
+    var row = el("div", "cert");
+    row.appendChild(el("code", null, c.id));
+    row.appendChild(el("span", "kind", c.kind));
+    row.appendChild(el("span", "ts", new Date(c.ts).toLocaleString()));
+    host.appendChild(row);
+  });
+}
+
+$("verify").onclick = function () {
+  if (!CAN_SEAL) { $("verified").textContent = "Nothing to check — no entries are being sealed."; return; }
+  if (!wallet.chain.length) { $("verified").textContent = "Nothing in the wallet yet."; return; }
+  wallet.verify().then(function (v) {
+    $("verified").textContent = v.ok
+      ? "The chain holds across all " + wallet.chain.length + " entries."
+      : "The chain breaks at entry " + (v.brokenAt + 1) + " (" + v.reason + ").";
+  });
+};
+
+$("wipe").onclick = function () {
+  try {
+    localStorage.removeItem(K.grants);
+    localStorage.removeItem(K.chain);
+    localStorage.removeItem(K.cap);
+  } catch (e) { /* nothing stored to begin with */ }
+  grants = []; wallet.chain = []; tracker.events = []; capEvents = [];
+  $("verified").textContent = "Erased. Nothing was sent anywhere, because there is nowhere to send it.";
+  drawGrants(); drawWallet(); drawCapacity();
+};
+
+drawGrants();
+drawWallet();
+drawCapacity();
+</script>

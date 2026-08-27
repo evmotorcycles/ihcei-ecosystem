@@ -1,10 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "HELM — Agency Layer",
+  "name": "HELM \u2014 Agency Layer",
   "version": "0.1.0",
   "description": "On-device agency verdicts on anything you read. Silent until it matters. Nothing leaves your device.",
-  "action": { "default_popup": "popup.html", "default_title": "HELM" },
-  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "HELM"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
   "host_permissions": [],
-  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'self'" }
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }
