@@ -1,0 +1,427 @@
+{
+ "A": {
+  "children_per_base": {
+   "GnLOLot/MiniCPM5-1B-Claude-Opus-Fable5-V2-Thinking": 1,
+   "Nanbeige/Nanbeige4.2-3B-Base": 1,
+   "Qwen/Qwen3.5-0.8B": 1,
+   "Qwen/Qwen3.6-27B": 4,
+   "Qwen/Qwen3.6-35B-A3B": 1,
+   "empero-ai/Qwythos-9B-Claude-Mythos-5-1M": 1,
+   "google/gemma-4-31B": 1,
+   "krea/Krea-2-Raw": 1,
+   "thinkingmachines/Inkling": 1
+  },
+  "collisions_model_and_base": [
+   "thinkingmachines/Inkling"
+  ],
+  "conserved": true,
+  "expected_total": 12.0,
+  "law": {
+   "GnLOLot/MiniCPM5-1B-Claude-Opus-Fable5-V2-Thinking": {
+    "deepest_dependence": 1.0,
+    "expected_one_over_m2": 1.0,
+    "m": 1,
+    "rests_on_one_thread": true,
+    "settles": [
+     1.0
+    ]
+   },
+   "Nanbeige/Nanbeige4.2-3B-Base": {
+    "deepest_dependence": 1.0,
+    "expected_one_over_m2": 1.0,
+    "m": 1,
+    "rests_on_one_thread": true,
+    "settles": [
+     1.0
+    ]
+   },
+   "Qwen/Qwen3.5-0.8B": {
+    "deepest_dependence": 1.0,
+    "expected_one_over_m2": 1.0,
+    "m": 1,
+    "rests_on_one_thread": true,
+    "settles": [
+     1.0
+    ]
+   },
+   "Qwen/Qwen3.6-27B": {
+    "deepest_dependence": 0.06250000000000056,
+    "expected_one_over_m2": 0.0625,
+    "m": 4,
+    "rests_on_one_thread": false,
+    "settles": [
+     0.0625,
+     0.0625,
+     0.0625,
+     0.0625
+    ]
+   },
+   "Qwen/Qwen3.6-35B-A3B": {
+    "deepest_dependence": 1.0,
+    "expected_one_over_m2": 1.0,
+    "m": 1,
+    "rests_on_one_thread": true,
+    "settles": [
+     1.0
+    ]
+   },
+   "empero-ai/Qwythos-9B-Claude-Mythos-5-1M": {
+    "deepest_dependence": 1.0,
+    "expected_one_over_m2": 1.0,
+    "m": 1,
+    "rests_on_one_thread": true,
+    "settles": [
+     1.0
+    ]
+   },
+   "google/gemma-4-31B": {
+    "deepest_dependence": 1.0,
+    "expected_one_over_m2": 1.0,
+    "m": 1,
+    "rests_on_one_thread": true,
+    "settles": [
+     1.0
+    ]
+   },
+   "krea/Krea-2-Raw": {
+    "deepest_dependence": 1.0,
+    "expected_one_over_m2": 1.0,
+    "m": 1,
+    "rests_on_one_thread": true,
+    "settles": [
+     1.0
+    ]
+   },
+   "thinkingmachines/Inkling": {
+    "deepest_dependence": 1.0,
+    "expected_one_over_m2": 1.0,
+    "m": 1,
+    "rests_on_one_thread": true,
+    "settles": [
+     1.0
+    ]
+   }
+  },
+  "links": 12,
+  "most_depended_base": "Qwen/Qwen3.6-27B",
+  "most_depended_count": 4,
+  "n_declaring_a_base": 12,
+  "n_models": 24,
+  "parts_in_graph": 32,
+  "pieces": 20,
+  "share_no_second_support": 0.5,
+  "single_points": [
+   "Qwen/Qwen3.6-27B"
+  ],
+  "single_points_that_are_bases": [
+   "Qwen/Qwen3.6-27B"
+  ],
+  "total_bearing": 12.0
+ },
+ "B": {
+  "changed": 18,
+  "gate_off": {
+   "BLOCK": 0,
+   "PASS": 2,
+   "WARN": 18
+  },
+  "gate_on": {
+   "BLOCK": 0,
+   "PASS": 20,
+   "WARN": 0
+  },
+  "n_repos": 22,
+  "n_with_text": 20,
+  "rows": [
+   {
+    "changed": true,
+    "chars": 48,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/awesome-deepseek-integration"
+   },
+   {
+    "changed": true,
+    "chars": 79,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen3"
+   },
+   {
+    "changed": false,
+    "chars": 59,
+    "gate_off": {
+     "p": 0.0709,
+     "verdict": "PASS"
+    },
+    "gate_on": {
+     "p": 0.0656,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/qwen-code"
+   },
+   {
+    "changed": true,
+    "chars": 41,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/DeepSeek-Coder"
+   },
+   {
+    "changed": true,
+    "chars": 28,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/DeepSeek-OCR"
+   },
+   {
+    "changed": true,
+    "chars": 98,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen"
+   },
+   {
+    "changed": true,
+    "chars": 93,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen3-VL"
+   },
+   {
+    "changed": true,
+    "chars": 68,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/Janus"
+   },
+   {
+    "changed": true,
+    "chars": 133,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen-Agent"
+   },
+   {
+    "changed": true,
+    "chars": 97,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen3-Coder"
+   },
+   {
+    "changed": false,
+    "chars": 180,
+    "gate_off": {
+     "p": 0.0709,
+     "verdict": "PASS"
+    },
+    "gate_on": {
+     "p": 0.0656,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen3-TTS"
+   },
+   {
+    "changed": true,
+    "chars": 55,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/FlashMLA"
+   },
+   {
+    "changed": true,
+    "chars": 117,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/3FS"
+   },
+   {
+    "changed": true,
+    "chars": 58,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/DeepEP"
+   },
+   {
+    "changed": true,
+    "chars": 119,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen-Image"
+   },
+   {
+    "changed": true,
+    "chars": 103,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/open-infra-index"
+   },
+   {
+    "changed": true,
+    "chars": 56,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/DeepGEMM"
+   },
+   {
+    "changed": true,
+    "chars": 34,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "deepseek-ai/DeepSeek-LLM"
+   },
+   {
+    "changed": true,
+    "chars": 111,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen-VL"
+   },
+   {
+    "changed": true,
+    "chars": 174,
+    "gate_off": {
+     "p": 0.4775,
+     "verdict": "WARN"
+    },
+    "gate_on": {
+     "p": 0.1445,
+     "verdict": "PASS"
+    },
+    "mechanism": false,
+    "repo": "QwenLM/Qwen2.5-Omni"
+   }
+  ],
+  "with_mechanism": 0
+ },
+ "_cohorts": {
+  "hf": "537bfb3de2c9852c5a0f81b954195bdb9c49d5988b82d5c0a24912ad8d48818b",
+  "qwen_deepseek": "fb05a3d05be43ce574fa80179053783cff9587455e636764f8aede1bb015680a"
+ },
+ "_prereg": {
+  "file": "oss-audit/prereg_oss.md",
+  "sha256": "d8ea04f0f39a4ea9b79980fc8c2438e6767d4e5b4a639411a1ef32cf3d26c148"
+ }
+}
