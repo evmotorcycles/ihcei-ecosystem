@@ -1,0 +1,613 @@
+<title>Page Code</title>
+<!--
+  Page Code — the structural half. ONE FILE. NO NETWORK.
+  ======================================================
+  The table below is MEASURED, not illustrative: eight real open-source
+  packages installed on the machine that ran the audit, and every product
+  directory in this repository. The numbers are injected at build time from
+  page-code/audit_data.json, which run_audit.py wrote.
+
+  The live reader at the bottom is a JavaScript port of the same Tarjan
+  articulation-point search the Python uses. test_pagecode_html.py asserts
+  the two agree on every product in the table, so the page cannot drift away
+  from the engine that produced the numbers above it.
+
+  There is no <script src>, no <link>, no @import and no webfont here.
+-->
+<style>
+/* A drafting sheet. Cut vertices are the only thing that gets ink. */
+:root{
+  --paper:#F7F4ED; --sheet:#FFFDF8; --rule:#DFD8C8; --rule2:#C8BFAA;
+  --ink:#17202A; --pencil:#5A6472; --faint:#8B93A0;
+  --mark:#B3402F; --mark-soft:rgba(179,64,47,.09);
+  --f:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --m:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0D1218; --sheet:#131A22; --rule:#212C36; --rule2:#2F3D4A;
+  --ink:#DFE8F0; --pencil:#8A9AA9; --faint:#5D6C7A;
+  --mark:#E08A62; --mark-soft:rgba(224,138,98,.10);
+}}
+:root[data-theme="dark"]{
+  --paper:#0D1218; --sheet:#131A22; --rule:#212C36; --rule2:#2F3D4A;
+  --ink:#DFE8F0; --pencil:#8A9AA9; --faint:#5D6C7A;
+  --mark:#E08A62; --mark-soft:rgba(224,138,98,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--f);
+  padding:0 18px 70px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto}
+header{padding:34px 0 6px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h1{margin:0;font-size:25px;font-weight:800;letter-spacing:-.02em}
+h1 span{color:var(--mark)}
+header p{margin:0;color:var(--pencil);font-size:15px}
+.themebtn{margin-left:auto;background:none;border:1px solid var(--rule2);
+  color:var(--pencil);border-radius:999px;padding:5px 13px;font:inherit;
+  font-size:13px;cursor:pointer}
+section{margin-top:20px;background:var(--sheet);border:1px solid var(--rule);
+  border-radius:10px;padding:18px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--mark);margin:0 0 4px}
+h2{margin:0 0 4px;font-size:19px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+.sub{margin:0 0 14px;color:var(--pencil);font-size:15px;text-wrap:pretty}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:right;padding:6px 10px 6px 0;border-bottom:1px solid var(--rule);
+  white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--faint);font-weight:600;font-size:11px;letter-spacing:.07em;
+  text-transform:uppercase}
+td{font-variant-numeric:tabular-nums}
+td.n{font-family:var(--m)}
+td.name{font-family:var(--m);font-size:13px}
+tr.absent td{color:var(--faint);font-style:normal}
+.cut{color:var(--mark);font-weight:700}
+.bar{display:inline-block;height:8px;background:var(--mark-soft);
+  border-left:2px solid var(--mark);vertical-align:middle;min-width:2px}
+.note{margin:14px 0 0;padding-left:14px;border-left:2px solid var(--rule2);
+  color:var(--pencil);font-size:15px}
+.limits{margin-top:16px;border-top:1px solid var(--rule);padding-top:13px}
+.limits h4{margin:0 0 7px;font-size:13px;font-weight:700;color:var(--pencil);
+  letter-spacing:.07em;text-transform:uppercase}
+.limits ul{margin:0;padding-left:19px}
+.limits li{margin:5px 0;color:var(--pencil);font-size:15px}
+.boundary{font-family:var(--m);font-size:13px;color:var(--mark);
+  background:var(--mark-soft);border-radius:6px;padding:8px 11px;margin:0 0 14px}
+textarea{width:100%;min-height:120px;background:var(--paper);color:var(--ink);
+  border:1px solid var(--rule2);border-radius:8px;padding:11px;
+  font:14px/1.55 var(--m);resize:vertical}
+textarea:focus-visible,button:focus-visible{outline:2px solid var(--mark);outline-offset:2px}
+button.go{background:var(--mark);color:var(--sheet);border:0;border-radius:8px;
+  padding:10px 20px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;
+  margin-top:11px}
+#live{margin-top:15px}
+#live:empty{display:none}
+.read{border-top:1px solid var(--rule);padding-top:13px;color:var(--pencil)}
+.read b{color:var(--ink)}
+footer{max-width:900px;margin:30px auto 0;color:var(--faint);font-size:14px;
+  text-align:center;text-wrap:pretty}
+</style>
+<div class="wrap">
+
+<header>
+  <h1>Page<span>Code</span></h1>
+  <p>what a project rests on</p>
+  <button class="themebtn" id="theme" type="button">Light / dark</button>
+</header>
+
+<section>
+  <p class="eyebrow">The boundary</p>
+  <h2>It reads import statements. It does not read code.</h2>
+  <p class="boundary">understands_language = false &nbsp;·&nbsp; proves = NOTHING</p>
+  <p class="sub">An edge exists here only because somebody wrote an import.
+    A dependency reached through a string, a registry, a subprocess or
+    reflection is invisible and will not appear in any reading below.</p>
+  <div class="limits">
+    <h4>What this cannot do</h4>
+    <ul id="limits"></ul>
+  </div>
+</section>
+
+<section>
+  <p class="eyebrow">Measured — eight real open-source packages</p>
+  <h2>What established libraries actually look like</h2>
+  <p class="sub">Installed distributions on the machine that ran the audit.
+    Nobody in this project wrote any of them. <b>iso</b> is the share of files
+    that import nothing else inside the package; <b>cuts</b> is how many files,
+    removed, would break the graph into more pieces.</p>
+  <div class="scroll"><table id="tp"></table></div>
+  <p class="note" id="tpnote"></p>
+</section>
+
+<section>
+  <p class="eyebrow">Measured — this stack</p>
+  <h2>Every product directory, on the same instrument</h2>
+  <p class="sub">Same extractor, same day. One row is not a project with zeros
+    in it &mdash; it is a project that does not exist yet, and the reading says
+    so rather than reporting nothing as something.</p>
+  <div class="scroll"><table id="pr"></table></div>
+</section>
+
+<section>
+  <p class="eyebrow">Try it</p>
+  <h2>Paste a structure and read it here</h2>
+  <p class="sub">One edge per line, <code>a -&gt; b</code> meaning
+    <em>a depends on b</em>. This runs the same articulation-point search the
+    audit above used; the suite asserts the two agree on every product in the
+    table.</p>
+  <textarea id="src" spellcheck="false"></textarea>
+  <button class="go" id="run" type="button">Read it</button>
+  <div id="live"></div>
+</section>
+
+<footer>
+  Everything on this page ran on this device. No request leaves it.<br>
+  A module everything imports may be exactly right. This says where the load
+  is, never that it is misplaced.
+</footer>
+
+</div>
+<script>
+"use strict";
+var DATA = {
+ "_prereg": {
+  "file": "page-code/prereg_audit.md",
+  "sha256": "cb63407c02c6806c92bfb99919750bd6897db711e713a00da9cdebc32793df01"
+ },
+ "_summary": {
+  "all_have_single_point": true,
+  "max_third_party_fan_in": 804,
+  "median_isolated_fraction": 0.119,
+  "products_absent": [
+   "trig"
+  ],
+  "products_with_zero_edges": [],
+  "third_party_n": 8,
+  "this_repo_fan_in": 22,
+  "this_repo_isolated_fraction": 0.6833
+ },
+ "products": {
+  "cairn": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 8,
+   "fanin": 7,
+   "files": 16,
+   "graph": 8,
+   "hub": "ei_llm.py",
+   "iso": 8,
+   "isoF": 0.5,
+   "pieces": 1,
+   "settles": 0.020408163265
+  },
+  "echo": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 2,
+   "fanin": 2,
+   "files": 4,
+   "graph": 3,
+   "hub": "echo.mjs",
+   "iso": 1,
+   "isoF": 0.25,
+   "pieces": 1,
+   "settles": 0.25
+  },
+  "fathom": {
+   "ct": "ABSTAINED",
+   "cuts": 0,
+   "edges": 1,
+   "fanin": 1,
+   "files": 3,
+   "graph": 2,
+   "hub": "fathom.py",
+   "iso": 1,
+   "isoF": 0.3333,
+   "pieces": 1,
+   "settles": null
+  },
+  "keel": {
+   "ct": "HALTED",
+   "cuts": 2,
+   "edges": 5,
+   "fanin": 2,
+   "files": 13,
+   "graph": 8,
+   "hub": "keel.py",
+   "iso": 5,
+   "isoF": 0.3846,
+   "pieces": 3,
+   "settles": 0.25
+  },
+  "novora-helm": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 7,
+   "fanin": 4,
+   "files": 13,
+   "graph": 8,
+   "hub": "src/helm-core.mjs",
+   "iso": 5,
+   "isoF": 0.3846,
+   "pieces": 2,
+   "settles": 0.0625
+  },
+  "novora-suite": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 3,
+   "fanin": 3,
+   "files": 13,
+   "graph": 4,
+   "hub": "engine/fastmode.mjs",
+   "iso": 9,
+   "isoF": 0.6923,
+   "pieces": 1,
+   "settles": 0.111111111111
+  },
+  "page-code": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 2,
+   "fanin": 2,
+   "files": 7,
+   "graph": 3,
+   "hub": "pagecode.mjs",
+   "iso": 4,
+   "isoF": 0.5714,
+   "pieces": 1,
+   "settles": 0.25
+  },
+  "plexus": {
+   "ct": "HALTED",
+   "cuts": 3,
+   "edges": 16,
+   "fanin": 11,
+   "files": 61,
+   "graph": 15,
+   "hub": "engines.js",
+   "iso": 46,
+   "isoF": 0.7541,
+   "pieces": 1,
+   "settles": 0.00826446281
+  },
+  "smi": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 11,
+   "fanin": 5,
+   "files": 13,
+   "graph": 8,
+   "hub": "lmd.py",
+   "iso": 5,
+   "isoF": 0.3846,
+   "pieces": 1,
+   "settles": 0.04
+  },
+  "spar": {
+   "ct": "ABSTAINED",
+   "cuts": 0,
+   "edges": 1,
+   "fanin": 1,
+   "files": 4,
+   "graph": 2,
+   "hub": "spar.py",
+   "iso": 2,
+   "isoF": 0.5,
+   "pieces": 1,
+   "settles": null
+  },
+  "trig": {
+   "absent": true,
+   "says": "trig has no code in this repository. There is nothing to read, which is not the same as a project with nothing in it."
+  },
+  "weir": {
+   "ct": "HALTED",
+   "cuts": 2,
+   "edges": 3,
+   "fanin": 2,
+   "files": 7,
+   "graph": 4,
+   "hub": "weir.mjs",
+   "iso": 3,
+   "isoF": 0.4286,
+   "pieces": 1,
+   "settles": 0.25
+  }
+ },
+ "third_party": {
+  "jax": {
+   "ct": "ABSTAINED",
+   "cuts": 70,
+   "edges": 2735,
+   "fanin": 306,
+   "files": 617,
+   "graph": 569,
+   "hub": "_src/__init__.py",
+   "iso": 48,
+   "isoF": 0.0778,
+   "pieces": 1,
+   "settles": null
+  },
+  "networkx": {
+   "ct": "ABSTAINED",
+   "cuts": 49,
+   "edges": 731,
+   "fanin": 187,
+   "files": 580,
+   "graph": 433,
+   "hub": "utils/__init__.py",
+   "iso": 147,
+   "isoF": 0.2534,
+   "pieces": 1,
+   "settles": null
+  },
+  "numpy": {
+   "ct": "ABSTAINED",
+   "cuts": 38,
+   "edges": 1001,
+   "fanin": 158,
+   "files": 487,
+   "graph": 430,
+   "hub": "testing/__init__.py",
+   "iso": 57,
+   "isoF": 0.117,
+   "pieces": 2,
+   "settles": null
+  },
+  "pandas": {
+   "ct": "ABSTAINED",
+   "cuts": 48,
+   "edges": 4579,
+   "fanin": 804,
+   "files": 1421,
+   "graph": 1249,
+   "hub": "_testing/__init__.py",
+   "iso": 172,
+   "isoF": 0.121,
+   "pieces": 1,
+   "settles": null
+  },
+  "pygments": {
+   "ct": "ABSTAINED",
+   "cuts": 24,
+   "edges": 811,
+   "fanin": 278,
+   "files": 339,
+   "graph": 333,
+   "hub": "token.py",
+   "iso": 6,
+   "isoF": 0.0177,
+   "pieces": 1,
+   "settles": null
+  },
+  "scipy": {
+   "ct": "ABSTAINED",
+   "cuts": 74,
+   "edges": 2500,
+   "fanin": 178,
+   "files": 973,
+   "graph": 899,
+   "hub": "_lib/_array_api.py",
+   "iso": 74,
+   "isoF": 0.0761,
+   "pieces": 2,
+   "settles": null
+  },
+  "sklearn": {
+   "ct": "ABSTAINED",
+   "cuts": 32,
+   "edges": 3372,
+   "fanin": 207,
+   "files": 654,
+   "graph": 568,
+   "hub": "base.py",
+   "iso": 86,
+   "isoF": 0.1315,
+   "pieces": 2,
+   "settles": null
+  },
+  "statsmodels": {
+   "ct": "ABSTAINED",
+   "cuts": 113,
+   "edges": 2355,
+   "fanin": 98,
+   "files": 948,
+   "graph": 811,
+   "hub": "regression/linear_model.py",
+   "iso": 137,
+   "isoF": 0.1445,
+   "pieces": 4,
+   "settles": null
+  }
+ }
+};
+var CANNOT = [
+ "It reads import statements. It does not read code and does not know what any of it does.",
+ "A module that everything imports may be exactly right. This says it is there, never that it is wrong.",
+ "A dependency reached through a string, a plugin registry, a subprocess or reflection is invisible here and will not appear in any reading.",
+ "It cannot tell you whether a project works."
+];
+
+var $ = function (id) { return document.getElementById(id); };
+function el(t, c, x) { var n = document.createElement(t); if (c) n.className = c;
+  if (x != null) n.textContent = x; return n; }
+
+try { var sv = localStorage.getItem("pagecode.theme");
+  if (sv) document.documentElement.setAttribute("data-theme", sv); } catch (e) {}
+$("theme").onclick = function () {
+  var d = document.documentElement, cur = d.getAttribute("data-theme");
+  if (!cur) cur = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  var nx = cur === "dark" ? "light" : "dark";
+  d.setAttribute("data-theme", nx);
+  try { localStorage.setItem("pagecode.theme", nx); } catch (e) {}
+};
+
+CANNOT.forEach(function (c) { $("limits").appendChild(el("li", null, c)); });
+
+/* ── the same cut-vertex search as the Python, ported ────────────────────── */
+function articulationPoints(parts, links) {
+  var adj = {}, i;
+  for (i = 0; i < parts.length; i++) adj[parts[i]] = {};
+  links.forEach(function (e) {
+    if (adj[e[0]] && adj[e[1]]) { adj[e[0]][e[1]] = 1; adj[e[1]][e[0]] = 1; }
+  });
+  var disc = {}, low = {}, parent = {}, cuts = {}, t = 0;
+  parts.forEach(function (root) {
+    if (disc[root] !== undefined) return;
+    disc[root] = low[root] = t++;
+    var kids = 0, stack = [[root, Object.keys(adj[root]).sort(), 0]];
+    while (stack.length) {
+      var top = stack[stack.length - 1], u = top[0], ns = top[1];
+      var advanced = false;
+      while (top[2] < ns.length) {
+        var v = ns[top[2]++];
+        if (disc[v] === undefined) {
+          parent[v] = u;
+          if (u === root) kids++;
+          disc[v] = low[v] = t++;
+          stack.push([v, Object.keys(adj[v]).sort(), 0]);
+          advanced = true;
+          break;
+        } else if (v !== parent[u]) {
+          low[u] = Math.min(low[u], disc[v]);
+        }
+      }
+      if (!advanced) {
+        stack.pop();
+        if (stack.length) {
+          var p = stack[stack.length - 1][0];
+          low[p] = Math.min(low[p], low[u]);
+          if (p !== root && low[u] >= disc[p]) cuts[p] = 1;
+        }
+      }
+    }
+    if (kids > 1) cuts[root] = 1;
+  });
+  return Object.keys(cuts).sort();
+}
+
+function pieces(parts, links) {
+  var adj = {}, i;
+  for (i = 0; i < parts.length; i++) adj[parts[i]] = [];
+  links.forEach(function (e) {
+    if (adj[e[0]] && adj[e[1]]) { adj[e[0]].push(e[1]); adj[e[1]].push(e[0]); }
+  });
+  var seen = {}, n = 0;
+  parts.forEach(function (p) {
+    if (seen[p]) return;
+    n++; var st = [p];
+    while (st.length) { var u = st.pop(); if (seen[u]) continue; seen[u] = 1;
+      adj[u].forEach(function (v) { if (!seen[v]) st.push(v); }); }
+  });
+  return n;
+}
+
+/* ── the two measured tables ─────────────────────────────────────────────── */
+function table(host, rows, maxIso) {
+  var t = $(host), head = el("tr");
+  ["", "files", "in graph", "iso", "iso share", "edges", "pieces", "cuts",
+   "busiest", "fan-in"].forEach(function (h) { head.appendChild(el("th", null, h)); });
+  var thead = el("thead"); thead.appendChild(head); t.appendChild(thead);
+  var tb = el("tbody");
+  rows.forEach(function (kv) {
+    var k = kv[0], r = kv[1], tr = el("tr");
+    if (r.absent) {
+      tr.className = "absent";
+      tr.appendChild(el("td", "name", k));
+      var td = el("td", null, r.says); td.colSpan = 9; td.style.textAlign = "left";
+      tr.appendChild(td); tb.appendChild(tr); return;
+    }
+    tr.appendChild(el("td", "name", k));
+    tr.appendChild(el("td", "n", String(r.files)));
+    tr.appendChild(el("td", "n", String(r.graph)));
+    tr.appendChild(el("td", "n", String(r.iso)));
+    var b = el("td", "n");
+    var bar = el("span", "bar");
+    bar.style.width = Math.max(2, Math.round((r.isoF / maxIso) * 60)) + "px";
+    b.appendChild(bar);
+    b.appendChild(document.createTextNode(" " + r.isoF.toFixed(3)));
+    tr.appendChild(b);
+    tr.appendChild(el("td", "n", String(r.edges)));
+    tr.appendChild(el("td", "n", String(r.pieces)));
+    var c = el("td", "n cut", String(r.cuts)); tr.appendChild(c);
+    tr.appendChild(el("td", "name", r.hub || "—"));
+    tr.appendChild(el("td", "n", r.fanin == null ? "—" : String(r.fanin)));
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+}
+
+table("tp", Object.keys(DATA.third_party).map(function (k) {
+  return [k, DATA.third_party[k]]; }), 1.0);
+table("pr", Object.keys(DATA.products).map(function (k) {
+  return [k, DATA.products[k]]; }), 1.0);
+
+$("tpnote").textContent =
+  "Median share of files importing nothing else in the package: " +
+  DATA._summary.median_isolated_fraction.toFixed(3) +
+  " across these eight. The same reading on this repository is " +
+  DATA._summary.this_repo_isolated_fraction.toFixed(3) +
+  " — an established library is wired together; this research repository is " +
+  "mostly standalone files. Both numbers are about declared imports only.";
+
+/* ── live ────────────────────────────────────────────────────────────────── */
+$("src").value =
+  "app.py -> core.py\n" +
+  "report.py -> core.py\n" +
+  "export.py -> core.py\n" +
+  "core.py -> util.py\n" +
+  "cli.py -> app.py";
+
+$("run").onclick = function () {
+  var lines = $("src").value.split("\n"), links = [], names = {};
+  lines.forEach(function (ln) {
+    var m = ln.split("->");
+    if (m.length !== 2) return;
+    var a = m[0].trim(), b = m[1].trim();
+    if (!a || !b) return;
+    names[a] = 1; names[b] = 1;
+    links.push([a, b]);
+  });
+  var parts = Object.keys(names).sort();
+  var out = $("live");
+  out.textContent = "";
+  if (!links.length) {
+    out.appendChild(el("p", "read",
+      "Nothing joins anything yet. With no edges there is no structure to " +
+      "read, which is not the same as a structure with nothing wrong with it."));
+    return;
+  }
+  var cuts = articulationPoints(parts, links);
+  var fan = {};
+  links.forEach(function (e) { (fan[e[1]] = fan[e[1]] || {})[e[0]] = 1; });
+  var ranked = Object.keys(fan).map(function (k) {
+    return [k, Object.keys(fan[k]).length]; })
+    .sort(function (x, y) { return y[1] - x[1] || (x[0] < y[0] ? -1 : 1); });
+
+  var p1 = el("p", "read");
+  p1.appendChild(el("b", null, String(parts.length) + " parts, " +
+    links.length + " links, " + pieces(parts, links) + " pieces. "));
+  p1.appendChild(document.createTextNode(cuts.length
+    ? cuts.length + (cuts.length === 1 ? " part would" : " parts would") +
+      " break this into more pieces if removed: " + cuts.join(", ") + "."
+    : "No single part breaks this. Every part has another way round it."));
+  out.appendChild(p1);
+
+  if (ranked.length && ranked[0][1] > 1) {
+    var m = ranked[0][1];
+    var p2 = el("p", "read");
+    p2.appendChild(el("b", null, ranked[0][0] + " is imported by " + m + ". "));
+    p2.appendChild(document.createTextNode(
+      "Those are not " + m + " separate groundings; they are one, counted " +
+      m + " times. Each settles " + (1 / (m * m)).toFixed(6) + "."));
+    out.appendChild(p2);
+  }
+  var p3 = el("p", "read");
+  p3.appendChild(document.createTextNode(
+    "Nothing above says any of this is wrong. Go and ask the person " +
+    "responsible for the busiest file what happens when they are away."));
+  out.appendChild(p3);
+};
+$("run").onclick();
+</script>

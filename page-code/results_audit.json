@@ -1,0 +1,762 @@
+{
+ "_prereg": {
+  "file": "page-code/prereg_audit.md",
+  "sha256": "cb63407c02c6806c92bfb99919750bd6897db711e713a00da9cdebc32793df01"
+ },
+ "_summary": {
+  "all_have_single_point": true,
+  "max_third_party_fan_in": 804,
+  "median_isolated_fraction": 0.119,
+  "products_absent": [
+   "trig"
+  ],
+  "products_with_zero_edges": [],
+  "third_party_n": 8,
+  "this_repo_fan_in": 22,
+  "this_repo_isolated_fraction": 0.6833
+ },
+ "products": {
+  "cairn": {
+   "counts": {
+    "edges": 8,
+    "external_imports_ignored": 59,
+    "files_in_graph": 8,
+    "files_isolated": 8,
+    "files_scanned": 16,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "ei_llm.py",
+     7
+    ],
+    [
+     "ci_engine.py",
+     1
+    ]
+   ],
+   "hub": "ei_llm.py",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.020408163265,
+   "hub_fan_in": 7,
+   "isolated_fraction": 0.5,
+   "name": "cairn",
+   "sole_routes": {
+    "n_single_points": 1,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "echo": {
+   "counts": {
+    "edges": 2,
+    "external_imports_ignored": 2,
+    "files_in_graph": 3,
+    "files_isolated": 1,
+    "files_scanned": 4,
+    "unresolved_relative": 2
+   },
+   "fan_in_top": [
+    [
+     "echo.mjs",
+     2
+    ]
+   ],
+   "hub": "echo.mjs",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.25,
+   "hub_fan_in": 2,
+   "isolated_fraction": 0.25,
+   "name": "echo",
+   "sole_routes": {
+    "n_single_points": 1,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "fathom": {
+   "counts": {
+    "edges": 1,
+    "external_imports_ignored": 11,
+    "files_in_graph": 2,
+    "files_isolated": 1,
+    "files_scanned": 3,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "fathom.py",
+     1
+    ]
+   ],
+   "hub": "fathom.py",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 1,
+   "isolated_fraction": 0.3333,
+   "name": "fathom",
+   "sole_routes": {
+    "n_single_points": 0,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "keel": {
+   "counts": {
+    "edges": 5,
+    "external_imports_ignored": 70,
+    "files_in_graph": 8,
+    "files_isolated": 5,
+    "files_scanned": 13,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "keel.py",
+     2
+    ],
+    [
+     "kernel.mjs",
+     2
+    ],
+    [
+     "audit.py",
+     1
+    ]
+   ],
+   "hub": "keel.py",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.25,
+   "hub_fan_in": 2,
+   "isolated_fraction": 0.3846,
+   "name": "keel",
+   "sole_routes": {
+    "n_single_points": 2,
+    "pieces": 3,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "novora-helm": {
+   "counts": {
+    "edges": 7,
+    "external_imports_ignored": 14,
+    "files_in_graph": 8,
+    "files_isolated": 5,
+    "files_scanned": 13,
+    "unresolved_relative": 3
+   },
+   "fan_in_top": [
+    [
+     "src/helm-core.mjs",
+     4
+    ],
+    [
+     "src/primitives.mjs",
+     2
+    ],
+    [
+     "extension/src/helm-core.mjs",
+     1
+    ]
+   ],
+   "hub": "src/helm-core.mjs",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.0625,
+   "hub_fan_in": 4,
+   "isolated_fraction": 0.3846,
+   "name": "novora-helm",
+   "sole_routes": {
+    "n_single_points": 1,
+    "pieces": 2,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "novora-suite": {
+   "counts": {
+    "edges": 3,
+    "external_imports_ignored": 18,
+    "files_in_graph": 4,
+    "files_isolated": 9,
+    "files_scanned": 13,
+    "unresolved_relative": 4
+   },
+   "fan_in_top": [
+    [
+     "engine/fastmode.mjs",
+     3
+    ]
+   ],
+   "hub": "engine/fastmode.mjs",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.111111111111,
+   "hub_fan_in": 3,
+   "isolated_fraction": 0.6923,
+   "name": "novora-suite",
+   "sole_routes": {
+    "n_single_points": 1,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "page-code": {
+   "counts": {
+    "edges": 2,
+    "external_imports_ignored": 33,
+    "files_in_graph": 3,
+    "files_isolated": 4,
+    "files_scanned": 7,
+    "unresolved_relative": 4
+   },
+   "fan_in_top": [
+    [
+     "pagecode.mjs",
+     2
+    ]
+   ],
+   "hub": "pagecode.mjs",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.25,
+   "hub_fan_in": 2,
+   "isolated_fraction": 0.5714,
+   "name": "page-code",
+   "sole_routes": {
+    "n_single_points": 1,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "plexus": {
+   "counts": {
+    "edges": 16,
+    "external_imports_ignored": 235,
+    "files_in_graph": 15,
+    "files_isolated": 46,
+    "files_scanned": 61,
+    "unresolved_relative": 5
+   },
+   "fan_in_top": [
+    [
+     "engines.js",
+     11
+    ],
+    [
+     "eti.js",
+     1
+    ],
+    [
+     "ihcei.js",
+     1
+    ],
+    [
+     "metaphor.js",
+     1
+    ],
+    [
+     "nere.js",
+     1
+    ]
+   ],
+   "hub": "engines.js",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.00826446281,
+   "hub_fan_in": 11,
+   "isolated_fraction": 0.7541,
+   "name": "plexus",
+   "sole_routes": {
+    "n_single_points": 3,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "smi": {
+   "counts": {
+    "edges": 11,
+    "external_imports_ignored": 58,
+    "files_in_graph": 8,
+    "files_isolated": 5,
+    "files_scanned": 13,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "lmd.py",
+     5
+    ],
+    [
+     "compositor.py",
+     3
+    ],
+    [
+     "mesh.py",
+     3
+    ]
+   ],
+   "hub": "lmd.py",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.04,
+   "hub_fan_in": 5,
+   "isolated_fraction": 0.3846,
+   "name": "smi",
+   "sole_routes": {
+    "n_single_points": 1,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "spar": {
+   "counts": {
+    "edges": 1,
+    "external_imports_ignored": 14,
+    "files_in_graph": 2,
+    "files_isolated": 2,
+    "files_scanned": 4,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "spar.py",
+     1
+    ]
+   ],
+   "hub": "spar.py",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 1,
+   "isolated_fraction": 0.5,
+   "name": "spar",
+   "sole_routes": {
+    "n_single_points": 0,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "trig": {
+   "name": "trig",
+   "says": "trig has no code in this repository. There is nothing to read, which is not the same as a project with nothing in it.",
+   "status": "ABSENT"
+  },
+  "weir": {
+   "counts": {
+    "edges": 3,
+    "external_imports_ignored": 30,
+    "files_in_graph": 4,
+    "files_isolated": 3,
+    "files_scanned": 7,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "weir.mjs",
+     2
+    ],
+    [
+     "upstream_fixture.mjs",
+     1
+    ]
+   ],
+   "hub": "weir.mjs",
+   "hub_counted_twice": "HALTED",
+   "hub_each_settles": 0.25,
+   "hub_fan_in": 2,
+   "isolated_fraction": 0.4286,
+   "name": "weir",
+   "sole_routes": {
+    "n_single_points": 2,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  }
+ },
+ "third_party": {
+  "jax": {
+   "counts": {
+    "edges": 2735,
+    "external_imports_ignored": 1977,
+    "files_in_graph": 569,
+    "files_isolated": 48,
+    "files_scanned": 617,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "_src/__init__.py",
+     306
+    ],
+    [
+     "numpy/__init__.py",
+     292
+    ],
+    [
+     "typing.py",
+     247
+    ],
+    [
+     "_src/typing.py",
+     132
+    ],
+    [
+     "_src/util.py",
+     106
+    ]
+   ],
+   "hub": "_src/__init__.py",
+   "hub_abstain_reason": "306 supports; this reading removes each in turn and does not finish at that size. No number is given rather than one derived from the law instead of measured.",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 306,
+   "isolated_fraction": 0.0778,
+   "name": "jax",
+   "sole_routes": {
+    "n_single_points": 70,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "networkx": {
+   "counts": {
+    "edges": 731,
+    "external_imports_ignored": 1541,
+    "files_in_graph": 433,
+    "files_isolated": 147,
+    "files_scanned": 580,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "utils/__init__.py",
+     187
+    ],
+    [
+     "exception.py",
+     26
+    ],
+    [
+     "algorithms/__init__.py",
+     25
+    ],
+    [
+     "utils/decorators.py",
+     18
+    ],
+    [
+     "algorithms/approximation/__init__.py",
+     14
+    ]
+   ],
+   "hub": "utils/__init__.py",
+   "hub_abstain_reason": "187 supports; this reading removes each in turn and does not finish at that size. No number is given rather than one derived from the law instead of measured.",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 187,
+   "isolated_fraction": 0.2534,
+   "name": "networkx",
+   "sole_routes": {
+    "n_single_points": 49,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "numpy": {
+   "counts": {
+    "edges": 1001,
+    "external_imports_ignored": 1766,
+    "files_in_graph": 430,
+    "files_isolated": 57,
+    "files_scanned": 487,
+    "unresolved_relative": 26
+   },
+   "fan_in_top": [
+    [
+     "testing/__init__.py",
+     158
+    ],
+    [
+     "_core/__init__.py",
+     66
+    ],
+    [
+     "distutils/__init__.py",
+     41
+    ],
+    [
+     "typing/__init__.py",
+     37
+    ],
+    [
+     "_utils/__init__.py",
+     34
+    ]
+   ],
+   "hub": "testing/__init__.py",
+   "hub_abstain_reason": "158 supports; this reading removes each in turn and does not finish at that size. No number is given rather than one derived from the law instead of measured.",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 158,
+   "isolated_fraction": 0.117,
+   "name": "numpy",
+   "sole_routes": {
+    "n_single_points": 38,
+    "pieces": 2,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "pandas": {
+   "counts": {
+    "edges": 4579,
+    "external_imports_ignored": 6163,
+    "files_in_graph": 1249,
+    "files_isolated": 172,
+    "files_scanned": 1421,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "_testing/__init__.py",
+     804
+    ],
+    [
+     "errors/__init__.py",
+     230
+    ],
+    [
+     "core/dtypes/common.py",
+     183
+    ],
+    [
+     "_typing.py",
+     180
+    ],
+    [
+     "_libs/__init__.py",
+     165
+    ]
+   ],
+   "hub": "_testing/__init__.py",
+   "hub_abstain_reason": "804 supports; this reading removes each in turn and does not finish at that size. No number is given rather than one derived from the law instead of measured.",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 804,
+   "isolated_fraction": 0.121,
+   "name": "pandas",
+   "sole_routes": {
+    "n_single_points": 48,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "pygments": {
+   "counts": {
+    "edges": 811,
+    "external_imports_ignored": 202,
+    "files_in_graph": 333,
+    "files_isolated": 6,
+    "files_scanned": 339,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "token.py",
+     278
+    ],
+    [
+     "lexer.py",
+     224
+    ],
+    [
+     "style.py",
+     48
+    ],
+    [
+     "util.py",
+     46
+    ],
+    [
+     "formatter.py",
+     13
+    ]
+   ],
+   "hub": "token.py",
+   "hub_abstain_reason": "278 supports; this reading removes each in turn and does not finish at that size. No number is given rather than one derived from the law instead of measured.",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 278,
+   "isolated_fraction": 0.0177,
+   "name": "pygments",
+   "sole_routes": {
+    "n_single_points": 24,
+    "pieces": 1,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "scipy": {
+   "counts": {
+    "edges": 2500,
+    "external_imports_ignored": 3034,
+    "files_in_graph": 899,
+    "files_isolated": 74,
+    "files_scanned": 973,
+    "unresolved_relative": 86
+   },
+   "fan_in_top": [
+    [
+     "_lib/_array_api.py",
+     178
+    ],
+    [
+     "_lib/deprecation.py",
+     113
+    ],
+    [
+     "_lib/_util.py",
+     110
+    ],
+    [
+     "sparse/__init__.py",
+     110
+    ],
+    [
+     "special/__init__.py",
+     93
+    ]
+   ],
+   "hub": "_lib/_array_api.py",
+   "hub_abstain_reason": "178 supports; this reading removes each in turn and does not finish at that size. No number is given rather than one derived from the law instead of measured.",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 178,
+   "isolated_fraction": 0.0761,
+   "name": "scipy",
+   "sole_routes": {
+    "n_single_points": 74,
+    "pieces": 2,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "sklearn": {
+   "counts": {
+    "edges": 3372,
+    "external_imports_ignored": 2822,
+    "files_in_graph": 568,
+    "files_isolated": 86,
+    "files_scanned": 654,
+    "unresolved_relative": 0
+   },
+   "fan_in_top": [
+    [
+     "base.py",
+     207
+    ],
+    [
+     "utils/__init__.py",
+     197
+    ],
+    [
+     "utils/_testing.py",
+     178
+    ],
+    [
+     "utils/validation.py",
+     171
+    ],
+    [
+     "utils/fixes.py",
+     153
+    ]
+   ],
+   "hub": "base.py",
+   "hub_abstain_reason": "207 supports; this reading removes each in turn and does not finish at that size. No number is given rather than one derived from the law instead of measured.",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 207,
+   "isolated_fraction": 0.1315,
+   "name": "sklearn",
+   "sole_routes": {
+    "n_single_points": 32,
+    "pieces": 2,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  },
+  "statsmodels": {
+   "counts": {
+    "edges": 2355,
+    "external_imports_ignored": 2668,
+    "files_in_graph": 811,
+    "files_isolated": 137,
+    "files_scanned": 948,
+    "unresolved_relative": 5
+   },
+   "fan_in_top": [
+    [
+     "regression/linear_model.py",
+     98
+    ],
+    [
+     "compat/pandas.py",
+     89
+    ],
+    [
+     "tools/tools.py",
+     85
+    ],
+    [
+     "compat/python.py",
+     80
+    ],
+    [
+     "datasets/__init__.py",
+     72
+    ]
+   ],
+   "hub": "regression/linear_model.py",
+   "hub_abstain_reason": "98 supports; this reading removes each in turn and does not finish at that size. No number is given rather than one derived from the law instead of measured.",
+   "hub_counted_twice": "ABSTAINED",
+   "hub_each_settles": null,
+   "hub_fan_in": 98,
+   "isolated_fraction": 0.1445,
+   "name": "statsmodels",
+   "sole_routes": {
+    "n_single_points": 113,
+    "pieces": 4,
+    "reader": "articulation_points (linear)",
+    "status": "READ"
+   },
+   "status": "READ"
+  }
+ }
+}

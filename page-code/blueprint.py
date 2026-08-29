@@ -106,8 +106,23 @@ def modules(root: str) -> dict:
     return found
 
 
-def _resolve_py(name: str, importer_rel: str, index: dict):
-    """An import name becomes an edge only if it lands on a file in THIS repo."""
+def _resolve_py(name: str, importer_rel: str, index: dict, selfname: str = None):
+    """An import name becomes an edge only if it lands on a file in THIS repo.
+
+    DEFECT found by running this on real packages: when the audit root IS a
+    package root, that package's own ABSOLUTE self-imports do not resolve.
+    pygments is written entirely as `from pygments.filter import ...`; the index
+    keys are `filter.py`, so the resolver looked for `pygments/filter.py` and
+    found nothing. pygments read 339 files, 0 edges, 0 cut vertices -- which is
+    false about pygments and was reported as a fact about it.
+
+    It cost two pre-registered predictions (C2 and C3). `selfname` strips the
+    leading package segment when it matches the audited root.
+    """
+    if selfname and (name == selfname or name.startswith(selfname + ".")):
+        name = name[len(selfname) + 1:]
+        if not name:
+            return None
     if name.startswith("."):
         base = os.path.dirname(importer_rel)
         tail = name.lstrip(".").replace(".", "/")
@@ -142,12 +157,13 @@ def blueprint(root: str, name: str = None) -> dict:
     one finding that matters.
     """
     index = modules(root)
+    selfname = os.path.basename(os.path.abspath(root).rstrip("/"))
     edges, external, unresolved = [], 0, 0
     for rel, meta in sorted(index.items()):
         names = (_py_imports(meta["path"]) if meta["lang"] == "py"
                  else _js_imports(meta["path"]))
         for n in names:
-            hit = (_resolve_py(n, rel, index) if meta["lang"] == "py"
+            hit = (_resolve_py(n, rel, index, selfname) if meta["lang"] == "py"
                    else _resolve_js(n, rel, index))
             if hit and hit != rel:
                 edges.append((rel, hit, 1.0))
@@ -193,3 +209,74 @@ def as_claim(bp: dict, hub: str, claim: str = None) -> dict:
     return {"name": f"modules importing {hub}",
             "parts": supports + [hub, claim], "links": links,
             "conclusion": claim, "supports": supports}
+
+
+# ── cut vertices in linear time, with a parity check against the tested engine ─
+# MEASURED, not assumed: spar.single_points computes cut vertices by REMOVING
+# each part and recomputing. That is one O(n^3) pseudo-inverse per node, and it
+# was timed on this machine at
+#
+#     n=50 -> 1.9s      n=100 -> 25.9s      n=200 -> 103.9s
+#
+# so a real library (pandas, ~1400 files) would never finish. bearings() itself
+# is cheap -- 0.9s at n=200 -- so the cost is the removal loop, not the algebra.
+#
+# Tarjan's articulation-point search answers the same question in O(V+E). This
+# does NOT replace spar: `parity_ok` below runs both on every graph small enough
+# for the slow one and requires identical answers. If they ever disagree, this
+# function is wrong and the tested engine is right.
+def articulation_points(parts, links) -> list:
+    adj = {p: set() for p in parts}
+    for a, b, *_ in links:
+        if a in adj and b in adj:
+            adj[a].add(b)
+            adj[b].add(a)
+
+    disc, low, parent = {}, {}, {}
+    cuts, timer = set(), [0]
+
+    for root in parts:
+        if root in disc:
+            continue
+        # iterative DFS: a recursive one blows the stack on a real dependency
+        # graph, which is exactly the size this function exists to handle.
+        stack = [(root, iter(sorted(adj[root])))]
+        disc[root] = low[root] = timer[0]
+        timer[0] += 1
+        root_children = 0
+        while stack:
+            u, it = stack[-1]
+            advanced = False
+            for v in it:
+                if v not in disc:
+                    parent[v] = u
+                    if u == root:
+                        root_children += 1
+                    disc[v] = low[v] = timer[0]
+                    timer[0] += 1
+                    stack.append((v, iter(sorted(adj[v]))))
+                    advanced = True
+                    break
+                if v != parent.get(u):
+                    low[u] = min(low[u], disc[v])
+            if not advanced:
+                stack.pop()
+                if stack:
+                    p = stack[-1][0]
+                    low[p] = min(low[p], low[u])
+                    if p != root and low[u] >= disc[p]:
+                        cuts.add(p)
+        if root_children > 1:
+            cuts.add(root)
+    return sorted(cuts)
+
+
+def parity_ok(parts, links) -> bool:
+    """Both readers on the same graph. Only callable where the slow one can
+    finish; the suite uses it on every graph under 60 nodes."""
+    import sys as _sys
+    _sys.path.insert(0, ROOT)
+    from spar.spar import Structure, single_points
+    slow = sorted(r["part"] for r in single_points(Structure(list(parts),
+                                                            [tuple(x) for x in links])))
+    return slow == articulation_points(parts, links)

@@ -1,0 +1,273 @@
+{
+ "_prereg": {
+  "file": "page-code/prereg_audit.md",
+  "sha256": "cb63407c02c6806c92bfb99919750bd6897db711e713a00da9cdebc32793df01"
+ },
+ "_summary": {
+  "all_have_single_point": true,
+  "max_third_party_fan_in": 804,
+  "median_isolated_fraction": 0.119,
+  "products_absent": [
+   "trig"
+  ],
+  "products_with_zero_edges": [],
+  "third_party_n": 8,
+  "this_repo_fan_in": 22,
+  "this_repo_isolated_fraction": 0.6833
+ },
+ "products": {
+  "cairn": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 8,
+   "fanin": 7,
+   "files": 16,
+   "graph": 8,
+   "hub": "ei_llm.py",
+   "iso": 8,
+   "isoF": 0.5,
+   "pieces": 1,
+   "settles": 0.020408163265
+  },
+  "echo": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 2,
+   "fanin": 2,
+   "files": 4,
+   "graph": 3,
+   "hub": "echo.mjs",
+   "iso": 1,
+   "isoF": 0.25,
+   "pieces": 1,
+   "settles": 0.25
+  },
+  "fathom": {
+   "ct": "ABSTAINED",
+   "cuts": 0,
+   "edges": 1,
+   "fanin": 1,
+   "files": 3,
+   "graph": 2,
+   "hub": "fathom.py",
+   "iso": 1,
+   "isoF": 0.3333,
+   "pieces": 1,
+   "settles": null
+  },
+  "keel": {
+   "ct": "HALTED",
+   "cuts": 2,
+   "edges": 5,
+   "fanin": 2,
+   "files": 13,
+   "graph": 8,
+   "hub": "keel.py",
+   "iso": 5,
+   "isoF": 0.3846,
+   "pieces": 3,
+   "settles": 0.25
+  },
+  "novora-helm": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 7,
+   "fanin": 4,
+   "files": 13,
+   "graph": 8,
+   "hub": "src/helm-core.mjs",
+   "iso": 5,
+   "isoF": 0.3846,
+   "pieces": 2,
+   "settles": 0.0625
+  },
+  "novora-suite": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 3,
+   "fanin": 3,
+   "files": 13,
+   "graph": 4,
+   "hub": "engine/fastmode.mjs",
+   "iso": 9,
+   "isoF": 0.6923,
+   "pieces": 1,
+   "settles": 0.111111111111
+  },
+  "page-code": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 2,
+   "fanin": 2,
+   "files": 7,
+   "graph": 3,
+   "hub": "pagecode.mjs",
+   "iso": 4,
+   "isoF": 0.5714,
+   "pieces": 1,
+   "settles": 0.25
+  },
+  "plexus": {
+   "ct": "HALTED",
+   "cuts": 3,
+   "edges": 16,
+   "fanin": 11,
+   "files": 61,
+   "graph": 15,
+   "hub": "engines.js",
+   "iso": 46,
+   "isoF": 0.7541,
+   "pieces": 1,
+   "settles": 0.00826446281
+  },
+  "smi": {
+   "ct": "HALTED",
+   "cuts": 1,
+   "edges": 11,
+   "fanin": 5,
+   "files": 13,
+   "graph": 8,
+   "hub": "lmd.py",
+   "iso": 5,
+   "isoF": 0.3846,
+   "pieces": 1,
+   "settles": 0.04
+  },
+  "spar": {
+   "ct": "ABSTAINED",
+   "cuts": 0,
+   "edges": 1,
+   "fanin": 1,
+   "files": 4,
+   "graph": 2,
+   "hub": "spar.py",
+   "iso": 2,
+   "isoF": 0.5,
+   "pieces": 1,
+   "settles": null
+  },
+  "trig": {
+   "absent": true,
+   "says": "trig has no code in this repository. There is nothing to read, which is not the same as a project with nothing in it."
+  },
+  "weir": {
+   "ct": "HALTED",
+   "cuts": 2,
+   "edges": 3,
+   "fanin": 2,
+   "files": 7,
+   "graph": 4,
+   "hub": "weir.mjs",
+   "iso": 3,
+   "isoF": 0.4286,
+   "pieces": 1,
+   "settles": 0.25
+  }
+ },
+ "third_party": {
+  "jax": {
+   "ct": "ABSTAINED",
+   "cuts": 70,
+   "edges": 2735,
+   "fanin": 306,
+   "files": 617,
+   "graph": 569,
+   "hub": "_src/__init__.py",
+   "iso": 48,
+   "isoF": 0.0778,
+   "pieces": 1,
+   "settles": null
+  },
+  "networkx": {
+   "ct": "ABSTAINED",
+   "cuts": 49,
+   "edges": 731,
+   "fanin": 187,
+   "files": 580,
+   "graph": 433,
+   "hub": "utils/__init__.py",
+   "iso": 147,
+   "isoF": 0.2534,
+   "pieces": 1,
+   "settles": null
+  },
+  "numpy": {
+   "ct": "ABSTAINED",
+   "cuts": 38,
+   "edges": 1001,
+   "fanin": 158,
+   "files": 487,
+   "graph": 430,
+   "hub": "testing/__init__.py",
+   "iso": 57,
+   "isoF": 0.117,
+   "pieces": 2,
+   "settles": null
+  },
+  "pandas": {
+   "ct": "ABSTAINED",
+   "cuts": 48,
+   "edges": 4579,
+   "fanin": 804,
+   "files": 1421,
+   "graph": 1249,
+   "hub": "_testing/__init__.py",
+   "iso": 172,
+   "isoF": 0.121,
+   "pieces": 1,
+   "settles": null
+  },
+  "pygments": {
+   "ct": "ABSTAINED",
+   "cuts": 24,
+   "edges": 811,
+   "fanin": 278,
+   "files": 339,
+   "graph": 333,
+   "hub": "token.py",
+   "iso": 6,
+   "isoF": 0.0177,
+   "pieces": 1,
+   "settles": null
+  },
+  "scipy": {
+   "ct": "ABSTAINED",
+   "cuts": 74,
+   "edges": 2500,
+   "fanin": 178,
+   "files": 973,
+   "graph": 899,
+   "hub": "_lib/_array_api.py",
+   "iso": 74,
+   "isoF": 0.0761,
+   "pieces": 2,
+   "settles": null
+  },
+  "sklearn": {
+   "ct": "ABSTAINED",
+   "cuts": 32,
+   "edges": 3372,
+   "fanin": 207,
+   "files": 654,
+   "graph": 568,
+   "hub": "base.py",
+   "iso": 86,
+   "isoF": 0.1315,
+   "pieces": 2,
+   "settles": null
+  },
+  "statsmodels": {
+   "ct": "ABSTAINED",
+   "cuts": 113,
+   "edges": 2355,
+   "fanin": 98,
+   "files": 948,
+   "graph": 811,
+   "hub": "regression/linear_model.py",
+   "iso": 137,
+   "isoF": 0.1445,
+   "pieces": 4,
+   "settles": null
+  }
+ }
+}
