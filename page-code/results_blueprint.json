@@ -1,0 +1,189 @@
+{
+ "_boundary": {
+  "cannot": [
+   "It reads import statements. It does not read code and does not know what any of it does.",
+   "A module that everything imports may be exactly right. This says it is there, never that it is wrong.",
+   "A dependency reached through a string, a plugin registry, a subprocess or reflection is invisible here and will not appear in any reading.",
+   "It cannot tell you whether a project works."
+  ],
+  "proves": "NOTHING",
+  "understands_language": false
+ },
+ "_prereg": {
+  "file": "page-code/prereg_blueprint.md",
+  "sha256": "bf47c93de29edd2cb030a23a370d04ec9e9b7e9a25132a221c6dadc36e2f1fc9"
+ },
+ "ihcei_v3": {
+  "abstained": [
+   "counted_twice",
+   "latency"
+  ],
+  "counted_twice": {
+   "detail": {
+    "claimed": 6,
+    "distinct_origins": 1,
+    "each_settles": 0.027777777778,
+    "the_one_origin": "gt_probabilistic.py"
+   },
+   "says": "These are not 6 supports. They are one support, counted 6 times -- every one of them hangs off the same thing. No count is given, because any count would be a number about something that is not there.",
+   "status": "HALTED"
+  },
+  "counts": {
+   "edges": 33,
+   "external_imports_ignored": 192,
+   "files_in_graph": 20,
+   "files_isolated": 6,
+   "files_scanned": 26,
+   "unresolved_relative": 0
+  },
+  "fan_in_top": [
+   [
+    "gt_probabilistic.py",
+    6
+   ],
+   [
+    "nere_engine_v3.py",
+    6
+   ],
+   [
+    "ihcei_kernel_v3.py",
+    3
+   ],
+   [
+    "nere_deep.py",
+    3
+   ],
+   [
+    "IHCEI_kernel_v2.py",
+    2
+   ],
+   [
+    "gt_regimes.py",
+    2
+   ],
+   [
+    "ihcei_kernel.py",
+    2
+   ],
+   [
+    "ihcei_middleware.py",
+    2
+   ]
+  ],
+  "hub": "gt_probabilistic.py",
+  "hub_fan_in": 6,
+  "name": "ihcei_v3",
+  "sole_routes": {
+   "detail": {
+    "conserved": true,
+    "parts": 20,
+    "pieces": 2,
+    "single_points": [
+     "calibration_harness.py",
+     "ihcei_api.py",
+     "ihcei_kernel.py",
+     "ihcei_kernel_v3.py"
+    ],
+    "total_bearing": 17.999999999999993
+   },
+   "says": "4 parts would break this into more pieces if removed.",
+   "status": "READ"
+  }
+ },
+ "this_repo": {
+  "abstained": [
+   "counted_twice",
+   "latency"
+  ],
+  "counted_twice": {
+   "detail": {
+    "claimed": 22,
+    "distinct_origins": 1,
+    "each_settles": 0.002066115702,
+    "the_one_origin": "echo/echo.mjs"
+   },
+   "says": "These are not 22 supports. They are one support, counted 22 times -- every one of them hangs off the same thing. No count is given, because any count would be a number about something that is not there.",
+   "status": "HALTED"
+  },
+  "counts": {
+   "edges": 197,
+   "external_imports_ignored": 1755,
+   "files_in_graph": 127,
+   "files_isolated": 275,
+   "files_scanned": 402,
+   "unresolved_relative": 0
+  },
+  "fan_in_top": [
+   [
+    "echo/echo.mjs",
+    22
+   ],
+   [
+    "novora-helm/src/helm-core.mjs",
+    18
+   ],
+   [
+    "spar/spar.py",
+    17
+   ],
+   [
+    "page-code/pagecode.mjs",
+    12
+   ],
+   [
+    "api/govern.js",
+    11
+   ],
+   [
+    "novora-suite/engine/fastmode.mjs",
+    11
+   ],
+   [
+    "plexus/engines.js",
+    11
+   ],
+   [
+    "ei/ei.mjs",
+    9
+   ]
+  ],
+  "hub": "echo/echo.mjs",
+  "hub_fan_in": 22,
+  "name": "this repository",
+  "sole_routes": {
+   "detail": {
+    "conserved": true,
+    "parts": 127,
+    "pieces": 9,
+    "single_points": [
+     "api/govern.js",
+     "cross-stack/lism_diagnostic.mjs",
+     "echo/echo.mjs",
+     "ei-llm/ei-llm.mjs",
+     "ei/ei.mjs",
+     "fathom/fathom.py",
+     "govphys_quadratic_prereg_test.py",
+     "keel/keel.py",
+     "keel/kernel.mjs",
+     "novora-helm/src/helm-core.mjs",
+     "novora-suite/engine/fastmode.mjs",
+     "plexus/cairn.js",
+     "plexus/engines.js",
+     "plexus/intercept.js",
+     "plexus/press.js",
+     "smi/lmd.js",
+     "smi/lmd.py",
+     "spar/spar.py",
+     "tau_v_monitor/__init__.py",
+     "tau_v_monitor/cli.py",
+     "tau_v_monitor/core.py",
+     "weir/weir.mjs",
+     "weir/weir.test.mjs"
+    ],
+    "total_bearing": 117.99999999999999
+   },
+   "says": "23 parts would break this into more pieces if removed.",
+   "status": "READ"
+  }
+ }
+}
