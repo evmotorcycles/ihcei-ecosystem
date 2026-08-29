@@ -1,0 +1,125 @@
+{
+ "A_fluent_vague": {
+  "carries_specifics": false,
+  "fluent": true,
+  "is_true": false,
+  "nere": {
+   "mechanism": false,
+   "p": 0.2094,
+   "verdict": "PASS"
+  },
+  "press": {
+   "checkable": false,
+   "handles": [],
+   "marks": 0,
+   "says": "Nothing runs out.",
+   "settles": null
+  },
+  "what": "fluent hallucination, no specifics (the supplied Case A)",
+  "words": 54
+ },
+ "B_flat_grounded": {
+  "carries_specifics": true,
+  "fluent": false,
+  "is_true": true,
+  "nere": {
+   "mechanism": false,
+   "p": 0.1445,
+   "verdict": "PASS"
+  },
+  "press": {
+   "all_equal": true,
+   "checkable": true,
+   "conserved": true,
+   "deepest": 1.0,
+   "fired": [
+    "scope"
+   ],
+   "handles": [
+    "AES-GCM",
+    "crypto.subtle.generateKey",
+    "localStorage",
+    "novora-helm/test/helm-html.test.mjs"
+   ],
+   "marks": 1,
+   "n_handles": 4,
+   "settles": 1.0
+  },
+  "what": "grounded plan, real handles (the supplied Case B)",
+  "words": 25
+ },
+ "C_fluent_specific_FABRICATED": {
+  "carries_specifics": true,
+  "fluent": true,
+  "is_true": false,
+  "nere": {
+   "mechanism": false,
+   "p": 0.1445,
+   "verdict": "PASS"
+  },
+  "press": {
+   "all_equal": true,
+   "checkable": true,
+   "conserved": true,
+   "deepest": 0.03999999999999948,
+   "fired": [
+    "source",
+    "figures",
+    "method",
+    "time",
+    "scope"
+   ],
+   "handles": [
+    "RFC 9455",
+    "WebCrypto",
+    "crypto.subtle.deriveSealedIdentity",
+    "novora-helm/src/sealed-identity.mjs"
+   ],
+   "marks": 5,
+   "n_handles": 4,
+   "settles": 0.04
+  },
+  "what": "THE DECISIVE CASE \u2014 hallucination written the way a capable model actually hallucinates: fluent AND carrying confident specifics, every one of which is invented",
+  "words": 48
+ },
+ "D_flat_honest_vague": {
+  "carries_specifics": false,
+  "fluent": false,
+  "is_true": true,
+  "nere": {
+   "mechanism": false,
+   "p": 0.1445,
+   "verdict": "PASS"
+  },
+  "press": {
+   "checkable": false,
+   "handles": [],
+   "marks": 0,
+   "says": "Nothing runs out.",
+   "settles": null
+  },
+  "what": "honest, careful, and vague \u2014 a person saying only what they know",
+  "words": 37
+ },
+ "_findings": {
+  "B_handles": 4,
+  "B_marks": 1,
+  "C_handles": 4,
+  "C_marks": 5,
+  "H1_C_at_least_as_checkable_as_B": true,
+  "H2_A_and_D_indistinguishable": true,
+  "H3_engines_disagree_somewhere": true,
+  "H4_no_engine_output_says_hallucination": true,
+  "H5_C_nere_verdict": "PASS",
+  "H6_C_handles_are_all_fabricated": [
+   "RFC 9455",
+   "WebCrypto",
+   "crypto.subtle.deriveSealedIdentity",
+   "novora-helm/src/sealed-identity.mjs"
+  ]
+ },
+ "_prereg": {
+  "file": "hallucination/prereg_hb.md",
+  "sha256": "468bf8b15be673800b06e7ce3780412413d1e90d9b7ee85e586a18f5829f54bb"
+ }
+}
