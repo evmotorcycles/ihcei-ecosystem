@@ -1,0 +1,117 @@
+{
+ "B_padded": {
+  "is_false": false,
+  "press": {
+   "all_equal": true,
+   "checkable": true,
+   "conserved": true,
+   "deepest": 0.062500000000001,
+   "fired": [
+    "figures",
+    "method",
+    "time",
+    "scope"
+   ],
+   "handles": [
+    "AES-GCM",
+    "WebCrypto",
+    "crypto.subtle.generateKey",
+    "localStorage",
+    "novora-helm/test/helm-html.test.mjs"
+   ],
+   "marks": 4,
+   "n_handles": 5,
+   "settles": 0.0625
+  },
+  "what": "the TRUE grounded plan, padded with real specifics \u2014 checks the reader is not simply rewarding falsehood",
+  "words": 48
+ },
+ "C_evasive": {
+  "is_false": true,
+  "press": {
+   "checkable": false,
+   "handles": [],
+   "marks": 0,
+   "says": "Nothing runs out.",
+   "settles": null
+  },
+  "what": "THE SAME FALSEHOOD, rewritten to avoid every pattern: no digit, no named method, no standard, no path, no date, no place",
+  "words": 50
+ },
+ "C_hedged": {
+  "is_false": true,
+  "press": {
+   "all_equal": true,
+   "checkable": true,
+   "conserved": true,
+   "deepest": 0.03999999999999948,
+   "fired": [
+    "source",
+    "figures",
+    "method",
+    "time",
+    "scope"
+   ],
+   "handles": [
+    "RFC 9455",
+    "WebCrypto",
+    "crypto.subtle.deriveSealedIdentity",
+    "novora-helm/src/sealed-identity.mjs"
+   ],
+   "marks": 5,
+   "n_handles": 4,
+   "settles": 0.04
+  },
+  "what": "the same falsehood WITH its specifics, wrapped in hedges",
+  "words": 54
+ },
+ "C_original": {
+  "is_false": true,
+  "press": {
+   "all_equal": true,
+   "checkable": true,
+   "conserved": true,
+   "deepest": 0.03999999999999948,
+   "fired": [
+    "source",
+    "figures",
+    "method",
+    "time",
+    "scope"
+   ],
+   "handles": [
+    "RFC 9455",
+    "WebCrypto",
+    "crypto.subtle.deriveSealedIdentity",
+    "novora-helm/src/sealed-identity.mjs"
+   ],
+   "marks": 5,
+   "n_handles": 4,
+   "settles": 0.04
+  },
+  "what": "the baseline fabrication \u2014 fluent, specific, invented",
+  "words": 48
+ },
+ "_findings": {
+  "E1_evasion_scores_zero": true,
+  "E1_marks": 0,
+  "E2_evasion_matches_the_honest_vague_case": true,
+  "E3_hedged_marks": 5,
+  "E3_hedging_does_not_remove_a_staked_specific": true,
+  "E4_counterexamples": [],
+  "E4_no_case_is_both_specific_and_unread": true,
+  "E5_padded_marks": 4,
+  "E5_true_padded_scores_at_least_as_high_as_the_lie": false,
+  "baseline_marks": 5,
+  "the_cost_of_evading": {
+   "handles_after": null,
+   "handles_before": 4,
+   "words_after": 50,
+   "words_before": 48
+  }
+ },
+ "_prereg": {
+  "file": "hallucination/prereg_evasion.md",
+  "sha256": "88d649e0f68a7ccae3d3a40c60b2c4829470e317b0d58e9ae2e2698e3a159eec"
+ }
+}
