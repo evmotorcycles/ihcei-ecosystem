@@ -106,11 +106,11 @@
    "status": "HALTED"
   },
   "counts": {
-   "edges": 199,
-   "external_imports_ignored": 1776,
-   "files_in_graph": 129,
-   "files_isolated": 276,
-   "files_scanned": 405,
+   "edges": 209,
+   "external_imports_ignored": 1784,
+   "files_in_graph": 138,
+   "files_isolated": 271,
+   "files_scanned": 409,
    "unresolved_relative": 0
   },
   "fan_in_top": [
@@ -153,8 +153,8 @@
   "sole_routes": {
    "detail": {
     "conserved": true,
-    "parts": 129,
-    "pieces": 9,
+    "parts": 138,
+    "pieces": 10,
     "single_points": [
      "api/govern.js",
      "cross-stack/lism_diagnostic.mjs",
@@ -171,6 +171,8 @@
      "plexus/engines.js",
      "plexus/intercept.js",
      "plexus/press.js",
+     "plumb/__init__.py",
+     "plumb/plumb.py",
      "smi/lmd.js",
      "smi/lmd.py",
      "spar/spar.py",
@@ -180,9 +182,9 @@
      "weir/weir.mjs",
      "weir/weir.test.mjs"
     ],
-    "total_bearing": 120.00000000000003
+    "total_bearing": 127.99999999999999
    },
-   "says": "23 parts would break this into more pieces if removed.",
+   "says": "25 parts would break this into more pieces if removed.",
    "status": "READ"
   }
  }

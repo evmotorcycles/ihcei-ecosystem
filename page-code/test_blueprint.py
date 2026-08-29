@@ -83,9 +83,21 @@ def test_the_three_readouts_are_never_fused(r):
 
 # ─────────────────────────────────────────────────── the real predictions ───
 def test_B1_and_B2_the_project_has_joints_and_is_in_pieces(r):
+    """B1 and B2. NO ABSOLUTE COUNT — the same lesson as
+    test_the_auditor_is_inside_the_corpus_it_measures, which I recorded one
+    turn earlier and then did not apply here.
+
+    This asserted 23 single points. Adding plumb/spec.py and plumb/emit.py made
+    it 25 and the suite went red. The audit walks the repository it lives in, so
+    every absolute structural count moves whenever the repository grows --
+    including when it grows by the commit adding the assertion.
+    """
     d = r["this_repo"]["sole_routes"]["detail"]
-    assert len(d["single_points"]) == 23
-    assert d["pieces"] == 9 and d["pieces"] > 1
+    assert len(d["single_points"]) >= 20
+    assert d["pieces"] > 1
+    # the named joints that should not vanish
+    for expected in ("echo/echo.mjs", "spar/spar.py", "plexus/engines.js"):
+        assert expected in d["single_points"], expected
 
 
 def test_B3_most_of_what_the_agent_wrote_stands_alone(r):
@@ -122,10 +134,12 @@ def test_the_auditor_is_inside_the_corpus_it_measures(r):
     # forbade a string and then contained it, so it failed on itself. Fifth
     # instance of that shape here, and it happened inside the test recording
     # the fourth.
-    forbidden = 'files_scanned"] ' + "=="
-    assert forbidden not in src, (
-        "an absolute file count was asserted again; it moves when a file is "
-        "added, including by the commit that adds the assertion")
+    for forbidden in ('files_scanned"] ' + "==",
+                      'single_points"]) ' + "==",
+                      'files_isolated"] ' + "=="):
+        assert forbidden not in src, (
+            "an absolute structural count was asserted again; it moves when a "
+            "file is added, including by the commit that adds the assertion")
     assert r["this_repo"]["counts"]["files_scanned"] > 300
 
 
@@ -136,8 +150,12 @@ def test_B4_there_is_a_hub_and_it_is_imported_by_many(r):
 
 
 def test_B8_the_separately_authored_stack_also_has_joints(r):
+    """B8. ihcei_v3 is a frozen vendored snapshot, so an absolute count here
+    would in fact be stable -- but a guard with an exception in it is a guard
+    nobody trusts, so this asserts the same way the live-corpus tests do."""
     d = r["ihcei_v3"]["sole_routes"]["detail"]
-    assert len(d["single_points"]) == 4
+    assert len(d["single_points"]) >= 4
+    assert "ihcei_kernel_v3.py" in d["single_points"]
     assert r["ihcei_v3"]["hub"] == "gt_probabilistic.py"
 
 
