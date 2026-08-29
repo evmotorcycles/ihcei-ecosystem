@@ -1,0 +1,255 @@
+{
+ "_contract": {
+  "L3_message": "this survey has nowhere to put: stars. Stars, downloads, age and popularity are not structure, and a field with nowhere ",
+  "L3_refuses_unaccepted_field": true,
+  "L6_refuses_its_own_output": true,
+  "L9_no_fused_field": true,
+  "abstain_rate": 0.6667,
+  "latency_abstained_on_real_cohorts": true,
+  "readouts_read": 7,
+  "readouts_total": 21,
+  "synthetic_latency_band": "ALERT"
+ },
+ "_prereg": {
+  "file": "keel/prereg_keel.md",
+  "sha256": "5378d4ec236671e7fbc9c80c6ef17faecb6f2da0cee8c96f35e6519109978444"
+ },
+ "assistant_plan": {
+  "abstained": [
+   "counted_twice",
+   "latency"
+  ],
+  "counted_twice": {
+   "detail": {
+    "claimed": 4,
+    "distinct_origins": 1,
+    "each_settles": 0.0625,
+    "the_one_origin": "what the assistant said"
+   },
+   "says": "These are not 4 supports. They are one support, counted 4 times -- every one of them hangs off the same thing. No count is given, because any count would be a number about something that is not there.",
+   "status": "HALTED"
+  },
+  "latency": {
+   "detail": {},
+   "says": "No history given. This reading is against your own past and cannot be borrowed from anyone else's.",
+   "status": "ABSTAINED"
+  },
+  "name": "an AI-written launch plan",
+  "sole_routes": {
+   "detail": {
+    "conserved": true,
+    "parts": 6,
+    "pieces": 1,
+    "single_points": [
+     "what the assistant said"
+    ],
+    "total_bearing": 4.999999999999996
+   },
+   "says": "1 part would break this into more pieces if removed.",
+   "status": "READ"
+  }
+ },
+ "four_fibres": {
+  "abstained": [
+   "latency"
+  ],
+  "counted_twice": {
+   "detail": {
+    "claimed": 4,
+    "deepest_dependence": 0.2500000000000001,
+    "distinct_origins": 4,
+    "rests_on_one_thread": false,
+    "settles": {
+     "the 2026 filing": 0.25,
+     "the council register": 0.25,
+     "the site measurement": 0.25,
+     "the supplier quote": 0.25
+    }
+   },
+   "says": "4 supports resting on 4 separate things.",
+   "status": "READ"
+  },
+  "latency": {
+   "detail": {},
+   "says": "No history given. This reading is against your own past and cannot be borrowed from anyone else's.",
+   "status": "ABSTAINED"
+  },
+  "name": "four supports, four origins",
+  "sole_routes": {
+   "detail": {
+    "conserved": true,
+    "parts": 9,
+    "pieces": 1,
+    "single_points": [
+     "filing office",
+     "supplier",
+     "the site",
+     "the council",
+     "the estimate holds"
+    ],
+    "total_bearing": 7.999999999999999
+   },
+   "says": "5 parts would break this into more pieces if removed.",
+   "status": "READ"
+  }
+ },
+ "hf_lineage": {
+  "abstained": [
+   "counted_twice",
+   "latency"
+  ],
+  "counted_twice": {
+   "detail": {},
+   "says": "Nothing was claimed to hold anything up, so there is nothing to count.",
+   "status": "ABSTAINED"
+  },
+  "latency": {
+   "detail": {},
+   "says": "No history given. This reading is against your own past and cannot be borrowed from anyone else's.",
+   "status": "ABSTAINED"
+  },
+  "name": "open-weight model lineage (24 trending)",
+  "sole_routes": {
+   "detail": {
+    "conserved": true,
+    "parts": 32,
+    "pieces": 20,
+    "single_points": [
+     "Qwen/Qwen3.6-27B"
+    ],
+    "total_bearing": 12.0
+   },
+   "says": "1 part would break this into more pieces if removed.",
+   "status": "READ"
+  }
+ },
+ "one_fibre": {
+  "abstained": [
+   "counted_twice",
+   "latency"
+  ],
+  "counted_twice": {
+   "detail": {
+    "claimed": 4,
+    "distinct_origins": 1,
+    "each_settles": 0.0625,
+    "the_one_origin": "Qwen/Qwen3.6-27B"
+   },
+   "says": "These are not 4 supports. They are one support, counted 4 times -- every one of them hangs off the same thing. No count is given, because any count would be a number about something that is not there.",
+   "status": "HALTED"
+  },
+  "latency": {
+   "detail": {},
+   "says": "No history given. This reading is against your own past and cannot be borrowed from anyone else's.",
+   "status": "ABSTAINED"
+  },
+  "name": "four derivatives, one base",
+  "sole_routes": {
+   "detail": {
+    "conserved": true,
+    "parts": 6,
+    "pieces": 1,
+    "single_points": [
+     "Qwen/Qwen3.6-27B"
+    ],
+    "total_bearing": 4.999999999999996
+   },
+   "says": "1 part would break this into more pieces if removed.",
+   "status": "READ"
+  }
+ },
+ "orgs": {
+  "abstained": [
+   "counted_twice",
+   "latency"
+  ],
+  "counted_twice": {
+   "detail": {},
+   "says": "Nothing was claimed to hold anything up, so there is nothing to count.",
+   "status": "ABSTAINED"
+  },
+  "latency": {
+   "detail": {},
+   "says": "No history given. This reading is against your own past and cannot be borrowed from anyone else's.",
+   "status": "ABSTAINED"
+  },
+  "name": "22 Qwen and DeepSeek repositories",
+  "sole_routes": {
+   "detail": {
+    "conserved": true,
+    "parts": 24,
+    "pieces": 2,
+    "single_points": [
+     "deepseek-ai",
+     "QwenLM"
+    ],
+    "total_bearing": 22.0
+   },
+   "says": "2 parts would break this into more pieces if removed.",
+   "status": "READ"
+  }
+ },
+ "synthetic_rising": {
+  "abstained": [
+   "sole_routes",
+   "counted_twice"
+  ],
+  "counted_twice": {
+   "detail": {},
+   "says": "Nothing was claimed to hold anything up, so there is nothing to count.",
+   "status": "ABSTAINED"
+  },
+  "latency": {
+   "detail": {
+    "baseline_tau_v": 11.0,
+    "current_tau_v": 49.0,
+    "status": "ALERT",
+    "trend": "increasing",
+    "trend_p": 8.303107353668793e-06
+   },
+   "says": "Your time-to-fix is rising AND is high against your own past.",
+   "status": "READ"
+  },
+  "name": "SYNTHETIC rising latency (engine test only)",
+  "sole_routes": {
+   "detail": {},
+   "says": "Nothing joins anything yet. With no links there is no structure to read, which is not the same as a structure with nothing wrong with it.",
+   "status": "ABSTAINED"
+  }
+ },
+ "tauv_cohort": {
+  "_cohort": {
+   "fields": [
+    "E",
+    "archived",
+    "n_closed",
+    "pushed_at",
+    "repo",
+    "tau_v"
+   ],
+   "has_per_item_timestamps": false,
+   "n_rows": 21
+  },
+  "abstained": [
+   "sole_routes",
+   "counted_twice",
+   "latency"
+  ],
+  "counted_twice": {
+   "detail": {},
+   "says": "Nothing was claimed to hold anything up, so there is nothing to count.",
+   "status": "ABSTAINED"
+  },
+  "latency": {
+   "detail": {},
+   "says": "No history given. This reading is against your own past and cannot be borrowed from anyone else's.",
+   "status": "ABSTAINED"
+  },
+  "name": "the tau_v repository cohort",
+  "sole_routes": {
+   "detail": {},
+   "says": "Nothing joins anything yet. With no links there is no structure to read, which is not the same as a structure with nothing wrong with it.",
+   "status": "ABSTAINED"
+  }
+ }
+}
