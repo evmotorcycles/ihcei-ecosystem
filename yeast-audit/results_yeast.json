@@ -1,0 +1,25 @@
+{
+ "_prereg": {
+  "file": "yeast-audit/prereg_yeast.md",
+  "sha256": "f8134f12f5223e736ce4c1dc3a76528d904c148d7f907039131c72e0ab1623d6"
+ },
+ "claimed_by_the_pasted_audit": {
+  "n_cut_vertices": 0,
+  "n_edges": 15400
+ },
+ "cut_vertices_in_largest_component": 437,
+ "degree_one_nodes": 593,
+ "findings": {
+  "Y1_many_cut_vertices": true,
+  "Y2_edge_count": 70201,
+  "Y3_more_than_one_piece": true,
+  "Y4_largest_component_has_cuts": true
+ },
+ "largest_component": 4772,
+ "n_cut_vertices": 437,
+ "n_edges": 70201,
+ "n_nodes": 4825,
+ "n_pieces": 26,
+ "raw_sha256": "5993baacdd7cdc116dcc7e4e0542a440e1d38fffe980e6ce3fdd2387f58ab2f9",
+ "source": "STRING v12 physical links, S. cerevisiae taxon 4932, combined_score >= 400"
+}
