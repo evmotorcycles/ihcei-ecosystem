@@ -1,0 +1,61 @@
+{
+ "_provenance": {
+  "source": "Hugging Face Hub model cards, fetched live via the HF connector",
+  "fetched_by": "authenticated HF connector user Mago1234",
+  "fetched_at": "2026-09-13",
+  "method": "hf_fs cat hf://models/OWNER/NAME/README.md",
+  "byte_caps": "4000 bytes (Wan), 9000 (HunyuanVideo, LTX-Video, CogVideoX-5b), 6000 (mochi, SVD)",
+  "note": "VERBATIM excerpts taken from within the fetched byte range of each card. Plain curl to huggingface.co still answers 000 through the proxy; only the connector reaches it, so the fetch is an attested manual step and every run below is offline against this file. Same arrangement as hf-cohort/data/hf_cohort_frozen.json.",
+  "limit": "These are EXCERPTS, not whole cards. Nothing here characterises a full card."
+ },
+ "models": [
+  {
+   "id": "Wan-AI/Wan2.2-T2V-A14B",
+   "task": "text-to-video",
+   "downloads": 101600,
+   "likes": 560,
+   "license": "apache-2.0",
+   "excerpt": "Wan2.2 open-sources a 5B model built with our advanced Wan2.2-VAE that achieves a compression ratio of 16x16x4. This model supports both text-to-video and image-to-video generation at 720P resolution with 24fps and can also run on consumer-grade graphics cards like 4090. Compared to Wan2.1, Wan2.2 is trained on a significantly larger data, with +65.6% more images and +83.2% more videos. This repository contains our T2V-A14B model, which supports generating 5s videos at both 480P and 720P resolutions."
+  },
+  {
+   "id": "tencent/HunyuanVideo",
+   "task": "text-to-video",
+   "downloads": 53900,
+   "likes": 2288,
+   "license": "other",
+   "excerpt": "Through an effective strategy for scaling model architecture and dataset, we successfully trained a video generative model with over 13 billion parameters, making it the largest among all open-source models. HunyuanVideo trains a 3D VAE with CausalConv3D to compress pixel-space videos and images into a compact latent space. We set the compression ratios of video length, space, and channel to 4, 8, and 16 respectively."
+  },
+  {
+   "id": "Lightricks/LTX-Video",
+   "task": "image-to-video",
+   "downloads": 8200000,
+   "likes": 2301,
+   "license": "other",
+   "excerpt": "LTX-Video is the first DiT-based video generation model capable of generating high-quality videos in real-time. It produces 30 FPS videos at a 1216x704 resolution faster than they can be watched. Trained on a large-scale dataset of diverse videos, the model generates high-resolution videos with realistic and varied content."
+  },
+  {
+   "id": "zai-org/CogVideoX-5b",
+   "task": "text-to-video",
+   "downloads": 1500000,
+   "likes": 688,
+   "license": "other",
+   "excerpt": "CogVideoX is an open-source version of the video generation model originating from QingYing. CogVideoX-2B is an entry-level model, balancing compatibility, with low cost for running and secondary development. CogVideoX-5B is a larger model with higher video generation quality and better visual effects."
+  },
+  {
+   "id": "genmo/mochi-1-preview",
+   "task": "text-to-video",
+   "downloads": 395800,
+   "likes": 1358,
+   "license": "apache-2.0",
+   "excerpt": "Mochi 1 represents a significant advancement in open-source video generation, featuring a 10 billion parameter diffusion model built on our novel Asymmetric Diffusion Transformer (AsymmDiT) architecture. Trained entirely from scratch, it is the largest video generative model ever openly released. Our AsymmVAE causally compresses videos to a 128x smaller size, with an 8x8 spatial and a 6x temporal compression to a 12-channel latent space."
+  },
+  {
+   "id": "stabilityai/stable-video-diffusion-img2vid-xt",
+   "task": "image-to-video",
+   "downloads": 8200000,
+   "likes": 3397,
+   "license": "other",
+   "excerpt": "This model was trained to generate 25 frames at resolution 576x1024 given a context frame of the same size, finetuned from SVD Image-to-Video 14 frames. Training the SVD checkpoints required a total of approximately 200,000 A100 80GB hours. The majority of the training occurred on 48 * 8 A100s. The resulting CO2 emission is ~19,000kg CO2 eq., and energy consumed is ~64000 kWh. With the default settings at the time of release, SVD takes ~100s for generation, and SVD-XT takes ~180s on an A100 80GB card."
+  }
+ ]
+}

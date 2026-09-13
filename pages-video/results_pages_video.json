@@ -1,0 +1,173 @@
+{
+ "stream": {
+  "version": "pages-0.1",
+  "root": "2322d2dd8dba24e67aca85c3cb3180d275ff029bc13de85112d2b12b7a706cd2",
+  "n_segments": 4,
+  "certified_on_build": true,
+  "segments": [
+   {
+    "i": 0,
+    "t": 0,
+    "sourceId": "Wan-AI/Wan2.2-T2V-A14B",
+    "grounded": true,
+    "p_alignment": 0.952,
+    "ground_mode": "fast",
+    "verdict": "PASS"
+   },
+   {
+    "i": 1,
+    "t": 12,
+    "sourceId": "stabilityai/stable-video-diffusion-img2vid-xt",
+    "grounded": false,
+    "p_alignment": 0.25,
+    "ground_mode": "fast",
+    "verdict": "PASS"
+   },
+   {
+    "i": 2,
+    "t": 24,
+    "sourceId": "genmo/mochi-1-preview",
+    "grounded": false,
+    "p_alignment": 0.25,
+    "ground_mode": "fast",
+    "verdict": "PASS"
+   },
+   {
+    "i": 3,
+    "t": 36,
+    "sourceId": "tencent/HunyuanVideo",
+    "grounded": true,
+    "p_alignment": 0.769,
+    "ground_mode": "fast",
+    "verdict": "PASS"
+   }
+  ]
+ },
+ "grounding": [
+  {
+   "i": 0,
+   "t": 0,
+   "sourceId": "Wan-AI/Wan2.2-T2V-A14B",
+   "grounded": true,
+   "p_alignment": 0.952,
+   "overlap": 0.95,
+   "addedNumbers": [],
+   "mode": "fast"
+  },
+  {
+   "i": 1,
+   "t": 12,
+   "sourceId": "stabilityai/stable-video-diffusion-img2vid-xt",
+   "grounded": false,
+   "p_alignment": 0.25,
+   "overlap": 0.61,
+   "addedNumbers": [
+    "500000",
+    "19000"
+   ],
+   "mode": "fast"
+  },
+  {
+   "i": 2,
+   "t": 24,
+   "sourceId": "genmo/mochi-1-preview",
+   "grounded": false,
+   "p_alignment": 0.25,
+   "overlap": 0.29,
+   "addedNumbers": [
+    "30",
+    "1216",
+    "704"
+   ],
+   "mode": "fast"
+  },
+  {
+   "i": 3,
+   "t": 36,
+   "sourceId": "tencent/HunyuanVideo",
+   "grounded": true,
+   "p_alignment": 0.769,
+   "overlap": 0.77,
+   "addedNumbers": [],
+   "mode": "fast"
+  }
+ ],
+ "word_swap": {
+  "editedIndex": 2,
+  "ok": false,
+  "brokenAt": 2,
+  "t": 24,
+  "reason": "spoken text altered",
+  "stillCertified": false
+ },
+ "splice": {
+  "removedIndex": 1,
+  "ok": false,
+  "brokenAt": 1,
+  "t": 24,
+  "reason": "prev-link mismatch (splice)",
+  "stillCertified": false
+ },
+ "taps": [
+  {
+   "i": 0,
+   "t": 0,
+   "sourceId": "Wan-AI/Wan2.2-T2V-A14B",
+   "provenInGroundingSet": true,
+   "passageUnchanged": true,
+   "passageChars": 505
+  },
+  {
+   "i": 1,
+   "t": 12,
+   "sourceId": "stabilityai/stable-video-diffusion-img2vid-xt",
+   "provenInGroundingSet": true,
+   "passageUnchanged": true,
+   "passageChars": 506
+  },
+  {
+   "i": 2,
+   "t": 24,
+   "sourceId": "genmo/mochi-1-preview",
+   "provenInGroundingSet": true,
+   "passageUnchanged": true,
+   "passageChars": 441
+  },
+  {
+   "i": 3,
+   "t": 36,
+   "sourceId": "tencent/HunyuanVideo",
+   "provenInGroundingSet": true,
+   "passageUnchanged": true,
+   "passageChars": 421
+  }
+ ],
+ "tampered_source_tap": {
+  "provenInGroundingSet": false
+ },
+ "findings": {
+  "P1_fabricated_number_capped": true,
+  "P1_addedNumbers": [
+   "500000",
+   "19000"
+  ],
+  "P2_wrong_source_low_without_fabrication": false,
+  "P2_wrong_source_overlap": 0.29,
+  "P2_wrong_source_addedNumbers": [
+   "30",
+   "1216",
+   "704"
+  ],
+  "P3_word_swap_breaks_at_edited_index": true,
+  "P4_splice_breaks_chain": true,
+  "P5_all_taps_prove_inclusion": true,
+  "P5_tampered_source_fails": true,
+  "P6_at_least_one_grounded": true,
+  "grounded_count": 2
+ },
+ "_prereg": {
+  "file": "pages-video/prereg_pages_video.md",
+  "sha256": "7ef0863e86d5435e3736eb0b05a9fd250a9926bd67f455337e826b7e0fd89bce"
+ },
+ "_cards_sha256": "fdb14d01dfa288aa8b1bd58eda6e4de191583bed21960cfc80028f7489a8f53c"
+}
