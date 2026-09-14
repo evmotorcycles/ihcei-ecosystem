@@ -1,0 +1,44 @@
+{
+ "N1_three_on_one_settles_one_ninth": true,
+ "N2_method_is_a_cut_vertex": true,
+ "N3_bit_identical_in_general": false,
+ "N3_general_permutations": 480,
+ "N3_general_that_differed": 440,
+ "N3_general_worst_deviation": 1.4988010832439613e-14,
+ "N3_invariant": true,
+ "N3_permutations": 500,
+ "N3_reversed_identical": true,
+ "N3_same_to_tolerance": true,
+ "N3_worst_deviation": 0.0,
+ "N4_invariant_under_renaming": true,
+ "N4_mask_deviation": 0.0,
+ "N5_proxy": {
+  "drop": 1.162022,
+  "drops": true,
+  "mean_logprob_original": -4.899789,
+  "mean_logprob_shuffled": -6.061812,
+  "n_sentences": 97,
+  "vocabulary": 487
+ },
+ "N6_prerequisites_absent_from_support_graph": true,
+ "_document_sha256": "53ef39e71de1b207f6d020b1ff2122f02ad0946ec02920f4e38573269416895d",
+ "_prereg": {
+  "file": "order-invariance/prereg_order.md",
+  "sha256": "9c9872e465270422bd30093720255a97b2d48ebba995589a994f987e23e3c40f"
+ },
+ "structure": {
+  "conserved": true,
+  "deepest": 0.111111111111,
+  "pieces": 1,
+  "settles": [
+   0.111111111111,
+   0.111111111111,
+   0.111111111111
+  ],
+  "single_points": [
+   "the one declared method"
+  ],
+  "total_bearing": 4.0
+ },
+ "where": "uploaded PDF: 'In This Segment', 'Understanding the Metaphor', and the concluding section. The three passages route through the one declared method because the document states that without it they 'will not make any sense to you'."
+}
