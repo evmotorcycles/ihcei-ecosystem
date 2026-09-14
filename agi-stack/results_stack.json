@@ -1,0 +1,92 @@
+{
+ "_prereg": {
+  "file": "agi-stack/prereg_stack.md",
+  "sha256": "e4af23ec25616963f9e8edb9a512d146521d218dd66064a6dcc3eceb523b670c"
+ },
+ "arm1_gaming": {
+  "G1_all_cut_vertices_removed": true,
+  "G2_at_most_three_edges": true,
+  "G3_deepest_dependence_falls": false,
+  "G4_total_bearing_rises": false,
+  "G5_every_padding_edge_refused": true,
+  "G5_honest_edges_commit": true,
+  "G5_honest_refusal": null,
+  "G5_refusals": [
+   "no source named for the link 'the first cited passage' -> 'the second cited passage'",
+   "no source named for the link 'the first cited passage' -> 'the third cited passage'",
+   "no source named for the link 'the first cited passage' -> 'the conclusion'"
+  ],
+  "cheapest_padding": [
+   [
+    "the first cited passage",
+    "the second cited passage"
+   ],
+   [
+    "the first cited passage",
+    "the third cited passage"
+   ],
+   [
+    "the first cited passage",
+    "the conclusion"
+   ]
+  ],
+  "evidence_added": 0,
+  "honest": {
+   "cut_vertices": [
+    "the one declared method"
+   ],
+   "deepest_dependence": 0.111111111111,
+   "n_cuts": 1,
+   "n_links": 4,
+   "pieces": 1,
+   "settles": [
+    0.111111111111,
+    0.111111111111,
+    0.111111111111
+   ],
+   "total_bearing": 4.0
+  },
+  "n_edges_added": 3,
+  "nodes_added": 0,
+  "padded": {
+   "cut_vertices": [],
+   "deepest_dependence": 0.619047619048,
+   "n_cuts": 0,
+   "n_links": 7,
+   "pieces": 1,
+   "settles": [
+    0.047619047619,
+    0.047619047619,
+    0.619047619048
+   ],
+   "total_bearing": 4.0
+  },
+  "wording_changed": false
+ },
+ "arm2_lism": {
+  "L1_below_0_66": true,
+  "L1_four_hops_at_0_9": 0.6561,
+  "L2_by_depth": {
+   "1": 0.9,
+   "2": 0.81,
+   "3": 0.729,
+   "4": 0.6561,
+   "5": 0.59049,
+   "6": 0.531441,
+   "7": 0.4782969,
+   "8": 0.43046721,
+   "9": 0.387420489,
+   "10": 0.3486784401,
+   "11": 0.31381059609,
+   "12": 0.282429536481
+  },
+  "L2_monotone_decreasing": true,
+  "L3_at_least_0_84": true,
+  "L3_per_hop_needed_for_half_at_four_hops": 0.85,
+  "L4_no_quadratic_here": true,
+  "L4_registry": {
+   "D_min_threshold": "RETIRED_FULLY",
+   "E_quadratic": "RETIRED_FULLY"
+  }
+ }
+}
