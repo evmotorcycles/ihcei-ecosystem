@@ -1,0 +1,136 @@
+{
+ "added_edges": 4,
+ "all_literal_toy": {
+  "handoff": "This measured the structure of the drawing provided. It makes no claim about whether the drawing corresponds to anything outside itself. The judgement is the reader's.",
+  "inferred_edge_ratio": 0.0,
+  "kept_out_of_layer_1_by": [],
+  "layer": "Layer 1 (stated)",
+  "layer_rule": "Layer 1 requires every edge to be literal. One interpretive or imported edge makes it Layer 3.",
+  "provenance_counts": {
+   "imported": 0,
+   "interpretive": 0,
+   "literal": 1
+  },
+  "semantic_energy": null,
+  "semantic_layer": "ABSTAIN (no benchmarked JEPA model in repo)",
+  "structure": {
+   "cut_parts": [],
+   "deepest_dependence": 1.0,
+   "load": {
+    "conserved": true,
+    "expected_total": 1.0,
+    "parts": 2,
+    "pieces": 1,
+    "total_bearing": 0.9999999999999998
+   },
+   "resistance_first_evidence_to_conclusion": 0.9999999999999998
+  }
+ },
+ "locked_five_part": {
+  "handoff": "This measured the structure of the drawing provided. It makes no claim about whether the drawing corresponds to anything outside itself. The judgement is the reader's.",
+  "inferred_edge_ratio": 1.0,
+  "kept_out_of_layer_1_by": [
+   "passage 1 -> the one declared method (interpretive; the document states the passages \"will not make any sense\" without the declared method, so they are drawn as routing through it)",
+   "passage 2 -> the one declared method (interpretive; the document states the passages \"will not make any sense\" without the declared method, so they are drawn as routing through it)",
+   "passage 3 -> the one declared method (interpretive; the document states the passages \"will not make any sense\" without the declared method, so they are drawn as routing through it)",
+   "the one declared method -> the conclusion about the chapter (interpretive; the concluding section draws the conclusion from the method)"
+  ],
+  "layer": "Layer 3 (motivating)",
+  "layer_rule": "Layer 1 requires every edge to be literal. One interpretive or imported edge makes it Layer 3.",
+  "provenance_counts": {
+   "imported": 0,
+   "interpretive": 4,
+   "literal": 0
+  },
+  "semantic_energy": null,
+  "semantic_layer": "ABSTAIN (no benchmarked JEPA model in repo)",
+  "structure": {
+   "cut_parts": [
+    "the one declared method"
+   ],
+   "deepest_dependence": 0.11111111111111072,
+   "load": {
+    "conserved": true,
+    "expected_total": 4.0,
+    "parts": 5,
+    "pieces": 1,
+    "total_bearing": 4.0
+   },
+   "resistance_first_evidence_to_conclusion": 1.9999999999999996
+  }
+ },
+ "padding": {
+  "after": {
+   "cut_parts": [],
+   "deepest_dependence": 0.44927536231884047,
+   "load": {
+    "conserved": true,
+    "expected_total": 5.0,
+    "parts": 6,
+    "pieces": 1,
+    "total_bearing": 5.0
+   },
+   "resistance_first_evidence_to_conclusion": 0.903846153846154
+  },
+  "before": {
+   "cut_parts": [
+    "the declared metaphor",
+    "the one declared method"
+   ],
+   "deepest_dependence": 0.06666666666666698,
+   "load": {
+    "conserved": true,
+    "expected_total": 5.0,
+    "parts": 6,
+    "pieces": 1,
+    "total_bearing": 5.000000000000001
+   },
+   "resistance_first_evidence_to_conclusion": 3.0000000000000018
+  },
+  "padding_tripwire": {
+   "cut_parts_after": 0,
+   "cut_parts_before": 2,
+   "deepest_dependence_after": 0.44927536231884047,
+   "deepest_dependence_before": 0.06666666666666698,
+   "fired": true,
+   "is_a_fusion": true,
+   "note": "declared fusion: cut count fell AND deepest dependence rose in the same comparison"
+  }
+ },
+ "prereg_sha256": "81a0c16b22a81c9d89df8c3153d9cfacc98e7ec5889a292b90f124828b45248c",
+ "six_part": {
+  "handoff": "This measured the structure of the drawing provided. It makes no claim about whether the drawing corresponds to anything outside itself. The judgement is the reader's.",
+  "inferred_edge_ratio": 1.0,
+  "kept_out_of_layer_1_by": [
+   "passage 1 -> the declared metaphor (interpretive; this drawing separates the metaphor from the method; the locked reading in order-invariance/prereg_order.md does not)",
+   "passage 2 -> the declared metaphor (interpretive; this drawing separates the metaphor from the method; the locked reading in order-invariance/prereg_order.md does not)",
+   "passage 3 -> the declared metaphor (interpretive; this drawing separates the metaphor from the method; the locked reading in order-invariance/prereg_order.md does not)",
+   "the declared metaphor -> the one declared method (interpretive; this drawing separates the metaphor from the method; the locked reading in order-invariance/prereg_order.md does not)",
+   "the one declared method -> the conclusion about the chapter (interpretive; the concluding section draws the conclusion from the method)"
+  ],
+  "layer": "Layer 3 (motivating)",
+  "layer_rule": "Layer 1 requires every edge to be literal. One interpretive or imported edge makes it Layer 3.",
+  "provenance_counts": {
+   "imported": 0,
+   "interpretive": 5,
+   "literal": 0
+  },
+  "semantic_energy": null,
+  "semantic_layer": "ABSTAIN (no benchmarked JEPA model in repo)",
+  "structure": {
+   "cut_parts": [
+    "the declared metaphor",
+    "the one declared method"
+   ],
+   "deepest_dependence": 0.06666666666666698,
+   "load": {
+    "conserved": true,
+    "expected_total": 5.0,
+    "parts": 6,
+    "pieces": 1,
+    "total_bearing": 5.000000000000001
+   },
+   "resistance_first_evidence_to_conclusion": 3.0000000000000018
+  }
+ }
+}
