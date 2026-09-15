@@ -229,10 +229,16 @@ def report(parts, links, result):
             "about how the files are arranged.")
     lines += [
         "",
-        "The NAMES are stable. The COUNT is not: inserting re-export shims "
-        "that change no behaviour raises it at will, so this number cannot be "
+        "The COUNT is not something to act on: inserting re-export shims that "
+        "change no behaviour raises it at will, so this number cannot be "
         "compared between two projects, or against the same project last "
         "month. It partly measures how finely the code is split into files.",
+        "",
+        "The NAMES are stable under how the code is DRAWN -- shims, splits and "
+        "merges leave the list alone. They are NOT stable under what the "
+        "drawing LEAVES OUT: adding candidate undeclared edges (string "
+        "dispatch, registries, subprocess calls) left 18 of 27 standing. See "
+        "invisible-edges/. Read the list twice and act on the agreed part.",
         "",
         "A surviving module is not a fault. A shared kernel that everything "
         "routes through is usually correct; this says the finding is stable, "

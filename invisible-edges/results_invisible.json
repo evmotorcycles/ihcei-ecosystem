@@ -1,0 +1,318 @@
+{
+ "arm1": {
+  "candidates": 92,
+  "examples": [
+   {
+    "from": "agency-net/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "echo/field_test.mjs"
+   },
+   {
+    "from": "agency-net/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "ei-llm/field_test.mjs"
+   },
+   {
+    "from": "agency-net/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "novora-suite/field_test.mjs"
+   },
+   {
+    "from": "agency-net/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "page-code/field_test.mjs"
+   },
+   {
+    "from": "agency-net/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "pages/field_test.mjs"
+   },
+   {
+    "from": "novora-helm/prereg/acceptance_harness.mjs",
+    "kind": "string-literal naming a repository file",
+    "to": "api/calibrate.js"
+   },
+   {
+    "from": "oss-field-trial/issues_followup.mjs",
+    "kind": "string-literal naming a repository file",
+    "to": "api/calibrate.js"
+   },
+   {
+    "from": "novora-helm/extension/src/helm-core.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "api/govern.js"
+   },
+   {
+    "from": "keel/kernel.mjs",
+    "kind": "string-literal naming a repository file",
+    "to": "cairn/ei_engine.js"
+   },
+   {
+    "from": "plexus/test_press.py",
+    "kind": "comment or docstring naming a repository file",
+    "to": "cairn/ei_engine.js"
+   },
+   {
+    "from": "weir/weir.mjs",
+    "kind": "string-literal naming a repository file",
+    "to": "cairn/ei_engine.js"
+   },
+   {
+    "from": "cross-stack/field_report.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "ei/field_report.mjs"
+   },
+   {
+    "from": "cross-stack/github_pilot.test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "cross-stack/integration.test.mjs"
+   },
+   {
+    "from": "echo/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "ei-llm/field_test.mjs"
+   },
+   {
+    "from": "echo/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "novora-suite/field_test.mjs"
+   },
+   {
+    "from": "echo/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "page-code/field_test.mjs"
+   },
+   {
+    "from": "echo/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "pages/field_test.mjs"
+   },
+   {
+    "from": "ei-llm/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "novora-suite/field_test.mjs"
+   },
+   {
+    "from": "ei-llm/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "page-code/field_test.mjs"
+   },
+   {
+    "from": "ei-llm/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "pages/field_test.mjs"
+   },
+   {
+    "from": "plexus/engines.js",
+    "kind": "comment or docstring naming a repository file",
+    "to": "fathom/fathom.py"
+   },
+   {
+    "from": "hallucination/run_hb.py",
+    "kind": "string-literal naming a repository file",
+    "to": "novora-helm/test/helm-html.test.mjs"
+   },
+   {
+    "from": "keel/test_keel.py",
+    "kind": "string-literal naming a repository file",
+    "to": "keel/run_keel.py"
+   },
+   {
+    "from": "keel/run_keel.py",
+    "kind": "comment or docstring naming a repository file",
+    "to": "plexus/press.js"
+   },
+   {
+    "from": "keel/test_keel.py",
+    "kind": "string-literal naming a repository file",
+    "to": "plexus/press.js"
+   },
+   {
+    "from": "nere/test_nere.py",
+    "kind": "string-literal naming a repository file",
+    "to": "nere/extractor.py"
+   },
+   {
+    "from": "nere/test_nere.py",
+    "kind": "string-literal naming a repository file",
+    "to": "nere/firewall.py"
+   },
+   {
+    "from": "nere/test_nere.py",
+    "kind": "string-literal naming a repository file",
+    "to": "nere/jepa_filter.py"
+   },
+   {
+    "from": "nere/test_nere.py",
+    "kind": "string-literal naming a repository file",
+    "to": "nere/lmd_engine.py"
+   },
+   {
+    "from": "nere/test_nere.py",
+    "kind": "string-literal naming a repository file",
+    "to": "nere/pipeline.py"
+   },
+   {
+    "from": "nere/test_nere.py",
+    "kind": "string-literal naming a repository file",
+    "to": "nere/values.py"
+   },
+   {
+    "from": "novora-helm/extension/src/helm-core.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "novora-helm/src/helm-core.mjs"
+   },
+   {
+    "from": "novora-helm/src/primitives.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "novora-helm/extension/src/helm-core.mjs"
+   },
+   {
+    "from": "sre-brief/validate_sre_brief.mjs",
+    "kind": "string-literal naming a repository file",
+    "to": "novora-helm/prereg/acceptance_harness.mjs"
+   },
+   {
+    "from": "novora-helm/src/primitives.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "novora-helm/src/helm-core.mjs"
+   },
+   {
+    "from": "novora-suite/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "page-code/field_test.mjs"
+   },
+   {
+    "from": "novora-suite/field_test.mjs",
+    "kind": "comment or docstring naming a repository file",
+    "to": "pages/field_test.mjs"
+   },
+   {
+    "from": "order-invariance/run_order.py",
+    "kind": "comment or docstring naming a repository file",
+    "to": "plexus/mask.js"
+   },
+   {
+    "from": "oss-audit/run_oss.py",
+    "kind": "comment or docstring naming a repository file",
+    "to": "plexus/press.js"
+   },
+   {
+    "from": "page-code/blueprint.py",
+    "kind": "string-literal naming a repository file",
+    "to": "page-code/pagecode.mjs"
+   }
+  ],
+  "kinds": {
+   "comment or docstring naming a repository file": 31,
+   "string-literal naming a repository file": 61
+  },
+  "lost": [
+   "api/govern.js",
+   "cross-stack/lism_diagnostic.mjs",
+   "fathom/fathom.py",
+   "keel/keel.py",
+   "plexus/cairn.js",
+   "plexus/engines.js",
+   "plexus/intercept.js",
+   "plexus/press.js",
+   "smi/lmd.js"
+  ],
+  "new": [
+   "cairn/ei_engine.js",
+   "novora-helm/extension/src/helm-core.mjs",
+   "page-code/run_audit.py",
+   "plumb/emit.py"
+  ],
+  "prose_only": 31,
+  "survived": 18,
+  "widened_cuts": [
+   "cairn/ei_engine.js",
+   "echo/echo.mjs",
+   "ei-llm/ei-llm.mjs",
+   "ei/ei.mjs",
+   "govphys_quadratic_prereg_test.py",
+   "keel/kernel.mjs",
+   "nere/lmd_engine.py",
+   "novora-helm/extension/src/helm-core.mjs",
+   "novora-helm/src/helm-core.mjs",
+   "novora-suite/engine/fastmode.mjs",
+   "page-code/run_audit.py",
+   "pages/pages.mjs",
+   "plumb/__init__.py",
+   "plumb/emit.py",
+   "plumb/plumb.py",
+   "smi/lmd.py",
+   "spar/spar.py",
+   "tau_v_monitor/__init__.py",
+   "tau_v_monitor/cli.py",
+   "tau_v_monitor/core.py",
+   "weir/weir.mjs",
+   "weir/weir.test.mjs"
+  ]
+ },
+ "arm2": {
+  "0": {
+   "collapsed": 2,
+   "cuts_before": 27,
+   "quotient_cuts": 26
+  },
+  "20": {
+   "collapsed": 22,
+   "cuts_before": 32,
+   "quotient_cuts": 26
+  },
+  "40": {
+   "collapsed": 42,
+   "cuts_before": 42,
+   "quotient_cuts": 26
+  }
+ },
+ "arm2_real_indirection_nodes": [
+  "plexus/metaphor.js",
+  "plexus/press.js"
+ ],
+ "arm3": {
+  "cards": [
+   "facebook__ijepa_vith14_1k.md",
+   "facebook__vjepa2-vitl-fpc64-256.md"
+  ],
+  "j1_no_collapse": true,
+  "j2_no_mechanism": true,
+  "j3_states_avoidance": true
+ },
+ "declared": {
+  "cuts": [
+   "api/govern.js",
+   "cross-stack/lism_diagnostic.mjs",
+   "echo/echo.mjs",
+   "ei-llm/ei-llm.mjs",
+   "ei/ei.mjs",
+   "fathom/fathom.py",
+   "govphys_quadratic_prereg_test.py",
+   "keel/keel.py",
+   "keel/kernel.mjs",
+   "nere/lmd_engine.py",
+   "novora-helm/src/helm-core.mjs",
+   "novora-suite/engine/fastmode.mjs",
+   "pages/pages.mjs",
+   "plexus/cairn.js",
+   "plexus/engines.js",
+   "plexus/intercept.js",
+   "plexus/press.js",
+   "plumb/__init__.py",
+   "plumb/plumb.py",
+   "smi/lmd.js",
+   "smi/lmd.py",
+   "spar/spar.py",
+   "tau_v_monitor/__init__.py",
+   "tau_v_monitor/cli.py",
+   "tau_v_monitor/core.py",
+   "weir/weir.mjs",
+   "weir/weir.test.mjs"
+  ],
+  "edges": 246,
+  "modules": 156
+ },
+ "prereg_sha256": "1f3455944c51ef2f306bf2d50041e046438a8077ee2124c34c716b5d9f23edc9"
+}

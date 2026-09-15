@@ -14,7 +14,15 @@ more useful direction than the thesis would have gone.**
 
 ## The finding
 
-> **The count is not a measurement. The names are.**
+> **The count is not a measurement. The names are — under this transformation
+> family, and not under every one.**
+
+**Narrowed by a later measurement, recorded here rather than left standing.**
+`invisible-edges/` applied a second transformation family — candidate undeclared
+edges (string dispatch, registries, subprocess calls) — and **only 18 of 27
+names survived**. So the certificate is: stable under *how the code is drawn*,
+**not** stable under *what the drawing omits*. The advice below is unchanged for
+the count; for the names, read the list twice and act on the agreed part.
 
 A plain articulation-point reading flags **27 modules** as single points of
 failure. Insert 40 re-export shims that change no behaviour and the count climbs
@@ -28,7 +36,8 @@ So the practical advice inverts depending on which you use:
 | | |
 |---|---|
 | **Do not** compare cut-vertex counts between projects, or against the same project last month | it partly measures how finely code is split into files |
-| **Do** trust the list of modules | it survived 60 shims, 8 splits and 8 merges without losing one |
+| **Do** trust the list of modules, under rewrites | it survived 60 shims, 8 splits and 8 merges without losing one |
+| **But** re-read it against candidate undeclared edges | 18/27 survived that too; the other 9 are disputed, not wrong (`invisible-edges/`) |
 
 Any "architecture health score" built on a count of single points of failure is
 measuring file-splitting style alongside fragility. Nothing in the reading

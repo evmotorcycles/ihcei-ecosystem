@@ -1,0 +1,24 @@
+{
+ "_provenance": {
+  "source": "Hugging Face Hub model cards, fetched live via the HF connector",
+  "fetched_by": "authenticated HF connector user Mago1234",
+  "fetched_at": "2026-09-15",
+  "method": "hf_fs cat hf://models/OWNER/NAME/README.md --max-bytes 6000",
+  "note": "Both cards returned COMPLETE (truncated:false, 3115 and 3204 bytes). These are whole cards, not excerpts -- unlike pages-video/cards_frozen.json. Plain curl to huggingface.co is still 000 through the proxy; only the connector reaches it, so the fetch is an attested manual step and every run below is offline against this file.",
+  "limit": "Two cards. Nothing here characterises JEPA implementations in general."
+ },
+ "models": [
+  {
+   "id": "facebook/ijepa_vith14_1k",
+   "paper": "arXiv:2301.08243",
+   "bytes": 3115,
+   "truncated": false
+  },
+  {
+   "id": "facebook/vjepa2-vitl-fpc64-256",
+   "paper": "V-JEPA 2 tech report, FAIR at Meta 2025",
+   "bytes": 3204,
+   "truncated": false
+  }
+ ]
+}
