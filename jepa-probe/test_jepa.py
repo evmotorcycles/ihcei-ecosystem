@@ -79,15 +79,31 @@ def test_j3_the_collapsed_arm_reaches_a_flat_energy_landscape(seeds):
 
 
 def test_the_two_arms_differ_in_exactly_one_thing():
-    """Otherwise the comparison would not isolate the asymmetry."""
-    src = open(os.path.join(HERE, "mini_jepa.py"), encoding="utf-8").read()
-    assert "if symmetric:" in src
-    assert "Wt = EMA_MOMENTUM * Wt + (1.0 - EMA_MOMENTUM) * We" in src
-    # the same data, the same initialisation, the same steps and rate
+    """Otherwise the comparison would not isolate the asymmetry.
+
+    Behavioural rather than a grep: the same data, the same initialisation, the
+    same steps and rate, so the first step is identical in both arms and only
+    the target-branch arrangement can account for the divergence after it.
+    """
     X, _ = make_data(seed=0)
     a = train(X, symmetric=True, seed=0, steps=50)
     b = train(X, symmetric=False, seed=0, steps=50)
     assert a["history"][0]["loss"] == pytest.approx(b["history"][0]["loss"])
+    assert a["final_loss"] != b["final_loss"]
+
+
+def test_splitting_the_switch_did_not_change_either_arm():
+    """`symmetric` was split into `shared_target` and `leak`. Bit-identical.
+
+    A refactor that quietly moved a number would invalidate every result above.
+    """
+    X, _ = make_data(seed=1)
+    for sym, shared, leak in ((True, True, 1.0), (False, False, 0.0)):
+        old = train(X, symmetric=sym, seed=1, steps=120)
+        new = train(X, symmetric=sym, seed=1, steps=120,
+                    shared_target=shared, leak=leak)
+        assert np.array_equal(old["Wt"], new["Wt"]), sym
+        assert old["final_loss"] == new["final_loss"], sym
 
 
 def test_the_run_is_deterministic():

@@ -65,7 +65,8 @@ def embed(W, blocks):
     return np.einsum("hd,nbd->nbh", W, blocks)
 
 
-def train(X, symmetric: bool, steps=STEPS, lr=LR, seed=0, batch=64):
+def train(X, symmetric: bool, steps=STEPS, lr=LR, seed=0, batch=64,
+          shared_target=None, leak=None):
     """Returns the trained encoders and a per-step history.
 
     symmetric=True  -> target encoder IS the context encoder, gradients flow
@@ -73,6 +74,17 @@ def train(X, symmetric: bool, steps=STEPS, lr=LR, seed=0, batch=64):
     symmetric=False -> target encoder is an EMA of the context encoder and the
                        target branch is stop-gradient. The paper's arrangement.
     """
+    # `shared_target` and `leak` split the single `symmetric` switch into its
+    # two independent halves, so an ablation can move one without the other:
+    #   shared_target -- does the target branch use the SAME weights (no EMA)?
+    #   leak          -- what fraction of the target branch's gradient reaches
+    #                    the encoder? 1.0 is no stop-gradient, 0.0 is a full one.
+    # The defaults reproduce the original two arms exactly.
+    if shared_target is None:
+        shared_target = bool(symmetric)
+    if leak is None:
+        leak = 1.0 if symmetric else 0.0
+
     rng = np.random.default_rng(seed + 7)
     We, P, pos = _init(seed)
     Wt = We.copy()
@@ -85,7 +97,7 @@ def train(X, symmetric: bool, steps=STEPS, lr=LR, seed=0, batch=64):
 
         s_x = embed(We, xb[:, CONTEXT, :]).mean(axis=1)          # (B, H)
         tgt_blocks = xb[:, TARGETS, :]                           # (B, T, BLOCK)
-        enc_for_target = We if symmetric else Wt
+        enc_for_target = We if shared_target else Wt
         s_y = embed(enc_for_target, tgt_blocks)                  # (B, T, H)
 
         pred = (s_x @ P.T)[:, None, :] + pos[None, :, :]         # (B, T, H)
@@ -101,16 +113,16 @@ def train(X, symmetric: bool, steps=STEPS, lr=LR, seed=0, batch=64):
         ctx_mean = xb[:, CONTEXT, :].mean(axis=1)                # (B, BLOCK)
         gWe = np.einsum("bh,bd->hd", g_sx, ctx_mean)
 
-        if symmetric:
-            # the target branch is NOT detached: its gradient reaches the same
-            # weights. This is the whole difference between the two arms.
-            gWe += np.einsum("bth,btd->hd", -g, tgt_blocks)
+        if leak > 0.0:
+            # the target branch is not (fully) detached: this fraction of its
+            # gradient reaches the same weights.
+            gWe += leak * np.einsum("bth,btd->hd", -g, tgt_blocks)
 
         We -= lr * gWe
         P -= lr * gP
         pos -= lr * gpos
 
-        if symmetric:
+        if shared_target:
             Wt = We
         else:
             Wt = EMA_MOMENTUM * Wt + (1.0 - EMA_MOMENTUM) * We

@@ -127,6 +127,7 @@ run "smi: LMD metric engine — the -0.5 slope is an identity, and two spec bugs
 run "smi: browser engine matches the JAX engine over 14 graphs (<1e-9)" py smi/test_parity.py
 run "lmd-scaling: the -0.5 verdict flips on dtype, pinv library and matrix assembly — S2/S3/S4 MISSED" py lmd-scaling/test_scaling.py
 run "nere: pipeline v1.0 — semantic seam ABSTAINS, one declared fusion, no 30% gate" py nere/test_nere.py
+run "geometric-gate: no threshold is picked out by the data — G9 MISSED twice; stop-gradient is the mechanism, not the EMA" py geometric-gate/test_geometric_gate.py
 run "jepa-probe: collapse mechanism built and run — the structural readouts are BLIND to it; Claude arm UNRUN" py jepa-probe/test_jepa.py
 run "swarm-lmd: coupling + decay re-run — S2 predicted and FAILED, dataset generated" py swarm-lmd/test_swarm.py
 run "ncu: the firewall — layer-1 telemetry to metaphor, one direction only" py ncu/test_ncu.py
