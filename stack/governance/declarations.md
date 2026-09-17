@@ -30,21 +30,90 @@ changing cutoffs. Layer-3 metaphysics are out of empirical scope.
 
 ## 3. Swarm (LISM / SENTRY) — information accounting
 
-- **Module:** `stack/swarm/lism_sentry.py` — not built in this patch.
+- **Module:** `stack/swarm/lism_sentry.py` — **BUILT, Commit 5.**
 - **Law:** `E = U * prod(D_k)` — a fidelity product. **Not thermodynamic
   entropy**, and the word is not to appear in the module.
-- **Floor:** `min_E` is a **required argument**; prefer the ratio-of-`U` form in
-  unit tests.
+- **Floor:** `min_ratio` is a **required argument with no default**, expressed
+  as a fraction of `U`. The absolute form ships as
+  `absolute_floor_trip_depth` **only so its defect is measurable**, and nothing
+  calls it. Measured: identical hops at `min = 0.6` trip at depth **5** with
+  `U = 1` and at depth **71** with `U = 1000` under the absolute form, and at
+  depth **5** under both `U` values under the ratio form.
+- **Pre-registration:** `stack/swarm/prereg_sentry.md`, sha256
+  `9e45f3b272faff4389e1126e6c71034a955fd480a3e112eeed3702d18ec964df`
+- **Two route readouts, never fused.** `ratio_best` is the highest-fidelity
+  simple route — what an attacker gets, because an attacker picks its route —
+  and `ratio_worst` the lowest. Both are returned side by side.
+- **The sentry is a THIRD sensor the declared-padding attack defeats.**
+  Registered before running and confirmed: bypass padding lifts `ratio_best`
+  from `0.59049` to `0.729`, clearing a floor of `0.6` that the unpadded chain
+  breached. Subdivision padding moves the other way, to `0.531441`. So padding
+  beats cut vertices, maximum load **and** best-route fidelity; only
+  `ratio_worst` and deepest dependence survive it. This is recorded as a
+  defeat, in those words.
+- **The OR-gate is earned, not asserted.** A 5-agent star trips structure
+  (1 cut vertex) and not fidelity (`0.81`); a 12-agent ring trips fidelity
+  (`0.531441`) and not structure (0 cut vertices — a ring is 2-connected).
+  Each sensor misses a fixture the other catches.
+- **Scope:** synthetic fixtures only. No handoff telemetry exists in this
+  repository and none is reachable from this container.
 
 ## 4. Audit / LINTEL
 
 - Foster total `= n - k` is a **harness invariant only**. It is conserved under
   every rewrite measured so far — `lmd-scaling/`, `jepa-probe/`, `lintel/` — and
   a quantity true of every drawing prefers none of them. It does not gate health.
-- Certificates must name their **invariance group**. Measured so far:
+- Certificates must name their **invariance group**. Measured on 2026-07-17:
   - rewrites of the drawing (shims, splits, merges) — names survive **27/27**
   - what the drawing omits (candidate undeclared edges) — names survive **18/27**
+  Those two figures are **cited as of that date and are not invariants.** Adding
+  `stack/` moved them to 31 and 23 with no certificate changing, which is §4b.
 - Gates compose as **OR** only.
+
+## 4b. Certificate schema — amended
+
+Every certificate carries four fields:
+**`(readout, invariance_group, subject_hash, date)`**, plus `schema`. The
+schema lives in `stack/governance/certificate.py` at version `cert/2`.
+
+- **`subject_hash` hashes the edge list actually audited, at audit time.** It
+  was added because `27 → 31` and `18 → 23` happened without any certificate
+  changing: a certificate said what it held *under* and never what it held
+  *about*.
+- **`combined_report` refuses two certificates whose subjects differ.**
+  Intersecting them would read agreement off two different graphs. This is the
+  teeth; without it the field is decoration.
+- **An audit reading carries `invariance_group = GROUP_NONE`.** `stack/audit/`
+  is a raw reading that has survived no transformation family, and was measured
+  to be *defeated* by declared padding. Stamping it with a group would be the
+  overclaim the schema exists to prevent; naming the absence is the honest
+  value.
+- **Legacy certificates are marked, never back-dated.** `mark_legacy` sets
+  `subject_hash = None`. A hash computed today over today's graph would attest
+  to a subject the old certificate never saw, which is worse than no hash.
+- **Tests assert relationships, never frozen counts.** `stable ⊆ declared`,
+  `stable == declared ∩ completed`, `lost ∪ gained == declared △ completed`,
+  and Foster `== n − k` as a harness self-check. A tolerance band on a ratio is
+  a frozen count in disguise and was removed with the counts.
+
+## 4c. `stack/structure/lintel.py` is a wrapper, not a vendored copy
+
+The decision was between **(a)** a wrapper importing root `lintel/` and **(b)** a
+vendored copy regression-tested against a frozen fixture snapshot external to
+both. **(a) is recorded**, with its consequences taken in full:
+
+- every engine symbol is a rebinding — `stack.structure.lintel.cuts is
+  lintel.cuts`, the same function object
+- **drift is impossible by construction**; there is one implementation
+- **therefore no engine regression ships here in any form.** An earlier draft
+  shipped one labelled "a tautology, recorded rather than claimed". That was
+  still an identity check occupying a slot where evidence is expected, and a
+  reader skimming a green suite counts it. It was deleted, and its absence is
+  asserted from the parse tree rather than by grepping for its own name.
+- had **(b)** been chosen the obligation would have been the opposite: a frozen
+  fixture snapshot outside both copies, with drift a real and testable failure.
+
+**In neither case does an identity check ship labelled as evidence.**
 
 ## 5. Firewall
 
@@ -136,3 +205,72 @@ a test (`test_*.py`), and a results write-up (`RESULTS.md`). A hand-listed
 allowlist was tried first and needed a new entry for every module added, which
 is an exemption list that grows silently — the thing this rule exists to stop.
 Shipped module code is never exempt, and a decoy asserts it.
+
+## 8. Both doors are shut ON CONTAINER EGRESS, and the human check is OPEN
+
+Neither verdict below rests on inspection. Both rest on what this container
+could reach on 2026-09-17, and **a network limitation must not harden into a
+finding.**
+
+### Door 1 — trained attention (`DOOR1_STATUS.md`)
+
+- `torch`, `transformers`, `safetensors`: **absent**. `numpy` 2.4.6 present.
+- `huggingface.co`, `cdn-lfs.huggingface.co`, `hf.co`: **000**, no response.
+- `pypi.org`: **200**. So the libraries are installable and the **weights are
+  not** — the blocker is weight egress, not tooling. The install was not
+  attempted, because a runtime with nothing to load is still a shut door.
+- The Hugging Face connector reaches the Hub and read a 70M model's
+  `config.json` and file listing, then **refused the weights as non-text by
+  design**. It can deliver a model's shape, never its parameters.
+- **No pre-registration was written.** An attention matrix from untrained
+  weights is a synthetic fixture and must be labelled one; it is not a cheap
+  way through this door.
+
+### Door 2 — per-hop swarm payloads (`DOOR2_STATUS.md`)
+
+- Dataset search returned 0 results; both first-party disclosures were
+  **egress-blocked from this container and were not read directly**.
+- **P24, P25 and P26 remain unwritten.** `stack/swarm/test_sentry.py` asserts by
+  ROLE that no `prereg_*.md` in that package locks any of them — not by one
+  hard-coded filename, which would pass the moment a second pre-registration
+  appeared under a different name.
+
+### The human check — status OPEN
+
+A reader with network access is asked to establish two things this container
+could not:
+
+1. **Door 2:** whether either first-party disclosure contains per-hop message
+   payloads. If it does, the Door 2 verdict is wrong and P24–P26 must be
+   locked before any code touches the data.
+2. **Door 1:** whether the weight hosts are blocked by this environment's
+   network policy rather than by an outage on the probe date.
+
+Neither has been done. **Status: OPEN**, and it stays recorded as open until a
+named reader records an answer. The portable form of both requests — feasibility
+gate, unlocked pre-registration text, data provenance and acceptance criteria —
+is `phase5/runner_spec.md`.
+
+## 9. The lexical matcher is a MECHANISM, not a rule to remember
+
+`stack/governance/matcher.py`. The discipline that §7 states in prose is now the
+only available implementation:
+
+- `forbid()` **collapses whitespace itself**, on every string it is handed. A
+  caller never sees the raw text and so cannot forget.
+- `scan()` takes `must_not_fire`, `must_fire` and `min_seen` as **required
+  keyword arguments**. A one-sided check cannot be written with it, and a walk
+  that read nothing cannot report clean.
+- Exemption is computed from **role**, and shipped module code has no role that
+  exempts it.
+- The claim is scoped to **precision**. Boundary-safety costs inflections —
+  `"gate"` no longer matches inside `"gates"` — so both forms must be listed.
+
+Fourteen self-matches in one session is a memory failure, and the fix for a
+memory failure is a mechanism. Two more arrived immediately and both are kept as
+cases: the **fifteenth** was `matcher.py` itself, flagged by the first scan ever
+run because its docstring illustrated the inflection cost with a word a caller
+bans — fixed by neutralising the example, **not** by exempting the file. The
+**sixteenth** was a test that grepped its own source for a deleted function's
+name, with the name in the assertion; fixed by reading the parse tree instead of
+matching text.

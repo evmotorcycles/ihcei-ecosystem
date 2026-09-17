@@ -21,7 +21,17 @@ bd6aaae34e41cb2a66b39044d3124fcb282cf383f7ad72093e2283e86d4eb283
 
 from __future__ import annotations
 
+import os
+import sys
+
 import numpy as np
+
+_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if _ROOT not in sys.path:
+    sys.path.insert(0, _ROOT)
+
+from stack.governance.certificate import (  # noqa: E402
+    GROUP_NONE, stamp, subject_hash_of_matrix)
 
 try:
     import networkx as nx
@@ -77,8 +87,17 @@ def foster_selfcheck(C, R, k, atol=1e-8):
             "ok": bool(abs(measured - counted) < atol)}
 
 
-def audit(C, tol_ratio: float = DEFAULT_TOL_RATIO, _force_pieces=None) -> dict:
+def audit(C, tol_ratio: float = DEFAULT_TOL_RATIO, _force_pieces=None,
+          at=None) -> dict:
     """Cut vertices, effective resistance, guarded distance and per-piece load.
+
+    Carries the certificate schema `(readout, invariance_group, subject_hash,
+    date)`, with `invariance_group = GROUP_NONE`. **That is not an oversight.**
+    An audit output is a RAW READING: it has survived no family of
+    transformations, and this module was in fact measured to be defeated by
+    declared padding. Stamping it with a group it never survived would be the
+    exact overclaim the schema exists to prevent; naming the absence is the
+    honest field value.
 
     `_force_pieces` exists only so a test can hand in a deliberately wrong
     component count and show that the null-mode cross-check catches it.
@@ -140,6 +159,8 @@ def audit(C, tol_ratio: float = DEFAULT_TOL_RATIO, _force_pieces=None) -> dict:
             load.update({v: 0.0 for v in members})
 
     return {
+        **stamp("cut vertices, per-piece load and guarded resistance",
+                GROUP_NONE, subject_hash_of_matrix(C), at=at),
         "D": D, "R": R,
         "cuts": sorted(nx.articulation_points(G)),
         "pieces": k,

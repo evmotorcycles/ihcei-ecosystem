@@ -275,28 +275,25 @@ def test_the_tradition_vocabulary_is_absent_from_the_whole_stack():
     its own check below, scoped to shipped code so the pre-registration can
     still document the mapping it replaced.
     """
-    words = ["sal" + "at", "zak" + "at", "shi" + "rk", "yu" + "sr", "us" + "r"]
-    # `\b` is NOT enough: a slash is a word boundary, so \busr\b fires inside
-    # "/usr/local". The named decoy below caught that before it shipped, which
-    # is what a named decoy is for. Path separators and hyphens are excluded on
-    # both sides.
-    pattern = re.compile(r"(?<![/\w-])(" + "|".join(words) + r")(?![/\w-])")
-    must_not_fire = "the /usr/local path, usr/bin, and the word usher"
-    must_fire = "a bare " + "us" + "r token on its own"
-    assert not pattern.search(must_not_fire), "decoy fired; the check is too loose"
-    assert pattern.search(must_fire), "the check is too tight to catch anything"
+    from stack.governance.matcher import scan
 
-    root = os.path.join(ROOT, "stack")
-    seen = 0
-    for dirpath, _, files in os.walk(root):
-        for f in files:
-            if not f.endswith((".py", ".md")) or f.startswith("test_"):
-                continue
-            path = os.path.join(dirpath, f)
-            seen += 1
-            hit = pattern.search(open(path, encoding="utf-8").read().lower())
-            assert not hit, f"{path} contains {hit.group(0) if hit else ''}"
-    assert seen >= 3
+    words = ["sal" + "at", "zak" + "at", "shi" + "rk", "yu" + "sr", "us" + "r"]
+    # The boundary logic, the whitespace collapse and the decoy enforcement all
+    # live in the matcher now; `\b` alone was NOT enough, because a slash is a
+    # word boundary and \busr\b fired inside "/usr/local".
+    #
+    # The exemption here is DELIBERATELY NARROWER than the matcher's default
+    # role set. `declarations.md` §6 records that the ledger does not restate
+    # these words, because restating them would put them back inside `stack/`.
+    # So only tests are exempt; a pre-registration or a RESULTS.md under
+    # `stack/` is held to the same rule as shipped code.
+    out = scan(
+        os.path.join(ROOT, "stack"), words,
+        must_not_fire="the /usr/local path, usr/bin, and the word usher",
+        must_fire="a bare " + "us" + "r token on its own",
+        min_seen=3,
+        exempt=lambda name: name.startswith("test_") and name.endswith(".py"))
+    assert out["hits"] == [], out["hits"]
 
 
 def test_physics_notation_stays_out_of_shipped_organization_code():
@@ -307,17 +304,15 @@ def test_physics_notation_stays_out_of_shipped_organization_code():
     thermodynamics. Scoped to .py so the pre-registration can quote the
     original's variable names while documenting what replaced them.
     """
-    root = os.path.join(ROOT, "stack")
-    pattern = re.compile(r"\bhba" + r"r\b")
-    seen = 0
-    for dirpath, _, files in os.walk(root):
-        for f in files:
-            if not f.endswith(".py") or f.startswith("test_"):
-                continue
-            seen += 1
-            text = open(os.path.join(dirpath, f), encoding="utf-8").read().lower()
-            assert not pattern.search(text), f"{dirpath}/{f}"
-    assert seen >= 2
+    from stack.governance.matcher import scan
+
+    out = scan(
+        os.path.join(ROOT, "stack"), ["hba" + "r"],
+        must_not_fire="the hbarrier module and /hbar/notes",
+        must_fire="a bare hba" + "r constant",
+        min_seen=2, suffixes=(".py",),
+        exempt=lambda name: name.startswith("test_") and name.endswith(".py"))
+    assert out["hits"] == [], out["hits"]
 
 
 def test_the_adapter_holds_the_mapping_and_computes_nothing():

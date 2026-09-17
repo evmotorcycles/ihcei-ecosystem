@@ -1,15 +1,17 @@
-"""Commit 4, the certificate layer over root lintel/. P7-P9.
+"""Commit 4, the certificate layer over root lintel/. P7-P9, plus the schema.
 
-The regression that matters is over the CERTIFICATES, against the numbers root
-lintel/RESULTS.md and invisible-edges/RESULTS.md already recorded. A
-bit-identical regression on an engine this module IMPORTS would compare a
-function to itself, and `test_the_engine_regression_is_a_tautology_and_says_so`
-records that rather than shipping it as if it meant something.
+`stack/structure/lintel.py` is a **wrapper**, by recorded decision, so no
+regression against the engine ships here in any form: there is one
+implementation and nothing can drift from itself. What is asserted instead is
+the CERTIFICATE layer -- the invariance group, the subject hash, the date, and
+the dispute residue -- and every assertion about the residue is a RELATIONSHIP,
+because the repository is its own subject and it grows.
 """
 
 from __future__ import annotations
 
 import os
+import re
 import sys
 
 import pytest
@@ -27,7 +29,8 @@ from candidates import find_candidates                            # noqa: E402
 from stack.structure.lintel import (  # noqa: E402
     COUNTS_ARE_UNTRUSTED, GROUP_OMISSION, GROUP_REWRITE, GROUPS,
     InvarianceGroupError, combined_report, cuts, insert_shim,
-    omission_certificate, rewrite_certificate, split_module)
+    omission_certificate, rewrite_certificate, split_module,
+    subject_hash)
 
 
 @pytest.fixture(scope="module")
@@ -44,29 +47,57 @@ def graph():
             "raw": cuts(parts, links)}
 
 
-# ------------------------------------------------- the port is a port ----
-def test_the_engine_is_imported_not_reimplemented():
-    """Nothing here recomputes a cut vertex."""
+# -------------------------------------- the recorded decision: WRAPPER ----
+def test_the_module_is_a_wrapper_which_is_why_it_ships_no_engine_regression():
+    """Option (a) was chosen and recorded. This asserts the CONSTRUCTION.
+
+    Not a regression, and not an identity check standing in for one. It
+    establishes that there is exactly one implementation, which is the licence
+    for this package having no engine regression at all. An earlier draft did
+    ship one, labelled "a tautology, recorded rather than claimed" -- but a
+    reader skimming a green suite counts it, so it was deleted rather than
+    annotated. Option (b), a vendored copy, would have carried the opposite
+    obligation: a frozen fixture snapshot external to both copies, with drift a
+    real and testable failure.
+    """
     from stack.structure import lintel as ported
+    assert ported.IS_A_WRAPPER is True
     assert ported.cuts is root_lintel.cuts
     assert ported.insert_shim is root_lintel.insert_shim
     assert ported.survivors is root_lintel.survivors
     src = open(os.path.join(HERE, "lintel.py"), encoding="utf-8").read()
-    assert "articulation" not in src, "the port must not carry its own engine"
+    assert "articulation" not in src, "the wrapper must not carry its own engine"
+    assert "impossible by construction" in ported.DRIFT_NOTE
 
 
-def test_the_engine_regression_is_a_tautology_and_says_so():
-    """A bit-identical check on an imported engine compares a function to itself.
-
-    Recorded rather than shipped as meaningful. `stack/organization/` had a real
-    regression to run because the pre-rename arithmetic lived in a separate file
-    and could have drifted; here there is nothing to drift from.
-    """
+def test_the_decision_is_recorded_in_the_module_and_in_the_ledger():
     from stack.structure import lintel as ported
-    assert ported.cuts is root_lintel.cuts          # the "regression", entire
     doc = " ".join(ported.__doc__.split())
-    assert "is a tautology" in doc
-    assert "compares a function to itself" in doc
+    assert "THE DECISION, RECORDED: THIS MODULE IS A WRAPPER" in doc
+    assert "Drift between this module and the engine is impossible" in doc
+    assert "In neither case does an identity check ship labelled as evidence" in doc
+    ledger = " ".join(open(os.path.join(ROOT, "stack", "governance",
+                                        "declarations.md"),
+                           encoding="utf-8").read().split())
+    assert "wrapper, not a vendored copy" in ledger
+
+
+def test_no_test_in_this_package_compares_the_engine_to_itself():
+    """The deleted check, asserted deleted. Otherwise it drifts back in.
+
+    Instance SIXTEEN of a check matching the text that describes it: the first
+    draft grepped its own source for the deleted function's name, and the name
+    was right there in the assertion. The fix is not a cleverer string -- it is
+    to stop matching text at all and read the DEFINED FUNCTIONS out of the
+    parse tree, which is what the rule was always about.
+    """
+    import ast
+    tree = ast.parse(open(os.path.join(HERE, "test_structure.py"),
+                          encoding="utf-8").read())
+    names = {n.name for n in ast.walk(tree)
+             if isinstance(n, ast.FunctionDef)}
+    assert names, "the parse found no tests, so it proved nothing"
+    assert not any(n.startswith("test_the_engine_regression") for n in names)
 
 
 # ------------------------------------------- P7: the rewrite certificate ----
@@ -113,15 +144,28 @@ def test_p8_the_omission_certificate_holds_as_a_RELATIONSHIP_not_a_number(graph)
     cert = omission_certificate(graph["parts"], graph["links"], graph["cands"])
     assert cert["invariance_group"] == GROUP_OMISSION
 
-    stable, raw = len(cert["stable_names"]), len(graph["raw"])
-    lost = [d for d in cert["disputes"] if d["status"] == "lost"]
-    gained = [d for d in cert["disputes"] if d["status"] == "gained"]
+    # recompute the completed reading here, so the relationships are asserted
+    # against the graph and not against the certificate's own bookkeeping
+    widened = sorted(set(graph["links"]) | set(graph["cands"]))
+    wparts = sorted(set(graph["parts"]) | {a for a, _, _ in graph["cands"]}
+                    | {b for _, b, _ in graph["cands"]})
+    declared, completed = set(graph["raw"]), set(cuts(wparts, widened))
 
-    assert 0 < stable < raw, (stable, raw)          # some survive, not all
-    assert len(lost) >= 1 and len(gained) >= 1      # the sets are not nested
-    assert stable + len(lost) == raw                # the residue accounts fully
-    # and the recorded proportion still holds roughly: a clear majority survive
-    assert 0.5 < stable / raw < 0.95, stable / raw
+    stable = set(cert["stable_names"])
+    lost = {d["name"] for d in cert["disputes"] if d["status"] == "lost"}
+    gained = {d["name"] for d in cert["disputes"] if d["status"] == "gained"}
+
+    # RELATIONSHIPS ONLY. Not one frozen count, and not a frozen ratio either:
+    # a band like `0.5 < stable/raw < 0.95` is a count wearing a disguise and
+    # would need renegotiating every time the repository grows.
+    assert stable <= declared                    # stable is a SUBSET
+    assert stable == declared & completed        # exactly the intersection
+    assert lost | gained == declared ^ completed  # disputes ARE the symdiff
+    assert lost == declared - completed
+    assert gained == completed - declared
+    assert stable | lost == declared             # the residue completes it
+    assert lost and gained                       # the sets are not nested
+    assert stable                                # and not everything is lost
 
 
 def test_p8_a_declared_only_graph_has_an_empty_residue(graph):
@@ -147,12 +191,82 @@ def test_p9_the_two_certificates_are_reported_side_by_side_not_fused(graph):
         parts, links, [("INSERT", lambda p, l: insert_shim(p, l, br[0]))])
     om = omission_certificate(parts, links, graph["cands"])
     out = combined_report(rw, om)
-    assert set(out) == {"rewrite", "omission", "act_on", "disputed", "note"}
+    assert set(out) == {"rewrite", "omission", "act_on", "disputed", "note",
+                        "subject_hash"}
     # no scalar anywhere that merges the two
     for k in out:
         assert not any(w in k for w in ("score", "index", "integrity", "health"))
     assert out["act_on"] == sorted(set(rw["stable_names"]) & set(om["stable_names"]))
     assert 0 < len(out["act_on"]) < len(rw["stable_names"])
+
+
+# ------------------------------- the schema: subject_hash and date ----
+def test_every_certificate_carries_the_four_schema_fields(graph):
+    from stack.governance.certificate import SCHEMA_VERSION, require_schema
+    parts, links = graph["parts"], graph["links"]
+    br = root_lintel.bridges(parts, links)
+    for cert in (rewrite_certificate(
+                     parts, links,
+                     [("INSERT", lambda p, l: insert_shim(p, l, br[0]))]),
+                 omission_certificate(parts, links, graph["cands"])):
+        require_schema(cert)                 # raises if any field is missing
+        assert cert["readout"] == "cut-vertex names"
+        assert len(cert["subject_hash"]) == 64
+        assert re.match(r"^\d{4}-\d{2}-\d{2}$", cert["date"])
+        assert cert["schema"] == SCHEMA_VERSION
+
+
+def test_both_certificates_hash_the_SAME_declared_subject(graph):
+    """Which is what makes intersecting them legitimate at all."""
+    parts, links = graph["parts"], graph["links"]
+    br = root_lintel.bridges(parts, links)
+    rw = rewrite_certificate(
+        parts, links, [("INSERT", lambda p, l: insert_shim(p, l, br[0]))])
+    om = omission_certificate(parts, links, graph["cands"])
+    assert rw["subject_hash"] == om["subject_hash"]
+    # and the completion is a DIFFERENT graph, recorded separately
+    assert om["completed_subject_hash"] != om["subject_hash"]
+
+
+def test_the_subject_hash_moves_when_the_drawing_moves(graph):
+    """Relationship, not a frozen digest. `27 -> 31` happened with no
+    certificate changing; this is the field that would have caught it."""
+    from stack.structure.lintel import subject_hash
+    parts, links = graph["parts"], graph["links"]
+    base = subject_hash(parts, links)
+    assert subject_hash(list(reversed(parts)), list(links)) == base  # order-free
+    assert subject_hash(parts + ["a/module/added/later.py"], links) != base
+    assert subject_hash(parts, list(links) + [(parts[0], parts[-1])]) != base
+
+
+def test_two_certificates_over_different_subjects_refuse_to_combine(graph):
+    """The teeth. Without this the schema is decoration."""
+    from stack.governance.certificate import SubjectMismatchError
+    parts, links = graph["parts"], graph["links"]
+    br = root_lintel.bridges(parts, links)
+    rw = rewrite_certificate(
+        parts, links, [("INSERT", lambda p, l: insert_shim(p, l, br[0]))])
+    om = omission_certificate(parts, links, graph["cands"])
+    grown = dict(om)
+    grown["subject_hash"] = "0" * 64          # a different graph entirely
+    with pytest.raises(SubjectMismatchError, match="different subjects"):
+        combined_report(rw, grown)
+
+
+def test_a_legacy_certificate_is_marked_not_back_dated(graph):
+    """No hash is invented for a certificate issued before the schema.
+
+    A hash computed today over today's graph would attest to a subject the old
+    certificate never saw, which is worse than having no hash at all.
+    """
+    from stack.governance.certificate import (CertificateSchemaError,
+                                              mark_legacy, require_schema)
+    om = omission_certificate(graph["parts"], graph["links"], graph["cands"])
+    old = mark_legacy(om)
+    assert old["subject_hash"] is None
+    assert "not comparable" in old["legacy_note"]
+    with pytest.raises(CertificateSchemaError, match="legacy"):
+        require_schema(old)
 
 
 def test_p9_an_unnamed_invariance_group_is_refused(graph):

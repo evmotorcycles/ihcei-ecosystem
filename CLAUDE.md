@@ -82,6 +82,39 @@ enforced by tests, and where they are, the test is named.
   the ledger, a `prereg_*.md`, a `test_*.py`, a `RESULTS.md` -- is exempt by
   what it is. A hand-listed allowlist needs a new entry per module and grows
   silently. Shipped module code is never exempt, and a decoy asserts it.
+- **A rule broken fourteen times is a mechanism, not a reminder.** The lexical
+  rule above now lives in `stack/governance/matcher.py` and is the only
+  available implementation: `forbid()` collapses whitespace itself so a caller
+  never holds the raw text, and `scan()` takes both decoys and `min_seen` as
+  **required keyword arguments** so a one-sided check cannot be written and a
+  walk that read nothing cannot report clean. Two more instances arrived
+  immediately and are kept as cases -- the fifteenth was the matcher's own
+  docstring, flagged by the first scan ever run, fixed by neutralising the
+  example and **not** by exempting the file; the sixteenth was a test grepping
+  its own source for a deleted function's name, fixed by reading the parse tree
+  instead of matching text. `test_matcher.py`.
+- **An identity check never ships labelled as evidence.** A wrapper that
+  imports its engine cannot drift from it, so it carries no regression against
+  it at all -- not even one annotated as a tautology, because a reader skimming
+  a green suite counts it. A vendored copy carries the opposite obligation: a
+  frozen fixture snapshot external to both. Pick one, record which, take the
+  consequence. `declarations.md` §4c.
+- **A certificate names its subject, not only its group.** `27 -> 31` cut
+  vertices and `18 -> 23` stable names happened with no certificate changing,
+  because a certificate said what it held *under* and never what it held
+  *about*. Every one now carries `(readout, invariance_group, subject_hash,
+  date)`, two certificates over different subjects refuse to combine, and
+  legacy ones are marked rather than back-dated. Tests assert relationships --
+  `stable == declared & completed`, `lost | gained == declared ^ completed` --
+  never frozen counts, and a tolerance band on a ratio is a frozen count in
+  disguise.
+- **Probe the container before writing a prediction against it.** Both Phase 5
+  doors are shut on **egress, not on inspection**: no ML runtime and no
+  reachable weight host for Door 1, no obtainable per-hop corpus for Door 2. No
+  pre-registration was written against either. The text exists unlocked in
+  `phase5/runner_spec.md` for a runner that can pass the gate, and the human
+  check stays recorded **OPEN** -- a network limitation must not harden into a
+  finding.
 
 ## On the words
 

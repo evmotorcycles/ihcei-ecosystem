@@ -303,37 +303,29 @@ def test_nothing_here_claims_to_be_an_attention_matrix_from_a_model():
 
 def test_the_forbidden_words_are_absent_from_the_shipped_stack():
     """CI grep: no un-gameable, no thermodynamics for LISM, no fused score."""
-    root = os.path.join(os.path.dirname(os.path.dirname(HERE)), "stack")
-    banned = ["un" + "-gameable", "thermodynamic", "integrity" + "_score"]
-    # Exempt BY ROLE, not by name. Four kinds of file must be able to quote what
-    # they forbid: the ledger, a pre-registration, a test, and a results
-    # write-up. A hand-listed allowlist was the first attempt and needed a new
-    # entry for every module added -- which is an exemption list that grows,
-    # exactly what the ledger says must not happen quietly.
+    # The walk, the whitespace collapse, the boundaries, the role exemption and
+    # the two-sided decoy now all live in `stack/governance/matcher.py`. This
+    # test no longer implements any of them, which is the point: fourteen
+    # self-matches in one session is a memory failure, and the fix for a memory
+    # failure is a mechanism, not a fifteenth reminder. The decoys below are
+    # REQUIRED KEYWORD ARGUMENTS -- a one-sided check cannot be written here.
     #
-    # It took four tries to get this right. The first exempted only this file
-    # and failed on the ledger's own "not thermodynamic entropy"; the second
-    # failed on the write-up OF that failure; the third failed when Patch 2 added
-    # a test file quoting the same word. Tenth through thirteenth times this
-    # session a check has matched the text forbidding the thing it checks for.
-    def states_the_rules(name):
-        return (name.startswith("test_") and name.endswith(".py")
-                or name.startswith("prereg_") and name.endswith(".md")
-                or name in ("declarations.md", "RESULTS.md"))
+    # Boundary-safety costs inflections, so "thermodynamics" is listed as well
+    # as "thermodynamic"; `test_matcher.py` pins that trade-off as a case.
+    sys.path.insert(0, os.path.dirname(os.path.dirname(HERE)))
+    from stack.governance.matcher import scan, states_the_rules
 
-    decoy = "adg_cfe.py"
-    assert not states_the_rules(decoy), "shipped code must never be exempt"
+    root = os.path.join(os.path.dirname(os.path.dirname(HERE)), "stack")
+    banned = ["un" + "-gameable", "thermodynamic", "thermodynamics",
+              "integrity" + "_score"]
+    assert not states_the_rules("adg_cfe.py"), "shipped code is never exempt"
 
-    seen = 0
-    for dirpath, _, files in os.walk(root):
-        for f in files:
-            if not f.endswith((".py", ".md")) or states_the_rules(f):
-                continue
-            seen += 1
-            text = open(os.path.join(dirpath, f), encoding="utf-8").read().lower()
-            for b in banned:
-                assert b not in text, f"{dirpath}/{f} contains {b}"
-    assert seen >= 2, "the grep walked nothing, so it proved nothing"
+    out = scan(
+        root, banned,
+        must_not_fire="a thermodynamicist wrote it; see /thermodynamic/notes",
+        must_fire="this is not thermodynamic at all",
+        min_seen=2)
+    assert out["hits"] == [], out["hits"]
 
 
 def test_the_ledger_forbids_the_words_rather_than_merely_avoiding_them():

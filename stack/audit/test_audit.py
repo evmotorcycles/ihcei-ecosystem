@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import os
+import re
 import sys
 
 import numpy as np
@@ -263,10 +264,49 @@ def test_the_sensor_that_does_move_against_the_padding():
 
 
 def test_the_two_sensors_are_reported_separately_and_never_fused():
+    from stack.governance.certificate import CERT_FIELDS
     out = audit(_chain_with_cut(9))
     assert isinstance(out["cuts"], list)
     assert isinstance(out["load"], dict)
-    assert set(out) == {"D", "R", "cuts", "pieces", "load", "tol_ratio"}
+    readings = {"D", "R", "cuts", "pieces", "load", "tol_ratio"}
+    assert set(out) == readings | set(CERT_FIELDS)
+    # the rule being asserted is that no field FUSES the sensors
+    for k in out:
+        assert not any(w in k for w in ("score", "index", "health", "combined"))
+
+
+def test_the_audit_carries_the_certificate_schema_and_claims_no_group():
+    """`(readout, invariance_group, subject_hash, date)` on every reading.
+
+    The group is GROUP_NONE and that is the honest value: this module was
+    measured to be DEFEATED by declared padding, so it has survived nothing.
+    """
+    from stack.governance.certificate import (GROUP_NONE, SCHEMA_VERSION,
+                                              require_schema)
+    out = audit(_chain_with_cut(9))
+    require_schema(out)                      # raises if a field is missing
+    assert out["invariance_group"] == GROUP_NONE
+    assert out["schema"] == SCHEMA_VERSION
+    assert re.match(r"^\d{4}-\d{2}-\d{2}$", out["date"])
+    assert "raw reading, not a certificate" in out["invariance_group"]
+
+
+def test_the_subject_hash_moves_when_the_audited_edge_list_moves():
+    """Relationship, not a frozen digest: same graph same hash, edge added
+    different hash. A frozen hex string here would be a count in disguise."""
+    C = _chain_with_cut(9)
+    a = audit(C)["subject_hash"]
+    assert audit(_chain_with_cut(9))["subject_hash"] == a      # deterministic
+    D = C.copy()
+    i, j = 0, len(C) - 1
+    D[i, j] = D[j, i] = 1.0
+    assert audit(D)["subject_hash"] != a
+    assert len(a) == 64
+
+
+def test_the_date_is_overridable_so_the_suite_stays_deterministic():
+    out = audit(_chain_with_cut(9), at="2026-09-17")
+    assert out["date"] == "2026-09-17"
 
 
 # ------------------------------------------------------- the refusals ----
