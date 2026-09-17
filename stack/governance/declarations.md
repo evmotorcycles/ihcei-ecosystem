@@ -438,3 +438,49 @@ tracked**, and it never churned anyway: zero changed lines across runs.
 Whether to fix the ordering — have the consumer generate what it reads, or move
 it after its producer — is **OPEN**. It is recorded here so that the next person
 to see `results_gapclosure.json` in a churn list has the reason it is not there.
+
+## 13b / 14b — §13 CLOSED; and closing it reopened §11 for one file
+
+**§13 closed.** `reproduce_all.sh` went from **100 suites to 123**, and the
+orphan count from **45 to 0** — re-running the coverage check (resolving every
+pipeline target and its parent directories) reports none remaining. `plexus/` is
+in, so the directory `CLAUDE.md` names as its enforcement layer is now actually
+enforced by a full run.
+
+Before wiring, every orphan was run rather than assumed green: Python **520
+passed, 1 skipped, 0 failed**; Node all green except one.
+
+**The frozen count and the air gap were the same defect.** `page-code/
+test_blueprint.py` asserted `each_settles == 1/484` (= 1/22²) and the hub
+`echo/echo.mjs`. Both had moved — to `1/676` (= 1/26²) and `spar/spar.py` —
+and nobody saw it, *because the suite that rebuilds the artifact was air-gapped
+from the pipeline*. Nothing regenerated it, so nothing noticed the numbers had
+gone stale. Both are now derived at runtime: `each_settles == 1.0/claimed**2`,
+and B4 asserts the claim (a hub exists, fan-in ≥ 5) plus internal consistency,
+with the hub's identity recorded as a dated observation. Demonstrated, not
+assumed: a probe module moved `claimed` 26 → 27 and `each_settles` → 1/729 and
+the test still passed.
+
+**One orphan was red and was NOT silenced.** `hinton_test.test.mjs` asserted the
+literal verdict `Partially Grounded`; the script emits `Insufficient Evidence`.
+Rather than update the test to match the code — which masks regressions — the
+change was checked: PAGES bands *Hollow Assertion → Partially Grounded → Solid*,
+and `Insufficient Evidence` is a separate **ABSTAIN** path. The engine gained
+the ability to refuse to place a text with no methodology on the ladder at all.
+That is a **tightening**, and it is this repository's own rule arriving in the
+engine — *"nothing to check" is not a low score, it is no score*. The assertion
+now states the claim, not the rung.
+
+**§11 reopened for exactly one file, and that is the honest cost.**
+`page-code/results_blueprint.json` was stable in git only because nothing ever
+rebuilt it. Wiring `page-code/` in means the pipeline now regenerates it every
+run, and every field in it counts a live tree — `edges`, `files_in_graph`,
+`files_isolated`, `claimed`, `the_one_origin` — exactly like `files_scanned`.
+Measured by the same boundary used for the other eight: only `run_blueprint.py`
+writes it, only `test_blueprint.py` reads it *after* rebuilding it, and deleting
+it then running `page-code/` gives **28 passed** and the file back. **Build
+output.** Untracked, listed by name.
+
+**Final tally: 123/123, zero orphans.** The earlier "100/100 was true and
+narrower than it reads" is retired — the number now counts every test file in
+the repository.

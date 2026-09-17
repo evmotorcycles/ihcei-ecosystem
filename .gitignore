@@ -70,6 +70,17 @@ keel/dist/*.exe
 # suite that generates it. Being committed is what hides that ordering
 # dependency; untracking it would break the first run on a clean clone. See
 # declarations.md 14.
+# page-code/results_blueprint.json joined this list when §13 wired page-code/
+# into the pipeline. It was stable in git only because nothing ever rebuilt it:
+# the suite that regenerates it was one of the 45 air-gapped files, so its
+# numbers went stale unnoticed -- hub echo/echo.mjs -> spar/spar.py, fan-in
+# 22 -> 26 -- and the frozen assertions in test_blueprint.py broke on growth
+# no one was watching. Every field in it counts a live tree (edges,
+# files_in_graph, files_isolated, claimed, the_one_origin), exactly like
+# governance-os's files_scanned. Only run_blueprint.py writes it and only
+# test_blueprint.py reads it, after rebuilding it via subprocess; deleting it
+# and running page-code/ gives 28 passed and the file back. Build output.
+page-code/results_blueprint.json
 benchmarks-governance/results.json
 ei-tests/results.json
 governance-os/results_os.json
