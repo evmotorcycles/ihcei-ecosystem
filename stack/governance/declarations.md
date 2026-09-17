@@ -82,6 +82,36 @@ cohort_hash`.
 - **Pre-registration:** `stack/organization/prereg_organization.md`,
   sha256 `e2c7b6567ae0b05111bf0f5332632d42f4d8f34c23975937dc48aa70b1a92e3c`
 
+## 6b. Audit module — Commit 3
+
+`stack/audit/laplacian_audit.py`. Pre-registration
+`stack/audit/prereg_audit.md`, sha256
+`bd6aaae34e41cb2a66b39044d3124fcb282cf383f7ad72093e2283e86d4eb283`.
+
+- **Component guard masks `R` as well as `D`.** Returning a raw `R` would hand
+  the caller the confident finite number across a void the guard exists to
+  refuse (0.790569 on two disjoint 4-rings).
+- **`tol_ratio = 1e-10` is a declared preference**, replacing numpy's default
+  `rcond` — which flipped a published verdict in `lmd-scaling/` depending on
+  matrix assembly. A declared default is better than an inherited one; it is not
+  a solution.
+- **Foster raises, it does not assert.** `python -O` strips assert statements
+  and a self-check that can be compiled away is not a self-check.
+- **The OR-gate's second sensor is deepest dependence, NOT load.** Measured:
+  under declared padding, cuts fall 3 → 0 and maximum load falls 0.5714 →
+  0.3088, so both proposed sensors move in the attacker's favour and the gate
+  does not trip. `fathom`'s deepest dependence rises 0.133 → 0.257 on the same
+  fixture, agreeing in direction with `agi-stack/`'s 0.111 → 0.619 on an
+  unrelated graph.
+
+## 6c. Symmetrization is not free on an already-symmetric input
+
+`C = A + Aᵀ` is pinned because raw attention is directed. A conductance matrix
+that is **already symmetric** is thereby doubled, and every resistance halves.
+The B2 regime figures supplied with Patch 2 match the **unsymmetrized** reading
+exactly (3.358, 6.558, 12.958, 25.758 against 1.679, 3.279, 6.479, 12.879).
+Under the ratio API the factor cancels; in a quoted absolute number it does not.
+
 ## 7. Two rules earned by failures in this stack
 
 **The horizon rule.** Any monotonicity or trend claim registers a **horizon**,
