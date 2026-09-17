@@ -7,7 +7,7 @@
     "cv_auc_linear": 0.6663,
     "cv_auc_quadratic": 0.5911,
     "multivariate_converged": false,
-    "multivariate_insample_auc": 0.4275
+    "multivariate_insample_auc": 0.7237
   },
   "github": {
     "gap992_open": false,
@@ -43,7 +43,7 @@
     {
       "gate": "Y4_published_047_is_an_artifact",
       "pass": true,
-      "detail": "single-term quadratic CV AUC = 0.5911 (ABOVE chance, not 0.47); multivariate U+D+D^2 converged=False, in-sample AUC=0.4275",
+      "detail": "single-term quadratic CV AUC = 0.5911 (ABOVE chance, not 0.47); multivariate U+D+D^2 converged=False, in-sample AUC=0.7237",
       "falsifiable": true
     },
     {

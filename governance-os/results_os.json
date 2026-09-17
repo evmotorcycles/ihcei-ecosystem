@@ -1,6 +1,6 @@
 {
   "prereg_sha256": "8ac051f268460b4d119770b8caf9722c523a360612c8b7348c4954ad483aaea9",
-  "files_scanned": 487,
+  "files_scanned": 663,
   "O1_interposition": {
     "gate": "some component can BLOCK an action, not merely report on one",
     "blocking_call_sites": [],
@@ -31,7 +31,8 @@
       "name": "HELM — Agency Layer",
       "permissions": [
         "activeTab",
-        "scripting"
+        "scripting",
+        "storage"
       ],
       "can_block": false,
       "reading": "READS the active tab when clicked. It cannot intercept or block anything, so it observes; it does not interpose."
