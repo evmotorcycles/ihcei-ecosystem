@@ -40,6 +40,19 @@ const FILES = walk(ROOT);
 const SELF = relative(ROOT, fileURLToPath(import.meta.url));
 function isEvidence(rel) {
   if (rel === SELF) return false;                       // no self-matching
+  // ...and no matching what this scanner WROTE. `rel === SELF` exempts one
+  // FILENAME; the role it means is "output of the detector", and the file this
+  // scanner emits has that role too. Measured: a blocking permission added to
+  // the manifest was recorded into results_os.json, and the next walk -- which
+  // reads the file as it stood BEFORE that run rewrote it -- matched the
+  // pattern inside the report and recorded a phantom "blocking browser
+  // extension" citing results_os.json itself. It survived a full cycle and a
+  // green suite. One cycle deep, so a second clean run wipes it, which makes
+  // it harder to notice rather than easier.
+  //
+  // Exempt by ROLE, never by name. A generated run-log is not evidence about
+  // the system; it is evidence about the last run.
+  if (/(^|\/)results[^/]*\.json$/.test(rel)) return false;  // our own output
   if (/(^|\/)fixtures?\//.test(rel)) return false;       // prose fixtures
   if (/\.test\.|_test\.|test_/.test(rel)) return false;  // tests discuss, not implement
   if (/_prose\.json$|README|\.md$/.test(rel)) return false;

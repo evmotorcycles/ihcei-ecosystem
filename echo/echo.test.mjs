@@ -55,5 +55,35 @@ ok('normal DB: the rewrite leaves no evidence (no verify, no root)',
 
 function scamText() { return "It's me, don't tell anyone, wire the money now."; }
 
+// F · the Merkle root is an EPHEMERAL RUN-ID, and that is the design
+// declarations.md §11 asked whether the root differing on every run is a
+// defect. It is not, and this pins WHY so nobody later "fixes" the
+// non-determinism by making the ledger weaker. put() builds `body` with
+// `ts: new Date().toISOString()` and hashes sha256(prev + canonical(body)),
+// so the timestamp is INSIDE the attested content and every record hash --
+// and root() over them -- depends on wall-clock time. For a tamper-evident
+// ledger that is correct: WHEN a record was written is part of what is
+// attested. Dropping `ts` from the body would make the root reproducible and
+// the ledger weaker. The claim this suite supports is therefore INTRA-RUN
+// CHAIN INTEGRITY, not cross-run reproducibility.
+const mkRun = () => {
+  const d = new EchoDB();
+  d.put('turn', 'the same content every time');
+  d.put('turn', 'and a second identical turn');
+  return d;
+};
+const runA = mkRun(), runB = mkRun();
+ok('identical input gives a DIFFERENT root across runs (root is a run-ID)',
+   runA.root() !== runB.root(),
+   'the root reproduced; if ts left the hashed body the ledger stopped ' +
+   'attesting when a record was written');
+ok('the timestamp is inside the attested body, which is why',
+   typeof runA.records[0].ts === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(runA.records[0].ts));
+ok('and the claim it DOES support holds: the chain is linked within one run',
+   runA.records.every((r, i) => r.prev === (i ? runA.records[i - 1].hash : 'GENESIS')));
+ok('a record hash covers its own ts (changing ts changes the hash)',
+   sha256(runA.records[0].prev + canonical({ ...runA.records[0], hash: undefined, id: undefined,
+     ts: '1999-01-01T00:00:00.000Z' })) !== runA.records[0].hash);
+
 console.log(`\n  RESULT: ${pass} passed, ${fail} failed\n`);
 process.exit(fail ? 1 : 0);
