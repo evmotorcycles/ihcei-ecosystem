@@ -365,3 +365,76 @@ the detector ought to have, so a recurrence fails loudly instead of reading as
 evidence. The one-line alternative is a `results*.json` clause in
 `isEvidence()`, exempting by role. **That is a decision about what the gate
 measures, and it is open.** Recorded here so it is not inherited silently.
+
+## 11b / 12b — both CLOSED, and what closing them cost
+
+**§12 closed.** `isEvidence()` in `governance-os/os_check.mjs` now excludes
+`results*.json`. The clause sits beside `rel === SELF`, which it generalises:
+`SELF` exempts one **filename**; the role it means is *output of the detector*,
+and the file the scanner writes has that role. Proven with a decoy rather than
+asserted — injecting `"webRequestBlocking"` into `results_os.json` previously
+produced a phantom *"blocking browser extension"* citing the report itself, and
+now cites only `keel/build_exe.py`.
+
+**§11 hinton closed by NARROWING THE CLAIM, not by fixing the determinism.**
+`echo/echo.mjs` `put()` builds `body` with `ts: new Date().toISOString()` and
+hashes `sha256(prev + canonical(body))`, so the timestamp is **inside the
+attested content** and `root()` over those hashes must differ per run. That is
+correct for a tamper-evident ledger: *when* a record was written is part of what
+is attested, and making the root reproducible would mean dropping `ts` and
+weakening it. The root is an **ephemeral run-ID**. Four assertions in
+`echo/echo.test.mjs` §F pin this so it is not later "fixed" into a weaker
+ledger.
+
+**§11 churn closed at EIGHT files, not sixty-nine.** The instruction was to
+ignore `results*.json` wholesale. Measured first: deleting all 69 gives
+**93/100**, because seven suites read a committed copy they never rebuild.
+`smi/test_smi.py` opens `results_smi.json` and asserts the recorded run said
+*"INVARIANT (BY CONSTRUCTION)"*, and the pipeline never invokes
+`smi/run_smi.py`. **That file is the thing under audit.** Deleting only the
+eight that churn gives **99/100**, and the single failure named the exception —
+see §14.
+
+**A static classifier disagreed and was wrong.** It reported *"65 regenerated
+somewhere, 0 read-only records"* because it asked whether any tracked script
+writes the file, when the question is whether the **pipeline** regenerates it.
+Recorded because the wrong number is the more quotable one.
+
+## 13. Forty-five test files are unreachable from `reproduce_all.sh`
+
+Found because a test added to `hinton-test/hinton_test.test.mjs` went red on an
+assertion unrelated to the change: the pipeline runs `hinton_test.mjs` and
+**never** the `.test.mjs`, which had been stale since the script's verdict moved
+from *"Partially Grounded"* to *"Insufficient Evidence"*.
+
+Resolving every pipeline target and its parent directories, **45 test files are
+not reachable from a full run.** That includes all 19 in `plexus/` — the
+directory `CLAUDE.md` names as where its rules are enforced: `test_gate.py`,
+`test_packs.py`, `test_metaphor.py`, and `test_cohort.py`, which carries one of
+the four recorded misses.
+
+Run directly they give **518 passed, 2 failed, 1 skipped**. Both failures are
+`page-code/test_blueprint.py`, and both are frozen counts against a growing
+repository: `each_settles == 1/484` (= 1/22²) against a measured `0.001479…`
+(= 1/26²) — the hub gained four importers. **Pre-existing**, identical at
+`5ac72a2`.
+
+**"100/100 suites" is true and narrower than it reads**: it counts suites named
+in `reproduce_all.sh`, not tests in the repository. Wiring the 45 in would
+surface those 2 known failures and whatever else, so it is **a decision about
+what the gate covers and stays OPEN.**
+
+## 14. A cross-suite ordering dependency, hidden by an artifact being committed
+
+`cohort-audit/test_cohort_audit.py` reads `results_gapclosure.json` at lines 48
+and 75, and runs at pipeline line **109** — *before* `test_gap_closure.py`
+generates it at line **110**.
+
+On the committed tree this never shows, because the file is checked in.
+Untracking it would make a clean clone fail its **first** run and pass its
+second, which is the worst failure mode to diagnose. So that file **stays
+tracked**, and it never churned anyway: zero changed lines across runs.
+
+Whether to fix the ordering — have the consumer generate what it reads, or move
+it after its producer — is **OPEN**. It is recorded here so that the next person
+to see `results_gapclosure.json` in a churn list has the reason it is not there.
