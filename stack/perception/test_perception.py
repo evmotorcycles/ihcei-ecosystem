@@ -305,27 +305,35 @@ def test_the_forbidden_words_are_absent_from_the_shipped_stack():
     """CI grep: no un-gameable, no thermodynamics for LISM, no fused score."""
     root = os.path.join(os.path.dirname(os.path.dirname(HERE)), "stack")
     banned = ["un" + "-gameable", "thermodynamic", "integrity" + "_score"]
-    # FOUR files are allowed to say these words, because saying them IS their
-    # job: the ledger that forbids them, this grep, the pre-registration and the
-    # write-up. It took two tries to get that list right -- the first version
-    # exempted only this file and failed on the ledger's "not thermodynamic
-    # entropy"; the second failed on the write-up OF that failure. Tenth and
-    # eleventh times this session a check has matched the text forbidding the
-    # thing it checks for. The exemption is an allowlist, not a pattern, so it
-    # cannot quietly grow.
-    ALLOWED = {"declarations.md", "test_perception.py",
-               "prereg_perception.md", "RESULTS.md"}
+    # Exempt BY ROLE, not by name. Four kinds of file must be able to quote what
+    # they forbid: the ledger, a pre-registration, a test, and a results
+    # write-up. A hand-listed allowlist was the first attempt and needed a new
+    # entry for every module added -- which is an exemption list that grows,
+    # exactly what the ledger says must not happen quietly.
+    #
+    # It took four tries to get this right. The first exempted only this file
+    # and failed on the ledger's own "not thermodynamic entropy"; the second
+    # failed on the write-up OF that failure; the third failed when Patch 2 added
+    # a test file quoting the same word. Tenth through thirteenth times this
+    # session a check has matched the text forbidding the thing it checks for.
+    def states_the_rules(name):
+        return (name.startswith("test_") and name.endswith(".py")
+                or name.startswith("prereg_") and name.endswith(".md")
+                or name in ("declarations.md", "RESULTS.md"))
+
+    decoy = "adg_cfe.py"
+    assert not states_the_rules(decoy), "shipped code must never be exempt"
+
     seen = 0
     for dirpath, _, files in os.walk(root):
         for f in files:
-            if not f.endswith((".py", ".md")) or f in ALLOWED:
+            if not f.endswith((".py", ".md")) or states_the_rules(f):
                 continue
             seen += 1
             text = open(os.path.join(dirpath, f), encoding="utf-8").read().lower()
             for b in banned:
                 assert b not in text, f"{dirpath}/{f} contains {b}"
     assert seen >= 2, "the grep walked nothing, so it proved nothing"
-    assert len(ALLOWED) == 4, "the exemption list grew; say why in the ledger"
 
 
 def test_the_ledger_forbids_the_words_rather_than_merely_avoiding_them():
@@ -339,12 +347,21 @@ def test_the_ledger_forbids_the_words_rather_than_merely_avoiding_them():
     assert 'no fused scalar "integrity"' in dec
 
 
-def test_the_organization_module_is_blocked_and_the_reason_is_recorded():
+def test_the_organization_block_was_lifted_by_a_recorded_decision():
+    """Patch 1 blocked this module and asserted the block. Patch 2 lifted it.
+
+    The test is updated rather than deleted: the assertion now pins the
+    RESOLUTION, so the ledger cannot quietly drop the rule that produced it.
+    """
     root = os.path.dirname(os.path.dirname(HERE))
     dec = " ".join(open(os.path.join(root, "stack", "governance",
                                      "declarations.md"),
                         encoding="utf-8").read().split())
-    assert "not built in this patch" in dec
-    assert "religious-tradition vocabulary" in dec
+    assert "A1 resolved" in dec
+    assert "appears nowhere under `stack/`" in dec
+    assert "faithful rename" in dec
+    # the old name never ships; the renamed module does
     assert not os.path.exists(os.path.join(root, "stack", "organization",
                                            "adg_tqg.py"))
+    assert os.path.exists(os.path.join(root, "stack", "organization",
+                                       "adg_cfe.py"))

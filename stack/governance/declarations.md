@@ -51,27 +51,58 @@ changing cutoffs. Layer-3 metaphysics are out of empirical scope.
 - No fused scalar "integrity".
 - Scope sentences are grepped in CI.
 
-## 6. Blocked, and why — the organization module
+## 6. Organization module — A1 resolved
 
-`stack/organization/adg_tqg.py` is **not built in this patch**, and not for
-engineering reasons.
+`stack/organization/adg_cfe.py` ships as a **faithful rename** of the arithmetic
+in `adg-tqg/experiment.py`, with engineering parameter names:
+`utility, d_enc, d_dec, noise, dissonance, eps, kappa, quartile_bound,
+cohort_hash`.
 
-The proposed signature is
-`adg_score(U, salat, zakat, hbar, cohort_hash, eps)` with
-`cfe_render(phi, kappa, quartile_bound, shirk, cohort_hash)`.
+- **Tradition vocabulary appears nowhere under `stack/`.** The mapping — both the
+  display labels and the older parameter names — lives in `ncu/adapter.py` and
+  only there. `test_the_tradition_vocabulary_is_absent_from_the_whole_stack`
+  walks `stack/` and asserts it. The ledger deliberately does not restate the
+  words, because restating them here would put them back inside `stack/`.
+- **Render labels:** `aligned | misaligned | high_dissonance`. A label names what
+  was measured; the class is a top-quartile say–do gap, and a stronger word
+  would overstate it. The display adapter carries the older correspondence.
+- **Faithfulness is asserted, not asserted-about:** the rename is bit-identical
+  to the pre-rename arithmetic on all 22 records, to 1e-12.
+- **`kappa` is `sorted(alignment)[n//2]`**, not a mean of the two middle values.
+  On n = 22 those differ (0.861235 against 0.844392) and records between them
+  would render on opposite sides.
+- **`dissonance` carries no push-date input.** The fixture's label rule is
+  `E = 0 iff archived or days_since_push > 365`, so a push-based dissonance
+  would be a function of the label. `leaky_dissonance()` exists only so the
+  leakage can be measured and reported; nothing shipped calls it.
+- **Cohort-relative and hash-carried.** Every emitted reading carries the cohort
+  hash, computed from the fixture bytes — a typed hash cannot enter. A probe
+  appended to the cohort marks the hash, so a probe reading can never be
+  mistaken for a fixture reading.
+- **Pre-registration:** `stack/organization/prereg_organization.md`,
+  sha256 `e2c7b6567ae0b05111bf0f5332632d42f4d8f34c23975937dc48aa70b1a92e3c`
 
-Three of those parameter names are religious-tradition vocabulary. This
-repository's standing rule is that such terminology lives **only** in `ncu/` and
-never in measurement code or in anything an ordinary person operates —
-`LAYERS.md` and `test_layers.py` enforce the interface half of it. A public
-scoring function that takes `salat` and `zakat` as arguments puts that
-vocabulary into every traceback, every log line and every API signature that
-touches it.
+## 7. Two rules earned by failures in this stack
 
-The rebrand to **ADG = Applied Governance** and **CFE = Cognitive Field
-Equivalence** addresses the *acronyms*, which was the smaller half. The
-parameter names are the larger half and are unchanged.
+**The horizon rule.** Any monotonicity or trend claim registers a **horizon**,
+and one probe **past** the horizon is mandatory and reported whichever way it
+falls. Earned twice: `geometric-gate/`'s coarse leak sweep showed an empty band
+that finer sampling filled, and `stack/perception/`'s P2R hit at 3.112x inside
+its registered range and reversed one doubling past it.
 
-**This needs a decision before Patch 2**, and the decision is not mine to make
-silently. The measurement is unaffected either way — `U · D / (eps + h)` with
-`D = a · b` does not care what `a` and `b` are called.
+**The lexical-detector rule.** A text check collapses whitespace before
+matching, uses boundaries that exclude path separators as well as word
+characters, carries a **two-sided named decoy** — one string it must not fire on
+and one it must — and is scoped to precision: it may demonstrate its false
+positives and must not claim recall. Earned repeatedly: `"ema"` matched inside
+`"semantically"`; `\busr\b` fired inside `/usr/local` because a slash is a word
+boundary, caught by its own decoy before shipping; and a rule-forbidding
+sentence matched its own rule **thirteen** times this session, including the
+write-up of the eleventh.
+
+**Grep exemptions are scoped by ROLE, not by name.** Four kinds of file must be
+able to quote what they forbid: the ledger, a pre-registration (`prereg_*.md`),
+a test (`test_*.py`), and a results write-up (`RESULTS.md`). A hand-listed
+allowlist was tried first and needed a new entry for every module added, which
+is an exemption list that grows silently — the thing this rule exists to stop.
+Shipped module code is never exempt, and a decoy asserts it.

@@ -127,7 +127,7 @@ run "smi: LMD metric engine — the -0.5 slope is an identity, and two spec bugs
 run "smi: browser engine matches the JAX engine over 14 graphs (<1e-9)" py smi/test_parity.py
 run "lmd-scaling: the -0.5 verdict flips on dtype, pinv library and matrix assembly — S2/S3/S4 MISSED" py lmd-scaling/test_scaling.py
 run "nere: pipeline v1.0 — semantic seam ABSTAINS, one declared fusion, no 30% gate" py nere/test_nere.py
-run "stack/perception: Patch 1 — 3 supplied tests were green for reasons that do not hold; P2R reverses one sample past its range" py stack/perception
+run "stack: Patch 1+2 — perception, organization rename (bit-identical), exact permutation null; P14-a and P15-b MISSED" py stack/
 run "invisible-edges: candidates cannot be cleaned statically — names 18/27 under omissions; quotient Q3 MISSED so no repaired count" py invisible-edges/test_invisible.py
 run "lintel: SPOF names are stable, the COUNT is inflatable 1.7x by re-export shims — N3/N5 MISSED" py lintel/test_lintel.py
 run "geometric-gate: no threshold is picked out by the data — G9 MISSED twice; stop-gradient is the mechanism, not the EMA" py geometric-gate/test_geometric_gate.py

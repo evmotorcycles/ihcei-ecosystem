@@ -62,6 +62,27 @@ enforced by tests, and where they are, the test is named.
 - **Never rebuild a list inside a handler bound to one of its own children.**
   Mutate the row. Six occurrences so far.
 
+## Earned by failures in this repository
+
+- **Register a horizon, then probe past it.** Any monotonicity or trend claim
+  states the range it was measured over, and **one probe past that range is
+  mandatory and reported whichever way it falls**. `geometric-gate/` found an
+  empty band that finer sampling filled; `stack/perception/` hit 3.112x inside
+  its registered range and reversed one doubling past it. Both would have
+  shipped a confident wrong number. `test_the_growth_reverses_one_sample_past_the_registered_range`.
+- **A lexical check needs a two-sided decoy.** Collapse whitespace before
+  matching; exclude path separators as well as word characters at the
+  boundaries; carry one string the check must NOT fire on and one it MUST; and
+  scope the claim to precision -- a static text check can demonstrate its false
+  positives and can never claim recall. `"ema"` matched inside `"semantically"`;
+  `\busr\b` fired inside `/usr/local`. Thirteen times in one session a check
+  has matched the sentence forbidding the thing it checks for, including the
+  write-up of the eleventh.
+- **Exempt by role, never by name.** A file that must quote what it forbids --
+  the ledger, a `prereg_*.md`, a `test_*.py`, a `RESULTS.md` -- is exempt by
+  what it is. A hand-listed allowlist needs a new entry per module and grows
+  silently. Shipped module code is never exempt, and a decoy asserts it.
+
 ## On the words
 
 `check` is an imperative and an errand: *three things to check*. `checked`,
