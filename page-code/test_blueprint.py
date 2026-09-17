@@ -144,9 +144,21 @@ def test_the_auditor_is_inside_the_corpus_it_measures(r):
 
 
 def test_B4_there_is_a_hub_and_it_is_imported_by_many(r):
-    assert r["this_repo"]["hub"] == "echo/echo.mjs"
-    assert r["this_repo"]["hub_fan_in"] == 22
-    assert r["this_repo"]["hub_fan_in"] >= 5
+    """B4's claim is that a hub EXISTS and is imported by many. Neither the
+    hub's name nor its fan-in is that claim, and both move.
+
+    Measured: the hub was `echo/echo.mjs` at fan-in 22 when this was written and
+    is `spar/spar.py` at 26 now. The identity of the most-imported module is a
+    dated observation about a growing repository, not an invariant, so it is
+    recorded here and not asserted. What is asserted is the claim itself, plus
+    the internal consistency that makes the reported hub the reported hub.
+    """
+    hub, fan_in = r["this_repo"]["hub"], r["this_repo"]["hub_fan_in"]
+    assert hub, "a hub must be named"
+    assert fan_in >= 5, f"{hub} has fan-in {fan_in}; 'many' is the claim"
+    # the halt below reports the same fan-in it halted on
+    assert r["this_repo"]["counted_twice"]["detail"]["claimed"] == fan_in
+    assert r["this_repo"]["counted_twice"]["detail"]["the_one_origin"] == hub
 
 
 def test_B8_the_separately_authored_stack_also_has_joints(r):
@@ -173,13 +185,30 @@ def test_the_two_projects_are_shaped_oppositely(r):
 
 
 def test_B9_the_law_holds_on_a_real_import_hub(r):
-    """22 modules importing one file each settle 1/484. Arithmetic, listed as
-    verification so it is not mistaken for a discovery."""
-    ct = r["this_repo"]["counted_twice"]
-    assert ct["status"] == "HALTED"
-    assert abs(ct["detail"]["each_settles"] - 1 / 484) < 1e-12
-    iv = r["ihcei_v3"]["counted_twice"]
-    assert abs(iv["detail"]["each_settles"] - 1 / 36) < 1e-12
+    """`claimed` modules importing one file each settle `1/claimed**2`.
+    Arithmetic, listed as verification so it is not mistaken for a discovery.
+
+    THE DENOMINATOR IS DERIVED, NEVER FROZEN. This asserted `1/484` (= 1/22²)
+    and read `1/676` (= 1/26²) once the hub gained four importers, so the test
+    broke on repository growth rather than on anything about the law. The law
+    is the RELATIONSHIP; neither number is the law, and hard-coding `1/676`
+    would only reset the same timer.
+
+    Same rule as `governance-os`'s permissions (derived from the manifest) and
+    `stack/structure`'s certificates (relationships, never frozen counts).
+    Asserted for BOTH projects, including the frozen vendored snapshot, for the
+    reason B8 gives: a guard with an exception in it is a guard nobody trusts.
+    """
+    for key in ("this_repo", "ihcei_v3"):
+        ct = r[key]["counted_twice"]
+        assert ct["status"] == "HALTED", key
+        claimed = ct["detail"]["claimed"]
+        # non-vacuity: "counted twice" needs at least two claims to be about
+        assert claimed >= 2, f"{key}: claimed={claimed} is not a double count"
+        assert abs(ct["detail"]["each_settles"] - 1.0 / claimed ** 2) < 1e-12, (
+            key, claimed, ct["detail"]["each_settles"])
+        # and the halt's whole point: many claims, ONE origin
+        assert ct["detail"]["distinct_origins"] == 1, key
 
 
 # ──────────────────────────────────────────────────── the extractor itself ──

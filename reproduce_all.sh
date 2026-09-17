@@ -172,6 +172,42 @@ run "physics: pre-registered locked run" py physics-agency/prereg/test_prereg.py
 run "physics: LMD spacetime-verdict-matrix (pre-registered)" py physics-agency/lmd/test_lmd.py
 run "physics: LMD vs 4 emergent-spacetime theories (honest)" py physics-agency/lmd/comparison/test_comparison.py
 
+bar; echo "  Previously AIR-GAPPED from this pipeline (declarations.md §13)"; bar
+# These 45 test files existed in the repository and were unreachable from a full
+# run: every pipeline target and its parent directories were resolved, and none
+# covered them. That made "100/100 suites" a count of suites NAMED HERE, not of
+# tests in the repository -- and `plexus/` is the worst of it, because CLAUDE.md
+# names that directory as where its rules are enforced (test_gate.py,
+# test_packs.py, test_metaphor.py, and test_cohort.py, which carries one of the
+# four recorded misses).
+#
+# Found because a test added to hinton-test/hinton_test.test.mjs went red on an
+# assertion unrelated to the change: the pipeline ran hinton_test.mjs and never
+# the .test.mjs beside it.
+run "plexus: the enforcement layer CLAUDE.md cites — gate, packs, metaphor, cohort" py plexus/
+run "page-code: blueprint + audit — the hub law, denominator DERIVED not frozen" py page-code/
+run "agi-stack: the triad (LMD / JEPA / LLM)" py agi-stack/
+run "fathom: deepest dependence — the sensor padding does NOT defeat" py fathom/test_fathom.py
+run "hallucination: evasion + hallucination budget" py hallucination/
+run "order-invariance: the readout does not move with input order" py order-invariance/test_order.py
+run "oss-audit: the field-trial audit" py oss-audit/test_oss.py
+run "pilot: the pilot harness" py pilot/test_pilot.py
+run "spar: sparring harness" py spar/test_spar.py
+run "yeast-audit: the yeast cohort audit" py yeast-audit/test_yeast.py
+run "keel: kernel unit tests" py keel/test_keel.py
+run "ncu: the five questions" py ncu/test_questions.py
+run "plumb: the spec" py plumb/test_spec.py
+run "agency-net: AIPS" node_test agency-net/aips.test.mjs
+run "benchmarks-governance: the bench" node_test benchmarks-governance/bench_governance.test.mjs
+run "ei-tests: Hinton & Russell harness" node_test ei-tests/ei_hinton_russell.test.mjs
+run "hinton-test: the .test.mjs beside the script — verdict asserted RELATIONALLY" node_test hinton-test/hinton_test.test.mjs
+run "novora-helm: HTML + order" node_test novora-helm/test/helm-html.test.mjs novora-helm/test/order.test.mjs
+run "os-integration: integration" node_test os-integration/os.test.mjs
+run "pages: the grounding engine" node_test pages/pages.test.mjs
+run "pages-video: video" node_test pages-video/pages_video.test.mjs
+run "russell-test: the Russell harness" node_test russell-test/russell_test.test.mjs
+run "validation-stages: stage 1-2" node_test validation-stages/stage12.test.mjs
+
 echo
 echo "========================================================================"
 if [ "$fail" -eq 0 ]; then
