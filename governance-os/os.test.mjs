@@ -33,6 +33,33 @@ test("the grep-only evidence is still empty — the pass is behavioural", () => 
     "pattern matching produced a false negative here; the behavioural check is why it passes");
 });
 
+test("the empty evidence is non-vacuous — the walk actually read files", () => {
+  // `files_scanned` was reported and never asserted, so the emptiness above
+  // rested on a walk nobody had shown was non-empty. A detector that read
+  // zero files also reports zero call sites.
+  //
+  // The floor is a NON-VACUITY floor and nothing else. It is not a frozen
+  // count: the repository is its own subject and it grows (487 -> 663 in one
+  // commit), so the assertion is one-sided by construction and needs no edit
+  // when it grows again. 480 is below the smallest walk this repository has
+  // recorded, and the operable sensor is the walk itself -- CLAUDE.md requires
+  // every gating number to carry both a reason and a sensor.
+  assert.equal(Number.isInteger(R.files_scanned), true);
+  assert.ok(R.files_scanned > 480,
+    `the walk read ${R.files_scanned} files; below this floor an empty ` +
+    `evidence list says nothing about the repository`);
+
+  // RELATIONSHIP: you cannot find evidence in more files than you scanned.
+  // This one holds at any repository size, and is the part that would catch a
+  // walk and a grep that had drifted apart.
+  const cited = new Set([
+    ...R.O1_interposition.blocking_call_sites,
+    ...R.O2_mandatory.hooks_found.flatMap(h => h.files),
+  ]);
+  assert.ok(cited.size <= R.files_scanned,
+    "more files cited as evidence than were scanned");
+});
+
 test("the bypass is DEMONSTRATED, not merely asserted", () => {
   const b = R.O2_mandatory.behavioural_check;
   assert.equal(R.O2_mandatory.result, "FAILS");
@@ -55,10 +82,31 @@ test("a word in a build script is not evidence of mandatory routing", () => {
 });
 
 test("the extension is an observer, and is described as one", () => {
+  // The frozen array `["activeTab", "scripting"]` stood here and was REMOVED.
+  // The manifest legally gained "storage" in 1866cc1 and the list went stale,
+  // so the test was measuring a moment rather than the finding. The finding is
+  // that the extension CANNOT BLOCK -- so the expectation is derived from the
+  // manifest, which is the single source of truth the scanner also reads.
   const e = R.O2_mandatory.observer_extension_found;
   assert.ok(e, "the extension should still be found and reported");
+
+  const mf = JSON.parse(readFileSync(
+    join(ROOT, "novora-helm/extension/manifest.json"), "utf8"));
+  const declared = [...(mf.permissions || []), ...(mf.host_permissions || [])];
+
+  // RELATIONSHIP, not a frozen list: the report invents nothing and drops
+  // nothing. A new permission appears here the moment the manifest declares
+  // one, and needs no edit to this file.
+  assert.deepEqual([...e.permissions].sort(), [...declared].sort());
+  assert.ok(e.permissions.length > 0, "an empty list would assert nothing");
+
+  // And the finding itself, stated directly rather than implied by a list:
+  // none of whatever it declares is a blocking permission. Add
+  // webRequestBlocking to the manifest and this fails, which is the whole
+  // point -- the gate protects the verdict, not the spelling.
+  const blocking = /webRequest|declarativeNetRequest|<all_urls>|^\*:/;
+  assert.deepEqual(e.permissions.filter(p => blocking.test(p)), []);
   assert.equal(e.can_block, false);
-  assert.deepEqual(e.permissions.sort(), ["activeTab", "scripting"]);
   assert.match(e.reading, /observes; it does not interpose/);
 });
 

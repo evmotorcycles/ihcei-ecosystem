@@ -274,3 +274,66 @@ bans — fixed by neutralising the example, **not** by exempting the file. The
 **sixteenth** was a test that grepped its own source for a deleted function's
 name, with the name in the assertion; fixed by reading the parse tree instead of
 matching text.
+
+## 10. Two legacy frozen-artifact defects, resolved
+
+Both were pre-existing, both were the defect this session has been chasing, and
+both surfaced in code outside `stack/`. Neither was resolved by moving a
+threshold.
+
+### `cohort-audit/test_gap_closure.py` — a gate on a fit that never converged
+
+The suite asserted `multivariate_insample_auc < 0.50`. That value is scored on
+whatever parameters the optimiser held when it stopped, because
+`multivariate_converged` is `False` three lines above it. It moved
+`0.4275 → 0.7237` with no change to the data, purely on this container's
+statsmodels version — deterministic across three runs, so not flakiness. Same
+shape as the three-knob verdict flip in `lmd-scaling/`.
+
+**The assertion was deleted, not relaxed.** The decisive fact is that it was
+**never a locked prediction**: `prereg/gapclosure_prereg.json` registers Y4 as
+*"single-term quadratic CV AUC >= 0.55 ... AND the multivariate U+D+D^2 logit
+reports converged == False"*, and nothing else. The `~0.49` appears only in the
+honesty disclosure as an earlier observation. Removing it restores the test to
+what the pre-registration actually locks, and
+`test_the_locked_spec_still_carries_the_y4_prediction_this_test_asserts` fails
+if Y4 ever gains an in-sample clause. The removal is pinned from the **parse
+tree**, not by grepping the source, because the comment explaining it quotes the
+expression it forbids.
+
+### `governance-os/os.test.mjs` — two frozen artifacts, only one of them failing
+
+- **The permissions list.** `assert.deepEqual(e.permissions.sort(),
+  ["activeTab", "scripting"])` went stale when the manifest legally gained
+  `storage` in `1866cc1`. The expectation is now **derived from the manifest**,
+  which is the same source the scanner reads, plus the finding stated directly:
+  no declared permission matches the blocking set, and `can_block` is `false`.
+  A decoy confirms it: adding `webRequestBlocking` to the manifest fails the
+  test — and now fails it for the right reason, the verdict rather than the
+  spelling.
+- **`files_scanned` was never asserted at all.** The reported count moved
+  `487 → 663` and broke nothing, because nothing read it. That is the worse of
+  the two defects: the empty `blocking_call_sites` finding rested on a walk
+  nobody had shown was non-empty, and a detector that reads zero files also
+  reports zero call sites. A **non-vacuity floor** was added (`> 480`, one-sided
+  by construction so repository growth never touches it) together with the
+  relationship `cited ⊆ scanned`, which holds at any size. This is the same role
+  `min_seen` plays in `stack/governance/matcher.py`.
+
+## 11. Recorded and NOT resolved — two reproducibility gaps
+
+Flagged rather than fixed. Neither is in any directive's scope, and neither is
+called a defect here, because what they are has not been established.
+
+- **`hinton-test` does not reproduce across runs.** The recorded Merkle root
+  differs on every invocation on unchanged inputs — measured `052dc44e1bc0`
+  then `6c65527d0693` on two consecutive runs. The suite still passes, because
+  it checks that the chain is **intact within a run**, not that it reproduces
+  between runs. If the generation timestamp is inside the hashed content then
+  this is correct behaviour and the reproducibility claim is what needs
+  narrowing; if it is not, something else is varying. **Not established.**
+- **The repository cannot be clean after a reproduce run.** Nine `results*.json`
+  files rewrite `generated_at` on every invocation, so `reproduce_all.sh` always
+  leaves a dirty tree. This makes "the tree is clean" unusable as a check and
+  quietly trains a reader to ignore the diff — which is how the `0.4275 →
+  0.7237` change above went unnoticed until a full run was read line by line.
