@@ -117,6 +117,30 @@ test("the detector does not match its own source", () => {
     "a detector that matches its own patterns is measuring itself");
 });
 
+test("the detector does not match its own OUTPUT either", () => {
+  // Found by accident and kept as a case. Temporarily adding
+  // webRequestBlocking to the manifest (to show the observer test can fail)
+  // wrote that string into results_os.json. The NEXT walk read the file as it
+  // stood BEFORE that run rewrote it, matched the pattern there, and recorded
+  // a phantom "blocking browser extension" citing results_os.json itself.
+  // It survived a full cycle and a green 12/12, because the test above
+  // excludes one FILENAME and the contamination was in a different file.
+  //
+  // os_check.mjs exempts `rel === SELF`, fixtures, tests and prose -- but not
+  // the file it writes. That is exemption BY NAME where the role is
+  // "generated output", which CLAUDE.md records as the thing that grows
+  // silently. The detector is NOT changed here; this asserts the property the
+  // detector should have, so a recurrence fails loudly instead of reading as
+  // evidence. Whether to exempt generated output inside isEvidence() is a
+  // call about what the gate measures -- recorded in declarations.md §12.
+  const all = [...R.O1_interposition.blocking_call_sites,
+               ...R.O2_mandatory.hooks_found.flatMap(h => h.files)];
+  const generated = all.filter(f => /(^|\/)results[^/]*\.json$/.test(f));
+  assert.deepEqual(generated, [],
+    "the detector cited its own generated output as evidence; a finding that " +
+    "feeds on the last run's report is measuring itself");
+});
+
 test("components chain but share no common record type", () => {
   assert.equal(R.O3_composition.chained_end_to_end, true);
   assert.equal(R.O3_composition.keys_shared_by_all_five_components.length, 0);

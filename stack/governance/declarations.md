@@ -337,3 +337,31 @@ called a defect here, because what they are has not been established.
   leaves a dirty tree. This makes "the tree is clean" unusable as a check and
   quietly trains a reader to ignore the diff — which is how the `0.4275 →
   0.7237` change above went unnoticed until a full run was read line by line.
+
+## 12. The governance-os detector greps its own output — RECORDED, not fixed
+
+Found by accident while showing that the rewritten observer test in §10 can
+fail. Adding `webRequestBlocking` to the extension manifest wrote that string
+into `governance-os/results_os.json`. The next walk read that file **as it stood
+before the run rewrote it**, matched the blocking pattern inside it, and recorded
+a phantom finding — *"blocking browser extension"*, citing `results_os.json`
+itself. It survived a full cycle, including a green 12/12, because the existing
+self-match test excludes one **filename** and the contamination sat in a
+different file.
+
+The loop is one cycle deep, not self-sustaining: once the manifest is restored,
+a second run clears it. That makes it worse to find, not better.
+
+`os_check.mjs`'s `isEvidence()` exempts `rel === SELF`, fixtures, tests and
+prose — but **not the file it writes**. That is exemption **by name** where the
+role is *generated output*, which is the pattern this repository has already
+recorded as the one that grows silently. The module's own comment states the
+principle it misses: *"A detector that matches its own source is measuring
+itself."*
+
+**The detector was NOT changed.** What changed is a test —
+`the detector does not match its own OUTPUT either` — which asserts the property
+the detector ought to have, so a recurrence fails loudly instead of reading as
+evidence. The one-line alternative is a `results*.json` clause in
+`isEvidence()`, exempting by role. **That is a decision about what the gate
+measures, and it is open.** Recorded here so it is not inherited silently.
