@@ -211,7 +211,7 @@ def main():
     print("  D %-26s %6d  %-42s" % ("Digital swarm (live)", D["N"], "LINEAR wins: R2 %.2f>%.2f; decay r=%.3f" % (D["r2_linear"], D["r2_quadratic"], D["decay_corr"])))
 
     print("\n LIVE recomputation (this run, stdlib, offline):")
-    print("   Cohort D swarm:  R2(E~U*D)=%.4f  >  R2(E~(U*D)^2)=%.4f   corr(depth,D)=%.3f   D %.3f->%.3f over %d hops"
+    print("   Cohort D swarm (SEEDED simulation, not observed):  R2(E~U*D)=%.4f  >  R2(E~(U*D)^2)=%.4f   corr(depth,D)=%.3f   D %.3f->%.3f over %d hops"
           % (D["r2_linear"], D["r2_quadratic"], D["decay_corr"], D["meanD_first"], D["meanD_last"], D["max_depth"]))
     print("   Cohort B hash:   %s  (live == archived CI %s)" % ("OK" if B["pass"] else "FAIL", GITHUB_CI_HASH[:12] + "..."))
 
@@ -219,7 +219,9 @@ def main():
     n_linear = sum(1 for r in (A, B, C, D) if r["pass"])
     print("\n META-VERDICT: linear E=U*D adequate in %d/%d channel-intact cohorts;" % (n_linear, n_intact))
     print("   the accelerating quadratic E=U*D^2 gains nothing where a valid test was possible.")
-    print("   The multi-hop digital swarm (Cohort D) INHERITS the linear coupling — it does not escape it.")
+    print("   The multi-hop digital swarm (Cohort D, a seeded simulation) INHERITS the")
+    print("   linear coupling — it does not escape it. Reproducing a seeded simulation is")
+    print("   a code-correctness check, not empirical support for the law.")
 
     print("\n NEGATIVES / NULLS REGISTER (emitted verbatim from the locked spec — this is the point):")
     for i, s in enumerate(spec["negatives_register_required"], 1):

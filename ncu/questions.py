@@ -116,7 +116,8 @@ def build():
             figures=[Figure(
                 figure="Speaking through a wall and being heard through a wall. "
                        "Neither wall has to be thick; two thin ones multiply.",
-                drawn_from="LISM E = U*D, mean D falling 0.838 -> 0.014 over 39 hops",
+                drawn_from="LISM E = U*D, mean D falling 0.838 -> 0.014 over 39 hops "
+                           "(Cohort D, a seeded simulation — not observed telemetry)",
                 schema="A purpose has two sides that compound. Saying it well does "
                        "not survive being received badly, and capacity is not "
                        "achievement.")]),
