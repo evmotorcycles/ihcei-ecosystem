@@ -159,6 +159,7 @@ run "lism-cohorts: 4-cohort E=U*D meta (pre-registered)" py lism-cohorts/test_me
 run "knowledge cohort: Barakah SE reproduces OFFLINE" py repro/test_se_offline.py
 run "LISM circuit breaker: drop-in agent-pipeline guard" py lism-cohorts/test_circuit_breaker.py
 run "cohort D provenance: every surface naming it carries the SEEDED tag (ledger H5)" py lism-cohorts/test_cohort_d_tagging.py
+run "lens-graph: the mesh refuses to draw a star or an undeclared structure" py lens-graph/test_lens_graph.py
 run "hardware template: coupler-sweep prediction (no fabrication)" py hardware_interfaces/test_mock_willow_sweep.py
 run "provenance: cryptographic origin lock verifies" py provenance/test_provenance.py
 run "financial-system: Mudaraba Ledger + Sabbath Lock" py financial-system/test_financial_system.py

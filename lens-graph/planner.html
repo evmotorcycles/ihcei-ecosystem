@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>The Planner — what holds it up</title>
+<meta name="description" content="Seven steps, and the wires you draw between them. Cut one and see what comes down.">
+<style>
+:root{
+  --bg:#0F1418; --card:#182026; --card-2:#141B21; --line:#25313A; --edge:#33434F;
+  --ink:#EDF3F7; --ink-2:#AEC0CC; --mute:#7B8D9A;
+  --hold:#E2664B; --hold-soft:#31150F;
+  --share:#D6A63C; --share-soft:#2C2209;
+  --spare:#5FB489;
+  --focus:#5AB4D6;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r:14px;
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --bg:#F2F4F6; --card:#FFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1; --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --focus:#116D8C;
+}}
+:root[data-theme="light"]{
+  --bg:#F2F4F6; --card:#FFF; --card-2:#F8FAFB; --line:#DDE3E8; --edge:#C6D0D8;
+  --ink:#101619; --ink-2:#3D4B54; --mute:#687883;
+  --hold:#B23A22; --hold-soft:#FBE6E1; --share:#8A6708; --share-soft:#FAF1D8;
+  --spare:#256B4B; --focus:#116D8C;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100dvh;background:var(--bg);color:var(--ink);
+  font:16px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.top{display:flex;align-items:center;gap:.55rem;padding:.6rem .8rem;
+  padding-top:max(.6rem,env(safe-area-inset-top));border-bottom:1px solid var(--line);
+  background:var(--card-2);position:sticky;top:0;z-index:5}
+.brand{font-weight:700;letter-spacing:-.02em;font-size:1.05rem}
+.brand span{display:block;font-weight:400;font-size:.7rem;color:var(--mute)}
+.sp{flex:1}
+.chip{border:1px solid var(--line);border-radius:99px;padding:.34rem .75rem;
+  font-size:.74rem;color:var(--ink-2);min-height:44px;display:inline-flex;align-items:center}
+
+.wrap{max-width:52rem;margin:0 auto;padding:.85rem .8rem calc(2.5rem + env(safe-area-inset-bottom))}
+.answer{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.9rem .95rem;margin-bottom:.75rem}
+.answer .big{font-size:1.3rem;font-weight:700;line-height:1.22;letter-spacing:-.02em;text-wrap:balance}
+.answer .big em{font-style:normal;color:var(--hold)}
+.answer p{margin:.45rem 0 0;color:var(--ink-2);font-size:.9rem}
+
+.stage{position:relative;background:var(--card);border:1px solid var(--line);
+  border-radius:var(--r);height:min(46dvh,340px);touch-action:none;overflow:hidden}
+svg{display:block;width:100%;height:100%}
+.node{cursor:grab}
+.hit{fill:transparent}
+
+/* the empty state is NOT an error. no red, no warning icon, no "failed". */
+.empty{background:var(--card);border:1px dashed var(--edge);border-radius:var(--r);
+  padding:1.1rem 1rem;text-align:left}
+.empty b{display:block;font-size:1.12rem;font-weight:680;letter-spacing:-.015em;margin-bottom:.35rem}
+.empty p{margin:0 0 .8rem;color:var(--ink-2);font-size:.92rem;line-height:1.55}
+.empty button{width:100%;min-height:48px;border:1px solid var(--edge);border-radius:12px;
+  background:var(--card-2);font-weight:640;font-size:.93rem}
+.empty button:active{border-color:var(--focus);color:var(--focus)}
+
+.wirebar{display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap;align-items:center}
+.wirebar select{flex:1 1 8rem;min-height:44px;background:var(--card);border:1px solid var(--edge);
+  border-radius:10px;padding:.4rem .5rem;font-size:.84rem}
+.wirebar button{min-height:44px;padding:.4rem .9rem;border:1px solid var(--edge);
+  border-radius:10px;background:var(--card);font-size:.86rem;font-weight:620}
+
+.rows{display:flex;flex-direction:column;gap:.4rem;margin-top:.7rem}
+.row{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.62rem .72rem;width:100%;text-align:left;display:block}
+.row .nm{display:flex;gap:.5rem;align-items:baseline;font-size:.9rem}
+.row .nm b{font-weight:600}
+.row .nm .to{color:var(--mute)}
+.row .pct{margin-left:auto;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  font-size:.96rem;font-weight:650}
+.bar{height:8px;border-radius:99px;background:var(--card-2);margin-top:.45rem;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.row .say{font-size:.77rem;color:var(--mute);margin-top:.34rem}
+.row[data-k=hold] .pct{color:var(--hold)}   .row[data-k=hold] .bar i{background:var(--hold)}
+.row[data-k=share] .pct{color:var(--share)} .row[data-k=share] .bar i{background:var(--share)}
+.row[data-k=spare] .pct{color:var(--spare)} .row[data-k=spare] .bar i{background:var(--spare)}
+
+.fell{margin:.6rem 0 0;padding:.6rem .75rem;border-radius:10px;font-size:.87rem;
+  background:var(--hold-soft);border:1px solid var(--hold);color:var(--hold);font-weight:620}
+.acts{display:flex;gap:.4rem;margin-top:.7rem;flex-wrap:wrap}
+.acts button{flex:1 1 auto;min-height:48px;min-width:9rem;background:var(--card);
+  border:1px solid var(--edge);border-radius:var(--r);padding:.5rem .7rem;font-size:.87rem}
+.tot{margin-top:.7rem;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:.62rem .8rem;display:flex;gap:.9rem;align-items:baseline;flex-wrap:wrap}
+.tot b{font-family:var(--mono);font-size:1.16rem;font-variant-numeric:tabular-nums}
+.tot span{color:var(--mute);font-size:.76rem}
+
+/* THE LIMIT. same size type as .answer p — not a footnote, not smaller. */
+.limit{margin-top:1rem;background:var(--card);border:1px solid var(--line);
+  border-left:3px solid var(--share);border-radius:0 var(--r) var(--r) 0;
+  padding:.75rem .85rem;font-size:.9rem;line-height:1.55;color:var(--ink-2)}
+.limit b{display:block;color:var(--share);font-size:.68rem;letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:.25rem}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="brand">The Planner<span>seven steps, and what holds them up</span></div>
+  <span class="sp"></span>
+  <button class="chip" id="theme" type="button">Light</button>
+</div>
+
+<div class="wrap">
+  <div class="answer" id="answer"></div>
+
+  <div id="view"></div>
+
+  <div class="wirebar">
+    <select id="from" aria-label="This step"></select>
+    <select id="to" aria-label="cannot start until this one comes back"></select>
+    <button id="addwire" type="button">Pull a wire</button>
+  </div>
+
+  <div id="fell"></div>
+  <div class="rows" id="rows"></div>
+  <div class="tot" id="tot"></div>
+
+  <div class="acts">
+    <button id="cut" type="button">Cut the weakest wire</button>
+    <button id="reset" type="button">Start again</button>
+  </div>
+
+  <div class="limit">
+    <b>What this cannot tell you</b>
+    <span id="limittext"></span>
+  </div>
+</div>
+
+<script src="lens-graph.js"></script>
+<script src="wires.js"></script>
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var VB = { w: 360, h: 340 }, NODE_W = 92, NODE_H = 40, PAD = 16;
+
+  /* The seven steps are a SCAFFOLD, shipped with NO wires. They are the same
+     seven the flat planner produced; what has changed is that the structure
+     between them is now the user's to declare, because nobody but the user
+     knows which of their steps actually waits on another. Shipping a default
+     chain would draw a structure nobody asserted. */
+  var STEPS = ["State it", "Write the gate", "Two checks", "Exclusions",
+               "Small step", "Compare", "Record"];
+  var ANCHOR = "Record";
+  var wires = [], pos = {}, lastXY = null, lastKeep = null, drag = null, fell = null;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]; });
+  }
+
+  /* layout: same relayout as app-2's map, trimmed to this screen. */
+  function relayout() {
+    var idx = {};
+    STEPS.forEach(function (n, i) { idx[n] = i; });
+    var r = LMD.meshMetric(LMD.laplacianFromEdges(
+      STEPS.length, wires.map(function (w) { return [idx[w[0]], idx[w[1]], w[2]]; })));
+    var a = idx[ANCHOR], keep = [], stranded = [];
+    STEPS.forEach(function (n, k) {
+      (r.dead || !isFinite(r.D[a][k]) ? stranded : keep).push(k);
+    });
+    if (keep.length >= 2) {
+      var xy = LMD.layout2d(r.D, keep);
+      if (lastXY && lastKeep) {
+        var shareP = [], order = [], rest = [];
+        keep.forEach(function (k, i) {
+          var j = lastKeep.indexOf(k);
+          (j >= 0 ? order : rest).push(i);
+          if (j >= 0) shareP.push(lastXY[j]);
+        });
+        if (shareP.length >= 2) {
+          var seq = order.concat(rest);
+          var al = LMD.procrustes2d(seq.map(function (i) { return xy[i]; }), shareP);
+          seq.forEach(function (i, slot) { xy[i] = al[slot]; });
+        }
+      }
+      lastXY = xy.map(function (p) { return p.slice(); });
+      lastKeep = keep.slice();
+      var stripH = stranded.length ? NODE_H + 14 : 0;
+      var loX = PAD + NODE_W/2, hiX = VB.w - PAD - NODE_W/2;
+      var loY = PAD + NODE_H/2, hiY = VB.h - PAD - NODE_H/2 - stripH;
+      var bx0=Infinity,bx1=-Infinity,by0=Infinity,by1=-Infinity;
+      xy.forEach(function (p) {
+        bx0=Math.min(bx0,p[0]); bx1=Math.max(bx1,p[0]);
+        by0=Math.min(by0,p[1]); by1=Math.max(by1,p[1]);
+      });
+      var scale = Math.min((hiX-loX)/((bx1-bx0)||1e-9), (hiY-loY)/((by1-by0)||1e-9));
+      var mx = (loX+hiX)/2 - (bx0+bx1)/2*scale, my = (loY+hiY)/2 - (by0+by1)/2*scale;
+      keep.forEach(function (k, i) {
+        pos[STEPS[k]] = { x: mx + xy[i][0]*scale, y: my + xy[i][1]*scale };
+      });
+    } else {
+      keep.forEach(function (k, i) {
+        pos[STEPS[k]] = { x: VB.w/2, y: (i+1)*VB.h/(keep.length+1) };
+      });
+    }
+    stranded.forEach(function (k, i) {
+      pos[STEPS[k]] = { x: (i+1)*VB.w/(stranded.length+1), y: VB.h - PAD/2 - NODE_H/2 };
+    });
+    /* separation, so boxes never overlap */
+    var MIN_X = NODE_W*0.8, MIN_Y = NODE_H*1.15;
+    for (var pass = 0; pass < 60; pass++) {
+      var hits = 0;
+      for (var i = 0; i < STEPS.length; i++) for (var j = i+1; j < STEPS.length; j++) {
+        var pa = pos[STEPS[i]], pb = pos[STEPS[j]];
+        if (!pa || !pb) continue;
+        var ux = (pb.x-pa.x)/MIN_X, uy = (pb.y-pa.y)/MIN_Y;
+        var far = Math.max(Math.abs(ux), Math.abs(uy));
+        if (far >= 1) continue;
+        hits++;
+        if (far < 1e-9) { pa.y -= MIN_Y/2; pb.y += MIN_Y/2; continue; }
+        var grow = (1/far - 1)/2;
+        pa.x -= ux*MIN_X*grow; pa.y -= uy*MIN_Y*grow;
+        pb.x += ux*MIN_X*grow; pb.y += uy*MIN_Y*grow;
+      }
+      STEPS.forEach(function (n) {
+        var p = pos[n]; if (!p) return;
+        p.x = Math.min(Math.max(p.x, NODE_W/2+4), VB.w-NODE_W/2-4);
+        p.y = Math.min(Math.max(p.y, NODE_H/2+4), VB.h-NODE_H/2-4);
+      });
+      if (!hits) break;
+    }
+    return { r: r, keep: keep, stranded: stranded, idx: idx };
+  }
+
+  function drawMesh() {
+    var st = relayout(), out = [];
+    var read = WIRES.readWires(STEPS, wires);
+    var byPair = {};
+    read.rows.forEach(function (r) { byPair[r.from + " " + r.to] = r; });
+    var reach = {};
+    STEPS.forEach(function (n, k) {
+      reach[n] = !st.r.dead && isFinite(st.r.D[st.idx[ANCHOR]][k]);
+    });
+
+    wires.forEach(function (w) {
+      var A = pos[w[0]], B = pos[w[1]];
+      if (!A || !B) return;
+      var r = byPair[w[0] + " " + w[1]];
+      var col = r && r.kind === "hold" ? "var(--hold)"
+              : r && r.kind === "spare" ? "var(--spare)" : "var(--share)";
+      out.push('<line x1="'+A.x.toFixed(1)+'" y1="'+A.y.toFixed(1)+
+        '" x2="'+B.x.toFixed(1)+'" y2="'+B.y.toFixed(1)+'" stroke="'+col+
+        '" stroke-width="'+(1.2 + 2.2*(r ? r.bearing : .5)).toFixed(2)+
+        '" stroke-opacity=".85"/>');
+    });
+    STEPS.forEach(function (n) {
+      var p = pos[n]; if (!p) return;
+      var isEnd = n === ANCHOR;
+      var col = !reach[n] ? "var(--mute)" : isEnd ? "var(--hold)" : "var(--ink-2)";
+      out.push('<g class="node" data-id="'+esc(n)+'" tabindex="0" role="button" aria-label="'+
+        esc(n)+(isEnd?", the last step":"")+'" opacity="'+(reach[n]?"1":".55")+'">'+
+        '<rect x="'+(p.x-NODE_W/2).toFixed(1)+'" y="'+(p.y-NODE_H/2).toFixed(1)+
+        '" width="'+NODE_W+'" height="'+NODE_H+'" rx="9" fill="var(--card-2)" stroke="'+col+
+        '" stroke-width="'+(isEnd?2:1.4)+'"/>'+
+        '<text x="'+p.x.toFixed(1)+'" y="'+(p.y+3.5).toFixed(1)+'" fill="'+col+
+        '" font-size="9.4" text-anchor="middle" font-weight="600">'+esc(n)+'</text>'+
+        '<rect class="hit" x="'+(p.x-NODE_W/2-8).toFixed(1)+'" y="'+(p.y-NODE_H/2-8).toFixed(1)+
+        '" width="'+(NODE_W+16)+'" height="'+(NODE_H+16)+'"/></g>');
+    });
+    $("#view").innerHTML = '<div class="stage" id="stage"><svg id="canvas" viewBox="0 0 '+
+      VB.w+' '+VB.h+'" preserveAspectRatio="xMidYMid meet" role="img" '+
+      'aria-labelledby="cdesc"></svg><p id="cdesc" class="sr">'+STEPS.length+
+      ' steps and '+wires.length+' wires. Drag a step to tighten or loosen what it hangs from.</p></div>';
+    $("#canvas").innerHTML = out.join("");
+    bindDrag();
+    return read;
+  }
+
+  function render() {
+    var state = WIRES.meshEarnsItsPlace(STEPS, wires, ANCHOR);
+    $("#limittext").textContent = WIRES.LIMIT;
+    fillPickers();
+
+    if (!state.draw) {
+      var m = WIRES.refusal(state);
+      $("#answer").innerHTML = '<div class="big">'+esc(m.head)+"</div>";
+      $("#view").innerHTML = '<div class="empty"><b>'+esc(m.head)+"</b><p>"+
+        esc(m.body)+'</p><button type="button" id="hint">'+esc(m.cta)+"</button></div>";
+      $("#rows").innerHTML = ""; $("#tot").innerHTML = ""; $("#fell").innerHTML = "";
+      return;
+    }
+
+    var read = drawMesh();
+    var sole = read.rows.filter(function (r) { return r.kind === "hold"; }).length;
+    var head = sole === read.rows.length
+      ? "<em>Every one</em> of the " + read.rows.length + " wires is the only thing doing its job."
+      : "<em>" + sole + " of " + read.rows.length + "</em> wires have nothing else doing their job.";
+    var sub = sole === read.rows.length
+      ? "Nothing here is held up twice. Cut any wire and the pieces below it come down."
+      : "The rest share the load, so cutting one of those would not bring anything down.";
+    if (read.pieces > 1) {
+      sub = "This is now hanging in " + read.pieces + " separate pieces.";
+    }
+    $("#answer").innerHTML = '<div class="big">'+head+"</div><p>"+sub+"</p>";
+
+    $("#rows").innerHTML = read.rows.map(function (r) {
+      return '<button class="row" data-i="'+r.i+'" data-k="'+r.kind+'" type="button">'+
+        '<span class="nm"><b>'+esc(r.from)+'</b><span class="to">holds up '+esc(r.to)+
+        '</span><span class="pct">'+Math.round(r.bearing*100)+'%</span></span>'+
+        '<span class="bar"><i style="width:'+(r.bearing*100).toFixed(1)+'%"></i></span>'+
+        '<span class="say">'+esc(r.say)+' Tap to cut it.</span></button>';
+    }).join("");
+
+    $("#tot").innerHTML = "<b>"+read.total.toFixed(2)+"</b><span>carried in total<br>"+
+      read.parts+" steps − "+read.pieces+" piece"+(read.pieces===1?"":"s")+" = "+
+      read.expected+", always. Nothing here was scored.</span>";
+
+    $("#fell").innerHTML = fell && fell.length
+      ? '<p class="fell">Came down: '+fell.map(esc).join(", ")+"</p>" : "";
+  }
+
+  function fillPickers() {
+    var opts = STEPS.map(function (s) { return '<option>'+esc(s)+"</option>"; }).join("");
+    if ($("#from").innerHTML !== opts) { $("#from").innerHTML = opts; $("#to").innerHTML = opts; }
+  }
+
+  function bindDrag() {
+    var stage = $("#stage"); if (!stage) return;
+    function pt(ev) {
+      var svg = $("#canvas"), rect = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+      var sc = Math.min(rect.width/vb.width, rect.height/vb.height);
+      var ox = (rect.width - vb.width*sc)/2, oy = (rect.height - vb.height*sc)/2;
+      return { x:(ev.clientX-rect.left-ox)/sc, y:(ev.clientY-rect.top-oy)/sc };
+    }
+    stage.addEventListener("pointerdown", function (ev) {
+      var g = ev.target.closest(".node"); if (!g) return;
+      var id = g.getAttribute("data-id"), k = -1;
+      wires.forEach(function (w, i) { if (k < 0 && (w[0] === id || w[1] === id)) k = i; });
+      if (k < 0) return;
+      var other = wires[k][0] === id ? wires[k][1] : wires[k][0];
+      var src = pos[other], p = pt(ev); if (!src) return;
+      drag = { k:k, J0:wires[k][2], r0:Math.hypot(p.x-src.x, p.y-src.y)||1, src:src };
+      stage.setPointerCapture(ev.pointerId); ev.preventDefault();
+    });
+    stage.addEventListener("pointermove", function (ev) {
+      if (!drag) return;
+      var p = pt(ev), r = Math.hypot(p.x-drag.src.x, p.y-drag.src.y)||1;
+      var ratio = drag.r0/r;
+      wires[drag.k][2] = Math.max(0.01, Math.min(400, drag.J0*ratio*ratio));
+      render(); ev.preventDefault();
+    });
+    ["pointerup","pointercancel"].forEach(function (n) {
+      stage.addEventListener(n, function () { drag = null; });
+    });
+  }
+
+  $("#addwire").onclick = function () {
+    var a = $("#from").value, b = $("#to").value;
+    if (a === b) return;
+    if (wires.some(function (w) {
+      return (w[0]===a&&w[1]===b)||(w[0]===b&&w[1]===a); })) return;
+    wires.push([a, b, 3]); fell = null; render();
+  };
+  $("#rows").addEventListener("click", function (ev) {
+    var b = ev.target.closest("button[data-i]"); if (!b) return;
+    var i = +b.dataset.i;
+    fell = WIRES.whatFalls(STEPS, wires, i, ANCHOR);
+    wires.splice(i, 1); render();
+  });
+  $("#cut").onclick = function () {
+    if (!wires.length) return;
+    var i = WIRES.weakest(wires);
+    fell = WIRES.whatFalls(STEPS, wires, i, ANCHOR);
+    wires.splice(i, 1); render();
+  };
+  $("#reset").onclick = function () {
+    wires = []; fell = null; lastXY = null; lastKeep = null; render();
+  };
+  $("#theme").onclick = function () {
+    var d = document.documentElement, light = d.getAttribute("data-theme") === "light";
+    d.setAttribute("data-theme", light ? "dark" : "light");
+    $("#theme").textContent = light ? "Light" : "Dark";
+  };
+  document.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "hint") $("#from").focus();
+  });
+
+  render();
+  window.__planner = { STEPS:STEPS, get wires(){return wires;}, render:render,
+    add:function(a,b,j){wires.push([a,b,j||3]);render();} };
+})();
+</script>
+</body>
+</html>
