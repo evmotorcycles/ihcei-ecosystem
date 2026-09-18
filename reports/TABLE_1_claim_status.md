@@ -60,7 +60,7 @@ contradiction is the row's point.
 
 | # | Claim | Value | Source | Status |
 |---|---|---|---|---|
-| E1 | `E = U · ∏D_k` is a **fidelity product**, not a thermodynamic quantity | law | ledger §3; module grepped for physics vocabulary | design constraint |
+| E1 | `E = U · ∏D_k` is a **fidelity product**; the physics vocabulary ledger §3 names is absent from the module and grepped for | law | ledger §3 | design constraint |
 | E2 | Ratio floor is blind to `U`; absolute floor is not | depth **5** vs **5**; **5** vs **71** at `U=1000` | `stack/swarm/RESULTS.md`; commit `d16eac3` | measured |
 | E3 | Subdivision padding lowers best-route fidelity | 0.59049 → **0.531441** | same | measured |
 | E4 | **Bypass padding defeats the best-route sentry** | 0.59049 → **0.729**, clearing a 0.6 floor | same | measured — **recorded as a defeat** |
