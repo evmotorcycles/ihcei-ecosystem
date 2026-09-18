@@ -38,7 +38,8 @@ repository has **not** tested).
 | **C1** | `d² = κ·τ_rt` | **postulate** | Latency is not a proxy for distance; it *is* distance up to κ | A medium where τ_rt varies at fixed geometry and `d` does not track it, or the converse |
 | **C2** | κ is a constant of the medium, not of the graph | **postulate** | κ measurable once per medium, transferable across topologies | Fitting κ per-topology in one medium and finding it varies beyond stated error |
 | **C3** | Prediction in latent space = trajectory of least resistance | **postulate** | JEPA's objective is a physical minimisation | A JEPA whose latent trajectories are measurably *not* minimal-resistance paths while training succeeds |
-| **C4** | Metric collapse under parallel background conductance: as noise ↑, τ_rt → 0 and emergent distance shrinks | **postulate, partially substrate-supported** | In large contexts tokens *drown in proximity*, they do not stretch apart | A regime where added parallel conductance **increases** resistance. **Note:** B7 says the ratio API cannot see uniform scale, so this must be measured on *ratios between pairs*, not absolutes |
+| **C4a** | **UNIFORM** collapse: all conductances scale together | **postulate** | Every distance shrinks by the same factor | **Invisible to every ratio, pair ratios included** — uniform rescaling cancels in any quotient. Tested only by the geometric gate's **absolute** sensors: trace ratio against a declared reference, and effective rank |
+| **C4b** | **DIFFERENTIAL** collapse: background conductance rises relative to structure | **postulate** | Tokens *drown in proximity*; inside/across separation compresses | Tested on **pair ratios** — `R_eff` inside a clique ÷ `R_eff` across background, mirroring the 40-agent ring's **1.0406 → 0.1523** |
 | **C5** | Scale-dependence distinguishes Layer-3 from Layer-1 | **derived** | Foster (B3) is scale-invariant accounting; `d` is not | If a scale-invariant quantity tracked latency, C1 would lose its discriminating power |
 
 ## D. Falsification programme — the examinable core
@@ -48,31 +49,72 @@ repository has **not** tested).
 | D1 | Vary propagation latency at **fixed physical geometry** | sensor network with programmable delay | τ_rt at constant layout | C1 if `d` fails to track | **yes, pre-specified** |
 | D2 | Vary geometry at **fixed latency** | same, delay-compensated | layout at constant τ_rt | C1 if `d` tracks geometry anyway | yes |
 | D3 | Measure κ in two topologies, one medium | coupled oscillator array | topology | C2 if κ differs beyond error | yes |
-| D4 | Inject parallel background conductance, read **pair ratios** | any of the above | noise floor | C4 if ratios do not compress | yes |
+| D4a | **Uniform** rescale of all conductances, read **absolute** sensors (trace ratio vs declared reference, effective rank) | any of the above | global scale | C4a if absolutes do not shrink | yes |
+| D4b | Raise background conductance **relative to** structure, read **pair ratios** | any of the above | noise floor | C4b if inside/across does not compress | yes |
+| **D0** | **Blindness control:** uniform rescale must leave **every** pair ratio unchanged | any | global scale | the instrument itself, if a pair ratio moves | **null is the expected result** |
 | D5 | Trajectory audit against least-resistance paths | trained JEPA | — | C3 | yes |
 | D6 | **Horizon probe** — one measurement past every registered range, reported whichever way it falls | all | — | any trend claim | **mandatory** |
+
+**D0 — the mandatory blindness decoy (ruling 5).** Preregister it: a **uniform
+rescale must leave every pair ratio unchanged**. That null result is the
+**control**, not a failure — it is what shows the pair-ratio instrument cannot
+see uniform collapse. Any test in Chapter 4 claiming "collapse" without naming
+it **uniform** or **differential** is unexaminable and gets sent back.
 
 D6 is not optional. `geometric-gate/` found an empty band that finer sampling
 filled, and `stack/perception/` hit 3.112× inside its range and **reversed** one
 doubling past it. Both would have shipped a confident wrong number.
 
-## E. Effect sizes and horizons — to be registered *before* any run
+## E. Effect sizes and horizons — declared, per ruling 3
 
-| # | Item | Status |
+**No estimate of κ exists in any medium. None is invented here.** Chapter 4
+opens with that sentence and pivots: it does not claim κ is a known constant, it
+proposes the methodology required to measure κ from live attention matrices —
+which is **Door 1**, currently shut on container egress.
+
+| # | Item | Value | Tag |
+|---|---|---|---|
+| **E1** | **Identifiability of κ.** κ is identifiable **only** from absolute latency and absolute distance in a physical medium. It is **not** identifiable from normalised graph readouts: ratio-API blindness (B7) cancels it exactly. | — | **analysis** |
+| **E2** | **Minimum detectable effect:** 10% relative deviation of the latency–distance coupling from the postulate's prediction. Rationale: smaller effects sit below the sweep- and solver-noise this repository has demonstrated — the verdict flip across dtype, pinv library and assembly, and the empty band that finer sampling filled. | 10% rel. | **declared** |
+| **E3** | **Horizon:** one decade of latency variation, with a single mandatory probe at **1.5 decades**, reported whichever way it falls. | 1 decade + 1.5× probe | **declared** |
+| E4 | Symmetrisation choice declared per experiment (B6) | — | required |
+| E5 | Pre-registration hashed before any measurement | — | required |
+
+**E1 is the chapter's load-bearing claim**, and it cuts against the repository:
+every reading this project ships is a ratio or a rank, and κ is precisely the
+quantity ratios destroy. Door 1 is not an inconvenience for the measurement — it
+is the only route to it.
+
+## F. Related work — read, with the suite's OWN labels quoted (ruling 6)
+
+`physics-agency/lmd/comparison/` was read before this row was written. Its four
+verdicts, verbatim:
+
+| Theory | The suite's own verdict |
+|---|---|
+| Holographic / AdS-CFT (RT, Van Raamsdonk) | `COMPARABLE (qualitatively)` |
+| Quantum-information / emergent spacetime | `MOST ALIGNED (in spirit)` |
+| Loop Quantum Gravity / spin networks | `SILENT (offers nothing on its core claims)` |
+| Amplituhedron / positive geometry | `NOT COMPARABLE (different problem)` |
+
+Its own disclaimer, verbatim, and asserted by `test_comparison.py`:
+
+> *"LMD is a Layer-1 toy; not quantum gravity; no Google collaboration; hardware
+> test only proposed."*
+
+**The finding that matters for Chapter 5.** Both of the suite's experiments are
+already in §B as identities:
+
+| Experiment | What it reports | What it is |
 |---|---|---|
-| E1 | κ estimate + CI, per medium | **unregistered** — needs your numbers |
-| E2 | Minimum detectable effect for D1/D2 | **unregistered** |
-| E3 | Registered range for every trend, plus its mandatory past-horizon probe | **unregistered** |
-| E4 | Symmetrisation choice declared per experiment (B6) | required |
-| E5 | Pre-registration hashed before any measurement | required by CLAUDE.md |
+| A — Van Raamsdonk analogue | sweep `J → d`: 2.0→0.7071, 1.0→1.0, 0.5→1.4142, 0.25→2.0, 0.01→10.0; `inverse_sqrt_law: True` | **`d = J^(−1/2)` exactly** — identity **B2**, relabelled as a physics analogue |
+| B — metric axioms | 200 networks, 43,200 triangle checks, **0 violations** | resistance distance **is** a metric; a theorem, not a measurement |
 
-## F. Related work — recorded as retractions, not as support
-
-| # | Item | Status |
-|---|---|---|
-| F1 | Holographic / emergent-gravity analogies | **motivation only**; no in-repo bearing |
-| F2 | This repository's own physics claims | **guarded against** by A2 — cite the guard, not a retraction, because the claim was blocked rather than published |
-| F3 | Emergent-spacetime comparison suite | exists and is labelled *"honest"* in the pipeline; **its content must be read before Chapter 5 is written** — not yet inventoried |
+So the suite carries **no live claim of physical emergence** — one identity, one
+theorem, and four comparison verdicts of which two are `SILENT` and `NOT
+COMPARABLE`. Chapter 5 cites it as **substrate and as the project's own
+disclaimer**, never as support. There is no retraction to record, because the
+claim was **guarded against rather than published** (A2).
 
 ## G. Limitations to carry into every chapter
 
@@ -86,14 +128,16 @@ doubling past it. Both would have shipped a confident wrong number.
 
 ---
 
-## Rulings needed before chapters
+## Status after rulings — this table is resubmitted for re-approval
 
-1. **A2** — the repository actively forbids this thesis's claim in shipped
-   output. Confirm the thesis proceeds as an explicitly *untested postulate with
-   a falsification programme*, citing that guard as its starting position.
-2. **E1–E3** — κ estimates, effect sizes and horizons are yours to set. I will
-   not invent them; without them Chapter 4 is unexaminable.
-3. **F3** — may I read the emergent-spacetime comparison suite before drafting
-   Chapter 5? I have not inventoried it and will not characterise it unread.
-4. **C4** — confirm the collapse claim is to be tested on **pair ratios**. As
-   written it is invisible to the ratio API (B7).
+| ruling | disposition |
+|---|---|
+| 3 — κ, effect sizes, horizons | **applied.** No κ invented. E1 identifiability, E2 10% MDE declared, E3 one-decade horizon + 1.5× probe. Chapter 4 pivots to *how to measure κ* via Door 1. |
+| 5 — collapse mode | **applied.** C4 split into C4a uniform / C4b differential. Uniform is invisible to **all** ratios, not only absolutes — pair ratios included — so it is tested by absolute sensors; D0 preregisters the blindness decoy as a control. |
+| 6 — comparison suite | **applied.** Read first; labels quoted; both experiments identified as identity + theorem. |
+
+**One correction to my own earlier row.** The pre-ruling C4 said the collapse
+"must be measured on ratios between pairs, not absolutes." That was wrong in the
+same direction the ruling corrects: pair ratios cannot see **uniform** collapse
+either, because uniform rescaling cancels in *any* quotient. Only differential
+collapse is a pair-ratio quantity.

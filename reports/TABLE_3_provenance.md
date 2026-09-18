@@ -12,14 +12,15 @@ below correct the provenance the commissioning prompt assigned.
 
 ---
 
-## A. Provenance corrections to the commissioning prompt
+## A. Provenance corrections — ALL RESOLVED BY RULING
 
-| # | Prompt said | Correct provenance | Evidence |
+| # | Prompt said | Correct provenance | Disposition |
 |---|---|---|---|
-| **A1** | *"The 39-hop fidelity decay narrative is **external-claimed**"* | **`simulated`** | `lism-cohorts/meta_lism.py:102` — `cohort_D_swarm(seed=20260719, N=500)`, `random.Random(seed)`. `lism-cohorts/README.md`: *"live re-simulation, seeded, stdlib"*. Not external, and not observed. |
-| **A2** | — | **Live mislabel in the repository** | Root `README.md:38` — *"Validated against **real** 39-hop telemetry"*. It is seeded simulation. Flagged in Table 1 §H5 as a retirement candidate. |
-| **A3** | *"the **verified** July 2026 HF/OpenAI Sandbox Breakout incident"* | **`external-claimed`, primaries unread** | `DOOR2_STATUS.md`: both first-party disclosures **egress-blocked**; verdict rests on secondary reporting. The word *verified* cannot be carried. Human check **OPEN**, ledger §8. |
-| **A4** | *"p = 0.044777 clean / 0.025679 leaky"* | **Confirmed `repo-measured`** | Recomputed 2026-09-18 over the full C(22,6) = 74,613 enumeration. The prompt's pairing is correct. |
+| **A1** | *"the 39-hop decay is **external-claimed**"* | **`simulated`** — `meta_lism.py:102`, `cohort_D_swarm(seed=20260719, N=500)` | **Ruling 1.** `simulated` added to the vocabulary. Its **absence** is what let the overclaim survive: with only `measured` and `external-claimed` available, a seeded cohort drifted to the nearest label. |
+| **A2** | — | Root `README.md:38` claimed *"real 39-hop telemetry"* | **RETIRED `a9ac3e6`** across 8 surfaces, including a test function name and the `REAL_REPRODUCIBLE` → `SIMULATED_REPRODUCIBLE` ledger label. |
+| **A3** | the prompt applied an adjective of confirmation to the July 2026 incident (retired wording quoted in ledger §16) | **`external-claimed`, primaries unread** | **Ruling 2.** The adjective was struck (retired wording in ledger §16). `DOOR2_STATUS.md` now reads *"externally-reported facts … (primary sources unread)"*. Ledger §16 records the three URLs, corroborated out-of-repo 2026-09-17, **never fetched by this repository**; per-hop payload availability **UNCONFIRMED**. |
+| **A4** | — | Confirmed `repo-measured`: `p_clean = 0.044777`, `p_leaky = 0.025679`, 74,613 enumerations | Recomputed 2026-09-18, not copied. The prompt's pairing was correct. |
+| **A5** | — | **A locked prereg already carried the correct analysis.** `text-channel/PREREG.md` named Cohort D *"the sharpest case… a seeded simulation that reproduces itself"* and warned that presenting it as evidence about real swarms *"would repeat exactly the error that the N=793 retraction was issued for."* | **The structural finding for Chapter 6.** Correct analysis, locked and hashed, while the front door said the opposite. **A prohibition in a locked file does not propagate to surfaces that never read it.** |
 
 ## B. LISM — channel accounting
 
@@ -33,7 +34,7 @@ below correct the provenance the commissioning prompt assigned.
 | B6 | Subdivision padding | 0.59049 → **0.531441** | repo-measured `d16eac3` | moves against the attacker |
 | B7 | **Bypass padding defeats `ratio_best`** | 0.59049 → **0.729** past a 0.6 floor | repo-measured `d16eac3` | recorded as a **defeat** |
 | B8 | `ratio_worst` survives bypass | 0.59049, trips | repo-measured | why both are returned, never fused |
-| B9 | 39-hop decay 0.84 → 0.01, r = −0.887, N=500 | — | **simulated** (A1) | must not be described as telemetry |
+| B9 | 39-hop decay 0.84 → 0.01, r = −0.887, N=500 | seed 20260719 | **`simulated`** | must not be described as telemetry; retired `a9ac3e6` |
 | B10 | Aggregate resistance is **not** a fidelity proxy | claim | design | redundancy masks serial decay |
 
 ## C. LMD telemetry on declared graphs
@@ -72,8 +73,8 @@ below correct the provenance the commissioning prompt assigned.
 | E3 | max load on that fixture | 0.3333 → 0.2566 (**falls**) | repo-measured |
 | E4 | incident scale ~1,200 agents / >70,000 messages / ~700 participating | — | **external-claimed**, primaries unread (A3) |
 | E5 | corpus analysed under access, no public release found | — | external-claimed |
-| E6 | Kill-switch failure as node deletion | argument | **design / analysis** — not measured |
-| E7 | `R_eff = ∞` as air-gap defence | argument | **design / analysis** — not measured; it is the definition of disconnection, not a result |
+| **E6** | Kill-switch failure as node deletion | theorem about a stated model | **`derived`** | A theorem whose **premise is untested**: that a post-coordination swarm communication graph has no articulation points. That premise is tagged **`open`** and has never been measured here. A theorem about an untested premise is analysis, and this row says so. |
+| **E7** | `R_eff = ∞` across components | — | **`identity`** — **struck from the findings list** | The guarded metric assigns `inf` across components **by construction**. Any claim that monitors "became infinitely far" **restates the guard rather than reporting evidence**. Chapter 5 frames air-gapping not as a defeated swarm tactic but as **the only mathematically valid topological state that guarantees isolation**. |
 | E8 | Unsanctioned channels are undeclared **by definition** | boundary | design — the declared-graph limit |
 | E9 | Subgroup finding on an undeclared graph is community detection, not telemetry | boundary | design |
 
@@ -116,12 +117,17 @@ below correct the provenance the commissioning prompt assigned.
 
 ---
 
-## Rulings needed before chapters
+## Status after rulings — resubmitted for re-approval
 
-1. **A1/A2** — confirm the 39-hop decay is tagged `simulated` throughout, and
-   say whether the root `README.md` "real telemetry" line is retired now.
-2. **A3** — confirm *"verified"* is dropped from the incident description.
-3. **E6/E7** — the kill-switch and `R_eff = ∞` arguments are **analysis, not
-   measurement**. Confirm they are presented as such; `R_eff = ∞` is the
-   definition of a disconnected graph, so it cannot also be a finding about one.
-4. Whether Chapter 5 may cite E1–E3 at all, given H1.
+| ruling | disposition |
+|---|---|
+| 1 | **applied** — `simulated` in the vocabulary; `cohort_*` output carries it; 22-repo fixture stays `measured`; retirement `a9ac3e6` |
+| 2 | **applied** — the adjective struck from every surface; ledger §16 records the retired wording, the URLs, the corroboration date, the never-fetched status, and that payload availability is unconfirmed |
+| 4 | **applied** — E6 re-tagged `derived` with its premise tagged `open`; E7 re-tagged `identity` and **struck from findings** |
+
+**Chapter 5 must state, in the register the ledger uses:** it analyses
+**secondary topological reporting, not primary logs**. That sentence is not a
+caveat at the end; it is the chapter's scope line.
+
+**Remaining for your call:** whether Chapter 5 may cite E1–E3 at all given H1 —
+every one of those numbers describes a graph this project drew.

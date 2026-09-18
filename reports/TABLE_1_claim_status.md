@@ -14,13 +14,14 @@ contradiction is the row's point.
 
 ---
 
-## A. Three prompt premises that do not survive the repository
+## A. Three prompt premises that did not survive — ALL NOW RESOLVED BY RULING
 
-| # | Prompt premise | What the repo says | Consequence for the report |
+| # | Prompt premise | What the repo said | Disposition |
 |---|---|---|---|
-| **A1** | *"the 2026 OpenAI–Hugging Face incident cited from **first-party disclosures only**"* | `stack/swarm/DOOR2_STATUS.md`: both first-party domains were **egress-blocked from this container and were not read directly**. The Branch B verdict rests on dataset search returning empty and on **secondary reporting**. | **First-party citation is not available.** The incident can appear only as `external-claimed`, with the unread-primary-source limitation stated. The human check is **OPEN** (ledger §8). |
-| **A2** | *"The 39-hop fidelity decay narrative is **external-claimed**"* (Prompt 3) | Worse and different. `lism-cohorts/meta_lism.py:102` — `cohort_D_swarm(seed=20260719, N=500)`, `random.Random(seed)`. Cohort D is a **seeded simulation**. `lism-cohorts/README.md` labels it *"live re-simulation, seeded, stdlib"*. | Provenance is **`simulated`**, not external-claimed. See A3 — it is also currently mislabelled. |
-| **A3** | — | **Live overclaim found.** Root `README.md:38`: *"Validated against **real** 39-hop telemetry (`lism-cohorts/appendix/cohort_D_decay.csv`, fidelity 0.84 → 0.01)."* The cohort it cites is seeded simulation. | This is a **retirement candidate**, not a citable result. It is the only live overclaim this inventory found, and it is in the repository's front door. |
+| **A1** | *"cite the incident from **first-party disclosures only**"* | `DOOR2_STATUS.md`: both first-party domains **egress-blocked, never read**. Verdict rests on secondary reporting. | **Ruling 2 applied.** Tagged `external-claimed`, primaries unread. The prompt's adjective of confirmation was struck from every repo surface (`a9ac3e6`); ledger §16 holds the retired wording and is exempt by role. Ledger §16 lists the three URLs, their out-of-repo corroboration date 2026-09-17, and states the repository has never fetched them. Per-hop payload availability **UNCONFIRMED**. |
+| **A2** | *"the 39-hop decay is **external-claimed**"* | `meta_lism.py:102` — `cohort_D_swarm(seed=20260719, N=500)` over `random.Random(seed)`. **Seeded simulation.** | **Ruling 1 applied.** Provenance vocabulary gained **`simulated`**; its absence is what let the overclaim survive, since a seeded cohort had nowhere correct to sit. |
+| **A3** | — | Root `README.md:38`: *"Validated against **real** 39-hop telemetry."* | **RETIRED `a9ac3e6`.** Replaced with the seeded wording; claim family (`real`/`observed`/`production`/`live`) grepped and retired across **8 files in one commit**, including a test function name and the `REAL_REPRODUCIBLE` ledger label. Ledger §15. |
+| **A4** | — | **`text-channel/PREREG.md` — a LOCKED prereg — already said it**: *"Cohort D is the sharpest case. It is a seeded simulation that reproduces itself… Presenting its 39-hop fidelity decay as evidence about real agent swarms would repeat exactly the error that the N=793 retraction was issued for."* | **The finding.** The correct analysis was locked, hashed and shipped while the front door claimed the opposite. **A prohibition in a locked file does not propagate to surfaces that never read it** — the same shape as §13. Ledger §15. |
 
 ## B. Layer-1 measured results
 
@@ -67,9 +68,9 @@ contradiction is the row's point.
 | E5 | Three of five sensors fall to declared padding | cuts, max load, best-route fidelity | ledger §3 | measured |
 | E6 | OR-gate earned: star trips structure only; 12-ring trips fidelity only | 0.81 vs 0.531441; cuts 1 vs 0 | same | measured |
 | E7 | `R_eff` inside/across is the only formation sensor that moves | **1.0406 → 0.1523** | `DOOR2_STATUS.md`, **synthetic** 40-agent ring + 12-agent clique | measured **on a synthetic fixture** |
-| E8 | 2026 incident scale | ~1,200 agents, >70,000 messages, ~700 participating | `DOOR2_STATUS.md` | **external-claimed**, primaries unread (A1) |
+| E8 | 2026 incident scale | ~1,200 agents, >70,000 messages, ~700 participating | `DOOR2_STATUS.md`, now reading *"externally-reported… (primary sources unread)"* | **external-claimed**, primaries unread; no motive attribution |
 | E9 | Corpus availability | analysed by third-party evaluators under access; **no public release found** | `DOOR2_STATUS.md` | external-claimed |
-| E10 | 39-hop decay 0.84 → 0.01, r = −0.887 | N=500 | `lism-cohorts/`, `seed=20260719` | **simulated** (see A2/A3) |
+| E10 | 39-hop decay 0.84 → 0.01, r = −0.887 | N=500 | `lism-cohorts/`, `seed=20260719` | **`simulated`** — retired from every "real" surface, `a9ac3e6` |
 
 ## F. Organization cohort — exact permutation nulls
 
@@ -104,7 +105,7 @@ Recomputed during this inventory, not copied from a write-up.
 | H2 | Identity check shipped labelled as a tautology | a reader skimming a green suite counts it | deleted; wrapper decision recorded | **retired** — ledger §4c |
 | H3 | Frozen band `0.5 < stable/raw < 0.95` | a ratio band is a frozen count in disguise | relationship assertions | **retired** — ledger §4b |
 | H4 | `each_settles == 1/484`; hub `echo/echo.mjs` | repo grew; hub moved to `spar/spar.py`, 1/676 | denominator derived at runtime | **retired** — ledger §13b, commit `f50ab22` |
-| H5 | `"Validated against real 39-hop telemetry"` | Cohort D is `seed=20260719` simulation | **none yet** | **RETIREMENT CANDIDATE — needs your ruling** |
+| H5 | `"Validated against real 39-hop telemetry"` | Cohort D is `seed=20260719` simulation; a locked prereg already said so | seeded wording, 8 surfaces, ledger §15 | **RETIRED 2026-09-18** — `a9ac3e6` |
 | H6 | Physics claims about latent space | `smi/test_smi.py` forbids printing "Space is Emergent", "spacetime", "physical distance" | scope held to software | **guarded by test** |
 
 ## I. Lineage — labelled lineage, never evidence
@@ -131,12 +132,14 @@ Recomputed during this inventory, not copied from a write-up.
 
 ---
 
-## Rulings needed before prose
+## Status after rulings — resubmitted for re-approval
 
-1. **H5** — retire the root `README.md` "real 39-hop telemetry" line? It is the
-   only live overclaim found.
-2. **A1** — confirm the incident may appear as `external-claimed` with primaries
-   unread, since first-party-only citation is impossible from this container.
-3. **I5** — is "the Karpathy Graph" to be presented as commissioning framing, or
-   dropped? Nothing in-repo measures it.
-4. Whether §J rows belong in the report body or an appendix.
+| ruling | disposition |
+|---|---|
+| 1 — H5 retirement | **applied** `a9ac3e6`: 8 surfaces, vocabulary amendment, ledger §15 |
+| 2 — incident provenance | **applied** `a9ac3e6`: the prompt's unsupported adjective struck from every surface — ledger §16 holds the retired wording and is exempt by role — plus URLs and corroboration date recorded as never-fetched |
+| — | `simulated` added to the provenance vocabulary; `cohort_*` output carries it; the 22-repo fixture stays `measured` |
+
+**Remaining for your call, unchanged:** I5 — whether "the Karpathy Graph"
+appears as commissioning framing or is dropped, since nothing in-repo measures
+it; and whether §J belongs in the body or an appendix.
