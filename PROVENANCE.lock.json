@@ -10,8 +10,17 @@
     "attribution_required": true
   },
   "algorithm": "SHA-256 leaves (0x00-prefixed) -> binary Merkle (0x01-prefixed internal), files sorted by path",
-  "merkle_root": "f12680a76156420066ca319b4542d24d34cb02d5360750bd20305d6794e2b640",
-  "git_commit": "22e10487d2baae1675ad56cb7937566870aef857",
+  "merkle_root": "26f9454f4cb8f61b3b23c723b7b5ef565a4610c9d71ab839d5390c7f845a8970",
+  "supersedes": "f12680a76156420066ca319b4542d24d34cb02d5360750bd20305d6794e2b640",
+  "supersession_chain": [
+    {
+      "root": "f12680a76156420066ca319b4542d24d34cb02d5360750bd20305d6794e2b640",
+      "superseded_on": "2026-09-18",
+      "reason": "H5 retirement (declarations.md \u00a715): lism-cohorts/README.md corrected 'live re-simulation, seeded' to 'seeded simulation re-run here (not observed)'. Cohort D is a seeded simulation and the frozen record said otherwise. One file of 77 changed; nothing was added or removed."
+    }
+  ],
+  "supersession_note": "This lock SUPERSEDES the root above; it does not replace it. The attribution, affiliation and origin are unchanged -- only the snapshot moved, and the reason it moved is recorded in the chain. Misattribution stays detectable: the chain is the audit trail back to the first-published root.",
+  "git_commit": "0fa804239152a9da643656c5ba8b0fb12a00b6cd",
   "file_count": 77,
   "covers": "All pre-registration specs + manifests, authored corpora, the offline knowledge fixture, and the manuscripts/READMEs for LISM, LMD, the four cohorts (yeast 4825 / GitHub 992 / knowledge 793 / digital swarm), the three validation stages, Hinton & Russell tests, benchmark-governance, and the tau_v cohort. Passed, NULL, and NEGATIVE results alike.",
   "attribution_statement": "This artifact set originates from Mago, Labib (Novora Research Initiative, Open Science Division), https://github.com/evmotorcycles/ihcei-ecosystem. If you reproduce, extend, or build upon it \u2014 including reproducing its null or negative results \u2014 you must retain this attribution and cite the origin. A faithful reproduction recomputes the merkle_root below; that root is the cryptographic reference back to this source. Do not represent this work, or reproductions of it, as your own origin.",
@@ -70,7 +79,7 @@
     "kaggle-lism/prereg/kaggle_prereg.json": "0a5feb6c79e9ad71d9f6891ccbac8eff8089fef5180a2b9b2776dab78396beaf",
     "knowledge-breakthroughs/prereg/MANIFEST.sha256.json": "dbb4f7fdd720364c72d50d85148a8ec76a03a78fcf724af6f53cd93058232872",
     "knowledge-breakthroughs/prereg/knowledge_prereg.json": "5d468f9ef84f806040722748c037d0c376ccfeca248093b67d2db08844abfdd6",
-    "lism-cohorts/README.md": "5af5d31cb6db8c75a793bbe6a41e6383d721cd46a5dc39d2e753eadf970c772b",
+    "lism-cohorts/README.md": "03651d474c534c71533751b81e70af7ba5fe27e5e7057b2c81fed6e61cd4f85d",
     "lism-cohorts/prereg/MANIFEST.sha256.json": "d8dc4ab264d7f311d3d0f02c2b8cd4e084f5fb67673c6eebffe4b6ccda74b7ad",
     "lism-cohorts/prereg/cohorts_prereg.json": "06d30d81b7f2d0d341c7a6a97a618e3b6a780f6cef7094971eae9b257746050d",
     "novora-helm/prereg/stage1_spec.json": "68bc02dcd4117d2fa12655774b24601202e8e86eb1e60bed22874986ad1c6ae1",
