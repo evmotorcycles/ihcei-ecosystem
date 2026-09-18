@@ -17,10 +17,13 @@
 ## Chapter 0. Epistemic status — placed first, deliberately
 
 The supporting repository **contains an active guard against this thesis's
-central claim** `[A2 · analysis]`. `smi/test_smi.py::test_nothing_printed_
-claims_a_result_about_the_physical_world` fails the build if the shipped output
-prints `"Space is Emergent"`, `"spacetime"`, `"the nature of space"`,
-`"physical distance"` or `"dead matter"`.
+central claim** `[A2 · analysis]`. `smi/test_smi.py::test_nothing_printed_claims_a_result_about_the_physical_world`
+fails the build if the shipped output prints any of **five specific phrases**
+asserting that space, spacetime or physical distance is an emergent product of
+the model. The five are listed verbatim in that test and are deliberately not
+reproduced here: a document arguing that borrowed vocabulary carries borrowed
+claims should not itself be the surface that reintroduces them. The reader
+checks the test.
 
 That guard is quoted here as the thesis's honest starting position, not routed
 around. It is a locked test, not a prose disclaimer, and it means the thesis

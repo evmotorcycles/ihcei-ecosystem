@@ -106,7 +106,7 @@ Recomputed during this inventory, not copied from a write-up.
 | H3 | Frozen band `0.5 < stable/raw < 0.95` | a ratio band is a frozen count in disguise | relationship assertions | **retired** — ledger §4b |
 | H4 | `each_settles == 1/484`; hub `echo/echo.mjs` | repo grew; hub moved to `spar/spar.py`, 1/676 | denominator derived at runtime | **retired** — ledger §13b, commit `f50ab22` |
 | H5 | `"Validated against real 39-hop telemetry"` | Cohort D is `seed=20260719` simulation; a locked prereg already said so | seeded wording, 8 surfaces, ledger §15 | **RETIRED 2026-09-18** — `a9ac3e6` |
-| H6 | Physics claims about latent space | `smi/test_smi.py` forbids printing "Space is Emergent", "spacetime", "physical distance" | scope held to software | **guarded by test** |
+| H6 | Physics claims about latent space | `smi/test_smi.py` forbids printing five named emergence phrases (listed verbatim in that test, not reproduced here) | scope held to software | **guarded by test** |
 
 ## I. Lineage — labelled lineage, never evidence
 

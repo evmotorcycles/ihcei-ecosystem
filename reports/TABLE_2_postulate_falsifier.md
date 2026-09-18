@@ -16,7 +16,7 @@ repository has **not** tested).
 | # | Fact | Consequence for the thesis |
 |---|---|---|
 | **A1** | **Nothing in this repository measures κ in a physical medium.** `physics-agency/prereg/run.py` takes `kappa` as a *simulation parameter* read from a prereg JSON. | κ is an **unmeasured free parameter**. No chapter may present any in-repo number as a value of κ. |
-| **A2** | `smi/test_smi.py::test_nothing_printed_claims_a_result_about_the_physical_world` **forbids** the strings `"Space is Emergent"`, `"spacetime"`, `"the nature of space"`, `"physical distance"`, `"dead matter"` in shipped output. | The repository contains an **active guard against** this thesis's claim. That is the thesis's honest starting position, and the guard is a feature to cite, not an obstacle to route around. |
+| **A2** | `smi/test_smi.py::test_nothing_printed_claims_a_result_about_the_physical_world` **forbids** five named emergence phrases in shipped output, listed verbatim in that test and deliberately not reproduced here. | The repository contains an **active guard against** this thesis's claim. That is the thesis's honest starting position, and the guard is a feature to cite, not an obstacle to route around. |
 | **A3** | Every Layer-1 result is an identity or a measurement **on a declared graph**. | The repository is the thesis's **substrate**, never its evidence. |
 
 ## B. Identities — the substrate

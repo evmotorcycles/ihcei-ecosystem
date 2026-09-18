@@ -22,9 +22,7 @@ violates it.)
 not a measure of uncertainty over a distribution, and it has no units of
 information. What is genuinely information-theoretic about it is
 weaker and more precise: taking logs, `log E = log U + Σ log D_k`, so
-**log-fidelity is additive across serially composed channels.** That additivity
-is the whole of the analogy, and it is worth stating exactly because it is what
-licenses reasoning about serial composition at all.
+**log-fidelity is additive across serially composed channels.** The thesis names this property **log-additive channel retention**, and uses that name throughout in place of the commissioned one. A positive name matters: a correction that only says what a quantity is *not* leaves the discredited term as the only available shorthand, and it returns in the next abstract. That additivity is the whole of the analogy, and it licenses reasoning about serial composition.
 
 The correction matters for the same reason the ledger's standing prohibition on
 physics vocabulary matters: **borrowed vocabulary implies borrowed results.** A quantity given the name of an uncertainty measure inherits, in the reader's mind, theorems that were established about a different object. The supporting repository forbids the physics
@@ -77,7 +75,7 @@ Nothing quantitative. The incident is the thesis's **motivating context** and
 never its data. Every number in Chapters 2–5 comes from a fixture the project
 drew `[H1 · threat to validity]`.
 
-## Chapter 2. LISM as serial channel accounting
+## Chapter 2. LISM as log-additive channel retention
 
 ### 2.1 The law and its floor
 
@@ -291,6 +289,18 @@ combined**, in either direction.
 The three textual claims appear here **only** as instances of the reporting
 standard this thesis adopts. **None of them supports any swarm claim, and none
 is cited anywhere else in this outline.**
+
+One further verdict belongs in this list, and it is included because the
+commissioning draft asked for a different one. That draft cited a
+*"118,443-case judicial database"* as `NOT BACKED`. **No such dataset exists in
+this repository**, and a claim tagged as unbacked is still a claim: inventing
+one to demonstrate rigour is the same defect as inventing one to demonstrate a
+result. What the repository does contain is the **legislation / judicial
+channel**, whose two-hop coupling is reported **INCONCLUSIVE** — no independent
+second fidelity hop, and underpowered — with the note that a full two-hop test
+*"needs the implementation/judicial hop via a data-holder partnership."* That is
+a verdict, not a gap, and it is the honest version of the row that was asked
+for.
 
 | claim | verdict | the fine print, carried in full |
 |---|---|---|
