@@ -290,17 +290,19 @@ The three textual claims appear here **only** as instances of the reporting
 standard this thesis adopts. **None of them supports any swarm claim, and none
 is cited anywhere else in this outline.**
 
-One further verdict belongs in this list, and it is included because the
-commissioning draft asked for a different one. That draft cited a
-*"118,443-case judicial database"* as `NOT BACKED`. **No such dataset exists in
-this repository**, and a claim tagged as unbacked is still a claim: inventing
-one to demonstrate rigour is the same defect as inventing one to demonstrate a
-result. What the repository does contain is the **legislation / judicial
-channel**, whose two-hop coupling is reported **INCONCLUSIVE** — no independent
-second fidelity hop, and underpowered — with the note that a full two-hop test
-*"needs the implementation/judicial hop via a data-holder partnership."* That is
-a verdict, not a gap, and it is the honest version of the row that was asked
-for.
+One further verdict belongs in this list. The commissioning draft asked for a
+*"118,443-case judicial database"* to be tagged `NOT BACKED`, and that request is
+**correct and already met**: `text-channel/README.md`'s availability audit records
+the judicial database as *"does not exist here"*, with the cited 118,443-case
+result and its *"1.24× citation premium, p≈0"* named as **not backed by any
+committed data in this repository**. The audit is the right home for it, and a
+thesis adds nothing by restating a gap its own repository already logs.
+
+What this thesis records in its place is the adjacent verdict that *is* about
+coupling: the **legislation / judicial channel** reports its two-hop result as
+**INCONCLUSIVE** — no independent second fidelity hop, underpowered — with the
+note that a full two-hop test *"needs the implementation/judicial hop via a
+data-holder partnership."* A real result, honestly bounded. A verdict, not a gap.
 
 | claim | verdict | the fine print, carried in full |
 |---|---|---|

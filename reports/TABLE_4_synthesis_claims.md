@@ -30,6 +30,33 @@ claims turned up.
 | **A4** | the text applies an adjective of confirmation to the incident | The confirming adjective was **struck from every repo surface** under ruling 2. Primaries were egress-blocked and **never fetched**; corroboration is out-of-repo and secondary. Per-hop payload availability remains **UNCONFIRMED**. | `external-claimed`, primaries unread |
 | **A5** | the text uses a completed-demonstration verb ~12 times | The repository's own engine carries a module constant whose value is the string `"NOTHING"`, named for exactly this verb. Nothing here demonstrates in that sense; things are measured, and identities hold. | **vocabulary `retired`** |
 
+## A6. A correction to MY correction — the judicial row was real
+
+I reported that the commissioning text had introduced a nonexistent dataset. **That
+was wrong about the source.** `text-channel/README.md:179` carries it verbatim in
+the availability audit:
+
+> `| Judicial database, N≥100,000 | **does not exist here.** The cited 118,443-case
+> result and its "1.24× citation premium, p≈0" are **not backed by any committed
+> data in this repository** |`
+
+The **dataset** does not exist — that is what the audit says. What does exist, and
+what I missed, is the repository's own **record of the gap**. The row was cited,
+not invented.
+
+**How the error happened, because the mechanism matters more than the apology:** I
+grepped for `judicial|118,?443`, piped through `head -5`, got five hits from
+`legislation_real_experiment.py` and `biorxiv-lism/`, and printed a label reading
+*"(blank = NOT PRESENT)"* beneath a result that was **not blank**. The truncation
+discarded the hit and the label asserted a conclusion the output did not support.
+A `head` on a search whose answer is "does this exist anywhere" is not a search;
+it is a sample.
+
+**The disposition is unchanged**: the thesis carries no row for the judicial
+figure, because the ruling was that the availability audit already records it and
+a thesis has nothing to add. What changes is why — *already recorded elsewhere*,
+not *fabricated here*.
+
 ## B. `repo-measured` — LMD / audit
 
 | # | Claim | Value | Commit | Tag |
