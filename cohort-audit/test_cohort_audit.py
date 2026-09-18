@@ -100,7 +100,8 @@ def test_cohort_integrity_audit_including_its_gaps():
         assert r["C2_yeast_outcome_GAP"]["gap_closed"] is True, \
             "yeast outcome coupling left the gap list without a verified closure"
     if "D_digital_swarm" not in c6["simulations"]:
-        assert r["C6_integrity_ledger"]["ledger"]["D_digital_swarm"].startswith("REAL_REPRODUCIBLE")
+        assert r["C6_integrity_ledger"]["ledger"]["D_digital_swarm"].startswith(
+            "SIMULATED_REPRODUCIBLE")
     if "C_knowledge_793" not in c6["simulations"]:
         assert r["C6_integrity_ledger"]["ledger"]["C_knowledge_793"].startswith("REAL_REPRODUCIBLE")
     assert c6["pass"] is True

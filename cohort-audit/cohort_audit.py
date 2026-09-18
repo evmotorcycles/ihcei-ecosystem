@@ -286,7 +286,11 @@ def main():
         "B_github_frozen_28": "REAL_REPRODUCIBLE (no survival label)",
         "C_knowledge_793": ("REAL_REPRODUCIBLE (gap closed; knowledge_793_results.csv)"
                             if knowledge_closed else "SIMULATION (retracted as real-world, PR #111)"),
-        "D_digital_swarm": ("REAL_REPRODUCIBLE (gap closed; digital_swarm_results.csv)"
+        # Cohort D is a SEEDED simulation. Reproducing itself is a code-correctness
+        # check, not empirical support -- this file says so at C5 already, and the
+        # label must not read as real-world data. Retired 2026-09-18, ledger H5.
+        "D_digital_swarm": ("SIMULATED_REPRODUCIBLE (seeded; code-correctness, "
+                            "not empirical support; digital_swarm_results.csv)"
                             if swarm_closed else "SIMULATION"),
         "hf_media_19 / biorxiv_40 / pubmed_8": "REAL_REPRODUCIBLE",
     }

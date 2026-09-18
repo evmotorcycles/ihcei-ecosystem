@@ -19,7 +19,7 @@ python3 -m pytest -q lism-cohorts/test_meta_lism.py
 | **A** | Yeast interactome (STRING v12) | 4825 | linear adequate; VIF 1.003 (channel intact) | attest committed refs; `repro/reproduce_yeast.py` recomputes VIF from raw STRING |
 | **B** | GitHub repositories (pre-registered) | 992 | **QUADRATIC DISCONFIRMED**; linear AUC ~0.73, quad CV AUC ~0.59 | **live** re-hash of the prereg spec == archived CI hash `cac34f44…` |
 | **C** | Knowledge / Stack Exchange (Barakah) | 793 | linear adequate; no curvature (LRT p~1); **effect weak** | attest committed `SE_BARAKAH_RESULTS.md`; `se_barakah_test.py` |
-| **D** | Digital swarm (dependency tree) | 500 | **linear wins** R² 0.93>0.90; decay r=−0.887 (0.84→0.01 / 39 hops) | **live** re-simulation, seeded, stdlib |
+| **D** | Digital swarm (dependency tree) | 500 | **linear wins** R² 0.93>0.90; decay r=−0.887 (0.84→0.01 / 39 hops) | **seeded simulation** re-run here (not observed), stdlib |
 
 **Meta-verdict:** linear `E = U·D` adequate in **4/4** channel-intact cohorts;
 the accelerating quadratic gains nothing where a valid test was possible; the

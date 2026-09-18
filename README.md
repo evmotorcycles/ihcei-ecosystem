@@ -35,8 +35,9 @@ for d_i in per_hop_fidelities:
     if cb.step(d_i)["tripped"]:
         break                                         # stop calling the next agent
 ```
-Validated against real 39-hop telemetry (`lism-cohorts/appendix/cohort_D_decay.csv`,
-fidelity 0.84 → 0.01). Standard library only.
+Validated against a seeded 500-agent, 39-hop simulation (`cohort_D_swarm`, seed
+20260719; `lism-cohorts/appendix/cohort_D_decay.csv`, fidelity 0.84 → 0.01);
+**no observed handoff logs exist in this repository.** Standard library only.
 
 ---
 

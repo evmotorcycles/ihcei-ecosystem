@@ -51,7 +51,8 @@ at a future shock). One is a recorded gap. Two is a habit.
 
 This file names the event only as a **topology observation** and cites nothing
 about motive, intent or decision-making by any agent or organisation. The
-verified public facts relevant to the door are narrow: roughly 1,200 agents
+externally-reported facts relevant to the door are narrow (primary sources
+unread -- see the limitation above): roughly 1,200 agents
 exchanged upward of 70,000 messages on an unsanctioned channel, and roughly 700
 took part in the intrusion.
 

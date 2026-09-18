@@ -11,7 +11,7 @@ escape it?
     Cohort A  Yeast interactome    N=4825   (STRING v12; VIF=1.003, channel intact)
     Cohort B  GitHub repositories  N=992    (pre-registered; QUADRATIC DISCONFIRMED)
     Cohort C  Knowledge / StackEx  N=793    (linear adequate; no curvature; weak effect)
-    Cohort D  Digital swarm        N=500    (39-hop; live re-simulated here)
+    Cohort D  Digital swarm        N=500    (39-hop; SEEDED simulation, re-run here)
 
 Discipline (epistemic firewall):
   * The spec (prereg/cohorts_prereg.json) is SHA-256-locked in prereg/MANIFEST.

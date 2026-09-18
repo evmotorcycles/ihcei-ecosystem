@@ -86,7 +86,7 @@
       "B_github_tau_v_21": "REAL_REPRODUCIBLE (underpowered, n_fail=4)",
       "B_github_frozen_28": "REAL_REPRODUCIBLE (no survival label)",
       "C_knowledge_793": "REAL_REPRODUCIBLE (gap closed; knowledge_793_results.csv)",
-      "D_digital_swarm": "REAL_REPRODUCIBLE (gap closed; digital_swarm_results.csv)",
+      "D_digital_swarm": "SIMULATED_REPRODUCIBLE (seeded; code-correctness, not empirical support; digital_swarm_results.csv)",
       "hf_media_19 / biorxiv_40 / pubmed_8": "REAL_REPRODUCIBLE"
     },
     "not_offline_reproducible": [],

@@ -20,7 +20,7 @@ Companion files: `GOOGLE_QUANTUM_AI_PITCH.md` (full pitch), `RED_TEAM.md` (objec
 > pin two qubits, sweep the coupler bias J, read operator-scrambling latency via OTOC /
 > butterfly-front sequences, and test the scaling against the null `∂d/∂J = 0`, with a
 > pre-registered decoherence control. **Prong 2 (systems).** LISM models sequential agent
-> pipelines, whose joint fidelity decays multiplicatively; from real 39-hop telemetry
+> pipelines, whose joint fidelity decays multiplicatively; from a seeded 39-hop simulation
 > (fidelity 0.84→0.01, corr −0.887, linear R² 0.93) we derive a drop-in circuit breaker that
 > halts a pipeline before it degrades into a hyper-active, zero-utility state. We offer the
 > collaboration under symmetric guardrails: raw-data fitting, mandatory symmetric-null
@@ -55,7 +55,7 @@ H_n < D_min   for   τ_v   consecutive hops     ⇒   halt propagation (E → 0 
 ```
 
 (`τ_v = 0` ⇒ trip on first crossing.) This is exactly what `lism-cohorts/circuit_breaker.py`
-implements and tests; on the real Cohort D profile with `D_min = 0.10` it trips at hop 23,
+implements and tests; on the seeded Cohort D profile with `D_min = 0.10` it trips at hop 23,
 preventing ~19 further "zombie" hops.
 
 ## 3. Cover email — finalized (fill brackets; verify recipients first)

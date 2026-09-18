@@ -1,5 +1,5 @@
 """pytest: the LISM_CircuitBreaker trips correctly, is deterministic, and matches
-the repo's real Cohort D telemetry."""
+the repo's SEEDED Cohort D simulation (cohort_D_swarm, seed 20260719)."""
 import os
 import sys
 
@@ -51,7 +51,7 @@ def test_validates_inputs():
         LISM_CircuitBreaker(d_min=0.5).step(1.5)
 
 
-def test_matches_real_cohort_d_and_prevents_zombie_hops():
+def test_matches_seeded_cohort_d_and_prevents_zombie_hops():
     per_hop = _load_cohort_d_per_hop()
     r = simulate(per_hop, d_min=0.10, tau_v=0)
     assert r["n_hops"] >= 39

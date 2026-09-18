@@ -22,7 +22,8 @@ below the floor before it actually trips -- models real detection lag).
 Honest scope: this is the CONTROL mechanism. It does not measure D_i for you --
 your framework supplies each hop's fidelity (a verifier score, a self-consistency
 check, a retrieval-grounding score, etc.). The value here is the trip law and the
-resource accounting, validated against the repo's real Cohort D telemetry.
+resource accounting, validated against the repo's SEEDED Cohort D simulation
+(cohort_D_swarm, seed 20260719). No observed handoff logs exist in this repo.
 
 No dependencies (standard library only). Zero cost, offline, deterministic.
 """
@@ -114,7 +115,7 @@ def simulate(per_hop_fidelities, d_min, tau_v=0):
 
 
 def _load_cohort_d_per_hop():
-    """Derive per-hop fidelities from the repo's real Cohort D mean-fidelity curve
+    """Derive per-hop fidelities from the repo's SEEDED Cohort D mean-fidelity curve
     (cohort_D_decay.csv): d_i = meanD[depth] / meanD[depth-1]."""
     path = os.path.join(HERE, "appendix", "cohort_D_decay.csv")
     rows = list(csv.DictReader(open(path)))
@@ -131,7 +132,7 @@ def _load_cohort_d_per_hop():
 def _demo():
     bar = "=" * 78
     print(bar)
-    print(" LISM_CircuitBreaker — governed vs ungoverned on the REAL Cohort D profile")
+    print(" LISM_CircuitBreaker — governed vs ungoverned on the SEEDED Cohort D profile")
     print(bar)
     per_hop = _load_cohort_d_per_hop()
     for d_min in (0.10, 0.05):
